@@ -439,7 +439,7 @@ namespace Hollowmere.Authoring
                 }
             }
 
-            if (voiced > 0)
+            if (voiced > 0 && a.NarrativeBlocked == null)
             {
                 HollowmereWorldContent.Graphs(a, true, voiced);
             }

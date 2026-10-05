@@ -77,6 +77,12 @@ namespace Hollowmere.Authoring
         {
             CreateFactsAndItems(a);
             CreateSets(a);
+            if (a.NarrativeBlocked != null)
+            {
+                a.Block("story.register-1 .. story.quest", a.NarrativeBlocked);
+                return;
+            }
+
             RegisterContent(a, "story.register-1", AllFirstWave());
             ConfigureItems(a);
             CreateVendorAndLoot(a);

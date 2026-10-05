@@ -66,6 +66,35 @@ namespace Hollowmere.Authoring
 
         public bool IsApplied(string step) => applied.Contains(step);
 
+        /// <summary>Why the narrative definition types cannot be authored through the Studio yet (null = they can).</summary>
+        public string? NarrativeBlocked { get; private set; }
+
+        /// <summary>Steps not attempted, with the reason.</summary>
+        public List<string> Blocked { get; } = new List<string>();
+
+        public void Block(string steps, string reason)
+        {
+            Blocked.Add(steps + ": " + reason);
+        }
+
+        /// <summary>Describes each type through the Studio identity; the first failure blocks the narrative steps.</summary>
+        public void CheckNarrativeTypes(params Type[] types)
+        {
+            NarrativeBlocked = null;
+            foreach (Type type in types)
+            {
+                try
+                {
+                    Runtime.Identity.Describe(type);
+                }
+                catch (InvalidOperationException error)
+                {
+                    NarrativeBlocked = type.Name + ": " + error.Message;
+                    return;
+                }
+            }
+        }
+
         /// <summary>
         /// Applies one step: <paramref name="build"/> produces the operations (called only when the step is not journaled
         /// yet). Throws with the engine's diagnostics when the change set is not Applied.

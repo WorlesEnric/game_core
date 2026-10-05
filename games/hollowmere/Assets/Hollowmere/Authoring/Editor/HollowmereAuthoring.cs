@@ -36,6 +36,7 @@ namespace Hollowmere.Authoring
         public string? Error;
         public List<string> Applied = new List<string>();
         public List<string> Skipped = new List<string>();
+        public List<string> Blocked = new List<string>();
         public Dictionary<string, int> ToolCounts = new Dictionary<string, int>();
         public int Operations;
         public bool BakeOk;
@@ -95,6 +96,11 @@ namespace Hollowmere.Authoring
             }
 
             Console.WriteLine("HOLLOWMERE-AUTHOR " + report);
+            foreach (string line in report.Blocked)
+            {
+                Console.WriteLine("HOLLOWMERE-AUTHOR blocked " + line);
+            }
+
             foreach (string line in report.Log)
             {
                 Console.WriteLine("HOLLOWMERE-AUTHOR step " + line);
@@ -130,6 +136,10 @@ namespace Hollowmere.Authoring
             StudioRuntime runtime = StudioServices.Runtime;
             OpenScenes();
             var author = new StudioAuthor(runtime);
+            author.CheckNarrativeTypes(
+                typeof(GameCore.Gameplay.Inventory.InventoryDefinition), typeof(GameCore.Gameplay.Inventory.WorldItemDefinition),
+                typeof(GameCore.Gameplay.Inventory.VendorDefinition), typeof(GameCore.Gameplay.Logic.RuleDefinition),
+                typeof(GameCore.Gameplay.Quest.QuestDefinition), typeof(GameCore.Gameplay.Dialogue.DialogueGraphDefinition));
             try
             {
                 HollowmereStory.Author(author);
@@ -149,7 +159,7 @@ namespace Hollowmere.Authoring
             }
             catch (Exception error)
             {
-                report.Error = error.Message;
+                report.Error = error.ToString();
                 Collect(author, report);
                 SaveAll();
                 report.Seconds = watch.Elapsed.TotalSeconds;
@@ -171,7 +181,7 @@ namespace Hollowmere.Authoring
             }
 
             AssetDatabase.SaveAssets();
-            report.Ok = report.Error == null && report.BakeOk && report.VerifyOk;
+            report.Ok = report.Error == null && report.BakeOk && report.VerifyOk && report.Blocked.Count == 0;
             report.Seconds = watch.Elapsed.TotalSeconds;
             return report;
         }
@@ -180,6 +190,7 @@ namespace Hollowmere.Authoring
         {
             report.Applied.AddRange(author.AppliedNow);
             report.Skipped.AddRange(author.Skipped);
+            report.Blocked.AddRange(author.Blocked);
             foreach (KeyValuePair<string, int> pair in author.ToolCounts)
             {
                 report.ToolCounts[pair.Key] = pair.Value;

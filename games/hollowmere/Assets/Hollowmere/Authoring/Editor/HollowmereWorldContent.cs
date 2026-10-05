@@ -112,9 +112,17 @@ namespace Hollowmere.Authoring
             Definitions(a);
             Npcs(a);
             Place(a);
-            WorldItems(a);
-            Graphs(a, false);
-            Rules(a);
+            if (a.NarrativeBlocked == null)
+            {
+                WorldItems(a);
+                Graphs(a, false);
+                Rules(a);
+            }
+            else
+            {
+                a.Block("world.world-items, story.graph.*, story.rules", a.NarrativeBlocked);
+            }
+
             Director(a);
             Boot(a);
         }
