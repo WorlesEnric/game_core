@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: VillageWell
+  m_EditorClassIdentifier: 
+  authoringId: d0e07a7e-7f26-4c76-a782-5c4f171c030d
+  entity: {fileID: 11400000, guid: 30fd77047fcfeb484a281c97ce32f960, type: 2}
+  kind: 2
+  initialState: idle
+  prompts:
+  - state: idle
+    text: Examine the well
+  conditionRef: 
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 3
+  focusPriority: 0
+  focusHeight: 1
+  cue: 
+  contentStamp: 

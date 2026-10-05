@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: CausewayGate
+  m_EditorClassIdentifier: 
+  authoringId: 7e4092b3-2dbe-4e7e-9a75-e35c6630e6b7
+  entity: {fileID: 11400000, guid: e4e13730b5bfc49b5a30784b04d65ffa, type: 2}
+  kind: 1
+  initialState: locked
+  prompts:
+  - state: locked
+    text: The gate is barred
+  - state: closed
+    text: Open the gate
+  - state: open
+    text: Close the gate
+  conditionRef: narrative.fact.gate_open
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 3
+  focusPriority: 0
+  focusHeight: 1
+  cue: 
+  contentStamp: 
