@@ -1,12 +1,3 @@
-// GameCore.Studio.Views - W-VIEW-04 model: a world definition's regions and portals from the index, the open region
-// scenes' markers (spawn point), NPC schedules, and the World view's change sets.
-//
-// Edits name P1.1's world.* tools when the engine can bind them (ToolBinding). Today it cannot (see ToolBinding), so:
-//   connect regions -> create world.portal {regionA, regionB} + set world.portals (two ops, the second depends on the
-//                      first and names the new portal by a pre-minted authoring id)
-//   set spawn point -> move the region's SpawnPoint object (when it exists), else world.setSpawnPoint
-//   add portal      -> world.addPortal (no generic equivalent: the portal end is a non-authorable component); the
-//                      engine refuses it until the tool binds its region parameter (PACKET.md, left open)
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -261,7 +252,7 @@ namespace GameCore.Studio.Views
                 {
                     foreach (MonoBehaviour behaviour in root.GetComponentsInChildren<MonoBehaviour>(true))
                     {
-                        if (behaviour == null || !NestedReferenceContributor.ImplementsRegion(behaviour.GetType()))
+                        if (behaviour == null || !IsRegion(behaviour.GetType()))
                         {
                             continue;
                         }
@@ -318,6 +309,13 @@ namespace GameCore.Studio.Views
             return schedules;
         }
 
+        private static bool IsRegion(Type type)
+        {
+            foreach (Type contract in type.GetInterfaces())
+                if (contract.Name == "IAuthoredRegion") return true;
+            return false;
+        }
+
         private static string Canonical(IndexGraph graph, AuthoringRef reference)
         {
             string key = reference.IdentityKey;
@@ -345,119 +343,39 @@ namespace GameCore.Studio.Views
         public const string AddPortalTool = "world.addPortal";
         public const string SetSpawnPointTool = "world.setSpawnPoint";
 
-        /// <summary>Operations connecting two regions with a new portal.</summary>
-        /// <summary>
-        /// The change sets that connect two regions, applied in order. With a bindable world.connectRegions it is one
-        /// change set of one op. Otherwise it is two: <c>create world.portal</c> (with a minted authoring id and both
-        /// regions), at a fresh asset path, then <c>set portals</c> on the world naming it by that path. They cannot share a change set because the engine defers only
-        /// unresolved op targets to apply time; a reference inside a value (the new portal in <c>portals</c>) must
-        /// resolve at stage time.
-        /// </summary>
-        public static IReadOnlyList<IReadOnlyList<Operation>> ConnectRegions(StudioRuntime runtime, WorldDocument world, WorldRegion a, WorldRegion b)
+        /// <summary>One atomic world action; the world tool owns portal creation and all related references.</summary>
+        public static ChangeSet ConnectRegions(StudioRuntime runtime, WorldDocument world, WorldRegion a, WorldRegion b)
         {
-            if (ToolBinding.IsBindable(ConnectRegionsTool))
+            return ViewEdits.Build("Connect " + a.Name + " and " + b.Name, new[]
             {
-                return new IReadOnlyList<Operation>[]
+                ViewEdits.Op("op1", ConnectRegionsTool, world.Ref, new JObject
                 {
-                    new[] { ViewEdits.Op("op1", ConnectRegionsTool, world.Ref, new JObject
-                    {
-                        ["regionA"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(a.Ref)),
-                        ["regionB"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(b.Ref)),
-                    }), },
-                };
-            }
-
-            string id = AuthoringIdentity.NewAuthoringId();
-            string folder = PortalFolder(runtime, world);
-            JObject fields = new JObject
-            {
-                ["regionA"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(a.Ref)),
-                ["regionB"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(b.Ref)),
-            };
-            string name = Safe(a.Name) + "_" + Safe(b.Name);
-            string assetPath = AssetDatabase.GenerateUniqueAssetPath(folder.TrimEnd('/') + "/" + name + ".asset");
-            Operation create = ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject
-            {
-                ["type"] = "world.portal",
-                ["name"] = name,
-                ["path"] = assetPath,
-                ["authoringId"] = id,
-                ["fields"] = fields,
+                    ["regionA"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(a.Ref)),
+                    ["regionB"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(b.Ref)),
+                }),
             });
-            JArray portals = new JArray();
-            foreach (WorldPortal portal in world.Portals)
-            {
-                portals.Add(StudioJson.ToToken(SemanticIndexService.EdgeRef(portal.Ref)));
-            }
-
-            // By asset path: the resolver loads it directly, without waiting for the index to see the new asset.
-            portals.Add(new JValue(assetPath));
-            Operation list = ViewEdits.Op("op1", BuiltInToolIdsExt.Set, world.Ref, new JObject { ["field"] = "portals", ["value"] = portals });
-            return new IReadOnlyList<Operation>[] { new[] { create }, new[] { list } };
         }
 
-        /// <summary>world.addPortal on <paramref name="portal"/> (the tool's reflected target) at a position in the region scene.</summary>
-        public static Operation AddPortal(WorldPortal portal, Vector3 position, float yaw = 0f, float arrivalDistance = 2.5f)
+        /// <summary>Places an end in an explicitly selected region through engine argument binding.</summary>
+        public static Operation AddPortal(WorldPortal portal, WorldRegion region, Vector3 position, float yaw = 0f, float arrivalDistance = 2.5f)
         {
             return ViewEdits.Op("op1", AddPortalTool, portal.Ref, new JObject
             {
+                ["region"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(region.Ref)),
                 ["position"] = new JArray(position.x, position.y, position.z),
                 ["yaw"] = yaw,
                 ["arrivalDistance"] = arrivalDistance,
             });
         }
 
-        /// <summary>Moves the region's spawn point (see the file header).</summary>
+        /// <summary>Targets the region definition, whether its scene is open or closed.</summary>
         public static Operation SetSpawnPoint(StudioRuntime runtime, WorldRegion region, Vector3 position, float yaw = 0f)
         {
-            Transform? spawn = region.Marker == null ? null : region.Marker.transform.Find("SpawnPoint");
-            if (!ToolBinding.IsBindable(SetSpawnPointTool) && spawn != null)
-            {
-                AuthoringRef? target = runtime.Resolver.BuildRef(spawn.gameObject, null, true);
-                if (target != null)
-                {
-                    Quaternion rotation = Quaternion.Euler(0f, yaw, 0f);
-                    return ViewEdits.Op("op1", BuiltInToolIdsExt.Move, target, new JObject
-                    {
-                        ["position"] = new JArray(position.x, position.y, position.z),
-                        ["rotation"] = new JArray(rotation.x, rotation.y, rotation.z, rotation.w),
-                    });
-                }
-            }
-
-            AuthoringRef markerRef = region.Marker == null ? region.Ref : runtime.Resolver.BuildRef(region.Marker, null, true) ?? region.Ref;
-            return ViewEdits.Op("op1", SetSpawnPointTool, markerRef, new JObject
+            return ViewEdits.Op("op1", SetSpawnPointTool, region.Ref, new JObject
             {
                 ["position"] = new JArray(position.x, position.y, position.z),
                 ["yaw"] = yaw,
             });
-        }
-
-        private static string PortalFolder(StudioRuntime runtime, WorldDocument world)
-        {
-            UnityEngine.Object? asset = runtime.Resolver.Find(world.Ref);
-            string path = asset == null ? string.Empty : AssetDatabase.GetAssetPath(asset);
-            if (path.Length == 0)
-            {
-                return "Assets";
-            }
-
-            string directory = Path.GetDirectoryName(path)!.Replace('\\', '/');
-            return AssetDatabase.IsValidFolder(directory + "/Portals") ? directory + "/Portals" : directory;
-        }
-
-        private static string Safe(string name)
-        {
-            char[] chars = (name ?? string.Empty).ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
-            {
-                if (!char.IsLetterOrDigit(chars[i]))
-                {
-                    chars[i] = '_';
-                }
-            }
-
-            return new string(chars);
         }
     }
 }

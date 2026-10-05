@@ -33,6 +33,9 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             Root + "/Items/GateKey.asset",
             Root + "/Quests/DrownedBell.asset",
             Root + "/World/Hollowmere.asset",
+            Root + "/World/Regions/ThornwickVillage.asset",
+            Root + "/World/Regions/BlackmereMarsh.asset",
+            Root + "/World/Regions/DrownedBelfry.asset",
         };
 
         private readonly Dictionary<string, byte[]> _backup = new Dictionary<string, byte[]>(StringComparer.Ordinal);
