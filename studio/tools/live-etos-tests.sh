@@ -129,10 +129,22 @@ if [[ -n "${GAMECORE_ETOS_STAGE_CHANGESET:-}" ]]; then
   export GAMECORE_ETOS_STAGE_CHANGESET GAMECORE_ETOS_STAGE_CATALOG
 fi
 
-# Redact before tee can persist child output, using the shared host policy.
-redact_output() {
-  python3 -u -c 'import sys; sys.path.insert(0, sys.argv[1]); from redact import redact
-for line in sys.stdin: sys.stdout.write(redact(line)); sys.stdout.flush()' "${base}/studio/stage"
+# The trusted host writer buffers token fragments and structured JSON before durable writes.
+# Its child environment is explicit; credential contents are never command arguments.
+run_logged() {
+  local log="$1"
+  shift
+  local forwarded=()
+  local name
+  for name in GAMECORE_ETOS_LIVE GAMECORE_ETOS_KEY_FILE GAMECORE_ETOS_PROJECT_ID \
+    GAMECORE_ETOS_STAGE_SOURCE GAMECORE_ETOS_STAGE_CHANGESET GAMECORE_ETOS_STAGE_CATALOG \
+    GC_ETOS_EVIDENCE_DIR GC_ETOS_FIXTURE_OUT GC_ETOS_MIC_SECONDS GC_ETOS_MIC_DEVICE \
+    GC_STUDIO_ON_HOST GC_STUDIO_HOST GC_STUDIO_REMOTE_BASE GC_STUDIO_UNITY_SLOTS \
+    UNITY UNITY_TIMEOUT UNITY_SILENCE_TIMEOUT; do
+    [[ -v "$name" ]] && forwarded+=("$name=${!name}")
+  done
+  python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout 7200 --silence 1800 \
+    -- env "${forwarded[@]}" "$@"
 }
 
 export GAMECORE_ETOS_LIVE=1
@@ -154,9 +166,9 @@ trap cleanup EXIT
 if (( ! skip_dotnet )); then
   echo "== dotnet live tests (${dotnet_filter})"
   rc=0
-  "${tools}/dotnet-test.sh" "${packet}" dotnet/tests/GameCore.Studio.Etos.Client.Tests -- \
+  run_logged "${evidence}/dotnet-live.log" bash "${tools}/dotnet-test.sh" "${packet}" dotnet/tests/GameCore.Studio.Etos.Client.Tests -- \
     --filter "${dotnet_filter}" --logger "trx;LogFileName=${evidence}/dotnet-live.trx" \
-    --logger "console;verbosity=normal" 2>&1 | redact_output | tee "${evidence}/dotnet-live.log" || rc=$?
+    --logger "console;verbosity=normal" || rc=$?
   (( rc == 0 )) || { echo "-- dotnet live tests failed (exit ${rc})" >&2; failures=$((failures + 1)); }
 fi
 
@@ -195,8 +207,7 @@ if (( ! skip_unity )); then
   echo "== Unity live tests (${unity_filter})"
   rc=0
   UNITY_TIMEOUT="${UNITY_TIMEOUT:-3600}" UNITY_SILENCE_TIMEOUT="${UNITY_SILENCE_TIMEOUT:-1500}" \
-    "${tools}/unity-compile.sh" "${packet}" games/hollowmere --tests EditMode --filter "${unity_filter}" 2>&1 \
-    | redact_output | tee "${evidence}/unity-live.log" || rc=$?
+    run_logged "${evidence}/unity-live.log" bash "${tools}/unity-compile.sh" "${packet}" games/hollowmere --tests EditMode --filter "${unity_filter}" || rc=$?
   (( rc == 0 )) || { echo "-- Unity live tests failed (exit ${rc})" >&2; failures=$((failures + 1)); }
   latest_xml="$(ls -t "${base}/.unity-logs/"*editmode*.xml 2>/dev/null | head -n 1 || true)"
   [[ -n "${latest_xml}" ]] && cp "${latest_xml}" "${evidence}/unity-live-results.xml"

@@ -3,7 +3,7 @@
 Branch `codex/r2-d`, Linux build host `myubuntu`. `git fetch origin && git merge origin/main`
 reported already up to date at `de2d9593`. R2-A's former root note is now
 `docs/studio/packets/R2-A-core-edit-recovery.md`; its published seams are consumed here.
-No installed service, sibling clone, credential file, paid operation or live-node test is touched.
+No installed service, sibling clone, real credential file, paid operation or live-node test is touched.
 
 ## R2 fixes
 
@@ -11,7 +11,7 @@ No installed service, sibling clone, credential file, paid operation or live-nod
 |---|---|---|
 | R2-13 client / D5 | Four-field stage POST; project header on HTTP, artifact, ticket and WebSocket calls; exact signed record fetch/verify; IStageService and ICandidateStageGateway; persisted productGUID/path identity; local source/catalog callbacks rebound on session startup | `R2_13_StageUsesExactOwnedContractAndVerifiesUnmodifiedRecord`, `R2_13_ProjectIdentityPersistsAndTrustedContextRebinds` |
 | R2-20 | Await main-thread handling before cursor save; stop cancels queued work; handler/save failure reconnects from last acknowledged cursor with `event_handler_failed` | `R2_20_UnhandledEventIsReplayedAfterStopAndThrowDoesNotAcknowledge`, `R2_20_MainThreadQueueMustHandleBeforeCursorSaveAndReloadReplays` |
-| R2-21 | Socket ownership transfers only on successful connect; finally disposes every unsuccessful connection, including caller cancellation; stream shutdown aborts/disposes connected sockets | `R2_21_CancelTicketedConnectAndRepeatedReloadLeaveNoConnections`, `R2_21_CancelDuringTicketedConnectDisposesConnection` |
+| R2-21 | Socket ownership transfers only on successful connect; finally disposes unsuccessful connections; explicit abort/dispose and cancellable wait handle Mono stalled handshakes; stream shutdown disposes connected sockets | `R2_21_CancelTicketedConnectAndRepeatedReloadLeaveNoConnections`, `R2_21_CancelDuringTicketedConnectDisposesConnection` |
 | R2-22/23 client | Core SecretRedactor for strings and nested payloads; no raw InnerException; retain sanitized structured timeout data, HTTP status, provider code and hint | `R2_22_23_TimeoutRetainsRedactedStructuredDataWithoutRawException`, `R2_22_23_DiagnosticRetainsSanitizedStructuredTimeout` |
 | R2-24 | 128 inspected objects, 64 KiB UTF-8 envelope, bounded strings/hierarchy, explicit truncation, secret redaction before packing | `R2_24_SceneContextBoundsObjectsBytesAndRedactsNames` |
 | R2-41 | Discoverable parameterless IMediaGenerationGateway; asynchronous Requested ID; configured max_cost_usd; verified download plus import-side digest check; journaled asset.import | `R2_41_AudioToolDiscoversGatewayAndImportsVerifiedVoiceThroughEngine`; existing media/import regression |
@@ -32,9 +32,10 @@ The authenticated companion remains the only signature verifier; mandatory steps
 
 - **R2-G**, `Packages/com.gamecore.gameplay.dialogue/Editor/DialogueTools.cs`, registered
   `GenerateVoice(DialogueGraphDefinition graph, int node, string voice = "")`: replace the
-  `new NotConfiguredMediaGateway()` argument with `MediaGateways.Resolve()` (with its audio namespace
-  qualified, or an equivalent contracts-owned discovery seam). Audio's existing TypeCache discovery
-  now finds `GameCore.Studio.Etos.EtosMediaGenerator`; dialogue still hardcodes the null gateway.
+  return line with `return GenerateVoice(graph, node, voice, ResolveMediaGateway());` and add
+  `private static IMediaGenerationGateway ResolveMediaGateway()` using the same TypeCache/public
+  parameterless discovery as AudioTools.MediaGateways.Resolve. This avoids a gameplay → Studio reference.
+  Audio's existing TypeCache discovery now finds `GameCore.Studio.Etos.EtosMediaGenerator`; dialogue still hardcodes the null gateway.
 - **R2-G / contracts owner**, `Packages/com.gamecore.gameplay.contracts/Runtime/Narrative/NarrativeSeams.cs`
   and `audio/Editor/AudioTools.cs`: the current IMediaGenerationGateway has only RequestVoiceLine.
   `audio.generateSfx` must keep its honest NotConfigured result until a shared sound-effect request
@@ -62,12 +63,53 @@ The authenticated companion remains the only signature verifier; mandatory steps
 
 ## Verification
 
-- Client tests: 62 passed, 0 failed, 6 live skipped (68 total); `/tmp/r2-d-tests/r2-d-client-final.trx`.
+- Client tests: 63 passed, 0 failed, 6 live skipped (69 total); `/tmp/r2-d-tests/r2-d-client-owned-upgrade.trx`.
   The sixth skip is the new optional R2-H candidate-stage qualification test.
-- C# checker passed at the implementation checkpoint (1,099 files).
-- Unity EditMode is pending a host-wide slot; exact final XML/counts will be recorded below.
-- Metadata checker currently reports only the external Hollowmere lockfile dependency request above.
+- C# checker passed on the final implementation sources (1,101 files).
+- Isolated defect-restoration build `/tmp/r2-d-regression-before/Before.csproj`, filter
+  `FullyQualifiedName~R2RegressionTests`: 4 failed / 0 passed, as expected. Only the old legacy POST,
+  queue-without-await, missing unsuccessful socket disposal, and raw/discarded error fields were
+  restored in copied sources. This is a targeted defect-restoration check, not a historical full-build
+  result. `/tmp/r2-d-tests/r2-d-before.trx` records the four failures; the actual checkout remains green.
+- Initial Hollowmere EditMode XML `.unity-logs/r2-d.xml`: 26 total, 21 passed, 1 failed,
+  4 skipped, 0 inconclusive. The failed `R2_21_CancelDuringTicketedConnectDisposesConnection`
+  exposed Mono ignoring cancellation during a stalled upgrade. The client now explicitly aborts/disposes
+  the pending socket, unblocks the caller on cancellation and observes any late task failure.
+  First attempt had timed out in package resolve; the wrapper retry compiled and ran tests.
+  The first warm rerun `.unity-logs/r2-d-verified.xml` again had 21 passed / 1 failed / 4 skipped:
+  cancellation now returned promptly, but Mono retained the pending TCP upgrade even after Abort/Dispose.
+  The Mono transport now owns the TCP/TLS upgrade and passes the verified stream to framework WebSocket
+  framing; .NET retains ClientWebSocket. `ConnectWebSocketAsync` returns Task<WebSocket>. Final full warm rerun `.unity-logs/r2-d-owned.xml`: **26 total, 22 passed, 0 failed,
+  4 skipped, 0 inconclusive**, Unity exit 0, 71 seconds wall time, 5.969 seconds test time. All seven
+  R2-D tests and all 15 existing offline P2.2 tests passed. The four credential-gated live tests remain
+  skipped; wrapper exit 1 correctly reports PARTIAL/NotRun for skipped acceptance rows.
+  It disabled the silence watchdog for observed disk I/O stalls, kept the normal 1,500-second
+  per-attempt deadline, and held one Editor slot.
+- Metadata checker passed (41 packages, 89 assemblies) against Unity's generated lock update during
+  the test run. That external generated file was restored after Unity exit to honor exclusive paths.
+  The final clean-scope checkout therefore reports exactly one metadata failure: the Hollowmere
+  lockfile dependency request above. No metadata rule or dependency declaration was weakened.
 - `bash -n studio/tools/live-etos-tests.sh` and `git diff --check`: pass.
+- Live runner uses the shared host `run-redacted.py` writer with explicit child environment before
+  any log write. Local `/tmp/r2-d-live-writer-smoke.sh` passed split-token and nested-JSON checks;
+  it runs only a synthetic Python child, never the live tests.
+
+Exact final Unity invocation (from this clone):
+
+```bash
+UNITY_SILENCE_TIMEOUT=0 bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
+  --log-dir "$PWD/.unity-logs" --label r2-d-owned --results "$PWD/.unity-logs/r2-d-owned.xml" -- \
+  -runTests -testPlatform EditMode \
+  -testFilter 'GameCore\.Studio\.Etos.*|Hollowmere\.P2_2.*|GameCore\.Studio\.Hollowmere\.P2_2.*'
+```
+
+Result hashes (SHA-256):
+
+- final Unity XML: `b6ba2e5a9b5b90fd44ca909e129bdcb773e7e57442650e651415abecf45c6b04`
+- initial failed XML: `6ef685be97fcd8f66f3a2c439de8c4ee2da79b304a67ef4302ed9d3152c38a9f`
+- intermediate failed XML: `81870cbb7a22b662270afcce5be7e3afbe0bdbf32a4fd3bb49623e46e6359e16`
+- final dotnet TRX: `39ec0fd3924335eb898315a89ed941c1d930237893e6831af38a23f9707a7dbc`
+- isolated defect-restoration TRX: `e3301475ece2b6e1b280af840f79d3ebd9681b7be58759d7760dafe9286ab5b4`
 
 ## Left open
 
@@ -77,6 +119,9 @@ The authenticated companion remains the only signature verifier; mandatory steps
   exact requests are above. No successful dialogue default-path or SFX generation claim is made.
 - Nonempty stage inputs cannot authenticate until R2-F includes them in the signed record.
 - The external lockfile must be synchronized before the integrated metadata gate can pass.
+- Mono's owned upgrade requires a direct node connection (`UseSystemProxy=false`, the existing production
+  default). Explicit system-proxy requests refuse NotConfigured. TLS keeps platform certificate/hostname
+  validation; no permissive certificate callback or raw WebSocket frame implementation is introduced.
 - R2-H owns live qualification. No live ETOS test, provider charge, real killed-Editor scenario,
   live Stage → Admit, or sandbox child is run here. D3's actual Docker Unity licensing result is
   recorded by R2-F in `studio/agent/evidence/r2-f-sandbox-probe.txt` (no valid Unity licence, exit 198).
