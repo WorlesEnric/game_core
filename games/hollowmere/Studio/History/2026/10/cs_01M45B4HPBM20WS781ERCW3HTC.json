@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B4HPBM20WS781ERCW3HTC",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Welcome to the Drowned Lantern. Coin for goods, and no questions.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav",
+        "artifact": {
+          "artifact": "sha256:8612681e24e2630ce5c11796300950397fefa972243e546df7b78d56274e3a19"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "8612681e24e2630ce5c11796300950397fefa972243e546df7b78d56274e3a19",
+      "name": "Bram_hello.wav",
+      "mediaType": "audio/wav",
+      "bytes": 172844,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-86608ff42b86350c6a2afddfa71219de-8300000-0",
+                "assetGuid": "86608ff42b86350c6a2afddfa71219de",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav"
+              },
+              "stamp": "sha256:8612681e24e2630ce5c11796300950397fefa972243e546df7b78d56274e3a19"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:38.132Z",
+    "applied": "2026-10-05T06:13:38.242Z"
+  }
+}

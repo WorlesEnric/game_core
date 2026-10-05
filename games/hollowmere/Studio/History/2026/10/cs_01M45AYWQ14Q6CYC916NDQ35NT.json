@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYWQ14Q6CYC916NDQ35NT",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The shrine is lit? I felt it tonight, like a held breath let go.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_lit.wav",
+        "artifact": {
+          "artifact": "sha256:4905137210fed1f1be486418424f2d2e9182814795067429ac1f605aab699a01"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4905137210fed1f1be486418424f2d2e9182814795067429ac1f605aab699a01",
+      "name": "Maren_lit.wav",
+      "mediaType": "audio/wav",
+      "bytes": 234284,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_lit.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-71c02f1cbae555acfb8715ddd1724fd1-8300000-0",
+                "assetGuid": "71c02f1cbae555acfb8715ddd1724fd1",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_lit.wav"
+              },
+              "stamp": "sha256:4905137210fed1f1be486418424f2d2e9182814795067429ac1f605aab699a01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:32.811Z",
+    "applied": "2026-10-05T06:10:32.927Z"
+  }
+}

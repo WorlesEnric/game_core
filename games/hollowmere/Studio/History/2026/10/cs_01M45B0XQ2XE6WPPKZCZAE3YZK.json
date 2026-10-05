@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B0XQ2XE6WPPKZCZAE3YZK",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: Painterly portrait of Odd the ferryman, a gaunt old man with a long pole over his shoulder, patched brown coat, wide-brimmed hat dripping with marsh water, green lantern glow, storybook fantasy style, head and shoulders",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Portraits/Odd.png",
+        "artifact": {
+          "artifact": "sha256:5246a5863799192fd0412f0bcfe5cba5196c4357f9b9d5df80cd3d3249431ac9"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "5246a5863799192fd0412f0bcfe5cba5196c4357f9b9d5df80cd3d3249431ac9",
+      "name": "Odd.png",
+      "mediaType": "image/png",
+      "bytes": 140067,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Portraits/Odd.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-251e8f10690a3b859996c7aafa4459da-2800000-0",
+                "assetGuid": "251e8f10690a3b859996c7aafa4459da",
+                "path": "Assets/Hollowmere/Media/Portraits/Odd.png"
+              },
+              "stamp": "sha256:5246a5863799192fd0412f0bcfe5cba5196c4357f9b9d5df80cd3d3249431ac9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:39.372Z",
+    "applied": "2026-10-05T06:11:39.403Z"
+  }
+}

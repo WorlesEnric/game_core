@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B12HBWWG63EPG58FC20Q8",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: You lit the old shrine. My mother tended it. I owe you a crossing.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Odd_thanks.wav",
+        "artifact": {
+          "artifact": "sha256:b4e2d0755c9dc6c801e110c520d77439d51676b2b23853e7f53d5e700d75596b"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "b4e2d0755c9dc6c801e110c520d77439d51676b2b23853e7f53d5e700d75596b",
+      "name": "Odd_thanks.wav",
+      "mediaType": "audio/wav",
+      "bytes": 311084,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Odd_thanks.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-b4ca9038e0c69834695bc1d46b2921b2-8300000-0",
+                "assetGuid": "b4ca9038e0c69834695bc1d46b2921b2",
+                "path": "Assets/Hollowmere/Media/Voices/Odd_thanks.wav"
+              },
+              "stamp": "sha256:b4e2d0755c9dc6c801e110c520d77439d51676b2b23853e7f53d5e700d75596b"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:44.310Z",
+    "applied": "2026-10-05T06:11:44.425Z"
+  }
+}

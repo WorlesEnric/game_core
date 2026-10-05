@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B3JQRRVE2YVBE712WNYW7",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The toll... it hurts... but the village will sleep. I will stay with the bell.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_stay.wav",
+        "artifact": {
+          "artifact": "sha256:337eaa1b233039ea5d6eddd76ae9f31494139a680e28f766246c5ac76fbb5494"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "337eaa1b233039ea5d6eddd76ae9f31494139a680e28f766246c5ac76fbb5494",
+      "name": "BelfryEcho_stay.wav",
+      "mediaType": "audio/wav",
+      "bytes": 230444,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_stay.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-fbd57a72a76e74bac8f90c0a55281aaa-8300000-0",
+                "assetGuid": "fbd57a72a76e74bac8f90c0a55281aaa",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_stay.wav"
+              },
+              "stamp": "sha256:337eaa1b233039ea5d6eddd76ae9f31494139a680e28f766246c5ac76fbb5494"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:06.433Z",
+    "applied": "2026-10-05T06:13:06.532Z"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AZYPRPMWZ5AQ01A174429",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The shrine burns again. First night in years I have not felt watched out here.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Hale_lit.wav",
+        "artifact": {
+          "artifact": "sha256:5202fc441ab96389c0e41782eb07723187af5007a13a81bc4f0d75584df1d17c"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "5202fc441ab96389c0e41782eb07723187af5007a13a81bc4f0d75584df1d17c",
+      "name": "Hale_lit.wav",
+      "mediaType": "audio/wav",
+      "bytes": 268844,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Hale_lit.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-88f6bf82ac23311a5abb7f6a5aa177cf-8300000-0",
+                "assetGuid": "88f6bf82ac23311a5abb7f6a5aa177cf",
+                "path": "Assets/Hollowmere/Media/Voices/Hale_lit.wav"
+              },
+              "stamp": "sha256:5202fc441ab96389c0e41782eb07723187af5007a13a81bc4f0d75584df1d17c"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:07.623Z",
+    "applied": "2026-10-05T06:11:07.757Z"
+  }
+}

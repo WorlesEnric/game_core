@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AZS88VNRDE8CJR69DJGEY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: Painterly portrait of Warden Hale, a stern weathered gate warden in a dented helmet and blue-grey cloak, holding a lantern, marsh fog behind him, storybook fantasy style, head and shoulders",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Portraits/Hale.png",
+        "artifact": {
+          "artifact": "sha256:c5ee61e53a92ecb5a155835605d44e5cb0eff2e7a0161cc77b19cc6c880847d0"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "c5ee61e53a92ecb5a155835605d44e5cb0eff2e7a0161cc77b19cc6c880847d0",
+      "name": "Hale.png",
+      "mediaType": "image/png",
+      "bytes": 138623,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Portraits/Hale.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d327629b5cd9b5df291cd00997d8221e-2800000-0",
+                "assetGuid": "d327629b5cd9b5df291cd00997d8221e",
+                "path": "Assets/Hollowmere/Media/Portraits/Hale.png"
+              },
+              "stamp": "sha256:c5ee61e53a92ecb5a155835605d44e5cb0eff2e7a0161cc77b19cc6c880847d0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:02.039Z",
+    "applied": "2026-10-05T06:11:02.077Z"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B312WC6YBM4HTZWMV16K5",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: ...who comes... to the drowned bell...",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_who.wav",
+        "artifact": {
+          "artifact": "sha256:848003ebea526548f576ed4960385a0da04d7d7a722c761003e244e9e3c3bfbc"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "848003ebea526548f576ed4960385a0da04d7d7a722c761003e244e9e3c3bfbc",
+      "name": "BelfryEcho_who.wav",
+      "mediaType": "audio/wav",
+      "bytes": 103724,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_who.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-4715ce8bb449f349a824f2a81701ffc1-8300000-0",
+                "assetGuid": "4715ce8bb449f349a824f2a81701ffc1",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_who.wav"
+              },
+              "stamp": "sha256:848003ebea526548f576ed4960385a0da04d7d7a722c761003e244e9e3c3bfbc"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:48.357Z",
+    "applied": "2026-10-05T06:12:48.941Z"
+  }
+}
