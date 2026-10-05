@@ -229,6 +229,7 @@ namespace GameCore.Studio.Etos
         {
             await previous.ConfigureAwait(false);
             await channel.SendPcmAsync(frame).ConfigureAwait(false);
+            return;
         }
 
         private void Unhook()
