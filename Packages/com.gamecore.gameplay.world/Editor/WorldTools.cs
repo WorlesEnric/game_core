@@ -2,16 +2,22 @@
 //
 //   world.connectRegions  create a PortalDefinition asset connecting two regions of a world and list it on the world;
 //                         the two regions become each other's neighbours; optional arrival spawn points and condition
-//   world.addPortal       place one end of a portal (trigger + arrival pose) in a region scene
-//   world.setSpawnPoint   set a region's spawn point (creates or moves its SpawnPoint child) and record it as a named
-//                         spawn point of the region definition
+//   world.addPortal       place one end of a portal (trigger + arrival pose) in the open scene of one of its regions
+//   world.setSpawnPoint   set a region's spawn point (creates or moves its SpawnPoint child when the region scene is
+//                         open) and record it as a named spawn point of the region definition
 //   world.configurePortal set a portal's arrival spawn points and the condition travel needs (P1.7b)
 //   world.setRegionBounds set a region definition's bounds (P1.7b)
 //
 // Like the entity tools, every tool validates before it changes anything, records Undo, marks what it edited dirty and
 // refuses with an ArgumentException whose message starts with the GP-* code.
+//
+// Engine binding (P1.7b): a tool's target is its first [Authorable] parameter and every other parameter is an
+// [AuthorArg], so ChangeSetEngine/ToolRegistry can bind all of them. world.addPortal targets the PortalDefinition and
+// world.setSpawnPoint the RegionDefinition; both find the region's scene marker (AuthoredRegion, a non-authorable
+// component) among the open scenes. The AuthoredRegion overloads stay for authoring scripts and tests.
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using GameCore.Gameplay.Contracts;
 using UnityEditor;
@@ -107,13 +113,29 @@ namespace GameCore.Gameplay.World.Editor
 
         [AuthorOperation("world.addPortal", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(WorldValidator), Requires = "world.region", RequiresOnTarget = "world.portal",
-            Doc = "Places one end of a portal in a region scene: a trigger volume whose forward axis points into the region.")]
-        public static RegionPortal AddPortal(
-            AuthoredRegion region,
+            Doc = "Places one end of the target portal in the open scene of one of the two regions it connects: a trigger volume whose forward axis points into the region.")]
+        public static RegionPortal AddPortalEnd(
             PortalDefinition portal,
             [AuthorArg(Unit = "m", Doc = "Position of the portal end.")] Vector3 position,
             [AuthorArg(Unit = "deg", Required = false, Doc = "Heading of the arrival direction around +Y.")] float yaw = 0f,
-            [AuthorArg(Unit = "m", Required = false, Doc = "Arrival distance in front of the portal.")] float arrivalDistance = 2.5f)
+            [AuthorArg(Unit = "m", Required = false, Doc = "Arrival distance in front of the portal.")] float arrivalDistance = 2.5f,
+            [AuthorArg(Category = "world.region", Required = false, Doc = "Region whose scene receives the end (empty: the portal's region whose scene is open; when both are, the one whose bounds hold the position).")] RegionDefinition? region = null)
+        {
+            if (portal == null)
+            {
+                throw new ArgumentException(GameplayDiagnosticCodes.PortalUnconnected + ": a portal is required");
+            }
+
+            return AddPortal(MarkerFor(portal, region, position), portal, position, yaw, arrivalDistance);
+        }
+
+        /// <summary>Places one end of <paramref name="portal"/> in the scene of <paramref name="region"/> (authoring scripts).</summary>
+        public static RegionPortal AddPortal(
+            AuthoredRegion region,
+            PortalDefinition portal,
+            Vector3 position,
+            float yaw = 0f,
+            float arrivalDistance = 2.5f)
         {
             if (region == null || region.Definition == null)
             {
@@ -146,12 +168,114 @@ namespace GameCore.Gameplay.World.Editor
 
         [AuthorOperation("world.setSpawnPoint", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(WorldValidator), Requires = "world.region",
-            Doc = "Sets a region spawn point: the default one creates or moves the scene's SpawnPoint child; every one is recorded as a named spawn point of the region definition.")]
-        public static Transform SetSpawnPoint(
-            AuthoredRegion region,
+            Doc = "Sets a spawn point of the target region: recorded as a named spawn point of the region definition; when the region scene is open, the default one also creates or moves the scene's SpawnPoint child (a named one its 'SpawnPoint <name>' marker).")]
+        public static void SetRegionSpawnPoint(
+            RegionDefinition region,
             [AuthorArg(Unit = "m", Doc = "Spawn position (world space).")] Vector3 position,
             [AuthorArg(Unit = "deg", Required = false, Doc = "Spawn heading around +Y.")] float yaw = 0f,
             [AuthorArg(Required = false, Doc = "Spawn point name (empty: default, the region's own spawn).")] string name = "")
+        {
+            if (region == null)
+            {
+                throw new ArgumentException(GameplayDiagnosticCodes.WorldUnknownRegion + ": a region is required");
+            }
+
+            AuthoredRegion? marker = OpenMarker(region);
+            if (marker != null)
+            {
+                SetSpawnPoint(marker, position, yaw, name);
+                return;
+            }
+
+            if (region.HasBounds && !region.Bounds.Contains(position))
+            {
+                throw new ArgumentException(GameplayDiagnosticCodes.EntityOutsideRegion + ": the spawn point lies outside the region bounds");
+            }
+
+            Undo.RecordObject(region, "world.setSpawnPoint");
+            region.SetSpawnPoint(string.IsNullOrEmpty(name) ? RegionDefinition.DefaultSpawnPoint : name, position, yaw);
+            EditorUtility.SetDirty(region);
+        }
+
+        /// <summary>The scene marker of <paramref name="region"/> among the open scenes, or null when its scene is closed.</summary>
+        public static AuthoredRegion? OpenMarker(RegionDefinition region)
+        {
+            foreach (AuthoredRegion marker in OpenMarkers())
+            {
+                if (marker.Definition == region)
+                {
+                    return marker;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// The open scene marker receiving an end of <paramref name="portal"/>: the named region's, else the one region
+        /// of the portal whose scene is open, else (both open) the one whose bounds hold <paramref name="position"/>.
+        /// </summary>
+        public static AuthoredRegion MarkerFor(PortalDefinition portal, RegionDefinition? region, Vector3 position)
+        {
+            var candidates = new List<AuthoredRegion>();
+            foreach (AuthoredRegion marker in OpenMarkers())
+            {
+                RegionDefinition? definition = marker.Definition;
+                bool wanted = region != null ? definition == region : definition != null && (definition == portal.RegionA || definition == portal.RegionB);
+                if (wanted)
+                {
+                    candidates.Add(marker);
+                }
+            }
+
+            if (candidates.Count == 1)
+            {
+                return candidates[0];
+            }
+
+            if (candidates.Count == 0)
+            {
+                string which = region != null ? region.name : (portal.RegionA != null ? portal.RegionA.name : "?") + " or " + (portal.RegionB != null ? portal.RegionB.name : "?");
+                throw new ArgumentException(GameplayDiagnosticCodes.WorldUnknownRegion + ": no open scene holds the marker of " + which + "; open the region scene first");
+            }
+
+            foreach (AuthoredRegion candidate in candidates)
+            {
+                if (candidate.Bounds != null && candidate.Bounds.Contains(position))
+                {
+                    return candidate;
+                }
+            }
+
+            throw new ArgumentException(GameplayDiagnosticCodes.WorldUnknownRegion + ": both regions of " + portal.name + " are open and neither holds the position; name the region");
+        }
+
+        private static IEnumerable<AuthoredRegion> OpenMarkers()
+        {
+            for (int s = 0; s < SceneManager.sceneCount; s++)
+            {
+                Scene scene = SceneManager.GetSceneAt(s);
+                if (!scene.isLoaded)
+                {
+                    continue;
+                }
+
+                foreach (GameObject root in scene.GetRootGameObjects())
+                {
+                    foreach (AuthoredRegion marker in root.GetComponentsInChildren<AuthoredRegion>(true))
+                    {
+                        yield return marker;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Sets the spawn point of the region scene <paramref name="region"/> (authoring scripts).</summary>
+        public static Transform SetSpawnPoint(
+            AuthoredRegion region,
+            Vector3 position,
+            float yaw = 0f,
+            string name = "")
         {
             if (region == null || region.Definition == null)
             {

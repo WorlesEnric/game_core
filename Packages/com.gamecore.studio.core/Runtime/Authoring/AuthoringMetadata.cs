@@ -146,6 +146,7 @@ namespace GameCore.Studio.Authoring
                 Requires = Get<string>(mirror, "Requires"),
                 RequiresOnTarget = Get<string>(mirror, "RequiresOnTarget"),
                 TargetKinds = kinds,
+                ReadOnly = Flag(mirror, "ReadOnly", false),
             };
         }
 

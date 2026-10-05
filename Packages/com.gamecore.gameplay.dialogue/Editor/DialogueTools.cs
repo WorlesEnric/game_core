@@ -179,7 +179,7 @@ namespace GameCore.Gameplay.Dialogue.Editor
             return fact;
         }
 
-        [AuthorOperation("dialogue.preview", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("dialogue.preview", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph,
             Doc = "Walks the graph over the initial facts plus overrides ('bell_rung=1; odd_paid=1') and prints every reachable path.")]
         public static string Preview(

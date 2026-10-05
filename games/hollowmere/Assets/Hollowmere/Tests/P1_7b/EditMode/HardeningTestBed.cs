@@ -109,6 +109,15 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             return report;
         }
 
+        /// <summary>Runs a read-only tool directly (ToolRegistry.Invoke) and asserts it applied with an output.</summary>
+        public JToken Invoke(string toolId, UnityEngine.Object target, JObject args)
+        {
+            OperationResult result = Runtime.Registry.Invoke(toolId, Ref(target, AuthorScope.Definition), args);
+            Assert.That(result.Status, Is.EqualTo(OutcomeStatus.Applied), toolId + ": " + result.Code + " " + result.Detail);
+            Assert.That(result.Output, Is.Not.Null, toolId + " returns its output");
+            return result.Output!;
+        }
+
         public static string Describe(ApplyReport report)
         {
             var lines = new List<string> { "state " + report.State };

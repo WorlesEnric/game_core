@@ -154,6 +154,9 @@ namespace GameCore.Gameplay.Contracts
         public string? RequiresOnTarget { get; set; }
 
         public AuthoringKind[]? TargetKinds { get; set; }
+
+        /// <summary>A pure tool (inspection, simulation, explanation): Studio may invoke it directly; it changes nothing.</summary>
+        public bool ReadOnly { get; set; }
     }
 
     /// <summary>A tool argument (method parameter).</summary>

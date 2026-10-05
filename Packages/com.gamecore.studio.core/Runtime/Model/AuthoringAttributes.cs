@@ -108,6 +108,12 @@ namespace GameCore.Studio.Model
 
         /// <summary>Authoring kinds the target may have; null means any.</summary>
         public AuthoringKind[]? TargetKinds { get; set; }
+
+        /// <summary>
+        /// True for a pure tool (an inspection, a simulation, an explanation): it changes nothing, so the registry runs it
+        /// directly (<c>ToolRegistry.Invoke</c>) and the engine records neither undo nor dirty state for its target.
+        /// </summary>
+        public bool ReadOnly { get; set; }
     }
 
     /// <summary>A tool argument (method parameter).</summary>

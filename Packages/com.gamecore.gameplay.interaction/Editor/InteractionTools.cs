@@ -221,7 +221,7 @@ namespace GameCore.Gameplay.Interaction.Editor
             EditorUtility.SetDirty(definition);
         }
 
-        [AuthorOperation("interaction.explain", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("interaction.explain", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(InteractionValidator), Requires = "interaction.interactable",
             Doc = "Evaluates an interactable's condition over a state (logic.test terms; empty: the content's initial state) and names the first failed condition and the inputs it read.")]
         public static ConditionExplanation Explain(

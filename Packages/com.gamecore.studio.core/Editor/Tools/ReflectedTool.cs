@@ -4,6 +4,8 @@
 // [AuthorArg] parameters their converted arguments. An instance method on the target's type runs on the target.
 // Returns: OperationResult as is; void/null means Applied; false means Refused; any other value becomes the output.
 // When the method supplies no inverse, the engine-side inverse is a `set` restoring every authorable member it changed.
+// A [AuthorOperation(ReadOnly = true)] tool is a pure query: ToolRegistry.Invoke runs it directly and Apply records no
+// undo, dirty state, inverse or touched object for its target.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -45,7 +47,7 @@ namespace GameCore.Studio.Edit
 
         public bool Internal => false;
 
-        public bool ReadOnly => false;
+        public bool ReadOnly => _operation.ReadOnly;
 
         public MethodInfo Method => _method;
 
@@ -116,9 +118,9 @@ namespace GameCore.Studio.Edit
                 target ??= instance;
             }
 
-            AuthoringTypeInfo? info = target == null ? null : context.Identity.Describe(target);
+            AuthoringTypeInfo? info = target == null || ReadOnly ? null : context.Identity.Describe(target);
             JObject? before = info == null ? null : ToolSupport.CaptureMembers(context, target!, info);
-            if (target != null)
+            if (target != null && !ReadOnly)
             {
                 context.RecordUndo(target);
             }
@@ -134,7 +136,7 @@ namespace GameCore.Studio.Edit
                 return OperationResult.Failed(DiagnosticCodes.Refused, Entry.Id + " failed: " + inner.GetType().Name + ": " + inner.Message);
             }
 
-            if (target != null)
+            if (target != null && !ReadOnly)
             {
                 EditorUtility.SetDirty(target);
             }
@@ -166,7 +168,7 @@ namespace GameCore.Studio.Edit
                 }
             }
 
-            return result.Touch(target);
+            return ReadOnly ? result : result.Touch(target);
         }
 
         private object?[] BindArguments(EditContext context, ToolStageResult problems)

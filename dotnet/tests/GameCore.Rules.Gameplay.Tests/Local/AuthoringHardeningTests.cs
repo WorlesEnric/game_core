@@ -34,6 +34,19 @@ namespace GameCore.Rules.Gameplay.Tests.Local
         }
 
         [Test]
+        public void ReadOnly_IsAReadWriteBoolDefaultingToFalse_OnTheMirrorAndTheStudioOperationAttribute()
+        {
+            foreach (object operation in new object[] { new AuthorOperationAttribute("probe.tool"), new StudioModel.AuthorOperationAttribute("probe.tool") })
+            {
+                PropertyInfo? property = operation.GetType().GetProperty("ReadOnly");
+                Assert.That(property, Is.Not.Null, operation.GetType().FullName);
+                Assert.That(property!.PropertyType, Is.EqualTo(typeof(bool)), operation.GetType().FullName);
+                Assert.That(property.CanRead && property.CanWrite, Is.True, operation.GetType().FullName);
+                Assert.That(property.GetValue(operation), Is.EqualTo(false), operation.GetType().FullName);
+            }
+        }
+
+        [Test]
         public void HardeningCodes_AreWellFormedUniqueAndListed()
         {
             List<string> declared = Constants(typeof(AuthoringHardeningCodes)).Select(c => c.Value).ToList();

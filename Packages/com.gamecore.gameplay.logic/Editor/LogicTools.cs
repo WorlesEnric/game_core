@@ -72,7 +72,7 @@ namespace GameCore.Gameplay.Logic.Editor
             return rule;
         }
 
-        [AuthorOperation("logic.explain", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("logic.explain", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(LogicValidator), Requires = NarrativeKinds.Rule,
             Doc = "Explains a rule over the content's initial state: trigger, gates, every condition and its inputs, and the actions it would run.")]
         public static string Explain(RuleDefinition rule)
@@ -80,7 +80,7 @@ namespace GameCore.Gameplay.Logic.Editor
             return Test(rule, string.Empty);
         }
 
-        [AuthorOperation("logic.test", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("logic.test", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(LogicValidator), Requires = NarrativeKinds.Rule,
             Doc = "Decides a rule over a test state and reports fire/skip, the first failed condition and the inputs read.")]
         public static string Test(
@@ -104,7 +104,7 @@ namespace GameCore.Gameplay.Logic.Editor
             return Describe(model, decision, models);
         }
 
-        [AuthorOperation("logic.whyNot", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("logic.whyNot", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(LogicValidator), Requires = NarrativeKinds.ContentSet,
             Doc = "Why does it not happen? For a gated subject (interactable, trigger, portal) or a rule: its condition over a state, the first failed condition, the inputs read, and the rules and action sets that would change what it reads.")]
         public static WhyNotReport WhyNot(

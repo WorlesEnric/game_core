@@ -123,7 +123,7 @@ namespace GameCore.Gameplay.Quest.Editor
             return index;
         }
 
-        [AuthorOperation("quest.simulate", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("quest.simulate", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
             Doc = "Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.")]
         public static string Simulate(
@@ -266,7 +266,7 @@ namespace GameCore.Gameplay.Quest.Editor
             NarrativeAuthoring.ThrowIfInvalid(quest);
         }
 
-        [AuthorOperation("quest.inspectRuntime", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("quest.inspectRuntime", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
             Doc = "Reports a quest's status, stage, branch, objectives and prerequisites over a state (logic.test terms; empty: the initial state).")]
         public static QuestInspection InspectRuntime(

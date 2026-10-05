@@ -1,6 +1,7 @@
-// Hollowmere.P1_7b.EditMode.Tests - B7: every tool added by P1.7b (B3 plus the authoring tools of the new B2 fields)
-// round-trips as a change set through the Studio engine (ChangeSetValidator -> ToolRegistry.Invoke -> Undo -> journal)
-// and lands in the journal as Applied; its effect is checked on temp assets under Tests/P1_7b/Temp.
+// Hollowmere.P1_7b.EditMode.Tests - B7: every mutating tool added by P1.7b (B3 plus the authoring tools of the new B2
+// fields) round-trips as a change set through the Studio engine (ChangeSetValidator -> ToolRegistry.Invoke -> Undo ->
+// journal) and lands in the journal as Applied; its effect is checked on temp assets under Tests/P1_7b/Temp. The pure
+// ones (interaction.explain, logic.whyNot, quest.inspectRuntime) are ReadOnly and run through ToolRegistry.Invoke.
 #nullable enable
 using System.Linq;
 using GameCore.Gameplay.Contracts;
@@ -95,7 +96,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             Bed.Apply("interaction.setActions", F.Door, new JObject { ["actions"] = Bed.RefToken(F.Actions) });
             Assert.That(F.Door.Actions, Is.SameAs(F.Actions));
             Assert.That(F.Door.ActionRef, Is.EqualTo(F.Actions.AuthoringId));
-            Bed.Apply("interaction.explain", F.Door, new JObject { ["state"] = string.Empty });
+            Bed.Invoke("interaction.explain", F.Door, new JObject { ["state"] = string.Empty });
         }
 
         [Test]
@@ -115,7 +116,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             Assert.That(F.Quest.CompletionActions, Is.SameAs(F.Actions));
             Bed.Apply("quest.setPrerequisites", F.Dependent, new JObject { ["prerequisites"] = new JArray(Bed.RefToken(F.Quest)) });
             Assert.That(F.Dependent.Prerequisites, Is.EquivalentTo(new[] { F.Quest }));
-            Bed.Apply("quest.inspectRuntime", F.Quest, new JObject { ["state"] = string.Empty });
+            Bed.Invoke("quest.inspectRuntime", F.Quest, new JObject { ["state"] = string.Empty });
         }
 
         [Test]
@@ -133,7 +134,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
         public void LogicTools_WhyNotAndMigrateRefs_AreJournaled()
         {
             InteractionToolsLink();
-            Bed.Apply("logic.whyNot", F.Content, new JObject { ["subject"] = Bed.RefToken(F.Door), ["state"] = string.Empty });
+            Bed.Invoke("logic.whyNot", F.Content, new JObject { ["subject"] = Bed.RefToken(F.Door), ["state"] = string.Empty });
             Bed.Apply("authoring.migrateRefs", null, new JObject { ["folders"] = new JArray(HardeningTestBed.TempFolder), ["apply"] = false });
         }
 
