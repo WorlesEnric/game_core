@@ -3,41 +3,51 @@
 Catalog rows 10 (UI and player flow) and 11 (audio and atmosphere) of the gameplay plugin library, with the Hollowmere
 UI and audio content.
 
-Branch: `worktree-agent-ab2fb374b37e8085c` (base main 444e266). Host clone: `~/wkspace/gc-studio/p1.5`.
+Branch: `worktree-agent-ab2fb374b37e8085c` (base main 444e266; main ad28bb3 with P1.3 merged in 8ff3ca6). Host clone:
+`~/wkspace/gc-studio/p1.5`.
 
 ## What was built
 
 | Package / path | Content |
 |---|---|
-| `Packages/com.gamecore.gameplay.contracts/Runtime/Presentation/` (engine-free, additive) | `PresentationServices` (the composition point, one per world plan, keyed by interface type, survives restore). Interfaces: `IPromptPresenter`, `IUiIntentSink` + `UiIntent`, `IFeedbackSink` (System.Numerics.Vector3), `IDialogueView`, `IJournalView`, `IInventoryView`, `IVoiceLinePlayer`, `IDialogueInput`, `IInventoryInput`, `IVolumeSettingsSink`, `IGameplayPauseQuery`, `IPlayerSettings`. View models `DialogueViewModel`, `JournalViewModel`/`JournalQuestEntry`, `InventoryViewModel`/`InventorySlotEntry`. `PresentationSlots` (owners `ui.owner`/`audio.owner`, slot ids, session targets, `KeyOf(id)`). `PresentationDiagnosticCodes` (GP-UI-001..014, GP-AUD-001..021). `MediaGeneration` (`IMediaGenerationGateway`, `NullMediaGenerationGateway`, request/result). |
+| `Packages/com.gamecore.gameplay.contracts/Runtime/Presentation/` (engine-free, additive) | `PresentationServices` (the composition point, one per world plan, keyed by interface type, survives restore). Interfaces: `IDialogueView`, `IJournalView`, `IInventoryView`, `IVoiceLinePlayer`, `IDialogueInput`, `IInventoryInput`, `IVolumeSettingsSink`, `IGameplayPauseQuery`, `IPlayerSettings` (P1.3's `IPromptPresenter`, `UiIntent`/`IUiIntentSink`, `IFootstepSink` and `IFeedbackSink` are implemented, not redeclared; `IDialogueView`, `IJournalView`, `IInventoryView` and `IVoiceLinePlayer` stay additive until P1.4 lands). View models `DialogueViewModel`, `JournalViewModel`/`JournalQuestEntry`, `InventoryViewModel`/`InventorySlotEntry`. `PresentationSlots` (owners `ui.owner`/`audio.owner`, slot ids, session targets, `KeyOf(id)`). `PresentationDiagnosticCodes` (GP-UI-001..014, GP-AUD-001..021). `MediaGeneration` (`IMediaGenerationGateway`, `NullMediaGenerationGateway`, request/result). |
 | `Packages/com.gamecore.rules.gameplay/Runtime/{Ui,Audio}` | `ScreenFlowRules` (open/close/command table, return-to for sub-screens, offered commands, host actions), `UiIntentRules`, `SaveSlotNaming`, `SettingsRules` (sensitivity, volume steps, resolution choices). `VolumeRules` (permille, dB), `MusicStateRules`, `AmbienceRules`, `CrossfadeSchedule` (equal-power, retarget). |
-| `Packages/com.gamecore.gameplay.ui` | Kernel: UI plugin with slots `ui.screen`, `ui.returnTo`, `ui.message` on a per-world UI session target; routes `ui.open`, `ui.close`, `ui.command`; event `ScreenChanged` (from, to, host action, argument); `[DisableAutoCreation] UiCommandSystem` + `UiModule` (refusal trace). Runtime: `UiRuntime`, `UiViewModels` (INotifyBindablePropertyChanged, `[CreateProperty]`), `BindingHost`, `CommandDispatcher`, `UiSettingsStore` (PlayerPrefs), `UiRoot` (UIDocument, PanelSettings, theme, layers), `UiInput` (Input System), `UiHostDriver`, `SceneReloadSessionActions`. Definitions `UiDocumentDefinition` [ui.document], `ThemeDefinition` [ui.theme], `ScreenFlowDefinition` [ui.flow]. Editor: `ui.bind`, `ui.setCommand`, `ui.addScreen`, `ui.setTheme`, `ui.previewScreen`, `UiValidator`, `UiPreviewSession`. |
-| `Packages/com.gamecore.gameplay.audio` | Kernel: audio plugin with slots `audio.musicState`, `audio.ambienceZone`, `audio.volumeMaster/Music/Sfx/Voice` on a per-world audio session target; routes `audio.setMusicState{state, stinger}`, `audio.setAmbienceZone{region}`, `audio.setVolume{channel, permille}`, `audio.playSfx{id, x, y, z}`, `audio.playVoice{clip, speaker}`, `audio.stopVoice`; events MusicStateChanged, AmbienceChanged, VolumeChanged, SfxPlayed, VoicePlayed, VoiceStopped; `AudioCommandSystem` + `AudioModule`. Runtime: `AudioRuntime`, `MusicController`, `AmbienceZoneBinder`, `LoopCrossfader`, `SfxPool` (IFeedbackSink), `VoicePlayer` (IVoiceLinePlayer), `AudioMixerBinding`, `AudioEngineHost`, `AnimationEventRelay`. Definitions `AudioBankDefinition` [audio.bank], `MusicStateDefinition` [audio.musicState], `AmbienceDefinition` [audio.ambience], `AudioSetDefinition` [audio.set]. Editor: `audio.assignClip`, `audio.setAmbience`, `audio.setMusicState`, `audio.generateVoice`, `audio.generateSfx`, `AudioValidator`, `ProceduralAudioGenerator`, `MediaGateways`. |
-| `Packages/com.gamecore.gameplay.world` (P1.1 files, minimal additive seam) | `WorldExtensions.cs` (new): `IGameplayWorldExtension`, `IGameplayWorldExtensionSource`, `GameplayExtensionTarget`. `WorldBuildOptions.Extensions` and `.Presentation`; `WorldBuilder.Build` adds each extension's plugin, system, routes, lanes, readers, recipes, seed and mount steps; `WorldBuilder.Attach` attaches the extensions before the presentation frame; `GameplayWorld.Presentation` and `.Extensions`. |
-| `Packages/com.gamecore.gameplay.contracts/Runtime/GameplayCatalogNames.cs` (P1.1 file, append only) | Catalog names and static entries for the ui and audio plugins, systems, session appliers, layouts and schemas. |
+| `Packages/com.gamecore.gameplay.ui` | Kernel: UI plugin with slots `ui.screen`, `ui.returnTo`, `ui.message` on a per-world UI session target; routes `ui.open`, `ui.close`, `ui.command`; event `ScreenChanged` (from, to, host action, argument); `[DisableAutoCreation] UiCommandSystem` + `UiModule` (refusal trace). Runtime: `UiRuntime`, `UiViewModels` (INotifyBindablePropertyChanged, `[CreateProperty]`), `BindingHost`, `CommandDispatcher`, `UiSettingsStore` (PlayerPrefs), `UiRoot` (UIDocument, PanelSettings, theme, layers), `UiInput` (Input System), `UiHostDriver`, `SceneReloadSessionActions`. Definitions `UiDocumentDefinition` [ui.document], `ThemeDefinition` [ui.theme], `ScreenFlowDefinition` [ui.flow]. Editor: `ui.bind`, `ui.setCommand`, `ui.addScreen`, `ui.setTheme`, `ui.previewScreen`, `UiValidator`, `UiPreviewSession`, `UiCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.audio` | Kernel: audio plugin with slots `audio.musicState`, `audio.ambienceZone`, `audio.volumeMaster/Music/Sfx/Voice` on a per-world audio session target; routes `audio.setMusicState{state, stinger}`, `audio.setAmbienceZone{region}`, `audio.setVolume{channel, permille}`, `audio.playSfx{id, x, y, z}`, `audio.playVoice{clip, speaker}`, `audio.stopVoice`; events MusicStateChanged, AmbienceChanged, VolumeChanged, SfxPlayed, VoicePlayed, VoiceStopped; `AudioCommandSystem` + `AudioModule`. Runtime: `AudioRuntime`, `MusicController`, `AmbienceZoneBinder`, `LoopCrossfader`, `SfxPool` (P1.3's `IFeedbackSink` and `IFootstepSink`), `VoicePlayer` (IVoiceLinePlayer), `AudioMixerBinding`, `AudioEngineHost`, `AnimationEventRelay`. Definitions `AudioBankDefinition` [audio.bank], `MusicStateDefinition` [audio.musicState], `AmbienceDefinition` [audio.ambience], `AudioSetDefinition` [audio.set]. Editor: `audio.assignClip`, `audio.setAmbience`, `audio.setMusicState`, `audio.generateVoice`, `audio.generateSfx`, `AudioValidator`, `ProceduralAudioGenerator`, `MediaGateways`, `AudioCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.world` (on top of P1.3's seam, additive) | The UI and audio extensions implement P1.3's `IGameplayWorldExtension`. `WorldExtensions.cs` (new) adds `IGameplayWorldTargets` (an extension's spawn recipes and world-scope session targets; `WorldBuilder.Build` adds the recipes and the seed steps), `GameplayExtensionTarget` and `IGameplayWorldExtensionSource`. `WorldBuildOptions.Presentation` / `WorldBuildPlan.Presentation`, `GameplayWorld.Presentation` and `.Extensions`. |
+| Catalog registrations | `UiDeclarations` / `AudioDeclarations` `CatalogSchemas` + `CatalogEntries`, contributed through P1.3's `IGameplayCatalogContributor` (`UiCatalogContributor`, `AudioCatalogContributor`); `GameplayCatalogNames.cs` is untouched. |
 | `games/hollowmere` | Manifest and lock add `com.gamecore.gameplay.ui`, `.audio`, `.save`. `Assets/Hollowmere/UI`: nine UXML screens (`Screens/`), one theme (`Theme/Hollowmere.uss`, `HollowmereTheme.tss`), runtime rig `Runtime/HollowmereUiAudio.cs` (asmdef `Hollowmere.UiAudio`), authoring utility `Editor/HollowmereUiAudioAuthoring.cs` (asmdef `Hollowmere.UiAudio.Editor`). `Assets/Hollowmere/Audio/HollowmereMixer.mixer` (Master + Music/Ambience/Sfx/Voice, exposed `MasterVolume`, `MusicVolume`, `AmbienceVolume`, `SfxVolume`, `VoiceVolume`). Generated on the host by the authoring utility and committed: `Audio/Generated/*.wav` + `HollowmereAudio.manifest.json`, `Audio/Definitions/*`, `UI/Definitions/*`, `UI/Theme/HollowmerePanelSettings.asset`, `UI/Theme/HollowmereTheme.asset`, `UI/Resources/Hollowmere/UiAudio.asset`. `Boot/UiAudioBootstrap.cs`. Tests under `Tests/P1_5`. |
 | `dotnet/tests/GameCore.Rules.Gameplay.Tests/{Ui,Audio}` | `ScreenFlowRulesTests`, `AudioRulesTests`. |
 
 ## GameBoot hook (for the integrator)
 
-One line in `games/hollowmere/Assets/Hollowmere/Boot/GameBoot.cs`, `Start()`:
+One line in `games/hollowmere/Assets/Hollowmere/Boot/GameBoot.cs`, `Start()`, right after
+`options.Extensions.Add(interactionExtension);`:
 
 ```csharp
-// before
-WorldBuildPlan plan = WorldBuilder.Build(manifest, catalog, fingerprint, new WorldBuildOptions { Name = "Hollowmere" });
-// after
-WorldBuildPlan plan = WorldBuilder.Build(manifest, catalog, fingerprint, UiAudioBootstrap.Configure(new WorldBuildOptions { Name = "Hollowmere" }, gameObject));
+UiAudioBootstrap.Configure(options, gameObject);
 ```
 
-`UiAudioBootstrap` loads `Resources/Hollowmere/UiAudio` as an `IGameplayWorldExtensionSource`, so `Hollowmere.Boot`
-needs no new asmdef reference. When the game has a save service (checkpoint codecs, P3.1), connect it once after
-the attach: `GetComponentInChildren<HollowmereUiAudio>().UseSaves(service, restored => { /* scene loader, views */ })`.
-Without it the save and load screens show GP-UI-014.
+`UiAudioBootstrap.Configure` loads `Resources/Hollowmere/UiAudio` as an `IGameplayWorldExtensionSource` (so
+`Hollowmere.Boot` needs no new asmdef reference): it adds the ui and audio extensions to the options, builds the
+presentation rig under the GameBoot object, and adds a `UiAudioBootstrap` component. Once GameBoot has installed the
+P1.3 sessions (same `Start`), the component wires them to the world's presentation services:
+`Player.Focus.Prompts` (IPromptPresenter = UiRuntime), `Player.Input.UiIntents` (IUiIntentSink = UiRuntime),
+`Player.Locomotion.Footsteps` (IFootstepSink = SfxPool), `Interactions.Dispatcher.Feedback` (IFeedbackSink = SfxPool).
+It also wraps `Player.Input.Source` so movement, look, run, jump and interact are dropped while a modal screen pauses
+gameplay (`IGameplayPauseQuery`); Pause, Journal and Inventory still reach the UI. The PlayMode test `BootWiring`
+checks all of this on Boot.unity and is ignored while the hook is absent.
 
-P1.3 player input should gate gameplay actions on `world.Presentation.Get<IGameplayPauseQuery>()?.GameplayPaused`
-and raise `UiIntent.Pause/Journal/Inventory` through `world.Presentation.Get<IUiIntentSink>()`. Its look input reads
-`IPlayerSettings.LookSensitivity`. P1.4 calls `IDialogueView`, `IJournalView`, `IInventoryView` and
-`IVoiceLinePlayer`, and registers `IDialogueInput` and `IInventoryInput`.
+After the hook, P1.3's `PlayerWalkAndInteract` line 157 can no longer cast `Focus.Prompts` to `NullPromptPresenter`;
+it reads the prompt from `UiRuntime.Models.Prompt.Text` instead (see Verification).
+
+When the game has a save service (checkpoint codecs, P3.1), connect it once after the attach:
+`GetComponentInChildren<HollowmereUiAudio>().UseSaves(service, restored => { /* scene loader, views */ })`. Without
+it the save and load screens show GP-UI-014. A restore replaces the world; GameBoot's `World` and the P1.3 sessions
+would then need to follow `UiRuntime.WorldReplaced` (P3.1 integration).
+
+P1.4 calls `IDialogueView`, `IJournalView`, `IInventoryView` and `IVoiceLinePlayer`, and registers `IDialogueInput`
+and `IInventoryInput`. P1.3's look input can read `IPlayerSettings.LookSensitivity`.
 
 ## API
 
@@ -59,7 +69,8 @@ Every runtime re-registers its services on every attach (also after a restore), 
 
 * `UiRuntime(UiRuntimeOptions)`: `Extension`, `Models`, `Dispatcher`, `Settings`, `World`, `Commands`
   (`UiCommandIssuer`: `Open(screen)`, `Close()`, `Command(action, arg)`, `State()`), `Screen`, `GameplayPaused`,
-  `UseSaves(SaveService, Action<GameplayWorld>?)`, `RunHostActions()`, `Raise(UiIntent)`, `Navigate(dx, dy)`,
+  `UseSaves(SaveService, Action<GameplayWorld>?)`, `RunHostActions()`, `Raise(UiIntent)` (P1.3's Pause/Journal/Inventory),
+  `Show(PromptRequest)`/`Hide()`, `Confirm()`, `Cancel()` (UI navigation), `Navigate(dx, dy)`,
   `SetEnding(title, body)`, events `WorldReplaced`, `HostActionDone`, `ActivateRequested`.
 * Binding sources: `vm:<model>.<Property>` (models `screen`, `hud`, `prompt`, `dialogue`, `journal`, `inventory`, `menu`,
   `settings`, `saveload`, `ending`), `slot:<owner>/<domain>.<member>@<session|audio|focus|authoringId>`,
@@ -86,9 +97,9 @@ Every runtime re-registers its services on every attach (also after a restore), 
 ## Decisions where 05 was silent
 
 1. **Two kernel plugins through a world extension seam.** UI and audio state are kernel slots on one session target
-   per world (in the world scope), so they are saved, restored and replayed like gameplay state. P1.1's
-   `WorldBuilder` has no plugin list, so I added the smallest additive seam: `WorldBuildOptions.Extensions`
-   (`IGameplayWorldExtension`). Nothing changes for a build without extensions.
+   per world (in the world scope), so they are saved, restored and replayed like gameplay state. After the
+   merge they use P1.3's `IGameplayWorldExtension`; the only P1.5 addition is `IGameplayWorldTargets` for the session
+   targets (P1.3's plugins live on baked entities). Nothing changes for a build without extensions.
 2. **`PresentationServices` is owned by the build plan**, not static. The plan survives a restore, so the
    registrations do too; runtimes re-register on attach.
 3. **`ui.returnTo` slot.** 05 lists `ui.screen` and `ui.message`; sub-screens (settings, save, load) need to know where
@@ -97,7 +108,7 @@ Every runtime re-registers its services on every attach (also after a restore), 
    quit). The host runs it between frames (`UiHostDriver.LateUpdate`), never inside the pump, then commits the outcome
    as `ui.message`. A successful load commits `ui.command{Loaded}`, which lands on the HUD from any screen.
 5. **Pause does not pause the root.** UI commands must commit while paused, so `ui.screen != Hud` is exposed as
-   `IGameplayPauseQuery.GameplayPaused` and gameplay input gates on it.
+   `IGameplayPauseQuery.GameplayPaused`; `UiAudioBootstrap` gates P1.3's intent source on it.
 6. **Volumes are slots** (saved with the game) and are mirrored to PlayerPrefs on every commit, so a new game starts
    with the player's volumes. Sensitivity, resolution and fullscreen are machine preferences (PlayerPrefs only).
 7. **Ambience direction is a presentation-side director**: the audio runtime sees the focus traveller's RegionEntered,
@@ -105,7 +116,10 @@ Every runtime re-registers its services on every attach (also after a restore), 
    `audio.setAmbienceZone` through its `IGameplayInputSource` before the next step.
 8. **No uGUI EventSystem.** UI Toolkit's own focus navigation handles buttons. `UiInput` adds Input System actions
    created in code: navigate (arrows, WASD, d-pad, left stick) for lists and dialogue choices, submit for dialogue,
-   cancel (Backspace / gamepad east). Escape stays P1.3's Pause action.
+   cancel (Backspace / gamepad east). Escape stays P1.3's Pause action. P1.3's `UiIntent` has only Pause, Journal and
+   Inventory, so UI submit/cancel are `UiRuntime.Confirm()`/`Cancel()`, not intents.
+12. **Interaction cues.** `SfxPool.OnFeedback` plays the cue id through the set's prefix; every `refused:<code>` cue
+    plays the `refused` id (Hollowmere's bank has none yet, so it counts as missing). Positions are millimetres.
 9. **Headless**: `UiRoot` and the AudioSources are created only with a graphics device. The runtimes, their binders
    (which touch no engine object), the host-action driver and the fade driver exist in every mode.
 10. **Media generation tier.** 05 says tier "Agent"; 03's `ToolTier` has no such member, so `audio.generateVoice` and
@@ -170,12 +184,14 @@ What the tests cover:
 
 ## Files outside my exclusive paths (integrator)
 
-* `Packages/com.gamecore.gameplay.world/Runtime/WorldBuilder.cs`, `GameplayWorld.cs`, new `WorldExtensions.cs` (seam).
-* `Packages/com.gamecore.gameplay.contracts/Runtime/GameplayCatalogNames.cs` (appended entries) and the re-baked
-  Hollowmere catalog outputs (`World/Generated/HollowmereCatalog.g.cs`, `World/Catalog/*`,
-  `World/Hollowmere.manifest.asset`). Other packets that append catalog entries need one re-bake after the merge.
-* `dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj` (two Compile globs).
-* `games/hollowmere/Packages/manifest.json` and `packages-lock.json` (three packages added; the host import left the lock unchanged).
+* `Packages/com.gamecore.gameplay.world/Runtime/WorldBuilder.cs` (P1.3's version plus `IGameplayWorldTargets` recipes and
+  seed steps and `Presentation`), `GameplayWorld.cs` (`Presentation`, `Extensions`), new `WorldExtensions.cs`.
+* The re-baked Hollowmere catalog outputs (`World/Generated/HollowmereCatalog.g.cs`, `HollowmereCatalogCoverage.g.cs`,
+  `World/Catalog/*`, `World/Hollowmere.manifest.asset`). Other packets that contribute catalog entries need one re-bake
+  after the merge.
+* `dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj` (two Compile globs next to P1.3's).
+* `games/hollowmere/Packages/manifest.json` and `packages-lock.json` (three packages added; ui and audio depend on
+  `com.gamecore.gameplay.compile` for the catalog contributors).
 
 ## Open
 
@@ -183,8 +199,8 @@ What the tests cover:
 * Hollowmere has no checkpoint codecs; the PlayMode test uses a verbatim copy of the validation project's generated
   checkpoint catalog under `Tests/P1_5/Checkpoint`. Production saves need the game's codecs (P3.1) and the
   `UseSaves` call in GameBoot.
-* HUD stamina is bound to `vm:hud.Stamina`, which nothing fills yet. P1.3 binds its stamina slot with `ui.bind`
-  (`slot:<owner>/<domain>.<member>@focus`) or sets the model.
+* HUD stamina is bound to `vm:hud.Stamina`, which nothing fills yet. With P1.3 on main the binding is
+  `ui.bind stamina-bar value slot:player.owner/player.stamina@<player authoring id>` with `percent:<staminaMax>`.
 * `ui.previewScreen` capture is skipped on the headless host (reason GP-UI-008); it needs a graphical Editor.
 * The LineShown event is P1.4's; the tests deliver the dialogue view model through `IDialogueView`, as P1.4's presenter
   will.
