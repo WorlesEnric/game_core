@@ -165,7 +165,11 @@ namespace GameCore.Studio.Etos.Tests
             string? path = null;
             try
             {
-                Assert.That(MediaGateways.Resolve(), Is.TypeOf<EtosMediaGenerator>());
+                var providers = Resources.FindObjectsOfTypeAll<ScriptableObject>().OfType<IMediaGenerationGatewayProvider>().ToList();
+                string seen = "[R2_41] media gateway lookup saw " + providers.Count + " provider(s): " + string.Join(", ", providers.Select(p => p.GetType().FullName + " -> " + (p.MediaGateway?.GetType().FullName ?? "null")))
+                    + "; EtosStudioSession implements the provider: " + typeof(IMediaGenerationGatewayProvider).IsAssignableFrom(typeof(EtosStudioSession));
+                Debug.Log(seen);
+                Assert.That(MediaGateways.Resolve(), Is.TypeOf<EtosMediaGenerator>(), seen);
                 MediaGenerationResult request = AudioTools.GenerateVoice(bank, "greeting", "Welcome", "voice", "speaker");
                 Assert.That(request.Status, Is.EqualTo(MediaGenerationStatus.Requested));
                 path = h.Gateway.Options.GeneratedFolder + "/voice-" + request.RequestId + ".wav";
