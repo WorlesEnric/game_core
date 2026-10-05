@@ -1,0 +1,100 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 28070,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 28070,
+  "steadySeconds": 472.361,
+  "dtMs": {
+    "p50": 16.665,
+    "p95": 17.101,
+    "p99": 18.224,
+    "max": 6916.719,
+    "mean": 17.149
+  },
+  "fpsMean": 59.42,
+  "framesOver16_7ms": 10895,
+  "framesOver100msOutsideTransitions": [
+    {
+      "frame": 1,
+      "time_s": 9.0215,
+      "dt_ms": 6916.719,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 2,
+      "time_s": 11.4238,
+      "dt_ms": 4505.784,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 1778,
+      "time_s": 41.6032,
+      "dt_ms": 464.46,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 2343,
+      "time_s": 51.1754,
+      "dt_ms": 110.184,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 3601,
+      "time_s": 72.9153,
+      "dt_ms": 804.841,
+      "region": "Thornwick Village"
+    }
+  ],
+  "framesOver100msOutsideTransitionsCount": 5,
+  "transitions": [
+    {
+      "frame": 9220,
+      "time_s": 166.5562,
+      "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 18.628
+    },
+    {
+      "frame": 17354,
+      "time_s": 302.2079,
+      "marker": "belfry|region:Blackmere Marsh->Drowned Belfry",
+      "max_dt_ms": 269.168
+    },
+    {
+      "frame": 21971,
+      "time_s": 379.5035,
+      "marker": "reload|region:Drowned Belfry->Thornwick Village",
+      "max_dt_ms": 80.955
+    },
+    {
+      "frame": 22993,
+      "time_s": 396.5901,
+      "marker": "restore|loaded|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 82.49
+    }
+  ],
+  "perRegion": {
+    "Blackmere Marsh": {
+      "frames": 13212,
+      "p95": 17.094,
+      "max": 82.49
+    },
+    "Drowned Belfry": {
+      "frames": 4617,
+      "p95": 17.041,
+      "max": 269.168
+    },
+    "Thornwick Village": {
+      "frames": 10241,
+      "p95": 17.135,
+      "max": 6916.719
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": false,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": false,
+    "duration_ge_budget": false
+  },
+  "verdict": "fail"
+}
