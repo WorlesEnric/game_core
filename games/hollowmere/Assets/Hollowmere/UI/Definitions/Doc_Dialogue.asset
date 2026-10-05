@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c73814afb7e044cca84eb43c1d27a9b5, type: 3}
+  m_Name: Doc_Dialogue
+  m_EditorClassIdentifier: GameCore.Gameplay.Ui:GameCore.Gameplay.Ui:UiDocumentDefinition
+  authoringId: a087fb66-2520-49f3-9a74-72eaccff48bf
+  screen: 1
+  layer: 20
+  uxml: {fileID: 9197481963319205126, guid: 8b56fc120cf74fc9b7d9dedb0b253f29, type: 3}
+  styles: []
+  bindings:
+  - element: dialogue-panel
+    property: visible
+    source: vm:dialogue.Visible
+    format: 
+  - element: dialogue-speaker
+    property: text
+    source: vm:dialogue.Speaker
+    format: 
+  - element: dialogue-text
+    property: text
+    source: vm:dialogue.Text
+    format: 
+  - element: dialogue-choices
+    property: items
+    source: vm:dialogue.Choices
+    format: command:choose
+  - element: dialogue-choices
+    property: selected
+    source: vm:dialogue.Selected
+    format: 
+  - element: dialogue-choices
+    property: visible
+    source: vm:dialogue.HasChoices
+    format: 
+  - element: dialogue-continue
+    property: clicked
+    source: command:advance
+    format: 

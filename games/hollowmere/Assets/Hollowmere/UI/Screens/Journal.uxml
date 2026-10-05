@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="journal-root" class="gc-screen">
+        <ui:VisualElement name="journal-panel" class="gc-panel">
+            <ui:Label name="journal-title" text="Journal" class="gc-title" />
+            <ui:Label name="journal-empty" text="No quests yet." class="gc-muted" />
+            <ui:VisualElement name="journal-body" class="gc-row" style="align-items: flex-start;">
+                <ui:VisualElement name="journal-quests" class="gc-list" style="width: 45%;" />
+                <ui:VisualElement name="journal-detail" class="gc-list" style="width: 50%;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="journal-actions" class="gc-row">
+                <ui:Button name="journal-inventory" text="Inventory" class="gc-button" />
+                <ui:Button name="journal-close" text="Close" class="gc-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

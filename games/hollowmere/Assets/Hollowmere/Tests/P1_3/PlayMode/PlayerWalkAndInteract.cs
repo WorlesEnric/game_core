@@ -287,6 +287,7 @@ namespace Hollowmere.P1_3.PlayMode.Tests
             player.Input.DeltaTime = () => 0.1f;
             player.Input.CameraYaw = null;
             player.Input.Enabled = false;
+            player.Focus.Prompts = new NullPromptPresenter(); // GameBoot wires the UI (P1.5) as presenter; this test records the prompt itself
             RegionRecord village = Region(world, "Thornwick Village");
             int frames = 0;
             while (!(world.Streamer.IsSettled && world.Streamer.ResidencyOf(village.AuthoringId) == RegionResidency.Resident) && frames++ < 1200)

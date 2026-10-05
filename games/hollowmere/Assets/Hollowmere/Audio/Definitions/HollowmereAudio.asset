@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d977c98c31d04a1eb0f9b44e82ae7d72, type: 3}
+  m_Name: HollowmereAudio
+  m_EditorClassIdentifier: GameCore.Gameplay.Audio:GameCore.Gameplay.Audio:AudioSetDefinition
+  authoringId: 356ab4b6-fa2c-4943-844e-918a602d914a
+  bank: {fileID: 11400000, guid: eaac588c23d3105748e359b0e33c5e6b, type: 2}
+  musicStates:
+  - {fileID: 11400000, guid: 4d9c981e5c3404dcfa4b942c05e98e08, type: 2}
+  - {fileID: 11400000, guid: 2e440db319228a84592bc05ce335a6b1, type: 2}
+  - {fileID: 11400000, guid: 19e0da4932c645e148232cb03490dcbd, type: 2}
+  startMusicState: music.explore
+  ambiences:
+  - {fileID: 11400000, guid: d3023a37a33dd4ba982edbbdd8ffcd1c, type: 2}
+  - {fileID: 11400000, guid: d04c75014f1bb82d8af00fd83d1d84ad, type: 2}
+  - {fileID: 11400000, guid: 75e0b6f795bb4c8dc9e0700b8c83760a, type: 2}
+  feedbackPrefix: sfx.

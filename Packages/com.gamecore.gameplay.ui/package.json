@@ -1,0 +1,28 @@
+{
+  "name": "com.gamecore.gameplay.ui",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay UI",
+  "description": "Catalog row 10 of the gameplay plugin library (P1.5): UI and player flow. Kernel half: the UI plugin (owner gameplay.ui.owner) with the ui.screen, ui.returnTo and ui.message slots on a per-world UI session target, the ui.open, ui.close and ui.command routes and the ScreenChanged event, mounted through the world extension seam; the screen flow rules live in com.gamecore.rules.gameplay (Runtime/Ui). Runtime: UiRuntime (view models filled from committed slots and events, host actions for save/load/new game/restart/quit through the P1.2 save commands, restore re-attach), BindingHost (binding maps with vm:, slot:, event: and command: sources; UI Toolkit runtime data binding), CommandDispatcher (UI actions to typed commands), UiRoot (UIDocument, PanelSettings, theme, layers, Input System navigation; not created headless), implementations of P1.3's IPromptPresenter and IUiIntentSink, P1.4's IDialogueView, IJournalView, IInventoryView and INarrativeMessageSink, and IGameplayPauseQuery; and the authorable UiDocumentDefinition, ScreenFlowDefinition and ThemeDefinition. Editor: ui.bind, ui.setCommand, ui.addScreen, ui.setTheme, ui.previewScreen and the UI validator.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "ui",
+    "uitoolkit"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.save": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6",
+    "com.unity.inputsystem": "1.19.0"
+  }
+}

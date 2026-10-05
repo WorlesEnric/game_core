@@ -163,6 +163,15 @@ namespace GameCore.Gameplay.World
 
         public RegionManifest Manifest => Plan.Manifest;
 
+        /// <summary>
+        /// The world's presentation service registry (P1.5): prompt, dialogue, journal, inventory views, voice player,
+        /// feedback sink, UI intent sink. Owned by the plan, so it is the same registry after a restore re-attach.
+        /// </summary>
+        public PresentationServices Presentation => Plan.Presentation;
+
+        /// <summary>The further gameplay plugins mounted with this world (P1.5).</summary>
+        public IReadOnlyList<IGameplayWorldExtension> Extensions => Plan.Extensions;
+
         public EntityModule Entities { get; }
 
         /// <summary>The world plugin's module (regions, portals, graph).</summary>

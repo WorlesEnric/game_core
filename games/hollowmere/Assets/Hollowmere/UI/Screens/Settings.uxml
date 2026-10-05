@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="settings-root" class="gc-screen">
+        <ui:VisualElement name="settings-panel" class="gc-panel">
+            <ui:Label name="settings-title" text="Settings" class="gc-title" />
+            <ui:Label name="settings-audio-heading" text="Audio" class="gc-subtitle" />
+            <ui:SliderInt name="settings-master" label="Master" low-value="0" high-value="1000" value="800" />
+            <ui:SliderInt name="settings-music" label="Music" low-value="0" high-value="1000" value="800" />
+            <ui:SliderInt name="settings-sfx" label="Effects" low-value="0" high-value="1000" value="800" />
+            <ui:SliderInt name="settings-voice" label="Voice" low-value="0" high-value="1000" value="800" />
+            <ui:Label name="settings-audio-off" text="Audio is not running in this build." class="gc-muted" />
+            <ui:Label name="settings-controls-heading" text="Controls and display" class="gc-subtitle" />
+            <ui:Slider name="settings-sensitivity" label="Look sensitivity" low-value="0.1" high-value="5" value="1" />
+            <ui:DropdownField name="settings-resolution" label="Resolution" />
+            <ui:Toggle name="settings-fullscreen" label="Fullscreen" />
+            <ui:Button name="settings-back" text="Back" class="gc-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
