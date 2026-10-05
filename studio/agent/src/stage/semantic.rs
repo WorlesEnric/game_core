@@ -113,9 +113,81 @@ pub(super) fn request(opts: &StageOptions) -> Result<Request, String> {
     Ok(request)
 }
 
+/// Refuse incompatible trusted package closures before launching Unity or asking UPM
+/// to resolve a package which the stage manifest intentionally excludes.
+pub(super) fn check_dependency_boundary(opts: &StageOptions) -> Result<(), String> {
+    let read = |path: &Path| -> Result<serde_json::Value, String> {
+        serde_json::from_slice(&std::fs::read(path).map_err(|e| e.to_string())?)
+            .map_err(|e| e.to_string())
+    };
+    let allow = read(&opts.repo.join("studio/stage/allowlist.json"))?;
+    let manifest = read(&opts.slot_dir().join("project/Packages/manifest.json"))?;
+    let deps = manifest["dependencies"]
+        .as_object()
+        .ok_or("stage manifest dependencies missing")?;
+    for name in deps.keys().filter(|name| name.starts_with("com.gamecore.")) {
+        let meta = read(&opts.sandbox.packages.join(name).join("package.json"))?;
+        if let Some(dependencies) = meta["dependencies"].as_object() {
+            for dependency in dependencies.keys() {
+                let denied = allow["deniedPackages"]
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .any(|v| v.as_str() == Some(dependency))
+                    || allow["deniedGamecorePrefixes"]
+                        .as_array()
+                        .into_iter()
+                        .flatten()
+                        .filter_map(|v| v.as_str())
+                        .any(|prefix| dependency.starts_with(prefix));
+                if denied {
+                    return Err(format!(
+                        "stage_dependency_denied: {name} requires excluded {dependency}; separate the trusted Studio integration from the stage-compatible gameplay package"
+                    ));
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn r2_11_stage_int_denied_transitive_dependency_has_named_seam() {
+        let temp = tempfile::tempdir().unwrap();
+        let mut opts =
+            StageOptions::from_env(temp.path(), "fixture", super::super::SlotSource::Existing);
+        opts.root = temp.path().join("slots");
+        std::fs::create_dir_all(temp.path().join("studio/stage")).unwrap();
+        std::fs::write(
+            temp.path().join("studio/stage/allowlist.json"),
+            r#"{"deniedPackages":[],"deniedGamecorePrefixes":["com.gamecore.studio."]}"#,
+        )
+        .unwrap();
+        let project = opts.slot_dir().join("project/Packages");
+        std::fs::create_dir_all(&project).unwrap();
+        std::fs::write(
+            project.join("manifest.json"),
+            r#"{"dependencies":{"com.gamecore.gameplay.world":"file:/trusted"}}"#,
+        )
+        .unwrap();
+        let package = opts.sandbox.packages.join("com.gamecore.gameplay.world");
+        std::fs::create_dir_all(&package).unwrap();
+        std::fs::write(
+            package.join("package.json"),
+            r#"{"dependencies":{"com.gamecore.studio.core":"1.0.0"}}"#,
+        )
+        .unwrap();
+        let error = check_dependency_boundary(&opts).unwrap_err();
+        assert!(error.contains("stage_dependency_denied"));
+        assert!(error.contains("com.gamecore.gameplay.world"));
+        assert!(error.contains("com.gamecore.studio.core"));
+        std::fs::write(package.join("package.json"), r#"{"dependencies":{}}"#).unwrap();
+        assert!(check_dependency_boundary(&opts).is_ok());
+    }
+
     #[test]
     fn r2_11_stage_int_shared_analyzer_fixture_and_strict_results() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../stage/analyzer/Tests/Fixtures");

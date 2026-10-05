@@ -383,6 +383,8 @@ impl Sandbox {
         if self.mode == Confinement::Host {
             return Ok("operator opted into host confinement".into());
         }
+        // Fail before acquiring an Editor allocation when provisioning is missing.
+        self.verify_cache()?;
         let project = self.slot.join("probe-project");
         std::fs::create_dir_all(project.join("Assets")).map_err(|e| e.to_string())?;
         std::fs::create_dir_all(project.join("ProjectSettings")).map_err(|e| e.to_string())?;
@@ -528,6 +530,8 @@ mod tests {
         );
         assert!(!out.ok());
         assert!(out.output.contains("cache_invalid"));
+        assert!(!sandbox.slot.exists());
+        assert!(sandbox.probe().unwrap_err().contains("cache_invalid"));
         assert!(!sandbox.slot.exists());
     }
 

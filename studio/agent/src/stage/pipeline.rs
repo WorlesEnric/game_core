@@ -920,6 +920,14 @@ impl Run<'_> {
     fn step_editmode(&mut self) -> bool {
         let t = Instant::now();
         let mut log = StepLog::new();
+        if let Err(error) = semantic::check_dependency_boundary(self.opts) {
+            log.line(&error);
+            self.finish(
+                StepResult::new("unity-editmode", StepStatus::Fail, ms(t.elapsed()), error),
+                log,
+            );
+            return false;
+        }
         let (out, totals) = self.unity("editmode", "EditMode", &mut log);
         let errors = Self::compile_errors(&out.output);
         let delta: Option<CatalogDelta> = std::fs::read(self.out_dir().join("catalog-delta.json"))

@@ -42,7 +42,40 @@ fn stage(slot_id: &str, candidate: &Path, budget: Duration) -> StageVerdict {
         opts.unity_attempt = budget;
     }
     opts.force = true;
-    let v = pipeline::run_stage(&opts).unwrap();
+    // Use the real CLI process: the allocator's engine wrapper must re-enter the
+    // companion binary, never this test harness's current_exe(). Keep its inode stable.
+    let launch = tempfile::tempdir().unwrap();
+    let executable = launch.path().join("gamecore-studio");
+    std::fs::copy(env!("CARGO_BIN_EXE_gamecore-studio"), &executable).unwrap();
+    let verdict_path = launch.path().join("verdict.json");
+    let output = std::process::Command::new(&executable)
+        .args(["stage", "run", slot_id, "--candidate"])
+        .arg(candidate)
+        .arg("--repo")
+        .arg(&r)
+        .arg("--root")
+        .arg(&opts.root)
+        .arg("--source-project")
+        .arg(&opts.source_project)
+        .args([
+            "--budget-s",
+            &budget.as_secs().to_string(),
+            "--force",
+            "--verdict-out",
+        ])
+        .arg(&verdict_path)
+        .env(
+            "GAMECORE_STAGE_UNITY_TIMEOUT_S",
+            opts.unity_attempt.as_secs().to_string(),
+        )
+        .output()
+        .unwrap();
+    assert!(
+        verdict_path.is_file(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let v = gamecore_studio::stage::verdict::parse(&std::fs::read(verdict_path).unwrap()).unwrap();
     for s in &v.steps {
         eprintln!(
             "   {:<15} {:?} {:>8} ms  {}",
@@ -60,7 +93,13 @@ fn status(v: &StageVerdict, id: &str) -> StepStatus {
 /// unless it exists; returns the warm-up duration when one ran.
 fn warm_up() -> Option<u64> {
     let root = slot::default_root();
-    if root.join("_warm").join("Library").is_dir() {
+    let opts = StageOptions::from_env(&repo(), "warmup-plate", SlotSource::Existing);
+    if root
+        .join("_warm")
+        .join(pipeline::cache_version(&opts).unwrap())
+        .join("Library/ArtifactDB")
+        .is_file()
+    {
         return None;
     }
     let v = stage(

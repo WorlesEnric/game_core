@@ -194,6 +194,23 @@ async fn r2_11_stage_int_docker_pressure_signed_verdict() {
         serde_json::to_vec_pretty(&completed).unwrap(),
     )
     .unwrap();
+    if completed["verdict"]["pass"] != true {
+        let issued = request(reqwest::Method::GET, &format!("{route}/verdict"))
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(
+            issued.status(),
+            404,
+            "a failing stage must not issue authority"
+        );
+        std::fs::write(
+            evidence.join("issuance.json"),
+            serde_json::to_vec_pretty(&json!({"jobId":job,"issued":false,"httpStatus":404}))
+                .unwrap(),
+        )
+        .unwrap();
+    }
     assert_eq!(
         completed["verdict"]["pass"], true,
         "{}",
