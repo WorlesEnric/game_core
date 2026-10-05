@@ -312,7 +312,14 @@ namespace Hollowmere.P3_2.Headless
                 });
                 string keyFile = Environment.GetEnvironmentVariable(EtosCredentials.KeyFileVariable) ?? EtosCredentials.DefaultKeyFile() ?? string.Empty;
                 Credentials = EtosCredentials.FromKeyFile(keyFile);
-                Client = new CompanionClient(new EtosClientOptions { NodeUrl = Credentials.NodeUrl ?? "http://127.0.0.1:7410", DefaultMaxCostUsd = 0.50, Log = line => Log.Write(StudioLogLevel.Debug, "etos.client", EtosRedaction.Redact(line)) }, Credentials);
+                Client = new CompanionClient(new EtosClientOptions
+                {
+                    NodeUrl = Credentials.NodeUrl ?? "http://127.0.0.1:7410",
+                    DefaultMaxCostUsd = 0.50,
+                    ProjectId = EtosProjectContext.LoadProjectId(ProjectRoot),
+                    Log = line => Log.Write(StudioLogLevel.Debug, "etos.client", EtosRedaction.Redact(line)),
+                }, Credentials);
+                EtosProjectContext.Bind(Runtime, Client);
                 Queue = new MainThreadQueue(Log);
                 Gateway = new EtosAgentGateway(Client, Runtime, Queue, new MemoryCursorStore(), new EtosGatewayOptions { Backoff = new BackoffPolicy(TimeSpan.FromMilliseconds(200), TimeSpan.FromSeconds(3)), GeneratedFolder = Folder }, Log);
                 Runtime.Services.AgentGateway = Gateway;
