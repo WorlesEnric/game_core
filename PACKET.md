@@ -2,7 +2,13 @@
 
 Owner: Claude Opus 5.5 (worktree `agent-a86a49b2ba589f359`, branch `worktree-agent-a86a49b2ba589f359`).
 Host: myubuntu (Unity 6000.0.75f1, .NET 8). Nothing was compiled, built or tested on the Mac.
-Final code revision: **c8497644**. It merges main 2ed48b96, which includes R2-G2, APP-1 e4ffd40 and the lock re-resolves.
+Final code revision: **d59a1af5**. It merges main 5e5a088e, which includes:
+- R2-G2 and APP-1 (e4ffd40);
+- R2-D2 (the media gateway provider);
+- the gate-checker renames (5eefd3d);
+- ADAPT-SPLIT (fd03853), whose Hollowmere manifest and lock were taken from main;
+- R3-E.
+
 Commits after it add evidence and this file only.
 
 ## 1. What the game is
@@ -69,7 +75,7 @@ The journal under `games/hollowmere/Studio/History` holds:
 
 ## 3. Studio admission in the real game (R2-G request 4, as superseded by R2-G2)
 
-`Authoring/Editor/HollowmereStudioAdmission.cs` is game-owned and Editor-only (`Hollowmere.Authoring.Editor`, which references `GameCore.Gameplay.World.Editor`). The player build references no Editor assembly; `GameBoot` only raises an instance event.
+`Authoring/Editor/HollowmereStudioAdmission.cs` is game-owned and Editor-only. It lives in `Hollowmere.Authoring.Editor`, which references `GameCore.Studio.Gameplay.Editor`: since ADAPT-SPLIT, `StudioAdmissionServices` and `WorldLiveOpTranslator` live in the Editor-only package `com.gamecore.studio.gameplay`, with the same namespaces and signatures. The player build references no Editor assembly; `GameBoot` only raises an instance event.
 
 **Binding.**
 - It binds on every `GameBoot.SavesInstalled`, i.e. every `UseSaves`, including each restored-world replacement.
@@ -102,26 +108,31 @@ The journal under `games/hollowmere/Studio/History` holds:
 2. Re-enter Play Mode and re-bind; then restore and run the polled smoke.
 3. Result: **"Admitted and verified." after 122 editor frames; 121 polls; 120 game steps; Pending → Passed**; coins restored; round trip equal.
 
+The result is identical on 03e3496f (before ADAPT-SPLIT) and on 905ec23e (after ADAPT-SPLIT).
+
 ## 4. Tests
 
-| Suite | Result | Evidence |
-|---|---|---|
-| Full EditMode | **385 passed, 1 failed, 8 skipped** (394) | `artifacts/studio/evidence/P3.1/tests/editmode-a869ed8b.xml` |
-| Full PlayMode | **19/19 passed** | `artifacts/studio/evidence/P3.1/tests/playmode-03e3496f.xml` |
-| Admission pair | 2/2 passed | `artifacts/studio/evidence/P3.1/tests/admission-03e3496f.xml` |
-| TenPlayEditCycles (explicit, W-GAME-08) | passed | `artifacts/studio/evidence/P3.1/tests/tenplayeditcycles-03e3496f.xml` and `memory-cycles.json` |
+| Suite | Revision | Result | Evidence (`artifacts/studio/evidence/P3.1/tests/`) |
+|---|---|---|---|
+| Full EditMode | 905ec23e (ADAPT-SPLIT) | **392 passed, 0 failed, 11 skipped** (403) | `editmode-905ec23e.xml` |
+| Full EditMode (retained, earlier) | a869ed8b | 385 passed, 1 failed (R2_41), 8 skipped | `editmode-a869ed8b.xml` |
+| Full PlayMode | 03e3496f | **19/19 passed** | `playmode-03e3496f.xml` |
+| Admission pair | 03e3496f | 2/2 passed (also inside the 905ec23e run) | `admission-03e3496f.xml` |
+| TenPlayEditCycles (explicit, W-GAME-08) | 03e3496f | passed | `tenplayeditcycles-03e3496f.xml` and `../memory-cycles.json` |
 
-These ran on 03e3496f/a869ed8b; the final revision adds only the playthrough script and main's Rust-only R2-F2.
+Beyond 905ec23e, the final revision adds only main's R3-E (Studio runner scripts and Python tests). The V1 gate below re-ran the validation suites on it.
 
-**The one failure.** `GameCore.Studio.Etos.Tests.R2EtosTests.R2_41_AudioToolDiscoversGatewayAndImportsVerifiedVoiceThroughEngine` is **not P3.1**.
-- The log line reads: `[R2_41] media gateway lookup saw 0 provider(s): ; EtosStudioSession implements the provider: False`.
-- `MediaGenerationLookup` (f827407d) needs an `IMediaGenerationGatewayProvider`, and nothing in production implements it.
-- It is routed to Codex **R2-D2**: `EtosStudioSession` will implement the provider. The XML is retained as is.
+**The 905ec23e run.**
+- The runner prints "FAIL ... PARTIAL/NotRun" only because its acceptance rule refuses skipped cases.
+- All 11 skips are environment-gated:
+  - 4 live etos tests and 3 P3.2 live workflows (need `GAMECORE_ETOS_LIVE=1`);
+  - 3 that need a graphics device (`-nographics`);
+  - `TenPlayEditCycles` (explicit; run separately).
 
-**The 8 skips:**
-- 4 live etos tests (need `GAMECORE_ETOS_LIVE=1`);
-- 3 that need a graphics device (`-nographics`);
-- `TenPlayEditCycles` (explicit; run separately above).
+**R2_41.** In the retained earlier run, `R2EtosTests.R2_41_AudioToolDiscoversGatewayAndImportsVerifiedVoiceThroughEngine` failed, and it is **not P3.1**.
+- The log read `[R2_41] media gateway lookup saw 0 provider(s): ; EtosStudioSession implements the provider: False`: no production type implemented `IMediaGenerationGatewayProvider`.
+- It was routed to Codex **R2-D2**, which made `EtosStudioSession` the provider.
+- On 905ec23e it **passes**, with the log line `saw 1 provider(s): GameCore.Studio.Etos.EtosStudioSession -> GameCore.Studio.Etos.EtosMediaGenerator`.
 
 **P3.1's own tests:**
 - EditMode `P31AuthoringTests`: `AuthorAllIsIdempotent`, `BakeVerifies`, `ContentIsBoundToScripts` (script binding).
@@ -146,24 +157,37 @@ These ran on 03e3496f/a869ed8b; the final revision adds only the playthrough scr
 
 ## 5. Player build and V1 gate
 
-`studio/tools/build_game_player.sh p3.1 --gate` ran on the host clone at **c8497644**. The player is at `~/wkspace/gc-studio/p3.1/build/HollowmereLinux/`.
+`studio/tools/build_game_player.sh p3.1 --gate` ran on the host clone at **d59a1af5**. The player is at `~/wkspace/gc-studio/p3.1/build/HollowmereLinux/`.
 
 **Build: PASS.**
-- Unity 6000.0.75f1, IL2CPP, StandaloneLinux64; 0 errors, 2 warnings; 543 s.
-- `Hollowmere.x86_64` sha256 `aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70`.
-- Shipped output is 176,264,078 bytes. That excludes 1,735,659,164 `notShippedBytes` of IL2CPP's `*_ButDontShipItWithYourGame` / `*_DoNotShip` folders, which the manifest and size now leave out.
-- Player smoke: `xvfb-run -a … -autoplay smoke.txt`, **exit 0**, 3 s, 3,322 frame-log rows.
-- **Bootstrap adoption:** the A11 registration (`GameApplication.Register` at SubsystemRegistration) is adopted by GameBoot in the player, as the smoke log shows.
+- Unity 6000.0.75f1, IL2CPP, StandaloneLinux64; 0 errors, 4 warnings.
+- 1057 s, including one retry: the first Unity attempt hit the documented ILPP start-up fault (`Can't find file /tmp/ilpp.sock-*`), which R3-E's runner retries.
+- `Hollowmere.x86_64` sha256 `aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70`. This is the Unity player stub and is identical across builds; the game is in `GameAssembly.so` and `Hollowmere_Data`, listed in `data-manifest.txt`.
+- Shipped output is 176,265,359 bytes. That excludes 1,735,270,270 `notShippedBytes` of IL2CPP's `*_ButDontShipItWithYourGame` / `*_DoNotShip` folders, which the manifest and size now leave out.
+- Player smoke: `xvfb-run -a … -autoplay smoke.txt`, **exit 0**, 2 s, 3,590 frame-log rows.
+- **Bootstrap adoption:** the A11 registration (`GameApplication.Register` at SubsystemRegistration) is adopted by GameBoot in the player. The smoke log shows "registered the application definition at SubsystemRegistration (11 plugins)", then "adopted the application root registered at SubsystemRegistration".
 
-Evidence is in `artifacts/studio/evidence/P3.1/build/`: `build-summary.json`, `build-report.json`, `data-manifest.txt`, `sha256.txt`, `unity-batch.txt`, `smoke-player.log`, `smoke-stdout.txt`. The full build log (548,190 bytes, sha256 `9e100af8fd6aacc63b8c83e7d6fb3615184d0f1c518ea7884b0595ed5ef76bfa`) is at host `~/wkspace/gc-studio/evidence/p3.1/build-c8497644/build.log`.
+Evidence is in `artifacts/studio/evidence/P3.1/build/`: `build-summary.json`, `build-report.json`, `data-manifest.txt`, `sha256.txt`, `unity-batch.txt`, `smoke-player.log`, `smoke-stdout.txt`. The full build log (348,981 bytes, sha256 `47eeccc8f6de8983f405fcd7cc7f0585caf60df58d62057197996544fc263bf8`) is at host `~/wkspace/gc-studio/evidence/p3.1/build-d59a1af5/build.log`.
 
-**V1 gate (`tools/run_w7_gate.sh`, same revision), run 1: FAIL** (`v1-gate-transcript-run1-FAIL.txt`).
+**V1 gate (`tools/run_w7_gate.sh`, on the same revision as the build): PASS at d59a1af5.**
+- Evidence: `v1-gate-transcript-PASS.txt`; "Wave 7 integration gate PASSED"; exit 0; 4587 s.
+- It covers every dotnet suite and the host-side checks (`check_gate_sources`: unresolved none).
+- It covers Unity EditMode/PlayMode and every GC/W probe run: narrative, cards, transition, W4, fault boundary, lifecycle stress, W6, catalog coverage, recovery, conformance, W7, world-dispatch, checkpoint round trip, adapters, traversal.
+- It covers the release shape (GC-017 release surface and release player), the short benchmark correctness diagnostic, and the documentation validator.
+
+Earlier runs, kept for the record:
+
+**Run 1 at c8497644: FAIL** (`v1-gate-transcript-run1-FAIL.txt`).
 - Every dotnet suite passed, as did the derivation-equivalence and 10k-property suites and `check_game_core_csharp`.
 - `check_gate_sources.py` member resolution reported `Result.Accepted` / `Result.ResultHash` / `Result.Assemblies` in `W7GateScenario.cs` 417–425 as unresolved, giving the verdict REVIEW NEEDED.
 - Cause: main's new nested `public sealed class Result` in `Packages/com.gamecore.studio.views/Tests/Editor/R2ViewsRegressionTests.cs` (75f5c51a) makes the name-based checker read the property `IncrementalDerivationOutcome.Result` as that type.
-- This is not P3.1: the branch has zero diff from main in Packages/, unity/, tools/ and dotnet/. It is routed to a Codex micro-packet that renames the class to `CheckerResult`.
+- This is not P3.1: the branch had zero diff from main in Packages/, unity/, tools/ and dotnet/. It was fixed on main 5eefd3d (`Result` renamed to `CheckerResult`; studio.core's test `World` renamed to `FakeWorld`).
 
-GATE_RERUN_SECTION
+**Run 2 at 636f9293** (after 5eefd3d): stopped by me (`v1-gate-transcript-run2-636f9293-stopped.txt`), because ADAPT-SPLIT (fd03853) required a merge and a rebuild.
+- Before I stopped it, the host checks passed. The `check_release_clone` self-test reports its seeded PROBLEM(S) as designed.
+- The Unity EditMode stage timed out once at 1800 s under host load, and its retry passed **1318/1318**. PlayMode passed **84/84**.
+
+The gate verdict is tied to the clone revision, so each main merge meant a rebuild before the passing run 3.
 
 ## 6. Recorded playthrough on :1
 
