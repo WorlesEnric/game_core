@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
-namespace Saltmarsh.Build
+namespace Saltmarsh
 {
-    public static class BuildLinuxPlayer
+    public static class Build
     {
-        public static void Run()
+        public static void BuildLinuxPlayer()
         {
             var verify=GameCore.Gameplay.Compile.Entry.Verify(Saltmarsh.Authoring.SaltmarshAuthoring.Load<GameCore.Gameplay.World.WorldDefinition>(Saltmarsh.Authoring.SaltmarshAuthoring.WorldPath),GameCore.Gameplay.Compile.BakePaths.ConventionFor(Saltmarsh.Authoring.SaltmarshAuthoring.WorldPath));
             if(!verify.Succeeded) throw new InvalidOperationException(verify.ToString());

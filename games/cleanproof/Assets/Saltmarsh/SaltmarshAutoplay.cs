@@ -52,9 +52,12 @@ namespace Saltmarsh
                 if(next is IEnumerator nested) { stack.Push(nested); continue; }
                 yield return next;
             }
+            int idleFrame=Time.frameCount; int idlePumps=boot.World!.Root.PumpCounter.SanctionedPumps;
             while(Time.frameCount-start<600) yield return null;
-            Debug.Log("[Saltmarsh] AUTOPLAY PASS frames="+(Time.frameCount-start)+" pumps="+boot.World!.Root.PumpCounter.SanctionedPumps+" violations="+boot.World.Root.PumpCounter.Violations);
-            Application.Quit(0);
+            var counter=boot.World!.Root.PumpCounter;
+            bool healthy=counter.Violations==0 && Math.Abs(counter.SanctionedPumps-idlePumps-(Time.frameCount-idleFrame))<=1;
+            Debug.Log("[Saltmarsh] AUTOPLAY "+(healthy?"PASS":"FAIL")+" frames="+(Time.frameCount-start)+" pumps="+counter.SanctionedPumps+" violations="+counter.Violations);
+            Application.Quit(healthy?0:1);
         }
     }
     public static class SaltmarshScenario
@@ -121,6 +124,9 @@ namespace Saltmarsh
             for(int i=0;i<20;i++) yield return null;
             Require(Math.Abs(root.PumpCounter.SanctionedPumps-pumps-(Time.frameCount-frame))<=1,"one pump per frame");
             Require(root.PumpCounter.Violations==0,"pump violations");
+            Require(Held(boot,"KeepersBadge")==1,"reward is not duplicated after settling");
+            Require(Fact(boot,branch==0?"spare_used":"salvaged")==0,"opposite branch remains unchosen");
+            Require(rig.Ui.Models.Ending.Body.Contains(branch==0?"spare remains ready":"make a new reserve"),"branch-specific ending consequence");
         }
     }
 }
