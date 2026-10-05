@@ -16,6 +16,9 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>The paired Unity app. etos sets <c>X-Etos-App</c> itself from the key; the client sends it too.</summary>
         public string AppName { get; set; } = "gamecore-unity";
 
+        /// <summary>Stable project SHA-256, supplied by the trusted Editor project context.</summary>
+        public string ProjectId { get; set; } = string.Empty;
+
         /// <summary>The cost ceiling sent with every media op that does not name one (USD).</summary>
         public double DefaultMaxCostUsd { get; set; } = 0.50;
 
@@ -23,7 +26,7 @@ namespace GameCore.Studio.Etos.Client
         public TimeSpan RequestTimeout { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>Deadline of <c>/v1/ops/generate</c> (the node blocks until the provider answers).</summary>
-        public TimeSpan GenerateTimeout { get; set; } = TimeSpan.FromSeconds(240);
+        public TimeSpan GenerateTimeout { get; set; } = TimeSpan.FromSeconds(360);
 
         /// <summary>Deadline of an artifact download.</summary>
         public TimeSpan DownloadTimeout { get; set; } = TimeSpan.FromSeconds(180);

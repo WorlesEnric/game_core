@@ -149,7 +149,7 @@ namespace GameCore.Studio.Etos.Client.Tests
         [Test]
         public async Task Events_AStoppedNodeIsRetriedWithBackoffAndReportedAsTransport()
         {
-            EtosClientOptions options = new EtosClientOptions { NodeUrl = "http://127.0.0.1:9", RequestTimeout = TimeSpan.FromSeconds(2) };
+            EtosClientOptions options = new EtosClientOptions { ProjectId = new string('a', 64), NodeUrl = "http://127.0.0.1:9", RequestTimeout = TimeSpan.FromSeconds(2) };
             using CompanionClient client = new CompanionClient(options, new EtosCredentials(FakeCompanion.AppKey, null, "fixture"));
             List<EventStreamState> states = new List<EventStreamState>();
             using EventStream stream = new EventStream(client, new MemoryCursorStore(), new BackoffPolicy(TimeSpan.FromMilliseconds(20), TimeSpan.FromMilliseconds(100), new Random(1)));

@@ -24,15 +24,10 @@ namespace GameCore.Studio.Etos.Client
         /// <summary><paramref name="text"/> with every etos credential, bearer value and ticket replaced by <see cref="Mask"/>.</summary>
         public static string Redact(string? text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return text ?? string.Empty;
-            }
-
-            string result = BearerValue.Replace(text!, "$1" + Mask);
-            result = PrefixedToken.Replace(result, "$1" + Mask);
-            result = TicketQuery.Replace(result, "$1" + Mask);
-            return result;
+            // Normalize transport URL/token syntax before the shared policy (core also covers JSON and sk-).
+            string value = TicketQuery.Replace(text ?? string.Empty, "$1" + Mask);
+            value = PrefixedToken.Replace(value, Mask);
+            return new GameCore.Studio.Authoring.SecretRedactor().Redact(value);
         }
 
         /// <summary>True when <paramref name="text"/> still holds something that looks like an etos credential.</summary>

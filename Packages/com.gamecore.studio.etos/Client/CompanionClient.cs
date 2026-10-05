@@ -153,11 +153,29 @@ namespace GameCore.Studio.Etos.Client
         }
 
         /// <summary><c>POST /v1/stage</c> (202 with the job).</summary>
-        public async Task<StageJobInfo> StageAsync(string changeSetId, string packageRef, CancellationToken ct = default)
+        public async Task<StageJobInfo> StageAsync(string changeSetId, string projectId, string sourceRevision, string catalogRevision, CancellationToken ct = default)
         {
-            JObject body = new JObject { ["changeSetId"] = changeSetId, ["packageRef"] = packageRef };
+            if (projectId != Options.ProjectId || Json.NormalizeSha256(projectId) == null
+                || string.IsNullOrWhiteSpace(sourceRevision) || Json.NormalizeSha256(catalogRevision) == null)
+                throw new EtosException(new EtosError(0, EtosCodes.BadRequest, "stage_context_invalid"));
+            JObject body = new JObject { ["changeSetId"] = changeSetId, ["projectId"] = projectId,
+                ["sourceRevision"] = sourceRevision, ["catalogRevision"] = catalogRevision };
             return new StageJobInfo(await SendObjectAsync(HttpMethod.Post, "/v1/stage", body, Options.RequestTimeout, ct).ConfigureAwait(false));
         }
+
+        public Task<JObject> FetchTrustedVerdictAsync(string jobId, CancellationToken ct = default) =>
+            GetObjectAsync("/v1/stage/" + Escape(jobId) + "/verdict", ct);
+
+        public async Task<bool> VerifyVerdictAsync(string jobId, JObject signedRecord, CancellationToken ct = default)
+        {
+            JObject result = await SendObjectAsync(HttpMethod.Post, "/v1/stage/" + Escape(jobId) + "/verify",
+                signedRecord, Options.RequestTimeout, ct).ConfigureAwait(false);
+            return result["verified"]?.Type == JTokenType.Boolean && result["verified"]!.Value<bool>();
+        }
+
+        public Task<JObject> DiscardStageAsync(string changeSetId, CancellationToken ct = default) =>
+            SendObjectAsync(HttpMethod.Post, "/v1/stage", new JObject { ["changeSetId"] = changeSetId,
+                ["projectId"] = Options.ProjectId, ["action"] = "discard" }, Options.RequestTimeout, ct);
 
         /// <summary><c>GET /v1/stage/{job}</c>.</summary>
         public async Task<StageJobInfo> GetStageAsync(string jobId, CancellationToken ct = default)
@@ -289,29 +307,34 @@ namespace GameCore.Studio.Etos.Client
         {
             string ticket = await IssueTicketAsync(companionPath, ct).ConfigureAwait(false);
             ClientWebSocket socket = new ClientWebSocket();
-            if (!Options.UseSystemProxy)
+            bool transferred = false;
+            try
             {
-                socket.Options.Proxy = null;
+                if (!Options.UseSystemProxy) socket.Options.Proxy = null;
+                socket.Options.SetRequestHeader("X-GameCore-Project", Options.ProjectId);
+                socket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+                Uri uri = WebSocketUri(companionPath, query, ticket);
+                Stopwatch watch = Stopwatch.StartNew();
+                using (CancellationTokenSource deadline = CancellationTokenSource.CreateLinkedTokenSource(ct))
+                {
+                    deadline.CancelAfter(Options.RequestTimeout);
+                    try
+                    {
+                        await socket.ConnectAsync(uri, deadline.Token).ConfigureAwait(false);
+                        Record("WS", companionPath, 101, watch, null);
+                        transferred = true;
+                        return socket;
+                    }
+                    catch (Exception error) when (error is WebSocketException || error is HttpRequestException || (error is OperationCanceledException && !ct.IsCancellationRequested))
+                    {
+                        Record("WS", companionPath, 0, watch, EtosCodes.Transport);
+                        throw EtosException.Transport("The WebSocket " + companionPath + " could not be opened through the node", error);
+                    }
+                }
             }
-
-            socket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
-            Uri uri = WebSocketUri(companionPath, query, ticket);
-            Stopwatch watch = Stopwatch.StartNew();
-            using (CancellationTokenSource deadline = CancellationTokenSource.CreateLinkedTokenSource(ct))
+            finally
             {
-                deadline.CancelAfter(Options.RequestTimeout);
-                try
-                {
-                    await socket.ConnectAsync(uri, deadline.Token).ConfigureAwait(false);
-                    Record("WS", companionPath, 101, watch, null);
-                    return socket;
-                }
-                catch (Exception error) when (error is WebSocketException || error is HttpRequestException || (error is OperationCanceledException && !ct.IsCancellationRequested))
-                {
-                    socket.Dispose();
-                    Record("WS", companionPath, 0, watch, EtosCodes.Transport);
-                    throw EtosException.Transport("The WebSocket " + companionPath + " could not be opened through the node", error);
-                }
+                if (!transferred) socket.Dispose();
             }
         }
 
@@ -379,9 +402,12 @@ namespace GameCore.Studio.Etos.Client
 
         private HttpRequestMessage NewMessage(HttpMethod method, string fullPath)
         {
+            if (Json.NormalizeSha256(Options.ProjectId) == null)
+                throw new EtosException(new EtosError(0, EtosCodes.NotConfigured, "A trusted project identity is required."));
             HttpRequestMessage message = new HttpRequestMessage(method, NodeUrl + fullPath);
             message.Headers.TryAddWithoutValidation("Authorization", _credentials.AuthorizationValue);
             message.Headers.TryAddWithoutValidation("X-Etos-App", Options.AppName);
+            message.Headers.TryAddWithoutValidation("X-GameCore-Project", Options.ProjectId);
             message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return message;
         }

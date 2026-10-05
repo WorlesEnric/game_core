@@ -13,14 +13,14 @@ namespace GameCore.Studio.Etos.Client.Tests
 {
     public sealed class RedactionTests
     {
-        [TestCase("key etk_abcdefghijklmnop0123 end", "key etk_[redacted] end")]
-        [TestCase("ticket=ett_0001fakeTicketabc", "ticket=ett_[redacted]")]
-        [TestCase("proxy etp_ZZZZ-yyyy.xxxx", "proxy etp_[redacted]")]
-        [TestCase("agent eta_token_value", "agent eta_[redacted]")]
+        [TestCase("key etk_abcdefghijklmnop0123 end", "key [redacted] end")]
+        [TestCase("ticket=ett_0001fakeTicketabc", "ticket=[redacted]")]
+        [TestCase("proxy etp_ZZZZ-yyyy.xxxx", "proxy [redacted]")]
+        [TestCase("agent eta_token_value", "agent [redacted]")]
         [TestCase("Authorization: Bearer abc.def-ghi", "Authorization: Bearer [redacted]")]
         [TestCase("authorization: bearer etk_abcdefgh", "authorization: bearer [redacted]")]
         [TestCase("ws://h/p?after=3&etos_ticket=whatever123", "ws://h/p?after=3&etos_ticket=[redacted]")]
-        [TestCase("nothing secret here: etk_ab", "nothing secret here: etk_ab")]
+        [TestCase("nothing secret here: etk_ab", "nothing secret here: [redacted]")]
         public void Redact_RemovesEveryCredentialShape(string input, string expected)
         {
             Assert.That(EtosRedaction.Redact(input), Is.EqualTo(expected));

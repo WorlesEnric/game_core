@@ -47,6 +47,9 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Raised on the stream's worker thread for every new frame, in cursor order.</summary>
         public event Action<EventFrame>? Received;
 
+        /// <summary>Completes only after main-thread handling; cancellation abandons unhandled work on reload.</summary>
+        public Func<EventFrame, CancellationToken, Task>? HandleAsync { get; set; }
+
         /// <summary>Raised on the worker thread when the connection state changes (with the error that caused a reconnect).</summary>
         public event Action<EventStreamState, EtosError?>? StateChanged;
 
@@ -165,7 +168,7 @@ namespace GameCore.Studio.Etos.Client
                             break;
                         }
 
-                        Deliver(text);
+                        await DeliverAsync(text, token).ConfigureAwait(false);
                     }
                 }
                 catch (OperationCanceledException) when (token.IsCancellationRequested)
@@ -212,37 +215,27 @@ namespace GameCore.Studio.Etos.Client
             return;
         }
 
-        private void Deliver(string text)
+        private async Task DeliverAsync(string text, CancellationToken token)
         {
             EventFrame? frame = EventFrame.Parse(text);
-            if (frame == null || frame.Cursor <= Cursor)
-            {
-                return;
-            }
-
+            if (frame == null || frame.Cursor <= Cursor) return;
             frame.ReceivedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            Action<EventFrame>? handler = Received;
-            if (handler != null)
-            {
-                try
-                {
-                    handler(frame);
-                }
-                catch (Exception error)
-                {
-                    _client.Log("an event handler failed on cursor " + frame.Cursor.ToString(CultureInfo.InvariantCulture) + ": " + error.Message);
-                }
-            }
-
-            Interlocked.Exchange(ref _cursor, frame.Cursor);
             try
             {
+                if (HandleAsync != null) await HandleAsync(frame, token).ConfigureAwait(false);
+                token.ThrowIfCancellationRequested();
+                Received?.Invoke(frame);
                 _cursors.Save(frame.Cursor);
+                Interlocked.Exchange(ref _cursor, frame.Cursor);
             }
-            catch (Exception error) when (error is IOException || error is UnauthorizedAccessException)
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
+            catch (Exception error)
             {
-                _client.Log("the event cursor could not be saved: " + error.Message);
+                // Reconnect from the last acknowledged cursor. Never skip ahead after a failed handler/save.
+                throw new EtosException(new EtosError(0, "event_handler_failed",
+                    "Event cursor " + frame.Cursor.ToString(CultureInfo.InvariantCulture) + " was not acknowledged: " + error.Message));
             }
+            return;
         }
 
         private void SetState(EventStreamState state, EtosError? error)

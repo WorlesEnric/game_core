@@ -22,6 +22,7 @@ namespace GameCore.Studio.Etos.Client.Tests
             Options = new EtosClientOptions
             {
                 NodeUrl = Fake.NodeUrl,
+                ProjectId = new string('a', 64),
                 TempDirectory = TempDirectory,
                 RequestTimeout = TimeSpan.FromSeconds(15),
                 Log = line =>

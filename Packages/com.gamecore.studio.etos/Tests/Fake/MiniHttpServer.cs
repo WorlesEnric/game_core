@@ -110,6 +110,14 @@ namespace GameCore.Studio.Etos.Testing
             return new MiniWebSocket(_stream);
         }
 
+        public async Task WaitForDisconnectAsync()
+        {
+            byte[] buffer = new byte[1];
+            while (await _stream.ReadAsync(buffer, 0, 1).ConfigureAwait(false) != 0) { }
+            _answered = true;
+            return;
+        }
+
         internal bool Answered => _answered;
 
         private static string Reason(int status)
