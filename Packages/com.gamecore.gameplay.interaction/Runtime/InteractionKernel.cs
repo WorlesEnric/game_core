@@ -429,7 +429,10 @@ namespace GameCore.Gameplay.Interaction
 
             InteractableSnapshot after = outcome.After;
             FrozenPayload succeeded = GameplayActorEvent.Encode(message.Target, use.ActorKey, after.State, after.Uses, state.State);
-            if (!plane.Commit(message, InteractionSlots.SucceededEvent, succeeded, plane.ExecutingStep, out string _))
+            if ((tap is IGameplayDeliveryBudget budget && !budget.HasRoomFor(
+                    new[] { InteractionSlots.SucceededEvent }, new[] { succeeded },
+                    budget.CountActionDemand(record.ActionRef, record.AuthoringId, record.Key, use.ActorKey)))
+                || !plane.Commit(message, InteractionSlots.SucceededEvent, succeeded, plane.ExecutingStep, out string _))
             {
                 module.CountRejected();
                 plane.Reject(message, DiagnosticCode.BudgetExceeded, plane.ExecutingStep);
@@ -516,7 +519,9 @@ namespace GameCore.Gameplay.Interaction
 
             SchemaRef schema = entered ? InteractionSlots.TriggerEnteredEvent : InteractionSlots.TriggerExitedEvent;
             FrozenPayload transit = GameplayActorEvent.Encode(message.Target, value.A, outcome.Occupants, outcome.FirstEntered ? 1 : 0, 0);
-            if (!plane.Commit(message, schema, transit, plane.ExecutingStep, out string _))
+            if ((tap is IGameplayDeliveryBudget budget && !budget.HasRoomFor(new[] { schema }, new[] { transit },
+                    entered && outcome.FirstEntered ? budget.CountActionDemand(record.ActionRef, record.AuthoringId, record.Key, value.A) : 0))
+                || !plane.Commit(message, schema, transit, plane.ExecutingStep, out string _))
             {
                 module.CountRejected();
                 plane.Reject(message, DiagnosticCode.BudgetExceeded, plane.ExecutingStep);

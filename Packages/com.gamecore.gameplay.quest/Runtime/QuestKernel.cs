@@ -44,6 +44,31 @@ using Unity.Entities;
 
 namespace GameCore.Gameplay.Quest
 {
+    /// <summary>A per-world read-only snapshot query; every call copies committed slots.</summary>
+    public interface IQuestRuntimeQuery
+    {
+        bool TryRead(int questKey, out QuestState? state);
+    }
+
+    /// <summary>Runtime conversion adds terminal actions without changing the authoring/bake converter.</summary>
+    public sealed class QuestRuntimeContentConverter : INarrativeContentConverter
+    {
+        public bool CanConvert(UnityEngine.ScriptableObject asset) => asset is QuestDefinition;
+
+        public void Convert(UnityEngine.ScriptableObject asset, NarrativeConversion conversion)
+        {
+            var definition = (QuestDefinition)asset;
+            QuestModel? model = QuestContentConverter.ToModel(definition, conversion);
+            if (model == null) return;
+            var complete = conversion.ActionSet(definition.CompletionActions);
+            var fail = conversion.ActionSet(definition.FailActions);
+            var runtime = new QuestModel(model.Key, model.Name, model.Stages, model.Objectives, model.Rewards,
+                model.FailConditions, model.BranchNames, model.Prerequisites, model.Dependents, complete, fail);
+            conversion.Models.AddQuest(runtime, definition.AuthoringId);
+            conversion.Models.Alias(definition.DefinitionName, runtime.Key);
+        }
+    }
+
     /// <summary>Declarations of the quest plugin.</summary>
     public static class QuestDeclarations
     {
@@ -96,7 +121,7 @@ namespace GameCore.Gameplay.Quest
     }
 
     /// <summary>The quest module of one world.</summary>
-    public sealed class QuestModule : INarrativeModule, INarrativeWorldAware
+    public sealed class QuestModule : INarrativeModule, INarrativeWorldAware, IQuestRuntimeQuery
     {
         private readonly Dictionary<TargetId, QuestModel> questsByTarget = new Dictionary<TargetId, QuestModel>();
         private NarrativeRuntime? runtime;
@@ -104,7 +129,7 @@ namespace GameCore.Gameplay.Quest
 
         public string Name => "quest";
 
-        public INarrativeContentConverter? Converter => new QuestContentConverter();
+        public INarrativeContentConverter? Converter => new QuestRuntimeContentConverter();
 
         public NarrativeRuntime? Runtime => runtime;
 
@@ -183,10 +208,22 @@ namespace GameCore.Gameplay.Quest
 
         public void OnWorld(NarrativeWorld world)
         {
+            world.Runtime.RegisterQuery<IQuestRuntimeQuery>(this);
             Journal = new JournalPresenter(world.Runtime, View);
             world.Runtime.AddPresenter(Journal);
             Markers = new ObjectiveMarker(world.Runtime);
             world.Runtime.AddPresenter(Markers);
+        }
+
+        public bool TryRead(int questKey, out QuestState? state)
+        {
+            NarrativeRuntime? rt = runtime;
+            state = null;
+            if (rt == null || rt.Delivery.Owner.IsDisposed) return false;
+            TargetId target = rt.Index.TargetOf(NarrativeTargetKind.Quest, questKey);
+            if (!questsByTarget.TryGetValue(target, out QuestModel? quest)) return false;
+            state = QuestDeclarations.ReadState(quest, target, rt.Slots);
+            return true;
         }
 
         // ---- kernel half --------------------------------------------------------------------------------------
@@ -244,7 +281,14 @@ namespace GameCore.Gameplay.Quest
             var closed = new List<KeyValuePair<TargetId, QuestState>>();
             if (setObjective)
             {
-                refusal = QuestRules.SetObjective(quest, state, command[0], command[1], produced);
+                int count = command[1];
+                if (count == -1 && GameplayRequestIds.IsObligation(requestId)
+                    && command[0] >= 0 && command[0] < quest.Objectives.Count && !quest.Objectives[command[0]].IsLevel)
+                {
+                    count = state.Counts[command[0]] == int.MaxValue ? int.MaxValue : state.Counts[command[0]] + 1;
+                }
+
+                refusal = QuestRules.SetObjective(quest, state, command[0], count, produced);
             }
             else
             {
@@ -303,6 +347,7 @@ namespace GameCore.Gameplay.Quest
                     if (QuestRules.CloseDependent(dependentState, dependentEvents))
                     {
                         events.Add(QuestIds.FailedEvent, dependentTarget, dependent.Key, dependentState.Stage, 0, 0, 0, 0);
+                        NarrativeActions.AddDue(events, rt.Index.HubTarget, dependent.FailureActions, rt.ActorKey, 0, dependent.Key, false);
                         closed.Add(new KeyValuePair<TargetId, QuestState>(dependentTarget, dependentState));
                     }
                 }
@@ -324,9 +369,11 @@ namespace GameCore.Gameplay.Quest
                         events.Add(QuestIds.ObjectiveUpdatedEvent, target, quest.Key, e.A, e.B, e.C, 0, 0);
                         break;
                     case QuestEventKind.Completed:
+                        NarrativeActions.AddDue(events, rt.Index.HubTarget, quest.CompletionActions, rt.ActorKey, 0, quest.Key, false);
                         events.Add(QuestIds.CompletedEvent, target, quest.Key, e.A, e.B, 0, 0, 0);
                         break;
                     case QuestEventKind.Failed:
+                        NarrativeActions.AddDue(events, rt.Index.HubTarget, quest.FailureActions, rt.ActorKey, 0, quest.Key, false);
                         events.Add(QuestIds.FailedEvent, target, quest.Key, e.A, 0, 0, 0, 0);
                         break;
                     case QuestEventKind.RewardGranted:
