@@ -79,7 +79,7 @@ namespace Hollowmere.P1_5.PlayMode.Tests
             }
 
             Assert.That(names, Is.EqualTo(new[] { "player", "npc", "interaction", "ui", "audio" }));
-            Assert.That(boot.PresentationSeams, Is.EqualTo(11), "prompt, intents, footsteps, pause gate, feedback, narrative feedback, messages, dialogue input, inventory input");
+            Assert.That(boot.PresentationSeams, Is.EqualTo(9), "prompt, intents, footsteps, pause gate, feedback, narrative feedback, messages, dialogue input, inventory input");
 
             PresentationServices services = world.Presentation;
             PlayerSession player = boot.Player!;
