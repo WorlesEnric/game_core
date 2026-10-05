@@ -12,6 +12,7 @@ from pathlib import Path
 import platform
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import time
@@ -85,6 +86,9 @@ def finish(folder, record):
 
 
 def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, expected_http=None, editor=False):
+    free = shutil.disk_usage(ROOT).free
+    if free < 40 * 1024**3:
+        raise RuntimeError('Disk reserve below 40 GiB; stop before starting another workload.')
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     folder = OUT / row / f'{label}-{stamp}'
     folder.mkdir(parents=True)
@@ -331,7 +335,11 @@ def summary():
     lines = ['# P4.2 verification summary', '', 'Matrix rows are accepted only by their row README; suite passes alone do not close workflows.', '',
              '| Evidence | Verdict | Revision |', '|---|---|---|']
     for p in sorted(OUT.glob('*/*/result.json')):
-        r = json.loads(p.read_text())
+        try:
+            r = json.loads(p.read_text())
+        except (ValueError, OSError):
+            lines.append(f'| {p.parent.relative_to(OUT)} | BLOCKED (incomplete ENOSPC record retained) | unknown |')
+            continue
         lines.append(f"| [{p.parent.relative_to(OUT)}]({p.parent.relative_to(OUT)}/README.md) | {r['status']} | {r['revision'][:12]} |")
     (OUT / 'SUMMARY.md').write_text('\n'.join(lines) + '\n')
 
