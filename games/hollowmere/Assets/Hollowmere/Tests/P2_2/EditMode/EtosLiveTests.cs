@@ -72,16 +72,30 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             CandidateImport? import = null;
             List<JObject> timeline = new List<JObject>();
             Stopwatch watch = Stopwatch.StartNew();
-            H.Gateway.RequestChanged += view => timeline.Add(new JObject { ["ms"] = watch.ElapsedMilliseconds, ["state"] = view.State, ["taskStatus"] = view.TaskStatus, ["local"] = view.LocalState, ["progress"] = view.Progress });
-            H.Gateway.CandidateStaged += result => import = result;
+            string id = IdDerivation.NewChangeSetId();
+            H.Gateway.RequestChanged += view =>
+            {
+                if (view.RequestId == id)
+                {
+                    timeline.Add(new JObject { ["ms"] = watch.ElapsedMilliseconds, ["state"] = view.State, ["taskStatus"] = view.TaskStatus, ["local"] = view.LocalState, ["progress"] = view.Progress });
+                }
+            };
+            H.Gateway.CandidateStaged += result =>
+            {
+                if (result.RequestId == id)
+                {
+                    import = result;
+                }
+            };
             H.Gateway.Start();
             yield return H.Await(H.Gateway.RefreshStatusAsync(), 60, "hello");
 
             SelectionSnapshot selection = AgentRequestBuilder.SnapshotOf(H.Runtime, new[] { traveller });
             AgentRequest request = AgentRequestBuilder.Build(H.Runtime, selection, "Move this NPC two metres north.");
+            request.ChangeSetId = id;
             Task<string> submit = H.Gateway.SubmitAsync(request, CancellationToken.None);
             yield return H.Await(submit, 120, "the submit");
-            string id = submit.Result;
+            Assert.That(submit.Result, Is.EqualTo(id));
             double submitMs = watch.Elapsed.TotalMilliseconds;
             yield return H.Until(() => import != null || Settled(H.Gateway.Requests.FirstOrDefault(r => r.RequestId == id)), 1200, "a candidate or a settled request", fail: false);
             RequestView? view = H.Gateway.Requests.FirstOrDefault(r => r.RequestId == id);
@@ -94,6 +108,8 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
                 ["submitMs"] = Math.Round(submitMs, 1),
                 ["totalMs"] = watch.ElapsedMilliseconds,
                 ["timeline"] = new JArray(timeline.ToArray()),
+                ["recoveredForeignRequests"] = H.Gateway.Requests.Count(r => !H.Gateway.IsOwn(r.RequestId)),
+                ["stagedForeign"] = H.Gateway.Staged.Keys.Count(k => k != id),
                 ["final"] = view == null ? null : new JObject { ["state"] = view.State, ["taskStatus"] = view.TaskStatus, ["tasks"] = new JArray(view.Tasks.ToArray()), ["outcome"] = view.Outcome?.DeepClone(), ["local"] = view.LocalState },
             };
             if (import != null)

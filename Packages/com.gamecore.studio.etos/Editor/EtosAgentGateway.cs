@@ -50,6 +50,24 @@ namespace GameCore.Studio.Etos
 
         /// <summary>Reconnect schedule of the event stream.</summary>
         public BackoffPolicy? Backoff { get; set; }
+
+        /// <summary>
+        /// Request ids this project submitted (persisted by the session across reloads). Only these are imported
+        /// automatically: the companion's ledger is shared by every client of the app, and a recovered or replayed
+        /// candidate of someone else's request is listed, never staged on its own.
+        /// </summary>
+        public ISet<string>? OwnRequests { get; set; }
+
+        /// <summary>
+        /// How long a long media op (image, tts, 3d) is re-issued after a companion <c>transport</c> timeout. The body
+        /// is identical, so the companion derives the same etos effect key and etops looks the job up instead of
+        /// submitting again (crates/etops/src/service.rs: "Starting again with the same key and arguments never
+        /// repeats the request"). Zero disables the re-issue.
+        /// </summary>
+        public TimeSpan OpReplayWindow { get; set; } = TimeSpan.FromMinutes(6);
+
+        /// <summary>Pause between re-issues of a long op.</summary>
+        public TimeSpan OpReplayDelay { get; set; } = TimeSpan.FromSeconds(5);
     }
 
     /// <summary>The result of a candidate import.</summary>
@@ -85,6 +103,7 @@ namespace GameCore.Studio.Etos
         private readonly List<string> _order = new List<string>();
         private readonly Dictionary<string, StagedChangeSet> _staged = new Dictionary<string, StagedChangeSet>(StringComparer.Ordinal);
         private readonly Stopwatch _sinceStatus = new Stopwatch();
+        private readonly ISet<string> _own;
         private ProviderStatus _status = ProviderStatus.Unknown;
         private HelloInfo? _hello;
         private int _statusInFlight;
@@ -97,6 +116,7 @@ namespace GameCore.Studio.Etos
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
             _options = options ?? new EtosGatewayOptions();
             _log = new RedactingStudioLog(log ?? runtime.Log);
+            _own = _options.OwnRequests ?? new HashSet<string>(StringComparer.Ordinal);
             Events = new EventStream(client, cursors ?? throw new ArgumentNullException(nameof(cursors)), _options.Backoff);
             Events.Received += frame => _queue.Post(() => OnEvent(frame));
             Events.StateChanged += (state, error) => _queue.Post(() => OnStreamState(state, error));
@@ -197,6 +217,9 @@ namespace GameCore.Studio.Etos
         public event Action<CandidateImport>? CandidateStaged;
 
         public IReadOnlyList<RequestView> Requests => _order.Select(id => _requests[id].View()).ToList();
+
+        /// <summary>True for a request this project submitted.</summary>
+        public bool IsOwn(string requestId) => _own.Contains(requestId);
 
         /// <summary>Staged candidates by request id (the UI applies or rejects them).</summary>
         public IReadOnlyDictionary<string, StagedChangeSet> Staged => _staged;
@@ -325,6 +348,7 @@ namespace GameCore.Studio.Etos
             bool held = _hello != null && _hello.HoldsCatalog(current);
             EditRequestBody body = AgentRequestBuilder.ToBody(req, id, _options.DesignWorker, _options.MechanismWorker, held ? null : catalog);
             JObject catalogJson = (JObject)StudioJson.ToToken(catalog);
+            _queue.Post(() => _own.Add(id));
             Track(id, req.Intent, req.Parent, current);
             SubmitResult result;
             try
@@ -375,7 +399,7 @@ namespace GameCore.Studio.Etos
             GenerateBody body = new GenerateBody(GenerateBody.CompanionOp(req.Op), req.Inputs) { MaxCostUsd = req.MaxCostUsd ?? _options.MaxCostUsd, ChangeSetId = req.ChangeSetId };
             try
             {
-                GenerateResult result = await Client.GenerateAsync(body, ct).ConfigureAwait(false);
+                GenerateResult result = await GenerateWithReplayAsync(body, ct).ConfigureAwait(false);
                 if (result.Artifacts.Count == 0)
                 {
                     return new OpResult(null, null, null, null, result.Text, null, result.Provider);
@@ -388,6 +412,39 @@ namespace GameCore.Studio.Etos
             catch (EtosException error)
             {
                 return OpResult.Refused(DiagnosticOf(error.Error));
+            }
+        }
+
+        /// <summary>
+        /// <c>POST /v1/ops/generate</c>; a long op whose companion call timed out (<c>transport</c>) is re-issued with
+        /// the identical body within <see cref="EtosGatewayOptions.OpReplayWindow"/> (same effect key: a lookup, not a
+        /// second submission). Any other refusal is returned at once.
+        /// </summary>
+        public async Task<GenerateResult> GenerateWithReplayAsync(GenerateBody body, CancellationToken ct)
+        {
+            Stopwatch watch = Stopwatch.StartNew();
+            int replays = 0;
+            while (true)
+            {
+                try
+                {
+                    GenerateResult result = await Client.GenerateAsync(body, ct).ConfigureAwait(false);
+                    if (replays > 0)
+                    {
+                        int count = replays;
+                        _queue.Post(() => _log.Write(StudioLogLevel.Info, "etos", "op " + body.Op + " answered after " + count + " re-issue(s) of the same effect key, " + watch.ElapsedMilliseconds + " ms"));
+                    }
+
+                    return result;
+                }
+                catch (EtosException error) when (error.Code == EtosCodes.Transport && body.Op != "describe" && watch.Elapsed + _options.OpReplayDelay < _options.OpReplayWindow)
+                {
+                    replays++;
+                    int count = replays;
+                    string message = error.Error.Message;
+                    _queue.Post(() => _log.Write(StudioLogLevel.Info, "etos", "op " + body.Op + " re-issue " + count + " after a companion transport timeout (" + message + ")"));
+                    await Task.Delay(_options.OpReplayDelay, ct).ConfigureAwait(false);
+                }
             }
         }
 
@@ -560,7 +617,7 @@ namespace GameCore.Studio.Etos
         private void MaybeImport(string requestId)
         {
             Tracked tracked = TrackedFor(requestId);
-            if (!_options.AutoImport || tracked.ImportStarted)
+            if (!_options.AutoImport || tracked.ImportStarted || !_own.Contains(requestId))
             {
                 return;
             }

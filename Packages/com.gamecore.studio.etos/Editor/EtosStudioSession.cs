@@ -5,6 +5,7 @@
 // The event cursor persists in Library/GameCoreStudio/etos-events.cursor so a reload resumes the stream without gaps.
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +24,14 @@ namespace GameCore.Studio.Etos
     {
         public const string CursorFileName = "etos-events.cursor";
 
+        /// <summary>The most request ids kept as "submitted by this project".</summary>
+        public const int OwnRequestLimit = 256;
+
         [SerializeField]
         private int starts;
+
+        [SerializeField]
+        private List<string> ownRequests = new List<string>();
 
         [NonSerialized]
         private EtosAgentGateway? _gateway;
@@ -98,8 +105,10 @@ namespace GameCore.Studio.Etos
                 CompanionClient client = new CompanionClient(settings.ToClientOptions(credentials, line => log.Write(StudioLogLevel.Debug, "etos", line)), credentials);
                 MainThreadQueue queue = new MainThreadQueue(log);
                 FileCursorStore cursors = new FileCursorStore(Path.Combine(runtime.Paths.LibraryRoot, CursorFileName));
-                EtosGatewayOptions options = new EtosGatewayOptions { MaxCostUsd = settings.MaxCostUsd, AutoImport = settings.AutoImport, GeneratedFolder = settings.GeneratedFolder };
+                HashSet<string> own = new HashSet<string>(ownRequests, StringComparer.Ordinal);
+                EtosGatewayOptions options = new EtosGatewayOptions { MaxCostUsd = settings.MaxCostUsd, AutoImport = settings.AutoImport, GeneratedFolder = settings.GeneratedFolder, OwnRequests = own };
                 _gateway = new EtosAgentGateway(client, runtime, queue, cursors, options, log);
+                _gateway.RequestChanged += view => RememberOwn(view.RequestId);
                 runtime.Services.AgentGateway = _gateway;
                 _gateway.Start();
                 _problem = null;
@@ -115,6 +124,23 @@ namespace GameCore.Studio.Etos
 
             Hook();
             return _gateway != null;
+        }
+
+        private void RememberOwn(string requestId)
+        {
+            EtosAgentGateway? gateway = _gateway;
+            if (gateway == null || !gateway.IsOwn(requestId) || ownRequests.Contains(requestId))
+            {
+                return;
+            }
+
+            ownRequests.Add(requestId);
+            if (ownRequests.Count > OwnRequestLimit)
+            {
+                ownRequests.RemoveRange(0, ownRequests.Count - OwnRequestLimit);
+            }
+
+            Save(true);
         }
 
         private void StopCore()

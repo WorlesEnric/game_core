@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a299656d-bdde-4103-8fc7-9d3a21097a4e" name="@worlesenric 2026-10-05 09:53:33" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-05T09:53:33.8976070+08:00" queuing="2026-10-05T09:53:33.8976071+08:00" start="2026-10-05T09:53:27.8622277+08:00" finish="2026-10-05T09:54:12.0511012+08:00" />
+  <TestSettings name="default" id="ccee890c-5595-42e0-978e-8230bfe6c639">
+    <Deployment runDeploymentRoot="_worlesenric_2026-10-05_09_53_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9cb7f4eb-f6d0-4df5-8d90-22ad2dff03d9" testId="aa9ee318-658e-21c2-2f2c-001af1267fcf" testName="L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused" computerName="worlesenric" duration="00:00:00.0823770" startTime="2026-10-05T09:54:11.9189731+08:00" endTime="2026-10-05T09:54:12.0013478+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9cb7f4eb-f6d0-4df5-8d90-22ad2dff03d9" />
+    <UnitTestResult executionId="b7605fb3-8aca-4207-8165-6d176265300f" testId="4e69573a-4198-07f5-8ae4-f5e7e59e826d" testName="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" computerName="worlesenric" duration="00:00:33.0979680" startTime="2026-10-05T09:53:33.8798055+08:00" endTime="2026-10-05T09:54:06.9777727+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7605fb3-8aca-4207-8165-6d176265300f" />
+    <UnitTestResult executionId="61be1f50-a494-460f-beab-e0bff6afd207" testId="9b9fa6bf-a953-75d5-82a8-e035a3c6bc27" testName="L02_TheAppKeyReachesNothingButItsOwnAgent" computerName="worlesenric" duration="00:00:00.0108740" startTime="2026-10-05T09:53:33.8689062+08:00" endTime="2026-10-05T09:53:33.8797800+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61be1f50-a494-460f-beab-e0bff6afd207" />
+    <UnitTestResult executionId="34ad24e0-0c2b-4867-9e6a-df56b73a9a4b" testId="4d59f15e-b758-2f35-bf48-81a42e4fa46c" testName="L01_HelloThroughTheProxyReportsProviderStates" computerName="worlesenric" duration="00:00:02.7163350" startTime="2026-10-05T09:53:31.1518091+08:00" endTime="2026-10-05T09:53:33.8681052+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="34ad24e0-0c2b-4867-9e6a-df56b73a9a4b" />
+    <UnitTestResult executionId="68638e64-80bb-4ea6-8454-02223c34a4a2" testId="9d51c54a-8427-b3d4-1e3d-91efaead149b" testName="L04_VoiceTranscribesARealSpokenPromptThroughTheNode" computerName="worlesenric" duration="00:00:04.9411460" startTime="2026-10-05T09:54:06.9778010+08:00" endTime="2026-10-05T09:54:11.9189468+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68638e64-80bb-4ea6-8454-02223c34a4a2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="L02_TheAppKeyReachesNothingButItsOwnAgent" storage="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="9b9fa6bf-a953-75d5-82a8-e035a3c6bc27">
+      <Execution id="61be1f50-a494-460f-beab-e0bff6afd207" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L02_TheAppKeyReachesNothingButItsOwnAgent" />
+    </UnitTest>
+    <UnitTest name="L04_VoiceTranscribesARealSpokenPromptThroughTheNode" storage="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="9d51c54a-8427-b3d4-1e3d-91efaead149b">
+      <Execution id="68638e64-80bb-4ea6-8454-02223c34a4a2" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L04_VoiceTranscribesARealSpokenPromptThroughTheNode" />
+    </UnitTest>
+    <UnitTest name="L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused" storage="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="aa9ee318-658e-21c2-2f2c-001af1267fcf">
+      <Execution id="9cb7f4eb-f6d0-4df5-8d90-22ad2dff03d9" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused" />
+    </UnitTest>
+    <UnitTest name="L01_HelloThroughTheProxyReportsProviderStates" storage="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="4d59f15e-b758-2f35-bf48-81a42e4fa46c">
+      <Execution id="34ad24e0-0c2b-4867-9e6a-df56b73a9a4b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L01_HelloThroughTheProxyReportsProviderStates" />
+    </UnitTest>
+    <UnitTest name="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" storage="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="4e69573a-4198-07f5-8ae4-f5e7e59e826d">
+      <Execution id="b7605fb3-8aca-4207-8165-6d176265300f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="aa9ee318-658e-21c2-2f2c-001af1267fcf" executionId="9cb7f4eb-f6d0-4df5-8d90-22ad2dff03d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e69573a-4198-07f5-8ae4-f5e7e59e826d" executionId="b7605fb3-8aca-4207-8165-6d176265300f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b9fa6bf-a953-75d5-82a8-e035a3c6bc27" executionId="61be1f50-a494-460f-beab-e0bff6afd207" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d59f15e-b758-2f35-bf48-81a42e4fa46c" executionId="34ad24e0-0c2b-4867-9e6a-df56b73a9a4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d51c54a-8427-b3d4-1e3d-91efaead149b" executionId="68638e64-80bb-4ea6-8454-02223c34a4a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running selected tests in /home/worlesenric/wkspace/gc-studio/p2.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll
+   NUnit3TestExecutor discovered 5 of 5 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

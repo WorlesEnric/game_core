@@ -40,7 +40,7 @@ namespace GameCore.Studio.Hollowmere.P2_2
             Client = new CompanionClient(new EtosClientOptions { NodeUrl = nodeUrl, DefaultMaxCostUsd = 0.50, Log = line => Log.Write(StudioLogLevel.Debug, "etos.client", EtosRedaction.Redact(line)) }, credentials);
             Queue = new MainThreadQueue(Log);
             Cursors = new MemoryCursorStore();
-            Gateway = new EtosAgentGateway(Client, Runtime, Queue, Cursors, new EtosGatewayOptions { Backoff = new BackoffPolicy(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(2)) }, Log);
+            Gateway = new EtosAgentGateway(Client, Runtime, Queue, Cursors, new EtosGatewayOptions { Backoff = new BackoffPolicy(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(2)), OpReplayDelay = fake != null ? TimeSpan.FromMilliseconds(100) : TimeSpan.FromSeconds(5) }, Log);
             Runtime.Services.AgentGateway = Gateway;
         }
 

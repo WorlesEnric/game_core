@@ -152,6 +152,29 @@ namespace GameCore.Studio.Hollowmere.P2_2.Tests
         }
 
         [UnityTest]
+        public IEnumerator ForeignCandidate_IsListedButNeverStagedOnItsOwn()
+        {
+            string path = TempPath(".png");
+            FakeArtifact png = new FakeArtifact("well.png", "image/png", FakeMedia.TinyPng(), "texture");
+            _harness = GatewayHarness.WithFake(fake => fake.Worker = body => new FakeCandidate(ImportCandidate((string)body["changeSetId"]!, path, png), new[] { png }));
+            bool staged = false;
+            H.Gateway.CandidateStaged += _ => staged = true;
+            H.Gateway.Start();
+            string foreign = IdDerivation.NewChangeSetId();
+            AgentRequest request = AgentRequestBuilder.Build(H.Runtime, H.EmptySelection(), "Another client's request.");
+            EditRequestBody body = AgentRequestBuilder.ToBody(request, foreign, "gc-designer", "gc-mechanic", H.Runtime.Registry.Catalog);
+            Task<SubmitResult> other = H.Client.SubmitAsync(body);
+            yield return H.Await(other, 30, "the foreign submit");
+            yield return H.Until(() => H.Gateway.Requests.Any(r => r.RequestId == foreign && r.HasCandidate), 30, "the foreign candidate event");
+            yield return H.Until(() => staged, 2, "an import that must not happen", fail: false);
+
+            Assert.That(staged, Is.False, "someone else's candidate is listed, not imported");
+            Assert.That(H.Gateway.IsOwn(foreign), Is.False);
+            Assert.That(H.Runtime.Artifacts.Has(png.Sha256), Is.False);
+            Assert.That(H.Fake!.Calls.Any(c => c.Path.EndsWith("/v1/candidates/" + foreign, StringComparison.Ordinal)), Is.False);
+        }
+
+        [UnityTest]
         public IEnumerator StaleCatalog_IsResentOnceWithTheFullCatalog()
         {
             _harness = GatewayHarness.WithFake();
@@ -246,6 +269,27 @@ namespace GameCore.Studio.Hollowmere.P2_2.Tests
             Task<MediaImport> sfx = media.GenerateSoundEffectAsync("splash", TempPath(".wav"));
             yield return H.Await(sfx, 5, "sfx");
             Assert.That(sfx.Result.Problem!.Code, Is.EqualTo(EtosCodes.NotConfigured));
+        }
+
+        [UnityTest]
+        public IEnumerator LongOp_TransportTimeout_IsReissuedWithTheSameBody_RefusalIsNot()
+        {
+            _harness = GatewayHarness.WithFake();
+            JObject timeout = new JObject { ["code"] = "transport", ["message"] = "POST /ops/generate.image timed out after 30000 ms", ["hint"] = "the etos node is unreachable from the companion; it retries" };
+            H.Fake!.FailNext("/v1/ops/generate", 502, timeout);
+            H.Fake.FailNext("/v1/ops/generate", 502, timeout);
+            Task<OpResult> image = H.Gateway.GenerateAsync(new OpRequest("generate.image", new JObject { ["prompt"] = "a well" }), CancellationToken.None);
+            yield return H.Await(image, 30, "the image");
+            List<FakeCall> posts = H.Fake.Calls.Where(c => c.Path.EndsWith("/v1/ops/generate", StringComparison.Ordinal)).ToList();
+            Assert.That(image.Result.Succeeded, Is.True, image.Result.Refusal?.Code);
+            Assert.That(posts, Has.Count.EqualTo(3));
+            Assert.That(posts.Select(c => c.Body).Distinct().Count(), Is.EqualTo(1), "identical bodies: the companion derives the same effect key");
+
+            H.Fake.FailNext("/v1/ops/generate", 402, new JObject { ["code"] = "budget_exhausted", ["message"] = "the agent's budget is spent" });
+            Task<OpResult> refused = H.Gateway.GenerateAsync(new OpRequest("tts", new JObject { ["text"] = "hello" }), CancellationToken.None);
+            yield return H.Await(refused, 30, "the refusal");
+            Assert.That(refused.Result.Refusal!.Code, Is.EqualTo(EtosCodes.BudgetExhausted));
+            Assert.That(H.Fake.Calls.Count(c => c.Path.EndsWith("/v1/ops/generate", StringComparison.Ordinal)), Is.EqualTo(4), "a refusal is never re-issued");
         }
 
         [UnityTest]
