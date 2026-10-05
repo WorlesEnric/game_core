@@ -6,6 +6,9 @@ use std::time::Duration;
 
 use super::pipeline::{ChildOutcome, run_child};
 
+mod licensing;
+use licensing::LicenseHome;
+
 /// Operator-controlled confinement mode. Never selected by a stage request.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -35,7 +38,11 @@ pub struct Sandbox {
     pub image: String,
     /// Unity installation (read-only).
     pub editor: PathBuf,
-    /// Only the Unity licensing directories, read-only; never mount a home/config directory.
+    /// Host HOME path preserved inside Docker, backed only by a private job copy.
+    pub home: PathBuf,
+    /// Hostname used by Unity machine-bound entitlement validation.
+    pub hostname: String,
+    /// Unity licensing sources copied privately; never mounted from the host.
     pub licences: Vec<PathBuf>,
     /// The single job slot.
     pub slot: PathBuf,
@@ -52,8 +59,13 @@ impl Sandbox {
             mode: Confinement::Docker,
             image: "gamecore-stage:6000.0.75f1-v1".into(),
             editor: home.join("Unity/Hub/Editor/6000.0.75f1/Editor"),
+            home: home.clone(),
+            hostname: std::fs::read_to_string("/proc/sys/kernel/hostname")
+                .unwrap_or_default()
+                .trim()
+                .to_string(),
             licences: vec![
-                home.join(".config/unity3d/Unity/licenses"),
+                home.join(".config/unity3d/Unity"),
                 home.join(".local/share/unity3d/Unity"),
                 PathBuf::from("/var/lib/unity"),
             ],
@@ -93,7 +105,7 @@ impl Sandbox {
     }
 
     /// Build a command with no inherited environment, network, host HOME or live project.
-    pub fn command(&self, executable: &Path) -> Result<Command, String> {
+    fn command(&self, executable: &Path, private_home: &Path) -> Result<Command, String> {
         for directory in [
             "home/.local/share/unity3d",
             "home/.cache/unity3d",
@@ -121,7 +133,16 @@ impl Sandbox {
                 "--security-opt=no-new-privileges",
                 "--pids-limit=512",
             ]);
+            if self.hostname.is_empty()
+                || !self
+                    .hostname
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-'))
+            {
+                return Err("sandbox requires a valid host hostname".into());
+            }
             cmd.arg("--name").arg(self.container_name());
+            cmd.arg("--hostname").arg(&self.hostname);
             use std::os::unix::fs::MetadataExt;
             let metadata = std::fs::metadata(&self.slot).map_err(|e| e.to_string())?;
             cmd.arg("--user")
@@ -129,7 +150,7 @@ impl Sandbox {
             // No daemon socket, host /tmp, HOME, live project, or provider environment.
             cmd.args([
                 "--env",
-                &format!("HOME={}", self.slot.join("home").display()),
+                &format!("HOME={}", self.home.display()),
                 "--env",
                 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
                 "--env",
@@ -162,25 +183,27 @@ impl Sandbox {
                 "type=bind,src={},dst=/tmp",
                 self.slot.join("tmp").display()
             ));
-            for path in self.licences.iter().filter(|p| p.is_dir()) {
-                // The operator cannot accidentally expose arbitrary config/credential trees.
-                if !path.ends_with("unity3d/Unity")
-                    && !path.ends_with("unity3d/Unity/licenses")
-                    && path != Path::new("/var/lib/unity")
-                {
-                    return Err("unsupported Unity licence directory".into());
-                }
-                let target = if path.ends_with("unity3d/Unity/licenses") {
-                    self.slot.join("home/.config/unity3d/Unity/licenses")
-                } else if path.ends_with("unity3d/Unity") {
-                    self.slot.join("home/.local/share/unity3d/Unity")
-                } else {
-                    path.clone()
-                };
+            licensing::mount_path(private_home)?;
+            licensing::mount_path(&self.home)?;
+            cmd.arg("--mount").arg(format!(
+                "type=bind,src={},dst={}",
+                private_home.display(),
+                self.home.display()
+            ));
+            cmd.args([
+                "--mount",
+                "type=bind,src=/etc/machine-id,dst=/etc/machine-id,readonly",
+            ]);
+            if private_home.join(".system-unity").is_dir() {
                 cmd.arg("--mount").arg(format!(
-                    "type=bind,src={},dst={},readonly",
-                    path.display(),
-                    target.display()
+                    "type=bind,src={},dst=/var/lib/unity",
+                    private_home.join(".system-unity").display()
+                ));
+            }
+            if private_home.join(".services-config.json").is_file() {
+                cmd.arg("--mount").arg(format!(
+                    "type=bind,src={},dst=/usr/share/unity3d/config/services-config.json,readonly",
+                    private_home.join(".services-config.json").display()
                 ));
             }
             cmd.arg("--workdir")
@@ -204,7 +227,26 @@ impl Sandbox {
         } else {
             requested
         };
-        let mut cmd = match self.command(executable) {
+        let private_home = if self.mode == Confinement::Docker {
+            match LicenseHome::prepare(self) {
+                Ok(home) => Some(home),
+                Err(error) => {
+                    return ChildOutcome {
+                        code: None,
+                        timed_out: false,
+                        output: format!("sandbox_unavailable: {error}"),
+                        elapsed: Duration::ZERO,
+                    };
+                }
+            }
+        } else {
+            None
+        };
+        let home_path = private_home
+            .as_ref()
+            .map(|h| h.0.as_path())
+            .unwrap_or(&self.slot);
+        let mut cmd = match self.command(executable, home_path) {
             Ok(cmd) => cmd,
             Err(e) => {
                 return ChildOutcome {
@@ -332,6 +374,8 @@ impl Sandbox {
             .parent()
             .ok_or("no repo parent")?
             .join("studio/tools/unity-batch.sh");
+        let engine_log = self.slot.join("unity-stream.log");
+        let _ = std::fs::remove_file(&engine_log);
         let out = self.run_unity(
             &batch,
             &project,
@@ -339,18 +383,24 @@ impl Sandbox {
             &["-quit".into()],
             Duration::from_secs(90),
         );
-        if out.ok()
-            && out.output.contains("Batchmode quit successfully invoked")
-            && !out.output.contains("No valid Unity Editor license")
-        {
-            Ok(out.output)
+        let engine_output = std::fs::read_to_string(engine_log).unwrap_or_default();
+        if probe_passed(&out, &engine_output) {
+            Ok(format!("{}\n{}", out.output, engine_output))
         } else {
             Err(format!(
                 "sandbox_unavailable: Unity container probe exit {:?}: {}",
-                out.code, out.output
+                out.code,
+                format_args!("{}\n{}", out.output, engine_output)
             ))
         }
     }
+}
+
+fn probe_passed(out: &ChildOutcome, engine_output: &str) -> bool {
+    out.ok()
+        && engine_output.contains("Batchmode quit successfully invoked")
+        && engine_output.contains("[Licensing::Client] Successfully resolved entitlement details")
+        && !engine_output.contains("No valid Unity Editor license")
 }
 
 /// Host unity-batch invokes this wrapper, preserving its global allocation protocol. The
@@ -364,7 +414,10 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
     let mut it = args.iter();
     while let Some(arg) = it.next() {
         if arg == "-logFile" {
-            log = it.next().map(PathBuf::from);
+            log = it
+                .next()
+                .filter(|value| value.as_str() != "-")
+                .map(PathBuf::from);
         } else {
             cmd.arg(arg);
         }
@@ -374,9 +427,9 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
         .clone()
         .unwrap_or_else(|| sandbox.slot.join("unity-stream.log"));
     let out = sandbox.run(&cmd, &capture, Duration::from_secs(1800));
-    if let Some(log) = log {
-        std::fs::write(log, &out.output).map_err(|e| e.to_string())?;
-    }
+    // run_child consumes its scratch file; retain the redacted engine stream for the
+    // readiness check even when unity-batch requested stdout via -logFile -.
+    std::fs::write(&capture, &out.output).map_err(|e| e.to_string())?;
     print!("{}", out.output);
     Ok(out.code.unwrap_or(124))
 }
@@ -384,6 +437,93 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn r2_f2_licensing_command_mounts_only_private_state_and_fixed_identity() {
+        use std::os::unix::fs::MetadataExt;
+        let temp = tempfile::tempdir().unwrap();
+        let mut sandbox = Sandbox::defaults(
+            &temp.path().join("slot"),
+            &temp.path().join("cache"),
+            Path::new("/trusted"),
+        );
+        sandbox.home = PathBuf::from("/home/creator");
+        sandbox.hostname = "build-host".into();
+        sandbox.editor = PathBuf::from("/home/creator/Unity/Editor");
+        let private = temp.path().join("private");
+        let cmd = sandbox.command(Path::new("dotnet"), &private).unwrap();
+        let args: Vec<_> = cmd
+            .get_args()
+            .map(|s| s.to_string_lossy().into_owned())
+            .collect();
+        let mounts: Vec<_> = args
+            .windows(2)
+            .filter(|v| v[0] == "--mount")
+            .map(|v| v[1].clone())
+            .collect();
+        assert_eq!(
+            mounts,
+            vec![
+                format!("type=bind,src={0},dst={0}", sandbox.slot.display()),
+                format!("type=bind,src={0},dst={0}", sandbox.cache.display()),
+                format!(
+                    "type=bind,src={0},dst={0},readonly",
+                    sandbox.editor.display()
+                ),
+                "type=bind,src=/trusted/Packages,dst=/trusted/Packages,readonly".into(),
+                format!(
+                    "type=bind,src={},dst=/tmp",
+                    sandbox.slot.join("tmp").display()
+                ),
+                format!("type=bind,src={},dst=/home/creator", private.display()),
+                "type=bind,src=/etc/machine-id,dst=/etc/machine-id,readonly".into(),
+            ]
+        );
+        let metadata = std::fs::metadata(&sandbox.slot).unwrap();
+        for pair in [
+            vec!["--network".into(), "none".into()],
+            vec!["--hostname".into(), "build-host".into()],
+            vec![
+                "--user".into(),
+                format!("{}:{}", metadata.uid(), metadata.gid()),
+            ],
+            vec!["--env".into(), "HOME=/home/creator".into()],
+        ] {
+            assert!(args.windows(2).any(|v| v == pair));
+        }
+        for flag in [
+            "--read-only",
+            "--cap-drop=ALL",
+            "--security-opt=no-new-privileges",
+            "--pull=never",
+        ] {
+            assert!(args.iter().any(|a| a == flag));
+        }
+        assert_eq!(cmd.get_envs().count(), 0);
+    }
+
+    #[test]
+    fn r2_f2_probe_requires_engine_handshake_even_when_allocator_exits_zero() {
+        let mut out = ChildOutcome {
+            code: Some(0),
+            timed_out: false,
+            output: "RESULT sandbox-probe: PASS".into(),
+            elapsed: Duration::ZERO,
+        };
+        let engine = "[Licensing::Client] Successfully resolved entitlement details\nBatchmode quit successfully invoked";
+        assert!(probe_passed(&out, engine));
+        assert!(!probe_passed(&out, ""));
+        assert!(!probe_passed(&out, "Batchmode quit successfully invoked"));
+        assert!(!probe_passed(
+            &out,
+            &format!("{engine}\nNo valid Unity Editor license")
+        ));
+        out.code = Some(1);
+        assert!(!probe_passed(&out, engine));
+        out.code = Some(0);
+        out.timed_out = true;
+        assert!(!probe_passed(&out, engine));
+    }
+
     #[test]
     #[ignore = "requires the locally provisioned gamecore-stage Docker image; no Unity or ETOS"]
     fn r2_11_docker_isolation_blocks_host_files_environment_and_network() {
@@ -422,7 +562,9 @@ mod tests {
             &temp.path().join("cache"),
             Path::new("/trusted"),
         );
-        let cmd = sandbox.command(Path::new("dotnet")).unwrap();
+        let cmd = sandbox
+            .command(Path::new("dotnet"), &temp.path().join("private-home"))
+            .unwrap();
         let args = cmd
             .get_args()
             .map(|s| s.to_string_lossy())
