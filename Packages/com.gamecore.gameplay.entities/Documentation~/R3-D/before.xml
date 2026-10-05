@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.7037909">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="401" result="Failed" site="Child" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.703791" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1577" name="Hollowmere.R3_D.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R3_D.EditMode.Tests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.694590" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2242374" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1578" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.694315" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1579" name="R3_D" fullname="Hollowmere.R3_D" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.694177" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1572" name="CatalogGapTests" fullname="Hollowmere.R3_D.CatalogGapTests" classname="Hollowmere.R3_D.CatalogGapTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.693343" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1574" name="D10a_RetainedShrineFactHasTypedConditionTool" fullname="Hollowmere.R3_D.CatalogGapTests.D10a_RetainedShrineFactHasTypedConditionTool" methodname="D10a_RetainedShrineFactHasTypedConditionTool" classname="Hollowmere.R3_D.CatalogGapTests" runstate="Runnable" seed="203989208" result="Failed" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.062889" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_D.CatalogGapTests.D10a_RetainedShrineFactHasTypedConditionTool () [0x00019] in /home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Assets/Hollowmere/Tests/R3_D/EditMode/CatalogGapTests.cs:34
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1575" name="D10b_RetainedHudRequestHasStageTitleSource" fullname="Hollowmere.R3_D.CatalogGapTests.D10b_RetainedHudRequestHasStageTitleSource" methodname="D10b_RetainedHudRequestHasStageTitleSource" classname="Hollowmere.R3_D.CatalogGapTests" runstate="Runnable" seed="575609977" result="Failed" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.156664" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: collection containing "QuestStageTitle"
+  But was:  < "Stamina", "StaminaVisible", "ObjectiveText", "ObjectiveVisible", "RegionName", "RegionBannerVisible" >
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_D.CatalogGapTests.D10b_RetainedHudRequestHasStageTitleSource () [0x00019] in /home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Assets/Hollowmere/Tests/R3_D/EditMode/CatalogGapTests.cs:41
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1576" name="D7_PairedProviderIsFoundByPublicVoiceTool" fullname="Hollowmere.R3_D.CatalogGapTests.D7_PairedProviderIsFoundByPublicVoiceTool" methodname="D7_PairedProviderIsFoundByPublicVoiceTool" classname="Hollowmere.R3_D.CatalogGapTests" runstate="Runnable" seed="1633096071" result="Passed" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.158048" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1573" name="D9_RetainedRobeRequestHasTextureBindingTool" fullname="Hollowmere.R3_D.CatalogGapTests.D9_RetainedRobeRequestHasTextureBindingTool" methodname="D9_RetainedRobeRequestHasTextureBindingTool" classname="Hollowmere.R3_D.CatalogGapTests" runstate="Runnable" seed="1551152057" result="Failed" start-time="2026-10-05 13:54:00Z" end-time="2026-10-05 13:54:00Z" duration="0.306022" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_D.CatalogGapTests.D9_RetainedRobeRequestHasTextureBindingTool () [0x00019] in /home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Assets/Hollowmere/Tests/R3_D/EditMode/CatalogGapTests.cs:26
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

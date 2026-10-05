@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.9190296">
+  <test-suite type="TestSuite" id="1056" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.919030" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1010" name="Hollowmere.P1_3.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_3.PlayMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.801111" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2351272" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1011" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.800669" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1012" name="P1_3" fullname="Hollowmere.P1_3" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.800499" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1013" name="PlayMode" fullname="Hollowmere.P1_3.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.800360" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1014" name="Tests" fullname="Hollowmere.P1_3.PlayMode.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.800204" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1008" name="PlayerWalkAndInteract" fullname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" classname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.799387" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1009" name="WalksInteractsTalksPastNpcsAndTravels" fullname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels" methodname="WalksInteractsTalksPastNpcsAndTravels" classname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" runstate="Runnable" seed="1349047142" result="Passed" start-time="2026-10-05 14:10:05Z" end-time="2026-10-05 14:10:06Z" duration="1.790625" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[B-FRAME] boot ms=1271 frames=6 msPerFrame=211.83
+[B-FRAME] scripted-90 ms=73 frames=90 msPerFrame=0.81
+[B-FRAME] boot ms=234 frames=6 msPerFrame=39.00
+[B-FRAME] scripted-90 ms=68 frames=90 msPerFrame=0.76
+[B-FRAME] walk-to-well ms=3 frames=2 msPerFrame=1.50
+[B-FRAME] run-to-portal-and-travel ms=66 frames=65 msPerFrame=1.02
+[B-FRAME] P1.3 loop frames=81 sanctionedPumps=81 resolutions=169 ungrounded=3 pumpCounter{sanctioned=178;duplicate=0;bypass=0}
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1017" name="Hollowmere.P1_4.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-d/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_4.PlayMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.110026" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2351272" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1018" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.109663" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1019" name="P1_4" fullname="Hollowmere.P1_4" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.109491" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1020" name="PlayMode" fullname="Hollowmere.P1_4.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.109352" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1021" name="Tests" fullname="Hollowmere.P1_4.PlayMode.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.109209" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1015" name="DrownedBellHeadless" fullname="Hollowmere.P1_4.PlayMode.Tests.DrownedBellHeadless" classname="Hollowmere.P1_4.PlayMode.Tests.DrownedBellHeadless" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.109048" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1016" name="PlaysTheDrownedBell" fullname="Hollowmere.P1_4.PlayMode.Tests.DrownedBellHeadless.PlaysTheDrownedBell" methodname="PlaysTheDrownedBell" classname="Hollowmere.P1_4.PlayMode.Tests.DrownedBellHeadless" runstate="Runnable" seed="1049649105" result="Passed" start-time="2026-10-05 14:10:06Z" end-time="2026-10-05 14:10:06Z" duration="0.107956" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.4] locked gate: fact gate_open != 0 (read 0)
+[P1.4] frames=38 sanctionedPumps=38 events=85 submitted=33 refusedSubmits=0 obligations=0 acknowledged=5 alreadyApplied=5 rulesFired=5 rulesSkipped=1 questCommands=8 grants=3 explain=9 interactions=2/1 evaluations=3 | boot 21ms/0f | maren intro 30ms/4f | locked gate 4ms/3f | key and gate 16ms/6f | clapper and belfry 3ms/2f | bell 4ms/5f | return to maren 7ms/5f | outbox replay 11ms/12f
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
