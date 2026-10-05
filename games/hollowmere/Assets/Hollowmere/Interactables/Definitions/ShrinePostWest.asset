@@ -21,7 +21,13 @@ MonoBehaviour:
     text: Light the west shrine lantern
   - state: on
     text: The west lantern burns
-  conditionRef: 78eeeedd-9917-460a-8d0e-71d128dc7246
+  condition: {fileID: 11400000, guid: abc1982dda435320caeb533fec290a89, type: 2}
+  conditionFact: {fileID: 0}
+  conditionOp: 1
+  conditionValue: 0
+  conditionRef: 
+  actions: {fileID: 0}
+  builtInAction: 
   actionRef: 
   maxUses: 0
   cooldownSeconds: 0.5

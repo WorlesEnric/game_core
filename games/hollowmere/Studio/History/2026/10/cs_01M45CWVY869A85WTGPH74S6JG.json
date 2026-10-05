@@ -1,0 +1,241 @@
+{
+  "id": "cs_01M45CWVY869A85WTGPH74S6JG",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.graph.Bram] Write the conversation of Bram",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+        "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+        "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset",
+        "scope": "Definition",
+        "stamp": "sha256:91eb0c84d2d29a721c9ec740c3d5ce778fed3bb80e055d650a95d233fcb2490b"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Bram",
+          "speakerEntityId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Welcome to the Drowned Lantern. Coin for goods, and no questions.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "What will it be?",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "A lantern (4 coins)",
+                  "condition": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset",
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "An oil flask (2 coins)",
+                  "condition": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset",
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Marsh herbs (1 coin)",
+                  "condition": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset",
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Nothing, thanks.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "There you are. Keep it dry.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset",
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/BuyOil.asset",
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset",
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Chew them when your legs give out.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Suit yourself.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 3,
+              "port": "Next",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 1,
+              "to": 4
+            },
+            {
+              "from": 4,
+              "port": "Next",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 2,
+              "to": 5
+            },
+            {
+              "from": 5,
+              "port": "Next",
+              "option": 0,
+              "to": 6
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 3,
+              "to": 7
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+                "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+                "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Bram",
+                  "speakerEntityId": "",
+                  "entry": 0,
+                  "nodes": [],
+                  "edges": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+                "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+                "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+              },
+              "stamp": "sha256:e6691199a648dda8572662be65e6b4eca85de71102b67a223f3ddc5825cfba96"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:23.644Z",
+    "applied": "2026-10-05T06:44:23.656Z"
+  }
+}

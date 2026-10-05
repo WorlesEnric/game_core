@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: ReturnToMaren
   m_EditorClassIdentifier: 
   authoringId: 78bdc449-3fc2-4935-8847-8c732163dd22
-  contentStamp: ea465fc15b1ca9a1ee6bbdeae09c16f05fdcf261556b9dee482e947f689ee537
+  contentStamp: de5cb72976b723c344f530b922addca719f032fa3958a563249c905b0a41d484
   trigger: 7
-  triggerSubject: {fileID: 11400000, guid: c0b53079e6e09fd8e94d904622330c55, type: 2}
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 11400000, guid: c0b53079e6e09fd8e94d904622330c55, type: 2}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
   triggerEntityId: 
   triggerValue: 0
   matchAnyValue: 1
@@ -23,18 +31,20 @@ MonoBehaviour:
   conditions: []
   actionSet: {fileID: 0}
   actions:
-  - kind: 13
-    target: {fileID: 0}
-    inventory: {fileID: 0}
-    entityId: 
-    value: 1
-    text: Maren presses her old lantern into your hands.
   - kind: 9
-    target: {fileID: 0}
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
     inventory: {fileID: 0}
     entityId: 
     value: 1
     text: sting.quest.complete
+    legacyTarget: {fileID: 0}
   once: 1
   cooldownMs: 0
   maxFires: 0

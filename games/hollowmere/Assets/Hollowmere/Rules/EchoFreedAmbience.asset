@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: EchoFreedAmbience
   m_EditorClassIdentifier: 
   authoringId: de03f0af-388d-4797-9d6e-3af2faa2a466
-  contentStamp: 7906799928180ab090253a1f0997d3d2282fb5491e7b9fbb6560ad8f61553e96
+  contentStamp: f6d12536aa476581e8db804569b4f544ba78b567810a80d9e2cba8809f8ccbfb
   trigger: 1
-  triggerSubject: {fileID: 11400000, guid: 9ee505637a2c9c8caac4a8cf29c6f3c6, type: 2}
+  triggerFact: {fileID: 11400000, guid: 9ee505637a2c9c8caac4a8cf29c6f3c6, type: 2}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
   triggerEntityId: 
   triggerValue: 1
   matchAnyValue: 0
@@ -24,17 +32,33 @@ MonoBehaviour:
   actionSet: {fileID: 0}
   actions:
   - kind: 9
-    target: {fileID: 0}
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
     inventory: {fileID: 0}
     entityId: 
     value: 1
     text: ambience.belfry.freed
+    legacyTarget: {fileID: 0}
   - kind: 13
-    target: {fileID: 0}
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
     inventory: {fileID: 0}
     entityId: 
     value: 1
     text: The belfry falls quiet. Something has left it.
+    legacyTarget: {fileID: 0}
   once: 1
   cooldownMs: 0
   maxFires: 0

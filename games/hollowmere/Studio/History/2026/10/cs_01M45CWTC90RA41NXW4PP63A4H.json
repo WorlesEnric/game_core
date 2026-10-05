@@ -1,0 +1,352 @@
+{
+  "id": "cs_01M45CWTC90RA41NXW4PP63A4H",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.graph.Odd] Write the conversation of Odd",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+        "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+        "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e858d7e50837b38f19d3ad7f61625cc7b962d292bea0ee4186f285ff732036b8"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Odd",
+          "speakerEntityId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "You lit the old shrine. My mother tended it. I owe you a crossing.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset",
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The black water is calm tonight.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "Take me to the belfry.",
+                  "condition": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset",
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Not yet.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset",
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "I will be here. The water is patient.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Else",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 3,
+              "port": "Next",
+              "option": 0,
+              "to": 4
+            },
+            {
+              "from": 4,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 5,
+              "port": "Option",
+              "option": 0,
+              "to": 6
+            },
+            {
+              "from": 5,
+              "port": "Option",
+              "option": 1,
+              "to": 7
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+                "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+                "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Odd",
+                  "speakerEntityId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+                  "entry": 0,
+                  "nodes": [
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The gate key? Three old coins, and no haggling.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Choice",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": [
+                        {
+                          "text": "Here are three coins.",
+                          "condition": {
+                            "kind": "Definition",
+                            "authoringId": "39b2f636-d880-4a2f-bda0-2a6af23ec1ef",
+                            "global": "GlobalObjectId_V1-3-c1de2c141423889659daf3556d78f3a3-11400000-0",
+                            "assetGuid": "c1de2c141423889659daf3556d78f3a3",
+                            "path": "Assets/Hollowmere/Rules/Conditions/HasThreeOldCoins.asset"
+                          },
+                          "hideWhenUnavailable": false
+                        },
+                        {
+                          "text": "Maren sent me. She trusts me.",
+                          "condition": {
+                            "kind": "Definition",
+                            "authoringId": "1c70446b-7b7c-4fc7-8b5d-6dafb0de98c2",
+                            "global": "GlobalObjectId_V1-3-20525d4762e7ea943baf62305ce6e41c-11400000-0",
+                            "assetGuid": "20525d4762e7ea943baf62305ce6e41c",
+                            "path": "Assets/Hollowmere/Rules/Conditions/MarenTrustsPlayer.asset"
+                          },
+                          "hideWhenUnavailable": true
+                        },
+                        {
+                          "text": "Not now.",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Pleasure doing business. Mind the reeds.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "2beb7fe9-752d-4e57-a701-e3bf4a64de70",
+                        "global": "GlobalObjectId_V1-3-1b459c779c5c6191b9a13e56b29434c6-11400000-0",
+                        "assetGuid": "1b459c779c5c6191b9a13e56b29434c6",
+                        "path": "Assets/Hollowmere/Rules/Actions/OddPersuaded.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "For Maren, then. Take it, and do not drown.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 1,
+                      "port": "Option",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 1,
+                      "port": "Option",
+                      "option": 1,
+                      "to": 3
+                    },
+                    {
+                      "from": 1,
+                      "port": "Option",
+                      "option": 2,
+                      "to": -1
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 3,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 4
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+                "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+                "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+              },
+              "stamp": "sha256:983f0b286b45cdff5c2f69c574083bd59252c5ea75b595ba204f0f08f40769c0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:22.085Z",
+    "applied": "2026-10-05T06:44:22.387Z"
+  }
+}

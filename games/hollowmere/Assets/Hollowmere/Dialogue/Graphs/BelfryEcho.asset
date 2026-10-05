@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BelfryEcho
   m_EditorClassIdentifier: 
   authoringId: b9b85886-492d-40a3-9edb-02c9d9a417b0
-  contentStamp: 782423efa5386f1d067e0335fcf2e731c7c63fd929f8a05f7ece0bfd47ef6d13
+  contentStamp: 7fd1ce33ddb58d24e74c7f6d2130fd4931561637a89ac3e6e29eb0efb2c4ec95
   speaker: Belfry Echo
   speakerEntityId: a91b8bb5-cbd4-4872-871b-118e53cc465d
   npcGraphRef: dialogue.belfry_echo
@@ -28,11 +28,53 @@ MonoBehaviour:
     condition: {fileID: 11400000, guid: cbdd4a8b5176fcea6841a70d15db8d3c, type: 2}
     actions: {fileID: 0}
     options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: 552cd24dca2d17643afbd89e937ffba8, type: 2}
+    actions: {fileID: 0}
+    options: []
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: ...silent... the bell is silent...
+    text: ...who comes... to the drowned bell...
+    voiceClip: {fileID: 8300000, guid: 4715ce8bb449f349a824f2a81701ffc1, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: ...silence... yes... rest now...
+    voiceClip: {fileID: 8300000, guid: 7feb1485e87f28dd985d8c5506a24293, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: Will you wake it?
     voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: I will ring it.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Let it sleep. Let the marsh keep its silence.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: ...then find its tongue... the clapper the water stole...
+    voiceClip: {fileID: 8300000, guid: 595b2b7b7b126edad9fa73eebec8295a, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
@@ -44,13 +86,41 @@ MonoBehaviour:
     voiceClip: {fileID: 0}
     portrait: {fileID: 0}
     condition: {fileID: 0}
-    actions: {fileID: 11400000, guid: 9ff24c44b07c174059bcd8a609b1f7ff, type: 2}
+    actions: {fileID: 11400000, guid: fb7b684f5e9afe019b15177a78021b99, type: 2}
     options: []
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: The toll... I hear it... I am free.
+    text: ...silence... yes... rest... the marsh will forget us...
+    voiceClip: {fileID: 8300000, guid: 06d697d926f774c859a7766b43403abf, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
     voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: 850520e0be842c7e9830bf255c4a9069, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The toll... and the shrine's light... I can see the way out. I am free.
+    voiceClip: {fileID: 8300000, guid: 78e921dd4a8fb3b5bada1980e9487956, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The toll... it hurts... but the village will sleep. I will stay with the
+      bell.
+    voiceClip: {fileID: 8300000, guid: fbd57a72a76e74bac8f90c0a55281aaa, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
@@ -60,11 +130,39 @@ MonoBehaviour:
     port: 1
     option: 0
     to: 1
-  - from: 0
-    port: 0
+  - from: 1
+    port: 1
     option: 0
     to: 2
-  - from: 2
+  - from: 1
     port: 0
     option: 0
     to: 3
+  - from: 2
+    port: 0
+    option: 0
+    to: 4
+  - from: 4
+    port: 2
+    option: 0
+    to: 5
+  - from: 4
+    port: 2
+    option: 1
+    to: 6
+  - from: 6
+    port: 0
+    option: 0
+    to: 7
+  - from: 0
+    port: 0
+    option: 0
+    to: 8
+  - from: 8
+    port: 0
+    option: 0
+    to: 9
+  - from: 8
+    port: 1
+    option: 0
+    to: 10

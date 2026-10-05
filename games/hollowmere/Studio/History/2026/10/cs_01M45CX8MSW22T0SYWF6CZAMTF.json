@@ -1,0 +1,370 @@
+{
+  "id": "cs_01M45CX8MSW22T0SYWF6CZAMTF",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:media.voices-28.Hale] Attach the generated voice lines of Hale",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+        "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+        "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset",
+        "scope": "Definition",
+        "stamp": "sha256:799bf407d6b9717e3aa402d3ba9b644ae3c36f7b8dd9d14812967fca423827a3"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Hale",
+          "speakerEntityId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Halt. Blackmere eats folk who walk it dark. Come back with a lantern and I will open the gate.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Hale_halt.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "A lantern, and lit. Fair enough. Mind the sinkholes: anything that glints out there is bait.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Hale_pass.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/OpenGate.asset",
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The shrine burns again. First night in years I have not felt watched out here.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Hale_lit.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The gate is open. Odd ferries from the jetty, if he likes you.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Hale_open.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Else",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 3,
+              "port": "Next",
+              "option": 0,
+              "to": 4
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 5,
+              "port": "Next",
+              "option": 0,
+              "to": 6
+            },
+            {
+              "from": 5,
+              "port": "Else",
+              "option": 0,
+              "to": 7
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+                "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+                "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Hale",
+                  "speakerEntityId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                  "entry": 0,
+                  "nodes": [
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "45e8c82c-389b-49fb-aa35-e526fffc6c4a",
+                        "global": "GlobalObjectId_V1-3-469b59b723897eb2494ae3706f6c9802-11400000-0",
+                        "assetGuid": "469b59b723897eb2494ae3706f6c9802",
+                        "path": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "78eeeedd-9917-460a-8d0e-71d128dc7246",
+                        "global": "GlobalObjectId_V1-3-abc1982dda435320caeb533fec290a89-11400000-0",
+                        "assetGuid": "abc1982dda435320caeb533fec290a89",
+                        "path": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Halt. Blackmere eats folk who walk it dark. Come back with a lantern and I will open the gate.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "A lantern, and lit. Fair enough. Mind the sinkholes: anything that glints out there is bait.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "42f181e3-ef95-4ce3-82e7-2c2d0b79d494",
+                        "global": "GlobalObjectId_V1-3-de277e8d1a615d2ff8aa2c0da24b5907-11400000-0",
+                        "assetGuid": "de277e8d1a615d2ff8aa2c0da24b5907",
+                        "path": "Assets/Hollowmere/Rules/Actions/OpenGate.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+                        "global": "GlobalObjectId_V1-3-850520e0be842c7e9830bf255c4a9069-11400000-0",
+                        "assetGuid": "850520e0be842c7e9830bf255c4a9069",
+                        "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The shrine burns again. First night in years I have not felt watched out here.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The gate is open. Odd ferries from the jetty, if he likes you.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 0,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 1,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 1,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 3
+                    },
+                    {
+                      "from": 3,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 4
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 5
+                    },
+                    {
+                      "from": 5,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 6
+                    },
+                    {
+                      "from": 5,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 7
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+                "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+                "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset"
+              },
+              "stamp": "sha256:37749ccda674b790e7fa5e983f9d8bb1aeb625d258c2b245e73b1d144c70d9f3"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:36.650Z",
+    "applied": "2026-10-05T06:44:37.467Z"
+  }
+}

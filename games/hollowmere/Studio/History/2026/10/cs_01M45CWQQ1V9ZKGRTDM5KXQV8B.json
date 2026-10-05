@@ -1,0 +1,74 @@
+{
+  "id": "cs_01M45CWQQ1V9ZKGRTDM5KXQV8B",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.bram-dialogue] Bram's talk starts his conversation",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "bram",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+        "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+        "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+        "scope": "Definition",
+        "stamp": "sha256:446af7e705923e2b29669139fae63d4f4d2f8c650f97b5c2a24cac5b17b695b8"
+      },
+      "args": {
+        "fields": {
+          "dialogue": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "bram",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+                "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+                "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+              },
+              "args": {
+                "fields": {
+                  "dialogue": null
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+                "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+                "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+              },
+              "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:19.315Z",
+    "applied": "2026-10-05T06:44:19.850Z"
+  }
+}

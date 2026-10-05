@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: BellKeepsGateOpen
   m_EditorClassIdentifier: 
   authoringId: 12fd6b07-8dab-4d77-a1dc-ce30262983a5
-  contentStamp: 7304e2def12a7a569ac5af49e1cb0ec54b0553f802b0fee00defc01c1f9ffcda
+  contentStamp: 9f44fb5a19b6c6330b6ccf2ecb5db48a2b48b1f503fe9bd878692abdb5334abc
   trigger: 1
-  triggerSubject: {fileID: 11400000, guid: 3287a51c5f37f1571b80dc4970cf6f31, type: 2}
+  triggerFact: {fileID: 11400000, guid: 3287a51c5f37f1571b80dc4970cf6f31, type: 2}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
   triggerEntityId: 
   triggerValue: 1
   matchAnyValue: 0
@@ -24,11 +32,19 @@ MonoBehaviour:
   actionSet: {fileID: 0}
   actions:
   - kind: 0
-    target: {fileID: 11400000, guid: 1af0f99dbdb793a73928cf5583252642, type: 2}
+    fact: {fileID: 11400000, guid: 1af0f99dbdb793a73928cf5583252642, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
     inventory: {fileID: 0}
     entityId: 
     value: 1
     text: 
+    legacyTarget: {fileID: 0}
   once: 1
   cooldownMs: 0
   maxFires: 0

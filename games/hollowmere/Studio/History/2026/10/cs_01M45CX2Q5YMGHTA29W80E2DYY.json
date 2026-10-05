@@ -1,0 +1,240 @@
+{
+  "id": "cs_01M45CX2Q5YMGHTA29W80E2DYY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.retire-p1_4-rules] Retire the P1.4 rules the new story replaces (gate key, Odd's stall, the return to Maren)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "gatekey",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318",
+        "global": "GlobalObjectId_V1-3-10d8def972356d3b0a656061428014c7-11400000-0",
+        "assetGuid": "10d8def972356d3b0a656061428014c7",
+        "path": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset",
+        "scope": "Definition",
+        "stamp": "sha256:20962b9ab49b0f11957a64c3eb3f6b1dc53cdf06fa0749481057b864a2b8ce9b"
+      },
+      "args": {
+        "fields": {
+          "maxFires": 0,
+          "once": true,
+          "trigger": "Manual"
+        }
+      }
+    },
+    {
+      "opId": "oddpaid",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "ebee54ff-745b-4c42-8f41-bb5bd5efadee",
+        "global": "GlobalObjectId_V1-3-21b1e35853c0ba9ad9a6c36eb8bf7dad-11400000-0",
+        "assetGuid": "21b1e35853c0ba9ad9a6c36eb8bf7dad",
+        "path": "Assets/Hollowmere/Rules/OddPaidOnTrade.asset",
+        "scope": "Definition",
+        "stamp": "sha256:9e53476457dff941f92ca23d391fffa46103f6b2816b92e2ae504a21af85bc2a"
+      },
+      "args": {
+        "fields": {
+          "once": true,
+          "trigger": "Manual"
+        }
+      }
+    },
+    {
+      "opId": "maren",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "78bdc449-3fc2-4935-8847-8c732163dd22",
+        "global": "GlobalObjectId_V1-3-e828e769813cc299199b3923378a957a-11400000-0",
+        "assetGuid": "e828e769813cc299199b3923378a957a",
+        "path": "Assets/Hollowmere/Rules/ReturnToMaren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:b9b68aaa22ea2c4e7c6ea656b5225f01c5192e302914a5a0357e624144d71954"
+      },
+      "args": {
+        "fields": {
+          "actions": [
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sting.quest.complete"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "gatekey",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318",
+                "global": "GlobalObjectId_V1-3-10d8def972356d3b0a656061428014c7-11400000-0",
+                "assetGuid": "10d8def972356d3b0a656061428014c7",
+                "path": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset"
+              },
+              "args": {
+                "fields": {
+                  "maxFires": 0,
+                  "once": true,
+                  "trigger": "ItemGranted"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318",
+                "global": "GlobalObjectId_V1-3-10d8def972356d3b0a656061428014c7-11400000-0",
+                "assetGuid": "10d8def972356d3b0a656061428014c7",
+                "path": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset"
+              },
+              "stamp": "sha256:dba4107ab34e31753d4e3ebe1284599114f4e4934007e8110bb094eae8b9fb29"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "oddpaid",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "ebee54ff-745b-4c42-8f41-bb5bd5efadee",
+                "global": "GlobalObjectId_V1-3-21b1e35853c0ba9ad9a6c36eb8bf7dad-11400000-0",
+                "assetGuid": "21b1e35853c0ba9ad9a6c36eb8bf7dad",
+                "path": "Assets/Hollowmere/Rules/OddPaidOnTrade.asset"
+              },
+              "args": {
+                "fields": {
+                  "once": true,
+                  "trigger": "TradeDone"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ebee54ff-745b-4c42-8f41-bb5bd5efadee",
+                "global": "GlobalObjectId_V1-3-21b1e35853c0ba9ad9a6c36eb8bf7dad-11400000-0",
+                "assetGuid": "21b1e35853c0ba9ad9a6c36eb8bf7dad",
+                "path": "Assets/Hollowmere/Rules/OddPaidOnTrade.asset"
+              },
+              "stamp": "sha256:e781e793cbc2ffd6e0a232ee60a0335ac026c3ab840c3a610781a5372e261e63"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "maren",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "78bdc449-3fc2-4935-8847-8c732163dd22",
+                "global": "GlobalObjectId_V1-3-e828e769813cc299199b3923378a957a-11400000-0",
+                "assetGuid": "e828e769813cc299199b3923378a957a",
+                "path": "Assets/Hollowmere/Rules/ReturnToMaren.asset"
+              },
+              "args": {
+                "fields": {
+                  "actions": [
+                    {
+                      "kind": "ShowMessage",
+                      "fact": null,
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": "Maren presses her old lantern into your hands."
+                    },
+                    {
+                      "kind": "PlayAudio",
+                      "fact": null,
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": "sting.quest.complete"
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "78bdc449-3fc2-4935-8847-8c732163dd22",
+                "global": "GlobalObjectId_V1-3-e828e769813cc299199b3923378a957a-11400000-0",
+                "assetGuid": "e828e769813cc299199b3923378a957a",
+                "path": "Assets/Hollowmere/Rules/ReturnToMaren.asset"
+              },
+              "stamp": "sha256:109c482849c100fc74aa198fc5d0384f0c9122defcd101e5c20fe1e8e585c7ba"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:30.589Z",
+    "applied": "2026-10-05T06:44:30.849Z"
+  }
+}

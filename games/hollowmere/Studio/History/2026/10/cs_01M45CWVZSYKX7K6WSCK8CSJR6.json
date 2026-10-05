@@ -1,0 +1,2795 @@
+{
+  "id": "cs_01M45CWVZSYKX7K6WSCK8CSJR6",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.rules] Create the story rules (pickups, shrine puzzle, punt, sinkhole, satchel, crafting, herbs, endings)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "rule_Take_Lantern_Barn",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_Lantern_Barn.asset",
+        "name": "Take_Lantern_Barn",
+        "authoringId": "c7243284-61d3-40c9-a7d8-9fc989b943b4",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/Lantern_Barn.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "837b3fc0-a424-4411-bc69-7ac040f8def0",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "837b3fc0-a424-4411-bc69-7ac040f8def0"
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_MarshHerbs_Garden",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Garden.asset",
+        "name": "Take_MarshHerbs_Garden",
+        "authoringId": "6006f3ab-c936-4e4f-9428-67604ae94ed4",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/MarshHerbs_Garden.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "bcc77f89-ca7d-4197-8c86-a6efe61aba9a",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "bcc77f89-ca7d-4197-8c86-a6efe61aba9a"
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_OldCoins_Village",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_OldCoins_Village.asset",
+        "name": "Take_OldCoins_Village",
+        "authoringId": "fd20b071-1e94-4e18-b9d1-9c3346e945ea",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/OldCoins_Village.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96"
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_BellClapper_Marsh",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_BellClapper_Marsh.asset",
+        "name": "Take_BellClapper_Marsh",
+        "authoringId": "8371856c-695a-4af8-89e9-06d2c7ccac04",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/BellClapper_Marsh.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "435ac6cc-d279-4249-891c-fa754873ee93",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "435ac6cc-d279-4249-891c-fa754873ee93"
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_OilFlask_Marsh",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_OilFlask_Marsh.asset",
+        "name": "Take_OilFlask_Marsh",
+        "authoringId": "2d182040-733a-49a9-b68a-ccdd09ee85b9",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/OilFlask_Marsh.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "1cc6ccc5-4575-41ac-8bf3-1446f594d70a",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "1cc6ccc5-4575-41ac-8bf3-1446f594d70a"
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_MarshHerbs_Marsh",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Marsh.asset",
+        "name": "Take_MarshHerbs_Marsh",
+        "authoringId": "371b38f3-3344-4b04-bb15-29cf638d9137",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "Pickup",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": "Assets/Hollowmere/Items/MarshHerbs_Marsh.asset",
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "a0ec0302-146b-494d-9ef5-95812f441000",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.pickup"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "a0ec0302-146b-494d-9ef5-95812f441000"
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost1",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/ShrinePost1.asset",
+        "name": "ShrinePost1",
+        "authoringId": "a61c2667-a6dc-4c1a-bed5-afde40c7cf3c",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.shrine.light"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "e37866ef-7b93-4781-a9e6-4448f1d3c30a"
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost2",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/ShrinePost2.asset",
+        "name": "ShrinePost2",
+        "authoringId": "7177ffa6-0ba2-4265-898c-656e4685fc1a",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.shrine.light"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "a33d46a3-4ccf-4e1c-b837-781e246e232a"
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost3",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/ShrinePost3.asset",
+        "name": "ShrinePost3",
+        "authoringId": "64cb3ff1-5202-4ed9-9085-e62a4650ff4d",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.shrine.light"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "0131f58d-bed5-4484-97f0-8e2ee2220399"
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrineLit",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/ShrineLit.asset",
+        "name": "ShrineLit",
+        "authoringId": "df8a9fac-e5ca-438c-8871-6911d257ce67",
+        "fields": {
+          "trigger": "FactSet",
+          "triggerFact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset",
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The sunken shrine flares green-gold. Somewhere across the water, something stirs."
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "stinger.bell"
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntCross",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/PuntCross.asset",
+        "name": "PuntCross",
+        "authoringId": "3bd1f176-b7f1-47ba-8be3-dedae13c7a91",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "You pole the old punt across the black water."
+            },
+            {
+              "kind": "Travel",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "83d50830-abde-42e5-abee-45629e38d17c"
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntRepair",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/PuntRepair.asset",
+        "name": "PuntRepair",
+        "authoringId": "53c4ce6e-afc1-4a06-a4b9-8eb38374f6ff",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "Consume",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "You seal the punt's seams with pitch from the oil flask. Use it again to push off."
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 1,
+          "triggerEntityId": "83d50830-abde-42e5-abee-45629e38d17c"
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntLeaks",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/PuntLeaks.asset",
+        "name": "PuntLeaks",
+        "authoringId": "2b53e423-a753-4056-bf0b-7407e93efa22",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The old punt leaks. Pitch from an oil flask would seal it."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 2,
+          "triggerEntityId": "83d50830-abde-42e5-abee-45629e38d17c"
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntNeedsLight",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/PuntNeedsLight.asset",
+        "name": "PuntNeedsLight",
+        "authoringId": "65dfb19f-4253-4368-8ea9-671feef338c9",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "Too dark to work on the punt without a lantern."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 3,
+          "triggerEntityId": "83d50830-abde-42e5-abee-45629e38d17c"
+        }
+      }
+    },
+    {
+      "opId": "rule_SinkholeTakesLantern",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/SinkholeTakesLantern.asset",
+        "name": "SinkholeTakesLantern",
+        "authoringId": "c913278a-aeaf-4783-a9fe-480fc1bbcbc7",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "Consume",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Grant",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OldCoin.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 2,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "Coins! But the marsh snatches your lantern into the black water."
+            },
+            {
+              "kind": "PlayAudio",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "sfx.splash"
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "e7431036-f8e5-4cfd-bd13-256c8014b254"
+        }
+      }
+    },
+    {
+      "opId": "rule_SinkholeDark",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/SinkholeDark.asset",
+        "name": "SinkholeDark",
+        "authoringId": "5c26090b-3b21-4adc-9796-28b2ed206c7e",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "Too dark to see what glints down there."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "e7431036-f8e5-4cfd-bd13-256c8014b254"
+        }
+      }
+    },
+    {
+      "opId": "rule_SearchSatchel",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/SearchSatchel.asset",
+        "name": "SearchSatchel",
+        "authoringId": "769bd7d8-6c9b-4ab5-8e80-b513bb48b0dc",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "AddFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/search_satchel.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Despawn",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "entityId": "d69435d0-4ca3-411a-afd0-20cb86c8c24d",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "You empty the drowned satchel."
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "d69435d0-4ca3-411a-afd0-20cb86c8c24d"
+        }
+      }
+    },
+    {
+      "opId": "rule_CraftLantern",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/CraftLantern.asset",
+        "name": "CraftLantern",
+        "authoringId": "b8cb6153-9bda-4e3c-b8d8-a1db99e4c123",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "Consume",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Consume",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Grant",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "You twist a wick from dried herbs and fill the lamp with oil: a working lantern."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "5943f467-f789-4796-8766-fb265a2f3cd2"
+        }
+      }
+    },
+    {
+      "opId": "rule_BenchNeedsOil",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/BenchNeedsOil.asset",
+        "name": "BenchNeedsOil",
+        "authoringId": "1e745705-43ea-45a8-adaf-b62a55c83b16",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "A lantern needs an oil flask and dried marsh herbs for a wick."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "5943f467-f789-4796-8766-fb265a2f3cd2"
+        }
+      }
+    },
+    {
+      "opId": "rule_BenchNeedsHerbs",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/BenchNeedsHerbs.asset",
+        "name": "BenchNeedsHerbs",
+        "authoringId": "7c998e58-e5f7-4e05-bd94-fc411c919245",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "You have oil, but no dried herbs for a wick."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "5943f467-f789-4796-8766-fb265a2f3cd2"
+        }
+      }
+    },
+    {
+      "opId": "rule_HerbsRestore",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/HerbsRestore.asset",
+        "name": "HerbsRestore",
+        "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+        "fields": {
+          "trigger": "ItemConsumed",
+          "triggerFact": null,
+          "triggerItem": "Assets/Hollowmere/Items/MarshHerbs.asset",
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [],
+          "actions": [
+            {
+              "kind": "AddFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The bitter herbs ease your aching legs."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0
+        }
+      }
+    },
+    {
+      "opId": "rule_BellNoClapper",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/BellNoClapper.asset",
+        "name": "BellNoClapper",
+        "authoringId": "cb4449c2-bd60-4762-ac76-7b3de6d60a15",
+        "fields": {
+          "trigger": "Interacted",
+          "triggerFact": null,
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/BellClapper.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The bell has no clapper. It cannot ring."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0,
+          "triggerEntityId": "e45e9ce2-198c-48ee-8a4e-b01bc4bf0bbf"
+        }
+      }
+    },
+    {
+      "opId": "rule_EndingRing",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/EndingRing.asset",
+        "name": "EndingRing",
+        "authoringId": "6d8711cb-2145-4c94-96e5-b7f7ea1dcbb4",
+        "fields": {
+          "trigger": "FactSet",
+          "triggerFact": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset",
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The Drowned Bell tolls across Blackmere."
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0
+        }
+      }
+    },
+    {
+      "opId": "rule_EndingFree",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/EndingFree.asset",
+        "name": "EndingFree",
+        "authoringId": "fbb46c29-caa1-4cfa-8a1d-46acc1f773d9",
+        "fields": {
+          "trigger": "FactSet",
+          "triggerFact": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset",
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "Fact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "actions": [
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "SetFact",
+              "fact": "Assets/Hollowmere/Dialogue/Facts/belfry_echo_freed.asset",
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "once": true,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0
+        }
+      }
+    },
+    {
+      "opId": "rule_LanternLost",
+      "tool": "create",
+      "args": {
+        "type": "logic.rule",
+        "path": "Assets/Hollowmere/Rules/LanternLost.asset",
+        "name": "LanternLost",
+        "authoringId": "4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf",
+        "fields": {
+          "trigger": "FactSet",
+          "triggerFact": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset",
+          "triggerItem": null,
+          "triggerVendor": null,
+          "triggerQuest": null,
+          "triggerGraph": null,
+          "triggerRegion": null,
+          "triggerRule": null,
+          "triggerWorldItem": null,
+          "triggerValue": 0,
+          "matchAnyValue": true,
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "rule": null,
+              "conditionSet": null,
+              "inventory": null,
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ],
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "Without a light, the marsh closes in around you."
+            }
+          ],
+          "once": false,
+          "cooldownMs": 0,
+          "maxFires": 0,
+          "priority": 0
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "rule_Take_Lantern_Barn",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_Lantern_Barn.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c7243284-61d3-40c9-a7d8-9fc989b943b4",
+                "global": "GlobalObjectId_V1-3-d95c7f9942a2ae08d97ff0b7afa91af8-11400000-0",
+                "assetGuid": "d95c7f9942a2ae08d97ff0b7afa91af8",
+                "path": "Assets/Hollowmere/Rules/Take_Lantern_Barn.asset"
+              },
+              "stamp": "sha256:d1c3ad44578bead69d0316d83fe99db39d824e2001c97b3071b268157640e2d6"
+            }
+          ],
+          "replay": {
+            "authoringId": "c7243284-61d3-40c9-a7d8-9fc989b943b4",
+            "assetPath": "Assets/Hollowmere/Rules/Take_Lantern_Barn.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_MarshHerbs_Garden",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Garden.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "6006f3ab-c936-4e4f-9428-67604ae94ed4",
+                "global": "GlobalObjectId_V1-3-2254c21ebe9625140b14833d3a5e6cb1-11400000-0",
+                "assetGuid": "2254c21ebe9625140b14833d3a5e6cb1",
+                "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Garden.asset"
+              },
+              "stamp": "sha256:f78334d68a7c743f4f98d1ef2387fd0f28b9e86a2f557253ae5416afd2ebe24c"
+            }
+          ],
+          "replay": {
+            "authoringId": "6006f3ab-c936-4e4f-9428-67604ae94ed4",
+            "assetPath": "Assets/Hollowmere/Rules/Take_MarshHerbs_Garden.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_OldCoins_Village",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_OldCoins_Village.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "fd20b071-1e94-4e18-b9d1-9c3346e945ea",
+                "global": "GlobalObjectId_V1-3-dde372c5e74940dd292ea05ec4f50c12-11400000-0",
+                "assetGuid": "dde372c5e74940dd292ea05ec4f50c12",
+                "path": "Assets/Hollowmere/Rules/Take_OldCoins_Village.asset"
+              },
+              "stamp": "sha256:a0ef16f595dddfea83f4077c170b8f26614bf3b6a0b4cd49b512c0e612478ed4"
+            }
+          ],
+          "replay": {
+            "authoringId": "fd20b071-1e94-4e18-b9d1-9c3346e945ea",
+            "assetPath": "Assets/Hollowmere/Rules/Take_OldCoins_Village.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_BellClapper_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_BellClapper_Marsh.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8371856c-695a-4af8-89e9-06d2c7ccac04",
+                "global": "GlobalObjectId_V1-3-0654ea5fd440ba2459836ff62f1baa88-11400000-0",
+                "assetGuid": "0654ea5fd440ba2459836ff62f1baa88",
+                "path": "Assets/Hollowmere/Rules/Take_BellClapper_Marsh.asset"
+              },
+              "stamp": "sha256:f20f1a787a252ba8d4f6e8d79058f26e99617cca41a2fd889682e14fbaf720c1"
+            }
+          ],
+          "replay": {
+            "authoringId": "8371856c-695a-4af8-89e9-06d2c7ccac04",
+            "assetPath": "Assets/Hollowmere/Rules/Take_BellClapper_Marsh.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_OilFlask_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_OilFlask_Marsh.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "2d182040-733a-49a9-b68a-ccdd09ee85b9",
+                "global": "GlobalObjectId_V1-3-e971d6dff44935e7f83b6174b44c008d-11400000-0",
+                "assetGuid": "e971d6dff44935e7f83b6174b44c008d",
+                "path": "Assets/Hollowmere/Rules/Take_OilFlask_Marsh.asset"
+              },
+              "stamp": "sha256:049b46e8800596e0b519d684328e0807f569f388de34b14d41891d9afa707eba"
+            }
+          ],
+          "replay": {
+            "authoringId": "2d182040-733a-49a9-b68a-ccdd09ee85b9",
+            "assetPath": "Assets/Hollowmere/Rules/Take_OilFlask_Marsh.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_Take_MarshHerbs_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Marsh.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "371b38f3-3344-4b04-bb15-29cf638d9137",
+                "global": "GlobalObjectId_V1-3-b799ec33c59a4897a80d098acf637b6f-11400000-0",
+                "assetGuid": "b799ec33c59a4897a80d098acf637b6f",
+                "path": "Assets/Hollowmere/Rules/Take_MarshHerbs_Marsh.asset"
+              },
+              "stamp": "sha256:48b6bf52d330e735c65d97b8fa19d3b43a838655ab1630bf579da9a79997b73f"
+            }
+          ],
+          "replay": {
+            "authoringId": "371b38f3-3344-4b04-bb15-29cf638d9137",
+            "assetPath": "Assets/Hollowmere/Rules/Take_MarshHerbs_Marsh.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/ShrinePost1.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "a61c2667-a6dc-4c1a-bed5-afde40c7cf3c",
+                "global": "GlobalObjectId_V1-3-71f53cbf70db3707ca7a921d61bcb50e-11400000-0",
+                "assetGuid": "71f53cbf70db3707ca7a921d61bcb50e",
+                "path": "Assets/Hollowmere/Rules/ShrinePost1.asset"
+              },
+              "stamp": "sha256:223566ed076440183b8bcf5eb60362cdddc218704541ac0483087eeeea4326ce"
+            }
+          ],
+          "replay": {
+            "authoringId": "a61c2667-a6dc-4c1a-bed5-afde40c7cf3c",
+            "assetPath": "Assets/Hollowmere/Rules/ShrinePost1.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/ShrinePost2.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7177ffa6-0ba2-4265-898c-656e4685fc1a",
+                "global": "GlobalObjectId_V1-3-daa5baa4a812d9b6c966ad21bcf78496-11400000-0",
+                "assetGuid": "daa5baa4a812d9b6c966ad21bcf78496",
+                "path": "Assets/Hollowmere/Rules/ShrinePost2.asset"
+              },
+              "stamp": "sha256:340a251a4e3b86da6773294edb8566b2dc545e7c9a3f754ed6c73295f6ac748d"
+            }
+          ],
+          "replay": {
+            "authoringId": "7177ffa6-0ba2-4265-898c-656e4685fc1a",
+            "assetPath": "Assets/Hollowmere/Rules/ShrinePost2.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrinePost3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/ShrinePost3.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "64cb3ff1-5202-4ed9-9085-e62a4650ff4d",
+                "global": "GlobalObjectId_V1-3-3e6693dfd57eafdeea5a380615289c58-11400000-0",
+                "assetGuid": "3e6693dfd57eafdeea5a380615289c58",
+                "path": "Assets/Hollowmere/Rules/ShrinePost3.asset"
+              },
+              "stamp": "sha256:7581c069b378568f8742f8dfd8f982cac408cda94f70a2e1e1b1d46556e4a8b1"
+            }
+          ],
+          "replay": {
+            "authoringId": "64cb3ff1-5202-4ed9-9085-e62a4650ff4d",
+            "assetPath": "Assets/Hollowmere/Rules/ShrinePost3.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_ShrineLit",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/ShrineLit.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "df8a9fac-e5ca-438c-8871-6911d257ce67",
+                "global": "GlobalObjectId_V1-3-350f7bc06d6c84d0abc622400df9dd8d-11400000-0",
+                "assetGuid": "350f7bc06d6c84d0abc622400df9dd8d",
+                "path": "Assets/Hollowmere/Rules/ShrineLit.asset"
+              },
+              "stamp": "sha256:1e9c50cf8161cebd53203376f4fbac1ff28957e7c985510332da54c777d7428b"
+            }
+          ],
+          "replay": {
+            "authoringId": "df8a9fac-e5ca-438c-8871-6911d257ce67",
+            "assetPath": "Assets/Hollowmere/Rules/ShrineLit.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntCross",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/PuntCross.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "3bd1f176-b7f1-47ba-8be3-dedae13c7a91",
+                "global": "GlobalObjectId_V1-3-22900d66e53b62f2892c313a119e5653-11400000-0",
+                "assetGuid": "22900d66e53b62f2892c313a119e5653",
+                "path": "Assets/Hollowmere/Rules/PuntCross.asset"
+              },
+              "stamp": "sha256:1a0651ee8323bd6125ac3ad97bec7596ce28557e03395cd5d2463b6a09c563c8"
+            }
+          ],
+          "replay": {
+            "authoringId": "3bd1f176-b7f1-47ba-8be3-dedae13c7a91",
+            "assetPath": "Assets/Hollowmere/Rules/PuntCross.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntRepair",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/PuntRepair.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "53c4ce6e-afc1-4a06-a4b9-8eb38374f6ff",
+                "global": "GlobalObjectId_V1-3-4acf5d05a9fdfe369b06bf2b68600a0d-11400000-0",
+                "assetGuid": "4acf5d05a9fdfe369b06bf2b68600a0d",
+                "path": "Assets/Hollowmere/Rules/PuntRepair.asset"
+              },
+              "stamp": "sha256:7f8d0bed58e39a04fba4778889b48a6de0b2151f51a90440efaa4d695ee0dd92"
+            }
+          ],
+          "replay": {
+            "authoringId": "53c4ce6e-afc1-4a06-a4b9-8eb38374f6ff",
+            "assetPath": "Assets/Hollowmere/Rules/PuntRepair.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntLeaks",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/PuntLeaks.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "2b53e423-a753-4056-bf0b-7407e93efa22",
+                "global": "GlobalObjectId_V1-3-dea84d3d989296212beb5098438055a5-11400000-0",
+                "assetGuid": "dea84d3d989296212beb5098438055a5",
+                "path": "Assets/Hollowmere/Rules/PuntLeaks.asset"
+              },
+              "stamp": "sha256:f15abb810a65a6a1e5cca0c8d5b3b5a9f175d709cf9bacfa20037734b98d36ce"
+            }
+          ],
+          "replay": {
+            "authoringId": "2b53e423-a753-4056-bf0b-7407e93efa22",
+            "assetPath": "Assets/Hollowmere/Rules/PuntLeaks.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_PuntNeedsLight",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/PuntNeedsLight.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "65dfb19f-4253-4368-8ea9-671feef338c9",
+                "global": "GlobalObjectId_V1-3-df2dd53d3e543803e8cb33896a10258f-11400000-0",
+                "assetGuid": "df2dd53d3e543803e8cb33896a10258f",
+                "path": "Assets/Hollowmere/Rules/PuntNeedsLight.asset"
+              },
+              "stamp": "sha256:7935ecc877bd5ca4a72655276911b40b24edec2d28210dabeb543bd7a2644306"
+            }
+          ],
+          "replay": {
+            "authoringId": "65dfb19f-4253-4368-8ea9-671feef338c9",
+            "assetPath": "Assets/Hollowmere/Rules/PuntNeedsLight.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_SinkholeTakesLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/SinkholeTakesLantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c913278a-aeaf-4783-a9fe-480fc1bbcbc7",
+                "global": "GlobalObjectId_V1-3-c71fbb22689ed0cd9aee9c0373605b48-11400000-0",
+                "assetGuid": "c71fbb22689ed0cd9aee9c0373605b48",
+                "path": "Assets/Hollowmere/Rules/SinkholeTakesLantern.asset"
+              },
+              "stamp": "sha256:f61956bb83fc5e7212bad48aa5c1fbab16cc396a525355be0f6a5f893408e0c4"
+            }
+          ],
+          "replay": {
+            "authoringId": "c913278a-aeaf-4783-a9fe-480fc1bbcbc7",
+            "assetPath": "Assets/Hollowmere/Rules/SinkholeTakesLantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_SinkholeDark",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/SinkholeDark.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5c26090b-3b21-4adc-9796-28b2ed206c7e",
+                "global": "GlobalObjectId_V1-3-b36222807b9368be89714ce35f4fb096-11400000-0",
+                "assetGuid": "b36222807b9368be89714ce35f4fb096",
+                "path": "Assets/Hollowmere/Rules/SinkholeDark.asset"
+              },
+              "stamp": "sha256:ce6bf4bb5789fed664829df3851f4519498c5d4270e6ba70f6690a7cb24ef3fd"
+            }
+          ],
+          "replay": {
+            "authoringId": "5c26090b-3b21-4adc-9796-28b2ed206c7e",
+            "assetPath": "Assets/Hollowmere/Rules/SinkholeDark.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_SearchSatchel",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/SearchSatchel.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "769bd7d8-6c9b-4ab5-8e80-b513bb48b0dc",
+                "global": "GlobalObjectId_V1-3-36b1b2127614a1b31a32295af0a0d176-11400000-0",
+                "assetGuid": "36b1b2127614a1b31a32295af0a0d176",
+                "path": "Assets/Hollowmere/Rules/SearchSatchel.asset"
+              },
+              "stamp": "sha256:57078b43d6920861ffc5a8a22144a517d88d3dfe079d8d4c2ce9da384d0a043b"
+            }
+          ],
+          "replay": {
+            "authoringId": "769bd7d8-6c9b-4ab5-8e80-b513bb48b0dc",
+            "assetPath": "Assets/Hollowmere/Rules/SearchSatchel.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_CraftLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/CraftLantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b8cb6153-9bda-4e3c-b8d8-a1db99e4c123",
+                "global": "GlobalObjectId_V1-3-affed2e0de82ba8da9dd725949b34021-11400000-0",
+                "assetGuid": "affed2e0de82ba8da9dd725949b34021",
+                "path": "Assets/Hollowmere/Rules/CraftLantern.asset"
+              },
+              "stamp": "sha256:d1706ff2db0e4d0e64146f16ce93199e76f5a6a6413d9502d1559c08a27aacd4"
+            }
+          ],
+          "replay": {
+            "authoringId": "b8cb6153-9bda-4e3c-b8d8-a1db99e4c123",
+            "assetPath": "Assets/Hollowmere/Rules/CraftLantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_BenchNeedsOil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/BenchNeedsOil.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1e745705-43ea-45a8-adaf-b62a55c83b16",
+                "global": "GlobalObjectId_V1-3-307ff08fe3e3c0e88b1d3a5fc70e2e11-11400000-0",
+                "assetGuid": "307ff08fe3e3c0e88b1d3a5fc70e2e11",
+                "path": "Assets/Hollowmere/Rules/BenchNeedsOil.asset"
+              },
+              "stamp": "sha256:d85b31e3d29d43dd6817755b65f9d159c6198078bb9af0739e36edbe25a5333a"
+            }
+          ],
+          "replay": {
+            "authoringId": "1e745705-43ea-45a8-adaf-b62a55c83b16",
+            "assetPath": "Assets/Hollowmere/Rules/BenchNeedsOil.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_BenchNeedsHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/BenchNeedsHerbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7c998e58-e5f7-4e05-bd94-fc411c919245",
+                "global": "GlobalObjectId_V1-3-8196d535e92788b949f552e3e0c8a08f-11400000-0",
+                "assetGuid": "8196d535e92788b949f552e3e0c8a08f",
+                "path": "Assets/Hollowmere/Rules/BenchNeedsHerbs.asset"
+              },
+              "stamp": "sha256:f2b3623a83c6dc241f3e7fd4385c158516ecf569e4486c8dce3a5e245c3fc4b8"
+            }
+          ],
+          "replay": {
+            "authoringId": "7c998e58-e5f7-4e05-bd94-fc411c919245",
+            "assetPath": "Assets/Hollowmere/Rules/BenchNeedsHerbs.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_HerbsRestore",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/HerbsRestore.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+                "global": "GlobalObjectId_V1-3-dfcd0a6b320da7905a54e537b7798e65-11400000-0",
+                "assetGuid": "dfcd0a6b320da7905a54e537b7798e65",
+                "path": "Assets/Hollowmere/Rules/HerbsRestore.asset"
+              },
+              "stamp": "sha256:de6bfd810b8246396dd9c4200ebfaae35f231ad9af581ddda83db1e172625e3f"
+            }
+          ],
+          "replay": {
+            "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+            "assetPath": "Assets/Hollowmere/Rules/HerbsRestore.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_BellNoClapper",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/BellNoClapper.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cb4449c2-bd60-4762-ac76-7b3de6d60a15",
+                "global": "GlobalObjectId_V1-3-d34010895e7cfd019a0ace5a0e6184cb-11400000-0",
+                "assetGuid": "d34010895e7cfd019a0ace5a0e6184cb",
+                "path": "Assets/Hollowmere/Rules/BellNoClapper.asset"
+              },
+              "stamp": "sha256:1c7c7a4a1dfd0a88dd349fed7d362402bdd8f9393495fb89247d631acb1379be"
+            }
+          ],
+          "replay": {
+            "authoringId": "cb4449c2-bd60-4762-ac76-7b3de6d60a15",
+            "assetPath": "Assets/Hollowmere/Rules/BellNoClapper.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_EndingRing",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/EndingRing.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "6d8711cb-2145-4c94-96e5-b7f7ea1dcbb4",
+                "global": "GlobalObjectId_V1-3-409814db78c3b5a03849bc634ecf2cda-11400000-0",
+                "assetGuid": "409814db78c3b5a03849bc634ecf2cda",
+                "path": "Assets/Hollowmere/Rules/EndingRing.asset"
+              },
+              "stamp": "sha256:dcec61c65115c461c7bd8062be00c9da88235fb673984ca3b4aa553e2e43eb05"
+            }
+          ],
+          "replay": {
+            "authoringId": "6d8711cb-2145-4c94-96e5-b7f7ea1dcbb4",
+            "assetPath": "Assets/Hollowmere/Rules/EndingRing.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_EndingFree",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/EndingFree.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "fbb46c29-caa1-4cfa-8a1d-46acc1f773d9",
+                "global": "GlobalObjectId_V1-3-04b624f430aace9d99cb14d137bf7aa9-11400000-0",
+                "assetGuid": "04b624f430aace9d99cb14d137bf7aa9",
+                "path": "Assets/Hollowmere/Rules/EndingFree.asset"
+              },
+              "stamp": "sha256:ccda560524c4d52d97ccf445a8fac5a50a1457359f060e8e6c03c06a07847dac"
+            }
+          ],
+          "replay": {
+            "authoringId": "fbb46c29-caa1-4cfa-8a1d-46acc1f773d9",
+            "assetPath": "Assets/Hollowmere/Rules/EndingFree.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "rule_LanternLost",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/LanternLost.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf",
+                "global": "GlobalObjectId_V1-3-e7ff9703a23afeb47b4a7596e1eb7493-11400000-0",
+                "assetGuid": "e7ff9703a23afeb47b4a7596e1eb7493",
+                "path": "Assets/Hollowmere/Rules/LanternLost.asset"
+              },
+              "stamp": "sha256:c4198cf385f5dc875675551fbea7ff575a192f5203459c20d92ee4cec51f08da"
+            }
+          ],
+          "replay": {
+            "authoringId": "4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf",
+            "assetPath": "Assets/Hollowmere/Rules/LanternLost.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:23.721Z",
+    "applied": "2026-10-05T06:44:26.718Z"
+  }
+}

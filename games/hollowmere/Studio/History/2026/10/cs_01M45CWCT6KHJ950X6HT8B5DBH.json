@@ -1,0 +1,120 @@
+{
+  "id": "cs_01M45CWCT6KHJ950X6HT8B5DBH",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.marsh-loot] The drowned satchel's loot: coins, herbs or an oil flask",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "loot",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+        "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+        "assetGuid": "445637ba7c003e982be814e23a7fe908",
+        "path": "Assets/Hollowmere/Items/MarshLoot.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e35987919e4aca566e9c3a5e0368974ee18c4dec90d7e56e064ecb55785839b5"
+      },
+      "args": {
+        "fields": {
+          "rolls": 2,
+          "entries": [
+            {
+              "item": "Assets/Hollowmere/Items/OldCoin.asset",
+              "weight": 3,
+              "min": 1,
+              "max": 3
+            },
+            {
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "weight": 2,
+              "min": 1,
+              "max": 2
+            },
+            {
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "weight": 1,
+              "min": 1,
+              "max": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "loot",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+                "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+                "assetGuid": "445637ba7c003e982be814e23a7fe908",
+                "path": "Assets/Hollowmere/Items/MarshLoot.asset"
+              },
+              "args": {
+                "fields": {
+                  "rolls": 1,
+                  "entries": [
+                    {
+                      "item": {
+                        "kind": "Definition",
+                        "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                        "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                        "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                        "path": "Assets/Hollowmere/Items/OldCoin.asset"
+                      },
+                      "weight": 3,
+                      "min": 1,
+                      "max": 2
+                    },
+                    {
+                      "item": {
+                        "kind": "Definition",
+                        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                        "path": "Assets/Hollowmere/Items/Lantern.asset"
+                      },
+                      "weight": 1,
+                      "min": 1,
+                      "max": 1
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+                "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+                "assetGuid": "445637ba7c003e982be814e23a7fe908",
+                "path": "Assets/Hollowmere/Items/MarshLoot.asset"
+              },
+              "stamp": "sha256:bde6c61ed69ae8f9047cd03b684739b8054899405cfc0d7a9aab245abae02c03"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:08.155Z",
+    "applied": "2026-10-05T06:44:08.702Z"
+  }
+}

@@ -21,7 +21,13 @@ MonoBehaviour:
     text: Light the middle shrine lantern
   - state: on
     text: The middle lantern burns
-  conditionRef: 5db7d10e-e46a-4c9b-be37-43fcb8c7c3cb
+  condition: {fileID: 11400000, guid: 4aeac7929e86dc988a48242220701d88, type: 2}
+  conditionFact: {fileID: 0}
+  conditionOp: 1
+  conditionValue: 0
+  conditionRef: 
+  actions: {fileID: 0}
+  builtInAction: 
   actionRef: 
   maxUses: 0
   cooldownSeconds: 0.5
