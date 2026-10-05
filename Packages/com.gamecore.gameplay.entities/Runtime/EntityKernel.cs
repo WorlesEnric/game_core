@@ -39,16 +39,22 @@ namespace GameCore.Gameplay.Entities
         {
         }
 
-        public EntityCommand(int value, int requestId)
+        public EntityCommand(int value, int requestId, bool? visible = null)
         {
+            SpawnVisible = visible;
             Value = value;
             RequestId = requestId;
         }
 
         public int Value { get; }
 
+        public bool? SpawnVisible { get; }
+
         /// <summary>0 when the command carries none; negative for an outbox obligation's id.</summary>
         public int RequestId { get; }
+
+        public static FrozenPayload EncodeSpawn(bool? visible, int requestId = 0) =>
+            new GameplayPayloadWriter().Int32(0).Int32(requestId).Int32(visible.HasValue ? (visible.Value ? 1 : 0) : -1).Freeze();
 
         public const int Length = 4;
 
@@ -72,6 +78,15 @@ namespace GameCore.Gameplay.Entities
         public EntityCommand Read(IReadOnlyList<byte> payload)
         {
             var reader = new GameplayPayloadReader(payload);
+            if (reader.HasLength(12))
+            {
+                int value = reader.Int32();
+                int request = reader.Int32();
+                int visible = reader.Int32();
+                if (visible < -1 || visible > 1) throw new FormatException("spawn visibility must be -1, 0 or 1");
+                return new EntityCommand(value, request, visible == -1 ? (bool?)null : visible == 1);
+            }
+
             if (reader.HasLength(EntityCommand.LengthWithRequest))
             {
                 return new EntityCommand(reader.Int32(), reader.Int32());
@@ -333,7 +348,7 @@ namespace GameCore.Gameplay.Entities
             SchemaRef eventSchema;
             if (message.Route.Equals(EntityDeclarations.SpawnRoute))
             {
-                transition = EntityRules.Spawn(state);
+                transition = EntityRules.Spawn(state, command.SpawnVisible);
                 eventSchema = EntityDeclarations.SpawnedEvent;
             }
             else if (message.Route.Equals(EntityDeclarations.DespawnRoute))
