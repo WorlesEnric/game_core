@@ -23,7 +23,7 @@ namespace GameCore.Studio.Edit.Tests
         [TearDown]
         public void TearDown() => _bed.Dispose();
 
-        private sealed class World
+        private sealed class FakeWorld
         {
             public FixtureItemDefinition Lantern = null!;
             public FixtureItemDefinition Flask = null!;
@@ -32,9 +32,9 @@ namespace GameCore.Studio.Edit.Tests
             public FixtureAuthoredEntity Entity = null!;
         }
 
-        private World Build()
+        private FakeWorld Build()
         {
-            World world = new World
+            FakeWorld world = new FakeWorld
             {
                 Lantern = _bed.CreateItem("Lantern", 2f),
                 Flask = _bed.CreateItem("OilFlask", 1f),
@@ -48,7 +48,7 @@ namespace GameCore.Studio.Edit.Tests
         }
 
         /// <summary>Five operations; op5's target changed after planning (stale stamp).</summary>
-        private ChangeSet FiveOps(World world, ApplyPolicy policy)
+        private ChangeSet FiveOps(FakeWorld world, ApplyPolicy policy)
         {
             AuthoringRef flaskPlanned = _bed.Ref(world.Flask);
             SerializedObject serialized = new SerializedObject(world.Flask);
@@ -67,7 +67,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing()
         {
-            World world = Build();
+            FakeWorld world = Build();
             ChangeSet changeSet = FiveOps(world, ApplyPolicy.AllOrNothing);
             Stopwatch watch = Stopwatch.StartNew();
             ApplyReport report = _bed.Runtime.Engine.Apply(changeSet);
@@ -92,7 +92,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes()
         {
-            World world = Build();
+            FakeWorld world = Build();
             ChangeSet changeSet = FiveOps(world, ApplyPolicy.BestEffort);
             Stopwatch watch = Stopwatch.StartNew();
             ApplyReport report = _bed.Runtime.Engine.Apply(changeSet);
@@ -122,7 +122,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows()
         {
-            World world = Build();
+            FakeWorld world = Build();
             string createdPath = _bed.Folder + "/Rope.asset";
             ChangeSet changeSet = StudioTestBed.NewChangeSet(
                 "rollback",
@@ -146,7 +146,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void Conflict_RebaseReplansAgainstTheCurrentStamp()
         {
-            World world = Build();
+            FakeWorld world = Build();
             AuthoringRef planned = _bed.Ref(world.Lantern);
             SerializedObject serialized = new SerializedObject(world.Lantern);
             serialized.FindProperty("displayName").stringValue = "Brass lantern";
@@ -167,7 +167,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void Journal_EntryLivesUnderYearAndMonthOfItsId()
         {
-            World world = Build();
+            FakeWorld world = Build();
             ChangeSet changeSet = StudioTestBed.NewChangeSet("journal", null, StudioTestBed.Set("op1", _bed.Ref(world.Lantern), "weight", 5));
             _bed.Runtime.Engine.Apply(changeSet);
             string path = _bed.Runtime.Journal.PathOf(changeSet.Id);
@@ -182,7 +182,7 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void Queue_SerializesAsyncApplies()
         {
-            World world = Build();
+            FakeWorld world = Build();
             System.Threading.Tasks.Task<ApplyReport> first = _bed.Runtime.Engine.ApplyAsync(StudioTestBed.NewChangeSet("a", null, StudioTestBed.Set("op1", _bed.Ref(world.Lantern), "weight", 5)));
             System.Threading.Tasks.Task<ApplyReport> second = _bed.Runtime.Engine.ApplyAsync(StudioTestBed.NewChangeSet("b", null, StudioTestBed.Set("op1", _bed.Ref(world.Ferryman), "greeting", "Hi")));
             Assert.That(_bed.Runtime.Queue.Pending, Is.EqualTo(2));
