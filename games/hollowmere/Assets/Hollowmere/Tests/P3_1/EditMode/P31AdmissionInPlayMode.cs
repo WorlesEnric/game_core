@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GameCore.Studio.Authoring;
+using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 using GameCore.Unity.App;
@@ -181,7 +182,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
     {
         public const string Package = HollowmereAdmittedSmoke.PressurePlatePackage;
         public const string CatalogType = "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog";
-        public static readonly string MechanismFingerprint = new string('c', 64);
+        public static readonly string PlateFingerprint = new string('c', 64);
 
         private readonly string world;
         private byte[]? verdictBytes;
@@ -309,8 +310,8 @@ namespace Hollowmere.P3_1.EditMode.Tests
                 ["budgetMs"] = 360000,
                 ["catalogDelta"] = new JObject
                 {
-                    ["mechanisms"] = new JArray(new JObject { ["catalogType"] = CatalogType, ["fingerprint"] = MechanismFingerprint, ["package"] = Package }),
-                    ["predicted"] = CatalogSet.Combine(world, new[] { MechanismFingerprint }),
+                    ["mechanisms"] = new JArray(new JObject { ["catalogType"] = CatalogType, ["fingerprint"] = PlateFingerprint, ["package"] = Package }),
+                    ["predicted"] = CatalogSet.Combine(world, new[] { PlateFingerprint }),
                     ["world"] = world,
                 },
                 ["changeSetId"] = candidate.Id,
@@ -353,7 +354,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
             problem = null;
             if (catalogType == CatalogType && Directory.Exists(PackageDirectory))
             {
-                return MechanismFingerprint;
+                return PlateFingerprint;
             }
 
             problem = catalogType + " is not loaded";
