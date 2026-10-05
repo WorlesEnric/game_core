@@ -92,6 +92,9 @@ namespace GameCore.Gameplay.World.Editor
             }
 
             PortalDefinition portal = ScriptableObject.CreateInstance<PortalDefinition>();
+            // Named like its file now, not at the next import: references to it (the world's portals list, the change
+            // set's stamps) must not change when the asset is reloaded.
+            portal.name = Path.GetFileNameWithoutExtension(path);
             portal.EnsureAuthoringId();
             portal.Connect(regionA, regionB);
             portal.SetSpawnPoints(spawnPointA, spawnPointB);
