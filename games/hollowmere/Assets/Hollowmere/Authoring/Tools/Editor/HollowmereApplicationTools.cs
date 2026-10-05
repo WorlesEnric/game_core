@@ -100,7 +100,11 @@ namespace Hollowmere.Authoring.Tools
 
         private static void EnsureFolder(string folder)
         {
-            if (AssetDatabase.IsValidFolder(folder))
+            // Inside the engine's AssetDatabase edit block a folder created earlier in the change set exists on disk but
+            // is not imported yet, so IsValidFolder is false; CreateFolder would then make a numbered duplicate
+            // ("Materials 1"). The disk is the truth: a folder that exists there is left alone.
+            if (string.IsNullOrEmpty(folder) || AssetDatabase.IsValidFolder(folder)
+                || Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), folder)))
             {
                 return;
             }
