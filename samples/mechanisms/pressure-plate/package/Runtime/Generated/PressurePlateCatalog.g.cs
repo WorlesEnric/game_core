@@ -44,7 +44,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         public const string CatalogFingerprint = "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
-        public static readonly Id128[] SupportedFeatureIds =
+        public static Id128[] SupportedFeatureIds => new Id128[]
         {
         };
 
@@ -67,7 +67,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         public static readonly FactoryKey PlateDomainSerializerKey = new FactoryKey(new Id128(0x428E6B472B3778B5UL, 0x24105F5C4CF9C9DFUL), 1U);
 
         /// <summary>Generated registrations of LayoutApply, in canonical key order, each bound to a direct constructor reference.</summary>
-        public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] LayoutRegistrations =
+        public static BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] LayoutRegistrations => new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[]
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 PlateLayoutKey,
@@ -80,7 +80,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Generated keys of LayoutRegistrations, in the same canonical order.</summary>
-        public static readonly FactoryKey[] LayoutKeys =
+        public static FactoryKey[] LayoutKeys => new FactoryKey[]
         {
             PlateLayoutKey,
             PlateApplierKey,
@@ -91,7 +91,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// Every entry carries its own owner package and precompiled implementation identity, so the
         /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
         /// </summary>
-        public static readonly FactoryRegistration[] LayoutRegistrationsCatalogRegistrations =
+        public static FactoryRegistration[] LayoutRegistrationsCatalogRegistrations => new FactoryRegistration[]
         {
             new FactoryRegistration(
                 PlateLayoutKey,
@@ -108,7 +108,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Generated registrations of PluginFactory, in canonical key order, each bound to a direct constructor reference.</summary>
-        public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] PluginRegistrations =
+        public static BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] PluginRegistrations => new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[]
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 PressurePlatePluginKey,
@@ -117,7 +117,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Generated keys of PluginRegistrations, in the same canonical order.</summary>
-        public static readonly FactoryKey[] PluginKeys =
+        public static FactoryKey[] PluginKeys => new FactoryKey[]
         {
             PressurePlatePluginKey,
         };
@@ -127,7 +127,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// Every entry carries its own owner package and precompiled implementation identity, so the
         /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
         /// </summary>
-        public static readonly FactoryRegistration[] PluginRegistrationsCatalogRegistrations =
+        public static FactoryRegistration[] PluginRegistrationsCatalogRegistrations => new FactoryRegistration[]
         {
             new FactoryRegistration(
                 PressurePlatePluginKey,
@@ -138,7 +138,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Generated registrations of SystemFactory, in canonical key order, each bound to a direct constructor reference.</summary>
-        public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] SystemRegistrations =
+        public static BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] SystemRegistrations => new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[]
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 PressurePlateCommandSystemKey,
@@ -147,7 +147,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Generated keys of SystemRegistrations, in the same canonical order.</summary>
-        public static readonly FactoryKey[] SystemKeys =
+        public static FactoryKey[] SystemKeys => new FactoryKey[]
         {
             PressurePlateCommandSystemKey,
         };
@@ -157,7 +157,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// Every entry carries its own owner package and precompiled implementation identity, so the
         /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
         /// </summary>
-        public static readonly FactoryRegistration[] SystemRegistrationsCatalogRegistrations =
+        public static FactoryRegistration[] SystemRegistrationsCatalogRegistrations => new FactoryRegistration[]
         {
             new FactoryRegistration(
                 PressurePlateCommandSystemKey,
@@ -168,7 +168,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         };
 
         /// <summary>Validated schema registrations, in canonical schema-id order.</summary>
-        public static readonly SchemaRegistration[] SchemaRegistrations =
+        public static SchemaRegistration[] SchemaRegistrations => new SchemaRegistration[]
         {
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0x3FB9ABF0555948F9UL, 0x9BC37B264B8DA057UL)), 1U),
@@ -266,7 +266,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// </summary>
         public sealed class PressurePlateConfigSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
@@ -375,7 +375,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// </summary>
         public sealed class PlateDomainSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
@@ -461,7 +461,7 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         /// Generated serializer instances, one per declared schema, in the same canonical order as
         /// SchemaRegistrations. Instances are constructed directly; no serializer is discovered at runtime.
         /// </summary>
-        public static readonly ISchemaSerializer[] Serializers =
+        public static ISchemaSerializer[] Serializers => new ISchemaSerializer[]
         {
             new PressurePlateConfigSerializer(),
             new PlateDomainSerializer(),
@@ -536,6 +536,6 @@ namespace Hollowmere.Mechanism.PressurePlate.Generated
         public const int SchemaCount = 2;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "052cc5874438b5fbae785b1ea4b1ae546c863af425ca49b5ffdb25e98fe19fcc";
+        public const string CatalogFileHash = "2ce84fa76c8a5793e48874981ec0f61d07070219968d025e227f3c41735b3ad3";
     }
 }
