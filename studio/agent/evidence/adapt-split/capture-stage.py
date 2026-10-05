@@ -34,6 +34,14 @@ if job_path.exists():
         'budgetMs': verdict.get('budgetMs'), 'coldCache': verdict.get('coldCache'),
         'confinement': verdict.get('confinement'),
         'warmMeasurement': verdict.get('coldCache') is False,
+        'status': 'verdict-produced' if 'pass' in verdict else 'blocked-before-pipeline',
+        'requestedConfinement': 'docker', 'configuredBudgetMs': 360000,
+        'serviceJobElapsedMs': job['updatedAt'] - job['createdAt'],
+        'cacheHasArtifactDbAtCapture': any((node / 'slots').glob('*/_warm/*/Library/ArtifactDB')),
+        'coldCacheReason': None if 'coldCache' in verdict else
+            'No StageVerdict was produced: the mandatory Unity probe refused before the pipeline',
+        'warmMeasurementReason': None if verdict.get('coldCache') is False else
+            'No warm passing stage was measured',
     }, indent=2) + '\n')
 for name in ['service-job.json', 'signed-verdict.json', 'issuance.json']:
     path = out / name
