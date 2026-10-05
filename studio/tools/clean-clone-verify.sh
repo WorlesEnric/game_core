@@ -94,7 +94,7 @@ if [[ -d "${clone}/games/hollowmere/Library" ]]; then
 fi
 
 rc=0
-P17B_BAKE_REPORT="${logs}/${label}.json" "${clone}/studio/tools/unity-batch.sh" \
+P17B_BAKE_REPORT="${logs}/${label}.json" bash "${clone}/studio/tools/unity-batch.sh" \
   --project "${clone}/games/hollowmere" --log-dir "${logs}" --label "${label}" \
   --timeout "${UNITY_TIMEOUT:-3600}" -- -executeMethod Hollowmere.P1_7b.EditMode.Tests.CleanCloneBakeCheck.Run || rc=$?
 
