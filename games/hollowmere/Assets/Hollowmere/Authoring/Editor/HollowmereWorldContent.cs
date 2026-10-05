@@ -124,6 +124,11 @@ namespace Hollowmere.Authoring
             }
 
             Director(a);
+            if (DeclaredTradeActions && a.NarrativeBlocked == null)
+            {
+                DeclaredTrade(a);
+            }
+
             Boot(a);
         }
 
@@ -240,7 +245,7 @@ namespace Hollowmere.Authoring
                 }),
             });
 
-            a.Step("world.bram-npc", "Bram's NPC definition (answers to dialogue.bram)", () => new List<Operation>
+            a.Step("world.bram-npc", "Bram's NPC definition (his conversation is linked once the graph exists)", () => new List<Operation>
             {
                 StudioAuthor.Create("npc", "npc.definition", Npc("Bram"), "Bram", StudioAuthor.Id("npc.Bram"), new JObject
                 {
@@ -249,8 +254,6 @@ namespace Hollowmere.Authoring
                     ["speed"] = 1.6f,
                     ["converseSeconds"] = 4f,
                     ["arriveRadius"] = 0.05f,
-                    ["voiceId"] = "voice.bram",
-                    ["dialogueGraph"] = "dialogue.bram",
                     ["behaviour"] = Npc("BramBehaviour"),
                     ["focusPriority"] = 1,
                     ["talkRange"] = 2.5f,
@@ -456,15 +459,23 @@ namespace Hollowmere.Authoring
         {
             if (!voices)
             {
-                a.Step("world.bram-graph", "Create Bram's conversation asset (answers to dialogue.bram)", () => new List<Operation>
+                a.Step("world.bram-graph", "Create Bram's conversation asset (answers to dialogue.bram)", () =>
                 {
-                    StudioAuthor.Create("graph", "dialogue.graph", Graph("Bram"), "Bram", StudioAuthor.Id("graph.Bram"), new JObject
+                    var fields = new JObject { ["speaker"] = "Bram" };
+                    if (!NarrativeSchema.Typed)
                     {
-                        ["speaker"] = "Bram",
-                        ["npcGraphRef"] = "dialogue.bram",
-                    }),
+                        fields["npcGraphRef"] = "dialogue.bram";
+                    }
+
+                    return new List<Operation> { StudioAuthor.Create("graph", "dialogue.graph", Graph("Bram"), "Bram", StudioAuthor.Id("graph.Bram"), fields) };
                 });
                 RegisterContent(a, "world.register-bram-graph", new List<string> { Graph("Bram") });
+                a.Step("world.bram-dialogue", "Bram's talk starts his conversation", () => new List<Operation>
+                {
+                    NarrativeSchema.Typed
+                        ? StudioAuthor.Set("bram", a.Ref(Npc("Bram")), new JObject { ["dialogue"] = Graph("Bram") })
+                        : StudioAuthor.Set("bram", a.Ref(Npc("Bram")), new JObject { ["dialogueGraph"] = StudioAuthor.Id("graph.Bram") }),
+                });
             }
 
             foreach (string name in HollowmereDialogues.All)
@@ -493,10 +504,20 @@ namespace Hollowmere.Authoring
 
         // ------------------------------------------------------------------ rules
 
-        private static JObject RuleFields(string trigger, string? subject, string entityId, JObject[] conditions, JObject[] actions, bool once, int priority = 0, int value = 0, bool any = true) => new JObject
+        private static JObject RuleFields(string trigger, string? subject, string entityId, JObject[] conditions, JObject[] actions, bool once, int priority = 0, int value = 0, bool any = true)
         {
-            ["trigger"] = trigger,
-            ["triggerSubject"] = StudioAuthor.Str(subject),
+            var rule = new JObject { ["trigger"] = trigger };
+            NarrativeSchema.Trigger(rule, trigger, subject);
+            foreach (JProperty field in RuleRest(entityId, conditions, actions, once, priority, value, any).Properties())
+            {
+                rule[field.Name] = field.Value;
+            }
+
+            return rule;
+        }
+
+        private static JObject RuleRest(string entityId, JObject[] conditions, JObject[] actions, bool once, int priority, int value, bool any) => new JObject
+        {
             ["triggerEntityId"] = entityId,
             ["triggerValue"] = value,
             ["matchAnyValue"] = any,
@@ -602,6 +623,29 @@ namespace Hollowmere.Authoring
                 {
                     ["actions"] = new JArray { Audio("sting.quest.complete") },
                 }),
+            });
+        }
+
+        // ------------------------------------------------------------------ declared trade and stamina actions
+
+        /// <summary>
+        /// True once P1.7a/P1.7b deliver ActionKind.Buy and ActionKind.RestoreStamina: the inn's purchases and the herbs'
+        /// stamina become declared actions and the director's interim fact-request bridge is emptied.
+        /// </summary>
+        public static readonly bool DeclaredTradeActions = false;
+
+        private static void DeclaredTrade(StudioAuthor a)
+        {
+            a.Step("story.declared-trade", "Buy from Bram and restore stamina with herbs through the declared Buy / RestoreStamina actions (the interim bridge retires)", () => new List<Operation>
+            {
+                StudioAuthor.Set("lantern", a.Ref(Action("BuyLantern")), new JObject { ["actions"] = new JArray(Act("Buy", Item("Lantern"), 1, vendor: Item("InnStock"))) }),
+                StudioAuthor.Set("oil", a.Ref(Action("BuyOil")), new JObject { ["actions"] = new JArray(Act("Buy", Item("OilFlask"), 1, vendor: Item("InnStock"))) }),
+                StudioAuthor.Set("herbs", a.Ref(Action("BuyHerbs")), new JObject { ["actions"] = new JArray(Act("Buy", Item("MarshHerbs"), 1, vendor: Item("InnStock"))) }),
+                StudioAuthor.Set("restore", a.Ref(Rule("HerbsRestore")), new JObject
+                {
+                    ["actions"] = new JArray(Act("RestoreStamina", null, 400), Message("The bitter herbs ease your aching legs.")),
+                }),
+                StudioAuthor.Set("bridge", a.Ref(HollowmerePaths.Director), new JObject { ["requests"] = new JArray(Request("search_satchel", "Loot", string.Empty, string.Empty, 1, Item("MarshLoot"))) }),
             });
         }
 

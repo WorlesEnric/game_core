@@ -165,7 +165,8 @@ namespace Hollowmere.Authoring
                 throw new InvalidOperationException("P3.1: a null target has no AuthoringRef");
             }
 
-            return Runtime.Resolver.BuildRef(target, null, false)
+            bool inScene = target is GameObject go ? go.scene.IsValid() : target is Component c && c.gameObject.scene.IsValid();
+            return Runtime.Resolver.BuildRef(target, inScene ? GameCore.Studio.Model.AuthorScope.Instance : GameCore.Studio.Model.AuthorScope.Definition, true)
                 ?? throw new InvalidOperationException("P3.1: " + target.name + " (" + target.GetType().Name + ") has no AuthoringRef");
         }
 

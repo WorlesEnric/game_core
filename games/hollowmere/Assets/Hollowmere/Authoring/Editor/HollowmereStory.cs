@@ -34,26 +34,28 @@ namespace Hollowmere.Authoring
 
         // ------------------------------------------------------------------ values
 
-        public static JObject Cond(string kind, string? subject, string op, int value) => new JObject
+        public static JObject Cond(string kind, string? subject, string op, int value)
         {
-            ["kind"] = kind,
-            ["subject"] = StudioAuthor.Str(subject),
-            ["inventory"] = null,
-            ["entityId"] = string.Empty,
-            ["index"] = 0,
-            ["op"] = op,
-            ["value"] = value,
-        };
+            var entry = new JObject { ["kind"] = kind };
+            NarrativeSchema.Condition(entry, kind, subject);
+            entry["inventory"] = null;
+            entry["entityId"] = string.Empty;
+            entry["index"] = 0;
+            entry["op"] = op;
+            entry["value"] = value;
+            return entry;
+        }
 
-        public static JObject Act(string kind, string? target, int value = 1, string text = "", string entityId = "") => new JObject
+        public static JObject Act(string kind, string? target, int value = 1, string text = "", string entityId = "", string? vendor = null)
         {
-            ["kind"] = kind,
-            ["target"] = StudioAuthor.Str(target),
-            ["inventory"] = null,
-            ["entityId"] = entityId,
-            ["value"] = value,
-            ["text"] = text,
-        };
+            var entry = new JObject { ["kind"] = kind };
+            NarrativeSchema.Action(entry, kind, target, vendor);
+            entry["inventory"] = null;
+            entry["entityId"] = entityId;
+            entry["value"] = value;
+            entry["text"] = text;
+            return entry;
+        }
 
         public static JObject FactAtLeast(string fact, int value = 1) => Cond("Fact", Fact(fact), "GreaterOrEqual", value);
 
@@ -273,8 +275,8 @@ namespace Hollowmere.Authoring
                     },
                     ["rewards"] = new JArray
                     {
-                        new JObject { ["kind"] = "Fact", ["target"] = Fact("maren_grateful"), ["value"] = 1, ["branch"] = 2 },
-                        new JObject { ["kind"] = "Fact", ["target"] = Fact("maren_grateful"), ["value"] = 1, ["branch"] = 3 },
+                        Reward("Fact", Fact("maren_grateful"), 1, 2),
+                        Reward("Fact", Fact("maren_grateful"), 1, 3),
                     },
                     ["failConditions"] = Condition("LanternLostNoSpare"),
                 }),
@@ -284,15 +286,24 @@ namespace Hollowmere.Authoring
         private static JObject Stage(string title, string description, int next) =>
             new JObject { ["title"] = title, ["description"] = description, ["next"] = next };
 
-        private static JObject Objective(int stage, string kind, string target, int required, int branch, string text) => new JObject
+        private static JObject Objective(int stage, string kind, string target, int required, int branch, string text)
         {
-            ["stage"] = stage,
-            ["kind"] = kind,
-            ["target"] = StudioAuthor.Str(target),
-            ["targetEntityId"] = string.Empty,
-            ["required"] = required,
-            ["branch"] = branch,
-            ["text"] = text,
-        };
+            var entry = new JObject { ["stage"] = stage, ["kind"] = kind };
+            NarrativeSchema.Objective(entry, kind, target);
+            entry["targetEntityId"] = string.Empty;
+            entry["required"] = required;
+            entry["branch"] = branch;
+            entry["text"] = text;
+            return entry;
+        }
+
+        private static JObject Reward(string kind, string target, int value, int branch)
+        {
+            var entry = new JObject { ["kind"] = kind };
+            NarrativeSchema.Reward(entry, kind, target);
+            entry["value"] = value;
+            entry["branch"] = branch;
+            return entry;
+        }
     }
 }
