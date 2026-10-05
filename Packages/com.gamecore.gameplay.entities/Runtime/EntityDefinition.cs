@@ -40,6 +40,24 @@ namespace GameCore.Gameplay.Entities
         [AuthorField(Structural = true, Doc = "Interaction kind exposed to interaction systems (empty = not interactable).")]
         [SerializeField] private string interactionKind = string.Empty;
 
+        [AuthorField(Doc = "Texture bindings for renderer material slots; presentation content, not recipe structure.")]
+        [SerializeField] private List<MaterialTextureBinding> materialTextures = new List<MaterialTextureBinding>();
+
+        public IReadOnlyList<MaterialTextureBinding> MaterialTextures => materialTextures;
+
+        public void SetMaterialTexture(MaterialTextureBinding binding)
+        {
+            materialTextures.RemoveAll(value => value.renderer == binding.renderer && value.slot == binding.slot
+                && string.Equals(value.property, binding.property, StringComparison.Ordinal));
+            if (binding.texture != null) materialTextures.Add(binding);
+            materialTextures.Sort((left, right) =>
+            {
+                int order = left.renderer.CompareTo(right.renderer);
+                if (order == 0) order = left.slot.CompareTo(right.slot);
+                return order == 0 ? string.CompareOrdinal(left.property, right.property) : order;
+            });
+        }
+
         [SerializeField] private string contentStamp = string.Empty;
 
         public string AuthoringId => authoringId;

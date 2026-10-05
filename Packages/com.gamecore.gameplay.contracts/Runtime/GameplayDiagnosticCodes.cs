@@ -23,6 +23,7 @@ namespace GameCore.Gameplay.Contracts
         public const string EntityUnknownOverride = "GP-ENT-004";
         public const string EntityScaleOutOfRange = "GP-ENT-005";
         public const string DefinitionMissingPrefab = "GP-ENT-006";
+        public const string EntityMaterialTextureInvalid = "GP-ENT-007";
         public const string EntityAlreadyAlive = "GP-ENT-010";
         public const string EntityAlreadyDead = "GP-ENT-011";
         public const string EntityNotAlive = "GP-ENT-012";
@@ -67,7 +68,7 @@ namespace GameCore.Gameplay.Contracts
         {
             MissingAuthoringId, InvalidAuthoringId, DuplicateAuthoringId, StableKeyCollision,
             EntityMissingDefinition, EntityOutsideRegion, EntityVariantOutOfRange, EntityUnknownOverride,
-            EntityScaleOutOfRange, DefinitionMissingPrefab, EntityAlreadyAlive, EntityAlreadyDead, EntityNotAlive,
+            EntityScaleOutOfRange, DefinitionMissingPrefab, EntityMaterialTextureInvalid, EntityAlreadyAlive, EntityAlreadyDead, EntityNotAlive,
             EntityUnchanged,
             RegionMissingScene, RegionMissingBounds, PortalUnconnected, PortalTargetsOwnRegion, WorldMissingStartRegion,
             WorldUnknownRegion, RegionMultipleInScene, TravelNoPortal, TravelSameRegion, TravelUnknownRegion,

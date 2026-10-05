@@ -19,6 +19,7 @@ namespace GameCore.Gameplay.Entities.Editor
         GameplayDiagnosticCodes.EntityVariantOutOfRange,
         GameplayDiagnosticCodes.EntityUnknownOverride,
         GameplayDiagnosticCodes.DefinitionMissingPrefab,
+        MaterialTextureBinding.InvalidCode,
     })]
     public static class EntityValidator
     {
@@ -97,6 +98,16 @@ namespace GameCore.Gameplay.Entities.Editor
             if (definition.Prefab == null)
             {
                 diagnostics.Add(new GameplayDiagnostic(GameplayDiagnosticCodes.DefinitionMissingPrefab, definition.AuthoringId, "definition " + definition.name + " has no prefab"));
+            }
+
+            for (int i = 0; i < definition.MaterialTextures.Count; i++)
+            {
+                MaterialTextureBinding binding = definition.MaterialTextures[i];
+                string problem = MaterialTextureBinding.Validate(definition, binding);
+                if (binding.texture == null) problem = "texture binding has no texture";
+                else if (!(UnityEditor.AssetImporter.GetAtPath(UnityEditor.AssetDatabase.GetAssetPath(binding.texture)) is UnityEditor.TextureImporter))
+                    problem = "texture must be an imported image asset";
+                if (problem.Length > 0) diagnostics.Add(new GameplayDiagnostic(MaterialTextureBinding.InvalidCode, definition.AuthoringId, problem));
             }
 
             for (int i = 0; i < definition.Variants.Count; i++)
