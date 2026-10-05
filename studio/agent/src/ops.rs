@@ -1,12 +1,17 @@
 //! Media operations (04 §5) and the provider status of `/v1/hello`.
 //!
 //! `POST /v1/ops/generate {op, spec, max_cost_usd, changeSetId}` runs
-//! `POST /ops/generate.image | tts | generate.3d | describe` through
-//! `client.ops().call(...)` (not the SDK's `Ops::generate`, which posts the wrong path), with
-//! an etops idempotency `key` derived from the change set and the spec (a lost answer is
+//! `POST /ops/generate.image | tts | generate.3d | describe` through the SDK's typed calls
+//! (`Ops::generate("image" | "3d")`, `Ops::tts`, `Ops::describe`; etos SDK `278ef9c` fixed
+//! `Ops::generate`, which used to post `generate`), with an etops idempotency `key` derived from the change set and the spec (a lost answer is
 //! looked up by etops, never generated twice). Every operation carries a cost ceiling: the
 //! call's `max_cost_usd`, else the configured `ops_max_cost_usd`; with neither the call is
-//! refused. Produced files (`refs`) are fetched, checked against the digest the node reports
+//! refused. The operation runs on its own client timeout (`ops_timeout_secs`, default 300 s;
+//! `generate.image` on a slow provider takes well over the SDK's 30 s default): the caller's
+//! request is held until the node answers. Past the timeout the answer is 504 `transport` with
+//! the operation's `key` in the hint and in `data`; resending the identical request asks etops
+//! for the same key, which returns the finished result instead of generating again.
+//! Produced files (`refs`) are fetched, checked against the digest the node reports
 //! (when it reports one), stored under the node's media type (else one guessed from the
 //! name); refusals (`not_configured`, `budget_exhausted`, ...) pass through unchanged.
 //!
@@ -59,6 +64,8 @@ type StatusCache = Option<(Instant, i64, BTreeMap<String, String>)>;
 /// Media operations.
 pub struct MediaOps {
     client: Client,
+    /// `client` with the operation timeout (`ops_timeout_secs`).
+    op_client: Client,
     ledger: Arc<Ledger>,
     store: ArtifactStore,
     hub: EventHub,
@@ -73,6 +80,30 @@ impl std::fmt::Debug for MediaOps {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("MediaOps").finish_non_exhaustive()
     }
+}
+
+/// A media operation that outlived `ops_timeout_secs`: 504 `transport`, naming the key a
+/// resend reuses (etops answers a known key with its result, never a second generation).
+fn op_timeout(e: ApiError, op: &str, key: Option<&str>) -> ApiError {
+    if e.code() != "transport" || !e.body.message.contains("timed out") {
+        return e;
+    }
+    let hint = match key {
+        Some(k) => format!(
+            "the node may still finish it: resend the identical request (key {k}) to get the result without generating again"
+        ),
+        None => "the node may still finish it: resend the identical request".to_string(),
+    };
+    let mut out = ApiError::new(
+        axum::http::StatusCode::GATEWAY_TIMEOUT,
+        "transport",
+        format!("{op}: {}", e.body.message),
+    )
+    .with_hint(hint);
+    if let Some(k) = key {
+        out = out.with_data(json!({"key": k, "op": op}));
+    }
+    out
 }
 
 fn blocked_code(code: &str) -> bool {
@@ -94,6 +125,7 @@ impl MediaOps {
         default_ceiling: Option<f64>,
     ) -> MediaOps {
         MediaOps {
+            op_client: client.clone(),
             client,
             ledger,
             store,
@@ -104,6 +136,12 @@ impl MediaOps {
             cache: Mutex::new(None),
             voice: Mutex::new(status::UNKNOWN.to_string()),
         }
+    }
+
+    /// Run operations with `timeout` per call (the SDK default is 30 s).
+    pub fn with_op_timeout(mut self, timeout: Duration) -> MediaOps {
+        self.op_client = self.client.with_timeout(timeout);
+        self
     }
 
     /// Record what a realtime session learned about the voice provider.
@@ -221,7 +259,15 @@ impl MediaOps {
             }
         };
         tracing::info!(op, key = %key, "running a media operation");
-        let answer = self.client.ops().call(op, Value::Object(input)).await?;
+        let input = Value::Object(input);
+        let ops = self.op_client.ops();
+        let answer = match op {
+            "generate.image" => ops.generate("image", input).await,
+            "generate.3d" => ops.generate("3d", input).await,
+            "tts" => ops.tts(input).await,
+            other => ops.call(other, input).await,
+        }
+        .map_err(|e| op_timeout(e.into(), op, Some(&key)))?;
         let provider = answer
             .get("provider")
             .and_then(Value::as_str)
@@ -342,10 +388,11 @@ impl MediaOps {
             ));
         }
         let answer = self
-            .client
+            .op_client
             .ops()
-            .call("describe", Value::Object(input))
-            .await?;
+            .describe(Value::Object(input))
+            .await
+            .map_err(|e| op_timeout(e.into(), "describe", None))?;
         Ok(GenerateResponse {
             op: req.op.clone(),
             etos_op: "describe".into(),
