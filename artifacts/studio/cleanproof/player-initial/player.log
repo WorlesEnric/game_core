@@ -1,0 +1,28 @@
+The selected window backend is (null) 
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Builds/Linux/Saltmarsh_Data/UnitySubsystems
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Disable old input system
+UnloadTime: 292.579768 ms
+Received signal SIGSEGV (11) - code:1 errno:0 addr:(nil)
+Obtained 6 stack frames.
+#0  0x0073a554c45330 in (Unknown)
+#1  0x0073a554d8a21a in __strcasecmp_l_avx2
+#2  0x0073a5565a343f in PlayerMain(int, char**)
+#3  0x0073a554c2a1ca in __libc_start_call_main
+#4  0x0073a554c2a28b in __libc_start_main_alias_2
+#5  0x00000000201029 in (Unknown)

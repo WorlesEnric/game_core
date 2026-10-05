@@ -1,0 +1,33 @@
+   ok   packages under .claude/, Library/, target/ and node_modules/ are not discovered
+   ok   every package directory is discovered
+   ok   an asmdef defines its own package's assembly
+   ok   a referenced assembly with no declared dependency is reported
+   ok   a declared dependency nothing references is reported
+   ok   a stale dependency version is reported
+   ok   an exactly correct package produces no problem
+   ok   a kernel package depending on a gameplay package is reported
+   ok   a reference to the embedding project's own assembly is reported
+   ok   an engine reference resolves to its pinned package
+   ok   a correct engine dependency produces no problem
+   ok   a project-provided test runner is not a package dependency
+   ok   a package version other than the release version is reported
+   ok   an allowlisted engine assembly resolves to its games-pinned package
+   ok   an allowlisted engine assembly without its package dependency is reported
+   ok   an allowlisted engine package pinned off the games manifest is reported
+   ok   an allowlisted engine package no games project pins is reported
+   ok   Unity.Transforms resolves to com.unity.entities at the qualification pin
+   ok   a built-in engine module needs no package dependency
+   ok   a Studio package's allowlisted precompiled DLL resolves to its package
+   ok   a precompiled DLL without its package dependency is reported
+   ok   a precompiled DLL outside the allowlist is reported
+   ok   a precompiled DLL in a package outside studio/gameplay is reported
+   ok   the project-provided nunit DLL stays legal in every package
+   ok   a kernel package depending on a Studio package is reported
+   ok   a games manifest pins an allowlisted package; a transitive one comes from its lock
+   ok   a games manifest pinning a kernel engine package differently is reported
+   ok   a package locked only in a games lock satisfies the lock rule
+   ok   a package locked in no lock source is reported
+   ok   a games lock whose dependency map disagrees is reported against that lock
+-- games/demo/Packages/packages-lock.json: rewrote the com.gamecore.* dependency map of 1 package(s)
+   ok   --sync-lock repairs the games lock it reported
+check_package_metadata.py --self-test passed (31 cases).
