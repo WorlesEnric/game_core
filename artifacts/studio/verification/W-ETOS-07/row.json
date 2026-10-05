@@ -1,0 +1,16 @@
+{
+  "status": "FAIL",
+  "note": "Legacy Unity media calls fail 404 for an unregistered local request ID. Direct TTS generation/download/import/undo and tamper refusal pass, but a new texture/import is not achieved.",
+  "command": "studio/tools/verify-all.sh media",
+  "row": "W-ETOS-07",
+  "scenario": "Generated texture arrives with matching sha256; tampered file refused",
+  "requirement": "SR-4.6",
+  "reportedAt": "2026-10-05T21:03:25.252731+00:00",
+  "evidence": [
+    "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
+    "W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md",
+    "W-ETOS-07/direct-tts-import-20261005T194103.515551Z/tts-import.json",
+    "W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/live/dotnet-f-i-refusals.json",
+    "W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md"
+  ]
+}

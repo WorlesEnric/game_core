@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "note": "The actual Causeway Gate condition explain names the failed condition; committed locked-gate refusal and condition-controlled travel are exercised.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate",
+    "UsingTheWellSucceeds_AndTheLockedGateRefusesWithItsCode",
+    "APortalCondition_RefusesTravelWithAStableCode_UntilItHolds"
+  ],
+  "row": "W-PLUG-05",
+  "scenario": "Locked door with key; explain refusal",
+  "requirement": "SR-6.5",
+  "reportedAt": "2026-10-05T21:03:25.257976+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "label": "rollback-killed-editor",
+  "revision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:22:08.957421+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/rollback-killed-editor-20261005T202208.951931Z/logs --label recovery-crash -- -executeMethod Hollowmere.P4_2.ProcessRecovery.Crash -p42State ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/rollback-state-20261005T202208.950937Z -p42Recovery rollback",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-REC-01/rollback-killed-editor-20261005T202208.951931Z",
+  "queuedAtRevision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "executionStarted": "2026-10-05T20:22:08.962518+00:00",
+  "sourceDiffSha256": "0ad7703f2f66a8c71b69ad3c0a982bca95850d398a938efdfa8f6063977145c3",
+  "exitCode": 124,
+  "status": "FAIL",
+  "ended": "2026-10-05T20:22:37.270198+00:00",
+  "seconds": 28.318079978926107,
+  "expectedTerminationObserved": true
+}

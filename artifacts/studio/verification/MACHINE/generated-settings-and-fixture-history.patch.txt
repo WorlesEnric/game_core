@@ -1,0 +1,151 @@
+diff --git a/games/hollowmere/Assets/Settings/Hollowmere_URP.asset b/games/hollowmere/Assets/Settings/Hollowmere_URP.asset
+index cd4c8aa9..75060620 100644
+--- a/games/hollowmere/Assets/Settings/Hollowmere_URP.asset
++++ b/games/hollowmere/Assets/Settings/Hollowmere_URP.asset
+@@ -99,38 +99,38 @@ MonoBehaviour:
+     obsoleteHasProbeVolumes:
+       m_Keys: []
+       m_Values:
+-  m_PrefilteringModeMainLightShadows: 1
+-  m_PrefilteringModeAdditionalLight: 4
+-  m_PrefilteringModeAdditionalLightShadows: 1
+-  m_PrefilterXRKeywords: 0
+-  m_PrefilteringModeForwardPlus: 1
+-  m_PrefilteringModeDeferredRendering: 1
+-  m_PrefilteringModeScreenSpaceOcclusion: 1
+-  m_PrefilterDebugKeywords: 0
+-  m_PrefilterWriteRenderingLayers: 0
+-  m_PrefilterHDROutput: 0
+-  m_PrefilterAlphaOutput: 0
+-  m_PrefilterSSAODepthNormals: 0
+-  m_PrefilterSSAOSourceDepthLow: 0
+-  m_PrefilterSSAOSourceDepthMedium: 0
+-  m_PrefilterSSAOSourceDepthHigh: 0
+-  m_PrefilterSSAOInterleaved: 0
+-  m_PrefilterSSAOBlueNoise: 0
+-  m_PrefilterSSAOSampleCountLow: 0
+-  m_PrefilterSSAOSampleCountMedium: 0
+-  m_PrefilterSSAOSampleCountHigh: 0
+-  m_PrefilterDBufferMRT1: 0
+-  m_PrefilterDBufferMRT2: 0
+-  m_PrefilterDBufferMRT3: 0
+-  m_PrefilterSoftShadowsQualityLow: 0
+-  m_PrefilterSoftShadowsQualityMedium: 0
+-  m_PrefilterSoftShadowsQualityHigh: 0
++  m_PrefilteringModeMainLightShadows: 3
++  m_PrefilteringModeAdditionalLight: 3
++  m_PrefilteringModeAdditionalLightShadows: 0
++  m_PrefilterXRKeywords: 1
++  m_PrefilteringModeForwardPlus: 0
++  m_PrefilteringModeDeferredRendering: 0
++  m_PrefilteringModeScreenSpaceOcclusion: 0
++  m_PrefilterDebugKeywords: 1
++  m_PrefilterWriteRenderingLayers: 1
++  m_PrefilterHDROutput: 1
++  m_PrefilterAlphaOutput: 1
++  m_PrefilterSSAODepthNormals: 1
++  m_PrefilterSSAOSourceDepthLow: 1
++  m_PrefilterSSAOSourceDepthMedium: 1
++  m_PrefilterSSAOSourceDepthHigh: 1
++  m_PrefilterSSAOInterleaved: 1
++  m_PrefilterSSAOBlueNoise: 1
++  m_PrefilterSSAOSampleCountLow: 1
++  m_PrefilterSSAOSampleCountMedium: 1
++  m_PrefilterSSAOSampleCountHigh: 1
++  m_PrefilterDBufferMRT1: 1
++  m_PrefilterDBufferMRT2: 1
++  m_PrefilterDBufferMRT3: 1
++  m_PrefilterSoftShadowsQualityLow: 1
++  m_PrefilterSoftShadowsQualityMedium: 1
++  m_PrefilterSoftShadowsQualityHigh: 1
+   m_PrefilterSoftShadows: 0
+-  m_PrefilterScreenCoord: 0
+-  m_PrefilterNativeRenderPass: 0
++  m_PrefilterScreenCoord: 1
++  m_PrefilterNativeRenderPass: 1
+   m_PrefilterUseLegacyLightmaps: 0
+-  m_PrefilterReflectionProbeBlending: 0
+-  m_PrefilterReflectionProbeBoxProjection: 0
++  m_PrefilterReflectionProbeBlending: 1
++  m_PrefilterReflectionProbeBoxProjection: 1
+   m_ShaderVariantLogLevel: 0
+   m_ShadowCascades: 0
+   m_Textures:
+diff --git a/games/hollowmere/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset b/games/hollowmere/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+index 172058ac..2caac4a4 100644
+--- a/games/hollowmere/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
++++ b/games/hollowmere/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+@@ -60,7 +60,17 @@ MonoBehaviour:
+       - rid: 8922127948574883864
+       - rid: 8922127948574883865
+     m_RuntimeSettings:
+-      m_List: []
++      m_List:
++      - rid: 8922127948574883842
++      - rid: 8922127948574883846
++      - rid: 8922127948574883847
++      - rid: 8922127948574883849
++      - rid: 8922127948574883851
++      - rid: 8922127948574883852
++      - rid: 8922127948574883854
++      - rid: 8922127948574883857
++      - rid: 8922127948574883858
++      - rid: 8922127948574883862
+   m_AssetVersion: 8
+   m_ObsoleteDefaultVolumeProfile: {fileID: 0}
+   m_RenderingLayerNames:
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/ProjectSettings.asset b/games/hollowmere/ProjectSettings/ProjectSettings.asset
+index 75e6c19b..1e08ac78 100644
+--- a/games/hollowmere/ProjectSettings/ProjectSettings.asset
++++ b/games/hollowmere/ProjectSettings/ProjectSettings.asset
+@@ -143,7 +143,8 @@ PlayerSettings:
+   visionOSBundleVersion: 1.0
+   tvOSBundleVersion: 1.0
+   bundleVersion: 1.0
+-  preloadedAssets: []
++  preloadedAssets:
++  - {fileID: -944628639613478452, guid: 4121b93fef22f6ff49ddab5192b0761b, type: 3}
+   metroInputSource: 0
+   wsaTransparentSwapchain: 0
+   m_HolographicPauseOnTrackingLoss: 1
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1
+diff --git a/games/hollowmere/Studio/History/2026/10/cs_01M45CXCNH5AM6FNEV5RVRYP1D.json b/games/hollowmere/Studio/History/2026/10/cs_01M45CXCNH5AM6FNEV5RVRYP1D.json
+index ea2bfa9e..1e81f4ae 100644
+--- a/games/hollowmere/Studio/History/2026/10/cs_01M45CXCNH5AM6FNEV5RVRYP1D.json
++++ b/games/hollowmere/Studio/History/2026/10/cs_01M45CXCNH5AM6FNEV5RVRYP1D.json
+@@ -188,7 +188,7 @@
+       }
+     }
+   ],
+-  "state": "Applied",
++  "state": "Undone",
+   "outcomes": [
+     {
+       "opId": "graph",

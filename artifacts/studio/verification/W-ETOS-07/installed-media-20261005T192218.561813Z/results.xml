@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.0853586">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="460" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.085359" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1131" name="GameCore.Studio.Hollowmere.P2_2.Tests.dll" fullname="~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Hollowmere.P2_2.Tests.dll" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.075488" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3479699" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1132" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.074677" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1133" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="26" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.073759" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1136" name="Hollowmere" fullname="GameCore.Studio.Hollowmere" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.071566" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1137" name="P2_2" fullname="GameCore.Studio.Hollowmere.P2_2" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.069365" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestSuite" id="1138" name="Live" fullname="GameCore.Studio.Hollowmere.P2_2.Live" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.067157" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-suite type="TestFixture" id="1110" name="EtosLiveTests" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.065602" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                  <properties>
+                    <property name="Category" value="Live" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[One or more child tests had errors]]></message>
+                  </failure>
+                  <test-case id="1112" name="C_D_E_F_I_MediaOps" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps" methodname="C_D_E_F_I_MediaOps" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" seed="131482263" result="Failed" start-time="2026-10-05 19:26:03Z" end-time="2026-10-05 19:26:03Z" duration="0.056237" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="900000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  image: not_found no request cs_01M46RFGKSDCY0D50YXSXJJSKH
+  Expected: True
+  But was:  False
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests+<C_D_E_F_I_MediaOps>d__11.MoveNext () [0x00a96] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P2_2/EditMode/EtosLiveTests.cs:234
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                    </failure>
+                    <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

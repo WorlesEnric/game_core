@@ -1,0 +1,415 @@
+== Wave 7 integration gate (W7-GATE) ==
+repo         : ~/wkspace/gc-studio/p4.2
+unity        : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/unity-gate-adapter.py
+dotnet       : dotnet
+project      : ~/wkspace/gc-studio/p4.2/unity/GameCore.Validation
+artifacts    : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate
+probe runs   : 2 (project-owner cap: two)
+unity timeout: 1800s (one retry on a timeout)
+release build: 1
+benchmark    : ONE short correctness diagnostic (1 run, 1s warmup, 2s windows)
+               TEST-023 full-duration timing is Deferred by project-owner decision; see BUDGET_DECISIONS.md
+audio        : DISABLED in the headless player (crash-139)
+
+== 9. release shape ==
+-- release-fault-surface: python3 tools/check_release_fault_free.py --dotnet dotnet --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release-fault-surface.json
+GC-017 release surface: PASS
+  the release compilation of the latch sources defines no type and carries no boundary literal (4608 bytes); the qualification one carries them all (12800 bytes)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+-- release-telemetry-surface: python3 tools/check_release_telemetry_free.py --dotnet dotnet --artifacts ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release-telemetry-surface.json
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Pass",
+  "problems": [],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "probeReleaseBuild": "Pass",
+    "probeReleaseReferencesCounting": false,
+    "probeReleaseOutput": "compiledIn=0;sideEffects=0;observed=0;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=disabled",
+    "probeReleaseExitCode": 0,
+    "probeQualificationBuild": "Pass",
+    "probeQualificationReferencesCounting": true,
+    "probeQualificationOutput": "compiledIn=1;sideEffects=4;observed=3;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=enabled",
+    "probeQualificationExitCode": 0,
+    "derivationReleaseBuild": "Pass",
+    "derivationReleaseCounting": {
+      "TelemetryCounting": false,
+      "IsCompiledIn": false
+    },
+    "derivationQualificationBuild": "Pass",
+    "derivationQualificationCounting": {
+      "TelemetryCounting": true,
+      "IsCompiledIn": false
+    },
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+-- release-project-prepare: python3 tools/unity/prepare_gc017_release_project.py
+Marker-free release project: ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck
+Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh
+-- link-xml-release: python3 tools/check_link_xml.py --project ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release/link-xml.json
+GameCore.Validation.Fixture: preserve=all types=0
+GameCore.Unity.Fixtures: preserve=all types=0
+GameCore.Unity.Adapters: preserve=None types=6
+GameCore.Unity.Runtime: preserve=None types=1
+~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+-- release-clone-check: python3 tools/check_release_clone.py --clone ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release/clone-surface.json
+clone files inspected: 180 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 92 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   71 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: False (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+
+VERDICT: clone is clean
+warning: UNITY=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/unity-gate-adapter.py does not contain the pinned revision 6000.0.75f1; the build script will refuse
+         to build unless the Editor reports that exact version.
+== GC-001 toolchain build ==
+editor      : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/unity-gate-adapter.py
+project     : ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck
+artifacts   : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release
+GC-024 host sharing: waited 0s before codegen
+-- step 1/2: generate closed registration catalog
+-- attempt 1/2: Unity (arguments withheld from logs)
+RESULT v1-gate: PASS (unity exit 0, 62s, attempts 1, log ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release/codegen-attempts/v1-gate-20261006T035520-3573414-a1.log)
+GC-024 host sharing: waited 0s before player-build
+-- step 2/2: build StandaloneLinux64 IL2CPP player (High stripping)
+-- attempt 1/2: Unity (arguments withheld from logs)
+RESULT v1-gate: PASS (unity exit 0, 235s, attempts 1, log ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release/build-attempts/v1-gate-20261006T035622-3580456-a1.log)
+== build complete ==
+player   : ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64
+catalog  : ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs
+lock file: ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Packages/packages-lock.json (produced by this resolve; commit it)
+next     : tools/unity/run_probe.sh
+-- release-player-latches: python3 tools/check_player_fault_free.py --player ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64 --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release-player-surface.json
+GC-017 release player: PASS
+  79 managed assembly(ies) and 375 generated source(s) contain no latch type, no boundary name and no trace prefix
+-- release-gate-surface: python3 tools/check_release_gate_free.py --player ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64 --qualification ~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64 --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release-gate-surface.json
+{
+  "check": "release-gate-surface",
+  "keptModes": [
+    "-probeTraversal",
+    "-probeCatalogCoverage",
+    "-probeRecoverySmoke"
+  ],
+  "markers": {
+    "gc017-fault-latch": [
+      "AssemblyFaultInjection",
+      "FaultBoundaryText",
+      "FaultInjectedException",
+      "GAMECORE_FAULT_INJECTION",
+      "first-live-write",
+      "structural-playback"
+    ],
+    "gc021-delivery-seat": [
+      "Gc021Scenario",
+      "Gc021CrashHook",
+      "gc021-redelivery-applies-the-mutation-once",
+      "-probeGc021"
+    ],
+    "gc022-lifecycle-stress": [
+      "LifecycleStressScenario",
+      "ProbeLifecycleStress",
+      "-probeLifecycleStress",
+      "GC_LIFECYCLE_STRESS_CYCLES"
+    ],
+    "gc023-replay-fixture": [
+      "ReplayParallelJobs",
+      "ReplayScenario",
+      "ProbeReplay",
+      "-probeReplay"
+    ],
+    "w5-gate": [
+      "W5GateScenario",
+      "ProbeW5Gate",
+      "-probeW5Gate"
+    ],
+    "w6-gate": [
+      "W6GateScenario",
+      "W6CompositionAudit",
+      "W6FamilyTraversalHost",
+      "ProbeW6Gate",
+      "-probeW6Gate",
+      "GC_W6_GATE_CYCLES"
+    ],
+    "w7-gate": [
+      "W7GateScenario",
+      "W7GateScenarioResult",
+      "ProbeW7Gate",
+      "-probeW7Gate"
+    ]
+  },
+  "problems": [],
+  "qualification": {
+    "expectedMarkers": {
+      "gc017-fault-latch": {
+        "count": 3,
+        "marker": "GAMECORE_FAULT_INJECTION"
+      },
+      "gc021-delivery-seat": {
+        "count": 2,
+        "marker": "-probeGc021"
+      },
+      "gc022-lifecycle-stress": {
+        "count": 2,
+        "marker": "-probeLifecycleStress"
+      },
+      "gc023-replay-fixture": {
+        "count": 2,
+        "marker": "-probeReplay"
+      },
+      "kept:-probeCatalogCoverage": {
+        "count": 2,
+        "marker": "-probeCatalogCoverage"
+      },
+      "kept:-probeRecoverySmoke": {
+        "count": 2,
+        "marker": "-probeRecoverySmoke"
+      },
+      "kept:-probeTraversal": {
+        "count": 2,
+        "marker": "-probeTraversal"
+      },
+      "w5-gate": {
+        "count": 2,
+        "marker": "-probeW5Gate"
+      },
+      "w6-gate": {
+        "count": 2,
+        "marker": "-probeW6Gate"
+      },
+      "w7-gate": {
+        "count": 2,
+        "marker": "-probeW7Gate"
+      }
+    },
+    "filesInspected": 485,
+    "root": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64"
+  },
+  "release": {
+    "filesInspected": 456,
+    "findings": [],
+    "groups": {},
+    "keptModes": {
+      "-probeCatalogCoverage": 2,
+      "-probeRecoverySmoke": 2,
+      "-probeTraversal": 2
+    },
+    "missingSeams": [
+      "durable-delivery-core (DeliveryKey)"
+    ],
+    "requiredSeams": {
+      "durable-delivery-core": {
+        "DeliveryKey": 0,
+        "DurableOutbox": 84
+      },
+      "optional-engine-stages": {
+        "CommittedAnimationStage": 181,
+        "CommittedAudioStage": 247,
+        "UnityPhysicsSceneBackend": 214
+      },
+      "traversal-course": {
+        "TraversalKeys": 719,
+        "TraversalRegistration": 34
+      }
+    },
+    "root": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64"
+  },
+  "status": "Pass",
+  "task": "W7-GATE"
+}
+-- release-telemetry-player: python3 tools/check_release_telemetry_free.py --dotnet dotnet --artifacts ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate --release-player-project ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/release/telemetry-release-surface.json
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Fail",
+  "problems": [
+    "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/gate/toolchain/probe-replay.json: qualification player replay result is missing"
+  ],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "probeReleaseBuild": "Pass",
+    "probeReleaseReferencesCounting": false,
+    "probeReleaseOutput": "compiledIn=0;sideEffects=0;observed=0;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=disabled",
+    "probeReleaseExitCode": 0,
+    "probeQualificationBuild": "Pass",
+    "probeQualificationReferencesCounting": true,
+    "probeQualificationOutput": "compiledIn=1;sideEffects=4;observed=3;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=enabled",
+    "probeQualificationExitCode": 0,
+    "derivationReleaseBuild": "Pass",
+    "derivationReleaseCounting": {
+      "TelemetryCounting": false,
+      "IsCompiledIn": false
+    },
+    "derivationQualificationBuild": "Pass",
+    "derivationQualificationCounting": {
+      "TelemetryCounting": true,
+      "IsCompiledIn": false
+    },
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false,
+    "releasePlayer": {
+      "project": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck",
+      "player": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 0,
+      "markerPresent": false,
+      "replayHookMentions": {
+        "ReplayProducerJob": 0,
+        "ReplayJobsRunner": 0,
+        "ReplayScenario": 0,
+        "ProbeReplay": 0
+      },
+      "replayPackagePresent": false,
+      "compiledInGetter": null
+    },
+    "qualificationPlayer": {
+      "project": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation",
+      "player": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 21,
+      "markerPresent": true,
+      "replayHookMentions": {
+        "ReplayProducerJob": 31,
+        "ReplayJobsRunner": 4,
+        "ReplayScenario": 331,
+        "ProbeReplay": 9
+      },
+      "replayPackagePresent": true,
+      "compiledInGetter": true
+    }
+  }
+}

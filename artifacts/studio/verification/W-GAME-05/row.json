@@ -1,0 +1,19 @@
+{
+  "status": "BLOCKED",
+  "note": "Editor full-quest endings and save/load pass; a current standalone menu\u2192save\u2192load\u2192ending\u2192restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "EndingA_Silence",
+    "EndingB_Toll",
+    "EndingC_FreedEcho",
+    "SaveRestoreMidQuest"
+  ],
+  "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
+  "row": "W-GAME-05",
+  "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
+  "requirement": "SR-6.10",
+  "reportedAt": "2026-10-05T21:03:25.263704+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}

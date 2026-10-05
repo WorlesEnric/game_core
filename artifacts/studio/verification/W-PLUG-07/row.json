@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Both quest branches pass; failure closes dependents transitively, cycles refuse, and the actual LanternLost failure ending is reached.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused",
+    "Failure_LanternLost"
+  ],
+  "row": "W-PLUG-07",
+  "scenario": "Quest branches; failure closes dependents",
+  "requirement": "SR-6.7",
+  "reportedAt": "2026-10-05T21:03:25.258599+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}

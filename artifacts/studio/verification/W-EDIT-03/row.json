@@ -1,0 +1,13 @@
+{
+  "status": "BLOCKED",
+  "note": "No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence.",
+  "command": "studio/tools/verify-all.sh media",
+  "row": "W-EDIT-03",
+  "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
+  "requirement": "SR-3.3",
+  "reportedAt": "2026-10-05T21:03:25.247826+00:00",
+  "evidence": [
+    "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
+    "W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md"
+  ]
+}

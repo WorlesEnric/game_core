@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "note": "Core and viewport gizmo tests compare the resulting journal entries with typed moves.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries",
+    "WEdit05_ViewportGizmoDragEqualsTypedMove"
+  ],
+  "row": "W-EDIT-05",
+  "scenario": "Gizmo drag and typed value produce identical History entries",
+  "requirement": "SR-1.6, SR-3.4",
+  "reportedAt": "2026-10-05T21:03:25.248612+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

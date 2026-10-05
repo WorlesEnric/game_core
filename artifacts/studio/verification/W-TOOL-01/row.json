@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Saltmarsh exports only installed production tools; fixture, Hollowmere and internal admission tools are absent. Catalog and installed-package manifest retained.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools"
+  ],
+  "row": "W-TOOL-01",
+  "scenario": "Tool catalog of the clean project lists only installed plugins' tools",
+  "requirement": "SR-2.3",
+  "reportedAt": "2026-10-05T21:03:25.245995+00:00",
+  "evidence": [
+    "UNITY-CLEANPROOF/editmode-20261005T190038.583676Z/README.md",
+    "W-TOOL-01/20261005T2021267101990Z/tool-catalog.json",
+    "W-TOOL-01/20261005T2021267101990Z/installed-packages.json"
+  ]
+}

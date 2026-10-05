@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "note": "Recorded small-sample click p95 exceeds 16 ms, but the mandatory 100-pick p95 and 500-candidate marquee dataset is absent. Neither a qualified pass nor a full-workload timing verdict is inferred.",
+  "command": "studio/tools/verify-all.sh ui",
+  "row": "W-UI-05",
+  "scenario": "Selection/hover and marquee timings",
+  "requirement": "B-SELECT",
+  "reportedAt": "2026-10-05T21:03:25.245336+00:00",
+  "evidence": [
+    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
+  ]
+}

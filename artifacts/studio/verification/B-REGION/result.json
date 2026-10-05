@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "xml": "UNITY-HOLLOWMERE/perf-final-1-20261005T201110.316067Z/results.xml",
+      "milliseconds": {
+        "boot": 831,
+        "Thornwick Village -> Blackmere Marsh": 29,
+        "Blackmere Marsh -> Drowned Belfry": 15,
+        "Drowned Belfry -> Thornwick Village": 10
+      }
+    },
+    {
+      "xml": "UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z/results.xml",
+      "milliseconds": {
+        "boot": 687,
+        "Thornwick Village -> Blackmere Marsh": 21,
+        "Blackmere Marsh -> Drowned Belfry": 10,
+        "Drowned Belfry -> Thornwick Village": 11
+      }
+    }
+  ],
+  "medianOfTwoMs": {
+    "Blackmere Marsh -> Drowned Belfry": 12.5,
+    "Drowned Belfry -> Thornwick Village": 10.5,
+    "Thornwick Village -> Blackmere Marsh": 25.0,
+    "boot": 759.0
+  },
+  "probeRuns": 2,
+  "status": "BLOCKED",
+  "limitations": "Headless real-scene travel/pose/pump probes; combined transition elapsed is not separate load/unload timing. Native texture/audio peak-relative release snapshots are missing. No graphical B-FRAME claim.",
+  "machine": "Core i7-12700KF, 20 logical CPUs, RTX 4060 Ti; Linux 7.0.0-31-generic",
+  "concurrency": "Packet Editors serialized. No other Editor observed at run boundaries; no continuous host-process sampler was installed."
+}

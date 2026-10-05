@@ -1,0 +1,32 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.Contracts -> ~/wkspace/gc-studio/p4.2/dotnet/src/GameCore.Contracts/bin/Debug/netstandard2.1/GameCore.Contracts.dll
+  GameCore.Studio.Model -> ~/wkspace/gc-studio/p4.2/dotnet/src/GameCore.Studio.Model/bin/Debug/netstandard2.1/GameCore.Studio.Model.dll
+  GameCore.Studio.Etos.Client -> ~/wkspace/gc-studio/p4.2/dotnet/src/GameCore.Studio.Etos.Client/bin/Debug/netstandard2.1/GameCore.Studio.Etos.Client.dll
+  GameCore.Studio.Etos.Client.Tests -> ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll
+Test run for ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused [1 s]
+  Error Message:
+     Expected: "not_configured" or "blocked"
+  But was:  "budget_unpriced"
+
+  Stack Trace:
+     at GameCore.Studio.Etos.Client.Tests.LiveTests.L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused() in ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/LiveTests.cs:line 272
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.BlockUntilCompleted()
+   at NUnit.Framework.Internal.MessagePumpStrategy.NoMessagePumpStrategy.WaitForCompletion(AwaitAdapter awaiter)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+
+1)    at GameCore.Studio.Etos.Client.Tests.LiveTests.L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused() in ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/LiveTests.cs:line 272
+
+
+Results File: ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/trx/_worlesenric_2026-10-06_03_29_50.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 1 s - GameCore.Studio.Etos.Client.Tests.dll (net8.0)

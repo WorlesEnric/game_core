@@ -1,0 +1,39 @@
+{
+  "label": "capture-ready-recorded-wav",
+  "revision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:43:04.383838+00:00",
+  "command": "bash artifacts/studio/verification/TOOLS/voice-fixture.sh ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z",
+  "queuedAtRevision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "executionStarted": "2026-10-05T19:43:04.385333+00:00",
+  "sourceDiffSha256": "2274aaa2b7a453cdb7b7ab7f37724da0b23014b49d98bd4e7d47a954f8b028ff",
+  "exitCode": 2,
+  "status": "FAIL",
+  "ended": "2026-10-05T19:43:47.083915+00:00",
+  "seconds": 42.70151866506785,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P4_2",
+        "Hollowmere.P4_2.VoiceAcceptanceTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+          "result": "Failed",
+          "detail": "Expected: String containing \"delete\"\n  But was:  \"to lead every n p c in the village.\"\n \n                 at Hollowmere.P4_2.VoiceAcceptanceTests+<R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits>d__0.MoveNext () [0x0069e] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/VoiceAcceptanceTests.cs:85\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/etos] voice session vs_1a10d97da9e095da62c39e8 capturing from microphone (default) @ 24000 Hz\nSaving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

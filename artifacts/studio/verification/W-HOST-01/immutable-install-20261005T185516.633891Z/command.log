@@ -1,0 +1,201 @@
+Dedicated main revision: e94f27aa68ce048d672a93e6c665e786f8e395d6
+Before current: ~/wkspace/gc-studio/main/studio/etos/agent
+--- ~/.local/share/etos-studio/models.toml
++++ ~/.local/share/etos-studio/models.toml
+@@ -2,9 +2,9 @@
+ # <root>/models.toml by studio/etos/install.sh (no substitutions). The key is resolved by
+ # etosd from its environment on every call and is never written here.
+ #
+-# Prices are deliberately not configured: no provider price list was verified for this host,
+-# so usage is reported in tokens and the catalog's cost is 0 (budgets in USD do not bind chat
+-# models until an operator adds [models.sla] cost entries).
++# List prices checked 2026-10-05 from the model publishers. Echo's reseller tariff is
++# not publicly verifiable; the integrator must reconcile any markup before deployment.
++# No zero-price model entries. Rates below are USD / million tokens at standard context.
+
+ [endpoints.echo]
+ base_url = "https://api.echo-coding.com/v1"
+@@ -21,6 +21,11 @@
+ aliases = ["default"]
+ roles = ["worker", "planning", "controller", "compaction"]
+ cost_class = "high"
++# Source (all three rates): https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5
++[models.sla.cost]
++input = 4.0
++cached_input = 0.2
++output = 20.0
+ [models.capabilities]
+ context_window = 200000
+ max_output = 32000
+@@ -34,6 +39,11 @@
+ aliases = ["fast"]
+ roles = ["worker", "planning", "controller", "compaction"]
+ cost_class = "high"
++# Source (all three rates): https://developers.openai.com/api/docs/models/gpt-6-sol
++[models.sla.cost]
++input = 2.0
++cached_input = 0.2
++output = 10.0
+ [models.capabilities]
+ context_window = 400000
+ max_output = 128000
+@@ -48,6 +58,11 @@
+ aliases = ["describe"]
+ roles = ["controller"]
+ cost_class = "high"
++# Source (all three rates): https://developers.openai.com/api/docs/models/gpt-5.6-sol
++[models.sla.cost]
++input = 4.0
++cached_input = 0.4
++output = 20.0
+ [models.capabilities]
+ context_window = 400000
+ max_output = 128000
+
+--- ~/.local/share/etos-studio/ops.toml
++++ ~/.local/share/etos-studio/ops.toml
+@@ -2,8 +2,8 @@
+ # <root>/ops.toml by studio/etos/install.sh (no substitutions). Keys are credential references
+ # resolved by etosd from its environment; none is written here.
+ #
+-# Prices (`[providers.cost]`) are not configured: no verified price list. `max_cost_usd` checks
+-# therefore estimate 0 until an operator adds `per_unit`.
++# List prices checked 2026-10-05. Companion caps fail closed if no matching ops_prices
++# entry exists. Image per_unit is an output-only estimate, not a total fixed tariff.
+
+ # Voice input: transcript-only realtime sessions (the companion never sends response_create).
+ [[realtime]]
+@@ -27,6 +27,15 @@
+ [providers.limits]
+ timeout = "300s"
+ max_outputs = 4
++# Source: https://developers.openai.com/api/docs/guides/image-generation
++# GPT Image 2 low 1024x1024: $0.006 output-only estimate per image.
++# Source: https://developers.openai.com/api/docs/models/gpt-image-2
++# Text input $2.50/M; image output $15/M. Input images cost $4/M, so reference edits
++# need a separately priced provider. Echo markup is unverified; see R3 Left open.
++[providers.cost]
++per_unit = 0.006
++per_1m_input_tokens = 2.5
++per_1m_output_tokens = 15.0
+
+ # Image description: a vision chat model of models.toml.
+ [[providers]]
+@@ -34,6 +43,10 @@
+ family = "describe"
+ kind = "chat"
+ model = "echo/gpt-5.6-sol"
++# Source: https://developers.openai.com/api/docs/models/gpt-5.6-sol
++[providers.cost]
++per_1m_input_tokens = 4.0
++per_1m_output_tokens = 20.0
+
+ # Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
+ [[providers]]
+@@ -46,6 +59,10 @@
+ options = { voice = "Cherry", language_type = "English" }
+ [providers.limits]
+ timeout = "120s"
++# Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
++# Qwen3-TTS-Flash, Chinese mainland: $0.114682 / 10,000 input characters.
++[providers.cost]
++per_unit = 0.0000114682
+
+ # 3D generation (family "3d", kind "predictions") is deliberately absent: no provider
+ # credential exists on this host (SADR-020). `POST /ops/generate.3d` therefore answers
+
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -0,0 +1,14 @@
++
++
++# Capped image/describe calls remain budget_unpriced: the node's image tariff is
++# output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
++[[ops_prices]]
++op = "tts"
++provider = "bailian-tts"
++unit = "bailian_character"
++# Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
++# Mainland Qwen3-TTS-Flash: $0.114682 / 10,000 characters, checked 2026-10-05.
++per_unit = 0.0000114682
++
++# Copy the required keys into the companion state directory's config.toml.
++# This is an example only; no installed service configuration is changed by R2-F.
+
+Price templates applied. Integrator must reload node/companion; no services restarted.
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -12,3 +12,9 @@
+
+ # Copy the required keys into the companion state directory's config.toml.
+ # This is an example only; no installed service configuration is changed by R2-F.
++
++[stage]
++"command" = "~/wkspace/gc-studio/companion/studio/stage/stage.sh"
++
++[stage.projects]
++"fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
+
+registered fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8 -> ~/wkspace/gc-studio/p4.2/games/hollowmere
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -17,4 +17,6 @@
+ "command" = "~/wkspace/gc-studio/companion/studio/stage/stage.sh"
+
+ [stage.projects]
++"a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
+ "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
++
+
+registered a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f -> ~/wkspace/gc-studio/p4.2/games/cleanproof
+restarted gamecore-studio
+healthy: 0.1.0-74096dc59ab3fd21; previous release retained: ~/wkspace/gc-studio/main/studio/etos/agent
+unchanged: release 0.1.0-74096dc59ab3fd21 (checksums verified)
+After current: 0.1.0-74096dc59ab3fd21
+agent.toml: OK
+bin/gamecore-studio: OK
+workers/gc-designer.md: OK
+workers/gc-mechanic.md: OK
+[
+  {
+    "agent": "gamecore-studio",
+    "version": "0.1.0",
+    "label": "GameCore Studio companion",
+    "source": "~/wkspace/gc-studio/main/studio/etos/agent",
+    "linked": true,
+    "state": "ready",
+    "pid": 3390385,
+    "restarts": 0,
+    "last_error": null,
+    "started_at": 1791226516946,
+    "connection": {
+      "connected": true,
+      "ready": true,
+      "sdk": "etos-sdk/rust/1.0.0",
+      "since": 1791226517029,
+      "endpoint": "http://127.0.0.1:39601",
+      "pending": 0
+    },
+    "grants": [
+      "logger",
+      "query",
+      "changes",
+      "tasks",
+      "files",
+      "topics",
+      "ops",
+      "providers",
+      "realtime",
+      "proxy",
+      "services"
+    ],
+    "workers": [
+      "gc-designer",
+      "gc-mechanic"
+    ],
+    "entrances": [],
+    "installed_at": 1791142156232,
+    "updated_at": 1791190286245
+  }
+]
+2026-10-05T18:55:18Z

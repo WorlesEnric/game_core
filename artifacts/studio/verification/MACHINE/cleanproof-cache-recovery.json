@@ -1,0 +1,4052 @@
+{
+  "utc": "2026-10-05T19:56:25.019394+00:00",
+  "reason": "Burst Mono.Cecil EndOfStreamException while reading GameCore.Gameplay.Audio build references after the retained ENOSPC failure. Preserve and rebuild only this clone's generated caches.",
+  "directories": [
+    "Bee",
+    "BurstCache",
+    "BuildPlayerData",
+    "PlayerDataCache"
+  ],
+  "dlls": [
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "8db7063168a0851cde706663dc8c150efa96b71dab1e9ad81796d5586374c088"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Saltmarsh.dll",
+      "bytes": 177664,
+      "sha256": "fa9de0e0bc816ccfea0e0e71487438c971db0127857d997dfc1b972a6cf304eb"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll",
+      "bytes": 305152,
+      "sha256": "4cfa320cdfcb4bdacf845b30375f872f9f4ed8ba594ef5e3d00eb4c248ca3b44"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.World.dll",
+      "bytes": 93696,
+      "sha256": "79ec9a874a5acde27dd27a2b75a1b3cae0ad15cf4bf026766cb41d0c6b5107d9"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.dll",
+      "bytes": 197120,
+      "sha256": "9257fb1bacd28843448e72f57ae1445681d0d3792e5414c9348095d1e6dc7e12"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Logic.dll",
+      "bytes": 118272,
+      "sha256": "c4c065526767af98bfed207129c3fd8717b5bde8173272d9c4291064a9de893e"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "e8a7e8d9b1c7cc88ede9f0407115fa0d72b24dafd5ddc9bb43a42066b40c87d5"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.dll",
+      "bytes": 138752,
+      "sha256": "6a3adc112133a7a2ad023cc537a04c7664a74b5ee59ede5a355be3995405174b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "aa806aa94d48d36980498999cc3cc3b512bf3b670ed305540f3318bb0b0b880f"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Traversal.dll",
+      "bytes": 67584,
+      "sha256": "86c0183327fbadaa2b05b6affcb85444a623d1bb85d7e2c8d81b3ffb5f30ce32"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "bytes": 4608,
+      "sha256": "9593a7888e351530ffe07c774a26d1e1b377f82e6cf44688a707e846078f6185"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Scenes.dll",
+      "bytes": 96256,
+      "sha256": "b4bdfe49916277b49feae7ee96ad0ed825ab4242aa830137e18fa068e8556cbb"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 18432,
+      "sha256": "080d5bf31f131c9f954db11e06af054146336510f975770d85e0c8b19f74fd93"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Audio.dll",
+      "bytes": 68096,
+      "sha256": "2ec9e16540f878fbfba1fc8c931a91ee03653cd085c15eefe63cf4257b77ab5c"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.dll",
+      "bytes": 9216,
+      "sha256": "983e473ba82410e323b9424202cfe6ae7e2314e3039d52993938c56c0f7e5328"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Traversal.Fixtures.dll",
+      "bytes": 17920,
+      "sha256": "c795a72de7b8a0f140978b9c149fb9c344e93185a66b16573542bfbc2854545b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 40960,
+      "sha256": "dec134d2114f5b234706df6d1235863bd242759c6dc5facfbbbe7365706de4d7"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.Fixtures.dll",
+      "bytes": 16896,
+      "sha256": "7bd51c629fab9aab6a88428c059eb1aa8635d5249fa781909808d103a0ad2690"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.dll",
+      "bytes": 28672,
+      "sha256": "3b596c7d320ffd95a0ada203cc8abb32904a1291aba322a28804a643a0d1fb62"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.AI.Navigation.dll",
+      "bytes": 24576,
+      "sha256": "d0ca6da00cbda65277d52a3bc1b9ce8067b9a9a2bbd40aa5cd368de5db2345da"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Rendering.LightTransport.Runtime.dll",
+      "bytes": 305664,
+      "sha256": "068c32306cb5c26c9331f0a2b6917a4510af01b07ffdd906edb7326b12745981"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.dll",
+      "bytes": 34816,
+      "sha256": "e160c7a48c1db0c67f32fc793d58653d641336bac507c77c1ca1e02780076c65"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.dll",
+      "bytes": 45056,
+      "sha256": "a21e78742b1ac1455e9396a05e20e1d2bee2ee1327a5e466e5e01e3ef8e578f2"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll",
+      "bytes": 453632,
+      "sha256": "d9b382f07c735213c30bc40af8c3e5eff25d4814beb5e1d8abbf94f2ba828d5e"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+      "bytes": 245760,
+      "sha256": "c867ddf5a184a92dae62a42fa1a99b5c9c1a3f1c8f5567e7c2a866405e3d4ae6"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "6bde7b34ad96115dfc28833bfeca856e5205b2fdd1f933af89b3b99e4c54f208"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "c9a229a490a4ae1c1dcbf1dc192ddd94a4435bb0eec1b073864cd1db6dc85db6"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.dll",
+      "bytes": 128000,
+      "sha256": "f49a095d541210ec78530d4537c5a41d98e5a92c1d8331b6ea611adbb196d49a"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.dll",
+      "bytes": 1134592,
+      "sha256": "052b987786fa9eda4212541659a5e8e7ab3c786b930c3aa64c04d8d07a8a89b8"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Traversal.dll",
+      "bytes": 19456,
+      "sha256": "c32504087950e618e3fa0546d8af10017c5732c4f0960b4198efced67b901e8d"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll",
+      "bytes": 5120,
+      "sha256": "c1d87614bccc43c1f3df1f7ee468227d37482fb23aff0c3d09a1a9a0ee4dde17"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "45a1b25d42cf908f321e36fb6782b9ec770f2504954a7f874ac556569347263c"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Transforms.dll",
+      "bytes": 37888,
+      "sha256": "7cad7229aa5a03538878efba049b5eaf285a834db368d1aff1bbec698d40f47b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.InputSystem.ForUI.dll",
+      "bytes": 16384,
+      "sha256": "80b026391250fd4a39d4c3904e70402618333b380e864b0acd27ae1e8734705b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Deformations.dll",
+      "bytes": 8192,
+      "sha256": "1be6d459d06b419efe19f8af84770b0ad33f9bd7b06a44eb5b92eb8fb40893ea"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "0d77ceae65b019a724871b884560f8565566254a3077368dff557a90162ea760"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "bytes": 5632,
+      "sha256": "6ec510451b8d45a8ddeafea564ac7ebf3a62361772a4690d1271c68523ae5492"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.dll",
+      "bytes": 445952,
+      "sha256": "f95a84b1441a1c25f83c8c8f192e8aec201134dbd55e6e9f296b60df65054afd"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.dll",
+      "bytes": 175104,
+      "sha256": "8fb0e656346cf8adce4bb1a6f435eaaa37a4ca82bd0fbf1fa3e9c53804a95c81"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.dll",
+      "bytes": 56832,
+      "sha256": "8de3e76325e65d56735d7643ba3083f71494ffea60e26ba09a50621c57368dc6"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "52eb95e6281513d01b94b5450255b5f26de666c340c6d6648bbc0ba4bd2aca19"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "bytes": 4608,
+      "sha256": "a54f69ebd29c3c4b1d63a6b8d822f07bc3c736966e52034689fe915f708d5c56"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 148480,
+      "sha256": "60d2964e9f823e2b85259a441090410093ea5544ea01222db5f1b1b36b2b7d6f"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "f35969850d97ec994cf38a59e0224fc9e00404506701399da5e2d9f151a2bb97"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Planning.dll",
+      "bytes": 202752,
+      "sha256": "7d69c4eb2ecd6c82af46458c563dbc5c94a5ee9835977e5607c7bb094b7f8047"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Serialization.dll",
+      "bytes": 173056,
+      "sha256": "8f85aba28b20d72e524fbe69b7b00cb877711c3a15a89b325182d332e632006d"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Npc.dll",
+      "bytes": 60416,
+      "sha256": "ae459db1c1811d2f97e5a86c20baa31935ce3088c4191930d2cd04b2789efdab"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 852480,
+      "sha256": "f7b2ada78e2978bf7d3dc6f3eb78b7a0ead81d0602eac2305637edd9736667ba"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Interaction.dll",
+      "bytes": 59904,
+      "sha256": "18af346ba9aa466a794b617dc93ffa9adf04c48ed099a60eb37097746bdc9706"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Inventory.dll",
+      "bytes": 49152,
+      "sha256": "ceb62c1806513bef083ff970e43df579afca9b1b3338fbf4074ec4e21c061ca5"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "0c4ecb914b01621146ca074c5ee8c946c42051ad1ab25338f44f53e6951f6d7b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Quest.dll",
+      "bytes": 39936,
+      "sha256": "8615805a20d0bc5aedf24cd3badbb26d7a39d3ff671c2d199facf5d3c40874c6"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/UnityEngine.UI.dll",
+      "bytes": 264192,
+      "sha256": "565eff042aebd601160559bd75647063779a50c1d6fadcc6ef680adb0ae5984b"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 784384,
+      "sha256": "6cfe43239a4900bc001ba01c515d97c3359ed567f5366abcc204640e7734e8c7"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.dll",
+      "bytes": 10240,
+      "sha256": "d816d124d2860a8d624814d38f98769b81b375eeb997b2215ca189f2ad5cd56e"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 227328,
+      "sha256": "36aeb7f6656d9ac1cf9de8e4b157e2059232da32f47ac382d4631c9b92357e0d"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll",
+      "bytes": 4608,
+      "sha256": "4fc84b230bf60f2bc3f3a4f3ee7da3bbcd56b50612f025754f88e3a9d2b6e29f"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Player.dll",
+      "bytes": 65024,
+      "sha256": "a32e4f8bb7c064a538411a3201124ceac92123923d46c4c99c7aa2364833fe3e"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104960,
+      "sha256": "489ad83bdfac33b433f2bf6796c76ab8cdfaf4ecf44444657512c72d0de5b404"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.dll",
+      "bytes": 8704,
+      "sha256": "a3ce8700409075f0b9a6a26a0543822068970490e955bea92bef9249783c072d"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "d1e07a6083c307d3bdf7c8e1127b2c681421665b00954b32642857e5ee6a5240"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Rewards.dll",
+      "bytes": 49152,
+      "sha256": "0719ceb43b9cffff9e35ef0041ff7d614db9714745119e66efb326f985d6f66d"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.dll",
+      "bytes": 12800,
+      "sha256": "486d2456cec136ed7df115e9440b45616b6d115e7a54f064c7f89769cd03d4c4"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Entities.dll",
+      "bytes": 56320,
+      "sha256": "953a1102ad20e341d521bea36b96edd288e6127ae8bc23d24858975c18f0362a"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Entities.dll",
+      "bytes": 1318400,
+      "sha256": "9cc916ac640c21992360a6be38b43ebf76fc266d43e578b32fa08d44ebd0a5f7"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Integration.dll",
+      "bytes": 27648,
+      "sha256": "d329728a4788d38428650c3fabe8d0e491cbcd027ece9374586ae5511fd04498"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Ui.dll",
+      "bytes": 109056,
+      "sha256": "add62d6814fcf8dd12d3601e0bee30ce371c08182f606003cb98e2629aec04a8"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.dll",
+      "bytes": 610816,
+      "sha256": "24349205d1e9e625b6c3b0898be803ee686f3810a496bb39ab304e9b4b668185"
+    },
+    {
+      "file": "Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll",
+      "bytes": 752640,
+      "sha256": "f4a00e387590611deb65ef383e93568526022fb85aad72e38597159bfcbf1423"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Mathematics.Extensions.ref.dll",
+      "bytes": 6656,
+      "sha256": "c645c5afaab46ffe99bfee63a26141dbafd299367c964a56e9e8086f67720dce"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Serialization.ref.dll",
+      "bytes": 87040,
+      "sha256": "aa281bd88d37683eb10b6a34aafabcba79196e39f461f99570e5de64b03845bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Burst.dll",
+      "bytes": 380928,
+      "sha256": "c89ef62d895e7fd8fb28079b33e470a644a303a65b9d9a676392b2783f619c9f"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Mathematics.ref.dll",
+      "bytes": 317952,
+      "sha256": "857e6b74518f00608e19dcd2904e086480d1152057b9b289753e3425b9232290"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Collections.ref.dll",
+      "bytes": 237056,
+      "sha256": "10f85be988252efb06d373df6090531ac0590ecae79397fefd9f804266a0c270"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Collections.dll",
+      "bytes": 472576,
+      "sha256": "d473eafda4081493ec89334a7f28060ec545e6e5b3e5b7dc33c2a22d13efffd1"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEngine.TestRunner.dll",
+      "bytes": 172544,
+      "sha256": "715d153621634065c2a7aeeee6c2c823be2012766251071642b8ed8f0a8888e4"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEditor.UI.dll",
+      "bytes": 98304,
+      "sha256": "7ca8856e01f5d32e02277ebd62de4135a7936d05b7c9370d3827a3e52cf8581b"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEngine.TestRunner.ref.dll",
+      "bytes": 88064,
+      "sha256": "543677b6372801ecf3f3fa7f1c6107faf746f5838c773b9a50f0ea7e14f9d574"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Entities.CodeGen.dll",
+      "bytes": 141312,
+      "sha256": "c2c9eb89f0059769fbdd944836adc18dcccc3e11ce999ed14848ce6863513347"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Serialization.dll",
+      "bytes": 177152,
+      "sha256": "a081fdf2fbd882bff7fc9317b36ec09a6282069a0bf836a44e2bc99dc987177f"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Burst.CodeGen.ref.dll",
+      "bytes": 12800,
+      "sha256": "0d88dfc70a8c80ec3995324c301e34d1691a2ac5b7baefcd9ca61c05537010e0"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Entities.CodeGen.ref.dll",
+      "bytes": 41472,
+      "sha256": "7147bcba980dafad811a0ce0bf07a381b9e2c035390b8dadb49958241c00d66e"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEngine.UI.ref.dll",
+      "bytes": 101376,
+      "sha256": "f6088ddb1efc8710c3ffdd1919e139e55842b5375dce7059d69a95550781bc84"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEngine.UI.dll",
+      "bytes": 268288,
+      "sha256": "bfaf93cc9b765a116932d49952109bb11c4d60e6df98f264b313b586aedef686"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEditor.TestRunner.dll",
+      "bytes": 309248,
+      "sha256": "2e69b998ccda970dcd9ec75c4703cac703d206eff8312bb58cd4064d1ccf8cc6"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Burst.ref.dll",
+      "bytes": 221184,
+      "sha256": "0075070d1c2b5d9a5ffd8b080042b4193a0c2236210fc78c1999a24910a3ddb8"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Collections.CodeGen.dll",
+      "bytes": 22016,
+      "sha256": "a2580761a5d4877c7b036e0d009ec0b04ddff9a0e1e5ce2e3a5d30bee3765d7a"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Collections.CodeGen.ref.dll",
+      "bytes": 8704,
+      "sha256": "f28139769ffc1b2dad73601fb2fcd7dab5816ebf73528990936cb86ed10866e5"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Profiling.Core.dll",
+      "bytes": 12288,
+      "sha256": "517cf61794031fad5b0803596e98aa7ea86e54ae5bed3c58bf944693a97078a9"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEditor.TestRunner.ref.dll",
+      "bytes": 154112,
+      "sha256": "07fa4d8b8fb582a0992561cf988d43050a603e946fcd2481fbc213b90e9df426"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Entities.ref.dll",
+      "bytes": 645120,
+      "sha256": "f2ac90822844f4954bfa626c85f9ee7dabb01f271597390b9f9d5e77671bd02f"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/UnityEditor.UI.ref.dll",
+      "bytes": 24576,
+      "sha256": "108bbfe1c3fdf53e59920529d9f91d290fee1c196272b724ada6e069ed167b70"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Burst.CodeGen.dll",
+      "bytes": 63488,
+      "sha256": "22880b9305508e420b813be5e0cfa213a383e0ec8e88bffc322bcf35e869eba0"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Mathematics.Extensions.dll",
+      "bytes": 8192,
+      "sha256": "47f44a717c330f6ffcc69a066e0a7b97dcaddfb5882ccf10768a4db399b8930e"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Entities.dll",
+      "bytes": 1401856,
+      "sha256": "5bcb002e3dabe1fef8d933fe80675229f11615ee65e051920fa57064f4d75b32"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Profiling.Core.ref.dll",
+      "bytes": 9216,
+      "sha256": "3b5555c0e01740f19aaac64a99f07e45b51869083408ec938e5ce5ade35f691a"
+    },
+    {
+      "file": "Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Mathematics.dll",
+      "bytes": 755200,
+      "sha256": "b205a79cfb219bc23b8213fdf02e2961e509f70a42d2066250db8c5312313688"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Cards.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "8db7063168a0851cde706663dc8c150efa96b71dab1e9ad81796d5586374c088"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.Extensions.ref.dll",
+      "bytes": 6656,
+      "sha256": "c645c5afaab46ffe99bfee63a26141dbafd299367c964a56e9e8086f67720dce"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.Hybrid.HybridComponents.ref.dll",
+      "bytes": 9216,
+      "sha256": "bf0b015858e21e557c74b1d62ec2d88b5c25d60fa9d6fccb4b808844339097c5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Serialization.ref.dll",
+      "bytes": 85504,
+      "sha256": "2d796af3150c1832146a34379e1d944f81b7847eaeea4b69fb6793a36a975809"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Saltmarsh.dll",
+      "bytes": 174080,
+      "sha256": "f3613ecd1148966e87f0e65fb47ea2c417b44c8a8b378659aabc272136f285ed"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Fixtures.ref.dll",
+      "bytes": 40448,
+      "sha256": "1466e3c7a3d5de98dd06483f930e9e3941426ef81b9dcf7413c6270249bc8f47"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Burst.dll",
+      "bytes": 318976,
+      "sha256": "af00df339b5e11238ace47d812f40b234f39d254f3d5d5fa5ebfa84e8fd81238"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.World.dll",
+      "bytes": 88064,
+      "sha256": "adf8a933e061eec42aebaa0d77e5c798546fd209cce2755476d147acca307bc9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll",
+      "bytes": 5120,
+      "sha256": "43d8ba402a63b7ff76d75bb80694cb75e803151654ee47c8e0c73c342696d2a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Contracts.ref.dll",
+      "bytes": 61440,
+      "sha256": "01a7c64e06e859887a77ce78697d17740a27fdbe7a29b1c7b7516ab872d41356"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Save.ref.dll",
+      "bytes": 13312,
+      "sha256": "e9f0cefcd35fb38801414f2cb2c9013a49ea88f4cf003af87ec67c52b4348bbc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.Hybrid.dll",
+      "bytes": 181760,
+      "sha256": "545eb9f89d41d94fffdddbb837337cbf8183003c2478feb5a3d31e34978b85ab"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Logic.dll",
+      "bytes": 113664,
+      "sha256": "e49bc3b31e1917bae40a62ccf0d48c41af5da74f2cffb1e75fdbcc6da68e0f5d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "e8a7e8d9b1c7cc88ede9f0407115fa0d72b24dafd5ddc9bb43a42066b40c87d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "0f6d02cdde6d1ba9c84d01060bb8dcd7512a638acae2f36fe9aae18cd2764aa2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.ref.dll",
+      "bytes": 317952,
+      "sha256": "857e6b74518f00608e19dcd2904e086480d1152057b9b289753e3425b9232290"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Narrative.ref.dll",
+      "bytes": 13824,
+      "sha256": "4d430f2feacc28b7fe706782347995a6c5439ecc31eefa98d3a007baaddf97ea"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "aa806aa94d48d36980498999cc3cc3b512bf3b670ed305540f3318bb0b0b880f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Cards.Fixtures.ref.dll",
+      "bytes": 34304,
+      "sha256": "af75b10360f7cbecced9ac0a480eb44fcaeef604d31e16642c4f98d1d9e24c0f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Traversal.dll",
+      "bytes": 59904,
+      "sha256": "ce21395c71104ea069dcb2786b50ffd3a7a0db46ad3b3339041b16863082c1df"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Transforms.ref.dll",
+      "bytes": 14336,
+      "sha256": "fa9933008501138d0b18abd59d92cc41bd055fc89ec8b5d4afd72810573ca0c4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "bytes": 4608,
+      "sha256": "9593a7888e351530ffe07c774a26d1e1b377f82e6cf44688a707e846078f6185"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Audio.ref.dll",
+      "bytes": 28160,
+      "sha256": "68255e2cadb2188c5e0f19390922d8138655a1923979fb131edae82e9068df02"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.TextMeshPro.ref.dll",
+      "bytes": 115712,
+      "sha256": "98599e9b6b6598d9d851369fe09980dec219726a5c1b689801782bbfaee2b311"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Scenes.dll",
+      "bytes": 82944,
+      "sha256": "8016da50fc129153811b06bf48daa9b355518477f89ee2fcad824ca77b441e68"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.Hybrid.ref.dll",
+      "bytes": 71680,
+      "sha256": "3c967c866b281a9dd15ea20ca3bc457208c9a75295058e6d2517e8042e645d9d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Traversal.ref.dll",
+      "bytes": 14848,
+      "sha256": "223269ae7e234743b0ece6d65ff18c02e67f6ff56cea9cc6dac119fbf388d03f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 9216,
+      "sha256": "340c20d1836f4a7d5c1033e60af2fe2965410aea724690d3d8fdeeed6cc42f31"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Cards.ref.dll",
+      "bytes": 20992,
+      "sha256": "97384fadd7cc9e6deb9c8d217675501daaad0cedcf3068fdeb4f860e30e02167"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Audio.dll",
+      "bytes": 62976,
+      "sha256": "69f301067cd49695a96163de7fb977001e29dd3b23fe2d744b7e8610367ff9d2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.ScriptableBuildPipeline.dll",
+      "bytes": 9216,
+      "sha256": "983e473ba82410e323b9424202cfe6ae7e2314e3039d52993938c56c0f7e5328"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Cards.ref.dll",
+      "bytes": 15872,
+      "sha256": "5eb9b5edcaeccacd681399c8c4582dcddb36b7dc4e2a538f33daf09ec3bee8cd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Traversal.Fixtures.dll",
+      "bytes": 17920,
+      "sha256": "c795a72de7b8a0f140978b9c149fb9c344e93185a66b16573542bfbc2854545b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 37376,
+      "sha256": "3e26aa7619fef2400028a75527b0773acc60f447cd2ccf5c8097af8da12a8e5b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Adapters.Fixtures.dll",
+      "bytes": 16896,
+      "sha256": "7bd51c629fab9aab6a88428c059eb1aa8635d5249fa781909808d103a0ad2690"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Transforms.Hybrid.dll",
+      "bytes": 20992,
+      "sha256": "0ccefb6f77c2f005cf9eae6a34357c704c9ecd004e02b16df8d5a66d2c1cd42b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Shaders.ref.dll",
+      "bytes": 5120,
+      "sha256": "c88c97aa531a9ffc1db48ef6b7fda19f6927647b24de615cfd40b9db2b20df98"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Inventory.ref.dll",
+      "bytes": 19968,
+      "sha256": "f4ec2a4528d61748bf19e478d52d8c582b7d81911c110dee2b250cb567cd974f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.AI.Navigation.dll",
+      "bytes": 24576,
+      "sha256": "d0ca6da00cbda65277d52a3bc1b9ce8067b9a9a2bbd40aa5cd368de5db2345da"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Rendering.LightTransport.Runtime.dll",
+      "bytes": 305664,
+      "sha256": "011c8e400843f05dfe862f11ff41e72e20ffd1c24192e0a305119adcfe86af2a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.ref.dll",
+      "bytes": 5120,
+      "sha256": "2e451539c4d513b20a052cf2c0224251d77359542f37d744eb7aadb37a6b795c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Quest.ref.dll",
+      "bytes": 15872,
+      "sha256": "199a094eda09c7e6c2d61b97ae98de6222f6bb6e2eed76fc26844b2376b9fb2e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Narrative.dll",
+      "bytes": 31744,
+      "sha256": "9fb79ea3a37d3ce3cf5967ada0740aaba6441590c8b27ac6ac94c7fdfbbc63bc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Collections.ref.dll",
+      "bytes": 233472,
+      "sha256": "6f7f60952439fddbd069f6d6d085bf457ccbdf997c3928a6fe3c9ebacf6ec986"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InternalAPIEngineBridge.002.dll",
+      "bytes": 45056,
+      "sha256": "a21e78742b1ac1455e9396a05e20e1d2bee2ee1327a5e466e5e01e3ef8e578f2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Collections.dll",
+      "bytes": 450560,
+      "sha256": "129757714551070268055deedb1f3561eb770801a43575dc8c54ae079cb704f6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+      "bytes": 237056,
+      "sha256": "2577134439e9e340d44d9ea1145b22f33049b9aaa2573fd5e3a9de4740a18d2d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "6bde7b34ad96115dfc28833bfeca856e5205b2fdd1f933af89b3b99e4c54f208"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Adapters.Fixtures.ref.dll",
+      "bytes": 10752,
+      "sha256": "05b6d908862b585a67141a2217fea158af9b3ebcacaf9c9c58a79b0ed6565565"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "c9a229a490a4ae1c1dcbf1dc192ddd94a4435bb0eec1b073864cd1db6dc85db6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Adapters.dll",
+      "bytes": 128000,
+      "sha256": "f49a095d541210ec78530d4537c5a41d98e5a92c1d8331b6ea611adbb196d49a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InputSystem.dll",
+      "bytes": 1134592,
+      "sha256": "052b987786fa9eda4212541659a5e8e7ab3c786b930c3aa64c04d8d07a8a89b8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Traversal.dll",
+      "bytes": 19456,
+      "sha256": "c32504087950e618e3fa0546d8af10017c5732c4f0960b4198efced67b901e8d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.Extensions.Hybrid.dll",
+      "bytes": 5120,
+      "sha256": "c1d87614bccc43c1f3df1f7ee468227d37482fb23aff0c3d09a1a9a0ee4dde17"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InputSystem.ForUI.ref.dll",
+      "bytes": 6656,
+      "sha256": "343f5ff72675eaedb0f1639cc6044db96da965e35a809c078e54571e60bcc98c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "45a1b25d42cf908f321e36fb6782b9ec770f2504954a7f874ac556569347263c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Runtime.ref.dll",
+      "bytes": 172544,
+      "sha256": "7c240f0c2b3baecbefc3ccbda53a60e57fdba8c1970a542c12d2b513f1da7b93"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Transforms.dll",
+      "bytes": 27648,
+      "sha256": "fa700dd8add3bfe91585b0d1016fc779ec37c3ef5d43a4d6ccf872dc1910ffc1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Derivation.Fixtures.ref.dll",
+      "bytes": 18944,
+      "sha256": "e2c0afda3816e33121bd3e09eadd4368dc6a5b4b92c58e9832329b48913dba11"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InputSystem.ForUI.dll",
+      "bytes": 16384,
+      "sha256": "80b026391250fd4a39d4c3904e70402618333b380e864b0acd27ae1e8734705b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Deformations.dll",
+      "bytes": 4608,
+      "sha256": "a5f721ee45d914efcdcda964026697638a0dbc75ad65ebda5e3dbd45fd52f083"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "0d77ceae65b019a724871b884560f8565566254a3077368dff557a90162ea760"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Entities.ref.dll",
+      "bytes": 24576,
+      "sha256": "388d56fbc9bd4f215ea9286ec6514dcae23747d091ff370800e727a270abea8c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "bytes": 5632,
+      "sha256": "6ec510451b8d45a8ddeafea564ac7ebf3a62361772a4690d1271c68523ae5492"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.2D.Runtime.ref.dll",
+      "bytes": 72192,
+      "sha256": "e9df8a84898e391d13dcff72534828870da26dd7e425783099b7b65bc8b2132b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.TextMeshPro.dll",
+      "bytes": 445952,
+      "sha256": "f95a84b1441a1c25f83c8c8f192e8aec201134dbd55e6e9f296b60df65054afd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.App.ref.dll",
+      "bytes": 35840,
+      "sha256": "24fb800def8062a136f0e8c4cc5d601412df722fadc1f8229fc9078654269a1d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.Runtime.ref.dll",
+      "bytes": 375808,
+      "sha256": "3fe6d0f6c6982966118f10daab45c05b80857450173015a29d002938c71dea8f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Derivation.dll",
+      "bytes": 175104,
+      "sha256": "8fb0e656346cf8adce4bb1a6f435eaaa37a4ca82bd0fbf1fa3e9c53804a95c81"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Ui.ref.dll",
+      "bytes": 39424,
+      "sha256": "20c1a83491c7f808a2941462c4f14cbeb9d233a5d80644880fb4209ebbbce179"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Cards.dll",
+      "bytes": 50176,
+      "sha256": "58ffdad92692c999a739c64ab0efc561b0f859be0da57d9789d596841a84a132"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "52eb95e6281513d01b94b5450255b5f26de666c340c6d6648bbc0ba4bd2aca19"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.UI.ref.dll",
+      "bytes": 10752,
+      "sha256": "309c505458ac152e57d3afdb13b7747db1f0fb11d5d080790fa696e0b33d2755"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Npc.ref.dll",
+      "bytes": 24064,
+      "sha256": "78ff457d7d59b1af9eebf6f5513781a12afb875fdc3d1651bf8be4a0ed170006"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.ScriptableBuildPipeline.ref.dll",
+      "bytes": 7168,
+      "sha256": "cc04f96b0ecf39ac26ca2f2cb2e83bfa444e9ad7b6f0f740f53008907137752f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "bytes": 4608,
+      "sha256": "a54f69ebd29c3c4b1d63a6b8d822f07bc3c736966e52034689fe915f708d5c56"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InternalAPIEngineBridge.002.ref.dll",
+      "bytes": 19968,
+      "sha256": "e1a9785a02e6050c996be7c6906dc1d0b437b9fa7603584e937bfb665d3351a3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Player.ref.dll",
+      "bytes": 24576,
+      "sha256": "03686fd406b2a47c62d119a4266e7be09b34ff7df274efd91b186deb9b79ad75"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 144384,
+      "sha256": "60d6a6eed2bcd68442f84a90f32bf3abb821c31d070edbbe9c1c75974ca03b98"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "f35969850d97ec994cf38a59e0224fc9e00404506701399da5e2d9f151a2bb97"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Planning.dll",
+      "bytes": 202752,
+      "sha256": "7d69c4eb2ecd6c82af46458c563dbc5c94a5ee9835977e5607c7bb094b7f8047"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Rendering.LightTransport.Runtime.ref.dll",
+      "bytes": 251904,
+      "sha256": "e3e8623b428f37ee4e86a896e10df6e74dddc5a2d4a41014ab575df75242f253"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Serialization.dll",
+      "bytes": 173568,
+      "sha256": "d5ca5a95d622a6f7db3a086fd301271a5966f04ab90fb22fc6d59186ee8cb28e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Interaction.ref.dll",
+      "bytes": 23552,
+      "sha256": "d9045fc45fc70f356472413b98ed31d681ecba5242d3bee03509cfa2694723e7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Deformations.ref.dll",
+      "bytes": 5632,
+      "sha256": "25333e00a2310acd86b59571d1a56cc67463a9cd6226c6a430a3779d60a43726"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Npc.dll",
+      "bytes": 55808,
+      "sha256": "65f09114004c38e95954f59ed3d80155c41058a5e100c2e2a9809578470000bf"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.InputSystem.ref.dll",
+      "bytes": 412160,
+      "sha256": "71c62302ef0e937abdd19d96b76d4bf5ef098244dd7d7e3ea244cd6e2688ab7c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 852480,
+      "sha256": "f7b2ada78e2978bf7d3dc6f3eb78b7a0ead81d0602eac2305637edd9736667ba"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Core.Runtime.Shared.ref.dll",
+      "bytes": 6144,
+      "sha256": "8ec211becc57a1c431834b5a6c280d84dc0945b2df9565686069b8732b3c8b5d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Planning.ref.dll",
+      "bytes": 55296,
+      "sha256": "8584f0c5be9542a62ebf5aceda3e13c6d02080003248ef521d0eefac6831679d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.Extensions.Hybrid.ref.dll",
+      "bytes": 5632,
+      "sha256": "b482a27dcf759d01ef6f346f48328665cd158cb4c5ea62201ec2aee05e1a5f37"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Dialogue.ref.dll",
+      "bytes": 16896,
+      "sha256": "8eb5f53360ced3f31cc6dbb7a7f72a956d507a5cbcd47caf225aaeaec9418bba"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Interaction.dll",
+      "bytes": 55808,
+      "sha256": "834ddc5706ab087f7d0576ce3e5671edd695c0c226d79c42d6b08d092221dea4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipeline.Universal.ShaderLibrary.ref.dll",
+      "bytes": 9728,
+      "sha256": "613bf27df72aca019ace6b97d8d417e4db523063db70f4504a776836e11f5edc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Inventory.dll",
+      "bytes": 44544,
+      "sha256": "dcefd437f4d9655e3f7d771009fe3d4516a47178ac73ba2eb18375c544ff7898"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Traversal.ref.dll",
+      "bytes": 24064,
+      "sha256": "a09de821ed2988fccdc6e5719bc55707ac72226a69231909aa244793c6cc84b9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Derivation.ref.dll",
+      "bytes": 48640,
+      "sha256": "4364ca4a68807145230a9d3e9ccfc3ccb9863e503f4294e8da7215f6f2e8b2bc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "0c4ecb914b01621146ca074c5ee8c946c42051ad1ab25338f44f53e6951f6d7b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Quest.dll",
+      "bytes": 36352,
+      "sha256": "68db209dca1d2b7445733417e04f1064b8304a3cb7cabdbde4e7b1f31cd5f596"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/UnityEngine.UI.ref.dll",
+      "bytes": 100352,
+      "sha256": "23abce49bb9d698547787a290fc42bf07412eaa86d74a0f7ac49d6729dbc6d6e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/UnityEngine.UI.dll",
+      "bytes": 264192,
+      "sha256": "565eff042aebd601160559bd75647063779a50c1d6fadcc6ef680adb0ae5984b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 784384,
+      "sha256": "6cfe43239a4900bc001ba01c515d97c3359ed567f5366abcc204640e7734e8c7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.World.ref.dll",
+      "bytes": 35840,
+      "sha256": "82d5012fdf33ad651d358c68a004cdb4c51c656de3f67c41165d7a36a9430eb7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Burst.ref.dll",
+      "bytes": 212992,
+      "sha256": "fbdaaee5056b8c12e87bbe6b0bc72da919b356c41ee88fcc787530d95b94d051"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Adapters.ref.dll",
+      "bytes": 51712,
+      "sha256": "581c15dec3056a78dc2bcb04feb4fb5dbacc7ced33cd08067c5861a52f770a5d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Profiling.Core.dll",
+      "bytes": 10240,
+      "sha256": "d816d124d2860a8d624814d38f98769b81b375eeb997b2215ca189f2ad5cd56e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Composition.ref.dll",
+      "bytes": 72704,
+      "sha256": "291abfffccc578d23faa5a11fd8ffea6a0a6a2cf9edbd4944ee570b6e337d380"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 215040,
+      "sha256": "20ad32bb4f615af36e8516a1e31b4edb4027c95e4abda6cf6ef899074a39cef1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Logic.ref.dll",
+      "bytes": 41472,
+      "sha256": "61d49e3889ad84ae9ca65faa980c1b2493c2864cd567e7aeca25882b42a95331"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Shaders.dll",
+      "bytes": 4608,
+      "sha256": "4fc84b230bf60f2bc3f3a4f3ee7da3bbcd56b50612f025754f88e3a9d2b6e29f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Saltmarsh.ref.dll",
+      "bytes": 45568,
+      "sha256": "fe1cd699562998bcc58d3e412dd514d83f6188f6342b760dc4b3c4d4ae203d18"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.ref.dll",
+      "bytes": 594432,
+      "sha256": "293dde2114ed2d07ca9286ec455d503591960dde56938b5e0c63b2c6c51a93e4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Player.dll",
+      "bytes": 61440,
+      "sha256": "163520b5ee076c955e8488adbeae191087199eb9d81b826261ccb0960dffce76"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Gameplay.ref.dll",
+      "bytes": 71168,
+      "sha256": "f7b8e2cc96b509e737802ed8f479e8761ea0244b31a41785d3010d78ea15d485"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104960,
+      "sha256": "489ad83bdfac33b433f2bf6796c76ab8cdfaf4ecf44444657512c72d0de5b404"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.Extensions.dll",
+      "bytes": 8192,
+      "sha256": "8ec0274e2d13efeb8ccd39b218f052df8928d517ed66c04187b2bd7a4cb7d61d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Runtime.ref.dll",
+      "bytes": 292352,
+      "sha256": "41feb1a1fc57dd4f653840b879e865009956583b0f7748cd4b5b62004b1a9b06"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Scenes.ref.dll",
+      "bytes": 32256,
+      "sha256": "79c69845abca04575f9096dfdf84e6ce9bf844827e38ce299915a480b2646b2d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Contracts.ref.dll",
+      "bytes": 119808,
+      "sha256": "8acc7aef104c9132923bac9fc60c2289be9a98a739d4b1e0482c110c7751d1a7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "d1e07a6083c307d3bdf7c8e1127b2c681421665b00954b32642857e5ee6a5240"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Rewards.ref.dll",
+      "bytes": 16384,
+      "sha256": "d9c4545f5664f58542a3710c32abb43bd75bba4cbbb2258cc165f842c103fa0e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.Universal.Config.Runtime.ref.dll",
+      "bytes": 6144,
+      "sha256": "955fa302dbf23dad11da88222b72e90f4c9c79556ab7978a15ffb74b7de4b0a3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Rules.Narrative.ref.dll",
+      "bytes": 28160,
+      "sha256": "bbcf5f6e5eeb90e25ef3e4a692ba9f139256aa8ff7d0601f6a88a7edb2c685e3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.RenderPipelines.GPUDriven.Runtime.ref.dll",
+      "bytes": 88576,
+      "sha256": "f3a690d7f6121b381a0ba638947de1e6bb9cbcc4a239b81419b9a70d87a0bec0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Rewards.dll",
+      "bytes": 49152,
+      "sha256": "0719ceb43b9cffff9e35ef0041ff7d614db9714745119e66efb326f985d6f66d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.UI.dll",
+      "bytes": 12800,
+      "sha256": "486d2456cec136ed7df115e9440b45616b6d115e7a54f064c7f89769cd03d4c4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Narrative.Fixtures.ref.dll",
+      "bytes": 37888,
+      "sha256": "4eb27f1f2d01e6e5035da6c0b2ddec2b5b9a06fabed0d03018d7550907ff1318"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Entities.dll",
+      "bytes": 51200,
+      "sha256": "c5cd0fdb8006f1115d9a1bf7e982e223c21e4ab062f1911219421d2180782cbf"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Entities.dll",
+      "bytes": 1225216,
+      "sha256": "42708ccbb07e8107af60a55b3f161ba885de925ce8b6a24f1e975f5affa4ad40"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Integration.ref.dll",
+      "bytes": 11776,
+      "sha256": "6842de8126442c106a4bffcdb66d8872d53540ce88914bf53439f08747414260"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Profiling.Core.ref.dll",
+      "bytes": 9216,
+      "sha256": "bfd0706dacde49815819ff5c13529eb92e72354234f22db6625ddc2e1a07c205"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Integration.dll",
+      "bytes": 27648,
+      "sha256": "d329728a4788d38428650c3fabe8d0e491cbcd027ece9374586ae5511fd04498"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Ui.dll",
+      "bytes": 104960,
+      "sha256": "357c6167d894ae7faf2411bd478c9b4a5a35813d4dc93d0d1f856796e8bab373"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Transforms.Hybrid.ref.dll",
+      "bytes": 11264,
+      "sha256": "cc458e034578293c11517a13b333598f458049f4a34d59da8e9b91d829ca2563"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Gameplay.Traversal.Fixtures.ref.dll",
+      "bytes": 11264,
+      "sha256": "3171095ef150688eaab4ccd9afaa463fb0aced2f3ba0682213c0e9129eb86e30"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/GameCore.Unity.Runtime.dll",
+      "bytes": 605696,
+      "sha256": "882bd57fcfc2223ab00e6fb86851ec238a11260691392a115f9086959a131455"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.Mathematics.dll",
+      "bytes": 752640,
+      "sha256": "f4a00e387590611deb65ef383e93568526022fb85aad72e38597159bfcbf1423"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/Unity.AI.Navigation.ref.dll",
+      "bytes": 12800,
+      "sha256": "531da06cea28eb7f0b9b4acf98d084f7dd5b5d84812536782d2ecccdb35f169f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Serialization.Editor.ref.dll",
+      "bytes": 6144,
+      "sha256": "be520d046cab000c7ecfd3a541944a43eca390feeaa4bf2399976a25e7148d83"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "1dfcff9d42f4f192fcf3d64e7031b8d81fee1baaee79bfcc46faa3231bacebf9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Extensions.ref.dll",
+      "bytes": 6656,
+      "sha256": "c645c5afaab46ffe99bfee63a26141dbafd299367c964a56e9e8086f67720dce"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Authoring.ref.dll",
+      "bytes": 34816,
+      "sha256": "a88dc9321bc84bf7f488edd92b884666d0940d5e18f085784a3da0a5ce8a9f39"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Hybrid.HybridComponents.ref.dll",
+      "bytes": 9216,
+      "sha256": "bf0b015858e21e557c74b1d62ec2d88b5c25d60fa9d6fccb4b808844339097c5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Serialization.ref.dll",
+      "bytes": 87040,
+      "sha256": "aa281bd88d37683eb10b6a34aafabcba79196e39f461f99570e5de64b03845bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ShaderGraph.Utilities.dll",
+      "bytes": 6144,
+      "sha256": "d82358ec58cf1be593f8d7d62d376314dcf1ce5145bf554609a97055d789344d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Sysroot.Linux_x86_64.ref.dll",
+      "bytes": 6656,
+      "sha256": "c63a82deb0779f5bb0e3c4fd1c6420166c5880b42825c1facd1a958d3f5c73a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Content.Compiler.Editor.ref.dll",
+      "bytes": 6144,
+      "sha256": "01471c33e098aeed7743cdfb21f99a5ea3412ead0918cd1035fb531b12c12ca2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.Editor.dll",
+      "bytes": 5632,
+      "sha256": "e6f9bf2cbe4be9823aca76a07679fc69ec55c9bf172a57c770d3dff7daff60df"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.dll",
+      "bytes": 174080,
+      "sha256": "ab0711f491b4330592b345e8de76c15a7b95a085ddd3b9b71f97df62935126b4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Model.ref.dll",
+      "bytes": 71680,
+      "sha256": "eaa635de5e13b9a6a693a28ecff430fee2f857971ea0edabbd4b46be364005ec"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Fixtures.ref.dll",
+      "bytes": 40448,
+      "sha256": "1466e3c7a3d5de98dd06483f930e9e3941426ef81b9dcf7413c6270249bc8f47"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Save.Editor.ref.dll",
+      "bytes": 7680,
+      "sha256": "1c9614bf9716b38fa67f3e4f3def83686df6501ae4a58d8918235c00370b43f7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Compile.Core.ref.dll",
+      "bytes": 15872,
+      "sha256": "19d6b8a830625a5250103bca25e5fee149f2d2ca4e910b67e63eaeae08b23c24"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.dll",
+      "bytes": 380928,
+      "sha256": "1c89c13033b86161f2ebe74e49149bb501ccdd9a482806a18573ad8e03b00692"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.World.dll",
+      "bytes": 89088,
+      "sha256": "74018b0eee28211f12fc95019daf410240a135e5fd64294976c6fd4de4ea3710"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Sysroot.Linux_x86_64.dll",
+      "bytes": 7680,
+      "sha256": "deed1722103368753443c131047fdd26ecf14c17e47a54e1b8aceffaa4581a85"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll",
+      "bytes": 5120,
+      "sha256": "43d8ba402a63b7ff76d75bb80694cb75e803151654ee47c8e0c73c342696d2a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Contracts.ref.dll",
+      "bytes": 61440,
+      "sha256": "01a7c64e06e859887a77ce78697d17740a27fdbe7a29b1c7b7516ab872d41356"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Npc.Editor.dll",
+      "bytes": 17408,
+      "sha256": "dff4396480379b4535e078e3292e1acaa589740a89550f9a5d2b1f153e977f09"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Scenes.Editor.ref.dll",
+      "bytes": 35840,
+      "sha256": "e7aeba0022796c972aa9a69b51ae47e1d7b875bda18744f3409da698745811fc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Etos.Client.dll",
+      "bytes": 110080,
+      "sha256": "2689660d6679b3ef89d7285d466114080e38ecbb3589472407958355da46ddca"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Save.ref.dll",
+      "bytes": 13312,
+      "sha256": "e9f0cefcd35fb38801414f2cb2c9013a49ea88f4cf003af87ec67c52b4348bbc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Hybrid.dll",
+      "bytes": 209920,
+      "sha256": "445d2602c0187c24e757476ff0b0f982fe9be8e579d355cb50edbee1e476bdb8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Logic.dll",
+      "bytes": 113664,
+      "sha256": "e34b4135a811b02c52d1c95f17522e8a28a16f0755292c003d9a3cf0ae3af04a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Editor.ConversionSystem.dll",
+      "bytes": 24576,
+      "sha256": "6e47eccb00eb488e6be355477db7c96be88d532b4094ea0057180bb586f79bef"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "28b4328606e9ba1345009284eb83adbf024b5956edeecb39edb8f839ec18a879"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "fd3fc58fc173dc3354e1ca93de500dcc565a00cf3f3135dee36487c4e2e249af"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.ref.dll",
+      "bytes": 317952,
+      "sha256": "857e6b74518f00608e19dcd2904e086480d1152057b9b289753e3425b9232290"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Narrative.ref.dll",
+      "bytes": 13824,
+      "sha256": "4d430f2feacc28b7fe706782347995a6c5439ecc31eefa98d3a007baaddf97ea"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "640df5d77f6c3070ece7ff0908e3562c5478a22e954d87b2a7c0836bccdb4410"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Ui.Editor.ref.dll",
+      "bytes": 13312,
+      "sha256": "b86793f5f53af87210de4faefda2b1c0fb7032e5887c73568befb232539a57fc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.TestFramework.ref.dll",
+      "bytes": 19968,
+      "sha256": "f2d43e43a667401cd73bcf6647930e5010aa2b2d2f402b49def43c3c084daf75"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.Fixtures.ref.dll",
+      "bytes": 34304,
+      "sha256": "af75b10360f7cbecced9ac0a480eb44fcaeef604d31e16642c4f98d1d9e24c0f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.dll",
+      "bytes": 59904,
+      "sha256": "f379d108e0cf562acae78e0aa81637f8efc702f02f24fa4011624bac5b2e9a05"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Transforms.ref.dll",
+      "bytes": 14336,
+      "sha256": "fa9933008501138d0b18abd59d92cc41bd055fc89ec8b5d4afd72810573ca0c4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "bytes": 4608,
+      "sha256": "f7bef2b1a7e8ceac8e2b04e984a52e422f6a0718e6d625bf8a02a7c832ee1106"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Audio.ref.dll",
+      "bytes": 28160,
+      "sha256": "68255e2cadb2188c5e0f19390922d8138655a1923979fb131edae82e9068df02"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.TextMeshPro.ref.dll",
+      "bytes": 117760,
+      "sha256": "4d0c9488c1925336a3c795ac526ec0053a390ae518b1c9a1afd584e92b81d5d8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Core.Editor.dll",
+      "bytes": 339456,
+      "sha256": "cc3aa082bfb15652325937be7ef614fc9521f46366021f2f0efc127896128d0d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Player.Editor.dll",
+      "bytes": 12800,
+      "sha256": "65c082485f2ea5f10085b2878c514ce987c53ef944a90642787115e438c8fa2e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Scenes.dll",
+      "bytes": 111616,
+      "sha256": "346a0d67518aaf904a387808fe19c29f31efc0db1fb7774c45ab7de0a559b73a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Quest.Editor.dll",
+      "bytes": 24576,
+      "sha256": "4694c944d23a0335c59446472734f1b14f8544564dc6bf3b8e7ad3a262c4dc38"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Hybrid.ref.dll",
+      "bytes": 78848,
+      "sha256": "e9d725c8fc13015d082eb1da1c95b5e593c51bdcae5afde52be348680b3dea6f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Core.Editor.dll",
+      "bytes": 4096,
+      "sha256": "ae745871860da506cd55238978b925f6302ae33c38addf5e6792ec6d9dee3cad"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Editor.Properties.dll",
+      "bytes": 19456,
+      "sha256": "700f12cbda769157d2e1082f565799cf572ca27a2b41615a306e0ca1623f355c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Traversal.ref.dll",
+      "bytes": 14848,
+      "sha256": "223269ae7e234743b0ece6d65ff18c02e67f6ff56cea9cc6dac119fbf388d03f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InternalAPIEditorBridge.002.dll",
+      "bytes": 37888,
+      "sha256": "60170530d866d2d829e58419f94207b3a8a595d6b65abba7a1df06a3f05478b3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 9216,
+      "sha256": "fc0f6578587fcfd78d0d12bf33b574207b83868d6fd0abf84c26ec688edbeedb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.PerformanceTesting.Editor.dll",
+      "bytes": 48640,
+      "sha256": "fdcf0d6ea7f82e21b26b30defa61492399b927f5f345219746dab106273865d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.ref.dll",
+      "bytes": 20992,
+      "sha256": "97384fadd7cc9e6deb9c8d217675501daaad0cedcf3068fdeb4f860e30e02167"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ShaderGraph.Editor.dll",
+      "bytes": 1585664,
+      "sha256": "9aa39df04961a6222414effe91626d84768955496cd528e83c3f202ff0c98d18"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Audio.dll",
+      "bytes": 62976,
+      "sha256": "fcc489394d078302313a2ec374febc142f14c5de8a3bba9367b5f673f857f67d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/PPv2URPConverters.dll",
+      "bytes": 4096,
+      "sha256": "2ca38015a951a1bad0fe6917de030eace3a1fa9f9fd5cfd2783101f5d10879ad"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Quest.Editor.ref.dll",
+      "bytes": 14336,
+      "sha256": "769351d72b5ded34fbda5fdb76cff2a147bac70a692b3d708fe7af5d3c9737dd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ScriptableBuildPipeline.dll",
+      "bytes": 9216,
+      "sha256": "c1d20c899d81eaa4c2268bdac5cb95006f2f1be39f5d173ab3bb31806fd014c3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Cards.ref.dll",
+      "bytes": 15872,
+      "sha256": "5eb9b5edcaeccacd681399c8c4582dcddb36b7dc4e2a538f33daf09ec3bee8cd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.Fixtures.dll",
+      "bytes": 17920,
+      "sha256": "1ca7c39a5771b6c282548bd1ff1f761314fc9e61aef451d87852265a166ac1d2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.Editor.ref.dll",
+      "bytes": 5120,
+      "sha256": "f88451b4508e89ee13b703acd15378206e475d32f2a47dcedb7ddf8957b4b2e8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 37376,
+      "sha256": "a35b5da678e3e10565e24c2c89104e5a10375a6c0b377bcf035fe46ab669584d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Adapters.Fixtures.dll",
+      "bytes": 16896,
+      "sha256": "ca476000368b217edd2051c1598c645b3ec666020d2b20029fd0d42e0d8d963f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Transforms.Hybrid.dll",
+      "bytes": 20992,
+      "sha256": "9dfc00b90e9789c2fc9259deef021aecd45e111d99abfb748f7c435663c2f98b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Editor.ref.dll",
+      "bytes": 218112,
+      "sha256": "efccccb6546e6dc3159d10ee92059a505fee8b76fe07e4b90d1da66f0b84464b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Shaders.ref.dll",
+      "bytes": 5120,
+      "sha256": "c88c97aa531a9ffc1db48ef6b7fda19f6927647b24de615cfd40b9db2b20df98"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Inventory.ref.dll",
+      "bytes": 19968,
+      "sha256": "f4ec2a4528d61748bf19e478d52d8c582b7d81911c110dee2b250cb567cd974f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Save.Editor.dll",
+      "bytes": 8704,
+      "sha256": "a1413a4dcf4385a505e52d62ee45b24612940b855cbf581a6651b2045f4f1629"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Editor.ConversionSystem.ref.dll",
+      "bytes": 11264,
+      "sha256": "83e2dbca2b18189198137197eda5d7c00186fec9e8c3f315e9b597da73eece57"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Build.ref.dll",
+      "bytes": 10240,
+      "sha256": "0d9b9cbb23ff2821ac4475b00382f5881ce2178caef7ac3efab581d6f8ce8491"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Rendering.LightTransport.Editor.dll",
+      "bytes": 13312,
+      "sha256": "5f9358cb0942e28bbf7b44619ea6bf479753af613373776241eec08d30e3e229"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Logic.Editor.dll",
+      "bytes": 37888,
+      "sha256": "02f3ff97d60d02eb22db7a874608ee41a20f84ead8084363ad0748ebdabfc55f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Dialogue.Editor.dll",
+      "bytes": 21504,
+      "sha256": "78c75583e99e8fb4147640bb2e98e5313da144639f0cc4ad558c8d8b1757e051"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.dll",
+      "bytes": 29696,
+      "sha256": "e5865b4a149d9e5afc64b8350897d47b8edec6c1134a33cd6093f9efa6ccf8bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Rendering.LightTransport.Runtime.dll",
+      "bytes": 314368,
+      "sha256": "8882b1939b6b12d292a1d23e5b72079934deedfdb01f808b44a939f4cd73369d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.Editor.ref.dll",
+      "bytes": 7680,
+      "sha256": "c9d4578cb9a76bee5626b700743edf30c4e0af1710cd727676365e87838e3353"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.ref.dll",
+      "bytes": 5120,
+      "sha256": "2e451539c4d513b20a052cf2c0224251d77359542f37d744eb7aadb37a6b795c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.ProjectSetup.Editor.dll",
+      "bytes": 6656,
+      "sha256": "0cdafe0b91b90ea63bfb702308afbbdf2c092e4975990ad512bc0755e5feef19"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Quest.ref.dll",
+      "bytes": 15872,
+      "sha256": "199a094eda09c7e6c2d61b97ae98de6222f6bb6e2eed76fc26844b2376b9fb2e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Narrative.dll",
+      "bytes": 31744,
+      "sha256": "1495fb7991af7a21d6d47c53d1cf9ceb1f1094e4ad9c01a3711b078c51c0ccae"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Content.Compiler.Editor.dll",
+      "bytes": 10240,
+      "sha256": "7787201a4e3758d279b123422e6346290711c311a2db80bd3d3a5ee42da912a7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.PerformanceTesting.ref.dll",
+      "bytes": 24576,
+      "sha256": "47f122e7c581cafcf301f75d36ed084d2832320b94a0f79866593d9b2cf201fe"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.ref.dll",
+      "bytes": 237056,
+      "sha256": "10f85be988252efb06d373df6090531ac0590ecae79397fefd9f804266a0c270"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InternalAPIEngineBridge.002.dll",
+      "bytes": 45568,
+      "sha256": "20c3fd78e537e4338ba01de3d33c66eede216e0243499bb831bb09e3a0f1a6c0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.dll",
+      "bytes": 472576,
+      "sha256": "ee3e73694c0e4a70ff728bdac2d56f7d2157e8ef4bd59fd1e7aeed7be141e85f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Views.Editor.dll",
+      "bytes": 254976,
+      "sha256": "7fa26d01ae2e81cd1e5494331397eee757daee90726dda03d0d4f4c8d16fcba6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Etos.Client.ref.dll",
+      "bytes": 39424,
+      "sha256": "94f3b330f6f3b536eab2ffabf344aa0aa9f80f274c0bd11aea8422942c3cf1e7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+      "bytes": 248832,
+      "sha256": "f6ba57cfe6bcc4d34f8026ddc385f16697ec0c9ff14d829ee0ed32f7dc87711d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEngine.TestRunner.dll",
+      "bytes": 172544,
+      "sha256": "bfdbb84362aecce3d5616f0124eec356306ac6a1d12a564b07f11a25d4a529dc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "b84cbdc0c2194a080163b9ac4e6ddb39f975b3694f6201eae6c9438bb255bf57"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Adapters.Fixtures.ref.dll",
+      "bytes": 10752,
+      "sha256": "05b6d908862b585a67141a2217fea158af9b3ebcacaf9c9c58a79b0ed6565565"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ScriptableBuildPipeline.Editor.ref.dll",
+      "bytes": 85504,
+      "sha256": "7ce6ce91213648aff44acc24b8d960c1baf7074c96a225bfae4fecce28cc3f75"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.EditMode.Tests.dll",
+      "bytes": 10240,
+      "sha256": "4fdd6d3255528e1e43489fdec51e558555586cff09dfc970e20fb441efd9c58e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.Editor.ref.dll",
+      "bytes": 38912,
+      "sha256": "c94c7b3b75f5df793a1dd2d055b55e75a95e540fe3c1d067022df871c7de86df"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "09202bef3d1b83b745b4ac8ea4aedb8195419a122b2a04eefc08b353e598b679"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.UI.Editor.dll",
+      "bytes": 229888,
+      "sha256": "edb64d2bcae3b83505bc5b172c5c0a25155c5593e64a43ffe0917b54768992cb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Updater.ref.dll",
+      "bytes": 7680,
+      "sha256": "63eb0242ed315b7cbe6511ced5b77dda1bb1475985174611867e960469769b54"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.PerformanceTesting.Editor.ref.dll",
+      "bytes": 15872,
+      "sha256": "6823ea5805a27868343979a79030224668ee335ff8911ce42ed53782b34f0082"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Adapters.dll",
+      "bytes": 128512,
+      "sha256": "f9b6335b2b58cb9079c8b1eca18b6d0e64ccc51673c8af4b43f65c6d4df2e7a0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.dll",
+      "bytes": 1827840,
+      "sha256": "4dc9fe4f6e772c33629ed1a08c5c82c206424354986686efc9a9b55df7149df6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.PerformanceTesting.dll",
+      "bytes": 48640,
+      "sha256": "62c6e7e405ac73fe2f5bb8c259a848dba3d65435c8a7f4f6b93c3773bbae12a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Traversal.dll",
+      "bytes": 19456,
+      "sha256": "717bd537ce95dffdf8a58ff368de9d75a21394fbdbc80c378a57f6cf3419217a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Extensions.Hybrid.dll",
+      "bytes": 5120,
+      "sha256": "faaa576a0a2a5ac43b27d70dd388c167a3f43571bf7f5aa15e83a211eb6a8ab4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Editor.dll",
+      "bytes": 23552,
+      "sha256": "b7d3d1be5a0b917b5cf5c583ac941a4933a4d2f752241d721b51ab9a93655827"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Editor.dll",
+      "bytes": 898048,
+      "sha256": "9d29e75172df48e29dd8e5ed1ad8d12b9e72ca11d7e5895b094e764c77f5c42b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.UI.dll",
+      "bytes": 98304,
+      "sha256": "1387924e6b0dc4140397e3d5ff6c4d1bd9befa79336f5264d09f3a26d051811c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.ForUI.ref.dll",
+      "bytes": 9216,
+      "sha256": "4079e533fde53b5efd4d3dc62c894b370790864ecea1cb8c3e814568c03f6d46"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "388c18fc0779ff0600954546995ca1545a91222a533695de2ebcd65bee500947"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/PPv2URPConverters.ref.dll",
+      "bytes": 4608,
+      "sha256": "f41910f5b245969eb2ab028c5860176fe102695481b248e751f1c9ab244eeb1b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Runtime.ref.dll",
+      "bytes": 172544,
+      "sha256": "7c240f0c2b3baecbefc3ccbda53a60e57fdba8c1970a542c12d2b513f1da7b93"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEngine.TestRunner.ref.dll",
+      "bytes": 88064,
+      "sha256": "543677b6372801ecf3f3fa7f1c6107faf746f5838c773b9a50f0ea7e14f9d574"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.Editor.Tests.ref.dll",
+      "bytes": 8192,
+      "sha256": "d019b61448ce110bbfc2aeb6f6d8a39df2afff0477950ea63cc19f6203c136cc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Interaction.Editor.dll",
+      "bytes": 26624,
+      "sha256": "68fa0e3202a9be731247c50cc620af2b1181cc9fa3ca8a01d228db60e55f52d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Core.Editor.ref.dll",
+      "bytes": 5120,
+      "sha256": "77556098a4e3bd83649c41f0da99e86a1bea01b47e0c531aab0a05e7c85febe7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Transforms.dll",
+      "bytes": 28160,
+      "sha256": "54b771456c9dccd004c83dd802e970e05d5c4ba3c1840fd7132efdbc8e592ebc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Derivation.Fixtures.ref.dll",
+      "bytes": 18944,
+      "sha256": "e2c0afda3816e33121bd3e09eadd4368dc6a5b4b92c58e9832329b48913dba11"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.ForUI.dll",
+      "bytes": 22016,
+      "sha256": "ad63ab332bf1858a8e5f36bdcb667740663323696724f76872f78566a33bcd3a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.UI.Editor.dll",
+      "bytes": 142336,
+      "sha256": "70f6c09a8b1bb0f9acfddc0a27eb3ffbb1e6ba4fad9666ea9cfbd40e3892f0e4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Deformations.dll",
+      "bytes": 4608,
+      "sha256": "66f9f8220e3e05031d09e58e32c7a79841ffe0082f4065d21e3efebd92141e19"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Core.Editor.ref.dll",
+      "bytes": 78336,
+      "sha256": "b6e8daada4ee6f4f4ce9a9c90790c3ca11819e1a982d655ca3926ab48d658341"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.UI.Editor.ref.dll",
+      "bytes": 69120,
+      "sha256": "5699e25d620efb1d9e9101ed4a32f8124878bb3f2019e458716651a721bcdb53"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "b172f4919fe1eb544c2088c62b01a108aafb4ecca94c6146b2a8a3a7778661a9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.CodeGen.dll",
+      "bytes": 141312,
+      "sha256": "b87331770c65d128101f8f31bc2d17487142b6de24bca04fc7b6119c968d1700"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Entities.ref.dll",
+      "bytes": 24576,
+      "sha256": "388d56fbc9bd4f215ea9286ec6514dcae23747d091ff370800e727a270abea8c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ShaderGraph.Editor.ref.dll",
+      "bytes": 536576,
+      "sha256": "6bd95e6f264362a6c4dfe199b902cfad7aefe9ecc34381fd7b69ccebd59e9f9e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Editor.Shared.dll",
+      "bytes": 4608,
+      "sha256": "99d986ca1c0419988a4bc1bcb450eb4642c4c41ce348796ff52b0adf792770f5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "bytes": 5632,
+      "sha256": "4ee090933cb8275a3f42c8e473d509f15a40e89b8001f03656b8a68050e58b05"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Content.Compiler.ref.dll",
+      "bytes": 17920,
+      "sha256": "5b22345bf7f953c4e91cc753084f790c5d4d1964f9f87e7942249f738d157ac8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Editor.ref.dll",
+      "bytes": 15872,
+      "sha256": "897c0605fae06c3444470fc85302c8608a3659d2bdfc6cefd8c7eb9b0e7a5f47"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.2D.Runtime.ref.dll",
+      "bytes": 73216,
+      "sha256": "1eed8097dbd091bceba883152c936c036532968df8d61927d6a22f3afcdeecda"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.PlayMode.Tests.dll",
+      "bytes": 11776,
+      "sha256": "65118bc81e3975f5563e8c3247dfe94ff644000c6355bf5cdd938735adb9a30c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.TextMeshPro.dll",
+      "bytes": 471040,
+      "sha256": "bfa9f9cafecc3c2cf679338d41f4048db1071fe55c0a606637a2410b1bf8b4f9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Searcher.Editor.dll",
+      "bytes": 41984,
+      "sha256": "d5f34ac9e9e44a2611eb46dd428f948919bd455a71d9d12c168570d206d324b6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Toolchain.Linux-x86_64.dll",
+      "bytes": 8192,
+      "sha256": "84f54612c261e097f8f70584ba4edd7722abdc3fc3126f852896993b3f091d00"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.ref.dll",
+      "bytes": 35840,
+      "sha256": "24fb800def8062a136f0e8c4cc5d601412df722fadc1f8229fc9078654269a1d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.SysrootPackage.Editor.dll",
+      "bytes": 35328,
+      "sha256": "5c76459cb4dc3aa5c339a976794ab54463647e1712775cfac5f3f9e25b66f0f5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Runtime.ref.dll",
+      "bytes": 395776,
+      "sha256": "9345b0aa57cd514e49c903e99ad5d4f9ffdf7cf6adf74ac3d8ecc401b7e5f5c3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Gameplay.Editor.ref.dll",
+      "bytes": 8192,
+      "sha256": "9d402af19545881322ddfa37864a7ffc604f02d8c0b3dcd88c2aa03e7bf9b996"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Derivation.dll",
+      "bytes": 175104,
+      "sha256": "14af191191ecf69d1b7fbbd6f719378011c5cd9c5848bf33a33c1cee3e16d472"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Ui.ref.dll",
+      "bytes": 39424,
+      "sha256": "20c1a83491c7f808a2941462c4f14cbeb9d233a5d80644880fb4209ebbbce179"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Editor.ref.dll",
+      "bytes": 259072,
+      "sha256": "8c182bdcf48890a8ba780c80d2e9130f64368685685dc61d7a11746828d6dcfd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Editor.dll",
+      "bytes": 934400,
+      "sha256": "6ab97b776bcdc2060a06eb8be8cf274d131d28cabe41226c07f2c8757643679d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.dll",
+      "bytes": 50176,
+      "sha256": "2c0c317aeba7e2526c72e2f490977f07d128c80d895a35b207359b7ba4bcfc0e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Editor.Properties.ref.dll",
+      "bytes": 11776,
+      "sha256": "b87aa20c4bade887e46a509e88a35c3fd3fd2f9ecc6b8b76a26502dea80980a1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "d07e193b3a2137e7eeaac99b93e93c0fc6371773d7f552a19082b4f204848432"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Etos.dll",
+      "bytes": 111104,
+      "sha256": "33037274849831078e4e31bdffe8fc7201325716f499b7d11ca3fe9e49e42f84"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Compile.Editor.dll",
+      "bytes": 40960,
+      "sha256": "ef957f75ef3372448bcfc370e7c82047dd7a1aab53560a8af9290b002cbb86ca"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Compile.Core.dll",
+      "bytes": 35840,
+      "sha256": "a3f28406159b1884d590128e0de984d3c1e250f24155eb7a02e36d83430f1142"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.UI.ref.dll",
+      "bytes": 10752,
+      "sha256": "309c505458ac152e57d3afdb13b7747db1f0fb11d5d080790fa696e0b33d2755"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Npc.ref.dll",
+      "bytes": 24064,
+      "sha256": "78ff457d7d59b1af9eebf6f5513781a12afb875fdc3d1651bf8be4a0ed170006"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ScriptableBuildPipeline.ref.dll",
+      "bytes": 7168,
+      "sha256": "cc04f96b0ecf39ac26ca2f2cb2e83bfa444e9ad7b6f0f740f53008907137752f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.TestFramework.dll",
+      "bytes": 44032,
+      "sha256": "02bd602a67f8ca726db17ca2bb10132807faec35c1a99692b2e8f93a44024f92"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "bytes": 4608,
+      "sha256": "313f8287d2397982f74c80244da93b1eadf85d52b42a997ee45a3b045d4cd543"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.Editor.dll",
+      "bytes": 918016,
+      "sha256": "72a05d71563c26b29e2706a0ca8b735b1d398ee875f5af632cc7d7f9a3ea4a9a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ScriptableBuildPipeline.Editor.dll",
+      "bytes": 229376,
+      "sha256": "3d17466be937aaf87ed1b80ad0e59160aaf167b2d0cdac982b3e93ad48a22a91"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.DocCodeSamples.ref.dll",
+      "bytes": 5632,
+      "sha256": "b0fbd44987a471a85a60599cade2dd13d02c3cdfd1bafdc947eb3a012dbed933"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Entities.Editor.ref.dll",
+      "bytes": 13312,
+      "sha256": "bd2eb76bce4110c592a48ff033bc9042848c3477810f1abbf2eeb7d25ab89ef3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Interaction.Editor.ref.dll",
+      "bytes": 14848,
+      "sha256": "8e1233d5f377633d9908b96862e347f1647d34ef3068e6aacb4ea313c6ac3cb2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InternalAPIEngineBridge.002.ref.dll",
+      "bytes": 19968,
+      "sha256": "3efdf974080f46bfa86facbaabc4daef45fb6ee544ab37828b5ba683f8ce0a31"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Player.ref.dll",
+      "bytes": 24576,
+      "sha256": "03686fd406b2a47c62d119a4266e7be09b34ff7df274efd91b186deb9b79ad75"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 144384,
+      "sha256": "5b486c487932321f37335617e81d3789c46a3099f814366128895b40c43985e2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "3dae5f1640e77ad8bcab8a72cad7082f677bd91d665bf01dfd439a58fdd70be2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Rendering.LightTransport.Editor.ref.dll",
+      "bytes": 6144,
+      "sha256": "559142c16cb13a1e743a293d808c1b779a5dd92eef69ffe9549b60d3056068bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Planning.dll",
+      "bytes": 202752,
+      "sha256": "6311cc47471f8a87faef5316faceba321c23daa91e515f3295ead858093d7642"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Rendering.LightTransport.Runtime.ref.dll",
+      "bytes": 252416,
+      "sha256": "b1b9eae2d4edb3d3d8e970e4c71637af42f8aac04d0b19e883462d37fcf42463"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Serialization.dll",
+      "bytes": 177152,
+      "sha256": "9d36f5decf2a11cf441877f011e967c80886eb012527d7e4b21e45f73b18da3b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Interaction.ref.dll",
+      "bytes": 23552,
+      "sha256": "d9045fc45fc70f356472413b98ed31d681ecba5242d3bee03509cfa2694723e7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Inventory.Editor.dll",
+      "bytes": 14336,
+      "sha256": "6536a1f6c521d232bab6152e4180846169efa606d59eb5bccfd229e86536a7d6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.UI.Analytics.ref.dll",
+      "bytes": 6656,
+      "sha256": "aba8754c67b28108a6b27146f7f8e2b8106840f3a19f365fb50970f3952b4bde"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.CodeGen.ref.dll",
+      "bytes": 12800,
+      "sha256": "0d88dfc70a8c80ec3995324c301e34d1691a2ac5b7baefcd9ca61c05537010e0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Deformations.ref.dll",
+      "bytes": 5632,
+      "sha256": "25333e00a2310acd86b59571d1a56cc67463a9cd6226c6a430a3779d60a43726"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Npc.dll",
+      "bytes": 55808,
+      "sha256": "8bfda0df3ba6f175974c496137e61a49bb3d3835bba175d4fc0396c54f843f48"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.World.Editor.ref.dll",
+      "bytes": 13312,
+      "sha256": "374877d100c83a508e2efa54d5f153dde1d9a0942a6283db4326191965eca745"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.SysrootPackage.Editor.ref.dll",
+      "bytes": 16896,
+      "sha256": "2268e125c93fc1f7824ad65888d5c62269cc5e088843989123f100ae5c469995"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.ref.dll",
+      "bytes": 660480,
+      "sha256": "aac2b0fdcdddac2ca0925791b30c4ba4fa14878e9da9f75654234b6bdd2f2a16"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 984576,
+      "sha256": "88975dc7bd45421a4dd21c3353d8d17eef111d1998ef24ab06ca60ccaa3d08cc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.UI.Analytics.dll",
+      "bytes": 7680,
+      "sha256": "d0b43815397bf6ab669d34a18c8df7ae3a3538802d5f0822e5d04f6ee9494401"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.PlayMode.Tests.ref.dll",
+      "bytes": 8704,
+      "sha256": "90a4950a0c39193138a6e6bfcfeedb250ce0425978d8f4f765d88f29bf6197e2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.P4_2.Editor.Tests.ref.dll",
+      "bytes": 6144,
+      "sha256": "e8dce8bbd2018880d22ec4744aba8e1785498fcc92cf3a08cad7495aee392c68"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Content.Compiler.dll",
+      "bytes": 107008,
+      "sha256": "11452484eafc366edb33cd7f9d12b7bdcc72d2cc5a0e23cbe259e1ad9d75518a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Gameplay.Editor.dll",
+      "bytes": 15360,
+      "sha256": "2c5bd7255010717fc48e65739ad5e65892d55592869bf80896404a565731f617"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Compile.Editor.ref.dll",
+      "bytes": 12288,
+      "sha256": "cb6b2595681c87c669f7cf70915005e64b6f1f9c6571b58dc21700e6300e39c3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Runtime.Shared.ref.dll",
+      "bytes": 6144,
+      "sha256": "8ec211becc57a1c431834b5a6c280d84dc0945b2df9565686069b8732b3c8b5d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Dialogue.Editor.ref.dll",
+      "bytes": 13824,
+      "sha256": "7c21cf2217a2f994ed8542a7eb28f24430e517a85074333dbcb4d6efcb33b30b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Planning.ref.dll",
+      "bytes": 55296,
+      "sha256": "8584f0c5be9542a62ebf5aceda3e13c6d02080003248ef521d0eefac6831679d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Extensions.Hybrid.ref.dll",
+      "bytes": 5632,
+      "sha256": "b482a27dcf759d01ef6f346f48328665cd158cb4c5ea62201ec2aee05e1a5f37"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Dialogue.ref.dll",
+      "bytes": 16896,
+      "sha256": "8eb5f53360ced3f31cc6dbb7a7f72a956d507a5cbcd47caf225aaeaec9418bba"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Audio.Editor.ref.dll",
+      "bytes": 13824,
+      "sha256": "907f6beffb741914f39c4d7a195b825cff2895dd5f5712d7581567842528ab6c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Build.dll",
+      "bytes": 16896,
+      "sha256": "41d99d78175f63cef01a2f59b839f3f0c66ce959a2506b81e96bc04c23a35c14"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.TextMeshPro.Editor.ref.dll",
+      "bytes": 36352,
+      "sha256": "2966caa9bb079bace989b60129790b92a4503342a6ec88a53ac65ec814854cf9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Audio.Editor.dll",
+      "bytes": 27648,
+      "sha256": "befb7673b43531c653d0f8b523558491f5f4dddfb679b1a163bb482b394e35aa"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Interaction.dll",
+      "bytes": 55808,
+      "sha256": "7329329fab16ab3043bd173d652b02c742b7dc6e6aa5b8f42958d6fb3564a972"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Editor.ref.dll",
+      "bytes": 15360,
+      "sha256": "ad5fdac44b37a5278e0a1610f7f314591d387351335fcbc236d4665b11a8ab88"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipeline.Universal.ShaderLibrary.ref.dll",
+      "bytes": 9728,
+      "sha256": "613bf27df72aca019ace6b97d8d417e4db523063db70f4504a776836e11f5edc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Inventory.dll",
+      "bytes": 44544,
+      "sha256": "d50609922f1d20760151d1b7b675be2271d622018fc594d5802c8282f28c6bb3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.ref.dll",
+      "bytes": 24064,
+      "sha256": "a09de821ed2988fccdc6e5719bc55707ac72226a69231909aa244793c6cc84b9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Derivation.ref.dll",
+      "bytes": 48640,
+      "sha256": "4364ca4a68807145230a9d3e9ccfc3ccb9863e503f4294e8da7215f6f2e8b2bc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.ShaderGraph.Utilities.ref.dll",
+      "bytes": 6144,
+      "sha256": "09bc7bfc20a3821c7741c609506edee05a38517cec0386427de4faf7bce1d7b4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.CodeGen.ref.dll",
+      "bytes": 41472,
+      "sha256": "7147bcba980dafad811a0ce0bf07a381b9e2c035390b8dadb49958241c00d66e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "1479bfcba3dc4ed70efb2d403e869f4ab2bc5d49425dd9497cb443fd2c7d585b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Quest.dll",
+      "bytes": 36352,
+      "sha256": "da4ff3c7175bccaa60f60ad641c3133f60a784816936a023f648c4e85b5fa900"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEngine.UI.ref.dll",
+      "bytes": 101376,
+      "sha256": "f6088ddb1efc8710c3ffdd1919e139e55842b5375dce7059d69a95550781bc84"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEngine.UI.dll",
+      "bytes": 268288,
+      "sha256": "597a6b2b2ca4b5bfceb0c7c744c624f71fbb3daa7fdb72a6114aa34c0cc620a5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Serialization.Editor.dll",
+      "bytes": 8192,
+      "sha256": "b2a25b22a381828403d0091c25cde76a76b45ad405d264014bff407c304ea274"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 839168,
+      "sha256": "64c8a13d7d300c02a6aef9a062ac734d8d5146b468b1a16a5e76388deee7052c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.World.ref.dll",
+      "bytes": 35840,
+      "sha256": "82d5012fdf33ad651d358c68a004cdb4c51c656de3f67c41165d7a36a9430eb7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Core.Editor.Shared.ref.dll",
+      "bytes": 5120,
+      "sha256": "fc5436708dbe29ad3a365d0704b4f66255ec9deb91d58312da6b3b2e8205c263"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Ui.Editor.dll",
+      "bytes": 24064,
+      "sha256": "79f586fecdcb9b4a1cd99b8ba5a0af9cae9946af9eb0fcab78b7c107cdc04f59"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.TestRunner.dll",
+      "bytes": 309248,
+      "sha256": "be030ebda1997f91718bccbf14da9610133cb3087b5318e6fac637a3efaf9023"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.ref.dll",
+      "bytes": 221184,
+      "sha256": "0075070d1c2b5d9a5ffd8b080042b4193a0c2236210fc78c1999a24910a3ddb8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Editor.dll",
+      "bytes": 69120,
+      "sha256": "8fb177108f3b190e1b4f7ba7f8dcafa2a2fadfd4ce2e8d2b897121f9d7889483"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.World.Editor.dll",
+      "bytes": 26624,
+      "sha256": "711dbfcd70a4af3b517c9eb0257c81b5aaf53ab36e7e46b93b298be752bc1727"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Npc.Editor.ref.dll",
+      "bytes": 11264,
+      "sha256": "1113439d7eefe5a7d0cd4b83270072deacbd9bd9b34db54c820256c1f8cb4f27"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Adapters.ref.dll",
+      "bytes": 51712,
+      "sha256": "581c15dec3056a78dc2bcb04feb4fb5dbacc7ced33cd08067c5861a52f770a5d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.CodeGen.dll",
+      "bytes": 22016,
+      "sha256": "0ee9bc0b27f41605f5780a1e87e35106cada1a80ac5fc36e7d6e952c66b594d2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.CodeGen.ref.dll",
+      "bytes": 8704,
+      "sha256": "f28139769ffc1b2dad73601fb2fcd7dab5816ebf73528990936cb86ed10866e5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Profiling.Core.dll",
+      "bytes": 12288,
+      "sha256": "70c74c5572da20560af3d230b30e55c0f0e2ff3e1c84cbf1b8f51ba9e393f23e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.TestRunner.ref.dll",
+      "bytes": 154112,
+      "sha256": "07fa4d8b8fb582a0992561cf988d43050a603e946fcd2481fbc213b90e9df426"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Views.Editor.ref.dll",
+      "bytes": 62464,
+      "sha256": "1e458f70cebb8293b402636f28ae6c21d42da999949503ead82ec69a74d42126"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Composition.ref.dll",
+      "bytes": 72704,
+      "sha256": "291abfffccc578d23faa5a11fd8ffea6a0a6a2cf9edbd4944ee570b6e337d380"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Etos.ref.dll",
+      "bytes": 33792,
+      "sha256": "12ec8ea55f6d8fcdef79bf0d2444bb9d2c8aa15a719daa8f409100b325004f2d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Entities.Editor.dll",
+      "bytes": 24064,
+      "sha256": "2df939846d19c55ce9be1544c3543becb0a92a782b35cf60eb3373fc051505b2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.ProjectSetup.Editor.ref.dll",
+      "bytes": 5120,
+      "sha256": "c7555f23b47d85018f1cfd37e27bc792f82e7d78d7f19ac60b8b6556f0b041f0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.EditMode.Tests.ref.dll",
+      "bytes": 6144,
+      "sha256": "b2e2f90598ad67fe94dc9817479fcadc5a8e281dca8d59bf04b881caf5ace15d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 232960,
+      "sha256": "2d6545c31922be3b40664705a8434279f39449fff82eb2c574091b2ad1bf11ad"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Logic.ref.dll",
+      "bytes": 41472,
+      "sha256": "61d49e3889ad84ae9ca65faa980c1b2493c2864cd567e7aeca25882b42a95331"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InputSystem.DocCodeSamples.dll",
+      "bytes": 6656,
+      "sha256": "755c00eace7612c8dfe5e4c4d51883611d9a4d3518a69476c225d37ecad24f2b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.TextMeshPro.Editor.dll",
+      "bytes": 292352,
+      "sha256": "a7eeac6d14188979f6ac0f40ebe5959da84395607a9dffa98ed14866c8e8b52c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Shaders.dll",
+      "bytes": 4608,
+      "sha256": "edaa63331a6cb8440dde42f5efafd9b0e677e4e62affe61fe6f0866c84626be3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.Editor.ref.dll",
+      "bytes": 323072,
+      "sha256": "715325588234990b57d10d88248d71c30297f619d4f8d0474d6d0baa4b79becc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Authoring.dll",
+      "bytes": 79872,
+      "sha256": "b6bfacdc930b8ae99f7c83e3014d8a4170c42d9708b2f9cdc361bc40935451e1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.P4_2.Editor.Tests.dll",
+      "bytes": 10240,
+      "sha256": "0782ad8b60bfe82d209e001f41e8f563bcc69ba1e708545f07988b2b18077e9c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.ref.dll",
+      "bytes": 45568,
+      "sha256": "fe1cd699562998bcc58d3e412dd514d83f6188f6342b760dc4b3c4d4ae203d18"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.ref.dll",
+      "bytes": 645120,
+      "sha256": "f2ac90822844f4954bfa626c85f9ee7dabb01f271597390b9f9d5e77671bd02f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.Editor.Tests.dll",
+      "bytes": 16384,
+      "sha256": "457d71679d66ac790d1531260f5b58abf759d3a89ce0a2018c0a0c3676d338fb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Player.dll",
+      "bytes": 61440,
+      "sha256": "2ee42df098e878c26aa80671138aec48f7ae5a36bdf49f3df8487e2a9e84d050"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/UnityEditor.UI.ref.dll",
+      "bytes": 24576,
+      "sha256": "108bbfe1c3fdf53e59920529d9f91d290fee1c196272b724ada6e069ed167b70"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Gameplay.ref.dll",
+      "bytes": 71168,
+      "sha256": "f7b8e2cc96b509e737802ed8f479e8761ea0244b31a41785d3010d78ea15d485"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104960,
+      "sha256": "d16e3154a5b7f9cf502731e1ffe15013859134f1a3e87bfda90cb3a329fa0b37"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.CodeGen.dll",
+      "bytes": 63488,
+      "sha256": "35d8c91a94c5154463d8a56f49b6889ab08176df5d8375e2f3ec9c4330079151"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.Extensions.dll",
+      "bytes": 8192,
+      "sha256": "da864a4a4e60527d0037e65dc08e3209b276039856643f8c61549357ff7be81f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Runtime.ref.dll",
+      "bytes": 303616,
+      "sha256": "73b8c4986436ed7c647ee2e6e7436494413536963ff6229aed3f86bc7e96d416"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Scenes.ref.dll",
+      "bytes": 38400,
+      "sha256": "e3e7f1892db9ba2a2e1a97c5251f588553e007580b1c820e6900f589f233bc83"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Editor.dll",
+      "bytes": 827392,
+      "sha256": "5ba06751ac58a562771347dc25fb2f6ea31862e1afe77e891dbd516e2e70c1a6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Contracts.ref.dll",
+      "bytes": 119808,
+      "sha256": "8acc7aef104c9132923bac9fc60c2289be9a98a739d4b1e0482c110c7751d1a7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Searcher.Editor.ref.dll",
+      "bytes": 13824,
+      "sha256": "8cfaf4ccf4698c819e9e71fc32ee8b4ae324d91d7b355899abe512a4e3422c01"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "9a46133fbc6452f6216c418c48d788a9ac5bbd6b43df054a74a2d099a8738eff"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.Updater.dll",
+      "bytes": 20992,
+      "sha256": "ffc7676cb81b1172f38b6979df8390d164a0425fb808cbf1cdc2168737654bb6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Rewards.ref.dll",
+      "bytes": 16384,
+      "sha256": "d9c4545f5664f58542a3710c32abb43bd75bba4cbbb2258cc165f842c103fa0e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.Universal.Config.Runtime.ref.dll",
+      "bytes": 6144,
+      "sha256": "955fa302dbf23dad11da88222b72e90f4c9c79556ab7978a15ffb74b7de4b0a3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Rules.Narrative.ref.dll",
+      "bytes": 28160,
+      "sha256": "bbcf5f6e5eeb90e25ef3e4a692ba9f139256aa8ff7d0601f6a88a7edb2c685e3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.RenderPipelines.GPUDriven.Runtime.ref.dll",
+      "bytes": 90112,
+      "sha256": "9fb0dff708bb8816433ef9d456cfc06b997c8a8e42ca04dcca1e562832e62c4b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Rewards.dll",
+      "bytes": 49152,
+      "sha256": "58fe4751fea01e0b8bc94e391f7c6d470e73103c4c059d76fa12016fdcfdd3b9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Saltmarsh.Editor.dll",
+      "bytes": 47616,
+      "sha256": "4e01500bfae1dd1d9df7b559da995372b630f3a20a966a64dc4a5f292158e68f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.UI.dll",
+      "bytes": 12800,
+      "sha256": "29152b900a554b9d3a2a4e85a08a3f3c19f75b255b0d81bb8a1cdcf6c315c895"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Narrative.Fixtures.ref.dll",
+      "bytes": 37888,
+      "sha256": "4eb27f1f2d01e6e5035da6c0b2ddec2b5b9a06fabed0d03018d7550907ff1318"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Entities.dll",
+      "bytes": 51712,
+      "sha256": "1cbb8285e5a092728e605a9a6a07718bc5f55bf4216fbf456ea948a6bd2f9e3f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Logic.Editor.ref.dll",
+      "bytes": 16384,
+      "sha256": "cd31930fdd9aa1bd53b716f876f940acdad5971d168020ce1e809b09bb18203f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.UI.Editor.ref.dll",
+      "bytes": 55296,
+      "sha256": "eedccb7af1de4cc9380f12bd1e0edb4c2d948dfcca7ab1c9f6b3ab76076c6394"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll",
+      "bytes": 1401856,
+      "sha256": "c4f0b836209b7530adf2ad349e903b80af81b6f724c96d43a07c5c356f707782"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Integration.ref.dll",
+      "bytes": 11776,
+      "sha256": "6842de8126442c106a4bffcdb66d8872d53540ce88914bf53439f08747414260"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Profiling.Core.ref.dll",
+      "bytes": 9216,
+      "sha256": "3b5555c0e01740f19aaac64a99f07e45b51869083408ec938e5ce5ade35f691a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Integration.dll",
+      "bytes": 27648,
+      "sha256": "43d13d1b7fb0450c762c1f7a10145c761c4c9c93e3dc583b04389372465eca81"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Player.Editor.ref.dll",
+      "bytes": 9728,
+      "sha256": "009cfee6812dccd020687152e931c65f0b4ef9508b7aea6516a413751765c210"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Ui.dll",
+      "bytes": 104960,
+      "sha256": "586fefe528b60ccd2abef5d86aba6df34a2f965b977d6082eb5798d27a2fd045"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Transforms.Hybrid.ref.dll",
+      "bytes": 11264,
+      "sha256": "cc458e034578293c11517a13b333598f458049f4a34d59da8e9b91d829ca2563"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.Fixtures.ref.dll",
+      "bytes": 11264,
+      "sha256": "3171095ef150688eaab4ccd9afaa463fb0aced2f3ba0682213c0e9129eb86e30"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Studio.Model.dll",
+      "bytes": 133632,
+      "sha256": "d9cf853716b01ce342759b7bcc894d462eb6a110729a8aef6df9f024fd8e0c90"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.InternalAPIEditorBridge.002.ref.dll",
+      "bytes": 22528,
+      "sha256": "f050096c01cbcc25f42a0731351afb77cf3f6a82c5bbd5b0c07382963f2d669a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Toolchain.Linux-x86_64.ref.dll",
+      "bytes": 7168,
+      "sha256": "d4fbe6527f90403cac2b0494859d4b23b2c7833a4690c0285f5e802d0bdf3f06"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.Runtime.dll",
+      "bytes": 605696,
+      "sha256": "4baec880c3594b24f66dba3e41e9991f8a1b7e4bd1668e9c1f0cb5a4e2d524ab"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Mathematics.dll",
+      "bytes": 755200,
+      "sha256": "a98fce7d3adcd403e8a4af2164ea019c0f65d1cf6401f682c0cce1a753c8359b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.AI.Navigation.ref.dll",
+      "bytes": 12800,
+      "sha256": "c6de256d1c6230aa0bf4f1cfa7af7b5547a11f32eab57419d2241983f280a4e5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Inventory.Editor.ref.dll",
+      "bytes": 11264,
+      "sha256": "001b3b4eb684218b42d619e66193badbad91765d5f88c7d244d1cbcd4691479e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/Unity.Scenes.Editor.dll",
+      "bytes": 142336,
+      "sha256": "d3750dde6d490101bd20c95380f5b52695df689bdb8bfdb633771dca8e1de616"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Cards.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "8db7063168a0851cde706663dc8c150efa96b71dab1e9ad81796d5586374c088"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Saltmarsh.dll",
+      "bytes": 177664,
+      "sha256": "fa9de0e0bc816ccfea0e0e71487438c971db0127857d997dfc1b972a6cf304eb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Burst.dll",
+      "bytes": 305152,
+      "sha256": "4cfa320cdfcb4bdacf845b30375f872f9f4ed8ba594ef5e3d00eb4c248ca3b44"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.World.dll",
+      "bytes": 93696,
+      "sha256": "79ec9a874a5acde27dd27a2b75a1b3cae0ad15cf4bf026766cb41d0c6b5107d9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Entities.Hybrid.dll",
+      "bytes": 197120,
+      "sha256": "9257fb1bacd28843448e72f57ae1445681d0d3792e5414c9348095d1e6dc7e12"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Logic.dll",
+      "bytes": 118272,
+      "sha256": "c4c065526767af98bfed207129c3fd8717b5bde8173272d9c4291064a9de893e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "e8a7e8d9b1c7cc88ede9f0407115fa0d72b24dafd5ddc9bb43a42066b40c87d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Unity.Fixtures.dll",
+      "bytes": 138752,
+      "sha256": "6a3adc112133a7a2ad023cc537a04c7664a74b5ee59ede5a355be3995405174b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "aa806aa94d48d36980498999cc3cc3b512bf3b670ed305540f3318bb0b0b880f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Traversal.dll",
+      "bytes": 67584,
+      "sha256": "86c0183327fbadaa2b05b6affcb85444a623d1bb85d7e2c8d81b3ffb5f30ce32"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "bytes": 4608,
+      "sha256": "9593a7888e351530ffe07c774a26d1e1b377f82e6cf44688a707e846078f6185"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Scenes.dll",
+      "bytes": 96256,
+      "sha256": "b4bdfe49916277b49feae7ee96ad0ed825ab4242aa830137e18fa068e8556cbb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 18432,
+      "sha256": "080d5bf31f131c9f954db11e06af054146336510f975770d85e0c8b19f74fd93"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Audio.dll",
+      "bytes": 68096,
+      "sha256": "2ec9e16540f878fbfba1fc8c931a91ee03653cd085c15eefe63cf4257b77ab5c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.ScriptableBuildPipeline.dll",
+      "bytes": 9216,
+      "sha256": "983e473ba82410e323b9424202cfe6ae7e2314e3039d52993938c56c0f7e5328"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Traversal.Fixtures.dll",
+      "bytes": 17920,
+      "sha256": "c795a72de7b8a0f140978b9c149fb9c344e93185a66b16573542bfbc2854545b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 40960,
+      "sha256": "dec134d2114f5b234706df6d1235863bd242759c6dc5facfbbbe7365706de4d7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Unity.Adapters.Fixtures.dll",
+      "bytes": 16896,
+      "sha256": "7bd51c629fab9aab6a88428c059eb1aa8635d5249fa781909808d103a0ad2690"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Transforms.Hybrid.dll",
+      "bytes": 28672,
+      "sha256": "3b596c7d320ffd95a0ada203cc8abb32904a1291aba322a28804a643a0d1fb62"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.AI.Navigation.dll",
+      "bytes": 24576,
+      "sha256": "d0ca6da00cbda65277d52a3bc1b9ce8067b9a9a2bbd40aa5cd368de5db2345da"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Rendering.LightTransport.Runtime.dll",
+      "bytes": 305664,
+      "sha256": "068c32306cb5c26c9331f0a2b6917a4510af01b07ffdd906edb7326b12745981"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Narrative.dll",
+      "bytes": 34816,
+      "sha256": "e160c7a48c1db0c67f32fc793d58653d641336bac507c77c1ca1e02780076c65"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.InternalAPIEngineBridge.002.dll",
+      "bytes": 45056,
+      "sha256": "a21e78742b1ac1455e9396a05e20e1d2bee2ee1327a5e466e5e01e3ef8e578f2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Collections.dll",
+      "bytes": 453632,
+      "sha256": "d9b382f07c735213c30bc40af8c3e5eff25d4814beb5e1d8abbf94f2ba828d5e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+      "bytes": 245760,
+      "sha256": "c867ddf5a184a92dae62a42fa1a99b5c9c1a3f1c8f5567e7c2a866405e3d4ae6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "6bde7b34ad96115dfc28833bfeca856e5205b2fdd1f933af89b3b99e4c54f208"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "c9a229a490a4ae1c1dcbf1dc192ddd94a4435bb0eec1b073864cd1db6dc85db6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Unity.Adapters.dll",
+      "bytes": 128000,
+      "sha256": "f49a095d541210ec78530d4537c5a41d98e5a92c1d8331b6ea611adbb196d49a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.InputSystem.dll",
+      "bytes": 1134592,
+      "sha256": "052b987786fa9eda4212541659a5e8e7ab3c786b930c3aa64c04d8d07a8a89b8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Rules.Traversal.dll",
+      "bytes": 19456,
+      "sha256": "c32504087950e618e3fa0546d8af10017c5732c4f0960b4198efced67b901e8d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Mathematics.Extensions.Hybrid.dll",
+      "bytes": 5120,
+      "sha256": "c1d87614bccc43c1f3df1f7ee468227d37482fb23aff0c3d09a1a9a0ee4dde17"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "45a1b25d42cf908f321e36fb6782b9ec770f2504954a7f874ac556569347263c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Transforms.dll",
+      "bytes": 37888,
+      "sha256": "7cad7229aa5a03538878efba049b5eaf285a834db368d1aff1bbec698d40f47b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.InputSystem.ForUI.dll",
+      "bytes": 16384,
+      "sha256": "80b026391250fd4a39d4c3904e70402618333b380e864b0acd27ae1e8734705b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Deformations.dll",
+      "bytes": 8192,
+      "sha256": "1be6d459d06b419efe19f8af84770b0ad33f9bd7b06a44eb5b92eb8fb40893ea"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "0d77ceae65b019a724871b884560f8565566254a3077368dff557a90162ea760"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "bytes": 5632,
+      "sha256": "6ec510451b8d45a8ddeafea564ac7ebf3a62361772a4690d1271c68523ae5492"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.TextMeshPro.dll",
+      "bytes": 445952,
+      "sha256": "f95a84b1441a1c25f83c8c8f192e8aec201134dbd55e6e9f296b60df65054afd"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Derivation.dll",
+      "bytes": 175104,
+      "sha256": "8fb0e656346cf8adce4bb1a6f435eaaa37a4ca82bd0fbf1fa3e9c53804a95c81"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Cards.dll",
+      "bytes": 56832,
+      "sha256": "8de3e76325e65d56735d7643ba3083f71494ffea60e26ba09a50621c57368dc6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "52eb95e6281513d01b94b5450255b5f26de666c340c6d6648bbc0ba4bd2aca19"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "bytes": 4608,
+      "sha256": "a54f69ebd29c3c4b1d63a6b8d822f07bc3c736966e52034689fe915f708d5c56"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 148480,
+      "sha256": "60d2964e9f823e2b85259a441090410093ea5544ea01222db5f1b1b36b2b7d6f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "f35969850d97ec994cf38a59e0224fc9e00404506701399da5e2d9f151a2bb97"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Planning.dll",
+      "bytes": 202752,
+      "sha256": "7d69c4eb2ecd6c82af46458c563dbc5c94a5ee9835977e5607c7bb094b7f8047"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Serialization.dll",
+      "bytes": 173056,
+      "sha256": "8f85aba28b20d72e524fbe69b7b00cb877711c3a15a89b325182d332e632006d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Npc.dll",
+      "bytes": 60416,
+      "sha256": "ae459db1c1811d2f97e5a86c20baa31935ce3088c4191930d2cd04b2789efdab"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 852480,
+      "sha256": "f7b2ada78e2978bf7d3dc6f3eb78b7a0ead81d0602eac2305637edd9736667ba"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Interaction.dll",
+      "bytes": 59904,
+      "sha256": "18af346ba9aa466a794b617dc93ffa9adf04c48ed099a60eb37097746bdc9706"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Inventory.dll",
+      "bytes": 49152,
+      "sha256": "ceb62c1806513bef083ff970e43df579afca9b1b3338fbf4074ec4e21c061ca5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "0c4ecb914b01621146ca074c5ee8c946c42051ad1ab25338f44f53e6951f6d7b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Quest.dll",
+      "bytes": 39936,
+      "sha256": "8615805a20d0bc5aedf24cd3badbb26d7a39d3ff671c2d199facf5d3c40874c6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/UnityEngine.UI.dll",
+      "bytes": 264192,
+      "sha256": "565eff042aebd601160559bd75647063779a50c1d6fadcc6ef680adb0ae5984b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 784384,
+      "sha256": "6cfe43239a4900bc001ba01c515d97c3359ed567f5366abcc204640e7734e8c7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Profiling.Core.dll",
+      "bytes": 10240,
+      "sha256": "d816d124d2860a8d624814d38f98769b81b375eeb997b2215ca189f2ad5cd56e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 227328,
+      "sha256": "36aeb7f6656d9ac1cf9de8e4b157e2059232da32f47ac382d4631c9b92357e0d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.RenderPipelines.Universal.Shaders.dll",
+      "bytes": 4608,
+      "sha256": "4fc84b230bf60f2bc3f3a4f3ee7da3bbcd56b50612f025754f88e3a9d2b6e29f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Player.dll",
+      "bytes": 65024,
+      "sha256": "a32e4f8bb7c064a538411a3201124ceac92123923d46c4c99c7aa2364833fe3e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104960,
+      "sha256": "489ad83bdfac33b433f2bf6796c76ab8cdfaf4ecf44444657512c72d0de5b404"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Mathematics.Extensions.dll",
+      "bytes": 8704,
+      "sha256": "a3ce8700409075f0b9a6a26a0543822068970490e955bea92bef9249783c072d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "d1e07a6083c307d3bdf7c8e1127b2c681421665b00954b32642857e5ee6a5240"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Rewards.dll",
+      "bytes": 49152,
+      "sha256": "0719ceb43b9cffff9e35ef0041ff7d614db9714745119e66efb326f985d6f66d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Entities.UI.dll",
+      "bytes": 12800,
+      "sha256": "486d2456cec136ed7df115e9440b45616b6d115e7a54f064c7f89769cd03d4c4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Entities.dll",
+      "bytes": 56320,
+      "sha256": "953a1102ad20e341d521bea36b96edd288e6127ae8bc23d24858975c18f0362a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Entities.dll",
+      "bytes": 1318400,
+      "sha256": "9cc916ac640c21992360a6be38b43ebf76fc266d43e578b32fa08d44ebd0a5f7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Integration.dll",
+      "bytes": 27648,
+      "sha256": "d329728a4788d38428650c3fabe8d0e491cbcd027ece9374586ae5511fd04498"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Gameplay.Ui.dll",
+      "bytes": 109056,
+      "sha256": "add62d6814fcf8dd12d3601e0bee30ce371c08182f606003cb98e2629aec04a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Unity.Runtime.dll",
+      "bytes": 610816,
+      "sha256": "24349205d1e9e625b6c3b0898be803ee686f3810a496bb39ab304e9b4b668185"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aP.dag/post-processed/Unity.Mathematics.dll",
+      "bytes": 752640,
+      "sha256": "f4a00e387590611deb65ef383e93568526022fb85aad72e38597159bfcbf1423"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.SubsystemsModule.dll",
+      "bytes": 15872,
+      "sha256": "3c191c9fb86e2aad56c17b411ebd3a00e1657b3061c1978de827c0e32f6c9b1e"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Saltmarsh.dll",
+      "bytes": 178176,
+      "sha256": "16ee3b05ceeb5d7e22af6ba424a9dcd6cd7e96f9bc67c45766a4ec7e47cb3b1b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputLegacyModule.dll",
+      "bytes": 20992,
+      "sha256": "d2c4f2c1d43af3f5d97e30c46ddcaea8d642d50eac1a8486a31dc98393570440"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.dll",
+      "bytes": 89088,
+      "sha256": "2f9ff3264e35bf87750ad7f386f0537c4f6d3f0570fee95120347bf22ee65032"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Burst.dll",
+      "bytes": 304640,
+      "sha256": "6a28a57792cb72b1342808f7631cbc477900b2cd5cbf39cfa5fb3d152ed29ff7"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.World.dll",
+      "bytes": 94208,
+      "sha256": "a7313bba216c090c5a02ea531c41cdef22915802a65491dfb063505b3d1ae1dd"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AccessibilityModule.dll",
+      "bytes": 22528,
+      "sha256": "ded451f98ee4e117905ec5c7a31ccae1e4b1f345412ff4c76068f4ea233f3478"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.Core.dll",
+      "bytes": 47616,
+      "sha256": "14f39b4b52d639f5d242b9d455827450793fc9f5b66db1450b11a7c98a950a69"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.Hybrid.dll",
+      "bytes": 197120,
+      "sha256": "a7036af542c3367869a99a051c728f56fbe2916c428538b63eb70d5d90437f1d"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Logic.dll",
+      "bytes": 118784,
+      "sha256": "c967c3f05ccb30042fef20c03eed7a873668cec26ba223742d758a87c97bf9c2"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "7f2693719f09f5d20df4cf60d684d0cc038dc61d5311f8116598a9ed0df476e2"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Fixtures.dll",
+      "bytes": 138240,
+      "sha256": "166a32edb5fa223b137f138bfd72f2c174795b7a4a7c15c62e441d02f78d2728"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "7c4db1bbc48c198f1cdff5f1a8f02d29bdc9ba50fea53e000072d5e8df323103"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AssetBundleModule.dll",
+      "bytes": 12288,
+      "sha256": "3fbda27e43edbcedbc13f7c9c4ca4a8e24b8da403ffd435fde290ebbc9319244"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Traversal.dll",
+      "bytes": 67584,
+      "sha256": "4b81685482f6e7e6c2fd2a9c5beb81d30320ec90b1fd11d1a453b37798ea6772"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Mono.Security.dll",
+      "bytes": 8704,
+      "sha256": "eab80a1804bd44f189e53e75c7d00b4baff4a0f1a4e98c3f74ea807d3da3b00c"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/mscorlib.dll",
+      "bytes": 1889792,
+      "sha256": "158f4ea42a080c5c165b9fe948ef0f4831cbc0b68bf43c2abb5c599e49ef200f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.DirectorModule.dll",
+      "bytes": 15872,
+      "sha256": "271963eaf761be1b6f909859f2207532c2c61f95fffcf415b91d0254da484fd9"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.PropertiesModule.dll",
+      "bytes": 125440,
+      "sha256": "aa47fc40fa1ddd96095cc80706c37814112bd68215a90a4f8d12cce054ee4896"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Scenes.dll",
+      "bytes": 96256,
+      "sha256": "b1e76cbb716350328be1baa980bb544f990b993817f321825ebf26b337d8c5fb"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.CoreModule.dll",
+      "bytes": 759296,
+      "sha256": "3e4555fdc81f5a9c4fca8360424826841691ca4b3a44747f07545bf535db0146"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 18432,
+      "sha256": "b76230d48f24f60dc5d05d200d59b613fbee0a54a414a3b9677d628247e40a85"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TilemapModule.dll",
+      "bytes": 19968,
+      "sha256": "209aaf403d31495cc7b11c74559d99471c923c44d3b9a0b41e720181eef47ff0"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.dll",
+      "bytes": 234496,
+      "sha256": "b71d8ab407c89c76974c419bbdc2c953566200055f1139e2b7721db9f2949a54"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Audio.dll",
+      "bytes": 68096,
+      "sha256": "a0b347514e24eac619b239c3f42617b8ee08cbf1a9dacc0924c89dc3d75bc27b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputForUIModule.dll",
+      "bytes": 39936,
+      "sha256": "7d156cc187f48b82c708332f2e92adfe42731150be321dbf436c23a234863a17"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.PhysicsModule.dll",
+      "bytes": 33792,
+      "sha256": "4cb119b72cfff8ee50788bd6a9d95fac97d04e7d7b0f29ee94e63f860e6c45c8"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 40960,
+      "sha256": "6b29ea017b076971a85c8d4755b2679ff8fe54ddc0bf32496d8ccd617ccefda3"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Transforms.Hybrid.dll",
+      "bytes": 28672,
+      "sha256": "797307e8a39fca51f1b7fe908b1c28cd5d83fa172ba80b668a71f63e7a09303e"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextCoreTextEngineModule.dll",
+      "bytes": 270336,
+      "sha256": "c881cdcedbead62b06ea295e7513d71b6ca51bb470afa263826461e701dc423b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VRModule.dll",
+      "bytes": 10752,
+      "sha256": "ccc9300fe3f5484b008046c9d29ed0b334c3dd2eaa29d3370e4e29e638e8c1c9"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.Configuration.dll",
+      "bytes": 4608,
+      "sha256": "e2fd6e22be391e122c12ba71c9cf3af5c5f5ccaa800fcc8edcbe88c56604507f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextRenderingModule.dll",
+      "bytes": 22528,
+      "sha256": "abf23c31ba1f16dc138363be977ea5209e040b2ad93caef3eaa256c47b6a212d"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Narrative.dll",
+      "bytes": 34816,
+      "sha256": "55067f61622406dbf2e3d6f8567086ebce0661c7824753741b228a3b00a2c820"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Collections.dll",
+      "bytes": 453632,
+      "sha256": "18aea3fb3d081f47baeb64c637d3711a9c1e8962dcb4835e2d1bf430c642016a"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "6ef3ba712be26ed022f4c54df4a59fb4ad3263cf09e9ca742730c9c6143737c6"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.ParticleSystemModule.dll",
+      "bytes": 15872,
+      "sha256": "8542177c8576c4ae53a272fa3b5c348e29656c9647ac7e1319262c1778a6e54f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.HierarchyCoreModule.dll",
+      "bytes": 37376,
+      "sha256": "62307e79fa569c01d1ef0ca48ebba341665f4000907a8680e51a1820607470c7"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "53219b5f4f526035239d7cd6aff07ae1933716291dcf59258e7ee4123da4fcc8"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Adapters.dll",
+      "bytes": 128000,
+      "sha256": "8747f076d0c95d6e2171792789fd3ccfdc808c3d26ec0c09f4efe70b728beeed"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.SharedInternalsModule.dll",
+      "bytes": 17408,
+      "sha256": "f90929e2a7d5b957242e2ae256ed014f75af47359d0abb181979dbe8145b4f70"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.InputSystem.dll",
+      "bytes": 1132544,
+      "sha256": "043785c271c6f6e6b4887eb88adc595a0321c1913ece4aef7f0079012ec7ccbd"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TerrainModule.dll",
+      "bytes": 20480,
+      "sha256": "810b274539e38399d3364d689564b1b2baa080efcb70413b5011ae906f96c982"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Traversal.dll",
+      "bytes": 19968,
+      "sha256": "b149ff75ab4edcc288080b0d996a4f5d2cf54e238591452b09889ead22bb7e25"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "398258ce091ffeafbe679dc2ebb134a581bfac5b59425b595955ff6cabc25ddc"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityConsentModule.dll",
+      "bytes": 4608,
+      "sha256": "619576f50c632602955d4fe29c515f0083d99808fa9553423a5eda5278ff9b78"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Transforms.dll",
+      "bytes": 37888,
+      "sha256": "cbf41382f69f8a7f10e92b31a7fbc796d4e015e76041c3e6518fa64fe9024a45"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.InputSystem.ForUI.dll",
+      "bytes": 16384,
+      "sha256": "13dab2496d233197aaeea50e7d886a7d0c724e5e8907e56fad55defd55b769a0"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "2650f96c7667fc7edd717cd8237997373fd165d0e44f2f9f1dd7b6006f49f754"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VFXModule.dll",
+      "bytes": 18432,
+      "sha256": "9e06c7444e817a7bee1f3b83893e20c88ea2c0034811e0e155c3f999f85de35b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.Physics2DModule.dll",
+      "bytes": 18944,
+      "sha256": "cdbfe2b3a4d122efdcb7c56b57945272b79e89f7ab6bb1b38140808b719b0423"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputModule.dll",
+      "bytes": 13312,
+      "sha256": "6a5c5e33f786ceaa71356aa5be6ac89493204392f4cdc13c49a06f2ccc1ed591"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UIModule.dll",
+      "bytes": 26112,
+      "sha256": "95d534b1f314bace3ee3f7ba1e39f76c5449c577670af76aab1340607dc8cb59"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Derivation.dll",
+      "bytes": 176128,
+      "sha256": "c285c7d74a28005ea8ff1051203ad9fb009cd3bbefb817842b3b3695ac066d84"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Cards.dll",
+      "bytes": 57344,
+      "sha256": "7ed0e0c5d2e83bcf3728c08ccc74929587b2ce6fed87a97efa80136119ee1215"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "702c959636358125d0b8c1316bc3ede16c344e0c9db32236e2757f7ccc211309"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UIElementsModule.dll",
+      "bytes": 1696768,
+      "sha256": "d08bcbeca29bba60190cd6a13bd465748386ddaaaac321fde717bdb0cb5e7b73"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityAnalyticsCommonModule.dll",
+      "bytes": 18944,
+      "sha256": "2c28df4cacdcfd425048b65add73712d49f7aec6e3154706100612342c0d575f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.ContentLoadModule.dll",
+      "bytes": 15360,
+      "sha256": "c8796fa290d8159777fc5d126f1f7a8182ff9a38a9881687a3e19effa86bb118"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.Net.Http.dll",
+      "bytes": 61440,
+      "sha256": "c589bbbc4ed4d4226573662279145385cd5be4699db12148e3c778d8a9a10154"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.Xml.dll",
+      "bytes": 6656,
+      "sha256": "052258cc745719b97a8f119ee2bf7af6a3caeee7360c108f29dfa751afb7ee8b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Collections.LowLevel.ILSupport.dll",
+      "bytes": 4608,
+      "sha256": "5571fbc636bc33cb7afc660b29acb0dce331ff13a0574ca947fe990d20e2e22b"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AIModule.dll",
+      "bytes": 13824,
+      "sha256": "17ddea6f0c164686cc635c9a63e040518be0076ab1ec27493ef770fb948c43b4"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 148480,
+      "sha256": "a57d9dfa8419942383d265e0ac254419d83335780f4859da62c41dcabc05092f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "2fe7ec7c0d4e29b8833d37c868c8e2f5f1578b1fd38baffc569cba93bb66fc61"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Planning.dll",
+      "bytes": 203264,
+      "sha256": "8044f91deb69f14cbf392df79cc01cf9b06f4db3b112e18b30d2c4d752377cf5"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Serialization.dll",
+      "bytes": 173056,
+      "sha256": "fa0951ac6418a1ea21abf5366f15db7709f7b05ab19d1363244ccde7878b5cb9"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Npc.dll",
+      "bytes": 60928,
+      "sha256": "c8609cbd6414605f56bf977cefe7d8d1884e432d4b7d9e5774ebd2e689ef6aeb"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 845312,
+      "sha256": "66d5b05ad80a79c9ad962d63e1f379360841348e3002e5a7262dd5d720c09336"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.IMGUIModule.dll",
+      "bytes": 102912,
+      "sha256": "74b55997e642046ca0e67dfac68a507d1c14848cfbebbe085fa5019f85e25b3e"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.XRModule.dll",
+      "bytes": 22528,
+      "sha256": "d16bbb42d688c3110912e5be92658a85a085bfc68748106ac5af5da8513d143f"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Interaction.dll",
+      "bytes": 59904,
+      "sha256": "9410f5b2c8d57d262db267cf071e148d9b12259696cc4f304655188e403a910a"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AnimationModule.dll",
+      "bytes": 27648,
+      "sha256": "ca7313ebb8ebcb434f0f54c7974415d5af2df33dc7c2ca3843db5c87b93b21ad"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Inventory.dll",
+      "bytes": 49152,
+      "sha256": "e2d71cf70746b5f240f11f3159ed9ee46a6a7a8555e81784e248ec7e9b5a4105"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.JSONSerializeModule.dll",
+      "bytes": 12800,
+      "sha256": "637323d224033b3841732784b82aa4ced939c35b59322fc20a20ea31db028252"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "24030616ba970062d440fb845d376534a3d18e08dac184a863dce2aa5ea15d74"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Quest.dll",
+      "bytes": 39936,
+      "sha256": "f5e2c69d405c75b1664390482baf3bf4bb3de87f7ca7e3b5d154fa3bf374debb"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UI.dll",
+      "bytes": 263168,
+      "sha256": "4c681077beac09d243c2d60f12b77b5b9bc424fed0869c718b26f37315834ddf"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 781312,
+      "sha256": "1ed2d26081fc41d3c0fa46d7fa219ddaa46fcd123ae1ebdea5eaf64409c4db4e"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Profiling.Core.dll",
+      "bytes": 9728,
+      "sha256": "d9a8698ead2e9f507d9f1f1e08ba927ede83be3cc9d4550fccf371de138e02ef"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityWebRequestModule.dll",
+      "bytes": 26624,
+      "sha256": "8bf5e156f9f35757c6360ac0b7111a6328255922103b5789a6f2ab09211d2272"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 226816,
+      "sha256": "904cad101a396d9a934d6b28b05a15dfb085c6fc2f9ca5d66ced0bece8bbd2ee"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextCoreFontEngineModule.dll",
+      "bytes": 38400,
+      "sha256": "1480bdd341908fd333686c888e94d2ae17ac0261180cbb69e752fd36ba82cc59"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityAnalyticsModule.dll",
+      "bytes": 13312,
+      "sha256": "efe13a8a376bcb02883fb6b55c7a39275fce82dc538ead0b117eff96607610bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Burst.Unsafe.dll",
+      "bytes": 5632,
+      "sha256": "f676d0a2487518ba3044d7f626f9d0f0e4b79e978474a15692042ccc3113de28"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Player.dll",
+      "bytes": 65024,
+      "sha256": "e90735b5a61fd90bf896438aedd67b498c0304fbb19d81b6c2fd127dc4ec17f3"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.GridModule.dll",
+      "bytes": 10752,
+      "sha256": "e5326bd665e29d5e756c504c4461c85c0f3211bdfa046b101d7a070360f94a24"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104448,
+      "sha256": "d2c1f67e1218f12bc3672d189b052f44d0da3fa9c8429f08deb4dd195169b2ec"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Mathematics.Extensions.dll",
+      "bytes": 8704,
+      "sha256": "5fb48268d515e11f9d5b4ff8a1df64c8ba2f22066cc482935ea983cfb0ea32b9"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AudioModule.dll",
+      "bytes": 18944,
+      "sha256": "f10bd99bbe92f2783ef7546677871613382793e013c3024c3df19b318a844445"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "ae58af70f5e2ab5c208bfffb6a39016a9c5f94d5a87b524e59fef9c58a104b1d"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AndroidJNIModule.dll",
+      "bytes": 58368,
+      "sha256": "e2f72379c07393e4943101eb5cff4e7801dc5520a5b22a6dbb36c66e8b955f68"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Entities.dll",
+      "bytes": 56320,
+      "sha256": "a9aea3429d2e3c255b8899df2da1e4ea738d9b706110e1266b3392a28ccd21ca"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.dll",
+      "bytes": 1318400,
+      "sha256": "574a163d7986d762475b18915eac55534049bf6f81d6f4fe94e400af775dc8ab"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VideoModule.dll",
+      "bytes": 14848,
+      "sha256": "df3dce9f4e420c75a90352cefaec298c29cfcb43e0fa5787d7c555e999421c56"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Ui.dll",
+      "bytes": 109568,
+      "sha256": "805f213fd9f96bf9745613a934505bf44448352af52a9e4675a564709613acf7"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Runtime.dll",
+      "bytes": 610816,
+      "sha256": "081c2e94bc1c3943743d4a86d0604b64191f1d8042570adfbb96a81bf11baf30"
+    },
+    {
+      "file": "Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Mathematics.dll",
+      "bytes": 746496,
+      "sha256": "2c24f0e263a8c72adaf02c08ea5e4a6efd13b6bec071df6b96d31ed36e5d04f1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Cards.Fixtures.dll",
+      "bytes": 130048,
+      "sha256": "1dfcff9d42f4f192fcf3d64e7031b8d81fee1baaee79bfcc46faa3231bacebf9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.ShaderGraph.Utilities.dll",
+      "bytes": 6144,
+      "sha256": "d82358ec58cf1be593f8d7d62d376314dcf1ce5145bf554609a97055d789344d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Collections.Editor.dll",
+      "bytes": 5632,
+      "sha256": "e6f9bf2cbe4be9823aca76a07679fc69ec55c9bf172a57c770d3dff7daff60df"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Saltmarsh.dll",
+      "bytes": 177664,
+      "sha256": "0390d5b2ce08fbf2728202eb7a34aab569467740b6767fe0ca953eb83e8af13f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Burst.dll",
+      "bytes": 365568,
+      "sha256": "e8be5a0307d923e56bc4a776922b9b778f4a4cd6508bd836532e5688b14cfe8b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.World.dll",
+      "bytes": 94720,
+      "sha256": "3147e32877810664edece93c8486ac55807ba90dc0c44401499b9a7999511e2e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Sysroot.Linux_x86_64.dll",
+      "bytes": 7680,
+      "sha256": "deed1722103368753443c131047fdd26ecf14c17e47a54e1b8aceffaa4581a85"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Npc.Editor.dll",
+      "bytes": 17408,
+      "sha256": "dff4396480379b4535e078e3292e1acaa589740a89550f9a5d2b1f153e977f09"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Etos.Client.dll",
+      "bytes": 110080,
+      "sha256": "2689660d6679b3ef89d7285d466114080e38ecbb3589472407958355da46ddca"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.Hybrid.dll",
+      "bytes": 225280,
+      "sha256": "741c4fa6a60a2505d0f7f122939b102403e4f4515dadae325d62166a847cf2a5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Logic.dll",
+      "bytes": 118272,
+      "sha256": "7efcd71c4d242d1b0b067815b884364981a7dd73af1626fbd17a5e6a2db4eb4b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.AI.Navigation.Editor.ConversionSystem.dll",
+      "bytes": 24576,
+      "sha256": "6e47eccb00eb488e6be355477db7c96be88d532b4094ea0057180bb586f79bef"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Rules.Gameplay.dll",
+      "bytes": 132096,
+      "sha256": "28b4328606e9ba1345009284eb83adbf024b5956edeecb39edb8f839ec18a879"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.Fixtures.dll",
+      "bytes": 138752,
+      "sha256": "95971aac3404829990546d089b3f628976bce4811c4a3d92d0fd61e741050ddf"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+      "bytes": 5632,
+      "sha256": "640df5d77f6c3070ece7ff0908e3562c5478a22e954d87b2a7c0836bccdb4410"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Traversal.dll",
+      "bytes": 67584,
+      "sha256": "221af1e02dfb405cfda46ac15cf6fe1f775e4937c3faf642201477abe5688abf"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "bytes": 4608,
+      "sha256": "f7bef2b1a7e8ceac8e2b04e984a52e422f6a0718e6d625bf8a02a7c832ee1106"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Core.Editor.dll",
+      "bytes": 339456,
+      "sha256": "cc3aa082bfb15652325937be7ef614fc9521f46366021f2f0efc127896128d0d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Player.Editor.dll",
+      "bytes": 12800,
+      "sha256": "65c082485f2ea5f10085b2878c514ce987c53ef944a90642787115e438c8fa2e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Scenes.dll",
+      "bytes": 124928,
+      "sha256": "f43cfb28719bc6f012abf000b4153ac53b2579e1667d82f9a1fee095c3f89b1e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Quest.Editor.dll",
+      "bytes": 24576,
+      "sha256": "4694c944d23a0335c59446472734f1b14f8544564dc6bf3b8e7ad3a262c4dc38"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Core.Editor.dll",
+      "bytes": 4096,
+      "sha256": "ae745871860da506cd55238978b925f6302ae33c38addf5e6792ec6d9dee3cad"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.Editor.Properties.dll",
+      "bytes": 19456,
+      "sha256": "700f12cbda769157d2e1082f565799cf572ca27a2b41615a306e0ca1623f355c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InternalAPIEditorBridge.002.dll",
+      "bytes": 37888,
+      "sha256": "60170530d866d2d829e58419f94207b3a8a595d6b65abba7a1df06a3f05478b3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.Hybrid.HybridComponents.dll",
+      "bytes": 18432,
+      "sha256": "552fd184db97e2aca5e7598cec1e829f64254ce9c9e103c7d9864bb6395356e8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.PerformanceTesting.Editor.dll",
+      "bytes": 48640,
+      "sha256": "fdcf0d6ea7f82e21b26b30defa61492399b927f5f345219746dab106273865d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.ShaderGraph.Editor.dll",
+      "bytes": 1585664,
+      "sha256": "9aa39df04961a6222414effe91626d84768955496cd528e83c3f202ff0c98d18"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Audio.dll",
+      "bytes": 68096,
+      "sha256": "e82bc018bd126d289be9ab11b89cf148fa1afb0ef933504a200ac6195f2a199f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/PPv2URPConverters.dll",
+      "bytes": 4096,
+      "sha256": "2ca38015a951a1bad0fe6917de030eace3a1fa9f9fd5cfd2783101f5d10879ad"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.ScriptableBuildPipeline.dll",
+      "bytes": 9216,
+      "sha256": "c1d20c899d81eaa4c2268bdac5cb95006f2f1be39f5d173ab3bb31806fd014c3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Traversal.Fixtures.dll",
+      "bytes": 17920,
+      "sha256": "1ca7c39a5771b6c282548bd1ff1f761314fc9e61aef451d87852265a166ac1d2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Dialogue.dll",
+      "bytes": 40960,
+      "sha256": "98581817bbbab5ad2fdc9818d2d3c70eecf06104dbc6f8f81b73d987d01f0130"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.Adapters.Fixtures.dll",
+      "bytes": 16896,
+      "sha256": "ca476000368b217edd2051c1598c645b3ec666020d2b20029fd0d42e0d8d963f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Transforms.Hybrid.dll",
+      "bytes": 28672,
+      "sha256": "2d2fdd7fe6683e34df89d32e7c48fe9b70998d635cc6f24d1a3c04f38960522c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Save.Editor.dll",
+      "bytes": 8704,
+      "sha256": "a1413a4dcf4385a505e52d62ee45b24612940b855cbf581a6651b2045f4f1629"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Rendering.LightTransport.Editor.dll",
+      "bytes": 13312,
+      "sha256": "5f9358cb0942e28bbf7b44619ea6bf479753af613373776241eec08d30e3e229"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Logic.Editor.dll",
+      "bytes": 37888,
+      "sha256": "02f3ff97d60d02eb22db7a874608ee41a20f84ead8084363ad0748ebdabfc55f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Dialogue.Editor.dll",
+      "bytes": 21504,
+      "sha256": "78c75583e99e8fb4147640bb2e98e5313da144639f0cc4ad558c8d8b1757e051"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.AI.Navigation.dll",
+      "bytes": 29696,
+      "sha256": "e5865b4a149d9e5afc64b8350897d47b8edec6c1134a33cd6093f9efa6ccf8bb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Rendering.LightTransport.Runtime.dll",
+      "bytes": 314368,
+      "sha256": "018d8270a4b62d12da909d1148fc849c9eaced75ee3747d589cee23a4f9f16c1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.ProjectSetup.Editor.dll",
+      "bytes": 6656,
+      "sha256": "0cdafe0b91b90ea63bfb702308afbbdf2c092e4975990ad512bc0755e5feef19"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Narrative.dll",
+      "bytes": 34816,
+      "sha256": "595effeb4390828adefec2902b905b8b6848751557cbd41cd0358a2ebae021eb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Content.Compiler.Editor.dll",
+      "bytes": 10240,
+      "sha256": "7787201a4e3758d279b123422e6346290711c311a2db80bd3d3a5ee42da912a7"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InternalAPIEngineBridge.002.dll",
+      "bytes": 45568,
+      "sha256": "20c3fd78e537e4338ba01de3d33c66eede216e0243499bb831bb09e3a0f1a6c0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Collections.dll",
+      "bytes": 476160,
+      "sha256": "3789e4204219591fc19eeee5d785473c91a9b327a5fd69aad5972fc028d264d8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Views.Editor.dll",
+      "bytes": 254976,
+      "sha256": "7fa26d01ae2e81cd1e5494331397eee757daee90726dda03d0d4f4c8d16fcba6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+      "bytes": 257536,
+      "sha256": "927210ff4004a94fd3ba8d9475a8323782e29e8ddb316885f137bc144ee72edc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Composition.dll",
+      "bytes": 221696,
+      "sha256": "b84cbdc0c2194a080163b9ac4e6ddb39f975b3694f6201eae6c9438bb255bf57"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Saltmarsh.EditMode.Tests.dll",
+      "bytes": 10240,
+      "sha256": "4fdd6d3255528e1e43489fdec51e558555586cff09dfc970e20fb441efd9c58e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Save.dll",
+      "bytes": 22528,
+      "sha256": "09202bef3d1b83b745b4ac8ea4aedb8195419a122b2a04eefc08b353e598b679"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.UI.Editor.dll",
+      "bytes": 229888,
+      "sha256": "edb64d2bcae3b83505bc5b172c5c0a25155c5593e64a43ffe0917b54768992cb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.Adapters.dll",
+      "bytes": 128512,
+      "sha256": "f9b6335b2b58cb9079c8b1eca18b6d0e64ccc51673c8af4b43f65c6d4df2e7a0"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InputSystem.dll",
+      "bytes": 1827840,
+      "sha256": "4dc9fe4f6e772c33629ed1a08c5c82c206424354986686efc9a9b55df7149df6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.PerformanceTesting.dll",
+      "bytes": 48640,
+      "sha256": "62c6e7e405ac73fe2f5bb8c259a848dba3d65435c8a7f4f6b93c3773bbae12a8"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Rules.Traversal.dll",
+      "bytes": 19456,
+      "sha256": "717bd537ce95dffdf8a58ff368de9d75a21394fbdbc80c378a57f6cf3419217a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Mathematics.Extensions.Hybrid.dll",
+      "bytes": 5120,
+      "sha256": "faaa576a0a2a5ac43b27d70dd388c167a3f43571bf7f5aa15e83a211eb6a8ab4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Mathematics.Editor.dll",
+      "bytes": 23552,
+      "sha256": "b7d3d1be5a0b917b5cf5c583ac941a4933a4d2f752241d721b51ab9a93655827"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.Editor.dll",
+      "bytes": 907776,
+      "sha256": "d31ca82d976fd539497f81de1a6ef118de4d5ebf61472bd998766a4bbf32682b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/UnityEditor.UI.dll",
+      "bytes": 98304,
+      "sha256": "1387924e6b0dc4140397e3d5ff6c4d1bd9befa79336f5264d09f3a26d051811c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Contracts.dll",
+      "bytes": 256512,
+      "sha256": "388c18fc0779ff0600954546995ca1545a91222a533695de2ebcd65bee500947"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Interaction.Editor.dll",
+      "bytes": 26624,
+      "sha256": "68fa0e3202a9be731247c50cc620af2b1181cc9fa3ca8a01d228db60e55f52d5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Transforms.dll",
+      "bytes": 38400,
+      "sha256": "592a8d1ab2677f966747c1ab9011372957b1e5e82d5bddb067a1d99512f1e88b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InputSystem.ForUI.dll",
+      "bytes": 22016,
+      "sha256": "ad63ab332bf1858a8e5f36bdcb667740663323696724f76872f78566a33bcd3a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.UI.Editor.dll",
+      "bytes": 142336,
+      "sha256": "70f6c09a8b1bb0f9acfddc0a27eb3ffbb1e6ba4fad9666ea9cfbd40e3892f0e4"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Deformations.dll",
+      "bytes": 8192,
+      "sha256": "39ba98a819ecf43faeba43783c6141fe7d5447d14bdb6c0bee1bf09d969fad2b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Rules.Cards.dll",
+      "bytes": 21504,
+      "sha256": "b172f4919fe1eb544c2088c62b01a108aafb4ecca94c6146b2a8a3a7778661a9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Core.Editor.Shared.dll",
+      "bytes": 4608,
+      "sha256": "99d986ca1c0419988a4bc1bcb450eb4642c4c41ce348796ff52b0adf792770f5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "bytes": 5632,
+      "sha256": "4ee090933cb8275a3f42c8e473d509f15a40e89b8001f03656b8a68050e58b05"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Saltmarsh.PlayMode.Tests.dll",
+      "bytes": 11776,
+      "sha256": "65118bc81e3975f5563e8c3247dfe94ff644000c6355bf5cdd938735adb9a30c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.TextMeshPro.dll",
+      "bytes": 471040,
+      "sha256": "bfa9f9cafecc3c2cf679338d41f4048db1071fe55c0a606637a2410b1bf8b4f9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Searcher.Editor.dll",
+      "bytes": 41984,
+      "sha256": "d5f34ac9e9e44a2611eb46dd428f948919bd455a71d9d12c168570d206d324b6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Toolchain.Linux-x86_64.dll",
+      "bytes": 8192,
+      "sha256": "84f54612c261e097f8f70584ba4edd7722abdc3fc3126f852896993b3f091d00"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.SysrootPackage.Editor.dll",
+      "bytes": 35328,
+      "sha256": "5c76459cb4dc3aa5c339a976794ab54463647e1712775cfac5f3f9e25b66f0f5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Derivation.dll",
+      "bytes": 175104,
+      "sha256": "14af191191ecf69d1b7fbbd6f719378011c5cd9c5848bf33a33c1cee3e16d472"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Core.Editor.dll",
+      "bytes": 934400,
+      "sha256": "6ab97b776bcdc2060a06eb8be8cf274d131d28cabe41226c07f2c8757643679d"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Cards.dll",
+      "bytes": 56832,
+      "sha256": "5550588612d652df36d440685b447979d98e7cfab2139c3b5ebc097e62232a65"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "bytes": 9216,
+      "sha256": "d07e193b3a2137e7eeaac99b93e93c0fc6371773d7f552a19082b4f204848432"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Etos.dll",
+      "bytes": 111104,
+      "sha256": "33037274849831078e4e31bdffe8fc7201325716f499b7d11ca3fe9e49e42f84"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Compile.Editor.dll",
+      "bytes": 40960,
+      "sha256": "ef957f75ef3372448bcfc370e7c82047dd7a1aab53560a8af9290b002cbb86ca"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Compile.Core.dll",
+      "bytes": 35840,
+      "sha256": "a3f28406159b1884d590128e0de984d3c1e250f24155eb7a02e36d83430f1142"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InputSystem.TestFramework.dll",
+      "bytes": 44032,
+      "sha256": "02bd602a67f8ca726db17ca2bb10132807faec35c1a99692b2e8f93a44024f92"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "bytes": 4608,
+      "sha256": "313f8287d2397982f74c80244da93b1eadf85d52b42a997ee45a3b045d4cd543"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Burst.Editor.dll",
+      "bytes": 918016,
+      "sha256": "72a05d71563c26b29e2706a0ca8b735b1d398ee875f5af632cc7d7f9a3ea4a9a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.ScriptableBuildPipeline.Editor.dll",
+      "bytes": 229376,
+      "sha256": "3d17466be937aaf87ed1b80ad0e59160aaf167b2d0cdac982b3e93ad48a22a91"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Narrative.Fixtures.dll",
+      "bytes": 148480,
+      "sha256": "1250f376bea62d64198735feef9df66ec280fbc298989de8963f26711c83a49e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.App.dll",
+      "bytes": 99840,
+      "sha256": "3dae5f1640e77ad8bcab8a72cad7082f677bd91d665bf01dfd439a58fdd70be2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Planning.dll",
+      "bytes": 202752,
+      "sha256": "6311cc47471f8a87faef5316faceba321c23daa91e515f3295ead858093d7642"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Serialization.dll",
+      "bytes": 177152,
+      "sha256": "bc3ed56d80567d0219d82b5c2d6312e5cf29d525361d4f6ba184f205fd99f305"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Inventory.Editor.dll",
+      "bytes": 14336,
+      "sha256": "6536a1f6c521d232bab6152e4180846169efa606d59eb5bccfd229e86536a7d6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Npc.dll",
+      "bytes": 60416,
+      "sha256": "c35fc53104108000d86c6f1580997b8c80168cfdfdc7f945a4451fb2c764709c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Core.Runtime.dll",
+      "bytes": 984576,
+      "sha256": "88975dc7bd45421a4dd21c3353d8d17eef111d1998ef24ab06ca60ccaa3d08cc"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/UnityEditor.UI.Analytics.dll",
+      "bytes": 7680,
+      "sha256": "d0b43815397bf6ab669d34a18c8df7ae3a3538802d5f0822e5d04f6ee9494401"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Content.Compiler.dll",
+      "bytes": 107008,
+      "sha256": "11452484eafc366edb33cd7f9d12b7bdcc72d2cc5a0e23cbe259e1ad9d75518a"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Gameplay.Editor.dll",
+      "bytes": 15360,
+      "sha256": "2c5bd7255010717fc48e65739ad5e65892d55592869bf80896404a565731f617"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.Build.dll",
+      "bytes": 19968,
+      "sha256": "732ed0e86024465772a930ad52b492c4a6ae669f1b0dbdb839ebc577cf5fc88e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Audio.Editor.dll",
+      "bytes": 27648,
+      "sha256": "befb7673b43531c653d0f8b523558491f5f4dddfb679b1a163bb482b394e35aa"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Interaction.dll",
+      "bytes": 59904,
+      "sha256": "9ce8253b6bdf5879d3489a1ede66f119279605301587e5212f8b448a9c412d00"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Inventory.dll",
+      "bytes": 49152,
+      "sha256": "df6ed7bb1c54ef02bff5dd33da27bfccc82b2a59eb7068ff6eba222e1b2dd699"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Rules.Narrative.dll",
+      "bytes": 55296,
+      "sha256": "1479bfcba3dc4ed70efb2d403e869f4ab2bc5d49425dd9497cb443fd2c7d585b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Quest.dll",
+      "bytes": 39936,
+      "sha256": "557f2bd3e6e4d4866e29a0d27772b30e60af9b4dfcb1d6da995688f061d52ee6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/UnityEngine.UI.dll",
+      "bytes": 268288,
+      "sha256": "597a6b2b2ca4b5bfceb0c7c744c624f71fbb3daa7fdb72a6114aa34c0cc620a5"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Serialization.Editor.dll",
+      "bytes": 8192,
+      "sha256": "b2a25b22a381828403d0091c25cde76a76b45ad405d264014bff407c304ea274"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Universal.Runtime.dll",
+      "bytes": 839168,
+      "sha256": "64c8a13d7d300c02a6aef9a062ac734d8d5146b468b1a16a5e76388deee7052c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Ui.Editor.dll",
+      "bytes": 24064,
+      "sha256": "79f586fecdcb9b4a1cd99b8ba5a0af9cae9946af9eb0fcab78b7c107cdc04f59"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.AI.Navigation.Editor.dll",
+      "bytes": 69120,
+      "sha256": "8fb177108f3b190e1b4f7ba7f8dcafa2a2fadfd4ce2e8d2b897121f9d7889483"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.World.Editor.dll",
+      "bytes": 26624,
+      "sha256": "711dbfcd70a4af3b517c9eb0257c81b5aaf53ab36e7e46b93b298be752bc1727"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Profiling.Core.dll",
+      "bytes": 12288,
+      "sha256": "70c74c5572da20560af3d230b30e55c0f0e2ff3e1c84cbf1b8f51ba9e393f23e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Entities.Editor.dll",
+      "bytes": 24064,
+      "sha256": "2df939846d19c55ce9be1544c3543becb0a92a782b35cf60eb3373fc051505b2"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+      "bytes": 245248,
+      "sha256": "e16e9cfca81e2ef0547a7de1ee176749f2d2cfc87f190b3a22d1eef0e44086a6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.InputSystem.DocCodeSamples.dll",
+      "bytes": 6656,
+      "sha256": "755c00eace7612c8dfe5e4c4d51883611d9a4d3518a69476c225d37ecad24f2b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.TextMeshPro.Editor.dll",
+      "bytes": 292352,
+      "sha256": "a7eeac6d14188979f6ac0f40ebe5959da84395607a9dffa98ed14866c8e8b52c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Universal.Shaders.dll",
+      "bytes": 4608,
+      "sha256": "edaa63331a6cb8440dde42f5efafd9b0e677e4e62affe61fe6f0866c84626be3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Authoring.dll",
+      "bytes": 79872,
+      "sha256": "b6bfacdc930b8ae99f7c83e3014d8a4170c42d9708b2f9cdc361bc40935451e1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Saltmarsh.P4_2.Editor.Tests.dll",
+      "bytes": 10240,
+      "sha256": "0782ad8b60bfe82d209e001f41e8f563bcc69ba1e708545f07988b2b18077e9c"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.App.Editor.Tests.dll",
+      "bytes": 16384,
+      "sha256": "457d71679d66ac790d1531260f5b58abf759d3a89ce0a2018c0a0c3676d338fb"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Player.dll",
+      "bytes": 65024,
+      "sha256": "b7f9c4cc21125482f26eb0460f73b58fb27214ac6b9657d1cd1172cf36e659f1"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Contracts.dll",
+      "bytes": 104960,
+      "sha256": "d16e3154a5b7f9cf502731e1ffe15013859134f1a3e87bfda90cb3a329fa0b37"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Mathematics.Extensions.dll",
+      "bytes": 8704,
+      "sha256": "93a1973efd1d9c4e9c88a62e0a42c68f76fdd175d17ec15b55bade215f4df894"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.RenderPipelines.Universal.Editor.dll",
+      "bytes": 827392,
+      "sha256": "5ba06751ac58a562771347dc25fb2f6ea31862e1afe77e891dbd516e2e70c1a6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Derivation.Fixtures.dll",
+      "bytes": 37888,
+      "sha256": "9a46133fbc6452f6216c418c48d788a9ac5bbd6b43df054a74a2d099a8738eff"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.AI.Navigation.Updater.dll",
+      "bytes": 20992,
+      "sha256": "ffc7676cb81b1172f38b6979df8390d164a0425fb808cbf1cdc2168737654bb6"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Rewards.dll",
+      "bytes": 49152,
+      "sha256": "58fe4751fea01e0b8bc94e391f7c6d470e73103c4c059d76fa12016fdcfdd3b9"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Saltmarsh.Editor.dll",
+      "bytes": 47616,
+      "sha256": "4e01500bfae1dd1d9df7b559da995372b630f3a20a966a64dc4a5f292158e68f"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.UI.dll",
+      "bytes": 12800,
+      "sha256": "29152b900a554b9d3a2a4e85a08a3f3c19f75b255b0d81bb8a1cdcf6c315c895"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Entities.dll",
+      "bytes": 56320,
+      "sha256": "f41a2ae8ee0a90ed8e414776eb84d9d0bf7743a5547509131696e803433af188"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Entities.dll",
+      "bytes": 1497600,
+      "sha256": "2ee6d1e21a776851437fc3bc707071795a84d4d5a76be2e866d9cb8678d531c3"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Integration.dll",
+      "bytes": 27648,
+      "sha256": "43d13d1b7fb0450c762c1f7a10145c761c4c9c93e3dc583b04389372465eca81"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gameplay.Ui.dll",
+      "bytes": 109568,
+      "sha256": "58f2eaa40925d5e270a77f9df5a3443aa1d1a8c034bdba3cf041978ad7966863"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Studio.Model.dll",
+      "bytes": 133632,
+      "sha256": "d9cf853716b01ce342759b7bcc894d462eb6a110729a8aef6df9f024fd8e0c90"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Unity.Runtime.dll",
+      "bytes": 610816,
+      "sha256": "a21164dac7e6b7d61adda0257309e914ee6fef78daf01fa28889d08793332b1e"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Mathematics.dll",
+      "bytes": 755200,
+      "sha256": "a98fce7d3adcd403e8a4af2164ea019c0f65d1cf6401f682c0cce1a753c8359b"
+    },
+    {
+      "file": "Library/Bee/artifacts/2400b0aE.dag/post-processed/Unity.Scenes.Editor.dll",
+      "bytes": 146944,
+      "sha256": "114118f36671d30e1503aa07046e66eec144ce12deb378eeff391a5144818936"
+    }
+  ]
+}

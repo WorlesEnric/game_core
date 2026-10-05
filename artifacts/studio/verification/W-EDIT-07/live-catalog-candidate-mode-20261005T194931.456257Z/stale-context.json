@@ -1,0 +1,45 @@
+{
+  "requestId": "cs_01M46RHDNPQ3ZH1V5A0864010R",
+  "taskId": "t37c5b3de59d3b13c7592770e",
+  "candidateCatalog": "f139b366348e5a2222efae4ea1c41922df390218f864cf769115f19bce564ea8",
+  "before": "39debaa89f1582228a0f913fb08527e6c072bc0bfaf27a459d6f36ab894334ba",
+  "after": "8ca96fa35a41a8e6764f5ceae862e770aec682e7b14453140d618de915809033",
+  "ok": false,
+  "diagnostics": [
+    {
+      "code": "StaleContext",
+      "message": "The candidate was planned against tool catalog f139b366348e5a2222efae4ea1c41922df390218f864cf769115f19bce564ea8, but the project's catalog is 8ca96fa35a41a8e6764f5ceae862e770aec682e7b14453140d618de915809033.",
+      "hint": "Re-plan against the current tool catalog.",
+      "data": {
+        "expected": "8ca96fa35a41a8e6764f5ceae862e770aec682e7b14453140d618de915809033",
+        "actual": "f139b366348e5a2222efae4ea1c41922df390218f864cf769115f19bce564ea8"
+      }
+    },
+    {
+      "code": "StaleTarget",
+      "message": "The region that holds the target is not loaded.",
+      "hint": "Load the region (or open its scene) and validate the selection again.",
+      "where": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      }
+    },
+    {
+      "code": "StaleTarget",
+      "message": "The region that holds the target is not loaded.",
+      "hint": "Load the region (or open its scene) and validate the selection again.",
+      "where": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      }
+    }
+  ]
+}

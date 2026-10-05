@@ -1,0 +1,39 @@
+{
+  "label": "live-catalog-stale-context",
+  "revision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:46:02.665352+00:00",
+  "command": "bash -c 'set -euo pipefail\npgrep -af '\"'\"'Unity|ffmpeg|xvfb'\"'\"' || true\nif pgrep -x Unity >/dev/null; then echo '\"'\"'BLOCKED: another Editor is active'\"'\"'; exit 2; fi\nunity_tools_dir=\"$PWD/studio/tools\"\nsource \"$unity_tools_dir/unity-slot.sh\"\nunity_slot_acquire\ntrap unity_slot_release EXIT\nout=\"$1\"; shift\npython3 studio/stage/run-redacted.py --log \"$out/editor.log\" --timeout 1500 --silence 600 -- env \"$@\"\n' p42-graphics ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z DISPLAY=:1 GAMECORE_P42_EVIDENCE=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z GAMECORE_ETOS_LIVE=1 GAMECORE_ETOS_AUTOSTART=1 GAMECORE_ETOS_PROJECT_ID=fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8 GAMECORE_ETOS_KEY_FILE=~/.config/gamecore-studio/app-key.json GC_ETOS_EVIDENCE_DIR=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z/live GC_ETOS_FIXTURE_OUT=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z/fixtures GAMECORE_P42_REQUEST=cs_01M46RHDNPQ3ZH1V5A0864010R ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -projectPath ~/wkspace/gc-studio/p4.2/games/hollowmere -logFile - -runTests -testPlatform EditMode -testFilter R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext -testResults ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z/results.xml",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z",
+  "queuedAtRevision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "executionStarted": "2026-10-05T19:46:02.666942+00:00",
+  "sourceDiffSha256": "2274aaa2b7a453cdb7b7ab7f37724da0b23014b49d98bd4e7d47a954f8b028ff",
+  "exitCode": 2,
+  "status": "FAIL",
+  "ended": "2026-10-05T19:46:39.174527+00:00",
+  "seconds": 36.51078168512322,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P4_2",
+        "Hollowmere.P4_2.CatalogLiveTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+          "result": "Failed",
+          "detail": "{\n  \"requestId\": \"cs_01M46RHDNPQ3ZH1V5A0864010R\",\n  \"taskId\": \"t37c5b3de59d3b13c7592770e\",\n  \"candidateCatalog\": \"f139b366348e5a2222efae4ea1c41922df390218f864cf769115f19bce564ea8\",\n  \"before\": \"39debaa89f1582228a0f913fb08527e6c072bc0bfaf27a459d6f36ab894334ba\",\n  \"after\": \"8ca96fa35a41a8e6764f5ceae862e770aec682e7b14453140d618de915809033\",\n  \"ok\": false,\n  \"diagnostics\": [\n    {\n      \"code\": \"StaleTarget\",\n      \"message\": \"The region that holds the target is not loaded.\",\n      \"hint\": \"Load the region (or open its scene) and validate the selection again.\",\n      \"where\": {\n        \"kind\": \"Entity\",\n        \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n        \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n        \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n        \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n        \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n      }\n    },\n    {\n      \"code\": \"StaleTarget\",\n      \"message\": \"The region that holds the target is not loaded.\",\n      \"hint\": \"Load the region (or open its scene) and validate the selection again.\",\n      \"where\": {\n        \"kind\": \"Entity\",\n        \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n        \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n        \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n        \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n        \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n      }\n    }\n  ]\n}\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.P4_2.CatalogLiveTests+<R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext>d__0.MoveNext () [0x00341] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/CatalogLiveTests.cs:46\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50\n[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Live, 3d NotConfigured, describe Live\n[GameCore.Studio/etos] candidate cs_01M46RHDNPQ3ZH1V5A0864010R refused at staging in 330 ms (0 artifact(s) verified) (StaleTarget: The region that holds the target is not loaded. @ Entity(auth:e3baad87-1923-4823-82fe-69c3cc399bf4))\nSaving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

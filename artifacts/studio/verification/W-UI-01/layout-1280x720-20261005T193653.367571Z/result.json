@@ -1,0 +1,26 @@
+{
+  "label": "layout-1280x720",
+  "revision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:36:53.368549+00:00",
+  "command": "bash -c 'set -euo pipefail\npgrep -af '\"'\"'Unity|ffmpeg|xvfb'\"'\"' || true\nif pgrep -x Unity >/dev/null; then echo '\"'\"'BLOCKED: another Editor is active'\"'\"'; exit 2; fi\nunity_tools_dir=\"$PWD/studio/tools\"\nsource \"$unity_tools_dir/unity-slot.sh\"\nunity_slot_acquire\ntrap unity_slot_release EXIT\nout=\"$1\"; shift\npython3 studio/stage/run-redacted.py --log \"$out/editor.log\" --timeout 1500 --silence 600 -- env \"$@\"\n' p42-graphics ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-UI-01/layout-1280x720-20261005T193653.367571Z DISPLAY=:1 GAMECORE_P42_EVIDENCE=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-UI-01/layout-1280x720-20261005T193653.367571Z GAMECORE_ETOS_KEY_FILE=/nonexistent/p42-layout-offline GAMECORE_ETOS_AUTOSTART=0 ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -projectPath ~/wkspace/gc-studio/p4.2/games/hollowmere -logFile - -runTests -testPlatform EditMode -testFilter R2_30_1280By720WorkspaceContainsEveryStudioPanel -testResults ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-UI-01/layout-1280x720-20261005T193653.367571Z/results.xml",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-UI-01/layout-1280x720-20261005T193653.367571Z",
+  "queuedAtRevision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "executionStarted": "2026-10-05T19:39:48.516032+00:00",
+  "sourceDiffSha256": "57f355672b2b8a114a5e9c5a3b694df7bf44b18c3d77248a9047fc78fe11e6af",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T19:41:03.512079+00:00",
+  "seconds": 250.14443379896693,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

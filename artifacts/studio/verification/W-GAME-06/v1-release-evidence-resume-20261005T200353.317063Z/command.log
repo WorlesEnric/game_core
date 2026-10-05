@@ -1,0 +1,1008 @@
+2548b88c569273d58d2211d78b0c0c27547d115738c5b3ad48e6fd8b8ad60d2c  ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/toolchain/probe-replay.json
+2548b88c569273d58d2211d78b0c0c27547d115738c5b3ad48e6fd8b8ad60d2c  ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/toolchain/probe-replay.json
+== Wave 7 integration gate (W7-GATE) ==
+repo         : ~/wkspace/gc-studio/p4.2
+unity        : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/unity-gate-adapter.py
+dotnet       : dotnet
+project      : ~/wkspace/gc-studio/p4.2/unity/GameCore.Validation
+artifacts    : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate
+probe runs   : 2 (project-owner cap: two)
+unity timeout: 1800s (one retry on a timeout)
+release build: 1
+benchmark    : ONE short correctness diagnostic (1 run, 1s warmup, 2s windows)
+               TEST-023 full-duration timing is Deferred by project-owner decision; see BUDGET_DECISIONS.md
+audio        : DISABLED in the headless player (crash-139)
+
+== 9. release shape ==
+-- release-fault-surface: python3 tools/check_release_fault_free.py --dotnet dotnet --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release-fault-surface.json
+GC-017 release surface: PASS
+  the release compilation of the latch sources defines no type and carries no boundary literal (4608 bytes); the qualification one carries them all (12800 bytes)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+-- release-telemetry-surface: python3 tools/check_release_telemetry_free.py --dotnet dotnet --artifacts ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release-telemetry-surface.json
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Pass",
+  "problems": [],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "probeReleaseBuild": "Pass",
+    "probeReleaseReferencesCounting": false,
+    "probeReleaseOutput": "compiledIn=0;sideEffects=0;observed=0;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=disabled",
+    "probeReleaseExitCode": 0,
+    "probeQualificationBuild": "Pass",
+    "probeQualificationReferencesCounting": true,
+    "probeQualificationOutput": "compiledIn=1;sideEffects=4;observed=3;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=enabled",
+    "probeQualificationExitCode": 0,
+    "derivationReleaseBuild": "Pass",
+    "derivationReleaseCounting": {
+      "TelemetryCounting": false,
+      "IsCompiledIn": false
+    },
+    "derivationQualificationBuild": "Pass",
+    "derivationQualificationCounting": {
+      "TelemetryCounting": true,
+      "IsCompiledIn": false
+    },
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+-- release-player: using the supplied player ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64
+-- release-player-latches: python3 tools/check_player_fault_free.py --player ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64 --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release-player-surface.json
+GC-017 release player: PASS
+  79 managed assembly(ies) and 375 generated source(s) contain no latch type, no boundary name and no trace prefix
+-- release-gate-surface: python3 tools/check_release_gate_free.py --player ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64 --qualification ~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64 --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release-gate-surface.json
+{
+  "check": "release-gate-surface",
+  "keptModes": [
+    "-probeTraversal",
+    "-probeCatalogCoverage",
+    "-probeRecoverySmoke"
+  ],
+  "markers": {
+    "gc017-fault-latch": [
+      "AssemblyFaultInjection",
+      "FaultBoundaryText",
+      "FaultInjectedException",
+      "GAMECORE_FAULT_INJECTION",
+      "first-live-write",
+      "structural-playback"
+    ],
+    "gc021-delivery-seat": [
+      "Gc021Scenario",
+      "Gc021CrashHook",
+      "gc021-redelivery-applies-the-mutation-once",
+      "-probeGc021"
+    ],
+    "gc022-lifecycle-stress": [
+      "LifecycleStressScenario",
+      "ProbeLifecycleStress",
+      "-probeLifecycleStress",
+      "GC_LIFECYCLE_STRESS_CYCLES"
+    ],
+    "gc023-replay-fixture": [
+      "ReplayParallelJobs",
+      "ReplayScenario",
+      "ProbeReplay",
+      "-probeReplay"
+    ],
+    "w5-gate": [
+      "W5GateScenario",
+      "ProbeW5Gate",
+      "-probeW5Gate"
+    ],
+    "w6-gate": [
+      "W6GateScenario",
+      "W6CompositionAudit",
+      "W6FamilyTraversalHost",
+      "ProbeW6Gate",
+      "-probeW6Gate",
+      "GC_W6_GATE_CYCLES"
+    ],
+    "w7-gate": [
+      "W7GateScenario",
+      "W7GateScenarioResult",
+      "ProbeW7Gate",
+      "-probeW7Gate"
+    ]
+  },
+  "problems": [],
+  "qualification": {
+    "expectedMarkers": {
+      "gc017-fault-latch": {
+        "count": 3,
+        "marker": "GAMECORE_FAULT_INJECTION"
+      },
+      "gc021-delivery-seat": {
+        "count": 2,
+        "marker": "-probeGc021"
+      },
+      "gc022-lifecycle-stress": {
+        "count": 2,
+        "marker": "-probeLifecycleStress"
+      },
+      "gc023-replay-fixture": {
+        "count": 2,
+        "marker": "-probeReplay"
+      },
+      "kept:-probeCatalogCoverage": {
+        "count": 2,
+        "marker": "-probeCatalogCoverage"
+      },
+      "kept:-probeRecoverySmoke": {
+        "count": 2,
+        "marker": "-probeRecoverySmoke"
+      },
+      "kept:-probeTraversal": {
+        "count": 2,
+        "marker": "-probeTraversal"
+      },
+      "w5-gate": {
+        "count": 2,
+        "marker": "-probeW5Gate"
+      },
+      "w6-gate": {
+        "count": 2,
+        "marker": "-probeW6Gate"
+      },
+      "w7-gate": {
+        "count": 2,
+        "marker": "-probeW7Gate"
+      }
+    },
+    "filesInspected": 485,
+    "root": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64"
+  },
+  "release": {
+    "filesInspected": 456,
+    "findings": [],
+    "groups": {},
+    "keptModes": {
+      "-probeCatalogCoverage": 2,
+      "-probeRecoverySmoke": 2,
+      "-probeTraversal": 2
+    },
+    "missingSeams": [
+      "durable-delivery-core (DeliveryKey)"
+    ],
+    "requiredSeams": {
+      "durable-delivery-core": {
+        "DeliveryKey": 0,
+        "DurableOutbox": 84
+      },
+      "optional-engine-stages": {
+        "CommittedAnimationStage": 181,
+        "CommittedAudioStage": 247,
+        "UnityPhysicsSceneBackend": 214
+      },
+      "traversal-course": {
+        "TraversalKeys": 719,
+        "TraversalRegistration": 34
+      }
+    },
+    "root": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64"
+  },
+  "status": "Pass",
+  "task": "W7-GATE"
+}
+-- release-telemetry-player: python3 tools/check_release_telemetry_free.py --dotnet dotnet --artifacts ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate --release-player-project ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck --json ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/telemetry-release-surface.json
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Pass",
+  "problems": [],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "probeReleaseBuild": "Pass",
+    "probeReleaseReferencesCounting": false,
+    "probeReleaseOutput": "compiledIn=0;sideEffects=0;observed=0;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=disabled",
+    "probeReleaseExitCode": 0,
+    "probeQualificationBuild": "Pass",
+    "probeQualificationReferencesCounting": true,
+    "probeQualificationOutput": "compiledIn=1;sideEffects=4;observed=3;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=enabled",
+    "probeQualificationExitCode": 0,
+    "derivationReleaseBuild": "Pass",
+    "derivationReleaseCounting": {
+      "TelemetryCounting": false,
+      "IsCompiledIn": false
+    },
+    "derivationQualificationBuild": "Pass",
+    "derivationQualificationCounting": {
+      "TelemetryCounting": true,
+      "IsCompiledIn": false
+    },
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false,
+    "releasePlayer": {
+      "project": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck",
+      "player": "~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 0,
+      "markerPresent": false,
+      "replayHookMentions": {
+        "ReplayProducerJob": 0,
+        "ReplayJobsRunner": 0,
+        "ReplayScenario": 0,
+        "ProbeReplay": 0
+      },
+      "replayPackagePresent": false,
+      "compiledInGetter": null
+    },
+    "qualificationPlayer": {
+      "project": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation",
+      "player": "~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 21,
+      "markerPresent": true,
+      "replayHookMentions": {
+        "ReplayProducerJob": 31,
+        "ReplayJobsRunner": 4,
+        "ReplayScenario": 331,
+        "ProbeReplay": 9
+      },
+      "replayPackagePresent": true,
+      "compiledInGetter": true,
+      "replayResult": "Pass",
+      "durationSamples": [
+        1,
+        133
+      ]
+    }
+  }
+}
+
+-- running GC-025 catalog coverage probe (2 run(s), shape=release)
+-- running catalog-coverage probe (run 1/2)
+GC-024 host sharing: waited 0s before catalog-coverage
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok catalog-coverage: run 1/2 clean, exit 0, result Pass
+-- running catalog-coverage probe (run 2/2)
+GC-024 host sharing: waited 0s before catalog-coverage
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok catalog-coverage: run 2/2 clean, exit 0, result Pass
+== GC-025 catalog coverage probe run PASSED (shape=release) ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-catalog-coverage-release.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-catalog-coverage-release.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running world-dispatch probe (run 1/2)
+GC-024 host sharing: waited 0s before world-dispatch
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok world-dispatch: run 1/2 clean, exit 0, result Pass
+-- running world-dispatch probe (run 2/2)
+GC-024 host sharing: waited 0s before world-dispatch
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok world-dispatch: run 2/2 clean, exit 0, result Pass
+== world-dispatch probe run PASSED ==
+result : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-world-dispatch.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-world-dispatch.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-010 narrative probe (2 run(s))
+-- running narrative probe (run 1/2)
+GC-024 host sharing: waited 0s before narrative
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok narrative: run 1/2 clean, exit 0, result Pass
+-- running narrative probe (run 2/2)
+GC-024 host sharing: waited 0s before narrative
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok narrative: run 2/2 clean, exit 0, result Pass
+== GC-010 narrative probe run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-narrative.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-narrative.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-011 card-slice probe (2 run(s))
+-- running cards probe (run 1/2)
+GC-024 host sharing: waited 0s before cards
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok cards: run 1/2 clean, exit 0, result Pass
+-- running cards probe (run 2/2)
+GC-024 host sharing: waited 0s before cards
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok cards: run 2/2 clean, exit 0, result Pass
+== GC-011 card probe run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-cards.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-cards.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-018 checkpoint round-trip probe (2 run(s))
+-- running gc018 probe (run 1/2)
+GC-024 host sharing: waited 0s before gc018
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok gc018: run 1/2 clean, exit 0, result Pass
+-- running gc018 probe (run 2/2)
+GC-024 host sharing: waited 0s before gc018
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok gc018: run 2/2 clean, exit 0, result Pass
+== GC-018 checkpoint round-trip probe run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-gc018.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-gc018.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-019 adapter probe (2 run(s))
+-- running gc019 probe (run 1/2)
+GC-024 host sharing: waited 0s before gc019
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok gc019: run 1/2 clean, exit 0, result Pass
+-- running gc019 probe (run 2/2)
+GC-024 host sharing: waited 0s before gc019
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok gc019: run 2/2 clean, exit 0, result Pass
+== GC-019 adapter probe run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-gc019.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-gc019.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-020 traversal probe (2 run(s))
+-- running traversal probe (run 1/2)
+GC-024 host sharing: waited 0s before traversal
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok traversal: run 1/2 clean, exit 0, result Pass
+-- running traversal probe (run 2/2)
+GC-024 host sharing: waited 0s before traversal
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok traversal: run 2/2 clean, exit 0, result Pass
+== GC-020 traversal probe run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-traversal.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-traversal.log
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+-- running GC-027 recovery smoke (2 run(s), release-kept mode)
+-- running recovery-smoke probe (run 1/2)
+GC-024 host sharing: waited 0s before recovery-smoke
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok recovery-smoke: run 1/2 clean, exit 0, result Pass
+-- running recovery-smoke probe (run 2/2)
+GC-024 host sharing: waited 0s before recovery-smoke
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   ok recovery-smoke: run 2/2 clean, exit 0, result Pass
+== GC-027 recovery smoke run PASSED ==
+result     : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/probe-recovery-smoke.json
+player log : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/player-recovery-smoke.log
+checkpoints: ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/release/recovery-smoke-{narrative,cards}.checkpoint
+note: 'Pass' here means the player process reported it; the result JSON is the evidence to archive.
+
+== 10. short benchmark correctness diagnostic ==
+   NOT the full-duration TEST-023 catalogue: the p95/p99 qualification is Deferred by project-owner decision,
+   recorded in artifacts/performance/BUDGET_DECISIONS.md. This single short run asserts the correctness gates
+   and records its numbers; the summarizer reports every row it cannot fill as NotMeasured rather than as a pass.
+== GC-026 benchmark (1 run(s)) ==
+repo        : ~/wkspace/gc-studio/p4.2
+player      : ~/wkspace/gc-studio/p4.2/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64
+artifacts   : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark
+workloads   : idle-command-world steady-unchanged-10000-steps steady-execution-10000-targets update-size-1 update-size-100 update-size-10000 whole-world-mode-switch spawn-1000 reparent-100 inactive-target-comparison lifecycle-cycles-1000
+scopes      : 1000 live 1000 ; targets: 10000 live 10000
+warmup      : 1s ; duration: 2s ; repetitions: 5
+seed        : 20260926 ; machine: worlesenric
+watchdog    : 1800s per run (a timeout is a defect, not a retry)
+-- running benchmark probe (run 1/1) -> ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/raw/run1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=4194304"
+    "memorysetup-bucket-allocator-block-count=1"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=4194304"
+    "memorysetup-profiler-bucket-allocator-block-count=1"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=4194304"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+   [run 1] waiting on player; host uptime:  04:07:49 up 12 days, 18:01, 14 users,  load average: 26.95, 21.30, 12.88; log=544B
+   [run 1] [GC026-bench] run 1 begin; workloads=11; intervalSeconds=30
+   [run 1] [GC026-bench] run 1 generating fixture (scopes=1000; targets=10000)
+[GC026-bench] run 1 deriving fixture baseline (the first derivation)
+   [run 1] waiting on player; host uptime:  04:08:50 up 12 days, 18:02, 13 users,  load average: 25.46, 21.89, 13.61; log=2344B
+   [run 1] [GC026-bench] run 1 workload 1/11 idle-command-world begin elapsed=15.4s
+   [run 1] [GC026-bench] run 1 workload 1/11 idle-command-world done; observations=4; documents=1
+[GC026-bench] run 1 workload 2/11 steady-unchanged-10000-steps begin elapsed=30.4s
+[GC026-bench] run 1 workload 2/11 steady-unchanged-10000-steps done; observations=5; documents=2
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets begin elapsed=31.6s
+   [run 1] [GC026-bench] run 1 workload 3/11 steady-execution-10000-targets done; observations=6; documents=3
+[GC026-bench] run 1 workload 4/11 update-size-1 begin elapsed=35.0s
+   [run 1] [GC026-bench] run 1 workload 4/11 update-size-1 done; observations=7; documents=4
+[GC026-bench] run 1 workload 5/11 update-size-100 begin elapsed=42.1s
+   [run 1] [GC026-bench] run 1 workload 5/11 update-size-100 done; observations=8; documents=5
+[GC026-bench] run 1 workload 6/11 update-size-10000 begin elapsed=51.3s
+   [run 1] [GC026-bench] run 1 workload 6/11 update-size-10000 done; observations=9; documents=6
+[GC026-bench] run 1 workload 7/11 whole-world-mode-switch begin elapsed=58.5s
+   [run 1] [GC026-bench] run 1 workload 7/11 whole-world-mode-switch done; observations=10; documents=7
+[GC026-bench] run 1 workload 8/11 spawn-1000 begin elapsed=63.1s
+   [run 1] [GC026-bench] run 1 workload 8/11 spawn-1000 done; observations=11; documents=8
+[GC026-bench] run 1 workload 9/11 reparent-100 begin elapsed=68.3s
+[GC026-bench] run 1 workload 9/11 reparent-100 done; observations=12; documents=9
+[GC026-bench] run 1 workload 10/11 inactive-target-comparison begin elapsed=70.1s
+   [run 1] waiting on player; host uptime:  04:09:53 up 12 days, 18:03, 13 users,  load average: 18.63, 20.91, 13.85; log=12166B
+   [run 1] [GC026-bench] run 1 workload 10/11 inactive-target-comparison done; observations=13; documents=10
+   [run 1] [GC026-bench] run 1 workload 11/11 lifecycle-cycles-1000 begin elapsed=82.9s
+   [run 1] [GC026-bench] run 1 workload 11/11 lifecycle-cycles-1000 done; observations=14; documents=11
+[GC026-bench] run 1 workloads complete; gates and teardown
+   [run 1] [GC026-bench] run 1 end; observations=16; documents=11
+   ok benchmark: run 1/1 clean, exit 0, result Pass
+-- summarising ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/raw
+missed : budget.whole-world-preparation-p95
+note: created ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/BUDGET_DECISIONS.md from the template; fill its fields when a run measures something.
+summary: ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/summary.md
+json   : ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/summarize.json
+counts : budgets=10, documents=11, gates=19, gatesFailed=0, missedTarget=1, notMeasured=0, runs=1, workloads=11
+run_benchmarks.sh: the summarizer reported a failure (exit 1); see ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate/benchmark/summary.md
+-- benchmark harness exit: 1 (advisory; the verdict below is read from the retained artifacts)
+-- benchmark run 1: Pass (correctness gates asserted in the player)
+   note: the summarizer's provisional timing miss (if any) is recorded, not waived: the full-duration TEST-023
+   qualification is Deferred by project-owner decision in artifacts/performance/BUDGET_DECISIONS.md, and
+   tools/check_budget_record.py is what asserts that record rather than this step inventing a target.
+
+== 11. documentation validator ==
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+== Wave 7 resumed phases 9-11 PASSED ==
+Phases 1-8 are retained separately; this invocation did not repeat those probes.
+Release player: ~/wkspace/gc-studio/p4.2/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64; phase artifacts: ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/gate

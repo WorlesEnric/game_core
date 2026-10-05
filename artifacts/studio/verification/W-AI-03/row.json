@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED",
+  "note": "R3-F fact handoff regressions pass, but no current real-worker conditional Odd line was produced and played; the bounded live task failed earlier on target scope.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine"
+  ],
+  "row": "W-AI-03",
+  "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
+  "requirement": "mandate \u00a710",
+  "reportedAt": "2026-10-05T21:03:25.255314+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
+  ]
+}

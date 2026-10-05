@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1\u20138 and resumed 9\u201311 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
+  "command": "studio/tools/verify-all.sh build\nstudio/tools/verify-all.sh v1",
+  "row": "W-GAME-06",
+  "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
+  "requirement": "SR-11.3",
+  "reportedAt": "2026-10-05T21:03:25.263974+00:00",
+  "evidence": [
+    "W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md",
+    "W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/binary.json",
+    "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/README.md",
+    "W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/README.md",
+    "W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/README.md",
+    "W-GAME-06/final-player-manifests-20261005T201815.687151Z/README.md"
+  ]
+}

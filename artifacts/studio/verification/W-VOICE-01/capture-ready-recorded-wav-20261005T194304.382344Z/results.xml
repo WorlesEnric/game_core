@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.6359695">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="462" result="Failed" site="Child" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.635970" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1586" name="Hollowmere.P4_2.Tests.dll" fullname="~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.625185" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3535084" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1587" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.624352" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1588" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.623115" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1584" name="VoiceAcceptanceTests" fullname="Hollowmere.P4_2.VoiceAcceptanceTests" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.620430" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1585" name="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" fullname="Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" methodname="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Explicit" seed="524180509" result="Failed" start-time="2026-10-05 19:43:37Z" end-time="2026-10-05 19:43:43Z" duration="5.610712" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 real PipeWire microphone and installed companion; reuses recorded WAV" />
+                <property name="Timeout" value="180000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: String containing "delete"
+  But was:  "to lead every n p c in the village."
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.P4_2.VoiceAcceptanceTests+<R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits>d__0.MoveNext () [0x0069e] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/VoiceAcceptanceTests.cs:85
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/etos] voice session vs_1a10d97da9e095da62c39e8 capturing from microphone (default) @ 24000 Hz
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

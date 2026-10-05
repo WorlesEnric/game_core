@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "note": "Graphical walking/picking captured and 1280\u00d7720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path.",
+  "command": "studio/tools/verify-all.sh ui\nstudio/tools/verify-all.sh graphics",
+  "row": "W-UI-01",
+  "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
+  "requirement": "SR-1.1",
+  "reportedAt": "2026-10-05T21:03:25.242070+00:00",
+  "evidence": [
+    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
+    "W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md",
+    "GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md"
+  ]
+}

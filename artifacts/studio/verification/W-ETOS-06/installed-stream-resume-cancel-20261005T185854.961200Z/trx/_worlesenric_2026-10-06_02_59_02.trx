@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="83ed5023-2024-4ddc-977a-ac09a2394f61" name="@worlesenric 2026-10-06 02:59:02" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-06T02:59:02.8222785+08:00" queuing="2026-10-06T02:59:02.8222785+08:00" start="2026-10-06T02:58:56.5161353+08:00" finish="2026-10-06T02:59:02.8262662+08:00" />
+  <TestSettings name="default" id="0d4ede2f-4d82-4714-93d1-36c60d4c5f07">
+    <Deployment runDeploymentRoot="_worlesenric_2026-10-06_02_59_02" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6848be56-7624-4f09-9293-de8df64f8e46" testId="4e69573a-4198-07f5-8ae4-f5e7e59e826d" testName="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" computerName="worlesenric" duration="00:00:05.9170450" startTime="2026-10-06T02:58:56.8475017+08:00" endTime="2026-10-06T02:59:02.7645072+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6848be56-7624-4f09-9293-de8df64f8e46" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" storage="~/wkspace/gc-studio/p4.2/dotnet/tests/gamecore.studio.etos.client.tests/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="4e69573a-4198-07f5-8ae4-f5e7e59e826d">
+      <Execution id="6848be56-7624-4f09-9293-de8df64f8e46" />
+      <TestMethod codeBase="~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Studio.Etos.Client.Tests.LiveTests" name="L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="4e69573a-4198-07f5-8ae4-f5e7e59e826d" executionId="6848be56-7624-4f09-9293-de8df64f8e46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running selected tests in ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "note": "Installed paired UI Stage returns 404 no owned resource for the app-origin pressure-plate and semantic-negative samples; no signed verdict, coldCache, cold/warm stage duration, Admit or undo exists. No host fallback.",
+  "command": "studio/tools/verify-all.sh stage",
+  "tests": [
+    "R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake"
+  ],
+  "row": "W-MECH-01",
+  "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
+  "requirement": "SR-3.6, SR-9.3, B-STAGE",
+  "reportedAt": "2026-10-05T21:03:25.262881+00:00",
+  "evidence": [
+    "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
+    "W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z/README.md",
+    "W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z/README.md"
+  ]
+}

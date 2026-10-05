@@ -1,0 +1,13 @@
+{
+  "status": "BLOCKED",
+  "note": "Stopping etosd is forbidden by the packet; network-namespace isolation is unavailable on this host. Historical no-socket observation does not prove this exact final-tree stopped-node scenario.",
+  "command": "No service-stop command is authorized for this packet.",
+  "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
+  "row": "W-GAME-07",
+  "scenario": "Player runs with etosd stopped and no network",
+  "requirement": "SR-4.10",
+  "reportedAt": "2026-10-05T21:03:25.264969+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}
