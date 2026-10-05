@@ -136,6 +136,8 @@ namespace GameCore.Studio.UI.Tests
             var entity = _bed.SpawnEntity("etk_sensitive_123456789", Vector3.zero);
             _bed.SaveScene();
             var targets = Enumerable.Repeat(_bed.Ref(entity), 2000).ToArray();
+            var redacted = _bed.Context.Requests.SceneContext(new[] { targets[0] })!;
+            Assert.That((string?)JObject.Parse(Encoding.UTF8.GetString(redacted.Data))["objects"]![0]!["name"], Is.EqualTo("[redacted]"));
             _bed.Context.Requests.ByteCap = 512;
             var scene = _bed.Context.Requests.SceneContext(targets)!;
             Assert.That(scene.Data.Length, Is.LessThanOrEqualTo(512));
@@ -237,6 +239,19 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(minimum, Is.Not.Null);
             Rect bounds = (Rect)minimum!.Invoke(null, new object[] { new Rect(0, 0, 800, 600) });
             Assert.That(bounds.size, Is.EqualTo(new Vector2(1280, 720)));
+            MethodInfo? layoutMethod = typeof(StudioMenu).GetMethod("Layout");
+            Assert.That(layoutMethod, Is.Not.Null);
+            Rect[] layout = (Rect[])layoutMethod!.Invoke(null, new object[] { bounds });
+            Assert.That(layout[0].width, Is.GreaterThanOrEqualTo(640));
+            Assert.That(layout[0].height, Is.GreaterThanOrEqualTo(480));
+            Assert.That(layout[3].width, Is.GreaterThanOrEqualTo(420));
+            Assert.That(layout[3].height, Is.GreaterThanOrEqualTo(260));
+            for (int i = 0; i < layout.Length; i++)
+            {
+                Assert.That(layout[i].xMax, Is.LessThanOrEqualTo(bounds.xMax + .01));
+                Assert.That(layout[i].yMax, Is.LessThanOrEqualTo(bounds.yMax + .01));
+                for (int j = i + 1; j < layout.Length; j++) Assert.That(layout[i].Overlaps(layout[j]), Is.False);
+            }
         }
 
         [Test]

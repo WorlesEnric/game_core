@@ -1,6 +1,6 @@
 // GameCore.Studio.UI - the history panel (GameCore/Studio/History; SR-3.3, SADR-009, W-EDIT-03/05, W-REC-01): journal
 // entries newest first (time, origin agent/manual/voice/replay, summary, state), Undo/Redo bound to HistoryService (an
-// admission entry, mechanism.admit, is undone through StageAdmission.Undo: package removed, recompiled, catalog hash checked),
+// admission entries dispatch through the same HistoryService lifecycle handler as every other entry point),
 // Interrupted entries highlighted with Resume/Rollback, a target filter, open-in-journal (reveals the entry's JSON file)
 // and the retained artifact list with sizes and a "retained" marker (referenced by a journal entry).
 #nullable enable

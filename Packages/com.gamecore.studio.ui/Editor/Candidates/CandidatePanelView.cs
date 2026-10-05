@@ -613,6 +613,8 @@ namespace GameCore.Studio.UI
                 Label summary = new Label(StudioStyles.Safe(entry.ChangeSet.Intent.Text)) { tooltip = StudioStyles.Safe(entry.Id) };
                 summary.AddToClassList("gcs-tray__intent");
                 card.Add(summary);
+                if (entry.VerifiedVerdict?.Confinement == "host")
+                    card.Add(StudioStyles.Text("Warning: host confinement; operator opt-in required.", "gcs-diagnostic"));
                 card.Add(new Label(StudioStyles.Safe(entry.Summary + " · " + entry.Stage)));
                 bool staging = CandidateRequirements.NeedsStageVerdict(entry.ChangeSet);
                 StageState? stage = staging ? _context.Candidates.StageStateOf(entry) : null;
