@@ -112,7 +112,7 @@ echo "RUN_DIR ${out}"
 [[ -x "${unity}" ]] || { echo "no Unity at ${unity}" >&2; exit 2; }
 [[ -f "${project_dir}/Packages/manifest.json" ]] || { echo "no project at ${project_dir} (sync-to-host.sh ${packet})" >&2; exit 2; }
 [[ -r "${key_file}" ]] || { echo "no readable app key file at ${key_file}" >&2; exit 2; }
-sha="$(git -C "${base}" rev-parse HEAD)"
+sha="$(git -C "${base}" rev-parse HEAD </dev/null)"
 
 waited=0
 until systemctl --user is-active --quiet etosd; do
@@ -186,13 +186,13 @@ if (( voice )); then
     > "${out}/voice/pw-loopback.log" 2>&1 &
   loopback_pid=$!
   sleep 2
-  mic_id="$(wpctl status 2>/dev/null | sed -n '/Sources:/,/Source endpoints:/p' | grep -m1 'GC_P3.2_mic' | grep -oE '[0-9]+\.' | head -n1 | tr -d '.')"
+  mic_id="$(wpctl status </dev/null 2>/dev/null | sed -n '/Sources:/,/Source endpoints:/p' | grep -m1 'GC_P3.2_mic' | grep -oE '[0-9]+\.' | head -n1 | tr -d '.')"
   if [[ -n "${mic_id}" ]]; then
-    wpctl set-default "${mic_id}" && echo "-- virtual microphone GC_P3.2_mic (node ${mic_id}) is the default source for this run"
+    wpctl set-default "${mic_id}" </dev/null && echo "-- virtual microphone GC_P3.2_mic (node ${mic_id}) is the default source for this run"
   else
     echo "-- the virtual microphone did not appear in wpctl status" >&2
   fi
-  wpctl status 2>/dev/null | sed -n '/Audio/,/Video/p' > "${out}/voice/wpctl-status.txt" || true
+  wpctl status </dev/null 2>/dev/null | sed -n '/Audio/,/Video/p' > "${out}/voice/wpctl-status.txt" || true
   (
     played=""
     for _ in $(seq 1 7200); do
@@ -271,9 +271,9 @@ while read -r task; do
   [[ -n "${task}" ]] || continue
   {
     echo '{"show":'
-    "${etos_bin}" task show "${task}" --json 2>/dev/null || echo 'null'
+    "${etos_bin}" task show "${task}" --json </dev/null 2>/dev/null || echo 'null'
     echo ',"budget":'
-    "${etos_bin}" budget --task "${task}" --json 2>/dev/null || echo 'null'
+    "${etos_bin}" budget --task "${task}" --json </dev/null 2>/dev/null || echo 'null'
     echo '}'
   } > "${out}/etos/${task}.json"
 done < "${out}/etos/task-ids.txt"
@@ -301,7 +301,7 @@ PY
 
 # Recording: frames -> mp4 (<= 25 MB); keyframes shrunk.
 if compgen -G "${out}/frames/*.png" > /dev/null; then
-  ffmpeg -loglevel error -y -framerate 2 -pattern_type glob -i "${out}/frames/*.png" \
+  ffmpeg -nostdin -loglevel error -y -framerate 2 -pattern_type glob -i "${out}/frames/*.png" \
     -vf "scale='min(1600,iw)':-2:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2,format=yuv420p" -c:v libx264 -crf 30 -preset veryfast \
     "${out}/recording.mp4" 2> "${out}/ffmpeg.log" || echo "-- ffmpeg failed (see ffmpeg.log)" >&2
   if [[ -f "${out}/recording.mp4" ]]; then

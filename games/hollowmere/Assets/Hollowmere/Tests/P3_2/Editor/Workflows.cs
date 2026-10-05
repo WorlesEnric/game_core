@@ -94,7 +94,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Maren"),
                 S.Note("roster", () => Roster("smoke", "village")),
@@ -107,7 +107,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Note("roster before", () => Roster("move-patrol", "before")),
 
@@ -173,7 +173,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Maren"),
                 S.Do("hashes before robe", () => HashStep("robe", "before", MarenBehaviour, MarenNpc, MarenEntity)),
@@ -222,7 +222,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Do("hashes before narrative", () => HashStep("narrative", "before", OddGraph, HudDoc, Quest, LanternItem)),
                 S.Note("previews before", () =>
@@ -315,7 +315,7 @@ namespace Hollowmere.P3_2.Workflows
             string[] tags = { "quest", "hud", "odd-line" };
             List<Step> steps = new List<Step>
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.Do("verify after reopen", () =>
                 {
                     string file = Path.Combine(WorkflowRunner.ProjectRoot, Shared, "narrative.json");
@@ -406,7 +406,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Village Well"),
                 S.Do("speak prompts (tts)", () => SpeakPrompts()),
@@ -621,7 +621,7 @@ namespace Hollowmere.P3_2.Workflows
             string[] crates = { "Crate 2", "Crate 3", "Market Crate" };
             return new[]
             {
-                S.OpenScene(S.VillageScene),
+                S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Do("marquee crates", () => Marquee(crates)),
                 S.Note("roster before", () => Roster("ring", "before")),
@@ -759,7 +759,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.MarshScene),
+                S.OpenScene(S.MarshScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Causeway Gate"),
                 S.Do("local explain", () => LocalExplain()),
@@ -865,7 +865,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.MarshScene),
+                S.OpenScene(S.MarshScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Causeway Gate"),
                 S.Send("mech", "Add a pressure plate mechanism that opens the marsh gate (the Causeway Gate) while an item sits on the plate.", "mechanism"),
@@ -944,7 +944,7 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.MarshScene),
+                S.OpenScene(S.MarshScene), S.Relayout(),
                 S.Do("find candidate", () => FindMechCandidate()),
                 S.Do("record verdict", () => RecordVerdict()),
                 S.Do("admit", () => Admit()),

@@ -188,6 +188,48 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         });
 
+        /// <summary>
+        /// Places the five Studio windows over the 1920x1080 display once they are mapped (the window manager ignores the
+        /// sizes OpenStudio asks for before the windows are shown) and records where they ended up.
+        /// </summary>
+        public static Step Relayout() => new Step("relayout", () =>
+        {
+            int pass = (int)St.Num("relayout.pass");
+            Dictionary<Type, Rect> layout = new Dictionary<Type, Rect>
+            {
+                [typeof(StudioViewportWindow)] = new Rect(20f, 70f, 1240f, 640f),
+                [typeof(StudioContextWindow)] = new Rect(1272f, 70f, 628f, 990f),
+                [typeof(StudioTasksWindow)] = new Rect(20f, 722f, 410f, 338f),
+                [typeof(StudioCandidatesWindow)] = new Rect(436f, 722f, 410f, 338f),
+                [typeof(StudioHistoryWindow)] = new Rect(852f, 722f, 408f, 338f),
+            };
+            JObject actual = new JObject();
+            foreach (EditorWindow window in Resources.FindObjectsOfTypeAll<EditorWindow>())
+            {
+                if (window != null && layout.TryGetValue(window.GetType(), out Rect rect))
+                {
+                    if (pass < 2)
+                    {
+                        window.minSize = new Vector2(Mathf.Min(rect.width, 320f), Mathf.Min(rect.height, 200f));
+                        window.position = rect;
+                        window.Repaint();
+                    }
+
+                    actual[window.GetType().Name] = window.position.ToString();
+                }
+            }
+
+            St.Set("relayout.pass", pass + 1);
+            if (pass < 2)
+            {
+                return false;
+            }
+
+            Viewport().RenderNow();
+            WorkflowRunner.Log("relayout", "Studio windows placed: " + actual.ToString(Newtonsoft.Json.Formatting.None), new JObject { ["windows"] = actual });
+            return true;
+        });
+
         /// <summary>Waits until the live gateway reports the node and the agent ready.</summary>
         public static Step WaitGateway() => new Step("wait for the gateway", () =>
         {
