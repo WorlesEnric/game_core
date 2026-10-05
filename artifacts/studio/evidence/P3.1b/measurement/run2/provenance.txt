@@ -1,0 +1,7 @@
+revision=2151e274855ce7c03611bb3fbffa8246371668da
+player_revision=2151e274855ce7c03611bb3fbffa8246371668da
+started=2026-10-06T02:07:26+08:00
+Attempt 2 of 2; private Xvfb display with rendering enabled, 1920x1080; no video capture
+One allocator reservation; mutex held; no Editor active
+Run 1 used -nographics and failed navigation; this profile differs and is reported separately.
+xvfb-run -a -s "-screen 0 1920x1080x24" Hollowmere.x86_64 -batchmode -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -frameLog <run2>/frame-log.csv -autoplay games/hollowmere/Autoplay/playthrough.txt -saveDir <run2>/saves

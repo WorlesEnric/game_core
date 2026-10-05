@@ -1,39 +1,94 @@
 # P3.1b — Hollowmere frame-time follow-ups
 
-Branch: `codex/p3.1b`. Host: myubuntu. `git fetch origin && git merge origin/main` reported already up to date.
-Exclusive edits: games/hollowmere, SaveService.cs (necessary capture/write seam), P3.1b evidence, P3.1 packet appendix.
+Branch: `codex/p3.1b`. Build host: myubuntu (hostname `worlesenric`). Runtime/build revision: **2151e274855ce7c03611bb3fbffa8246371668da**. Initial `git fetch origin && git merge origin/main` reported already up to date at 813e6b45. Subsequent qualification commits add evidence, documentation and the second-attempt launcher only.
 
 ## R2 fixes
 
-These follow-ups are the P3.1 B-FRAME observations, not newly numbered R2 review findings.
+These IDs name the P3.1 B-FRAME follow-ups, not new numbered findings in the R2 review.
 
-- P31b-SAVE: keep capture, delivery ownership, serialization and canonical slot hashing on the main thread; write only the immutable snapshot on a worker. `CaptureSnapshot`, `WriteCapturedAsync`, `CaptureAsync` share the original capture path. Header rename commits a content-addressed checkpoint; legacy slot.gcc remains readable. Keep current and previous generations, collect older generations after commit. Refuse overlapping save/load/delete. The game supplies the public BindingHost callback (including mouse/controller activation and autoplay); show “Saving…” until completion, then the saved HUD message. Tests: `P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite`, `P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave`. Before: the game command immediately blocks on file writes, and a failed header publication can make the old checkpoint unreadable.
-- P31b-BELFRY: enable streamer neighbour preloading while the player has the clapper in the marsh, before the ferry conversation. Disable on departure; no custom residency writes or extra pumps. Tests: `P31b_BELFRY_PreloadIsLimitedToFerryPreparation`, `P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads`. Before: belfry is unloaded until travel commits.
-- P31b-BOOT: defer first-region IO for three menu presentation frames, with low-priority background asset integration; retain real scene loader reconciliation and restoration. Test: `P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency`. Before: loader begins IO immediately. The B-FRAME window is unchanged: 07 has no boot exemption.
+| Finding | Fix | Regression test |
+|---|---|---|
+| P31b-SAVE: recorded manual save stalled ~288 ms | Capture, serialization, delivery ownership and canonical slot hash remain on the main thread. `SaveService.CaptureSnapshot` returns an immutable snapshot; `WriteCapturedAsync` / `CaptureAsync` write on a worker. An immutable `slot.<digest>.gcc` is committed by atomically replacing the header. Interrupted publication leaves the previous header and document readable. The game shows “Saving…” and confirms through the HUD only after completion. | `P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite`; `P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave` |
+| P31b-BELFRY: recorded transition 267–269 ms | Enable the streamer's neighbour preload while the player has the clapper in the marsh, before the ferry conversation; disable it on departure. Residency transitions and scene reconciliation remain streamer-owned. | `P31b_BELFRY_PreloadIsLimitedToFerryPreparation`; `P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads` |
+| P31b-BOOT: recorded first two frames 2900 / 612 ms | Defer first-region IO for three menu presentation frames and use low-priority background asset integration. The loader reports real scene completion and delegates unloads. The first ready frame stays in the measurement window: 07 has no boot exemption. | `P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency` |
+
+**Why the permitted SaveService edit was necessary:** its existing public capture API combined capture and synchronous file publication; serialized checkpoint bytes were private. A game-only worker could neither obtain the original snapshot nor safely call the live-world capture off-thread. The new seam shares the original `TryCaptureDocument` and `SlotHashOf` implementations. Only `Packages/com.gamecore.unity.app/Runtime/SaveService.cs` was edited outside the game/evidence/doc paths.
+
+Async storage keeps the current and previous immutable generations and collects older generations after a successful header commit. Save/load/delete are refused while a write is pending. Completion events return to the calling Unity synchronization context; the test asserts the main thread and restored/captured hash equality. Crash coverage abandons a capture without publishing, then injects a header-write failure **after** writing the new checkpoint and restores the previous asynchronous save. This is deterministic failure injection, not an OS process-kill test.
+
+The synchronous `Capture` API retains its legacy writable document path for migration tools. The extra shared persistence suite initially caught 5 failures when synchronous captures also used content-addressed names; that change was corrected before the build. Initial failure XML is retained, and the final shared suite passes 17/17.
+
+Hollowmere supplies its command callback through the existing public `BindingHost` surface, shared by mouse/controller confirmation and autoplay. Rebinding re-clones document contents because `BindingHost.Clear` does not detach old command closures. No synchronous save callback remains on the replacement controls.
+
+The suite's rebake exposed merged main's new cosmetic `EntityDefinition.materialTextures` field. The retained 28 definition rewrites add only the empty field and updated content stamps; the two bake outputs reflect those stamps. Structural stamps, catalog fingerprint and recipe revisions are unchanged. An isolated bake verification passed on the committed refreshed assets.
 
 ## Verification
 
-Pending host runs; XML is authoritative. Evidence under artifacts/studio/evidence/P3.1b.
-The existing video (20,223,247 bytes; 636.533 seconds container duration) and keyframes predate these fixes. No recording is redone.
+Evidence root: `artifacts/studio/evidence/P3.1b/`. XML/TRX is authoritative; runner summaries alone were not used as test verdicts.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Full Hollowmere EditMode, final | **446 passed, 0 failed, 12 skipped** (458) | `tests/editmode-final.xml` |
+| Full Hollowmere PlayMode, final | **22/22 passed** (19 baseline + 3 regressions) | `tests/playmode-final.xml` |
+| Shared SaveService persistence, final | **17/17 passed** | `tests/persistence-final.xml` |
+| Isolated `P31AuthoringTests.BakeVerifies` | **1/1 passed**; also passes in the final full suite | `tests/verify.xml` |
+| dotnet Execution | **178/178 passed** | `dotnet/execution.trx` |
+| Required package metadata / C# checks | **PASS**; 42 packages / 1189 C# files | `metadata-check.txt`, `csharp-check.txt` |
+| Linux IL2CPP player | **PASS**, 0 errors, 7 warnings, 569 s wrapper wall time | `build/build-summary.json`, `build/build-report.json`, full log and shipped-file digest manifest |
+| Built-player smoke | **exit 0**, 3 s, autoplay quit at frame 5352 | `build/smoke-player.log.gz`, `build/smoke-frame-log.csv` |
+
+The 12 EditMode skips are seven live ETOS/workflow tests, four graphics-only cases and one explicit memory-cycle case. All five new regressions pass. The required 392/19 baseline is preserved. No live/paid ETOS tests were enabled, and no service was stopped or restarted.
+
+The existing P1.1 PlayMode loop reports marsh→belfry 9 ms / 10 frames and 33 loop frames / 33 sanctioned pumps / zero violations. This is suite diagnostic evidence, separate from the player measurements below.
+
+Representative commands (all on this host):
+
+```sh
+studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
+  --log-dir "$PWD/artifacts/studio/evidence/P3.1b/tests" --label editmode-final \
+  --results "$PWD/artifacts/studio/evidence/P3.1b/tests/editmode-final.xml" \
+  --timeout 2400 -- -runTests -testPlatform EditMode
+# Same wrapper for full PlayMode and the filtered GameCore.Persistence.Tests suite in unity/GameCore.Validation.
+PATH="$HOME/.dotnet:$PATH" dotnet test dotnet/tests/GameCore.Execution.Tests/GameCore.Execution.Tests.csproj
+studio/tools/build_game_player.sh p3.1b
+PROBE_RUNS=2 games/hollowmere/Tools/measure_frames.sh
+PROBE_RUNS=2 games/hollowmere/Tools/measure_frames_second.sh
+```
+
+The second launcher resumes the second and final attempt after the first launch's failed navigation; it does not add a third attempt. Each measurement held **one** allocator reservation and the allocator mutex, after waiting for zero active Editors. Run 1’s before inventory, run 2’s before/after inventories, and exact commands are retained; the allocator mutex stayed held until each player exited. A proposed scheduling adjustment was unnecessary: the second attempt acquired the original reservation before any adjustment or process signal occurred.
+
+Build output is retained on the host at `build/HollowmereLinux/` (176,338,000 shipped bytes; debug/non-shipped files excluded). Build-generated URP shader-prefilter/runtime-settings changes were restored to committed source afterward. Generated Entities settings were moved beside the build. The executable stub hash matches P3.1; `build/data-manifest.txt` records the actual changed game assembly and data hashes.
+
+## Measurements — exactly two attempts
+
+The same P3.1 autoplay script and `FrameLogRecorder` were used. The extracted statistics implementation reproduces **the complete original P3.1 JSON exactly** from its 36,465-row CSV (`stats-parity.txt`). No boot rows, logger stalls or save rows are excluded beyond the original transition-window rule.
+
+| | Attempt 1 | Attempt 2 |
+|---|---|---|
+| Actual profile | Xvfb, `-batchmode -nographics`, Null Device, 640×480 | Private Xvfb, `-batchmode` with device, **llvmpipe OpenGLCore, 640×480** |
+| Outcome | **exit 3**, route stopped approaching the Echo | **exit 0**, full route, Ending C, restart, restore and final walk |
+| Steady window | 661.593 s | 612.580 s |
+| p95 | **0.692 ms** | **1.284 ms** |
+| >100 ms outside transition windows | **8** | **0** |
+| Marsh→belfry transition hitch | **2.587 ms** | **7.404 ms** |
+| Manual-save main-thread capture | 28.982 ms | 27.141 ms |
+| Worst frame around manual save | **31.840 ms**, 0 over 100 ms | **29.013 ms**, 0 over 100 ms |
+| Numerical frame-budget checks | fail (>100 ms count) | pass |
+
+The manual-save window runs from two frames before the logged save command through three frames after the `saved` marker, including the following-frame delta that contains capture cost. Raw per-run details are in `manual-save.json`.
+
+Attempt 1 failed at autoplay line 223: `approach timed out at (103.38, 184.78), 7.08 m from Belfry Echo`. Its first frame was 331.779 ms. All seven other >100 ms rows occur immediately after a 120-frame logger flush (`frame % 120 == 1`); attribution to a specific IO/GC cause has not been profiled. They remain counted. Attempt 2 passed that navigation point and completed the full script at frame 908028; its maximum frame was 86.967 ms (the first frame).
+
+Raw text logs are also losslessly compressed as `.log.gz`, with uncompressed hashes in `raw-log-integrity.json`. The CSVs are retained **losslessly compressed** as `frame-log.csv.gz`; `frame-log-integrity.json` records uncompressed/compressed SHA-256 and sizes. Decompress before running the unchanged statistics script. Logs, stats, save headers/checkpoints, exit dispositions and allocator provenance are retained for both attempts.
+
+**The original 20,223,247-byte recording and its keyframes predate these fixes. They were not re-recorded.**
 
 ## Requests to other packets
 
-None currently. The shared gameplay UI runtime remains synchronous for its generic callers; Hollowmere supplies its own command callback through the existing BindingHost surface.
+None. The implementation uses existing world-streamer and UI binding interfaces plus the explicitly permitted SaveService seam.
 
 ## Left open
 
-- The P3.1 note names an xvfb headless rehearsal but commits no distinct frame-time probe executable or command transcript for it. This packet will retain its player, autoplay script, FrameLogRecorder and exact statistics calculation; command/environment differences will be recorded with the new evidence.
-- Budget outcomes are pending measurement. The first ready frame still includes boot; it is not suppressed or relabelled.
-
-### Host qualification checkpoint
-
-- Full Hollowmere EditMode XML: **446 passed, 0 failed, 12 skipped** (458). The baseline 392 passes is exceeded on merged main. Skips: seven live ETOS/workflow tests, four graphics-only tests, one explicit memory-cycle test. No paid/live tests enabled.
-- Full Hollowmere PlayMode XML: **22/22 passed** (P3.1's 19 plus three regressions). New manual-save capture measured 47.159 ms in this run. Both new save tests and real belfry unload/reload pass.
-- dotnet Execution: **178/178 passed**. Required metadata and C# checks pass.
-- The suite's rebake exposed merged main's new cosmetic `EntityDefinition.materialTextures` field. Keep the 28 refreshed definition stamps and two bake outputs: their only definition changes are empty `materialTextures` plus content stamps; structural stamps, catalog fingerprint and recipe revisions remain unchanged. These are needed for Verify on the delivered checkout, rather than discarding them as transient test edits.
-- Isolated `P31AuthoringTests.BakeVerifies`: **1/1 passed** after committing the refreshed bake. This checks the delivered assets without a preceding authoring fixture mutating them.
-- Existing P1.1 PlayMode region loop: marsh→belfry **9 ms**, 10 frames; full loop 33 frames / 33 sanctioned pumps / zero violations. This is a suite diagnostic, not the required player measurement.
-
-### Compatibility regression caught before build
-
-The additional shared `GameCore.Persistence.Tests` run initially failed 5/17: legacy migration helpers rewrite the pathname returned by `DocumentPath` before updating the header. Applying content-addressed storage to the synchronous API made those paths disappear when the header hash changed. Keep `Capture`'s legacy writable file contract; only `CaptureAsync` / `WriteCapturedAsync` use immutable generations and a single atomic header commit. The new interrupted-publication regression now starts from an asynchronous prior save. Final shared and Hollowmere suite reruns follow this correction.
+- **Exact original rehearsal launch profile is unknowable from committed P3.1 evidence.** The packet names an `xvfb-run -a` headless rehearsal but supplies no distinct command transcript or frame CSV for it. Attempt 1 used the committed smoke launcher's Null Device flags and failed navigation. Attempt 2 used a device-enabled private Xvfb launch and completed. These are **not two completed repetitions of an identical profile**, and their numbers must not be presented as such. The two-attempt cap was respected.
+- **07's graphical RTX 4060 Ti / 1080p B-FRAME qualification is not established by these offscreen measurements.** Attempt 2 requested a 1920×1080 display and player dimensions, but Unity's batchmode logger reports 640×480 / llvmpipe. The successful headless numeric checks do not replace the graphical gate or retroactively qualify the old video.
+- **Null Device startup and flush-aligned stalls remain observed.** Attempt 1 retains eight >100 ms frames, including boot; no rule was relaxed to hide them. The save and belfry targets pass in both measured portions, and the complete second attempt has zero >100 ms frames, but the cause of the Null Device logger-aligned stalls is not isolated by this packet's two allowed attempts.

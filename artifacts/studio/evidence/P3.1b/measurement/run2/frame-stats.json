@@ -1,0 +1,69 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 908028,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 908028,
+  "steadySeconds": 612.58,
+  "dtMs": {
+    "p50": 0.593,
+    "p95": 1.284,
+    "p99": 1.91,
+    "max": 86.967,
+    "mean": 0.675
+  },
+  "fpsMean": 1482.3,
+  "framesOver16_7ms": 8,
+  "framesOver100msOutsideTransitions": [],
+  "framesOver100msOutsideTransitionsCount": 0,
+  "transitions": [
+    {
+      "frame": 280782,
+      "time_s": 184.6531,
+      "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 7.49
+    },
+    {
+      "frame": 516222,
+      "time_s": 345.9221,
+      "marker": "region:Blackmere Marsh->Drowned Belfry",
+      "max_dt_ms": 7.404
+    },
+    {
+      "frame": 658650,
+      "time_s": 427.4538,
+      "marker": "reload|region:Drowned Belfry->Thornwick Village",
+      "max_dt_ms": 42.765
+    },
+    {
+      "frame": 686147,
+      "time_s": 444.5048,
+      "marker": "restore|loaded|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 73.678
+    }
+  ],
+  "perRegion": {
+    "Blackmere Marsh": {
+      "frames": 457322,
+      "p95": 1.361,
+      "max": 73.678
+    },
+    "Drowned Belfry": {
+      "frames": 142428,
+      "p95": 1.266,
+      "max": 9.695
+    },
+    "Thornwick Village": {
+      "frames": 308278,
+      "p95": 1.252,
+      "max": 86.967
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": true,
+    "no_frame_over_100ms_outside_transitions": true,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": true
+  },
+  "verdict": "pass"
+}
