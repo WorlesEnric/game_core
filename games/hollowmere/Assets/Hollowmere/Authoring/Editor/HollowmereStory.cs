@@ -13,6 +13,7 @@
 // Effects the action kinds cannot express yet (buying from a vendor, rolling a loot table, restoring stamina) are raised
 // as counter facts that the director's interim fact-request bridge turns into typed commands (HollowmereDirector).
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
@@ -86,6 +87,12 @@ namespace Hollowmere.Authoring
             }
 
             RegisterContent(a, "story.register-1", AllFirstWave());
+            if (a.NarrativeBlocked != null)
+            {
+                a.Block("story.item-tuning .. story.quest", a.NarrativeBlocked);
+                return;
+            }
+
             ConfigureItems(a);
             CreateVendorAndLoot(a);
             Quest(a);
@@ -186,6 +193,26 @@ namespace Hollowmere.Authoring
 
         /// <summary>Lists definitions on the content set (assign append, one op each).</summary>
         public static void RegisterContent(StudioAuthor a, string step, List<string> paths)
+        {
+            if (a.NarrativeBlocked != null)
+            {
+                a.Block(step, a.NarrativeBlocked);
+                return;
+            }
+
+            try
+            {
+                RegisterContentStep(a, step, paths);
+            }
+            catch (InvalidOperationException error) when (error.Message.Contains("narrative.definition"))
+            {
+                string reason = "the content set's 'definitions' (category narrative.definition) refuses every narrative definition: " + error.Message.Split('\n')[1].Trim();
+                a.BlockNarrative(reason);
+                a.Block(step, reason);
+            }
+        }
+
+        private static void RegisterContentStep(StudioAuthor a, string step, List<string> paths)
         {
             a.Step(step, "Register " + paths.Count + " definitions on the Hollowmere content set", () =>
             {

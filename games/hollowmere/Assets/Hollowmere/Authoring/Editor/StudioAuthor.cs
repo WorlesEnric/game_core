@@ -77,6 +77,12 @@ namespace Hollowmere.Authoring
             Blocked.Add(steps + ": " + reason);
         }
 
+        /// <summary>Marks the narrative steps blocked (first reason wins).</summary>
+        public void BlockNarrative(string reason)
+        {
+            NarrativeBlocked ??= reason;
+        }
+
         /// <summary>Describes each type through the Studio identity; the first failure blocks the narrative steps.</summary>
         public void CheckNarrativeTypes(params Type[] types)
         {
