@@ -11,7 +11,6 @@ using GameCore.Studio.Edit;
 using GameCore.Studio.Etos.Client;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
-using UnityEditor;
 
 namespace GameCore.Studio.Etos
 {
@@ -43,7 +42,7 @@ namespace GameCore.Studio.Etos
             }
 
             string id = IdDerivation.NewSelectionId(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), CryptoIdEntropy.Instance);
-            return new SelectionSnapshot(id, EditorApplication.isPlaying ? SelectionMode.Play : SelectionMode.Edit, refs, runtime.Index.Revision);
+            return new SelectionSnapshot(id, UnityEditor.EditorApplication.isPlaying ? SelectionMode.Play : SelectionMode.Edit, refs, runtime.Index.Revision);
         }
 
         /// <summary>A request for <paramref name="intent"/> on <paramref name="selection"/> with the runtime's slice and catalog revision.</summary>
