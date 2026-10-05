@@ -448,7 +448,7 @@ namespace GameCore.Studio.Edit
             foreach (ArtifactRef artifact in changeSet.Artifacts ?? Array.Empty<ArtifactRef>())
             {
                 string? file = null;
-                foreach (string candidate in new[] { artifact.Name, artifact.Sha256, "sha256-" + artifact.Sha256 })
+                foreach (string? candidate in new[] { artifact.Name, artifact.Sha256, "sha256-" + artifact.Sha256 })
                 {
                     if (candidate == null)
                     {
@@ -566,7 +566,7 @@ namespace GameCore.Studio.Edit
                 validation.Add(new ValidationScenario(VerdictScenario, verdict.Pass ? ScenarioStatus.Pass : ScenarioStatus.Fail, verdict.Summary + "; " + verdict.Reference));
             }
 
-            Operation admit = new Operation(propose.OpId, MechanismAdmission.AdmitTool, null, args, null, Preconditions.None, RuntimeApply.Compile);
+            Operation admit = new Operation(propose.OpId, MechanismAdmission.AdmitTool, null, args, null, null, RuntimeApply.Compile);
             return new ChangeSet(
                 candidate.Id,
                 ChangeSet.SchemaId,
@@ -603,9 +603,10 @@ namespace GameCore.Studio.Edit
                 }
 
                 captureSlot = "admit-" + candidate.Id;
-                if (Options.Capture == null || !Options.Capture.TryCapture(captureSlot, out string? captureProblem))
+                string? captureProblem = "no capture hook is registered (AdmissionOptions.Capture)";
+                if (Options.Capture == null || !Options.Capture.TryCapture(captureSlot, out captureProblem))
                 {
-                    return Refuse(candidate.Id, "capture_failed", "The running game could not be captured to " + captureSlot + (Options.Capture == null ? ": no capture hook is registered (AdmissionOptions.Capture)." : ": " + captureProblem));
+                    return Refuse(candidate.Id, "capture_failed", "The running game could not be captured to " + captureSlot + ": " + captureProblem);
                 }
 
                 (Options.StopPlayMode ?? (() => UnityEditor.EditorApplication.isPlaying = false))();
