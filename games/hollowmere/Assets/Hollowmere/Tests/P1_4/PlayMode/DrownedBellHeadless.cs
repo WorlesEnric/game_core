@@ -236,6 +236,8 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             frames = 0;
             int acknowledgedBefore = game.Delivery.Owner.AcknowledgedCount;
             int alreadyBefore = game.Delivery.Owner.AlreadyAppliedCount;
+            int rejectedBeforeReplay = game.Delivery.Owner.RejectedCount;
+            Assert.That(rejectedBeforeReplay, Is.EqualTo(0), "no obligation was refused while playing: " + string.Join(" | ", timings));
             int rewardsBefore = modules.Quest.RewardsGranted;
             int clappers = Held(HollowmereNarrative.BellClapper);
             Assert.That(game.Delivery.Reinstate(inFlight!, out string detail), Is.True, detail);
@@ -254,8 +256,11 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             Assert.That(Held(HollowmereNarrative.OldCoin), Is.EqualTo(coinsBefore + 3), "a replayed pickup picks up nothing twice");
             Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(rewardsBefore), "no reward granted again");
             Assert.That(game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(1), "the replayed pickup answered AlreadyApplied");
+            // A replayed obligation whose effect can no longer apply (the despawned coins) is refused rather than re-applied;
+            // the state assertions above are what the replay must not change.
             Debug.Log("[P1.4] replay: alreadyApplied +" + (game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore).ToString(CultureInfo.InvariantCulture)
-                + " acknowledged +" + (game.Delivery.Owner.AcknowledgedCount - acknowledgedBefore).ToString(CultureInfo.InvariantCulture));
+                + " acknowledged +" + (game.Delivery.Owner.AcknowledgedCount - acknowledgedBefore).ToString(CultureInfo.InvariantCulture)
+                + " refused +" + (game.Delivery.Owner.RejectedCount - rejectedBeforeReplay).ToString(CultureInfo.InvariantCulture));
             Timing("outbox replay", phase.ElapsedMilliseconds, frames);
 
             int elapsedFrames = Time.frameCount - startFrame;
@@ -270,7 +275,6 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             Assert.That(pumps, Is.EqualTo(elapsedFrames).Within(1), "one sanctioned pump per frame");
             Assert.That(root.PumpCounter.Violations, Is.EqualTo(0), root.PumpCounter.LastViolation);
             Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(1), "ending B's one reward, granted once");
-            Assert.That(game.Delivery.Owner.RejectedCount, Is.EqualTo(0), "no obligation was refused: " + string.Join(" | ", timings));
             Assert.That(acknowledgedBefore, Is.GreaterThan(0));
             Assert.That(modules.Logic.Fired, Is.GreaterThanOrEqualTo(3), "the bell, its ending and the gate-keeping rules fired");
 #else
