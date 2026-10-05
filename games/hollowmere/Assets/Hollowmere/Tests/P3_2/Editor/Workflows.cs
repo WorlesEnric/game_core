@@ -83,6 +83,8 @@ namespace Hollowmere.P3_2.Workflows
         private const string LanternItem = "Assets/Hollowmere/Items/Lantern.asset";
         private const string GateRule = "Assets/Hollowmere/Rules/GateKeyOpensGate.asset";
         private const string Shared = "Library/P3_2";
+        private const string GateInteractable = "Assets/Hollowmere/Interactables/Definitions/CausewayGate.asset";
+        private const string ContentSet = "Assets/Hollowmere/Rules/HollowmereContent.asset";
 
         private static string PositionAnswer(string question)
         {
@@ -848,6 +850,7 @@ namespace Hollowmere.P3_2.Workflows
                 S.OpenScene(S.MarshScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Causeway Gate"),
+                S.AddAsset(GateInteractable, LanternItem),
                 S.Do("local explain", () => LocalExplain()),
                 S.Send("explain", "Why is the Causeway Gate locked, and what would break if the lantern item were deleted? Explain only; do not change anything."),
                 S.Await("explain", null, 900),
@@ -901,14 +904,37 @@ namespace Hollowmere.P3_2.Workflows
                 result[name] = new JObject { ["tool"] = tool, ["status"] = output.Status.ToString(), ["code"] = output.Code, ["detail"] = output.Detail, ["ms"] = Math.Round(watch.Elapsed.TotalMilliseconds, 1), ["output"] = output.Output?.DeepClone() };
             }
 
-            try
+            UnityEngine.Object gateInteractable = AssetDatabase.LoadMainAssetAtPath(GateInteractable);
+            UnityEngine.Object content = AssetDatabase.LoadMainAssetAtPath(ContentSet);
+            foreach ((string name, string tool, object?[] args) in new[]
             {
-                object? explained = S.InvokeTool("logic.explain", AssetDatabase.LoadMainAssetAtPath(GateRule));
-                result["rule-explain"] = new JObject { ["tool"] = "logic.explain", ["rule"] = GateRule, ["output"] = explained?.ToString() };
-            }
-            catch (Exception error) when (!(error is OutOfMemoryException))
+                ("gate-interaction-explain", "interaction.explain", new object?[] { gateInteractable, string.Empty }),
+                ("gate-interaction-explain-with-key", "interaction.explain", new object?[] { gateInteractable, "item.e1d08e53-755f-4d05-a23d-c84d98a29897=1" }),
+                ("gate-why-not", "logic.whyNot", new object?[] { content, gateInteractable, string.Empty }),
+                ("rule-explain", "logic.explain", new object?[] { AssetDatabase.LoadMainAssetAtPath(GateRule) }),
+                ("quest-inspect-runtime", "quest.inspectRuntime", new object?[] { AssetDatabase.LoadMainAssetAtPath(Quest), string.Empty }),
+            })
             {
-                result["rule-explain"] = new JObject { ["tool"] = "logic.explain", ["error"] = (error.InnerException ?? error).Message };
+                System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+                try
+                {
+                    object? output = S.InvokeTool(tool, args);
+                    JToken token;
+                    try
+                    {
+                        token = output == null ? JValue.CreateNull() : output is string text ? new JValue(text) : JToken.FromObject(output);
+                    }
+                    catch (Exception)
+                    {
+                        token = new JValue(output?.ToString());
+                    }
+
+                    result[name] = new JObject { ["tool"] = tool, ["status"] = "ok", ["ms"] = Math.Round(watch.Elapsed.TotalMilliseconds, 1), ["output"] = token };
+                }
+                catch (Exception error) when (!(error is OutOfMemoryException))
+                {
+                    result[name] = new JObject { ["tool"] = tool, ["error"] = (error.InnerException ?? error).Message };
+                }
             }
 
             WorkflowRunner.Json("explain/local-tools.json", result);
