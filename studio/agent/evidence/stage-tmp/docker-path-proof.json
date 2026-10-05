@@ -1,0 +1,60 @@
+{
+  "environment": {
+    "HOME": "/home/worlesenric",
+    "TMPDIR": "/tmp/gcs/251f522b",
+    "XDG_RUNTIME_DIR": "/tmp/gcs/251f522b",
+    "XDG_CACHE_HOME": "/tmp/gcs/251f522b/cache",
+    "UPM_CACHE_ROOT": "/tmp/gcs/251f522b/cache/upm",
+    "NUGET_PACKAGES": "/c/nuget"
+  },
+  "executable": "/u/Unity",
+  "arguments": [
+    "-job-worker-count",
+    "4",
+    "-diag-debug-shader-compiler",
+    "-batchmode",
+    "-nographics",
+    "-projectPath",
+    "/w/p",
+    "-testResults",
+    "/w/s/out/editmode.xml",
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-logFile",
+    "-"
+  ],
+  "workingDirectory": "/w/s",
+  "readOnlyRootfs": true,
+  "networkMode": "none",
+  "capDrop": [
+    "ALL"
+  ],
+  "securityOpt": [
+    "no-new-privileges"
+  ],
+  "pidsLimit": 512,
+  "privateMounts": [
+    {
+      "source": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor",
+      "destination": "/u",
+      "writable": false
+    },
+    {
+      "source": "/tmp/gamecore-stage-tmp-service/node-04JtqZ/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/tmp",
+      "destination": "/tmp",
+      "writable": true
+    },
+    {
+      "source": "/tmp/gamecore-stage-tmp-service/node-04JtqZ/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/.licensing-df36ef6a6f2f1139e92d0f3c2887a02a/.cache",
+      "destination": "/tmp/gcs/251f522b/cache",
+      "writable": true
+    },
+    {
+      "source": "/tmp/gamecore-stage-tmp-service/node-04JtqZ/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/project",
+      "destination": "/w/p",
+      "writable": true
+    }
+  ],
+  "maximumLauncherPathBytes": 27
+}

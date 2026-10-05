@@ -100,10 +100,14 @@ async fn stage_tmp_docker_cold_warm_pressure() {
         .join(&version);
     std::fs::create_dir_all(cache.parent().unwrap()).unwrap();
     // A private copy of the operator-provisioned cache; no sibling clone or installed state.
+    // A previous private NVMe copy can avoid repeated slow host-disk fixture copies.
+    let provisioned = std::env::var_os("STAGE_TMP_CACHE")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| base.join("stage/_warm").join(&version));
     assert!(
         Command::new("cp")
             .args(["-a", "--reflink=auto"])
-            .arg(base.join("stage/_warm").join(version))
+            .arg(provisioned)
             .arg(&cache)
             .status()
             .unwrap()

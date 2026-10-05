@@ -1,0 +1,81 @@
+{
+  "implementationCommit": "8d27c8e5",
+  "dockerStage": "BLOCKED",
+  "ordinaryRust": {
+    "passed": 117,
+    "failed": 0,
+    "ignored": 8
+  },
+  "dockerIsolation": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "dockerLicensing": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "dockerAcceptance": {
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "stagePython": {
+    "passed": 16
+  },
+  "slotSelfTests": {
+    "passed": 29
+  },
+  "dockerAnalyzer": {
+    "passed": 50
+  },
+  "negativeSemantic": {
+    "refused": true,
+    "findings": 21,
+    "ruleIds": [
+      "SG001",
+      "SG002",
+      "SG003",
+      "SG004",
+      "SG005",
+      "SG006",
+      "SG007",
+      "SG008",
+      "SG009",
+      "SG010"
+    ]
+  },
+  "timings": [
+    {
+      "run": "cold",
+      "pass": false,
+      "durationMs": 841857,
+      "budgetMs": 360000,
+      "coldCache": true,
+      "confinement": "docker",
+      "configuredBudgetMs": 360000,
+      "executionBudgetMs": 1800000,
+      "warmMeasurementReason": "No completed cold import seeded a warm cache",
+      "serviceJobElapsedMs": 841902,
+      "warmMeasurement": false,
+      "status": "verdict-produced",
+      "candidateXmlCounts": {}
+    },
+    {
+      "run": "warm",
+      "pass": false,
+      "durationMs": 12582,
+      "budgetMs": 360000,
+      "coldCache": true,
+      "confinement": "docker",
+      "configuredBudgetMs": 360000,
+      "executionBudgetMs": 360000,
+      "warmMeasurementReason": "No completed cold import seeded a warm cache",
+      "serviceJobElapsedMs": 12603,
+      "warmMeasurement": false,
+      "status": "verdict-produced",
+      "candidateXmlCounts": {}
+    }
+  ]
+}

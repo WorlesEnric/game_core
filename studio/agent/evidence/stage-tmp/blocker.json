@@ -1,0 +1,45 @@
+{
+  "status": "BLOCKED",
+  "primary": "Cold candidate EditMode produced no XML; the 600-second silence watchdog killed its wrapper, then the retry collided with the surviving container name.",
+  "locations": {
+    "bufferedUnityOutput": "studio/agent/src/stage/sandbox.rs:608",
+    "stdoutOnlyAfterExit": "studio/agent/src/stage/sandbox.rs:612",
+    "silenceDeadline": "studio/stage/run-redacted.py:73",
+    "cleanupAfterEntireBatch": "studio/agent/src/stage/sandbox.rs:495",
+    "missingXmlRefusal": "studio/agent/src/stage/pipeline.rs:967",
+    "repeatMetadataRefusal": "studio/agent/src/stage/semantic.rs:100",
+    "reuseSkipsCacheReseed": "studio/stage/make-slot.py:496"
+  },
+  "probePassed": true,
+  "liveMaximumLauncherPathBytes": 27,
+  "cold": {
+    "durationMs": 841857,
+    "budgetMs": 360000,
+    "coldCache": true,
+    "rulesTestsPassed": 15,
+    "editModeXml": false,
+    "playModeXml": false
+  },
+  "repeat": {
+    "durationMs": 12582,
+    "budgetMs": 360000,
+    "coldCache": true,
+    "firstMissingMetadata": "ScriptAssemblies/Unity.Core.Editor.dll"
+  },
+  "signedPassingVerdictAvailable": false,
+  "authenticatedVerdictHttpStatuses": [
+    404,
+    404
+  ],
+  "compilerObservation": {
+    "waitingCscTargets": [
+      "Hollowmere.Mechanism.PressurePlate.Generated.dll",
+      "GameCore.Content.Compiler.dll"
+    ],
+    "compilerErrorsObserved": 0,
+    "lastCompletedBeeNodes": 1314,
+    "nodesEverQueued": 1368,
+    "rootCauseOfCompilerWait": "not established"
+  },
+  "priorAllocatorBlockers": "attempt-1/"
+}

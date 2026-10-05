@@ -1,0 +1,78 @@
+{
+  "implementationCommit": "8d27c8e5",
+  "dockerStage": "BLOCKED",
+  "ordinaryRust": {
+    "passed": 117,
+    "failed": 0,
+    "ignored": 8
+  },
+  "dockerIsolation": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0
+  },
+  "dockerLicensing": {
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "dockerAcceptance": {
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0
+  },
+  "stagePython": {
+    "passed": 16
+  },
+  "slotSelfTests": {
+    "passed": 29
+  },
+  "dockerAnalyzer": {
+    "passed": 50
+  },
+  "negativeSemantic": {
+    "refused": true,
+    "findings": 21,
+    "ruleIds": [
+      "SG001",
+      "SG002",
+      "SG003",
+      "SG004",
+      "SG005",
+      "SG006",
+      "SG007",
+      "SG008",
+      "SG009",
+      "SG010"
+    ]
+  },
+  "timings": [
+    {
+      "run": "cold",
+      "pass": null,
+      "durationMs": null,
+      "budgetMs": null,
+      "coldCache": null,
+      "confinement": null,
+      "configuredBudgetMs": 360000,
+      "serviceJobElapsedMs": 211965,
+      "warmMeasurement": false,
+      "status": "blocked-before-pipeline",
+      "candidateXmlCounts": {}
+    },
+    {
+      "run": "warm",
+      "pass": null,
+      "durationMs": null,
+      "budgetMs": null,
+      "coldCache": null,
+      "confinement": null,
+      "configuredBudgetMs": 360000,
+      "serviceJobElapsedMs": 221105,
+      "warmMeasurement": false,
+      "status": "blocked-before-pipeline",
+      "candidateXmlCounts": {}
+    }
+  ],
+  "licensingDisposition": "Blocked: late allocator admission followed by the unchanged outer deadline"
+}
