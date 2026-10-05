@@ -25,7 +25,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         /// <summary>studio.core's retained-blob folder (delete/replace inverses); removed when a test created it.</summary>
         public const string BlobFolder = "Assets/GameCoreStudioTemp";
 
-        protected static readonly string[] BackedUp =
+        protected static readonly IReadOnlyList<string> BackedUp = Array.AsReadOnly(new[]
         {
             Root + "/Dialogue/Graphs/Maren.asset",
             Root + "/Items/Lantern.asset",
@@ -33,7 +33,10 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             Root + "/Items/GateKey.asset",
             Root + "/Quests/DrownedBell.asset",
             Root + "/World/Hollowmere.asset",
-        };
+            Root + "/World/Regions/ThornwickVillage.asset",
+            Root + "/World/Regions/BlackmereMarsh.asset",
+            Root + "/World/Regions/DrownedBelfry.asset",
+        });
 
         private readonly Dictionary<string, byte[]> _backup = new Dictionary<string, byte[]>(StringComparer.Ordinal);
         private string _stateRoot = string.Empty;
@@ -56,6 +59,11 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             }
 
             _portalsBefore = new List<string>(Directory.GetFiles(Path.Combine(project, Root, "World", "Portals"), "*.asset"));
+            foreach (string portal in _portalsBefore)
+            {
+                string asset = Root + "/World/Portals/" + Path.GetFileName(portal);
+                _backup[asset] = File.ReadAllBytes(portal);
+            }
             _blobFolderExisted = AssetDatabase.IsValidFolder(BlobFolder);
             if (!AssetDatabase.IsValidFolder(TempFolder))
             {

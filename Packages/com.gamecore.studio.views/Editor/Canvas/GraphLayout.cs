@@ -25,6 +25,8 @@ namespace GameCore.Studio.Views.Canvas
         private readonly Dictionary<string, CanvasNode> _byId = new Dictionary<string, CanvasNode>(StringComparer.Ordinal);
         private readonly Dictionary<string, List<string>> _next = new Dictionary<string, List<string>>(StringComparer.Ordinal);
         private readonly Dictionary<string, List<string>> _previous = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        private readonly IReadOnlyList<CanvasEdge> _edges;
+        private readonly Stopwatch _watch = new Stopwatch();
         private readonly HashSet<string> _roots;
         private readonly bool _vertical;
         private IEnumerator<bool>? _work;
@@ -33,28 +35,7 @@ namespace GameCore.Studio.Views.Canvas
         public GraphLayout(IReadOnlyList<CanvasNode> nodes, IReadOnlyList<CanvasEdge> edges, IEnumerable<string>? roots = null, bool vertical = false)
         {
             _nodes = new List<CanvasNode>(nodes ?? throw new ArgumentNullException(nameof(nodes)));
-            foreach (CanvasNode node in _nodes)
-            {
-                _byId[node.Id] = node;
-            }
-
-            HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (CanvasEdge edge in edges ?? Array.Empty<CanvasEdge>())
-            {
-                if (!_byId.ContainsKey(edge.From) || !_byId.ContainsKey(edge.To) || edge.From == edge.To)
-                {
-                    continue;
-                }
-
-                if (!seen.Add(edge.From + "\n" + edge.To))
-                {
-                    continue;
-                }
-
-                Link(_next, edge.From, edge.To);
-                Link(_previous, edge.To, edge.From);
-            }
-
+            _edges = edges ?? Array.Empty<CanvasEdge>();
             _roots = new HashSet<string>(roots ?? Array.Empty<string>(), StringComparer.Ordinal);
             _vertical = vertical;
         }
@@ -79,8 +60,8 @@ namespace GameCore.Studio.Views.Canvas
             }
 
             _work ??= Run().GetEnumerator();
-            Stopwatch watch = Stopwatch.StartNew();
-            while (watch.Elapsed.TotalMilliseconds < budgetMs)
+            _watch.Restart();
+            while (_watch.Elapsed.TotalMilliseconds < budgetMs)
             {
                 if (!_work.MoveNext())
                 {
@@ -89,7 +70,7 @@ namespace GameCore.Studio.Views.Canvas
                 }
             }
 
-            double elapsed = watch.Elapsed.TotalMilliseconds;
+            double elapsed = _watch.Elapsed.TotalMilliseconds;
             Steps++;
             TotalMilliseconds += elapsed;
             MaxStepMilliseconds = Math.Max(MaxStepMilliseconds, elapsed);
@@ -106,6 +87,32 @@ namespace GameCore.Studio.Views.Canvas
 
         private IEnumerable<bool> Run()
         {
+            // Building adjacency is part of the sliced workload, not constructor work.
+            int prepared = 0;
+            foreach (CanvasNode node in _nodes)
+            {
+                _byId[node.Id] = node;
+                if (++prepared % 64 == 0) yield return false;
+            }
+
+            HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (CanvasEdge edge in _edges)
+            {
+                if (++prepared % 64 == 0) yield return false;
+                if (!_byId.ContainsKey(edge.From) || !_byId.ContainsKey(edge.To) || edge.From == edge.To)
+                {
+                    continue;
+                }
+
+                if (!seen.Add(edge.From + "\n" + edge.To))
+                {
+                    continue;
+                }
+
+                Link(_next, edge.From, edge.To);
+                Link(_previous, edge.To, edge.From);
+            }
+
             // Phase 1: layers.
             Dictionary<string, int> layer = new Dictionary<string, int>(StringComparer.Ordinal);
             Queue<string> queue = new Queue<string>();

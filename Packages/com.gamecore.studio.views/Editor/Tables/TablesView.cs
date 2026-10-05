@@ -28,7 +28,7 @@ namespace GameCore.Studio.Views
         public const string SavesTab = "Save slots";
         public const string AnyTab = "Any type";
 
-        private static readonly IReadOnlyList<string> Tabs = new[] { EntitiesTab, DefinitionsTab, ItemsTab, FactsTab, SavesTab, AnyTab };
+        private static readonly IReadOnlyList<string> Tabs = System.Array.AsReadOnly(new[] { EntitiesTab, DefinitionsTab, ItemsTab, FactsTab, SavesTab, AnyTab });
 
         private readonly Dictionary<string, ToolbarToggle> _tabToggles = new Dictionary<string, ToolbarToggle>(StringComparer.Ordinal);
         private readonly PopupField<string> _typePicker;

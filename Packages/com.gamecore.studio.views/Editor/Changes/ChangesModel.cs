@@ -235,13 +235,13 @@ namespace GameCore.Studio.Views
     {
         public const string NewtonsoftPackage = "com.unity.nuget.newtonsoft-json";
 
-        public static readonly IReadOnlyList<string> KernelPackages = new[]
+        public static readonly IReadOnlyList<string> KernelPackages = System.Array.AsReadOnly(new[]
         {
             "com.gamecore.contracts", "com.gamecore.composition", "com.gamecore.derivation", "com.gamecore.planning",
             "com.gamecore.content.compiler", "com.gamecore.rules.cards", "com.gamecore.rules.narrative", "com.gamecore.rules.traversal",
-        };
+        });
 
-        public static readonly IReadOnlyList<string> LayerNames = new[] { "kernel", "rules", "unity", "gameplay", "studio" };
+        public static readonly IReadOnlyList<string> LayerNames = System.Array.AsReadOnly(new[] { "kernel", "rules", "unity", "gameplay", "studio" });
 
         public PackageGraph(IReadOnlyList<PackageNode> packages)
         {

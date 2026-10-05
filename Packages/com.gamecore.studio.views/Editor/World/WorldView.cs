@@ -130,7 +130,7 @@ namespace GameCore.Studio.Views
                 return Array.Empty<ApplyReport>();
             }
 
-            IReadOnlyList<ApplyReport> reports = Context.Edits.ApplySequence("World: connect " + a.Name + " and " + b.Name, WorldEdits.ConnectRegions(Context.Runtime, Document, a, b));
+            IReadOnlyList<ApplyReport> reports = new[] { Context.Edits.Apply(WorldEdits.ConnectRegions(Context.Runtime, Document, a, b)) };
             Refresh();
             return reports;
         }
@@ -284,7 +284,7 @@ namespace GameCore.Studio.Views
                 _inspector.Add(portalPicker);
                 _inspector.Add(position);
                 _inspector.Add(yaw);
-                _inspector.Add(new Button(() => ApplyEdit(ViewEdits.Build("World: add portal end in " + region.Name, new[] { WorldEdits.AddPortal(portals[portalPicker.index], position.value, yaw.value) }))) { text = "Add portal (world.addPortal)" });
+                _inspector.Add(new Button(() => ApplyEdit(ViewEdits.Build("World: add portal end in " + region.Name, new[] { WorldEdits.AddPortal(portals[portalPicker.index], region, position.value, yaw.value) }))) { text = "Add portal (world.addPortal)" });
                 IReadOnlyList<string> unbound = ToolBinding.UnboundParameters(WorldEdits.AddPortalTool);
                 if (unbound.Count > 0)
                 {
