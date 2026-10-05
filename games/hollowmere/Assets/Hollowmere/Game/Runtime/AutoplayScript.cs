@@ -7,6 +7,9 @@
 //   waitframes <n>                         rendered frames
 //   ui <command>                           a UI command (newgame, resume, save.1, load.1, restart, open.journal ...)
 //   walk <x> <z> [run] [timeout <s>]       steer the player to world (x, z) metres until within 1 m (default 60 s)
+//   approach <entity> [within <m>] [run] [timeout <s>]
+//                                          steer toward a placed entity's committed position, re-targeted every frame
+//                                          (patrolling NPCs), until within <m> metres (default 1.6), then face it
 //   face <yawDeg>                          turn the camera/player to a yaw in degrees
 //   interact                               press Interact once
 //   advance                                advance the dialogue
@@ -30,6 +33,7 @@ namespace Hollowmere.Game
         WaitFrames,
         Ui,
         Walk,
+        Approach,
         Face,
         Interact,
         Advance,
@@ -174,6 +178,8 @@ namespace Hollowmere.Game
                     return true;
                 case "walk":
                     return TryWalk(line, text, tokens, out command, out problem);
+                case "approach":
+                    return TryApproach(line, text, tokens, out command, out problem);
                 case "face":
                     if (count != 1 || !TryFloat(tokens[1], out float yaw))
                     {
@@ -228,6 +234,47 @@ namespace Hollowmere.Game
                     problem = "unknown command '" + tokens[0] + "'";
                     return false;
             }
+        }
+
+        /// <summary>approach &lt;entity name&gt; [within &lt;m&gt;] [run] [timeout &lt;s&gt;]: X carries the distance.</summary>
+        private static bool TryApproach(int line, string text, List<string> tokens, out AutoplayCommand? command, out string problem)
+        {
+            command = null;
+            problem = "approach <entity name> [within <m>] [run] [timeout <s>]";
+            var name = new List<string>();
+            float within = 1.6f;
+            float timeout = 0f;
+            bool run = false;
+            for (int i = 1; i < tokens.Count; i++)
+            {
+                string token = tokens[i].ToLowerInvariant();
+                if (token == "within" && i + 1 < tokens.Count && TryFloat(tokens[i + 1], out float metres) && metres > 0f)
+                {
+                    within = metres;
+                    i++;
+                }
+                else if (token == "timeout" && i + 1 < tokens.Count && TryFloat(tokens[i + 1], out float seconds) && seconds > 0f)
+                {
+                    timeout = seconds;
+                    i++;
+                }
+                else if (token == "run")
+                {
+                    run = true;
+                }
+                else
+                {
+                    name.Add(tokens[i]);
+                }
+            }
+
+            if (name.Count == 0)
+            {
+                return false;
+            }
+
+            command = new AutoplayCommand(line, AutoplayVerb.Approach, text, string.Join(" ", name), within, 0f, run, timeout, 0);
+            return true;
         }
 
         private static bool TryWalk(int line, string text, List<string> tokens, out AutoplayCommand? command, out string problem)

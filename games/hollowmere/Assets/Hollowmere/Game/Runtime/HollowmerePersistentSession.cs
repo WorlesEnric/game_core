@@ -159,6 +159,12 @@ namespace Hollowmere.Game
 
         public Vector3 PlayerPosition => game != null ? game.PlayerPosition() : Vector3.zero;
 
+        public bool TryEntityPosition(string name, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return game != null && game.TryEntityPosition(name, out position);
+        }
+
         public void SetMove(Vector3 worldDirection, bool run)
         {
             AutoplayIntentSource? intents = game != null ? game.Intents : null;

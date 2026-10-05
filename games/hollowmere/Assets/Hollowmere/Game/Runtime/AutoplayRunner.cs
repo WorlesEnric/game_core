@@ -21,6 +21,9 @@ namespace Hollowmere.Game
         /// <summary>The player's committed position in metres.</summary>
         Vector3 PlayerPosition { get; }
 
+        /// <summary>The committed position (metres) of the placed entity named <paramref name="name"/>; false when unknown.</summary>
+        bool TryEntityPosition(string name, out Vector3 position);
+
         /// <summary>Moves the player along a world-space direction (zero stops).</summary>
         void SetMove(Vector3 worldDirection, bool run);
 
@@ -180,6 +183,8 @@ namespace Hollowmere.Game
                     return true;
                 case AutoplayVerb.Walk:
                     return Walk(command, elapsed);
+                case AutoplayVerb.Approach:
+                    return Approach(command, elapsed);
                 case AutoplayVerb.Face:
                     game.SetFacing(command.Seconds);
                     return true;
@@ -268,6 +273,55 @@ namespace Hollowmere.Game
                 game.SetMove(Vector3.zero, false);
                 Fail(command, "walk timed out after " + Timeout(command).ToString("F0", CultureInfo.InvariantCulture) + " s at (" + F(position.x) + ", " + F(position.z) + "), "
                     + F(distance) + " m from the target");
+                return false;
+            }
+
+            game.SetMove(delta / distance, command.Run);
+            return false;
+        }
+
+        private bool Approach(AutoplayCommand command, float elapsed)
+        {
+            IAutoplayHost game = host!;
+            if (!game.TryEntityPosition(command.Argument, out Vector3 target))
+            {
+                game.SetMove(Vector3.zero, false);
+                Fail(command, "approach: no placed entity named '" + command.Argument + "'");
+                return false;
+            }
+
+            Vector3 position = game.PlayerPosition;
+            Vector3 delta = new Vector3(target.x - position.x, 0f, target.z - position.z);
+            float distance = delta.magnitude;
+            if (distance <= command.X)
+            {
+                game.SetMove(Vector3.zero, false);
+                float yaw = Mathf.Atan2(delta.x, delta.z) * Mathf.Rad2Deg;
+                game.SetFacing(yaw);
+                game.Log("[autoplay] " + command.Line.ToString(CultureInfo.InvariantCulture) + " reached " + command.Argument + " at (" + F(position.x) + ", " + F(position.z)
+                    + "), " + F(distance) + " m, facing " + F(yaw) + " after " + elapsed.ToString("F2", CultureInfo.InvariantCulture) + " s");
+                return true;
+            }
+
+            float now = Time.realtimeSinceStartup;
+            Vector3 moved = position - progressAnchor;
+            moved.y = 0f;
+            if (moved.magnitude >= StuckDistance)
+            {
+                progressAnchor = position;
+                progressSince = now;
+            }
+            else if (now - progressSince > StuckSeconds)
+            {
+                game.SetMove(Vector3.zero, false);
+                Fail(command, "approach stuck at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + command.Argument);
+                return false;
+            }
+
+            if (elapsed > Timeout(command))
+            {
+                game.SetMove(Vector3.zero, false);
+                Fail(command, "approach timed out at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + command.Argument);
                 return false;
             }
 

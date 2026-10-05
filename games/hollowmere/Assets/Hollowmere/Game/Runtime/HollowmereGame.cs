@@ -273,6 +273,34 @@ namespace Hollowmere.Game
                 (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, 0)));
         }
 
+        /// <summary>The committed position (metres) of the placed entity named <paramref name="name"/> (baked manifest name).</summary>
+        public bool TryEntityPosition(string name, out Vector3 position)
+        {
+            position = Vector3.zero;
+            GameplayWorld? world = World;
+            if (world == null || string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            foreach (ManifestEntity entity in world.Manifest.Entities)
+            {
+                if (!string.Equals(entity.name, name, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                TargetId target = AuthoringIds.TargetIdFor(entity.authoringId);
+                position = new Vector3(
+                    (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosX, entity.x)),
+                    (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosY, entity.y)),
+                    (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, entity.z)));
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// The scripted intents (autoplay and tests): an override of the player's input source, wrapping it (P1.5's pause
         /// gate stays inside). Null unless -autoplay was given or <see cref="UseScriptedIntents"/> was called.

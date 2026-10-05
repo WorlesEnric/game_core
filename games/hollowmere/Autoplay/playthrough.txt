@@ -1,7 +1,8 @@
 # Hollowmere recorded playthrough (P3.1 W-GAME-07): menu -> new game -> Thornwick Village (Maren, coins, Bram's lantern)
 # -> Warden Hale's gate -> Blackmere Marsh (shrine puzzle, clapper, save) -> Odd's ferry -> the Drowned Belfry (the Echo,
 # the bell) -> Ending C -> restart -> load the mid-quest save -> quit. About ten and a half minutes at walking pace.
-# Positions are world metres (village centre 0,0; marsh 200,0; belfry 100,200).
+# Positions are world metres (village centre 0,0; marsh 200,0; belfry 100,200). Every interaction first approaches the
+# entity by its baked name (re-targeted each frame, so patrolling NPCs are reached), then waits for its prompt.
 
 waituntil ready timeout 120
 mark menu
@@ -19,9 +20,9 @@ face -40
 wait 3
 face 0
 walk -2 -6
-walk -6 -6
 mark maren
-waituntil prompt Maren timeout 30
+approach Maren within 1.8 timeout 40
+waituntil prompt Maren timeout 15
 interact
 waituntil dialogue active timeout 10
 wait 4
@@ -37,9 +38,7 @@ waituntil fact heard_rumour >= 1 timeout 10
 wait 2
 
 mark coins
-walk 1 -4
-walk 4 -4.2
-face 0
+approach "Coins (square)" within 1.4 timeout 30
 waituntil prompt coins timeout 10
 interact
 waituntil item OldCoin >= 5 timeout 10
@@ -47,8 +46,7 @@ wait 2
 
 mark bram
 walk 6 -8
-walk 9.3 -13
-face 90
+approach Bram within 1.8 timeout 40
 waituntil prompt Bram timeout 15
 interact
 waituntil dialogue active timeout 10
@@ -91,8 +89,7 @@ waituntil region Blackmere timeout 30
 # --- Blackmere Marsh ----------------------------------------------------------------------------------------------
 mark marsh
 wait 5
-walk 167.5 2.4
-face 0
+approach Hale within 1.8 timeout 30
 waituntil prompt Hale timeout 15
 interact
 waituntil dialogue active timeout 10
@@ -101,8 +98,7 @@ advance
 waituntil dialogue none timeout 10
 waituntil fact gate_open >= 1 timeout 10
 wait 2
-walk 168.2 2
-face 90
+approach "Causeway Gate" within 1.6 timeout 20
 waituntil prompt gate timeout 10
 interact
 wait 3
@@ -110,23 +106,17 @@ walk 172 2
 walk 180 2
 mark shrine
 walk 192 -1
-walk 199 2.4
-face 0
+approach "Shrine Lantern West" within 1.6 timeout 30
 waituntil prompt west timeout 10
 interact
 waituntil fact shrine_post_1 >= 1 timeout 10
 wait 3
-walk 203 -0.5
-walk 206 0.4
-face 0
+approach "Shrine Lantern Middle" within 1.6 timeout 30
 waituntil prompt middle timeout 10
 interact
 waituntil fact shrine_post_2 >= 1 timeout 10
 wait 3
-walk 209 -1.5
-walk 214 -1
-walk 213 2.4
-face 0
+approach "Shrine Lantern East" within 1.6 timeout 30
 waituntil prompt east timeout 10
 interact
 waituntil fact shrine_lit >= 1 timeout 10
@@ -136,9 +126,7 @@ wait 6
 mark clapper
 walk 213 -2
 walk 200 -3
-walk 194 4
-walk 194 7.4
-face 0
+approach "Bell Clapper" within 1.4 timeout 40
 waituntil prompt clapper timeout 10
 interact
 waituntil item BellClapper >= 1 timeout 10
@@ -150,8 +138,7 @@ wait 3
 
 log the satchel in the reeds
 walk 190 -6
-walk 186 -14.6
-face 180
+approach "Drowned Satchel" within 1.4 timeout 30
 waituntil prompt satchel timeout 10
 interact
 wait 4
@@ -160,8 +147,7 @@ mark odd
 walk 192 0
 walk 200 16
 walk 212 19.5
-walk 219.5 21
-face 90
+approach Odd within 1.8 timeout 40
 waituntil prompt Odd timeout 15
 interact
 waituntil dialogue active timeout 10
@@ -176,8 +162,7 @@ mark belfry
 wait 6
 face 0
 wait 3
-walk 100 189
-face 0
+approach "Belfry Echo" within 1.8 timeout 30
 waituntil prompt Echo timeout 15
 interact
 waituntil dialogue active timeout 10
@@ -188,9 +173,7 @@ choose 0
 wait 5
 advance
 waituntil dialogue none timeout 10
-walk 103 191
-walk 101.5 195.6
-face -20
+approach "Drowned Bell" within 1.8 timeout 30
 waituntil prompt bell timeout 15
 mark ring
 interact
