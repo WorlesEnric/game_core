@@ -1,0 +1,48 @@
+{
+  "sourceRevision": "74481e6d864cb1785cc1d5efc34b11f8a1a138e4",
+  "baseRevision": "8b954014ac084f7f6787382083ffadbdc1044a2a",
+  "host": "worlesenric",
+  "verifiedAtUtc": "2026-10-05T08:14:36.967655+00:00",
+  "suites": [
+    {
+      "xml": "artifacts/studio/cleanproof/editmode-final/results.xml",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "durationSeconds": 2.3409537
+    },
+    {
+      "xml": "artifacts/studio/cleanproof/playmode-final/results.xml",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "durationSeconds": 2.4733486
+    }
+  ],
+  "player": {
+    "exitCode": 0,
+    "elapsedSeconds": 21.146,
+    "command": "DISPLAY=:1 XDG_SESSION_TYPE=x11 Saltmarsh.x86_64 -batchmode -nographics -saltmarshAutoplay -logFile artifacts/studio/cleanproof/player.log",
+    "buildSourceRevision": "678b9200f7342300795679b7b3508889dc3b0615",
+    "buildElapsedSeconds": 1053,
+    "frames": 600,
+    "pumps": 571,
+    "violations": 0
+  },
+  "buildManifestSha256": "1ced85ce5df18927fc5ee1951183a9dca739d8446795b3ebe51b6ac042f27464",
+  "executableSha256": "aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70",
+  "excludedDebugDirectories": [
+    "Saltmarsh_BackUpThisFolder_ButDontShipItWithYourGame",
+    "Saltmarsh_BurstDebugInformation_DoNotShip"
+  ],
+  "buildFiles": 31,
+  "buildBytes": 204393508,
+  "packageDiff": "",
+  "qualifiedRuntimeDiff": "",
+  "journalStates": {
+    "Applied": 25,
+    "Interrupted": 1
+  }
+}

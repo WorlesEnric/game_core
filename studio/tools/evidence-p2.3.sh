@@ -65,38 +65,13 @@ mkdir -p "${out}" "${slot_dir}"
 [[ -x "${unity}" ]] || { echo "no Unity at ${unity}" >&2; exit 2; }
 [[ -f "${project_dir}/Packages/manifest.json" ]] || { echo "no project at ${project_dir}" >&2; exit 2; }
 
-count_editors() {
-  local pid n=0
-  for pid in $(pgrep -x Unity 2>/dev/null || true); do
-    if ! tr '\0' ' ' < "/proc/${pid}/cmdline" 2>/dev/null | grep -q 'AssetImportWorker'; then
-      n=$((n + 1))
-    fi
-  done
-  echo "${n}"
-}
-
-waited=0
-slot_fd=""
-while [[ -z "${slot_fd}" ]]; do
-  for ((i = 1; i <= SLOTS; i++)); do
-    exec {fd}>"${slot_dir}/slot${i}.lock"
-    if flock -n "${fd}"; then
-      if (( $(count_editors) < SLOTS )); then
-        slot_fd="${fd}"
-        printf '%s pid=%s packet=%s project=%s evidence-p2.3 since=%s\n' "$(hostname)" "$$" "${PACKET}" "${PROJECT}" "$(date -Is)" > "${slot_dir}/slot${i}.owner"
-        echo "-- Unity slot ${i}/${SLOTS} acquired" >&2
-        break
-      fi
-      flock -u "${fd}"
-    fi
-    exec {fd}>&-
-  done
-  if [[ -z "${slot_fd}" ]]; then
-    (( waited % 60 == 0 )) && echo "-- waiting for a Unity slot (waited ${waited}s)" >&2
-    sleep 10
-    waited=$((waited + 10))
-  fi
-done
+unity_tools_dir="${base}/studio/tools"
+source "${unity_tools_dir}/unity-slot.sh"
+export GC_STUDIO_REMOTE_BASE="$REMOTE_BASE" GC_STUDIO_UNITY_SLOTS="$SLOTS"
+unity_slot_acquire
+trap unity_slot_release EXIT
+stop_evidence() { kill -TERM "${pid:-0}" 2>/dev/null || true; wait "${pid:-0}" 2>/dev/null || true; exit 143; }
+trap stop_evidence TERM INT HUP
 
 if [[ -f "${project_dir}/Temp/UnityLockfile" ]]; then
   for pid in $(pgrep -x Unity 2>/dev/null || true); do
@@ -111,8 +86,8 @@ fi
 
 log="${out}/editor.log"
 # shellcheck disable=SC2086
-DISPLAY="${EVIDENCE_DISPLAY}" GCS_FLIP="${GCS_FLIP}" nohup "${unity}" -projectPath "${project_dir}" \
-  -executeMethod GameCore.Studio.Views.Evidence.StudioViewsEvidence.Run -p23Out "${out}" ${NO_PLAY} -logFile "${log}" >/dev/null 2>&1 &
+DISPLAY="${EVIDENCE_DISPLAY}" GCS_FLIP="${GCS_FLIP}" python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout "$EVIDENCE_TIMEOUT" --silence "${EVIDENCE_SILENCE_TIMEOUT:-600}" -- "${unity}" -projectPath "${project_dir}" \
+  -executeMethod GameCore.Studio.Views.Evidence.StudioViewsEvidence.Run -p23Out "${out}" ${NO_PLAY} -logFile - >/dev/null 2>&1 &
 pid=$!
 echo "-- interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY}; output ${out}" >&2
 start=$(date +%s)
@@ -140,7 +115,7 @@ while kill -0 "${pid}" 2>/dev/null; do
     echo "-- no progress (timeout ${EVIDENCE_TIMEOUT}s / log silent ${EVIDENCE_SILENCE_TIMEOUT}s); killing own pid ${pid}" >&2
     kill -TERM "${pid}" 2>/dev/null || true
     sleep 20
-    kill -KILL "${pid}" 2>/dev/null || true
+    wait "${pid}" 2>/dev/null || true
     rc=124
     break
   fi

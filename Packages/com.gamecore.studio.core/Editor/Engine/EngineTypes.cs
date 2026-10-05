@@ -44,6 +44,8 @@ namespace GameCore.Studio.Edit
         /// <summary>After the Interrupted entry is written, before the first write.</summary>
         AfterInterruptedWritten,
         BeforeOperation,
+        AfterPrepared,
+        AfterFileWrite,
         /// <summary>After an operation's outcome is checkpointed in the journal.</summary>
         AfterOperation,
         /// <summary>After all operations, before rollback or commit and the final journal write.</summary>

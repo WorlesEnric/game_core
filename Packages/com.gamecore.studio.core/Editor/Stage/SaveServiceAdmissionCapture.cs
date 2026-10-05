@@ -6,6 +6,7 @@
 //
 //   StageAdmission.Of(StudioServices.Runtime).Options.Capture = new SaveServiceAdmissionCapture(() => mySaveService);
 using System;
+using System.IO;
 using GameCore.Unity.App;
 
 namespace GameCore.Studio.Edit
@@ -46,6 +47,14 @@ namespace GameCore.Studio.Edit
                 return false;
             }
 
+            // A crash can occur after Capture writes the slot but before the admission checkpoints stop-play.
+            // Never replace that pre-admission world with the fresh world's state on retry.
+            if (capture && (File.Exists(service.DocumentPath(slot)) || File.Exists(service.HeaderPath(slot))))
+            {
+                SaveSlotInspection existing = service.Inspect(slot);
+                problem = existing.Readable ? null : "The existing admission checkpoint is incomplete or unreadable; it was retained.";
+                return existing.Readable;
+            }
             SaveResult result = capture ? service.Capture(slot) : service.Restore(slot);
             problem = result.Refusal == null ? null : result.Refusal.CodeId + ": " + result.Refusal.Detail + " (" + result.Refusal.Hint + ")";
             return result.Succeeded;

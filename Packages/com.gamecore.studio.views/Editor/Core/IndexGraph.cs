@@ -43,7 +43,7 @@ namespace GameCore.Studio.Views
     /// <summary>Edge-kind names and sets.</summary>
     public static class EdgeKinds
     {
-        public static readonly IReadOnlyList<EdgeKind> All = new[] { EdgeKind.References, EdgeKind.Contains, EdgeKind.Spawns, EdgeKind.BindsUi, EdgeKind.Triggers };
+        public static readonly IReadOnlyList<EdgeKind> All = System.Array.AsReadOnly(new[] { EdgeKind.References, EdgeKind.Contains, EdgeKind.Spawns, EdgeKind.BindsUi, EdgeKind.Triggers });
 
         public static string Name(EdgeKind kind)
         {
@@ -125,10 +125,10 @@ namespace GameCore.Studio.Views
                 {
                     foreach (IndexRef reference in node.Refs)
                     {
-                        string linkKey = EdgeKinds.Key(key, reference.To.IdentityKey, EdgeKind.References);
-                        if (!fieldOf.ContainsKey(linkKey))
+                        foreach (EdgeKind kind in EdgeKinds.All)
                         {
-                            fieldOf.Add(linkKey, reference.Field);
+                            string linkKey = EdgeKinds.Key(key, reference.To.IdentityKey, kind);
+                            if (!fieldOf.ContainsKey(linkKey)) fieldOf.Add(linkKey, reference.Field);
                         }
                     }
                 }

@@ -29,7 +29,7 @@ namespace GameCore.Studio.Views
             Runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             Selection = selection ?? throw new ArgumentNullException(nameof(selection));
             Gameplay = gameplay ?? throw new ArgumentNullException(nameof(gameplay));
-            Contributor = ViewIndexContributors.Ensure(runtime);
+            Contributor = runtime.References;
             Edits = new ViewEdits(runtime);
             Tools = new ReadOnlyToolInvoker(runtime);
             runtime.Index.Changed += OnIndexChanged;
@@ -81,7 +81,7 @@ namespace GameCore.Studio.Views
             SemanticIndex snapshot = Runtime.Index.Snapshot();
             if (_graph == null || _graph.Revision != snapshot.Revision)
             {
-                _graph = IndexGraph.Build(snapshot, Contributor.Labels);
+                _graph = IndexGraph.Build(snapshot);
             }
 
             return _graph;

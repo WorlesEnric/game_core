@@ -95,6 +95,39 @@ fn fail(message: &str) -> i32 {
 
 /// Entry point; `args` are the words after `stage`. Returns the process exit code.
 pub fn main(args: &[String]) -> i32 {
+    if args.first().is_some_and(|s| s == "sandbox-probe") {
+        let result = args
+            .get(1)
+            .ok_or_else(|| "sandbox config required".to_string())
+            .and_then(|path| std::fs::read(path).map_err(|e| e.to_string()))
+            .and_then(|bytes| {
+                serde_json::from_slice::<super::sandbox::Sandbox>(&bytes).map_err(|e| e.to_string())
+            })
+            .and_then(|sandbox| sandbox.probe());
+        return match result {
+            Ok(output) => {
+                println!("{}", crate::redact::redact(&output));
+                0
+            }
+            Err(error) => {
+                eprintln!("{}", crate::redact::redact(&error));
+                1
+            }
+        };
+    }
+    if args.first().is_some_and(|s| s == "sandbox-unity") {
+        return match args
+            .get(1)
+            .ok_or_else(|| "sandbox config required".to_string())
+            .and_then(|path| super::sandbox::unity_wrapper(std::path::Path::new(path), &args[2..]))
+        {
+            Ok(code) => code,
+            Err(error) => {
+                eprintln!("{}", crate::redact::redact(&error));
+                2
+            }
+        };
+    }
     let Some(command) = args.first() else {
         eprintln!("{USAGE}");
         return 2;
@@ -254,9 +287,14 @@ fn discard(a: &Args) -> i32 {
         return fail("not a slot id");
     }
     let dir = root_of(a).join(slot_id);
-    if slot::is_locked(&dir) {
-        return fail("the slot is being staged");
-    }
+    let _lock = match slot::SlotLock::acquire(&dir, slot::MAX_SLOT_AGE) {
+        Ok(lock) => lock,
+        Err(error) => {
+            eprintln!("{error}");
+            return 2;
+        }
+    };
+
     match slot::remove_slot(&dir) {
         Ok(()) => {
             println!("{}", json!({"ok": true, "discarded": slot_id}));

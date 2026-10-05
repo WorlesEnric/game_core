@@ -14,6 +14,8 @@ usage:
 from __future__ import annotations
 
 import hashlib
+import importlib.util
+import re
 import json
 import pathlib
 import subprocess
@@ -108,14 +110,23 @@ def description_text() -> str:
 def main() -> int:
     check = "--check" in sys.argv[1:]
     text = description_text()
+    spec = importlib.util.spec_from_file_location("catalog_emitter", EMITTER)
+    emitter = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(emitter)
+    catalog, _, coverage = emitter.emit(emitter.validate(json.loads(text)))
+    # D1: callers receive fresh tables, never a shared mutable static array.
+    catalog = re.sub(r"static readonly ([^\n=]+\[\]) (\w+) =\n(\s*)\{",
+                     r"static \1 \2 => new \1\n\3{", catalog)
+    marker = catalog.index(emitter.HASH_DECLARATION)
+    digest = emitter.sha256_hex(catalog[:marker])
+    catalog = re.sub(r'(public const string CatalogFileHash = ")[a-f0-9]+', r'\g<1>' + digest, catalog)
+    outputs = {DESCRIPTION: text, GENERATED: catalog, emitter.coverage_path_for(GENERATED): coverage}
     if check:
-        if not DESCRIPTION.exists() or DESCRIPTION.read_text(encoding="utf-8") != text:
-            print("stale: " + str(DESCRIPTION.relative_to(ROOT)))
-            return 1
-        return subprocess.call([sys.executable, str(EMITTER), "--check", str(DESCRIPTION), str(GENERATED)])
-    DESCRIPTION.parent.mkdir(parents=True, exist_ok=True)
-    DESCRIPTION.write_bytes(text.encode("utf-8"))
-    return subprocess.call([sys.executable, str(EMITTER), str(DESCRIPTION), str(GENERATED)])
+        return int(any(not path.exists() or path.read_text() != content for path, content in outputs.items()))
+    for path, content in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+    return 0
 
 
 if __name__ == "__main__":

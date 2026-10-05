@@ -110,8 +110,8 @@ Status: `planned` → `exercised` / `blocked(prereq)` / `failed`. Only the verif
 | W-GAME-06 | Build log + sha256 + V1 gate transcript on the same revision | SR-11.3 | planned | |
 | W-GAME-07 | Player runs with etosd stopped and no network | SR-4.10 | planned | |
 | W-GAME-08 | Memory after 10 Play/Edit cycles | B-MEMORY | planned | |
-| W-CLEAN-01 | Clean project: install, author, run, build | SR-7.2 | planned | |
-| W-CLEAN-02 | Kernel diff empty after the clean exercise | SR-7.3 | planned | |
+| W-CLEAN-01 | Clean project: install, author, run, build | SR-7.2 | exercised | [Saltmarsh proof](../../artifacts/studio/cleanproof/README.md): EditMode 3/3, PlayMode 3/3, Linux IL2CPP, 600-frame player exit 0; [XML/provenance](../../artifacts/studio/cleanproof/proof.json). |
+| W-CLEAN-02 | Kernel diff empty after the clean exercise | SR-7.3 | exercised | [Package diff proof](../../artifacts/studio/cleanproof/README.md#empty-package-diff), [empty raw diff](../../artifacts/studio/cleanproof/package-diff.txt); all Packages/ unchanged from recorded origin/main. |
 | W-DOC-01 | New user adds an NPC with dialogue from the creator guide | SR-12.1 | planned | |
 | W-DOC-02 | Developer adds a lever interactable from the plugin guide | SR-12.2 | planned | |
 | W-E2E-01 | All rows resolved on one revision; completion report | SR-12.3 | planned | |

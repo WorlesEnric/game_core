@@ -64,7 +64,7 @@ impl ArtifactStore {
             }
         }
         let path = self.path_of(&actual)?;
-        if path.is_file() {
+        if matches!(self.get(&actual), Ok(Some(_))) {
             return Ok((actual, path));
         }
         let dir = path.parent().unwrap_or(Path::new("."));
@@ -107,7 +107,15 @@ impl ArtifactStore {
     pub fn get(&self, sha256: &str) -> Result<Option<Vec<u8>>, StoreError> {
         let path = self.path_of(sha256)?;
         match std::fs::read(&path) {
-            Ok(b) => Ok(Some(b)),
+            Ok(b) => {
+                let expected =
+                    normalize_sha256(sha256).ok_or_else(|| StoreError::BadDigest(sha256.into()))?;
+                let actual = sha256_hex(&b);
+                if actual != expected {
+                    return Err(StoreError::Mismatch { expected, actual });
+                }
+                Ok(Some(b))
+            }
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
             Err(e) => Err(e.into()),
         }
@@ -134,6 +142,17 @@ fn sync_dir(dir: &Path) -> std::io::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn r2_26_corruption_is_refused_and_verified_put_repairs() {
+        let dir = tempfile::tempdir().unwrap();
+        let store = ArtifactStore::new(dir.path());
+        let (hash, path) = store.put(b"trusted", None).unwrap();
+        std::fs::write(&path, b"tampered").unwrap();
+        assert!(matches!(store.get(&hash), Err(StoreError::Mismatch { .. })));
+        store.put(b"trusted", Some(&hash)).unwrap();
+        assert_eq!(store.get(&hash).unwrap().unwrap(), b"trusted");
+    }
 
     #[test]
     fn put_verifies_and_addresses_by_content() {

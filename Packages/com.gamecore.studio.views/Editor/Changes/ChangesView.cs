@@ -30,7 +30,7 @@ namespace GameCore.Studio.Views
         public const string DependenciesTab = "Dependencies";
         public const string JournalTab = "Journal";
 
-        private static readonly IReadOnlyList<string> TabNames = new[] { PendingTab, DiagnosticsTab, DependenciesTab, JournalTab };
+        private static readonly IReadOnlyList<string> TabNames = System.Array.AsReadOnly(new[] { PendingTab, DiagnosticsTab, DependenciesTab, JournalTab });
 
         private readonly Dictionary<string, ToolbarToggle> _tabs = new Dictionary<string, ToolbarToggle>(StringComparer.Ordinal);
         private readonly Dictionary<string, VisualElement> _pages = new Dictionary<string, VisualElement>(StringComparer.Ordinal);
@@ -151,6 +151,26 @@ namespace GameCore.Studio.Views
 
             // Dependencies.
             VisualElement dependencies = Page(DependenciesTab);
+            Button checkMetadata = new Button { text = "Run repository dependency check" };
+            Label checkStatus = new Label("Not assessed. Graph hints are informational.");
+            checkStatus.style.whiteSpace = WhiteSpace.Normal;
+            checkMetadata.clicked += async () =>
+            {
+                checkMetadata.SetEnabled(false);
+                checkStatus.text = "Checking repository metadata…";
+                PackageMetadataCheck report = await PackageMetadataCheck.RunAsync(System.IO.Directory.GetCurrentDirectory());
+                checkStatus.text = report.Detail + " (" + DateTime.UtcNow.ToString("u") + ")";
+                _problemLines.Clear();
+                foreach (string problem in report.Problems) _problemLines.Add(problem);
+                if (report.Problems.Count == 0) _problemLines.Add(report.Detail);
+                _packageProblems?.RefreshItems();
+                checkMetadata.SetEnabled(true);
+            };
+            VisualElement checker = new VisualElement();
+            checker.style.width = 220f;
+            checker.Add(checkMetadata);
+            checker.Add(checkStatus);
+            dependencies.Add(checker);
             _packages = new GraphCanvas();
             dependencies.Add(_packages);
             _packageProblems = new ListView(_problemLines, 20f, () => new Label(), (element, index) => ((Label)element).text = _problemLines[index]);
@@ -314,11 +334,11 @@ namespace GameCore.Studio.Views
 
             if (_problemLines.Count == 0)
             {
-                _problemLines.Add("No package metadata problems (" + graph.Packages.Count + " packages).");
+                _problemLines.Add("No local graph hints (not a checker pass; " + graph.Packages.Count + " packages).");
             }
 
             _packages.SetGraph(cards, edges, null, keepPositions: false, frame: true);
-            _packages.StatusText = graph.Packages.Count + " packages, " + graph.ProblemCount + " problems; layers left to right: " + string.Join(", ", PackageGraph.LayerNames);
+            _packages.StatusText = graph.Packages.Count + " packages, " + graph.ProblemCount + " informational hints; layers left to right: " + string.Join(", ", PackageGraph.LayerNames);
             _packageProblems.RefreshItems();
         }
 

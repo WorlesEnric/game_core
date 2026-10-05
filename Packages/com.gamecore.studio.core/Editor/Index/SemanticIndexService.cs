@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,6 +33,13 @@ namespace GameCore.Studio.Edit
     {
         internal readonly List<IndexEdge> Edges = new List<IndexEdge>();
         internal readonly List<ScopeEntry> Scopes = new List<ScopeEntry>();
+        internal readonly Dictionary<string, List<IndexRef>> References = new Dictionary<string, List<IndexRef>>(StringComparer.Ordinal);
+
+        public void AddReference(AuthoringRef from, AuthoringRef to, string field)
+        {
+            if (!References.TryGetValue(from.IdentityKey, out List<IndexRef>? refs)) References[from.IdentityKey] = refs = new List<IndexRef>();
+            refs.Add(new IndexRef(field, to));
+        }
 
         public void AddEdge(AuthoringRef from, AuthoringRef to, EdgeKind kind)
         {
@@ -689,7 +697,7 @@ namespace GameCore.Studio.Edit
                 return false;
             }
 
-            if (cache == null || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
+            if (cache == null || cache.Schema != "gamecore.studio.indexsources/2" || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
             {
                 return false;
             }
@@ -844,6 +852,14 @@ namespace GameCore.Studio.Edit
                 }
             }
 
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                IndexNode node = nodes[i];
+                if (!sink.References.TryGetValue(EdgeRef(node.Ref).IdentityKey, out List<IndexRef>? added)) continue;
+                List<IndexRef> all = new List<IndexRef>(node.Refs ?? Array.Empty<IndexRef>());
+                all.AddRange(added);
+                nodes[i] = new IndexNode(node.Ref, node.Type, node.Name, node.Fields, all, node.Capabilities, node.Provenance);
+            }
             edges.AddRange(sink.Edges);
             return new SourceRecord(nodes, edges, sink.Scopes);
         }
@@ -1049,9 +1065,37 @@ namespace GameCore.Studio.Edit
                 }
             }
 
-            string? previousKey = null;
-            foreach (IndexEdge edge in edges)
+                AuthoringRef ResolveEndpoint(AuthoringRef endpoint)
+                {
+                    if (endpoint.AuthoringId != null && maps.ByAuthoringId.TryGetValue(endpoint.AuthoringId, out IndexNode? byId)) return EdgeRef(byId.Ref);
+                    if (endpoint.Path != null && endpoint.Path.StartsWith("byname:", StringComparison.Ordinal))
+                    {
+                        string[] parts = endpoint.Path.Substring(7).Split(new[] { ':' }, 2);
+                        if (parts.Length == 2)
+                            foreach (IndexNode node in maps.Nodes)
+                                if (node.Provides(parts[0]))
+                                {
+                                    if (node.Name == parts[1] || node.Ref.AuthoringId == parts[1] || node.Ref.Definition == parts[1] || node.Ref.Definition?.StartsWith(parts[1] + "@", StringComparison.Ordinal) == true) return EdgeRef(node.Ref);
+                                    foreach (IndexField field in node.Fields?.Values ?? Array.Empty<IndexField>())
+                                        if (field.Value?.Type == JTokenType.String && field.Value.Value<string>() == parts[1]) return EdgeRef(node.Ref);
+                                }
+                    }
+                    return endpoint;
+                }
+            for (int i = 0; i < maps.Nodes.Count; i++)
             {
+                IndexNode node = maps.Nodes[i];
+                if (node.Refs == null) continue;
+                List<IndexRef> resolved = new List<IndexRef>();
+                foreach (IndexRef reference in node.Refs) resolved.Add(new IndexRef(reference.Field, ResolveEndpoint(reference.To)));
+                IndexNode updated = new IndexNode(node.Ref, node.Type, node.Name, node.Fields, resolved, node.Capabilities, node.Provenance);
+                maps.Nodes[i] = updated;
+                maps.ByKey[node.Ref.IdentityKey] = updated;
+            }
+            string? previousKey = null;
+            foreach (IndexEdge rawEdge in edges)
+            {
+                IndexEdge edge = new IndexEdge(ResolveEndpoint(rawEdge.From), ResolveEndpoint(rawEdge.To), rawEdge.Kind);
                 string edgeKey = edge.From.IdentityKey + ">" + edge.To.IdentityKey + ">" + edge.Kind.ToString();
                 if (string.Equals(edgeKey, previousKey, StringComparison.Ordinal))
                 {
@@ -1113,7 +1157,7 @@ namespace GameCore.Studio.Edit
         internal sealed class SourceCache
         {
             [JsonProperty("schema")]
-            public string Schema = "gamecore.studio.indexsources/1";
+            public string Schema = "gamecore.studio.indexsources/2";
 
             [JsonProperty("project")]
             public string Project = string.Empty;

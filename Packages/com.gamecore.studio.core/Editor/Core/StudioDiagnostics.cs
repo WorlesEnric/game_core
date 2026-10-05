@@ -3,6 +3,8 @@
 // that raises an unregistered code is reported as ValidationFailed with the original code kept in the message.
 #nullable enable
 using GameCore.Studio.Model;
+using GameCore.Studio.Authoring;
+using Newtonsoft.Json.Linq;
 
 namespace GameCore.Studio.Edit
 {
@@ -19,19 +21,21 @@ namespace GameCore.Studio.Edit
         {
             if (DiagnosticCodes.IsRegistered(diagnostic.Code))
             {
-                return diagnostic;
+                SecretRedactor redactor = new SecretRedactor();
+                return new Diagnostic(diagnostic.Code, redactor.Redact(diagnostic.Message), diagnostic.Hint == null ? null : redactor.Redact(diagnostic.Hint),
+                    diagnostic.Where, diagnostic.Data == null ? null : (JObject)redactor.RedactJson(diagnostic.Data));
             }
 
             return new Diagnostic(DiagnosticCodes.ValidationFailed, "[" + diagnostic.Code + "] " + diagnostic.Message, diagnostic.Hint, diagnostic.Where);
         }
 
         public static Diagnostic Op(string code, string opId, string message, string? hint = null) =>
-            Diagnostic.AtOperation(Registered(code), opId, message, hint);
+            Normalize(Diagnostic.AtOperation(Registered(code), opId, message, hint));
 
         public static Diagnostic At(string code, AuthoringRef where, string message, string? hint = null) =>
-            Diagnostic.AtRef(Registered(code), where, message, hint);
+            Normalize(Diagnostic.AtRef(Registered(code), where, message, hint));
 
         public static Diagnostic General(string code, string message, string? hint = null) =>
-            new Diagnostic(Registered(code), message, hint);
+            Normalize(new Diagnostic(Registered(code), message, hint));
     }
 }

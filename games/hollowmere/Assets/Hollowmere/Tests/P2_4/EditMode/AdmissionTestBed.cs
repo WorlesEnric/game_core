@@ -3,11 +3,13 @@
 // temporary packages root outside the project (Unity never imports what an admission writes there) and fakes for the
 // compiler, the catalog and the checkers, so every admission branch runs without a domain reload.
 using System;
+using GameCore.Studio.Authoring.Agent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
@@ -83,7 +85,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
         public bool TryCapture(string slot, out string? problem)
         {
-            Captured.Add(slot);
+            if (!Captured.Contains(slot)) Captured.Add(slot);
             problem = null;
             return true;
         }
@@ -108,7 +110,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
         }
     }
 
-    internal sealed class AdmissionTestBed : IDisposable
+    internal sealed class AdmissionTestBed : IDisposable, IStageService
     {
         public const string Package = "com.example.p24.pressureplate";
         public const string CatalogType = "Example.P24.Generated.PlateCatalog";
@@ -142,6 +144,10 @@ namespace Hollowmere.P2_4.EditMode.Tests
                 Catalog = Catalog,
                 Checker = Checker,
                 PlayModeProbe = () => false,
+                StageService = this,
+                ProjectId = "test-project", SourceRevision = () => "test-source", CatalogRevision = () => "test-catalog",
+                SmokeTest = _ => true,
+
             });
         }
 
@@ -260,7 +266,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
                 ["description"] = "A pressure plate (test).",
                 ["package"] = new JObject { ["artifact"] = "sha256:" + packageSha },
                 ["proposal"] = new JObject { ["artifact"] = "sha256:" + proposalSha },
-                ["stageInputs"] = new JArray("Assets/Hollowmere/World"),
+                ["stageInputs"] = new JArray("Assets/Hollowmere/World.json"),
             };
             Operation propose = new Operation("op1", BuiltInToolIds.MechanismPropose, null, args, null, null, RuntimeApply.Compile);
             return new ChangeSet(
@@ -289,6 +295,8 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
             JObject verdict = new JObject
             {
+                ["jobId"] = "test-job", ["projectId"] = "test-project", ["sourceRevision"] = "test-source",
+                ["catalogRevision"] = "test-catalog", ["confinement"] = "docker", ["coldCache"] = false,
                 ["artifacts"] = new JArray(
                     new JObject { ["role"] = "package", ["sha256"] = packageSha },
                     new JObject { ["role"] = "proposal", ["sha256"] = proposalSha }),
@@ -312,6 +320,35 @@ namespace Hollowmere.P2_4.EditMode.Tests
                 ["steps"] = steps,
             };
             return Utf8(verdict.ToString(Formatting.None));
+        }
+
+        public SignedVerdict? Issued { get; set; }
+        public bool Verify { get; set; } = true;
+        public Task<string> RequestStage(StageCandidateRequest request) => Task.FromResult("test-job");
+        public Task<SignedVerdict> GetVerdict(string jobId) => Task.FromResult(Issued!);
+        public Task<StageVerification> VerifyVerdict(string jobId, StageVerificationRequest request)
+            => Task.FromResult(new StageVerification(Verify, jobId));
+
+        public StageCandidateRequest Request(ChangeSet candidate) => Admission.BuildStageRequest(candidate, "games/hollowmere");
+        public void Trust(ChangeSet candidate, byte[] verdict)
+        {
+            Issued = new SignedVerdict("test-job", "companion-test-signature", JObject.Parse(Encoding.UTF8.GetString(verdict)));
+            Admission.FetchVerdict("test-job", Request(candidate)).GetAwaiter().GetResult();
+        }
+        public AdmissionResult Admit(ChangeSet candidate, byte[]? verdict = null, bool captureAndStop = false)
+        {
+            if (verdict != null)
+            {
+                try { Trust(candidate, verdict); }
+                catch (InvalidOperationException error)
+                {
+                    Runtime.Journal.Write(candidate.WithState(ChangeSetState.Rejected));
+                    string reason = error.Message.Split(':')[0];
+                    Runtime.Journal.Write(StageAdmission.WithScenario(candidate.WithState(ChangeSetState.Rejected), StageAdmission.VerdictScenario, ScenarioStatus.Fail, reason));
+                    return new AdmissionResult(candidate.Id, AdmissionOutcome.Refused, error.Message) { Reason = reason };
+                }
+            }
+            return Admission.Admit(candidate, captureAndStop: captureAndStop);
         }
 
         public void Dispose()

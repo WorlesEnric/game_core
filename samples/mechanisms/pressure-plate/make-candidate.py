@@ -192,7 +192,7 @@ def change_set(change_id: str, package: bytes, proposal_bytes: bytes) -> dict:
                     "description": DESCRIPTION,
                     "package": {"artifact": "sha256:" + package_hash},
                     "proposal": {"artifact": "sha256:" + proposal_hash},
-                    "stageInputs": ["Assets/Hollowmere/World", "Assets/Hollowmere/Regions"],
+                    "stageInputs": [],
                 },
                 "applyRequirement": "Compile",
             }

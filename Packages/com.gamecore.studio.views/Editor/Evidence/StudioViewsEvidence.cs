@@ -67,12 +67,12 @@ namespace GameCore.Studio.Views.Evidence
         [NonSerialized]
         private EditorWindow? _repin;
 
-        private static readonly IReadOnlyList<string> Shots = new[]
+        private static readonly IReadOnlyList<string> Shots = System.Array.AsReadOnly(new[]
         {
             "01-relationships-maren", "02-relationships-impact-lantern", "03-dialogue-maren-preview", "04-quests-drowned-bell",
             "05-world-hollowmere", "06-tables-items", "07-changes-conflict", "08-changes-dependencies", "09-changes-journal",
             "10-canvas-2000-nodes", "11-quests-live", "12-world-live",
-        };
+        });
 
         /// <summary>-executeMethod entry.</summary>
         public static void Run()

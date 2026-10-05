@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98cbda7e319411cb50e51d82f05dfac, type: 3}
+  m_Name: Bank
+  m_EditorClassIdentifier: 
+  authoringId: 819ae3d3-6e83-d0e0-02b3-b151b81e1b7e
+  entries:
+  - id: ambience.Harbour
+    clip: {fileID: 8300000, guid: 0292451ea81dbe6fc88a5c8a0aff2752, type: 3}
+    group: 1
+    volume: 0.7
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: ambience.Dunes
+    clip: {fileID: 8300000, guid: b40462ebccc2ec66c877acd0cc81cfd6, type: 3}
+    group: 1
+    volume: 0.7
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: ambience.Lighthouse
+    clip: {fileID: 8300000, guid: 70fcf2569a520edc19170e842980ddaf, type: 3}
+    group: 1
+    volume: 0.7
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: music.coast
+    clip: {fileID: 8300000, guid: 58dd371f80b086891a03cea010036d1d, type: 3}
+    group: 0
+    volume: 0.7
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  mixer: {fileID: 0}

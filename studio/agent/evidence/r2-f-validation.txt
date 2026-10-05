@@ -1,0 +1,110 @@
+R2-F host validation, myubuntu, 2026-10-05
+Tested source commit: 03246274ae89fe26b6366b9bba8184ff51f4c1d3
+
+Commands:
+  ~/.cargo/bin/cargo fmt --check
+  ~/.cargo/bin/cargo clippy --all-targets -- -D warnings
+  ~/.cargo/bin/cargo test
+  ~/.cargo/bin/cargo test r2_11_docker_isolation -- --ignored
+  python3 tools/check_package_metadata.py
+  python3 tools/check_game_core_csharp.py
+  git diff --check
+
+Results:
+  Rust fmt: PASS
+  Rust clippy, all targets, warnings denied: PASS
+  Rust default suites: 78 library + 21 fake-node + 4 stage-lane tests PASS (103 total).
+  Default ignores: 1 Docker integration fixture, 2 paid/installed-node fixtures,
+    2 real Unity stage fixtures. The Docker fixture was then explicitly run and PASS.
+  Actual Docker isolation: 1 PASS; total executed passing tests = 104.
+  Four external real-node/real-stage fixtures remain ignored, not passing acceptance.
+  Package metadata: PASS, 41 packages, 88 assemblies, four engine pins,
+    six additional allowlisted pins, two lock sources.
+  C# checker: PASS, 1076 files. No C# source or dependency set changed.
+  Diff whitespace: PASS.
+
+Unity licence-only probe: FAIL as required to be reported, exit 198 with no valid
+Editor licence inside Docker. No NUnit suite or XML result was produced or claimed.
+This is a sandbox_unavailable refusal, not a passing stage. See r2-f-sandbox-probe.txt.
+The semantic analyzer is absent from this branch; its mandatory failure is covered
+by a stage-lane regression. No passing signed candidate admission is claimed.
+
+Baseline manifest remains Rust edition 2024, rust-version 1.97.1. The requested Rust
+2021 manifest conversion is outside the exclusive path set and is explicitly handed
+back in PACKET.md; these are actual current-manifest gate results, not a Rust 2021 claim.
+
+Final Rust gate transcript (exit 0):
+    Checking gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r2-f/studio/agent)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.08s
+
+running 79 tests
+........................i......................................................
+test result: ok. 78 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 21 tests
+.....................
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.20s
+
+
+running 2 tests
+ii
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+....
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+
+
+running 2 tests
+ii
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/lib.rs (studio/agent/target/debug/deps/gamecore_studio-7c49548b0c6f1153)
+
+running 1 test
+test stage::sandbox::tests::r2_11_docker_isolation_blocks_host_files_environment_and_network ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 78 filtered out; finished in 0.32s
+
+     Running unittests src/main.rs (studio/agent/target/debug/deps/gamecore_studio-ab4b71f1ada7955a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/companion.rs (studio/agent/target/debug/deps/companion-3ff459fa4248762f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.00s
+
+     Running tests/real_node.rs (studio/agent/target/debug/deps/real_node-42d6f237759e8fa7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/stage_lane.rs (studio/agent/target/debug/deps/stage_lane-b70fb0e9955a958e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/stage_real.rs (studio/agent/target/debug/deps/stage_real-897635e0b0708a97)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s

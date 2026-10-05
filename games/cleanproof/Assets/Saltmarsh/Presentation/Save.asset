@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c73814afb7e044cca84eb43c1d27a9b5, type: 3}
+  m_Name: Save
+  m_EditorClassIdentifier: 
+  authoringId: 8ce22d62-8cec-4858-8163-5d4d8ac2fcd7
+  screen: 5
+  layer: 0
+  uxml: {fileID: 9197481963319205126, guid: 2fb533eab476617e18afd0e4414715c4, type: 3}
+  styles: []
+  bindings:
+  - element: saveload-title
+    property: text
+    source: vm:saveload.Mode
+    format: '{0} game'
+  - element: saveload-slots
+    property: items
+    source: vm:saveload.SlotLabels
+    format: command:select
+  - element: saveload-slots
+    property: selected
+    source: vm:saveload.Selected
+    format: offset:-1
+  - element: saveload-status
+    property: text
+    source: vm:saveload.Status
+    format: 
+  - element: saveload-code
+    property: text
+    source: vm:saveload.RefusalCode
+    format: 
+  - element: saveload-confirm
+    property: enabled
+    source: vm:saveload.Available
+    format: 
+  - element: saveload-delete
+    property: enabled
+    source: vm:saveload.Available
+    format: 
+  - element: saveload-confirm
+    property: clicked
+    source: command:slot.selected
+    format: 
+  - element: saveload-delete
+    property: clicked
+    source: command:delete.selected
+    format: 
+  - element: saveload-back
+    property: clicked
+    source: command:close
+    format: 
