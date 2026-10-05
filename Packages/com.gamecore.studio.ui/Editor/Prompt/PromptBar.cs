@@ -27,6 +27,7 @@ namespace GameCore.Studio.UI
         private readonly Func<FrameContext?>? _captureFrame;
         private readonly TextField _input;
         private readonly Button _send;
+        private readonly DropdownField _worker;
         private readonly Button _mic;
         private readonly Label _transcript;
         private readonly Label _reason;
@@ -95,6 +96,9 @@ namespace GameCore.Studio.UI
             _chips.AddToClassList("gcs-row");
             _chips.AddToClassList("gcs-prompt__chips");
             footer.Add(_chips);
+            _worker = new DropdownField("Worker") { name = "prompt-worker", tooltip = "Worker advertised by the companion for this request." };
+            _worker.RegisterValueChangedCallback(change => SelectedWorker = change.newValue);
+            footer.Add(_worker);
             _attachmentsRow = new VisualElement { name = "attachments" };
             _attachmentsRow.AddToClassList("gcs-row");
             footer.Add(_attachmentsRow);
@@ -117,6 +121,18 @@ namespace GameCore.Studio.UI
             {
                 _input.value = StudioStyles.Safe(value);
                 Refresh();
+            }
+        }
+
+        /// <summary>The advertised worker for this prompt; also used by creator automation without a graphics panel.</summary>
+        public string SelectedWorker
+        {
+            get => _worker.value;
+            set
+            {
+                if (!_worker.choices.Contains(value)) throw new ArgumentException("The companion did not advertise worker " + StudioStyles.Safe(value) + ".", nameof(value));
+                StudioWorkerSettings.instance.Worker = value;
+                _worker.SetValueWithoutNotify(value);
             }
         }
 
@@ -165,6 +181,15 @@ namespace GameCore.Studio.UI
         {
             IAgentGateway gateway = _context.Gateway;
             ProviderStatus status = gateway.Status;
+            IReadOnlyList<string> advertised = GatewayExtras.Workers(gateway);
+            List<string> workers = new List<string>();
+            foreach (string worker in advertised)
+                if (!string.IsNullOrWhiteSpace(worker) && !workers.Contains(worker)) workers.Add(worker);
+            string preferred = StudioWorkerSettings.instance.Worker;
+            string selected = workers.Contains(preferred) ? preferred : workers.Contains("gc-designer") ? "gc-designer" : workers.Count > 0 ? workers[0] : "gc-designer";
+            _worker.choices = workers;
+            _worker.SetValueWithoutNotify(selected);
+            _worker.SetEnabled(workers.Count > 0 && !_submitting);
             _chips.Clear();
             foreach (string provider in ProviderNames.All)
             {
@@ -202,7 +227,7 @@ namespace GameCore.Studio.UI
             PreparedRequest request;
             try
             {
-                request = _context.Requests.Build(Text, selection, origin, _voiceTranscriptId, new List<PromptAttachment>(_attachments));
+                request = _context.Requests.Build(Text, selection, origin, _voiceTranscriptId, new List<PromptAttachment>(_attachments), worker: _worker.value);
             }
             catch (Exception error) when (error is System.IO.IOException || error is ArgumentException || error is UnauthorizedAccessException)
             {

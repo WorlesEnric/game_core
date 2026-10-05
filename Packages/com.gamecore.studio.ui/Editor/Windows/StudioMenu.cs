@@ -2,6 +2,7 @@
 // and tiles them over the main editor window (viewport/tasks left, context/candidates/history right). Windows
 // already docked by the user keep their place; only windows this call creates are positioned.
 #nullable enable
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,30 +34,30 @@ namespace GameCore.Studio.UI
             StudioViewportWindow viewport = StudioViewportWindow.Open();
             if (!viewportExisted)
             {
-                viewport.position = layout[0];
+                StudioDeferredLayout.instance.Place(viewport, layout[0]);
             }
 
             if (!contextExisted)
             {
                 StudioContextWindow.Open();
-                EditorWindow.GetWindow<StudioContextWindow>().position = layout[1];
+                StudioDeferredLayout.instance.Place(EditorWindow.GetWindow<StudioContextWindow>(), layout[1]);
             }
 
             if (!tasksExisted)
             {
                 StudioTasksWindow.Open();
-                EditorWindow.GetWindow<StudioTasksWindow>().position = layout[2];
+                StudioDeferredLayout.instance.Place(EditorWindow.GetWindow<StudioTasksWindow>(), layout[2]);
             }
 
             if (!candidatesExisted)
             {
-                StudioCandidatesWindow.Open(null).position = layout[3];
+                StudioDeferredLayout.instance.Place(StudioCandidatesWindow.Open(null), layout[3]);
             }
 
             if (!historyExisted)
             {
                 StudioHistoryWindow.Open();
-                EditorWindow.GetWindow<StudioHistoryWindow>().position = layout[4];
+                StudioDeferredLayout.instance.Place(EditorWindow.GetWindow<StudioHistoryWindow>(), layout[4]);
             }
 
             viewport.Focus();
@@ -96,4 +97,33 @@ namespace GameCore.Studio.UI
             return EditorWindow.HasOpenInstances<T>();
         }
     }
+
+    // The window manager can override placement during Show. Reapply once on the next Editor update.
+    internal sealed class StudioDeferredLayout : ScriptableSingleton<StudioDeferredLayout>
+    {
+        private readonly Dictionary<EditorWindow, Rect> _pending = new Dictionary<EditorWindow, Rect>();
+
+        public void Place(EditorWindow window, Rect rect)
+        {
+            window.position = rect;
+            _pending[window] = rect;
+            EditorApplication.update -= Apply;
+            EditorApplication.update += Apply;
+        }
+
+        private void Apply()
+        {
+            EditorApplication.update -= Apply;
+            foreach (KeyValuePair<EditorWindow, Rect> item in _pending)
+                if (item.Key != null && item.Key.position != item.Value) item.Key.position = item.Value;
+            _pending.Clear();
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.update -= Apply;
+            _pending.Clear();
+        }
+    }
+
 }

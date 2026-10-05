@@ -183,7 +183,8 @@ namespace GameCore.Studio.Etos
             EditRequestBody body = new EditRequestBody(changeSetId, request.Intent, origin, selection, slice, request.ToolCatalogRevision)
             {
                 VoiceTranscriptId = request.VoiceTranscriptId,
-                Worker = string.Equals(request.Mode, "mechanism", StringComparison.Ordinal) ? mechanismWorker : designWorker,
+                Worker = string.Equals(request.Mode, "mechanism", StringComparison.Ordinal) ? mechanismWorker
+                    : string.IsNullOrEmpty(request.Mode) || string.Equals(request.Mode, "design", StringComparison.Ordinal) ? designWorker : request.Mode,
             };
             if (catalog != null)
             {

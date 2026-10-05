@@ -77,3 +77,33 @@ XML SHA-256:
 - Production Stage → Admit transport qualification requires R2-D's authenticated adapter, absent on this baseline. UI fails closed without it. Deterministic service tests do not qualify real HMAC transport or package admission.
 - No candidate stage child is launched by this UI packet. Existing R2-F/G Docker evidence reports Unity exit 198 (no valid headless entitlement); no host fallback or passing sandbox verdict is claimed. Trusted EditMode tests on the host are not candidate sandbox evidence.
 - Graphical evidence explicitly belongs to R2-H and was not run. Actual rendered layout/focus/keyboard-to-game acceptance remains for that run.
+
+## R3 — packet R3-B
+
+- **D16:** the prompt's `prompt-worker` dropdown lists the companion hello's exact advertised worker
+  ids through the optional `Workers : IReadOnlyList<string>` gateway seam. Default is `gc-designer`
+  when advertised; unavailable saved workers fall back to an advertised choice. Selection persists
+  per project under `UserSettings/GameCoreStudio.Worker.asset`, separate from credential settings.
+  Programmatic request-builder worker arguments remain available. Tests:
+  `D16_PromptListsAdvertisedWorkersAndPreservesSelection` and
+  `D16_HelloWorkersReachPromptAndExactWorkerReachesCompanion`.
+- **D12:** OpenStudio retains D6 rectangles and schedules one idempotent placement pass on the next
+  `EditorApplication.update`. Existing windows keep their placement unless reposition was requested;
+  subsequent creator moves are not overwritten. Test:
+  `D12_DeferredPlacementRunsOnceWithoutOpeningGraphics` exercises the one-update placement scheduler.
+  `D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce` is explicitly skipped without graphics.
+- **D19 / D22 / W-VOICE-01:** the end-to-end fake-companion test drives the actual reusable voice
+  session and prompt bar with the retained move WAV. Both takes show partial text, receive the
+  delayed final on release, and leave requests and the tray empty. Only final user text fills the field.
+- **D13:** the fake-companion test measures 20 terminal transitions through the actual UI task ledger,
+  including a progress-event burst and 50 ms main-thread pump cadence, against the unchanged ≤1 s p95 budget.
+
+See [R3-B PACKET.md](../../../Packages/com.gamecore.studio.etos/PACKET.md) for before/after counts,
+latency measurements, exact commands, and the unisolated D22 upstream question. Simulated late placement
+is not a claim of a new physical `:1` qualification run.
+
+R3 final host result: **Unity 81 passed / 0 failed / 7 skipped** (88 total), including every runnable R3
+Editor regression. Tray-state p95 **110 ms**, max **117 ms** (20 samples). The seven skips include the new
+physical D12 check, two existing graphical checks, and four live-node checks. Dotnet: **67 passed / 6 live skipped**.
+The headless worker tests use `PromptBar.SelectedWorker`, the same controller called by the dropdown callback;
+detached UI Toolkit fields do not emit real panel change events. No graphical input pass is inferred from that.

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:57:13Z" duration="39.0717608">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="401" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:57:13Z" duration="39.071761" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1187" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="48" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.453444" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2252063" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1188" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="48" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.452677" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1189" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="48" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.452061" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1190" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="48" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.451447" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1191" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="48" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.450856" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1171" name="R3UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.449231" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1173" name="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" methodname="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" seed="1791049473" result="Failed" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:34Z" duration="0.438964" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[Unhandled log message: '[Error] No graphic device is available to initialize the view.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                    <stack-trace><![CDATA[UnityEditor.EditorWindow:GetWindow<GameCore.Studio.UI.StudioViewportWindow> (string)
+GameCore.Studio.UI.StudioViewportWindow:Open () (at /home/worlesenric/wkspace/gc-studio/r3-b/Packages/com.gamecore.studio.ui/Editor/Viewport/StudioViewportWindow.cs:109)
+GameCore.Studio.UI.StudioMenu:OpenStudio (UnityEngine.Rect,bool) (at /home/worlesenric/wkspace/gc-studio/r3-b/Packages/com.gamecore.studio.ui/Editor/Windows/StudioMenu.cs:33)
+GameCore.Studio.UI.Tests.R3UiRegressionTests/<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__1:MoveNext () (at /home/worlesenric/wkspace/gc-studio/r3-b/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:38)
+UnityEditor.TestTools.TestRunner.Te
+
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[No graphic device is available to initialize the view.
+No graphic device is available to show the window.
+No graphic device is available to initialize the view.
+No graphic device is available to initialize the view.
+No graphic device is available to show the window.
+No graphic device is available to initialize the view.
+No graphic device is available to initialize the view.
+No graphic device is available to show the window.
+No graphic device is available to initialize the view.
+No graphic device is available to initialize the view.
+No graphic device is available to show the window.
+No graphic device is available to initialize the view.
+No graphic device is available to initialize the view.
+No graphic device is available to show the window.
+No graphic device is available to initialize the view.
+]]></output>
+                </test-case>
+                <test-case id="1172" name="D16_PromptListsAdvertisedWorkersAndPreservesSelection" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests.D16_PromptListsAdvertisedWorkersAndPreservesSelection" methodname="D16_PromptListsAdvertisedWorkersAndPreservesSelection" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" seed="1661326769" result="Failed" start-time="2026-10-05 13:56:34Z" end-time="2026-10-05 13:56:37Z" duration="3.000895" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  P3.2 D16: worker selector missing
+  Expected: not null
+  But was:  null
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3UiRegressionTests.D16_PromptListsAdvertisedWorkersAndPreservesSelection () [0x00020] in /home/worlesenric/wkspace/gc-studio/r3-b/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:19
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1578" name="Hollowmere.R3_B.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R3_B.EditMode.Tests.dll" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 13:56:37Z" end-time="2026-10-05 13:57:13Z" duration="35.605766" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2252063" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1579" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 13:56:38Z" end-time="2026-10-05 13:57:13Z" duration="35.374938" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1580" name="R3_B" fullname="Hollowmere.R3_B" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 13:56:38Z" end-time="2026-10-05 13:57:13Z" duration="35.374527" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1575" name="WorkflowRegressionTests" fullname="Hollowmere.R3_B.WorkflowRegressionTests" classname="Hollowmere.R3_B.WorkflowRegressionTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 13:56:38Z" end-time="2026-10-05 13:57:13Z" duration="35.374263" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1577" name="D13_EventBurstReachesTrayWithinOneSecond" fullname="Hollowmere.R3_B.WorkflowRegressionTests.D13_EventBurstReachesTrayWithinOneSecond" methodname="D13_EventBurstReachesTrayWithinOneSecond" classname="Hollowmere.R3_B.WorkflowRegressionTests" runstate="Runnable" seed="2004640181" result="Failed" start-time="2026-10-05 13:56:38Z" end-time="2026-10-05 13:57:12Z" duration="34.808876" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: less than or equal to 1000
+  But was:  1645.0d
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_B.WorkflowRegressionTests+<D13_EventBurstReachesTrayWithinOneSecond>d__1.MoveNext () [0x004f3] in /home/worlesenric/wkspace/gc-studio/r3-b/games/hollowmere/Assets/Hollowmere/Tests/R3_B/EditMode/WorkflowRegressionTests.cs:111
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[D13 tray latency ms n=20 p95=1645 max=1647
+]]></output>
+            </test-case>
+            <test-case id="1576" name="D19_D22_TwoTakesDrainDelayedFinalsAndDisplayPartialsWithoutSubmitting" fullname="Hollowmere.R3_B.WorkflowRegressionTests.D19_D22_TwoTakesDrainDelayedFinalsAndDisplayPartialsWithoutSubmitting" methodname="D19_D22_TwoTakesDrainDelayedFinalsAndDisplayPartialsWithoutSubmitting" classname="Hollowmere.R3_B.WorkflowRegressionTests" runstate="Runnable" seed="551715467" result="Failed" start-time="2026-10-05 13:57:12Z" end-time="2026-10-05 13:57:13Z" duration="0.564538" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  each take opens a new channel
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_B.WorkflowRegressionTests+<D19_D22_TwoTakesDrainDelayedFinalsAndDisplayPartialsWithoutSubmitting>d__0.MoveNext () [0x0024b] in /home/worlesenric/wkspace/gc-studio/r3-b/games/hollowmere/Assets/Hollowmere/Tests/R3_B/EditMode/WorkflowRegressionTests.cs:47
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

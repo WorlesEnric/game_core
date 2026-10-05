@@ -202,3 +202,36 @@ Evidence SHA-256:
   `python3 tools/check_game_core_csharp.py`: pass, 1,137 files. `git diff --check`: pass.
   No manifest, lockfile, R2-G/P2.2 test, installed service or credential was edited.
 - Final XML SHA-256: `b219e3258d53bba2ee03d2a8b8cf549cc50a0ccd6603b7a6bd5f22027788568f`.
+
+## R3 — packet R3-B
+
+This section supersedes only the voice lifecycle and event-delivery details above.
+The complete finding/test/evidence record and external requests are in
+[the R3-B packet](../../../Packages/com.gamecore.studio.etos/PACKET.md).
+
+- **D19:** serialize connect / capture / drain / next take; release drains queued PCM and the
+  final partial frame, sends stop, waits for close and main-thread transcript delivery, disposes
+  and clears the channel. Each take resets capture/framing/error/final state. Old callbacks
+  cannot close a new take. Test: `D19_D22_TwoTakesDrainDelayedFinalsAndDisplayPartialsWithoutSubmitting`.
+- **D22 client:** keep receiving after stop, preserve `stop timed out` before transport shutdown,
+  and surface `voice_no_transcript` if close arrives without a final. Only user final revisions
+  enter the prompt. Tests: `D22_StopDrainsDelayedFinalAfterAllAudioFrames`,
+  `D22_StopTimeoutPreservesPreciseReasonInsteadOfClientClosed`, plus the two-take Editor test.
+  The historical missing transcript is still unisolated; the retained run has no raw realtime
+  frame log. The packet records the exact companion-side investigation request.
+- **D13:** stream events are primary. Bounded FIFO read-ahead removes the one-Editor-update-per-event
+  backlog, with cursor persistence still ordered and strictly after handling. Disconnected streams
+  use one-second request-list recovery with a single in-flight poll. Tests:
+  `D13_ReadAheadIsBoundedAndNeverAcknowledgesQueuedWork`, `D13_EventBurstReachesTrayWithinOneSecond`,
+  `D13_DisconnectedStreamPollsAsFallback`. Latency is measured at the task ledger, not socket receipt.
+- **D16 client seam:** `EtosAgentGateway.Workers : IReadOnlyList<string>` exposes authenticated
+  hello worker ids. `AgentRequest.Mode` still accepts the programmatic `design` / `mechanism`
+  aliases and additionally carries an exact selected worker id through `ToBody`.
+
+Final host verification is recorded in the linked packet. No installed service or live paid operation is used.
+
+R3 final host result: **dotnet 67 passed / 0 failed / 6 live skipped**; **Unity 81 passed / 0 failed / 7 skipped**
+(88 total, requested filter plus the existing P2.2 gateway namespace). D13 tray-state p95 **110 ms**, max **117 ms**
+for 20 fake-companion transitions. Buffered-handler failure/replay is also covered by
+`D13_BufferedFailureReplaysWithoutAcknowledgingLaterEvents`. Metadata and C# checkers pass.
+Retained before/intermediate/final results and their hashes are retained in the linked packet's `Tests/Evidence/R3_B/`.

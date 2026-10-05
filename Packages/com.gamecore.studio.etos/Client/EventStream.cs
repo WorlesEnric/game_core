@@ -6,6 +6,7 @@
 #nullable enable
 using System;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.IO;
 using System.Net.WebSockets;
@@ -49,6 +50,9 @@ namespace GameCore.Studio.Etos.Client
 
         /// <summary>Completes only after main-thread handling; cancellation abandons unhandled work on reload.</summary>
         public Func<EventFrame, CancellationToken, Task>? HandleAsync { get; set; }
+
+        /// <summary>Bounded read-ahead for FIFO dispatchers. Handlers enqueue in wire order; cursors still acknowledge in order after handling.</summary>
+        public int MaxPendingEvents { get; set; } = 1;
 
         /// <summary>Raised on the worker thread when the connection state changes (with the error that caused a reconnect).</summary>
         public event Action<EventStreamState, EtosError?>? StateChanged;
@@ -159,17 +163,8 @@ namespace GameCore.Studio.Etos.Client
 
                     attempt = 0;
                     SetState(EventStreamState.Connected, null);
-                    while (!token.IsCancellationRequested)
-                    {
-                        string? text = await WebSocketText.ReceiveAsync(socket, token).ConfigureAwait(false);
-                        if (text == null)
-                        {
-                            LastError = new EtosError(0, EtosCodes.Transport, "The companion closed the event stream.");
-                            break;
-                        }
-
-                        await DeliverAsync(text, token).ConfigureAwait(false);
-                    }
+                    await ReadAheadAsync(socket, token).ConfigureAwait(false);
+                    LastError = new EtosError(0, EtosCodes.Transport, "The companion closed the event stream.");
                 }
                 catch (OperationCanceledException) when (token.IsCancellationRequested)
                 {
@@ -215,27 +210,72 @@ namespace GameCore.Studio.Etos.Client
             return;
         }
 
-        private async Task DeliverAsync(string text, CancellationToken token)
+        private async Task ReadAheadAsync(WebSocket socket, CancellationToken token)
         {
-            EventFrame? frame = EventFrame.Parse(text);
-            if (frame == null || frame.Cursor <= Cursor) return;
-            frame.ReceivedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            using CancellationTokenSource connection = CancellationTokenSource.CreateLinkedTokenSource(token);
+            using SemaphoreSlim slots = new SemaphoreSlim(Math.Max(1, Math.Min(256, MaxPendingEvents)));
+            using SemaphoreSlim ready = new SemaphoreSlim(0);
+            ConcurrentQueue<Tuple<EventFrame, Task>> pending = new ConcurrentQueue<Tuple<EventFrame, Task>>();
+            Task reader = Read();
             try
             {
-                if (HandleAsync != null) await HandleAsync(frame, token).ConfigureAwait(false);
-                token.ThrowIfCancellationRequested();
-                Received?.Invoke(frame);
-                _cursors.Save(frame.Cursor);
-                Interlocked.Exchange(ref _cursor, frame.Cursor);
+                while (true)
+                {
+                    await ready.WaitAsync(connection.Token).ConfigureAwait(false);
+                    if (!pending.TryDequeue(out Tuple<EventFrame, Task>? item))
+                    {
+                        await reader.ConfigureAwait(false);
+                        return;
+                    }
+                    try
+                    {
+                        await item.Item2.ConfigureAwait(false);
+                        connection.Token.ThrowIfCancellationRequested();
+                        Received?.Invoke(item.Item1);
+                        _cursors.Save(item.Item1.Cursor);
+                        Interlocked.Exchange(ref _cursor, item.Item1.Cursor);
+                    }
+                    catch (OperationCanceledException) when (connection.IsCancellationRequested) { throw; }
+                    catch (Exception error)
+                    {
+                        throw new EtosException(new EtosError(0, "event_handler_failed",
+                            "Event cursor " + item.Item1.Cursor.ToString(CultureInfo.InvariantCulture) + " was not acknowledged: " + error.Message));
+                    }
+                    finally { slots.Release(); }
+                }
             }
-            catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
-            catch (Exception error)
+            finally
             {
-                // Reconnect from the last acknowledged cursor. Never skip ahead after a failed handler/save.
-                throw new EtosException(new EtosError(0, "event_handler_failed",
-                    "Event cursor " + frame.Cursor.ToString(CultureInfo.InvariantCulture) + " was not acknowledged: " + error.Message));
+                connection.Cancel();
+                try { await reader.ConfigureAwait(false); }
+                catch (Exception) { /* The consumer reports its failure; the reader is observed before reconnect. */ }
+                while (pending.TryDequeue(out Tuple<EventFrame, Task>? abandoned))
+                    _ = abandoned.Item2.ContinueWith(t => { _ = t.Exception; }, TaskContinuationOptions.OnlyOnFaulted);
             }
-            return;
+
+            async Task Read()
+            {
+                long readCursor = Cursor;
+                try
+                {
+                    while (!connection.IsCancellationRequested)
+                    {
+                        await slots.WaitAsync(connection.Token).ConfigureAwait(false);
+                        string? text = await WebSocketText.ReceiveAsync(socket, connection.Token).ConfigureAwait(false);
+                        if (text == null) return;
+                        EventFrame? frame = EventFrame.Parse(text);
+                        if (frame == null || frame.Cursor <= readCursor) { slots.Release(); continue; }
+                        readCursor = frame.Cursor;
+                        frame.ReceivedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                        Task handled;
+                        try { handled = HandleAsync?.Invoke(frame, connection.Token) ?? Task.CompletedTask; }
+                        catch (Exception error) { handled = Task.FromException(error); }
+                        pending.Enqueue(Tuple.Create(frame, handled));
+                        ready.Release();
+                    }
+                }
+                finally { ready.Release(); }
+            }
         }
 
         private void SetState(EventStreamState state, EtosError? error)
