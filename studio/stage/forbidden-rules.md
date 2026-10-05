@@ -1,48 +1,41 @@
-# Staging lane: forbidden-content rules
+# Semantic staging rules (D1)
 
-`gamecore-studio stage` step `scan` (`studio/agent/src/stage/scan.rs`) runs these rules on every file of the
-candidate package before any of its code is compiled or run. If any rule fires, the stage fails. The steps that
-would run candidate code (`dotnet`, `unity-editmode`, `playmode-smoke`, `determinism`) are then skipped with
-"scan failed". Each finding is a verdict `forbiddenHits[]` entry `{rule, path, line, excerpt}`, and the excerpt is
-redacted.
+The trusted service invokes the Roslyn analyzer inside the D3 sandbox during the dotnet step. Lexical scanning is an
+early prefilter only. Candidates cannot disable rules, supply trusted references, grant `allowUnsafe`, or claim generated
+code exemptions. Hashes of findings are not authenticated verdicts; only R2-F's signed stage record can authorize R2-B.
 
-The scan reads C# through a small lexer, not regular expressions. Comments, string contents and
-`#if UNITY_EDITOR` branches are handled correctly, so a rule name inside a comment or string never fires.
+| Stable ID | Refusal |
+|---|---|
+| SG000 | Invalid C# 9 syntax or inactive conditional source that has not been analyzed. |
+| SG001 | `InitializeOnLoad*`, `DidReloadScripts`, `MenuItem`, `ExecuteAlways`/`ExecuteInEditMode`, module initializers, direct/indirect `AssetPostprocessor` or `AssetModificationProcessor` inheritance. All candidate menu entry points are refused conservatively. |
+| SG002 | Semantic references to `System.Reflection.Emit`. |
+| SG003 | `System.Diagnostics.Process`, `ProcessStartInfo`, or `NativeLibrary` execution/loading. |
+| SG004 | `System.Net` and descendants, `UnityEngine.Networking`, legacy `WWW`. |
+| SG005 | Filesystem access without proven package/persistent-data containment, file-handle constructors, IO method-group escapes, link creation and implicit temporary-file creation. |
+| SG006 | `unsafe`, pointers or function pointers. |
+| SG007 | Native imports (`DllImport` / `LibraryImport`). |
+| SG008 | Nonconstant static mutable fields, reference-backed readonly fields (including arrays), mutable static auto-properties, static events. The explicit `ScriptableSingleton<T>` field exception follows the project contract. |
+| SG009 | `Resources.Load*` with absolute, traversing or unproven dynamic paths. |
+| SG010 | Static Editor constructors/field initialization or Editor API calls outside declared `[AuthorOperation]` / `[AuthorValidator]`, GameCore catalog contributor, or sandbox NUnit test call chains. |
+| SG011 | Reflective/dynamic execution that can evade API attribution. |
+| SG012 | Unresolved invocations, attributes or base types in the supplied trusted reference context. |
 
-| Rule | Fires on | Legitimate alternative / exemption |
-|------|----------|------------------------------------|
-| `reflection-emit` | `System.Reflection.Emit`, `DynamicMethod`, `ILGenerator`, `AssemblyBuilder`, `ModuleBuilder`, `TypeBuilder`, `MethodBuilder` | none: generated code must be source in the package |
-| `process-start` | `Process.Start`, `ProcessStartInfo`, `System.Diagnostics.Process` | none |
-| `file-write` | `File.Write*/Append*/Create*/Delete/Move/Copy/Replace/Open/OpenWrite/Set*/Encrypt/Decrypt`, `Directory.CreateDirectory/Delete/Move/CreateSymbolicLink`, `new StreamWriter/FileStream/BinaryWriter` | allowed when the statement's first string literal starts with `Assets/<package>/` or `Packages/<package>/`, or the statement uses `persistentDataPath` |
-| `editor-in-runtime` | `UnityEditor` in a runtime assembly; a runtime asmdef referencing an Editor assembly | allowed in an Editor-only asmdef, under an `Editor/` folder, or inside `#if UNITY_EDITOR` |
-| `dllimport` | `DllImport`, `LibraryImport`, `extern` | none |
-| `native-plugin` | `.dll .so .dylib .bundle .a .lib .jar .aar .jnilib .exe` files, symbolic links | none |
-| `unsafe` | `unsafe`, `stackalloc`, `fixed (...)`; asmdef `allowUnsafeCode: true` | allowed only when the proposal declares `allowUnsafe.reason` (non-empty); the reason is copied into the slot record |
-| `network` | `System.Net*`, `UnityEngine.Networking`, `UnityWebRequest`, `HttpClient(Handler)`, `WebClient`, `(Http)WebRequest`, `TcpClient/Listener`, `UdpClient`, `Socket`, `(Client)WebSocket`, `Dns`, `NetworkStream` | none: mechanisms are offline |
-| `resources-absolute` | `Resources.Load*("...")` with an absolute path, a drive colon, or `..` | use a path relative to a `Resources/` folder |
-| `static-mutable` | non-readonly static fields, `static event`, static readonly arrays and mutable collections, `[ThreadStatic]` | `const`, `static readonly` immutable values, static methods and properties; simulation state belongs in components, which keeps the determinism step meaningful |
-| `credentials` | `etk_ ett_ etp_ eta_` etos keys and tickets, `sk-` provider keys (16+ chars), `Bearer <token>` (8+ chars), in any text file | none: never commit a secret; the excerpt is masked |
-| `binary-blob` | any file larger than 2 MB | allowed when declared in `proposal.blobs` or `package.json` `gamecore.blobs` |
+Symbols, aliases, inherited types, parameters and constant values come from Roslyn semantic models. Text in comments
+and strings does not identify an API. The scanner never compiles or loads a candidate assembly or evaluates code.
 
-`check_game_core_csharp.py` and `check_package_metadata.py` back up the scan in the `checkers` step. Run through
-`studio/stage/slot-checks.py`, they apply to the slot package exactly as they apply to repository packages.
-`tools/check_stage_slot.py` then checks the slot itself: the manifest allowlist, embedded files equal to
-`stage.json`, and no stray assets.
+Filesystem proof is conservative: literal `Assets/<package>` paths must consist of normalized components with no rooted
+prefix, backslash, colon, `.` or `..`. The other allowed root is the semantic `UnityEngine.Application.persistentDataPath`
+property. `System.IO.Path.Combine` accepts one proven root followed only by normalized constant relative components.
+All path parameters must pass (e.g. both source and destination of Copy); the contents argument mentioning a permitted
+root proves nothing. Unknown locals, aliases to mutable strings, interpolation and dynamic joins are refused. `File` and
+`Directory` calls are checked; arbitrary filesystem object handles are refused. The sandbox remains necessary to contain
+candidate execution, including existing filesystem links and native engine behavior that static analysis cannot prove.
 
-## Documented exemptions (`studio/stage/allowlist.json` `scanExemptions`)
+Editor helpers are permitted only when reachable through the declared extension/test call graph. This does not permit
+automatic hook registration. No generated-source filename/header exemption exists: the pressure-plate generator now
+returns fresh catalog arrays rather than shared mutable fields. Candidate test methods are scanned under the same forbidden
+API/state/path rules as production code. Negative fixtures are parsing inputs, never Unity packages to install.
 
-No rule is relaxed. If a legitimate mechanism package is blocked by a rule, the fix is an explicit allowlist entry
-with a written reason, never a change to the rule. An entry matches only when all of these hold:
-
-- the rule is the one named;
-- the file name ends with `pathSuffix`;
-- the file sits directly in a folder named `directory`;
-- the file's first ten lines contain `header`;
-- the offending line contains `excerptContains`.
-
-An exempted hit is not discarded. It is still written to the scan log as `exempt[<id>] ...` and counted in the
-step's `facts.exempted`. The runner refuses an entry that names an unknown rule or has no reason or no header.
-
-| id | rule | covers | reason (summary) |
-|----|------|--------|------------------|
-| `generated-catalog-tables` | `static-mutable` | `static readonly` lines in `Generated/*.g.cs` with the CatalogEmitter header | The repository's catalog emitter writes its tables as `static readonly T[]`, exactly as in every gameplay package. Nothing writes them after type initialisation, and the determinism step still guards against shared state. stage_real found the need on the pressure plate: 14 hits, all emitter tables. |
+R2-F must enforce all mandatory steps, versioned warm caches and the 360-second warm budget; mark the one cold overrun
+`coldCache: true`. Sandbox or licensing failure emits `stage_failed{sandbox_unavailable}` with no verdict. Host execution
+requires explicit operator configuration, a `confinement: "host"` verdict, an admission warning and a reported deviation.
