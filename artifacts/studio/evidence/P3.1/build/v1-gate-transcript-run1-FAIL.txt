@@ -1,0 +1,185 @@
+== V1 gate (tools/run_w7_gate.sh) on revision c8497644ac4c6050d4e67541686887a94548ea99 ==
+started   : 2026-10-05T11:49:16Z
+clone     : /home/worlesenric/wkspace/gc-studio/p3.1
+profile   : headless validation player (SADR-017); the graphical Hollowmere player is a separate target
+== Wave 7 integration gate (W7-GATE) ==
+repo         : /home/worlesenric/wkspace/gc-studio/p3.1
+unity        : /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+dotnet       : /home/worlesenric/.dotnet/dotnet
+project      : /home/worlesenric/wkspace/gc-studio/p3.1/unity/GameCore.Validation
+artifacts    : /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate
+probe runs   : 2 (project-owner cap: two)
+unity timeout: 1800s (one retry on a timeout)
+release build: 1
+benchmark    : ONE short correctness diagnostic (1 run, 1s warmup, 2s windows)
+               TEST-023 full-duration timing is Deferred by project-owner decision; see BUDGET_DECISIONS.md
+audio        : DISABLED in the headless player (crash-139)
+
+== 1. plain dotnet (every test project, so every earlier gate's equivalence suites re-run) ==
+-- dotnet-build: /home/worlesenric/.dotnet/dotnet build dotnet/GameCore.sln -c Release --nologo -v:q
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:33.89
+-- dotnet-test: /home/worlesenric/.dotnet/dotnet test dotnet/GameCore.sln -c Release --no-build --nologo -v:q --logger trx;LogFilePrefix=w7 --results-directory /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Planning.Tests/bin/Release/net8.0/GameCore.Planning.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.ProtocolFixtures.Production.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Production.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Derivation.Tests/bin/Release/net8.0/GameCore.Derivation.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Rules.Cards.Tests/bin/Release/net8.0/GameCore.Rules.Cards.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Rules.Narrative.Tests/bin/Release/net8.0/GameCore.Rules.Narrative.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Rules.Traversal.Tests/bin/Release/net8.0/GameCore.Rules.Traversal.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Adapters.Tests/bin/Release/net8.0/GameCore.Adapters.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Replay.Tests/bin/Release/net8.0/GameCore.Replay.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.ReferenceConformance.Tests/bin/Release/net8.0/GameCore.ReferenceConformance.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Benchmarks.Tests/bin/Release/net8.0/GameCore.Benchmarks.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Studio.Model.Tests/bin/Release/net8.0/GameCore.Studio.Model.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Rules.Gameplay.Tests/bin/Release/net8.0/GameCore.Rules.Gameplay.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Studio.Etos.Client.Tests/bin/Release/net8.0/GameCore.Studio.Etos.Client.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.A total of 1 test files matched the specified pattern.
+
+A total of 1 test files matched the specified pattern.A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.A total of 1 test files matched the specified pattern.
+
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.A total of 1 test files matched the specified pattern.
+
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195018.trx
+
+Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 436 ms - GameCore.Rules.Traversal.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195019.trx
+
+Passed!  - Failed:     0, Passed:    21, Skipped:     0, Total:    21, Duration: 748 ms - GameCore.ReferenceSeams.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195020.trx
+
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195021.trx
+
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195022.trx
+
+Passed!  - Failed:     0, Passed:    26, Skipped:     0, Total:    26, Duration: 402 ms - GameCore.Rules.Cards.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:    42, Skipped:     0, Total:    42, Duration: 491 ms - GameCore.Adapters.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:    27, Skipped:     0, Total:    27, Duration: 720 ms - GameCore.ReferenceConformance.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195023.trxResults File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195024.trxResults File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195025.trx
+
+
+
+
+
+Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 139 ms - GameCore.ProtocolFixtures.Production.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 138 ms - GameCore.ProtocolFixtures.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:   163, Skipped:     0, Total:   163, Duration: 989 ms - GameCore.Planning.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195028.trx
+
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195027.trx
+
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195026.trx
+
+Passed!  - Failed:     0, Passed:   118, Skipped:     0, Total:   118, Duration: 555 ms - GameCore.Rules.Narrative.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:    47, Skipped:     0, Total:    47, Duration: 836 ms - GameCore.Recovery.Fixtures.Tests.dll (net8.0)
+Passed!  - Failed:     0, Passed:   307, Skipped:     0, Total:   307, Duration: 664 ms - GameCore.Rules.Gameplay.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195029.trx
+
+Passed!  - Failed:     0, Passed:   173, Skipped:     0, Total:   173, Duration: 1 s - GameCore.Contracts.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195030.trx
+
+Passed!  - Failed:     0, Passed:   178, Skipped:     0, Total:   178, Duration: 1 s - GameCore.Execution.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195031.trx
+
+Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 1 s - GameCore.Content.Compiler.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195032.trx
+
+Passed!  - Failed:     0, Passed:   189, Skipped:     0, Total:   189, Duration: 1 s - GameCore.Composition.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195033.trx
+
+Passed!  - Failed:     0, Passed:   104, Skipped:     0, Total:   104, Duration: 2 s - GameCore.Studio.Model.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195034.trx
+
+Passed!  - Failed:     0, Passed:    63, Skipped:     6, Total:    69, Duration: 2 s - GameCore.Studio.Etos.Client.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195035.trx
+
+Passed!  - Failed:     0, Passed:   118, Skipped:     0, Total:   118, Duration: 13 s - GameCore.Derivation.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195037.trx
+
+Passed!  - Failed:     0, Passed:    57, Skipped:     0, Total:    57, Duration: 19 s - GameCore.Replay.Tests.dll (net8.0)
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7_net8.0_20261005195050.trx
+
+Passed!  - Failed:     0, Passed:    90, Skipped:     0, Total:    90, Duration: 32 s - GameCore.Benchmarks.Tests.dll (net8.0)
+-- dotnet-derivation-equivalence: /home/worlesenric/.dotnet/dotnet test dotnet/tests/GameCore.Derivation.Tests/GameCore.Derivation.Tests.csproj -c Release --no-build --nologo -v:q --filter FullyQualifiedName~GameCore.Derivation.Tests.IncrementalAgreementTests|FullyQualifiedName~GameCore.Derivation.Tests.OracleAgreementTests --logger trx;LogFilePrefix=w7-equivalence --results-directory /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Derivation.Tests/bin/Release/net8.0/GameCore.Derivation.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20261005195103.trx
+
+Passed!  - Failed:     0, Passed:     8, Skipped:     0, Total:     8, Duration: 11 s - GameCore.Derivation.Tests.dll (net8.0)
+-- dotnet-10k-property: /home/worlesenric/.dotnet/dotnet test dotnet/tests/GameCore.Benchmarks.Tests/GameCore.Benchmarks.Tests.csproj -c Release --no-build --nologo -v:q --filter FullyQualifiedName~BenchmarkFixtureDerivationTests --logger trx;LogFilePrefix=w7-ten-thousand --results-directory /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx
+Test run for /home/worlesenric/wkspace/gc-studio/p3.1/dotnet/tests/GameCore.Benchmarks.Tests/bin/Release/net8.0/GameCore.Benchmarks.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+Results File: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20261005195133.trx
+
+Passed!  - Failed:     0, Passed:    13, Skipped:     0, Total:    13, Duration: 29 s - GameCore.Benchmarks.Tests.dll (net8.0)
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20260927023432.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20260927023732.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20260927024102.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20260927031422.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-equivalence_net8.0_20261005195103.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20260927023457.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20260927023757.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20260927024126.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20260927031446.trx
+-- named suite re-run: /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/trx/w7-ten-thousand_net8.0_20261005195133.trx
+
+== 2. host-side checks ==
+-- csharp-check: python3 tools/check_game_core_csharp.py
+checked 1170 C# file(s)
+ok
+-- gate-sources: python3 tools/check_gate_sources.py --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W7GateScenario.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeW7Gate.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeRecoverySmoke.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/Gc027Scenario.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeArguments.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeRunner.cs --file unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W7Gate/W7GateIntegrationTests.cs --json /home/worlesenric/wkspace/gc-studio/p3.1/artifacts/w7-gate/host/gate-sources.json
+== balance (.cs; comments and literals removed) ==
+   W7GateScenario.cs                  balanced
+   ProbeW7Gate.cs                     balanced
+   ProbeRecoverySmoke.cs              balanced
+   Gc027Scenario.cs                   balanced
+   ProbeArguments.cs                  balanced
+   ProbeRunner.cs                     balanced
+   W7GateIntegrationTests.cs          balanced
+
+== member resolution (Type.Member against the declaring sources) ==
+   unresolved: [('W7GateScenario.cs', 417, 'Result', 'Accepted', 'bool stepPass = incremental.Result.Accepted && clean.Accepted'), ('W7GateScenario.cs', 418, 'Result', 'ResultHash', '&& incremental.Result.ResultHash.Equals(clean.ResultHash)'), ('W7GateScenario.cs', 419, 'Result', 'Assemblies', '&& incremental.Result.Assemblies.Count == clean.Assemblies.Count;'), ('W7GateScenario.cs', 425, 'Result', 'Accepted', '+ " incremental=" + (incremental.Result.Accepted ? "accepted" : "refus'), ('W7GateScenario.cs', 427, 'Result', 'ResultHash', '+ " hashes=" + incremental.Result.ResultHash.ToHex() + "/" + clean.Res'), ('W7GateScenario.cs', 428, 'Result', 'Assemblies', '+ " assemblies=" + incremental.Result.Assemblies.Count.ToString(Cultur'), ('W7GateScenario.cs', 435, 'Result', 'ResultHash', '+ " resultHash=" + incremental.Result.ResultHash.ToHex()'), ('W7GateScenario.cs', 439, 'Result', 'Accepted', 'previous = incremental.Result.Accepted ? incremental.Result : previous'), ('ProbeRecoverySmoke.cs', 853, 'World', 'Session', '+ "; destination=" + (destination == null ? "<none>" : destination.Wor'), ('ProbeRecoverySmoke.cs', 907, 'World', 'Session', '&& !destination.World.Session.Equals(sourceWorld.Session)'), ('ProbeRecoverySmoke.cs', 908, 'World', 'Session', '&& !destination.World.Session.Equals(secondSourceWorld.Session)'), ('ProbeRecoverySmoke.cs', 909, 'World', 'Session', '&& !destination.World.Session.Equals(recoveredSession);'), ('ProbeRecoverySmoke.cs', 925, 'World', 'Session', '+ "; destination=" + (destination == null ? "<none>" : destination.Wor'), ('ProbeRecoverySmoke.cs', 1036, 'World', 'Session', 'blockage.Add(subject.World.Session.ToString() + ":" + exception.Messag'), ('Gc027Scenario.cs', 443, 'World', 'Session', '"session=" + world.World.Session.ToString()'), ('Gc027Scenario.cs', 1673, 'World', 'Session', '&& own.World.Session.Equals(destination.World.Session)'), ('Gc027Scenario.cs', 1673, 'World', 'Session', '&& own.World.Session.Equals(destination.World.Session)'), ('Gc027Scenario.cs', 1674, 'World', 'Session', '&& !own.World.Session.Equals(sourceFirstObservation.World.Session);'), ('Gc027Scenario.cs', 1674, 'World', 'Session', '&& !own.World.Session.Equals(sourceFirstObservation.World.Session);'), ('Gc027Scenario.cs', 1677, 'World', 'Session', '"oldToken=" + sourceFirstObservation.World.Session.ToString() + "/epoc'), ('Gc027Scenario.cs', 1683, 'World', 'Session', '? own.World.Session.ToString() + "/epoch "')]
+== using coverage (a used type must be reachable through the file's own usings) ==
+   unreachable: none
+== ambiguity (a used name declared in two imported namespaces) ==
+   ambiguous: none
+== the Parse call site's own locals ==
+   declared locals: 26 | problems: none
+
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal'], conformance 3
+   w7 harness steps: 18 | missing: none | extra: none
+VERDICT: REVIEW NEEDED
+finished  : 2026-10-05T11:52:48Z exit=1 seconds=212

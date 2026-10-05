@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pip
   m_EditorClassIdentifier: 
   authoringId: dc88c507-3b24-44ea-8eb8-fcb35dcf733e
-  contentStamp: e37d1a51218bcda82910f76f3e2f8f16bcdf95f006f45ebc5f55ef1cdf9e40bb
+  contentStamp: aee25c815385bcca282c416f575eeb4d32031ca6598eaefab0e402ef3fe7d057
   speaker: Pip
   speakerEntityId: 508f7d78-7b44-42e8-8028-be4b2c9ee4b0
   npcGraphRef: dialogue.pip
@@ -22,8 +22,8 @@ MonoBehaviour:
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: Did you ever hear the bell? I never have.
-    voiceClip: {fileID: 0}
+    text: Did you ever hear the bell? Gran says it rang every dusk before the flood.
+    voiceClip: {fileID: 8300000, guid: 98bd640ca1f0638a7b10ccce20ebb545, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
@@ -38,6 +38,9 @@ MonoBehaviour:
     actions: {fileID: 0}
     options:
     - text: Where is the clapper?
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Anything about the shrine?
       condition: {fileID: 0}
       hideWhenUnavailable: 0
     - text: Bye, Pip.
@@ -55,26 +58,36 @@ MonoBehaviour:
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: Gran says it fell in the marsh, by the dead willow.
-    voiceClip: {fileID: 0}
+    text: It fell in the marsh, by the dead willow. Hale will not let me look.
+    voiceClip: {fileID: 8300000, guid: 1136afa3f650dff97b0fec8264e15cab, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: 'Gran says you light the shrine lanterns the way the sun walks: from the
+      willow in the west to the water in the east.'
+    voiceClip: {fileID: 8300000, guid: c586f9e22dd50c9d4b9da9eabf02235d, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
     options: []
   edges:
-  - from: 1
-    port: 2
-    option: 0
-    to: 2
-  - from: 1
-    port: 2
-    option: 1
-    to: -1
   - from: 0
     port: 0
     option: 0
     to: 1
+  - from: 1
+    port: 2
+    option: 0
+    to: 2
   - from: 2
     port: 0
     option: 0
     to: 3
+  - from: 1
+    port: 2
+    option: 1
+    to: 4

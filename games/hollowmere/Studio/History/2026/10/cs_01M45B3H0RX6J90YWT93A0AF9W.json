@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B3H0RX6J90YWT93A0AF9W",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The toll... and the shrine's light... I can see the way out. I am free.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_free.wav",
+        "artifact": {
+          "artifact": "sha256:2033ce302596e38886dc4375d91d9efcfbfa3501a6892d4121aafd548599259d"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "2033ce302596e38886dc4375d91d9efcfbfa3501a6892d4121aafd548599259d",
+      "name": "BelfryEcho_free.wav",
+      "mediaType": "audio/wav",
+      "bytes": 230444,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_free.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-78e921dd4a8fb3b5bada1980e9487956-8300000-0",
+                "assetGuid": "78e921dd4a8fb3b5bada1980e9487956",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_free.wav"
+              },
+              "stamp": "sha256:2033ce302596e38886dc4375d91d9efcfbfa3501a6892d4121aafd548599259d"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:04.672Z",
+    "applied": "2026-10-05T06:13:04.773Z"
+  }
+}

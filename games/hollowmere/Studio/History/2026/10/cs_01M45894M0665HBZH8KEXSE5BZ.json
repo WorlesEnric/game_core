@@ -1,0 +1,142 @@
+{
+  "id": "cs_01M45894M0665HBZH8KEXSE5BZ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:closure.stamina-hud] Bind the HUD stamina bar to the player's committed stamina slot (percent of 1000)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "bind",
+      "tool": "ui.bind",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "fec46a1a-6c42-4e2d-9617-ac365d913658",
+        "global": "GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0",
+        "assetGuid": "42910ef6c7c4d13f5a85ccbb2ef3b3f6",
+        "path": "Assets/Hollowmere/UI/Definitions/Doc_Hud.asset",
+        "scope": "Definition",
+        "stamp": "sha256:3a51269e1c13aef795d04369e66460385e59c1a12a25c9cbabd8b99edc9063c7"
+      },
+      "args": {
+        "element": "stamina-bar",
+        "source": "slot:player.owner/player.stamina@focus",
+        "property": "value",
+        "format": "percent:1000"
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "bind",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "fec46a1a-6c42-4e2d-9617-ac365d913658",
+                "global": "GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0",
+                "assetGuid": "42910ef6c7c4d13f5a85ccbb2ef3b3f6",
+                "path": "Assets/Hollowmere/UI/Definitions/Doc_Hud.asset"
+              },
+              "args": {
+                "fields": {
+                  "bindings": [
+                    {
+                      "element": "objective-line",
+                      "property": "text",
+                      "source": "vm:hud.ObjectiveText",
+                      "format": ""
+                    },
+                    {
+                      "element": "objective-line",
+                      "property": "visible",
+                      "source": "vm:hud.ObjectiveVisible",
+                      "format": ""
+                    },
+                    {
+                      "element": "stamina-bar",
+                      "property": "value",
+                      "source": "vm:hud.Stamina",
+                      "format": ""
+                    },
+                    {
+                      "element": "stamina-bar",
+                      "property": "visible",
+                      "source": "vm:hud.StaminaVisible",
+                      "format": ""
+                    },
+                    {
+                      "element": "region-banner",
+                      "property": "visible",
+                      "source": "vm:hud.RegionBannerVisible",
+                      "format": ""
+                    },
+                    {
+                      "element": "region-name",
+                      "property": "text",
+                      "source": "event:region-entered",
+                      "format": ""
+                    },
+                    {
+                      "element": "message",
+                      "property": "text",
+                      "source": "vm:screen.MessageText",
+                      "format": ""
+                    },
+                    {
+                      "element": "message",
+                      "property": "visible",
+                      "source": "vm:screen.MessageVisible",
+                      "format": ""
+                    },
+                    {
+                      "element": "prompt",
+                      "property": "visible",
+                      "source": "vm:prompt.Visible",
+                      "format": ""
+                    },
+                    {
+                      "element": "prompt-text",
+                      "property": "text",
+                      "source": "vm:prompt.Text",
+                      "format": ""
+                    },
+                    {
+                      "element": "prompt-text",
+                      "property": "enabled",
+                      "source": "vm:prompt.Enabled",
+                      "format": ""
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "fec46a1a-6c42-4e2d-9617-ac365d913658",
+                "global": "GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0",
+                "assetGuid": "42910ef6c7c4d13f5a85ccbb2ef3b3f6",
+                "path": "Assets/Hollowmere/UI/Definitions/Doc_Hud.asset"
+              },
+              "stamp": "sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.857Z",
+    "applied": "2026-10-05T05:23:42.922Z"
+  }
+}

@@ -7,14 +7,16 @@
 //                 root's delivery owner (NarrativeComposer.AttachRestored), the canonical slot hash of the restored world
 //                 equals the capture's, the streamer reconciles (Belfry resident, Village unloaded), the in-flight
 //                 deliveries apply exactly once (bell_rung, quest stage 3, the bell rule fired once), the runtime target
-//                 is registered again, dialogue.start works after travelling home. Then save.capture while the quest
-//                 rewards are in flight, an in-place restore, and the rewards land exactly once (one lantern, three
-//                 coins); a replay of the in-flight outbox rows on top changes nothing (AlreadyApplied).
+//                 is registered again, dialogue.start works after travelling home. Then save.capture while a pickup
+//                 (the square's three coins) is in flight, an in-place restore, and the pickup lands exactly once; a
+//                 replay of the in-flight outbox rows on top changes nothing (AlreadyApplied). (P3.1 re-scripted the
+//                 play on the reference game's story: Maren, a lantern, Hale's gate, the clapper, ending B.)
 //                 W-PLUG-01 (moved NPC stays across a region cycle and a restore), W-PLUG-04 (an NPC in an unloaded
 //                 region keeps its slots across save/load), W-PLUG-06 (facts persist) are asserted on the way.
 //   W-PERSIST-02  A cosmetic edit (a definition whose content stamp changed, structural stamp kept) restores.
 //   W-PERSIST-03  A structural edit (structural stamp changed) refuses with RecipeRevisionMismatch.
 //   W-PLUG-08     200 grants get 200 distinct request ids (none deduplicated), and grants after a reload still apply.
+//   Counts of old coins are relative to the player's starting purse (P3.1: two coins).
 //   Determinism   Two boots fed the same frame-indexed commands commit identical slots.
 //
 // The save service uses the validation project's generated checkpoint codecs (Tests/P1_5/Checkpoint), as P1.5 does.
@@ -194,8 +196,9 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             Assert.That(b.World.World.Streamer.ResidencyOf(BelfryId), Is.EqualTo(RegionResidency.Resident));
             Assert.That(b.World.World.Streamer.ResidencyOf(VillageId), Is.EqualTo(RegionResidency.Unloaded));
 
-            yield return Until(() => Fact(b, "bell_rung") == 1 && QuestSlot(b, quest, QuestIds.Stage) == 3 && b.World.Delivery.Owner.Outbox.OpenCount == 0,
+            yield return Until(() => Fact(b, "bell_rung") == 1 && Fact(b, "ending_b") == 1 && b.World.Delivery.Owner.Outbox.OpenCount == 0,
                 "the in-flight bell deliveries apply after the restore", f => frames += f);
+            yield return Until(() => QuestSlot(b, quest, QuestIds.Status) == QuestIds.Completed, "the quest completes on ending B", f => frames += f);
             for (int i = 0; i < 30; i++)
             {
                 frames++;
@@ -206,7 +209,8 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             Assert.That(b.World.Delivery.Dropped, Is.Zero, b.World.Delivery.LastDropDetail);
             Timing("fresh boot restore and in-flight delivery", phase.ElapsedMilliseconds, frames);
 
-            // 5. Home to Maren: dialogue.start works on the re-attached world; capture while the rewards are in flight.
+            // 5. Home: dialogue.start works on the re-attached world (Maren's lines follow bell_rung); then the square's
+            //    coins are picked up and save.capture is taken while the pickup is in flight.
             phase.Restart();
             frames = 0;
             traveller = b.World.World.Focus;
@@ -215,18 +219,24 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             ConversationStart started = b.World.Conversations.TryStart(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef);
             Assert.That(started.Started, Is.True, started.Detail);
             yield return Until(() => Presented(b).Active && Presented(b).Kind == "line", "Maren's thanks line", f => frames += f);
-            StringAssert.Contains("You rang it", Presented(b).Text);
+            StringAssert.Contains("The bell rang", Presented(b).Text);
             Assert.That(b.Modules.Dialogue.Runner!.Advance(), Is.True);
-            Id128 grantPort = NarrativeDelivery.DestinationOf("grant");
+            yield return Until(() => !Presented(b).Active, "the end of the conversation", f => frames += f);
+
+            int coinsBefore = Held(b, HollowmereNarrative.OldCoin);
+            TargetId coins = AuthoringIds.TargetIdFor(EntityId("Coins (square)"));
+            yield return StandBy(b, coins, f => frames += f);
+            Id128 pickupPort = NarrativeDelivery.DestinationOf("pickup");
+            Assert.That(new InteractionCommands(b.World.World).Use(traveller, b.World.Runtime.ActorKey, coins).Admitted, Is.True);
             IReadOnlyList<OutboxRecordValue>? inFlight = null;
-            SaveResult? rewardsSaved = null;
-            for (int i = 0; i < MaxFrames && rewardsSaved == null; i++)
+            SaveResult? pickupSaved = null;
+            for (int i = 0; i < MaxFrames && pickupSaved == null; i++)
             {
                 IReadOnlyList<OutboxRecordValue> rows = b.World.Delivery.Owner.ToRecords();
-                if (OpenGrants(rows, grantPort) >= 2)
+                if (OpenGrants(rows, pickupPort) >= 1)
                 {
                     inFlight = rows;
-                    rewardsSaved = b.Saves.Capture("slot-2");
+                    pickupSaved = b.Saves.Capture("slot-2");
                     break;
                 }
 
@@ -234,41 +244,39 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
                 yield return null;
             }
 
-            Assert.That(rewardsSaved, Is.Not.Null, "the reward grants were seen in flight");
-            Assert.That(rewardsSaved!.Succeeded, Is.True, rewardsSaved.ToString());
-            yield return Until(() => Held(b, HollowmereNarrative.Lantern) == 1, "the lantern before the restore", f => frames += f);
+            Assert.That(pickupSaved, Is.Not.Null, "the pickup was seen in flight");
+            Assert.That(pickupSaved!.Succeeded, Is.True, pickupSaved.ToString());
+            yield return Until(() => Held(b, HollowmereNarrative.OldCoin) == coinsBefore + 3, "the coins before the restore", f => frames += f);
 
-            // 6. In-place restore of slot-2: the rewards land exactly once more (from the reinstated obligations).
-            SaveResult rewardsRestored = b.Saves.Restore("slot-2");
-            Assert.That(rewardsRestored.Succeeded, Is.True, rewardsRestored.ToString());
+            // 6. In-place restore of slot-2: the pickup lands exactly once more (from the reinstated obligation).
+            SaveResult pickupRestored = b.Saves.Restore("slot-2");
+            Assert.That(pickupRestored.Succeeded, Is.True, pickupRestored.ToString());
             Assert.That(b.Reattachments, Is.EqualTo(2));
-            Assert.That(Held(b, HollowmereNarrative.Lantern), Is.EqualTo(0), "the capture was taken before the grants applied");
-            yield return Until(() => OpenGrants(b.World.Delivery.Owner.ToRecords(), grantPort) == 0 && Held(b, HollowmereNarrative.Lantern) == 1,
-                "the in-flight rewards apply after the restore", f => frames += f);
+            Assert.That(Held(b, HollowmereNarrative.OldCoin), Is.EqualTo(coinsBefore), "the capture was taken before the pickup applied");
+            yield return Until(() => OpenGrants(b.World.Delivery.Owner.ToRecords(), pickupPort) == 0 && Held(b, HollowmereNarrative.OldCoin) == coinsBefore + 3,
+                "the in-flight pickup applies after the restore", f => frames += f);
             for (int i = 0; i < 30; i++)
             {
                 frames++;
                 yield return null;
             }
 
-            Assert.That(Held(b, HollowmereNarrative.Lantern), Is.EqualTo(1), "the in-flight reward is granted exactly once");
-            Assert.That(Held(b, HollowmereNarrative.OldCoin), Is.EqualTo(3), "the pay-branch coins, exactly once");
+            Assert.That(Held(b, HollowmereNarrative.OldCoin), Is.EqualTo(coinsBefore + 3), "the in-flight pickup applies exactly once");
             Assert.That(QuestSlot(b, quest, QuestIds.Status), Is.EqualTo(QuestIds.Completed));
 
             // 7. A replay of the in-flight rows on the restored delivery changes nothing.
             int alreadyBefore = b.World.Delivery.Owner.AlreadyAppliedCount;
             Assert.That(b.World.Delivery.Reinstate(inFlight!, out string replayDetail), Is.True, replayDetail);
-            yield return Until(() => OpenGrants(b.World.Delivery.Owner.ToRecords(), grantPort) == 0, "the replayed grants settle", f => frames += f);
+            yield return Until(() => OpenGrants(b.World.Delivery.Owner.ToRecords(), pickupPort) == 0, "the replayed pickup settles", f => frames += f);
             for (int i = 0; i < 10; i++)
             {
                 frames++;
                 yield return null;
             }
 
-            Assert.That(Held(b, HollowmereNarrative.Lantern), Is.EqualTo(1), "a replayed outbox after a restore grants nothing twice");
-            Assert.That(Held(b, HollowmereNarrative.OldCoin), Is.EqualTo(3));
-            Assert.That(b.World.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(2), "the replayed grants answered AlreadyApplied");
-            Timing("rewards capture, restore and replay", phase.ElapsedMilliseconds, frames);
+            Assert.That(Held(b, HollowmereNarrative.OldCoin), Is.EqualTo(coinsBefore + 3), "a replayed outbox after a restore picks up nothing twice");
+            Assert.That(b.World.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(1), "the replayed pickup answered AlreadyApplied");
+            Timing("pickup capture, restore and replay", phase.ElapsedMilliseconds, frames);
 
             GameApplicationRoot root = b.World.Root;
             int startFrame = Time.frameCount;
@@ -305,9 +313,11 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             Game a = Boot(manifest!);
             yield return null;
             int frames = 0;
+            int purse = 0;
+            yield return StartingPurse(a, value => purse = value, f => frames += f);
             InventoryCommands inventory = a.Modules.Inventory.Commands!;
             Assert.That(inventory.Grant(HollowmereNarrative.OldCoin, 2).Admitted, Is.True);
-            yield return Until(() => Held(a, HollowmereNarrative.OldCoin) == 2, "two coins", f => frames += f);
+            yield return Until(() => Held(a, HollowmereNarrative.OldCoin) == purse + 2, "two coins", f => frames += f);
             SaveResult saved = a.Saves.Capture("slot-1");
             Assert.That(saved.Succeeded, Is.True, saved.ToString());
             a.Close();
@@ -332,7 +342,7 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             yield return null;
             SaveResult cosmeticRestore = cosmeticGame.Saves.Restore("slot-1");
             Assert.That(cosmeticRestore.Succeeded, Is.True, cosmeticRestore.ToString());
-            Assert.That(Held(cosmeticGame, HollowmereNarrative.OldCoin), Is.EqualTo(2));
+            Assert.That(Held(cosmeticGame, HollowmereNarrative.OldCoin), Is.EqualTo(purse + 2));
             cosmeticGame.Close();
             Object.DestroyImmediate(cosmetic);
 
@@ -375,6 +385,8 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             Game g = Boot(manifest!);
             yield return null;
             int frames = 0;
+            int purse = 0;
+            yield return StartingPurse(g, value => purse = value, f => frames += f);
             int submitted = 0;
             while (submitted < 200 && frames < MaxFrames)
             {
@@ -392,7 +404,7 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             }
 
             Assert.That(submitted, Is.EqualTo(200));
-            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == 200, "200 single-coin grants, none deduplicated", f => frames += f);
+            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == purse + 200, "200 single-coin grants, none deduplicated", f => frames += f);
             Assert.That(g.Modules.Inventory.Refused, Is.Zero, "no grant was refused as already applied");
 
             SaveResult saved = g.Saves.Capture("slot-1");
@@ -405,7 +417,7 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
                 Assert.That(g.Modules.Inventory.Commands!.Grant(HollowmereNarrative.OldCoin, 1).Admitted, Is.True);
             }
 
-            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == 208, "grants after the reload apply (fresh ids, not the ring's)", f => frames += f);
+            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == purse + 208, "grants after the reload apply (fresh ids, not the ring's)", f => frames += f);
             Debug.Log("[P1.7a] W-PLUG-08 frames=" + frames.ToString(CultureInfo.InvariantCulture) + " total=" + total.ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture) + "ms");
 #else
             Assert.Ignore("runs in the Editor only");
@@ -488,12 +500,12 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
                 yield break;
             }
 
-            // Every portal of a copy of the manifest needs narrative.fact.gate_open (P1.7b's PortalDefinition field lands
-            // in the baked ManifestPortal.conditionRef).
+            // Every portal of a copy of the manifest needs narrative.fact.heard_rumour (P1.7b's PortalDefinition field lands
+            // in the baked ManifestPortal.conditionRef); Maren's conversation in the village satisfies it.
             RegionManifest gated = Object.Instantiate(manifest!);
             for (int i = 0; i < gated.Portals.Count; i++)
             {
-                gated.Portals[i].conditionRef = "narrative.fact.gate_open";
+                gated.Portals[i].conditionRef = "narrative.fact.heard_rumour";
             }
 
             Game g = Boot(gated);
@@ -506,14 +518,11 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
             Assert.That(g.World.World.Worlds.LastRefusalCode, Is.EqualTo(WorldRefusalCodes.TravelConditionFailed));
             IReadOnlyList<ExplainRecord> explained = g.World.World.Worlds.RecentRefusals(1);
             Assert.That(explained.Count, Is.EqualTo(1));
-            StringAssert.Contains("narrative.fact.gate_open", explained[0].FailedCondition, "the explain record names the condition");
+            StringAssert.Contains("narrative.fact.heard_rumour", explained[0].FailedCondition, "the explain record names the condition");
             Assert.That(RegionOf(g, traveller), Is.EqualTo(AuthoringIds.StableKey(VillageId)), "the traveller stays home");
 
-            InventoryCommands inventory = g.Modules.Inventory.Commands!;
-            Assert.That(inventory.Grant(HollowmereNarrative.OldCoin, 3).Admitted, Is.True);
-            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == 3, "three old coins", f => frames += f);
-            Assert.That(inventory.Buy(HollowmereNarrative.Vendor, HollowmereNarrative.GateKey, 1).Admitted, Is.True);
-            yield return Until(() => Fact(g, "gate_open") == 1, "gate_open", f => frames += f);
+            yield return Converse(g, HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef, new[] { 2 }, "Maren's rumour", f => frames += f);
+            yield return Until(() => Fact(g, "heard_rumour") == 1, "heard_rumour", f => frames += f);
             Assert.That(g.World.World.Commands.Travel(traveller, MarshId).Admitted, Is.True);
             yield return Until(() => RegionOf(g, traveller) == AuthoringIds.StableKey(MarshId), "the travel passes once the condition holds", f => frames += f);
             Debug.Log("[P1.7a] portal condition frames=" + frames.ToString(CultureInfo.InvariantCulture) + " refusal=" + explained[0]);
@@ -631,29 +640,19 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
         private IEnumerator PlayToTheClapper(Game g, System.Action<int> count)
         {
             NarrativeWorld w = g.World;
-            DialogueRunner talk = g.Modules.Dialogue.Runner!;
             int questKey = Key(g, HollowmereNarrative.Quest);
             TargetId quest = w.Runtime.Index.TargetOf(NarrativeTargetKind.Quest, questKey);
             TargetId traveller = w.World.Focus;
-            ConversationStart started = w.Conversations.TryStart(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef);
-            Assert.That(started.Started, Is.True, started.Detail);
-            yield return Until(() => Presented(g).Active && Presented(g).Kind == "line", "Maren's first line", count);
-            Assert.That(talk.Advance(), Is.True);
-            yield return Until(() => Presented(g).Kind == "choice", "Maren's question", count);
-            Assert.That(talk.Choose(0), Is.True);
-            yield return Until(() => Presented(g).Text.StartsWith("Bless you", System.StringComparison.Ordinal), "Maren's thanks", count);
-            Assert.That(talk.Advance(), Is.True);
-            yield return Until(() => !Presented(g).Active, "the end of the conversation", count);
+            yield return Converse(g, HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef, new[] { 2 }, "Maren's rumour", count);
             yield return Until(() => QuestSlot(g, quest, QuestIds.Stage) == 1, "quest stage 1", count);
+            InventoryCommands inventory = g.Modules.Inventory.Commands!;
+            Assert.That(inventory.Grant(HollowmereNarrative.Lantern, 1).Admitted, Is.True);
+            yield return Until(() => Held(g, HollowmereNarrative.Lantern) == 1 && QuestSlot(g, quest, QuestIds.Stage) == 2, "a lantern and quest stage 2", count);
 
             Assert.That(w.World.Commands.Travel(traveller, MarshId).Admitted, Is.True);
             yield return Until(() => RegionOf(g, traveller) == AuthoringIds.StableKey(MarshId), "arrival in the marsh", count);
-            InventoryCommands inventory = g.Modules.Inventory.Commands!;
-            Assert.That(inventory.Grant(HollowmereNarrative.OldCoin, 3).Admitted, Is.True);
-            yield return Until(() => Held(g, HollowmereNarrative.OldCoin) == 3, "three old coins", count);
-            Assert.That(inventory.Buy(HollowmereNarrative.Vendor, HollowmereNarrative.GateKey, 1).Admitted, Is.True);
-            yield return Until(() => Held(g, HollowmereNarrative.GateKey) == 1 && Fact(g, "gate_open") == 1 && QuestSlot(g, quest, QuestIds.Stage) == 2,
-                "the gate key, gate_open and quest stage 2", count);
+            yield return Converse(g, HollowmereNarrative.HaleId, HollowmereNarrative.HaleGraphRef, System.Array.Empty<int>(), "Hale opens the gate", count);
+            yield return Until(() => Fact(g, "gate_open") == 1, "gate_open", count);
             TargetId gate = AuthoringIds.TargetIdFor(HollowmereNarrative.GateId);
             yield return StandBy(g, gate, count);
             var interact = new InteractionCommands(w.World);
@@ -662,6 +661,73 @@ namespace Hollowmere.P1_7a.PlayMode.Tests
                 "the gate unlocks", count);
             Assert.That(g.Modules.Inventory.WorldItems!.TryPickup(HollowmereNarrative.ClapperWorldItem), Is.True);
             yield return Until(() => Held(g, HollowmereNarrative.BellClapper) == 1, "the bell clapper", count);
+        }
+
+        /// <summary>Talks a conversation through: advances lines, picks the planned choices in order, until it ends.</summary>
+        private IEnumerator Converse(Game g, string npcId, string graphRef, int[] choices, string what, System.Action<int> count)
+        {
+            ConversationStart started = g.World.Conversations.TryStart(npcId, graphRef);
+            Assert.That(started.Started, Is.True, what + ": " + started.Detail);
+            DialogueRunner talk = g.Modules.Dialogue.Runner!;
+            var queue = new Queue<int>(choices);
+            for (int steps = 0; steps < 40; steps++)
+            {
+                yield return Until(() => !Presented(g).Active || Presented(g).CanAdvance || Presented(g).Kind == "choice", what + ": a line or a choice", count);
+                DialogueViewModel shown = Presented(g);
+                if (!shown.Active)
+                {
+                    break;
+                }
+
+                int node = shown.Node;
+                if (shown.Kind == "choice")
+                {
+                    Assert.That(queue.Count, Is.GreaterThan(0), what + ": an unplanned choice (" + shown.Text + ")");
+                    Assert.That(talk.Choose(queue.Dequeue()), Is.True, what + ": choose");
+                }
+                else
+                {
+                    Assert.That(talk.Advance(), Is.True, what + ": advance");
+                }
+
+                yield return Until(() => !Presented(g).Active || Presented(g).Node != node, what + ": the next node", count);
+            }
+
+            Assert.That(Presented(g).Active, Is.False, what + ": the conversation ended");
+        }
+
+        /// <summary>The player's starting purse of old coins once the boot settled (stable for ten frames).</summary>
+        private IEnumerator StartingPurse(Game g, System.Action<int> purse, System.Action<int> count)
+        {
+            int value = Held(g, HollowmereNarrative.OldCoin);
+            int stable = 0;
+            int frames = 0;
+            while (stable < 10 && frames < MaxFrames)
+            {
+                frames++;
+                yield return null;
+                int now = Held(g, HollowmereNarrative.OldCoin);
+                stable = now == value ? stable + 1 : 0;
+                value = now;
+            }
+
+            count(frames);
+            purse(value);
+        }
+
+        /// <summary>The authoring id of the placed entity named <paramref name="name"/> in the baked manifest.</summary>
+        private string EntityId(string name)
+        {
+            foreach (ManifestEntity entity in manifest!.Entities)
+            {
+                if (entity.name == name)
+                {
+                    return entity.authoringId;
+                }
+            }
+
+            Assert.Fail("no placed entity named " + name);
+            return string.Empty;
         }
 
         // ------------------------------------------------------------------ helpers

@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: CraftLantern
+  m_EditorClassIdentifier: 
+  authoringId: b8cb6153-9bda-4e3c-b8d8-a1db99e4c123
+  contentStamp: d9c17b631466c49dcd38873898f839d7f87f4631cd32c7eb0135489822fae94e
+  trigger: 12
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: 5943f467-f789-4796-8766-fb265a2f3cd2
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions:
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: ffdbcfebb268de301b2946345b0b0d5d, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 3
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 3
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: ffdbcfebb268de301b2946345b0b0d5d, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 2
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: fffb111048bcd5d6ea31bc57defa7c6d, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 13
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 'You twist a wick from dried herbs and fill the lamp with oil: a working
+      lantern.'
+    legacyTarget: {fileID: 0}
+  once: 0
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0

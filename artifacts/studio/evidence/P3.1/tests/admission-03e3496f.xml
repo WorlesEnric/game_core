@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.4227528">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="394" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.422753" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1536" name="Hollowmere.P3_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.1/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.358658" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1552982" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1537" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.346347" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1538" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.344925" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1539" name="EditMode" fullname="Hollowmere.P3_1.EditMode" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.343830" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1540" name="Tests" fullname="Hollowmere.P3_1.EditMode.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.342721" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1527" name="P31AdmissionInPlayMode" fullname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" classname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 10:52:37Z" end-time="2026-10-05 10:52:53Z" duration="16.021612" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1528" name="PressurePlateAdmittedIntoTheRunningGame" fullname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode.PressurePlateAdmittedIntoTheRunningGame" methodname="PressurePlateAdmittedIntoTheRunningGame" classname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" runstate="Runnable" seed="1992059770" result="Passed" start-time="2026-10-05 10:52:37Z" end-time="2026-10-05 10:52:53Z" duration="16.012562" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                  </properties>
+                  <output><![CDATA[[P3.1] admission from Play Mode: Pending () Waiting for Play Mode to stop.; capture 
+[P3.1] admission in Edit Mode: Re-entering Play Mode for checkpoint restore.; installed /tmp/gcstudio-p31-b8d6c65535/packages/com.hollowmere.mechanism.pressureplate
+[GameCore Studio] stage: resumed cs_01M459YHH3QGAA80B8035JQ4ER -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AGWJFF6VT9BMZ319FMW45 -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AS5MANWVMR0ZDQRNSKTPP -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[Hollowmere] admitted smoke pass: active root Running, catalog d82aed185b6d, round trip equal (slot hash 214db39c8488); 120 game frame(s) stepped and asserted [Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin, steps 120]
+[P3.1] admission after the restart: Admitted () Admitted and verified. after 122 editor frame(s); smoke polls 121, steps 120, Pending -> Passed; pass: active root Running, catalog d82aed185b6d, round trip equal (slot hash 214db39c8488); 120 game frame(s) stepped and asserted [Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin, steps 120]
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1533" name="P31PlayModeHooksTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-05 10:52:56Z" end-time="2026-10-05 10:53:14Z" duration="17.333587" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1534" name="AdmissionFromPlayModeCaptures" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.AdmissionFromPlayModeCaptures" methodname="AdmissionFromPlayModeCaptures" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Runnable" seed="1037292149" result="Passed" start-time="2026-10-05 10:52:53Z" end-time="2026-10-05 10:53:14Z" duration="21.022126" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] unverified admission from Play Mode: Refused (verdict_missing)
+[P3.1] admission capture adapter wrote admit-p31-bec21a65 (230710 bytes); the retry reused it
+[GameCore Studio] stage: resumed cs_01M459YHH3QGAA80B8035JQ4ER -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AGWJFF6VT9BMZ319FMW45 -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AS5MANWVMR0ZDQRNSKTPP -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

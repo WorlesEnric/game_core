@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: ShrinePostMiddle
+  m_EditorClassIdentifier: 
+  authoringId: f808476f-ed12-45d0-9992-83b67f1b28a5
+  entity: {fileID: 11400000, guid: 5378e6f60b1da6540b15c03420163020, type: 2}
+  kind: 4
+  initialState: off
+  prompts:
+  - state: off
+    text: Light the middle shrine lantern
+  - state: on
+    text: The middle lantern burns
+  condition: {fileID: 11400000, guid: 4aeac7929e86dc988a48242220701d88, type: 2}
+  conditionFact: {fileID: 0}
+  conditionOp: 1
+  conditionValue: 0
+  conditionRef: 
+  actions: {fileID: 0}
+  builtInAction: 
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 2.6
+  focusPriority: 2
+  focusHeight: 0.8
+  cue: sfx.ui.click
+  contentStamp: 

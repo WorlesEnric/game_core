@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8a661df4cd4291941c55a60b2bf239, type: 3}
+  m_Name: InnStock
+  m_EditorClassIdentifier: 
+  authoringId: 1cc0feea-96aa-409f-8f60-ca0d51065de5
+  contentStamp: 907198225e10b55c10689d6c8faa0fb2e26e5a397728e1c83b4d9237527f63b1
+  displayName: The Drowned Lantern
+  stock:
+  - item: {fileID: 11400000, guid: fffb111048bcd5d6ea31bc57defa7c6d, type: 2}
+    stock: 1
+    buyPrice: 4
+    sellPrice: 2
+    unlimited: 0
+  - item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    stock: 3
+    buyPrice: 2
+    sellPrice: 1
+    unlimited: 0
+  - item: {fileID: 11400000, guid: ffdbcfebb268de301b2946345b0b0d5d, type: 2}
+    stock: 1
+    buyPrice: 1
+    sellPrice: 0
+    unlimited: 1
+  paymentItem: {fileID: 11400000, guid: 05dd05be1474ee7c6bcfc41eeee1b1fc, type: 2}
+  stockSlots: 8
+  vendorEntityId: 

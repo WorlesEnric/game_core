@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: BenchNeedsHerbs
+  m_EditorClassIdentifier: 
+  authoringId: 7c998e58-e5f7-4e05-bd94-fc411c919245
+  contentStamp: e246a05a89375d3c889fd99ca9af08d84613e648f327de3f6e8ecf4b5cd44c0d
+  trigger: 12
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: 5943f467-f789-4796-8766-fb265a2f3cd2
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions:
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: ffdbcfebb268de301b2946345b0b0d5d, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 0
+    value: 0
+    legacySubject: {fileID: 0}
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 13
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: You have oil, but no dried herbs for a wick.
+    legacyTarget: {fileID: 0}
+  once: 0
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0

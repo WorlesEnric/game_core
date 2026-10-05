@@ -18,9 +18,9 @@ MonoBehaviour:
   startRegionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
   focusEntityId: 90f935f8-12d5-4278-b336-107b081e1dfd
   preloadNeighbours: 0
-  catalogFingerprint: 2141c797a101a08dff74450a39c563bb49330b0ddffa971910a0497ab3c138f0
+  catalogFingerprint: d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18
   catalogTypeName: Hollowmere.Generated.HollowmereCatalog
-  bakeReportHash: 217b3c7abd8606801308f0c52afff3859ad3efc5824737abf4d955cd647d710e
+  bakeReportHash: 1b273bf2c3afb98d290c4d6825f2e4dbf826df644c1b07186266e6ba7582ceac
   regions:
   - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
     name: Thornwick Village
@@ -96,6 +96,12 @@ MonoBehaviour:
     contentStamp: 7ab8a57185fab2735b12fb126a990e23a22ce1f0a3218e2e5d198b4066b28e98
     structuralStamp: 3c11f0416eed64384d875d67eabe98c5891bea346a4d7a76e42213b2ba5886e9
     variantCount: 2
+  - authoringId: 13778dd9-35bd-4e39-a90e-f001d6d1d5da
+    name: BramEntity
+    definition: {fileID: 11400000, guid: 26dcffb30564d3a8e87c681d023454ec, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
+    variantCount: 1
   - authoringId: 18779563-f74f-4223-947f-19f0502c5a63
     name: Lantern
     definition: {fileID: 11400000, guid: b2a9c9d308ca808c7968da017d5b089f, type: 2}
@@ -120,11 +126,29 @@ MonoBehaviour:
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
     structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
+  - authoringId: 2e52c6af-c201-47b6-925d-9f53530eb275
+    name: PickupHerbsEntity
+    definition: {fileID: 11400000, guid: de700c80a95ee55288b017010f4b2253, type: 2}
+    contentStamp: b08d9438fbb90d27c2c44ce5282899cef4dc06f4894fcc7498efa9d5d03a57c0
+    structuralStamp: f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83
+    variantCount: 1
   - authoringId: 2e855e96-41a6-4b39-b5a0-56319b43c989
     name: PipEntity
     definition: {fileID: 11400000, guid: 2970f8269becd59aea9228da6f3781cc, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
     structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
+    variantCount: 1
+  - authoringId: 37902cb4-be99-4267-90cb-c02bd295f8d1
+    name: DrownedSatchelEntity
+    definition: {fileID: 11400000, guid: b143fbbb94f6cdb40b16ca2d2a51fdc8, type: 2}
+    contentStamp: 05b3a5e55d65149907ae8337e84214e8f5ed2a83482eefcc77300d9693f47c64
+    structuralStamp: dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf
+    variantCount: 1
+  - authoringId: 3e5ad90c-f48f-43bc-aeeb-aa51360dc71d
+    name: ShrinePostEastEntity
+    definition: {fileID: 11400000, guid: 1ab4d95d6ffe8caa29ad5a25a9ca9e74, type: 2}
+    contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
     name: Crate
@@ -132,11 +156,35 @@ MonoBehaviour:
     contentStamp: 2adc9cde53c408f520951781ead083f132e2c76e1f5ff51ade48fd3b659a0bb3
     structuralStamp: db635bfeff6cb63d8bb808a36b810861aacba6f27697ac514ecbb2c433286746
     variantCount: 2
+  - authoringId: 5ffeae11-f167-46ca-86d4-6d1b37687905
+    name: ShrinePostWestEntity
+    definition: {fileID: 11400000, guid: eb53f7306dbe96774946e2d5f1495fe1, type: 2}
+    contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
+    variantCount: 1
   - authoringId: 68d2519f-2a40-439b-be2d-63d16581cd06
     name: HaleEntity
     definition: {fileID: 11400000, guid: 8925e4c338fef6c91879d6e770181bdf, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
     structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
+    variantCount: 1
+  - authoringId: 81ae7773-9697-41d7-b790-2d0346b8fd58
+    name: PickupMarshHerbsEntity
+    definition: {fileID: 11400000, guid: eaa18d27dcc6a6049a51b4a3b610b6a3, type: 2}
+    contentStamp: b08d9438fbb90d27c2c44ce5282899cef4dc06f4894fcc7498efa9d5d03a57c0
+    structuralStamp: f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83
+    variantCount: 1
+  - authoringId: 8f7c3953-8560-4072-8754-be36e8a94b06
+    name: SinkholeGlintEntity
+    definition: {fileID: 11400000, guid: 09e506b0ec5c07545bc522b6dc83a362, type: 2}
+    contentStamp: 43000f88eb00d2f19b24b406271d7111f35285d060f2cfc81b2bd59aa0686600
+    structuralStamp: 30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5
+    variantCount: 1
+  - authoringId: 9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2
+    name: ShrinePostMiddleEntity
+    definition: {fileID: 11400000, guid: 5378e6f60b1da6540b15c03420163020, type: 2}
+    contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: acefbaad-340d-466f-9d66-214afb15646f
     name: Stone
@@ -156,11 +204,29 @@ MonoBehaviour:
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
     structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
+  - authoringId: b341c519-f6b4-42b7-99ff-649bd5fb071f
+    name: OldPuntEntity
+    definition: {fileID: 11400000, guid: 28421afb24106a6bf809f380e5edce51, type: 2}
+    contentStamp: 1f36ff042b51f88ded8b568c24f7a499b98a999caabc9b9130b8d1b956c1ab50
+    structuralStamp: 3ee5c7efd8e81dce49796a4ee565054eebc52b8e4b9b07e3624dc0ee0a3cde92
+    variantCount: 1
   - authoringId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
     name: Reed
     definition: {fileID: 11400000, guid: 772847e89f0fd59f59429d20ade552e8, type: 2}
     contentStamp: bc8b0ed35828c5586db8b83e229a6b12fad7bc3a93a4ee6aca9e577fc428c371
     structuralStamp: 6774e23be712d4e00df62aece426e5632dc6fd7dd882bb4f30f7a93e19ff9776
+    variantCount: 1
+  - authoringId: b6f71bc7-2c1f-4165-8f25-a249cfa316e5
+    name: TinkersBenchEntity
+    definition: {fileID: 11400000, guid: a6be78279957368ee9ceeb01f2cec8e0, type: 2}
+    contentStamp: 8c18bd3f4b3bc578a3201c636e5c22054ba1ecea1ce1f98476529e9466359226
+    structuralStamp: dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf
+    variantCount: 1
+  - authoringId: bdecb271-eb2c-4fd8-94d5-c47c158b9a6d
+    name: PickupCoinsEntity
+    definition: {fileID: 11400000, guid: e070a9213e4093001b7fab85bdaa52e4, type: 2}
+    contentStamp: ff78ae55a05731e45f42f78efc825df4f97c58ac7df1290b105d42a4c6f1d892
+    structuralStamp: 30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5
     variantCount: 1
   - authoringId: ce503024-4b28-4194-8865-8eec9dd6d8a7
     name: MarenEntity
@@ -173,6 +239,24 @@ MonoBehaviour:
     definition: {fileID: 11400000, guid: 6823d6f31a6524606825fca1a7107720, type: 2}
     contentStamp: d8eb40a3f2087b5cb0a07f1fc4542553ed0d72f83d637d933015e5f00e19bb80
     structuralStamp: 339361070744b5918a91e3abb69e38fb98f3d915bcfd035462c2da41d4dd2eb8
+    variantCount: 1
+  - authoringId: e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c
+    name: PickupClapperEntity
+    definition: {fileID: 11400000, guid: dd3e17cd1cd37adecbfdcd5193978e4c, type: 2}
+    contentStamp: c5c219cd306e27f694f578a78b0852e27a8e23449598172336fd4f0480312593
+    structuralStamp: 0cebbf98b5a343ffe58ac8300e70d6dbaf06a6c0fa8ecbcfe632b0243c0ea4a3
+    variantCount: 1
+  - authoringId: f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b
+    name: PickupLanternEntity
+    definition: {fileID: 11400000, guid: 60ae29846299723c78e73baae1552e75, type: 2}
+    contentStamp: f2aad259e1fa9111791c06ee6b5441a9f643611222b03aee816f8b76668ed4c0
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
+    variantCount: 1
+  - authoringId: fafbedd0-6061-4883-93da-4c2a1e6b1a21
+    name: PickupOilEntity
+    definition: {fileID: 11400000, guid: 064bebcc159e3c45a9519998e2926a7e, type: 2}
+    contentStamp: 41dc328f79b899191fb105814d803dfdbddc21ddca1a0bceae13221478df8d40
+    structuralStamp: e787116304bfe70a8e6e1ac7862f8ea9e8a1ba026af018cf12b2680a4bc16ce3
     variantCount: 1
   entities:
   - authoringId: 0e714e11-b708-4dfa-a7d5-5ddb99f8724b
@@ -188,6 +272,36 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: 2825db71-11a1-4155-b1db-9e7734111d9e
+    name: Bram
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 13778dd9-35bd-4e39-a90e-f001d6d1d5da
+    x: 11000
+    y: 0
+    z: -13000
+    yaw: 4712
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides:
+    - field: tint
+      value: '#8e3d2f'
+  - authoringId: 3eff1dd9-d229-4733-aad4-d5cc22c0fd96
+    name: Coins (square)
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: bdecb271-eb2c-4fd8-94d5-c47c158b9a6d
+    x: 4000
+    y: 0
+    z: -3000
+    yaw: 0
+    variant: 0
+    scaleMilli: 350
+    visible: 1
+    alive: 1
+    overrides:
+    - field: tint
+      value: '#d6b03a'
   - authoringId: 508f7d78-7b44-42e8-8028-be4b2c9ee4b0
     name: Pip
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -200,7 +314,9 @@ MonoBehaviour:
     scaleMilli: 1000
     visible: 1
     alive: 1
-    overrides: []
+    overrides:
+    - field: tint
+      value: '#d8a23f'
   - authoringId: 5536e67e-9df5-48d1-8e4e-dde2fac37d97
     name: Crate 2
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -224,6 +340,19 @@ MonoBehaviour:
     yaw: 0
     variant: 0
     scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 5943f467-f789-4796-8766-fb265a2f3cd2
+    name: Tinker's Bench
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: b6f71bc7-2c1f-4165-8f25-a249cfa316e5
+    x: 11000
+    y: 0
+    z: -17500
+    yaw: 1571
+    variant: 0
+    scaleMilli: 900
     visible: 1
     alive: 1
     overrides: []
@@ -294,6 +423,19 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: 837b3fc0-a424-4411-bc69-7ac040f8def0
+    name: Lantern (barn)
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b
+    x: 8000
+    y: 0
+    z: 7000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: 90f935f8-12d5-4278-b336-107b081e1dfd
     name: Traveller
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -304,6 +446,19 @@ MonoBehaviour:
     yaw: 0
     variant: 0
     scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: bcc77f89-ca7d-4197-8c86-a6efe61aba9a
+    name: Marsh Herbs (garden)
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 2e52c6af-c201-47b6-925d-9f53530eb275
+    x: -9000
+    y: 0
+    z: 15000
+    yaw: 0
+    variant: 0
+    scaleMilli: 600
     visible: 1
     alive: 1
     overrides: []
@@ -332,7 +487,9 @@ MonoBehaviour:
     scaleMilli: 1000
     visible: 1
     alive: 1
-    overrides: []
+    overrides:
+    - field: tint
+      value: '#6f9a76'
   - authoringId: e0981979-d2fd-4cbc-8261-2e2f83eab806
     name: Lantern West
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -367,19 +524,6 @@ MonoBehaviour:
     y: 0
     z: -5663
     yaw: 5655
-    variant: 0
-    scaleMilli: 1000
-    visible: 1
-    alive: 1
-    overrides: []
-  - authoringId: feae7fb3-57f9-4711-8549-04fa8f161ac2
-    name: Odd
-    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
-    definitionId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
-    x: -8000
-    y: 0
-    z: 6000
-    yaw: 3142
     variant: 0
     scaleMilli: 1000
     visible: 1
@@ -449,7 +593,9 @@ MonoBehaviour:
     scaleMilli: 1000
     visible: 1
     alive: 1
-    overrides: []
+    overrides:
+    - field: tint
+      value: '#a9c9ea'
   - authoringId: aef0bdae-1d73-4283-ae97-8dce12658586
     name: Crate 1
     regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
@@ -502,6 +648,19 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: 0131f58d-bed5-4484-97f0-8e2ee2220399
+    name: Shrine Lantern East
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 3e5ad90c-f48f-43bc-aeeb-aa51360dc71d
+    x: 213000
+    y: 0
+    z: 4000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1400
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: 041817b7-8aaf-4a0c-84f5-c2826612563a
     name: Reed 5
     regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
@@ -525,6 +684,19 @@ MonoBehaviour:
     yaw: 0
     variant: 0
     scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 1cc6ccc5-4575-41ac-8bf3-1446f594d70a
+    name: Oil Flask (marsh)
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: fafbedd0-6061-4883-93da-4c2a1e6b1a21
+    x: 190000
+    y: 0
+    z: -6000
+    yaw: 0
+    variant: 0
+    scaleMilli: 450
     visible: 1
     alive: 1
     overrides: []
@@ -558,12 +730,27 @@ MonoBehaviour:
     name: Hale
     regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
     definitionId: 68d2519f-2a40-439b-be2d-63d16581cd06
-    x: 196000
+    x: 167500
     y: 0
-    z: 4000
+    z: 4500
     yaw: 4712
     variant: 0
     scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides:
+    - field: tint
+      value: '#52668c'
+  - authoringId: 435ac6cc-d279-4249-891c-fa754873ee93
+    name: Bell Clapper
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c
+    x: 194000
+    y: 0
+    z: 9000
+    yaw: 0
+    variant: 0
+    scaleMilli: 300
     visible: 1
     alive: 1
     overrides: []
@@ -621,6 +808,73 @@ MonoBehaviour:
     overrides:
     - field: visible
       value: false
+  - authoringId: 83d50830-abde-42e5-abee-45629e38d17c
+    name: Old Punt
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b341c519-f6b4-42b7-99ff-649bd5fb071f
+    x: 228500
+    y: 0
+    z: 27000
+    yaw: 785
+    variant: 0
+    scaleMilli: 700
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: a0ec0302-146b-494d-9ef5-95812f441000
+    name: Marsh Herbs (marsh)
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 81ae7773-9697-41d7-b790-2d0346b8fd58
+    x: 204000
+    y: 0
+    z: -14000
+    yaw: 0
+    variant: 0
+    scaleMilli: 600
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: a33d46a3-4ccf-4e1c-b837-781e246e232a
+    name: Shrine Lantern Middle
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2
+    x: 206000
+    y: 0
+    z: 2000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1400
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: a8255407-3f1c-4aa5-b7e7-e6141e6d5534
+    name: Odd
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
+    x: 221000
+    y: 0
+    z: 20000
+    yaw: 785
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides:
+    - field: tint
+      value: '#6e5b44'
+  - authoringId: d69435d0-4ca3-411a-afd0-20cb86c8c24d
+    name: Drowned Satchel
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 37902cb4-be99-4267-90cb-c02bd295f8d1
+    x: 186000
+    y: 0
+    z: -16000
+    yaw: 349
+    variant: 0
+    scaleMilli: 450
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: db488917-7d9b-49d7-827d-b42b3712aa01
     name: Reed 3
     regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
@@ -644,6 +898,32 @@ MonoBehaviour:
     yaw: 0
     variant: 0
     scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e37866ef-7b93-4781-a9e6-4448f1d3c30a
+    name: Shrine Lantern West
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 5ffeae11-f167-46ca-86d4-6d1b37687905
+    x: 199000
+    y: 0
+    z: 4000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1400
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e7431036-f8e5-4cfd-bd13-256c8014b254
+    name: Glinting Sinkhole
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 8f7c3953-8560-4072-8754-be36e8a94b06
+    x: 216000
+    y: 0
+    z: -12000
+    yaw: 0
+    variant: 0
+    scaleMilli: 500
     visible: 1
     alive: 1
     overrides: []

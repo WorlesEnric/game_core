@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYV56YDZ60R2HCT9C71EG",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Then go with care. The marsh keeps what it takes.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_go.wav",
+        "artifact": {
+          "artifact": "sha256:eb1576aafb278efb1609e7130e55fa780923871f2e5b1cdd70b6d1e28826ad98"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "eb1576aafb278efb1609e7130e55fa780923871f2e5b1cdd70b6d1e28826ad98",
+      "name": "Maren_go.wav",
+      "mediaType": "audio/wav",
+      "bytes": 153644,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_go.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-5ad81d1545019570a90eb9a9f79a24a7-8300000-0",
+                "assetGuid": "5ad81d1545019570a90eb9a9f79a24a7",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_go.wav"
+              },
+              "stamp": "sha256:eb1576aafb278efb1609e7130e55fa780923871f2e5b1cdd70b6d1e28826ad98"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:31.219Z",
+    "applied": "2026-10-05T06:10:31.345Z"
+  }
+}

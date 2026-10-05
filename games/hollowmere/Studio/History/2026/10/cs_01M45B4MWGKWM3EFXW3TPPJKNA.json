@@ -1,0 +1,109 @@
+{
+  "id": "cs_01M45B4MWGKWM3EFXW3TPPJKNA",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:media.portraits-6] Show the 6 generated speaker portraits in the dialogue panel",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "portraits",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+        "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+        "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+        "path": "Assets/Hollowmere/Game/HollowmereDirector.asset",
+        "scope": "Definition",
+        "stamp": "sha256:17435fa0ad1bd65657eaa37e45f2f106f63343bff548ed3751380caf96d86de5"
+      },
+      "args": {
+        "fields": {
+          "portraits": [
+            {
+              "speaker": "Maren",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Maren.png"
+            },
+            {
+              "speaker": "Hale",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Hale.png"
+            },
+            {
+              "speaker": "Odd",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Odd.png"
+            },
+            {
+              "speaker": "Pip",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Pip.png"
+            },
+            {
+              "speaker": "Belfry Echo",
+              "portrait": "Assets/Hollowmere/Media/Portraits/BelfryEcho.png"
+            },
+            {
+              "speaker": "Bram",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Bram.png"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "portraits",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "args": {
+                "fields": {
+                  "portraits": [
+                    {
+                      "speaker": "Maren",
+                      "portrait": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-7efe3ca91a22ed72c835860d19a91759-2800000-0",
+                        "assetGuid": "7efe3ca91a22ed72c835860d19a91759",
+                        "path": "Assets/Hollowmere/Media/Portraits/Maren.png"
+                      }
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "stamp": "sha256:ea6854e976314c26a18bdb2f61c0b50d550970bc1844f3c908d662e88204fe8c"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:41.406Z",
+    "applied": "2026-10-05T06:13:41.479Z"
+  }
+}

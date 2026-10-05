@@ -1,0 +1,133 @@
+{
+  "id": "cs_01M45CW8YW55FTT9VP462PSNNP",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.item-tuning] Lantern stacks to two (a spare is possible) and costs four coins; the coin is shown as Coin",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "lantern",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e3206d52eb9cd8ef6cf9ac6c6db2c8e44ccb27ad68bd71ce0615d0427022f411"
+      },
+      "args": {
+        "fields": {
+          "maxStack": 2,
+          "price": 4
+        }
+      }
+    },
+    {
+      "opId": "coin",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+        "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+        "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+        "path": "Assets/Hollowmere/Items/OldCoin.asset",
+        "scope": "Definition",
+        "stamp": "sha256:05b791a17eb3efa70404a6a4630ba11ef29e08f1921d1fd7de8bb2ea24fa1d22"
+      },
+      "args": {
+        "fields": {
+          "displayName": "Coin"
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "lantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              },
+              "args": {
+                "fields": {
+                  "maxStack": 1,
+                  "price": 12
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              },
+              "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "coin",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              },
+              "args": {
+                "fields": {
+                  "displayName": "Old Coin"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              },
+              "stamp": "sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:04.214Z",
+    "applied": "2026-10-05T06:44:04.230Z"
+  }
+}

@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: ShrineLit
+  m_EditorClassIdentifier: 
+  authoringId: df8a9fac-e5ca-438c-8871-6911d257ce67
+  contentStamp: 760fadc6c0e67600ccbc4bf06d733a08c15c8874c6e0e6abe596d4c62c281447
+  trigger: 1
+  triggerFact: {fileID: 11400000, guid: 8005deb973a85103fa0ea8e88018bdb5, type: 2}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: 
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions:
+  - kind: 0
+    fact: {fileID: 11400000, guid: e3aebab10bb56eb48ae9a70ada17ff6e, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  - kind: 0
+    fact: {fileID: 11400000, guid: c80f5e49569ea648bb40cb478cb3f5a9, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 0
+    fact: {fileID: 11400000, guid: 05ecf3f2a97fc647ab1aab76f0594786, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 13
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: The sunken shrine flares green-gold. Somewhere across the water, something
+      stirs.
+    legacyTarget: {fileID: 0}
+  - kind: 9
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: stinger.bell
+    legacyTarget: {fileID: 0}
+  once: 1
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0

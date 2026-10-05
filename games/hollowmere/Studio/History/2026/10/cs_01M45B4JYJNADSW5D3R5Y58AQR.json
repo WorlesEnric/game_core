@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B4JYJNADSW5D3R5Y58AQR",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: There you are. Keep it dry.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav",
+        "artifact": {
+          "artifact": "sha256:b58e7ba8dd8d98ec64ebb7b7a878a496f055e14d99495593c0bcfd301bba53b9"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "b58e7ba8dd8d98ec64ebb7b7a878a496f055e14d99495593c0bcfd301bba53b9",
+      "name": "Bram_thanks.wav",
+      "mediaType": "audio/wav",
+      "bytes": 76844,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7c4fab1eb2876608a9f0702064b57a7a-8300000-0",
+                "assetGuid": "7c4fab1eb2876608a9f0702064b57a7a",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav"
+              },
+              "stamp": "sha256:b58e7ba8dd8d98ec64ebb7b7a878a496f055e14d99495593c0bcfd301bba53b9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:39.429Z",
+    "applied": "2026-10-05T06:13:39.537Z"
+  }
+}

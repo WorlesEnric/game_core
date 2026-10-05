@@ -118,6 +118,9 @@ namespace Hollowmere.GameplayAuthoring
                 Array.Empty<Vector3>(), 1.2f, "voice.echo", "dialogue.belfry_echo"),
         };
 
+        /// <summary>Once this asset exists (P3.1 AuthorAll), the P1.3 content is no longer re-applied here.</summary>
+        public const string P31SupersededMarker = "Assets/Hollowmere/Game/HollowmereDirector.asset";
+
         [MenuItem("Hollowmere/Author P1.3 Gameplay Content And Bake")]
         public static void AuthorMenu()
         {
@@ -136,6 +139,12 @@ namespace Hollowmere.GameplayAuthoring
         public static BakeResult AuthorAndBake()
         {
             WorldDefinition world = HollowmereWorldAuthoring.EnsureWorld();
+            if (AssetDatabase.LoadMainAssetAtPath(P31SupersededMarker) != null)
+            {
+                // P3.1 owns the content now (Authoring/Editor, journaled change sets): only re-bake.
+                return Entry.Bake(world, BakePaths.ConventionFor(HollowmereWorldAuthoring.WorldPath), false);
+            }
+
             WorldTools.EnsureFolder(PlayerRoot);
             WorldTools.EnsureFolder(NpcRoot + "/Prefabs");
             WorldTools.EnsureFolder(NpcRoot + "/Definitions");

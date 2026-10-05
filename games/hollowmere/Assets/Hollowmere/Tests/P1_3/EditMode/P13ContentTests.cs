@@ -26,7 +26,8 @@ namespace Hollowmere.P1_3.EditMode.Tests
     [TestFixture]
     public sealed class P13ContentTests
     {
-        private static readonly string[] NpcNames = { "Maren", "Odd", "Pip", "Hale", "Belfry Echo" };
+        // P3.1 added Bram the innkeeper (and moved Odd to the marsh jetty, Hale to the causeway gate).
+        private static readonly string[] NpcNames = { "Maren", "Odd", "Pip", "Hale", "Belfry Echo", "Bram" };
 
         [Test, Order(0)]
         public void AuthorAndBake_AddsThePlayerNpcsAndInteractables()
@@ -67,7 +68,7 @@ namespace Hollowmere.P1_3.EditMode.Tests
             Assert.That(patrolling, Is.GreaterThanOrEqualTo(1), "at least one NPC patrols");
 
             InteractionRoster interactions = AssetDatabase.LoadAssetAtPath<InteractionRoster>(HollowmereGameplayAuthoring.InteractionRosterPath);
-            Assert.That(interactions.Interactables.Count, Is.EqualTo(3));
+            Assert.That(interactions.Interactables.Count, Is.GreaterThanOrEqualTo(3), "P1.3's well, gate and bell, plus P3.1's pickups and story interactables");
             Assert.That(EntityNamed(manifest, HollowmereGameplayAuthoring.WellName), Is.Not.Null);
             Assert.That(EntityNamed(manifest, HollowmereGameplayAuthoring.GateName), Is.Not.Null);
             Assert.That(EntityNamed(manifest, HollowmereGameplayAuthoring.BellName), Is.Not.Null);

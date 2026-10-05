@@ -1,0 +1,352 @@
+{
+  "id": "cs_01M45CWVV0RANZX8Q4V0HRJ6NS",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.graph.BelfryEcho] Write the conversation of BelfryEcho",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+        "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+        "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset",
+        "scope": "Definition",
+        "stamp": "sha256:39b70d5bf806ad618a52c1b70fcb700e4c88254f97af6c352158cb965e6921c3"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Belfry Echo",
+          "speakerEntityId": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/BellRung.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/EndingReached.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "...who comes... to the drowned bell...",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "...silence... yes... rest now...",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Will you wake it?",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "I will ring it.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Let it sleep. Let the marsh keep its silence.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "...then find its tongue... the clapper the water stole...",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/SilenceBell.asset",
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "...silence... yes... rest... the marsh will forget us...",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The toll... and the shrine's light... I can see the way out. I am free.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The toll... it hurts... but the village will sleep. I will stay with the bell.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Else",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 2,
+              "port": "Next",
+              "option": 0,
+              "to": 4
+            },
+            {
+              "from": 4,
+              "port": "Option",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 4,
+              "port": "Option",
+              "option": 1,
+              "to": 6
+            },
+            {
+              "from": 6,
+              "port": "Next",
+              "option": 0,
+              "to": 7
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 8
+            },
+            {
+              "from": 8,
+              "port": "Next",
+              "option": 0,
+              "to": 9
+            },
+            {
+              "from": 8,
+              "port": "Else",
+              "option": 0,
+              "to": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+                "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+                "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Belfry Echo",
+                  "speakerEntityId": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+                  "entry": 0,
+                  "nodes": [
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+                        "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+                        "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+                        "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "...silent... the bell is silent...",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "f8f82ca0-fc26-440b-87a3-75b5f13b721d",
+                        "global": "GlobalObjectId_V1-3-9ff24c44b07c174059bcd8a609b1f7ff-11400000-0",
+                        "assetGuid": "9ff24c44b07c174059bcd8a609b1f7ff",
+                        "path": "Assets/Hollowmere/Rules/Actions/EchoFreed.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The toll... I hear it... I am free.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 0,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 2,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 3
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+                "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+                "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset"
+              },
+              "stamp": "sha256:86ac5d83435a0167de0194a2ab0128b7205c134b09787415db6890c16e952356"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:23.570Z",
+    "applied": "2026-10-05T06:44:23.592Z"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M458MHJPB91RBMTRQHWWVMQR",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: Painterly portrait of Maren, a kind middle-aged village healer with grey-streaked auburn hair tied back, sage-green shawl, herbs at her collar, warm candlelight, dark muted background, storybook fantasy style, head and shoulders",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Portraits/Maren.png",
+        "artifact": {
+          "artifact": "sha256:ec10d63b73cadca012f7703863e497d00a52fca6879f1d40c09c5eca71beb7d1"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "ec10d63b73cadca012f7703863e497d00a52fca6879f1d40c09c5eca71beb7d1",
+      "name": "Maren.png",
+      "mediaType": "image/png",
+      "bytes": 128301,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Portraits/Maren.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7efe3ca91a22ed72c835860d19a91759-2800000-0",
+                "assetGuid": "7efe3ca91a22ed72c835860d19a91759",
+                "path": "Assets/Hollowmere/Media/Portraits/Maren.png"
+              },
+              "stamp": "sha256:ec10d63b73cadca012f7703863e497d00a52fca6879f1d40c09c5eca71beb7d1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:29:56.567Z",
+    "applied": "2026-10-05T05:29:56.814Z"
+  }
+}

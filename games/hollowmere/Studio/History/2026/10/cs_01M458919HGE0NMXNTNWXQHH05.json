@@ -1,0 +1,410 @@
+{
+  "id": "cs_01M458919HGE0NMXNTNWXQHH05",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.place-marsh] Place the pickups and story interactables of BlackmereMarsh",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "p0",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "e97671bc-e580-4b81-ae77-aff1072836b3",
+        "global": "GlobalObjectId_V1-3-655184795d73cfa20b738cb7cf0ef038-11400000-0",
+        "assetGuid": "655184795d73cfa20b738cb7cf0ef038",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset",
+        "scope": "Definition",
+        "stamp": "sha256:80b42f92b3d4b8750b462dfdabc343d5aa82b6ec0a2c213f7a33756741f1851d"
+      },
+      "args": {
+        "location": [
+          194.0,
+          0.0,
+          9.0
+        ],
+        "yaw": 0.0,
+        "name": "Bell Clapper"
+      }
+    },
+    {
+      "opId": "p1",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "5af6c283-8027-4a08-bec0-2b4b8781109b",
+        "global": "GlobalObjectId_V1-3-c2f529c47c003e5f28a993ee9a2b589e-11400000-0",
+        "assetGuid": "c2f529c47c003e5f28a993ee9a2b589e",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset",
+        "scope": "Definition",
+        "stamp": "sha256:58ca783c5c6a9074931aece170c85667eb9fe8fe627f0524bb16a1afc52a6f50"
+      },
+      "args": {
+        "location": [
+          190.0,
+          0.0,
+          -6.0
+        ],
+        "yaw": 0.0,
+        "name": "Oil Flask (marsh)"
+      }
+    },
+    {
+      "opId": "p2",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "177dcb07-bfa2-4665-b805-1db30089e2df",
+        "global": "GlobalObjectId_V1-3-0b7739a99232cd33ab5a52482a522da8-11400000-0",
+        "assetGuid": "0b7739a99232cd33ab5a52482a522da8",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset",
+        "scope": "Definition",
+        "stamp": "sha256:20e00b7c21311a348c007a74572c39d04d09c52a9a73cf60ba74a864b438888a"
+      },
+      "args": {
+        "location": [
+          204.0,
+          0.0,
+          -14.0
+        ],
+        "yaw": 0.0,
+        "name": "Marsh Herbs (marsh)"
+      }
+    },
+    {
+      "opId": "f3",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "cf7d3515-d05e-48f7-8921-945dda810fba",
+        "global": "GlobalObjectId_V1-3-c8fbcfeed33a83595abdfec9c650e8bc-11400000-0",
+        "assetGuid": "c8fbcfeed33a83595abdfec9c650e8bc",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset",
+        "scope": "Definition",
+        "stamp": "sha256:20e2f9706a8947705b5db6ffec6b04e2dd41215579225947609d861c91ae69c6"
+      },
+      "args": {
+        "location": [
+          199.0,
+          0.0,
+          4.0
+        ],
+        "yaw": 0.0,
+        "name": "Shrine Lantern West"
+      }
+    },
+    {
+      "opId": "f4",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "f808476f-ed12-45d0-9992-83b67f1b28a5",
+        "global": "GlobalObjectId_V1-3-7b8d4a0814ef9376e89bff124f836dfd-11400000-0",
+        "assetGuid": "7b8d4a0814ef9376e89bff124f836dfd",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a798f91c35f4d34f3039ed5534be54f4ec4e7c5e57d1e5acbbb8ce33ca22a4e2"
+      },
+      "args": {
+        "location": [
+          206.0,
+          0.0,
+          2.0
+        ],
+        "yaw": 0.0,
+        "name": "Shrine Lantern Middle"
+      }
+    },
+    {
+      "opId": "f5",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1af26fb0-16c3-40a3-889f-05cd60067ede",
+        "global": "GlobalObjectId_V1-3-0024c16fca9775f9c8320dc14e30a585-11400000-0",
+        "assetGuid": "0024c16fca9775f9c8320dc14e30a585",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset",
+        "scope": "Definition",
+        "stamp": "sha256:03df85c87a59968942e2e2c1729fe286442444609f2a3b82c1b7c11e83d6498b"
+      },
+      "args": {
+        "location": [
+          213.0,
+          0.0,
+          4.0
+        ],
+        "yaw": 0.0,
+        "name": "Shrine Lantern East"
+      }
+    },
+    {
+      "opId": "f6",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "22e6de43-8e2f-4575-a51e-2cac12aeb19d",
+        "global": "GlobalObjectId_V1-3-41a15c90e081a417f87ff1b321bbec26-11400000-0",
+        "assetGuid": "41a15c90e081a417f87ff1b321bbec26",
+        "path": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e8df152e531fb31b90058707867f3679ddcc8c3444a553760d4475affbc755d9"
+      },
+      "args": {
+        "location": [
+          228.5,
+          0.0,
+          27.0
+        ],
+        "yaw": 45.0,
+        "name": "Old Punt"
+      }
+    },
+    {
+      "opId": "f7",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "d7af6ffd-bffa-4c65-92cf-1191d2220b9f",
+        "global": "GlobalObjectId_V1-3-9fcb677c0a986a09681f65190e6bc10e-11400000-0",
+        "assetGuid": "9fcb677c0a986a09681f65190e6bc10e",
+        "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset",
+        "scope": "Definition",
+        "stamp": "sha256:2c2cccfa5fac7f9d4f037c9145a81ae1bbbbeebb3942e7830e4b9d2ebf718aeb"
+      },
+      "args": {
+        "location": [
+          216.0,
+          0.0,
+          -12.0
+        ],
+        "yaw": 0.0,
+        "name": "Glinting Sinkhole"
+      }
+    },
+    {
+      "opId": "f8",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "38ed1b55-d39b-4146-add9-5535f09bb4cf",
+        "global": "GlobalObjectId_V1-3-8d57185a420adabf4af9e35b3255bc94-11400000-0",
+        "assetGuid": "8d57185a420adabf4af9e35b3255bc94",
+        "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset",
+        "scope": "Definition",
+        "stamp": "sha256:5beff112542ea8c8d44a66920e72f20e703ef55253efe3bc5488a514f7abe122"
+      },
+      "args": {
+        "location": [
+          186.0,
+          0.0,
+          -16.0
+        ],
+        "yaw": 20.0,
+        "name": "Drowned Satchel"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "p0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e97671bc-e580-4b81-ae77-aff1072836b3",
+                "global": "GlobalObjectId_V1-3-655184795d73cfa20b738cb7cf0ef038-11400000-0",
+                "assetGuid": "655184795d73cfa20b738cb7cf0ef038",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset"
+              },
+              "stamp": "sha256:80b42f92b3d4b8750b462dfdabc343d5aa82b6ec0a2c213f7a33756741f1851d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "p1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5af6c283-8027-4a08-bec0-2b4b8781109b",
+                "global": "GlobalObjectId_V1-3-c2f529c47c003e5f28a993ee9a2b589e-11400000-0",
+                "assetGuid": "c2f529c47c003e5f28a993ee9a2b589e",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset"
+              },
+              "stamp": "sha256:58ca783c5c6a9074931aece170c85667eb9fe8fe627f0524bb16a1afc52a6f50"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "p2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "177dcb07-bfa2-4665-b805-1db30089e2df",
+                "global": "GlobalObjectId_V1-3-0b7739a99232cd33ab5a52482a522da8-11400000-0",
+                "assetGuid": "0b7739a99232cd33ab5a52482a522da8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset"
+              },
+              "stamp": "sha256:20e00b7c21311a348c007a74572c39d04d09c52a9a73cf60ba74a864b438888a"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cf7d3515-d05e-48f7-8921-945dda810fba",
+                "global": "GlobalObjectId_V1-3-c8fbcfeed33a83595abdfec9c650e8bc-11400000-0",
+                "assetGuid": "c8fbcfeed33a83595abdfec9c650e8bc",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset"
+              },
+              "stamp": "sha256:20e2f9706a8947705b5db6ffec6b04e2dd41215579225947609d861c91ae69c6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "f808476f-ed12-45d0-9992-83b67f1b28a5",
+                "global": "GlobalObjectId_V1-3-7b8d4a0814ef9376e89bff124f836dfd-11400000-0",
+                "assetGuid": "7b8d4a0814ef9376e89bff124f836dfd",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset"
+              },
+              "stamp": "sha256:a798f91c35f4d34f3039ed5534be54f4ec4e7c5e57d1e5acbbb8ce33ca22a4e2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1af26fb0-16c3-40a3-889f-05cd60067ede",
+                "global": "GlobalObjectId_V1-3-0024c16fca9775f9c8320dc14e30a585-11400000-0",
+                "assetGuid": "0024c16fca9775f9c8320dc14e30a585",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset"
+              },
+              "stamp": "sha256:03df85c87a59968942e2e2c1729fe286442444609f2a3b82c1b7c11e83d6498b"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "22e6de43-8e2f-4575-a51e-2cac12aeb19d",
+                "global": "GlobalObjectId_V1-3-41a15c90e081a417f87ff1b321bbec26-11400000-0",
+                "assetGuid": "41a15c90e081a417f87ff1b321bbec26",
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset"
+              },
+              "stamp": "sha256:e8df152e531fb31b90058707867f3679ddcc8c3444a553760d4475affbc755d9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f7",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d7af6ffd-bffa-4c65-92cf-1191d2220b9f",
+                "global": "GlobalObjectId_V1-3-9fcb677c0a986a09681f65190e6bc10e-11400000-0",
+                "assetGuid": "9fcb677c0a986a09681f65190e6bc10e",
+                "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset"
+              },
+              "stamp": "sha256:2c2cccfa5fac7f9d4f037c9145a81ae1bbbbeebb3942e7830e4b9d2ebf718aeb"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f8",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "38ed1b55-d39b-4146-add9-5535f09bb4cf",
+                "global": "GlobalObjectId_V1-3-8d57185a420adabf4af9e35b3255bc94-11400000-0",
+                "assetGuid": "8d57185a420adabf4af9e35b3255bc94",
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset"
+              },
+              "stamp": "sha256:5beff112542ea8c8d44a66920e72f20e703ef55253efe3bc5488a514f7abe122"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.450Z",
+    "applied": "2026-10-05T05:23:39.466Z"
+  }
+}

@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: Take_OilFlask_Marsh
+  m_EditorClassIdentifier: 
+  authoringId: 2d182040-733a-49a9-b68a-ccdd09ee85b9
+  contentStamp: 9a968b2a8f2837beeacdb62b51caae35dacc341fe90ff6f673551d816ad6b8d1
+  trigger: 12
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: 1cc6ccc5-4575-41ac-8bf3-1446f594d70a
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions: []
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 16
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 11400000, guid: 36b68ff2d6a69d907a0e5bffb7968d58, type: 2}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 11
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 1cc6ccc5-4575-41ac-8bf3-1446f594d70a
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 9
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: sfx.pickup
+    legacyTarget: {fileID: 0}
+  once: 1
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0

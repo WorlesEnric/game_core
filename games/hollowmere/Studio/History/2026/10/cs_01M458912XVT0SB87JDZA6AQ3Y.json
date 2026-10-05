@@ -1,0 +1,78 @@
+{
+  "id": "cs_01M458912XVT0SB87JDZA6AQ3Y",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.bram-npc] Bram's NPC definition (his conversation is linked once the graph exists)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "npc",
+      "tool": "create",
+      "args": {
+        "type": "npc.definition",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+        "name": "Bram",
+        "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+        "fields": {
+          "entity": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset",
+          "displayName": "Bram",
+          "speed": 1.6,
+          "converseSeconds": 4.0,
+          "arriveRadius": 0.05,
+          "behaviour": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset",
+          "focusPriority": 1,
+          "talkRange": 2.5
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "npc",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+                "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+                "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+              },
+              "stamp": "sha256:a4914acacdbf346b00d4960e6eb5423b05eb6073245ed91ac317f507fd111e61"
+            }
+          ],
+          "replay": {
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.236Z",
+    "applied": "2026-10-05T05:23:39.256Z"
+  }
+}

@@ -23,7 +23,13 @@ MonoBehaviour:
     text: Open the gate
   - state: open
     text: Close the gate
-  conditionRef: narrative.fact.gate_open
+  condition: {fileID: 0}
+  conditionFact: {fileID: 11400000, guid: 1af0f99dbdb793a73928cf5583252642, type: 2}
+  conditionOp: 1
+  conditionValue: 0
+  conditionRef: 
+  actions: {fileID: 0}
+  builtInAction: 
   actionRef: 
   maxUses: 0
   cooldownSeconds: 0.5

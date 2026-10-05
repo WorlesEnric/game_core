@@ -4,8 +4,12 @@
 //                                                     fact) and the catalog registrations of the four plugins; a second
 //                                                     bake changes nothing and Entry.Verify passes
 //   MarenPreview_DependsOnBellRung                    dialogue.preview differs for bell_rung 0 and 1
-//   DrownedBell_CompletesAlongBothBranches            quest.simulate completes on the pay and on the persuade branch,
-//                                                     with the branch reward only on its branch
+//   DrownedBell_CompletesAlongBothBranches            quest.simulate completes on each of P3.1's three endings (A let
+//                                                     it sleep, B ring, C free the echo), maren_grateful only on B and C
+//
+// P3.1 replaced the P1.4 story with the reference game's (25 facts, six conversations, the Rumour -> Lantern -> Crossing
+// -> Belfry quest with three endings and a failure condition, two vendors, six world items, 31 rules); the expected
+// counts and lines below are P3.1's. The test names are kept for history.
 //   RuntimeModels_ConvertWithoutProblems              the baked content converts with every package converter
 #nullable enable
 using System.Collections.Generic;
@@ -51,13 +55,13 @@ namespace Hollowmere.P1_4.EditMode.Tests
             Assert.That(content!.FormatId, Is.EqualTo(GameplayContentManifest.Format));
             Assert.That(content.WorldId, Is.EqualTo(world.AuthoringId));
             Assert.That(content.ContentHash.Length, Is.EqualTo(64));
-            Assert.That(content.Facts.Count, Is.EqualTo(9));
-            Assert.That(content.OfKind(NarrativeKinds.Graph).Count, Is.EqualTo(5));
+            Assert.That(content.Facts.Count, Is.EqualTo(25));
+            Assert.That(content.OfKind(NarrativeKinds.Graph).Count, Is.EqualTo(6));
             Assert.That(content.OfKind(NarrativeKinds.Quest).Count, Is.EqualTo(1));
-            Assert.That(content.OfKind(NarrativeKinds.Item).Count, Is.EqualTo(4));
-            Assert.That(content.OfKind(NarrativeKinds.Vendor).Count, Is.EqualTo(1));
-            Assert.That(content.OfKind(NarrativeKinds.WorldItem).Count, Is.EqualTo(2));
-            Assert.That(content.OfKind(NarrativeKinds.Rule).Count, Is.EqualTo(6));
+            Assert.That(content.OfKind(NarrativeKinds.Item).Count, Is.EqualTo(6));
+            Assert.That(content.OfKind(NarrativeKinds.Vendor).Count, Is.EqualTo(2));
+            Assert.That(content.OfKind(NarrativeKinds.WorldItem).Count, Is.EqualTo(6));
+            Assert.That(content.OfKind(NarrativeKinds.Rule).Count, Is.EqualTo(31));
             for (int i = 0; i < content.Entries.Count; i++)
             {
                 ContentEntry entry = content.Entries[i];
@@ -96,9 +100,9 @@ namespace Hollowmere.P1_4.EditMode.Tests
             string rung = DialogueTools.Preview(maren, "bell_rung=1");
             Debug.Log("[P1.4] Maren preview bell_rung=0:\n" + silent + "\n[P1.4] Maren preview bell_rung=1:\n" + rung);
             Assert.That(silent, Is.Not.EqualTo(rung));
-            Assert.That(silent, Does.Contain("silent since the flood"));
-            Assert.That(silent, Does.Not.Contain("You rang it"));
-            Assert.That(rung, Does.Contain("You rang it"));
+            Assert.That(silent, Does.Contain("has been silent"));
+            Assert.That(silent, Does.Not.Contain("The bell rang"));
+            Assert.That(rung, Does.Contain("The bell rang"));
             Assert.That(DialogueTools.Preview(maren, string.Empty), Is.EqualTo(silent), "facts start at their initial values");
         }
 
@@ -106,21 +110,20 @@ namespace Hollowmere.P1_4.EditMode.Tests
         public void DrownedBell_CompletesAlongBothBranches()
         {
             QuestDefinition quest = Load<QuestDefinition>(HollowmereNarrativeAuthoring.QuestsDir + "/DrownedBell.asset");
-            string common = "; collect:BellClapper=1; reach:" + BelfryId + "; fact:bell_rung=1; talk:Maren";
-            SimulationResult pay = QuestTools.SimulateResult(quest, "fact:heard_rumour=1; fact:odd_paid=1; fact:gate_open=1" + common);
-            SimulationResult persuade = QuestTools.SimulateResult(quest, "fact:heard_rumour=1; fact:odd_persuaded=1; fact:gate_open=1" + common);
-            Debug.Log("[P1.4] simulate pay:\n" + pay.Text + "\n[P1.4] simulate persuade:\n" + persuade.Text);
+            string path = "fact:heard_rumour=1; collect:Lantern=1; fact:gate_open=1; reach:" + BelfryId;
+            var endings = new[] { ("ending_a", 1, 0), ("ending_b", 2, 1), ("ending_c", 3, 1) };
+            foreach ((string fact, int branch, int rewards) in endings)
+            {
+                SimulationResult result = QuestTools.SimulateResult(quest, path + "; fact:" + fact + "=1");
+                Debug.Log("[P1.4/P3.1] simulate " + fact + ":\n" + result.Text);
+                Assert.That(result.Completed, Is.True, result.Text);
+                Assert.That(result.State.Branch, Is.EqualTo(branch), fact + " is branch " + branch);
+                Assert.That(result.Rewards.Count, Is.EqualTo(rewards), fact + ": maren_grateful only when the bell rang");
+            }
 
-            Assert.That(pay.Completed, Is.True, pay.Text);
-            Assert.That(pay.State.Branch, Is.EqualTo(1), "paying Odd is branch 1");
-            Assert.That(pay.Rewards.Count, Is.EqualTo(3), "lantern, maren_grateful and the repaid coins");
-            Assert.That(persuade.Completed, Is.True, persuade.Text);
-            Assert.That(persuade.State.Branch, Is.EqualTo(2), "persuading Odd is branch 2");
-            Assert.That(persuade.Rewards.Count, Is.EqualTo(2), "no repaid coins on the persuade branch");
-
-            SimulationResult stuck = QuestTools.SimulateResult(quest, "fact:heard_rumour=1; fact:gate_open=1" + common);
-            Assert.That(stuck.Completed, Is.False, "the gate alone does not pass the marsh stage");
-            Assert.That(stuck.State.Stage, Is.EqualTo(1));
+            SimulationResult stuck = QuestTools.SimulateResult(quest, "fact:heard_rumour=1; collect:Lantern=1; fact:gate_open=1");
+            Assert.That(stuck.Completed, Is.False, "the gate alone does not reach the belfry");
+            Assert.That(stuck.State.Stage, Is.EqualTo(2));
         }
 
         [Test, Order(3)]
@@ -136,17 +139,17 @@ namespace Hollowmere.P1_4.EditMode.Tests
 
             NarrativeModelSet models = NarrativeContent.Build(content, converters);
             Assert.That(models.Problems, Is.Empty, string.Join("\n", models.Problems));
-            Assert.That(models.FactCount, Is.EqualTo(9));
-            Assert.That(models.GraphCount, Is.EqualTo(5));
+            Assert.That(models.FactCount, Is.EqualTo(25));
+            Assert.That(models.GraphCount, Is.EqualTo(6));
             Assert.That(models.QuestCount, Is.EqualTo(1));
-            Assert.That(models.RuleCount, Is.EqualTo(6));
+            Assert.That(models.RuleCount, Is.EqualTo(31));
             foreach (string npcGraphRef in new[] { HollowmereNarrative.MarenGraphRef, HollowmereNarrative.OddGraphRef, HollowmereNarrative.PipGraphRef,
                 HollowmereNarrative.HaleGraphRef, HollowmereNarrative.EchoGraphRef })
             {
                 Assert.That(models.TryResolve(npcGraphRef, out int graphKey) && models.TryGetGraph(graphKey, out DialogueGraphModel? _), Is.True,
                     "P1.3's NpcDefinition.dialogueGraph " + npcGraphRef + " resolves to a baked graph");
             }
-            Assert.That(models.WorldItemCount, Is.EqualTo(2));
+            Assert.That(models.WorldItemCount, Is.EqualTo(6));
             Assert.That(models.PlayerInventory, Is.Not.Null);
             Assert.That(models.TryResolve(HollowmereNarrative.BellCondition, out int _), Is.True);
             Assert.That(models.TryResolve(HollowmereNarrative.ClapperWorldItem, out int _), Is.True);

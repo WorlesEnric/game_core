@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: ShrinePost1
+  m_EditorClassIdentifier: 
+  authoringId: a61c2667-a6dc-4c1a-bed5-afde40c7cf3c
+  contentStamp: b258654e400b46f4411697dbf8875de06469fe9f964d2662efbf1d3eac9c6067
+  trigger: 12
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: e37866ef-7b93-4781-a9e6-4448f1d3c30a
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions: []
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 0
+    fact: {fileID: 11400000, guid: e3aebab10bb56eb48ae9a70ada17ff6e, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 9
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: sfx.shrine.light
+    legacyTarget: {fileID: 0}
+  once: 1
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0

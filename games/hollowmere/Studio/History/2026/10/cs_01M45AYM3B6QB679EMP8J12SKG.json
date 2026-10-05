@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYM3B6QB679EMP8J12SKG",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Since the flood the bell in the old belfry has been silent, and the marsh has gone dark and hungry.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_rumour.wav",
+        "artifact": {
+          "artifact": "sha256:25c130e3a4fba72955ce144c7d18bca96c321ce41f55c5d7d7d863c3b13aebe9"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "25c130e3a4fba72955ce144c7d18bca96c321ce41f55c5d7d7d863c3b13aebe9",
+      "name": "Maren_rumour.wav",
+      "mediaType": "audio/wav",
+      "bytes": 307244,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_rumour.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-5cac189b9b64139d78bb343d7af7ccdc-8300000-0",
+                "assetGuid": "5cac189b9b64139d78bb343d7af7ccdc",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_rumour.wav"
+              },
+              "stamp": "sha256:25c130e3a4fba72955ce144c7d18bca96c321ce41f55c5d7d7d863c3b13aebe9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:23.981Z",
+    "applied": "2026-10-05T06:10:24.344Z"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 36465,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 36465,
+  "steadySeconds": 608.573,
+  "dtMs": {
+    "p50": 16.668,
+    "p95": 21.822,
+    "p99": 25.421,
+    "max": 2900.226,
+    "mean": 16.78
+  },
+  "fpsMean": 59.92,
+  "framesOver16_7ms": 17232,
+  "framesOver100msOutsideTransitions": [
+    {
+      "frame": 1,
+      "time_s": 3.2973,
+      "dt_ms": 2900.226,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 2,
+      "time_s": 3.5126,
+      "dt_ms": 611.547,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 17183,
+      "time_s": 290.2247,
+      "dt_ms": 287.85,
+      "region": "Blackmere Marsh"
+    }
+  ],
+  "framesOver100msOutsideTransitionsCount": 3,
+  "transitions": [
+    {
+      "frame": 10670,
+      "time_s": 181.2978,
+      "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 17.653
+    },
+    {
+      "frame": 20181,
+      "time_s": 340.1833,
+      "marker": "region:Blackmere Marsh->Drowned Belfry",
+      "max_dt_ms": 267.138
+    },
+    {
+      "frame": 25041,
+      "time_s": 421.4598,
+      "marker": "reload|region:Drowned Belfry->Thornwick Village",
+      "max_dt_ms": 44.566
+    },
+    {
+      "frame": 26068,
+      "time_s": 438.5919,
+      "marker": "restore|loaded|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 61.301
+    }
+  ],
+  "perRegion": {
+    "Blackmere Marsh": {
+      "frames": 19909,
+      "p95": 22.27,
+      "max": 287.85
+    },
+    "Drowned Belfry": {
+      "frames": 4860,
+      "p95": 21.679,
+      "max": 267.138
+    },
+    "Thornwick Village": {
+      "frames": 11696,
+      "p95": 17.921,
+      "max": 2900.226
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": false,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": false,
+    "duration_ge_budget": true
+  },
+  "verdict": "fail"
+}

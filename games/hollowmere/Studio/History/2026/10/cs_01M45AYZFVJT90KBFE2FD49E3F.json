@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYZFVJT90KBFE2FD49E3F",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The bell rang. Hollowmere can sleep again. Thank you, traveller.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_rung.wav",
+        "artifact": {
+          "artifact": "sha256:8e93ee1a901af77c3488e4a6859c80d5a4eed59a5d62b9a1804eb12209568e59"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "8e93ee1a901af77c3488e4a6859c80d5a4eed59a5d62b9a1804eb12209568e59",
+      "name": "Maren_rung.wav",
+      "mediaType": "audio/wav",
+      "bytes": 215084,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_rung.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-4be95551503f3a5359dbbdc4121c51f7-8300000-0",
+                "assetGuid": "4be95551503f3a5359dbbdc4121c51f7",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_rung.wav"
+              },
+              "stamp": "sha256:8e93ee1a901af77c3488e4a6859c80d5a4eed59a5d62b9a1804eb12209568e59"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:35.659Z",
+    "applied": "2026-10-05T06:10:35.787Z"
+  }
+}

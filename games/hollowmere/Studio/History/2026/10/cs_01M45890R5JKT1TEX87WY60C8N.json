@@ -1,0 +1,844 @@
+{
+  "id": "cs_01M45890R5JKT1TEX87WY60C8N",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.interactables] Create the pickup and story interactables (shrine lanterns, punt, sinkhole, satchel, tinker's bench)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "x_PickupLantern",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset",
+        "name": "PickupLantern",
+        "authoringId": "dd40bbdf-8491-48a0-a879-6b252119270c",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Pick up the lantern"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_PickupHerbs",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset",
+        "name": "PickupHerbs",
+        "authoringId": "49c6ed2a-cba1-442f-92b0-30ec7e6b65ea",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Gather the marsh herbs"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_PickupCoins",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset",
+        "name": "PickupCoins",
+        "authoringId": "bb729b45-41da-4e1d-aa65-d574c5db0201",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Pick up the coins"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_PickupClapper",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset",
+        "name": "PickupClapper",
+        "authoringId": "e97671bc-e580-4b81-ae77-aff1072836b3",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Lift the bell clapper"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_PickupOil",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset",
+        "name": "PickupOil",
+        "authoringId": "5af6c283-8027-4a08-bec0-2b4b8781109b",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Pick up the oil flask"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_PickupMarshHerbs",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset",
+        "name": "PickupMarshHerbs",
+        "authoringId": "177dcb07-bfa2-4665-b805-1db30089e2df",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbsEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Gather the marsh herbs"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.2,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostWest",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset",
+        "name": "ShrinePostWest",
+        "authoringId": "cf7d3515-d05e-48f7-8921-945dda810fba",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWestEntity.asset",
+          "kind": "Switch",
+          "initialState": "off",
+          "prompts": [
+            {
+              "state": "off",
+              "text": "Light the west shrine lantern"
+            },
+            {
+              "state": "on",
+              "text": "The west lantern burns"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click",
+          "conditionRef": "78eeeedd-9917-460a-8d0e-71d128dc7246"
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostMiddle",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset",
+        "name": "ShrinePostMiddle",
+        "authoringId": "f808476f-ed12-45d0-9992-83b67f1b28a5",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddleEntity.asset",
+          "kind": "Switch",
+          "initialState": "off",
+          "prompts": [
+            {
+              "state": "off",
+              "text": "Light the middle shrine lantern"
+            },
+            {
+              "state": "on",
+              "text": "The middle lantern burns"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click",
+          "conditionRef": "5db7d10e-e46a-4c9b-be37-43fcb8c7c3cb"
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostEast",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset",
+        "name": "ShrinePostEast",
+        "authoringId": "1af26fb0-16c3-40a3-889f-05cd60067ede",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset",
+          "kind": "Switch",
+          "initialState": "off",
+          "prompts": [
+            {
+              "state": "off",
+              "text": "Light the east shrine lantern"
+            },
+            {
+              "state": "on",
+              "text": "The east lantern burns"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click",
+          "conditionRef": "23b3180d-6b41-4b6b-a274-5d08a8ab4123"
+        }
+      }
+    },
+    {
+      "opId": "x_OldPunt",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset",
+        "name": "OldPunt",
+        "authoringId": "22e6de43-8e2f-4575-a51e-2cac12aeb19d",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Use the old punt"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_SinkholeGlint",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset",
+        "name": "SinkholeGlint",
+        "authoringId": "d7af6ffd-bffa-4c65-92cf-1191d2220b9f",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlintEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Reach into the glinting water"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_DrownedSatchel",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset",
+        "name": "DrownedSatchel",
+        "authoringId": "38ed1b55-d39b-4146-add9-5535f09bb4cf",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Search the drowned satchel"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    },
+    {
+      "opId": "x_TinkersBench",
+      "tool": "create",
+      "args": {
+        "type": "interaction.interactable",
+        "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset",
+        "name": "TinkersBench",
+        "authoringId": "06408cc5-bdd2-400f-8db6-52514b43c804",
+        "fields": {
+          "entity": "Assets/Hollowmere/Interactables/Definitions/TinkersBenchEntity.asset",
+          "kind": "Examinable",
+          "initialState": "idle",
+          "prompts": [
+            {
+              "state": "idle",
+              "text": "Use the tinker's bench"
+            }
+          ],
+          "maxUses": 0,
+          "cooldownSeconds": 0.5,
+          "range": 2.6,
+          "focusPriority": 2,
+          "focusHeight": 0.8,
+          "cue": "sfx.ui.click"
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "x_PickupLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "dd40bbdf-8491-48a0-a879-6b252119270c",
+                "global": "GlobalObjectId_V1-3-bf7c86a105692fa619538f41b8c659f2-11400000-0",
+                "assetGuid": "bf7c86a105692fa619538f41b8c659f2",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset"
+              },
+              "stamp": "sha256:f557209f94d1c14dcc377e9eb6f96e1a75f31ec18d24e3a8691511ef5d79b9cd"
+            }
+          ],
+          "replay": {
+            "authoringId": "dd40bbdf-8491-48a0-a879-6b252119270c",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_PickupHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "49c6ed2a-cba1-442f-92b0-30ec7e6b65ea",
+                "global": "GlobalObjectId_V1-3-06028de006b42c698a3f95cbe4268fda-11400000-0",
+                "assetGuid": "06028de006b42c698a3f95cbe4268fda",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset"
+              },
+              "stamp": "sha256:d48a4bf1eafa3f36a9aed36ccd31a2a824015785ffcf0d3ffcc74ffd6f3a4e32"
+            }
+          ],
+          "replay": {
+            "authoringId": "49c6ed2a-cba1-442f-92b0-30ec7e6b65ea",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_PickupCoins",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "bb729b45-41da-4e1d-aa65-d574c5db0201",
+                "global": "GlobalObjectId_V1-3-7bb9fcd8d520fd5159d10c216b89fbe8-11400000-0",
+                "assetGuid": "7bb9fcd8d520fd5159d10c216b89fbe8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset"
+              },
+              "stamp": "sha256:94b58daa7f70eb378eda58238d1b5bcd7d2e5065fabfe23e608fea813ce7b038"
+            }
+          ],
+          "replay": {
+            "authoringId": "bb729b45-41da-4e1d-aa65-d574c5db0201",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_PickupClapper",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e97671bc-e580-4b81-ae77-aff1072836b3",
+                "global": "GlobalObjectId_V1-3-655184795d73cfa20b738cb7cf0ef038-11400000-0",
+                "assetGuid": "655184795d73cfa20b738cb7cf0ef038",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset"
+              },
+              "stamp": "sha256:80b42f92b3d4b8750b462dfdabc343d5aa82b6ec0a2c213f7a33756741f1851d"
+            }
+          ],
+          "replay": {
+            "authoringId": "e97671bc-e580-4b81-ae77-aff1072836b3",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupClapper.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_PickupOil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5af6c283-8027-4a08-bec0-2b4b8781109b",
+                "global": "GlobalObjectId_V1-3-c2f529c47c003e5f28a993ee9a2b589e-11400000-0",
+                "assetGuid": "c2f529c47c003e5f28a993ee9a2b589e",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset"
+              },
+              "stamp": "sha256:58ca783c5c6a9074931aece170c85667eb9fe8fe627f0524bb16a1afc52a6f50"
+            }
+          ],
+          "replay": {
+            "authoringId": "5af6c283-8027-4a08-bec0-2b4b8781109b",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupOil.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_PickupMarshHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "177dcb07-bfa2-4665-b805-1db30089e2df",
+                "global": "GlobalObjectId_V1-3-0b7739a99232cd33ab5a52482a522da8-11400000-0",
+                "assetGuid": "0b7739a99232cd33ab5a52482a522da8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset"
+              },
+              "stamp": "sha256:20e00b7c21311a348c007a74572c39d04d09c52a9a73cf60ba74a864b438888a"
+            }
+          ],
+          "replay": {
+            "authoringId": "177dcb07-bfa2-4665-b805-1db30089e2df",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbs.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostWest",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cf7d3515-d05e-48f7-8921-945dda810fba",
+                "global": "GlobalObjectId_V1-3-c8fbcfeed33a83595abdfec9c650e8bc-11400000-0",
+                "assetGuid": "c8fbcfeed33a83595abdfec9c650e8bc",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset"
+              },
+              "stamp": "sha256:20e2f9706a8947705b5db6ffec6b04e2dd41215579225947609d861c91ae69c6"
+            }
+          ],
+          "replay": {
+            "authoringId": "cf7d3515-d05e-48f7-8921-945dda810fba",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWest.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostMiddle",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "f808476f-ed12-45d0-9992-83b67f1b28a5",
+                "global": "GlobalObjectId_V1-3-7b8d4a0814ef9376e89bff124f836dfd-11400000-0",
+                "assetGuid": "7b8d4a0814ef9376e89bff124f836dfd",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset"
+              },
+              "stamp": "sha256:a798f91c35f4d34f3039ed5534be54f4ec4e7c5e57d1e5acbbb8ce33ca22a4e2"
+            }
+          ],
+          "replay": {
+            "authoringId": "f808476f-ed12-45d0-9992-83b67f1b28a5",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddle.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_ShrinePostEast",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1af26fb0-16c3-40a3-889f-05cd60067ede",
+                "global": "GlobalObjectId_V1-3-0024c16fca9775f9c8320dc14e30a585-11400000-0",
+                "assetGuid": "0024c16fca9775f9c8320dc14e30a585",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset"
+              },
+              "stamp": "sha256:03df85c87a59968942e2e2c1729fe286442444609f2a3b82c1b7c11e83d6498b"
+            }
+          ],
+          "replay": {
+            "authoringId": "1af26fb0-16c3-40a3-889f-05cd60067ede",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEast.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_OldPunt",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "22e6de43-8e2f-4575-a51e-2cac12aeb19d",
+                "global": "GlobalObjectId_V1-3-41a15c90e081a417f87ff1b321bbec26-11400000-0",
+                "assetGuid": "41a15c90e081a417f87ff1b321bbec26",
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset"
+              },
+              "stamp": "sha256:e8df152e531fb31b90058707867f3679ddcc8c3444a553760d4475affbc755d9"
+            }
+          ],
+          "replay": {
+            "authoringId": "22e6de43-8e2f-4575-a51e-2cac12aeb19d",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/OldPunt.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_SinkholeGlint",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d7af6ffd-bffa-4c65-92cf-1191d2220b9f",
+                "global": "GlobalObjectId_V1-3-9fcb677c0a986a09681f65190e6bc10e-11400000-0",
+                "assetGuid": "9fcb677c0a986a09681f65190e6bc10e",
+                "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset"
+              },
+              "stamp": "sha256:2c2cccfa5fac7f9d4f037c9145a81ae1bbbbeebb3942e7830e4b9d2ebf718aeb"
+            }
+          ],
+          "replay": {
+            "authoringId": "d7af6ffd-bffa-4c65-92cf-1191d2220b9f",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlint.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_DrownedSatchel",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "38ed1b55-d39b-4146-add9-5535f09bb4cf",
+                "global": "GlobalObjectId_V1-3-8d57185a420adabf4af9e35b3255bc94-11400000-0",
+                "assetGuid": "8d57185a420adabf4af9e35b3255bc94",
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset"
+              },
+              "stamp": "sha256:5beff112542ea8c8d44a66920e72f20e703ef55253efe3bc5488a514f7abe122"
+            }
+          ],
+          "replay": {
+            "authoringId": "38ed1b55-d39b-4146-add9-5535f09bb4cf",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchel.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "x_TinkersBench",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "06408cc5-bdd2-400f-8db6-52514b43c804",
+                "global": "GlobalObjectId_V1-3-708da97207d48818daa335384d74d878-11400000-0",
+                "assetGuid": "708da97207d48818daa335384d74d878",
+                "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset"
+              },
+              "stamp": "sha256:4415321c04c900d344d0fd78456b3d37e2531f08c544291ddc537246ed811c37"
+            }
+          ],
+          "replay": {
+            "authoringId": "06408cc5-bdd2-400f-8db6-52514b43c804",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:38.897Z",
+    "applied": "2026-10-05T05:23:39.136Z"
+  }
+}

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: ShrinePostWest
+  m_EditorClassIdentifier: 
+  authoringId: cf7d3515-d05e-48f7-8921-945dda810fba
+  entity: {fileID: 11400000, guid: eb53f7306dbe96774946e2d5f1495fe1, type: 2}
+  kind: 4
+  initialState: off
+  prompts:
+  - state: off
+    text: Light the west shrine lantern
+  - state: on
+    text: The west lantern burns
+  condition: {fileID: 11400000, guid: abc1982dda435320caeb533fec290a89, type: 2}
+  conditionFact: {fileID: 0}
+  conditionOp: 1
+  conditionValue: 0
+  conditionRef: 
+  actions: {fileID: 0}
+  builtInAction: 
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 2.6
+  focusPriority: 2
+  focusHeight: 0.8
+  cue: sfx.ui.click
+  contentStamp: 

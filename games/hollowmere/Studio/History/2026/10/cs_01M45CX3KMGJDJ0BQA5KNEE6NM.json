@@ -1,0 +1,37 @@
+{
+  "id": "cs_01M45CX3KMGJDJ0BQA5KNEE6NM",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:migrate.refs] Rewrite legacy references as typed references (authoring.migrateRefs, apply)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "migrate",
+      "tool": "authoring.migrateRefs",
+      "args": {
+        "folders": [
+          "Assets/Hollowmere"
+        ],
+        "apply": true
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "migrate",
+      "status": "Applied"
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:31.493Z",
+    "applied": "2026-10-05T06:44:31.838Z"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "cs_01M45CW90BPBNC9D0RXMTCE12R",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.starting-coins] The traveller starts with two coins",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "grant",
+      "tool": "inventory.grantStarting",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "392e67f7-738f-403d-81f1-52fb78205528",
+        "global": "GlobalObjectId_V1-3-3c69301ce51fa2d0fa432a6e78884f19-11400000-0",
+        "assetGuid": "3c69301ce51fa2d0fa432a6e78884f19",
+        "path": "Assets/Hollowmere/Items/PlayerInventory.asset",
+        "scope": "Definition",
+        "stamp": "sha256:343f6c67f8fc4db4d2a66071ce9d44fe1a1697c2af89d5ee530b4d6dffd7513a"
+      },
+      "args": {
+        "item": "Assets/Hollowmere/Items/OldCoin.asset",
+        "count": 2
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "grant",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "392e67f7-738f-403d-81f1-52fb78205528",
+                "global": "GlobalObjectId_V1-3-3c69301ce51fa2d0fa432a6e78884f19-11400000-0",
+                "assetGuid": "3c69301ce51fa2d0fa432a6e78884f19",
+                "path": "Assets/Hollowmere/Items/PlayerInventory.asset"
+              },
+              "args": {
+                "fields": {
+                  "starting": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "392e67f7-738f-403d-81f1-52fb78205528",
+                "global": "GlobalObjectId_V1-3-3c69301ce51fa2d0fa432a6e78884f19-11400000-0",
+                "assetGuid": "3c69301ce51fa2d0fa432a6e78884f19",
+                "path": "Assets/Hollowmere/Items/PlayerInventory.asset"
+              },
+              "stamp": "sha256:833503a0bb6978141250fc22da8a0b3163af3b574c14cd72bcd4062bf1154b8d"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:04.284Z",
+    "applied": "2026-10-05T06:44:04.505Z"
+  }
+}

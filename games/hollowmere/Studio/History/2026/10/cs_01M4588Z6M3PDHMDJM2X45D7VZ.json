@@ -1,0 +1,1083 @@
+{
+  "id": "cs_01M4588Z6M3PDHMDJM2X45D7VZ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.sets] Create the condition and action sets of the P3.1 story",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "c_HasLantern",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset",
+        "name": "HasLantern",
+        "authoringId": "78eeeedd-9917-460a-8d0e-71d128dc7246",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/Lantern.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_HeardRumour",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/HeardRumour.asset",
+        "name": "HeardRumour",
+        "authoringId": "9fa5e8cb-4aaf-4a16-bbac-05bf75af633a",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_ShrineLit",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset",
+        "name": "ShrineLit",
+        "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_OddFavour",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset",
+        "name": "OddFavour",
+        "authoringId": "a6f7c2a5-47b1-4fe9-a6fb-a5946f443f67",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_ShrinePost1Lit",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost1Lit.asset",
+        "name": "ShrinePost1Lit",
+        "authoringId": "5db7d10e-e46a-4c9b-be37-43fcb8c7c3cb",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/Lantern.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_ShrinePost2Lit",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset",
+        "name": "ShrinePost2Lit",
+        "authoringId": "23b3180d-6b41-4b6b-a274-5d08a8ab4123",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/Lantern.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins1",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset",
+        "name": "HasCoins1",
+        "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/OldCoin.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins2",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset",
+        "name": "HasCoins2",
+        "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/OldCoin.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins4",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset",
+        "name": "HasCoins4",
+        "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/OldCoin.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_LanternLostNoSpare",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset",
+        "name": "LanternLostNoSpare",
+        "authoringId": "7dd0efa0-6634-4639-812e-4db07f37db04",
+        "fields": {
+          "mode": "All",
+          "conditions": [
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "ItemCount",
+              "subject": "Assets/Hollowmere/Items/Lantern.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "Equal",
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "c_EndingReached",
+      "tool": "create",
+      "args": {
+        "type": "logic.conditionSet",
+        "path": "Assets/Hollowmere/Rules/Conditions/EndingReached.asset",
+        "name": "EndingReached",
+        "authoringId": "df15dd7b-be04-4e22-98c2-ee783a06027f",
+        "fields": {
+          "mode": "Any",
+          "conditions": [
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            },
+            {
+              "kind": "Fact",
+              "subject": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset",
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_OddGrantsFavour",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset",
+        "name": "OddGrantsFavour",
+        "authoringId": "d2a1a116-34a6-4f16-bd03-7575628b11d9",
+        "fields": {
+          "actions": [
+            {
+              "kind": "SetFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "sfx.ui.confirm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_FerryCrossing",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset",
+        "name": "FerryCrossing",
+        "authoringId": "421c017e-2867-4d58-821a-67045e416c1b",
+        "fields": {
+          "actions": [
+            {
+              "kind": "ShowMessage",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "Odd poles you across the black water to the drowned belfry."
+            },
+            {
+              "kind": "Travel",
+              "target": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_SilenceBell",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/SilenceBell.asset",
+        "name": "SilenceBell",
+        "authoringId": "1a6c7c41-797b-4e2b-8e84-c545bb34a6ee",
+        "fields": {
+          "actions": [
+            {
+              "kind": "SetFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/bell_silenced.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "SetFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_BuyLantern",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset",
+        "name": "BuyLantern",
+        "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+        "fields": {
+          "actions": [
+            {
+              "kind": "AddFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_BuyOil",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset",
+        "name": "BuyOil",
+        "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+        "fields": {
+          "actions": [
+            {
+              "kind": "AddFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a_BuyHerbs",
+      "tool": "create",
+      "args": {
+        "type": "logic.actionSet",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset",
+        "name": "BuyHerbs",
+        "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+        "fields": {
+          "actions": [
+            {
+              "kind": "AddFact",
+              "target": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset",
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "c_HasLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "78eeeedd-9917-460a-8d0e-71d128dc7246",
+                "global": "GlobalObjectId_V1-3-abc1982dda435320caeb533fec290a89-11400000-0",
+                "assetGuid": "abc1982dda435320caeb533fec290a89",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset"
+              },
+              "stamp": "sha256:95a75a30aca65aad5b177441589656d403fdf063e2ef5198b6f8573f5fef799f"
+            }
+          ],
+          "replay": {
+            "authoringId": "78eeeedd-9917-460a-8d0e-71d128dc7246",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_HeardRumour",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/HeardRumour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "9fa5e8cb-4aaf-4a16-bbac-05bf75af633a",
+                "global": "GlobalObjectId_V1-3-25070db6c5ef45f9bbc94d6547da39f1-11400000-0",
+                "assetGuid": "25070db6c5ef45f9bbc94d6547da39f1",
+                "path": "Assets/Hollowmere/Rules/Conditions/HeardRumour.asset"
+              },
+              "stamp": "sha256:19d444ee0468a514f2d84384322ecec17451b85cc24ac6e730128d7df71e1b3f"
+            }
+          ],
+          "replay": {
+            "authoringId": "9fa5e8cb-4aaf-4a16-bbac-05bf75af633a",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/HeardRumour.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_ShrineLit",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+                "global": "GlobalObjectId_V1-3-850520e0be842c7e9830bf255c4a9069-11400000-0",
+                "assetGuid": "850520e0be842c7e9830bf255c4a9069",
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+              },
+              "stamp": "sha256:984f8472c8e46ce6c8ea79495ebfb0353e547d6eeba69c329b4485037394336c"
+            }
+          ],
+          "replay": {
+            "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_OddFavour",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "a6f7c2a5-47b1-4fe9-a6fb-a5946f443f67",
+                "global": "GlobalObjectId_V1-3-5dc4b5ce6affc78bc94dd2031bc52e2d-11400000-0",
+                "assetGuid": "5dc4b5ce6affc78bc94dd2031bc52e2d",
+                "path": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset"
+              },
+              "stamp": "sha256:77debdc795f8039ebcd9645a1901ed525aefd78db1887c0bb0c4c8d560a61bee"
+            }
+          ],
+          "replay": {
+            "authoringId": "a6f7c2a5-47b1-4fe9-a6fb-a5946f443f67",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_ShrinePost1Lit",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost1Lit.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5db7d10e-e46a-4c9b-be37-43fcb8c7c3cb",
+                "global": "GlobalObjectId_V1-3-4aeac7929e86dc988a48242220701d88-11400000-0",
+                "assetGuid": "4aeac7929e86dc988a48242220701d88",
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost1Lit.asset"
+              },
+              "stamp": "sha256:580b6317766ccde9ab16204641b7633b2bdca2af12079309bbba07b491ee3c18"
+            }
+          ],
+          "replay": {
+            "authoringId": "5db7d10e-e46a-4c9b-be37-43fcb8c7c3cb",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/ShrinePost1Lit.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_ShrinePost2Lit",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "23b3180d-6b41-4b6b-a274-5d08a8ab4123",
+                "global": "GlobalObjectId_V1-3-86c925c9e9ef805f897d990a3734a6a0-11400000-0",
+                "assetGuid": "86c925c9e9ef805f897d990a3734a6a0",
+                "path": "Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset"
+              },
+              "stamp": "sha256:62358f2de521e33b1a46ad7a6d4db3ecaca2a9a59f131444d9a4b247560f99ea"
+            }
+          ],
+          "replay": {
+            "authoringId": "23b3180d-6b41-4b6b-a274-5d08a8ab4123",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+                "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+                "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+              },
+              "stamp": "sha256:780806f2003dec1fd6d7ee331ecf2b5deea9673dd8b1dfedddd9aa39888c5e77"
+            }
+          ],
+          "replay": {
+            "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+                "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+                "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+              },
+              "stamp": "sha256:75559d3e08d49907b85dce59658bd4d784bbb6761717c41133c1509e9aadc7d6"
+            }
+          ],
+          "replay": {
+            "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_HasCoins4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+                "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+                "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+              },
+              "stamp": "sha256:6e244f4df6bbd6c4d39aa043f90afb7bc6ddfba2ad284727d9057743fdc26d41"
+            }
+          ],
+          "replay": {
+            "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_LanternLostNoSpare",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7dd0efa0-6634-4639-812e-4db07f37db04",
+                "global": "GlobalObjectId_V1-3-0cd1b102e3608ea06b309455eb3ae89d-11400000-0",
+                "assetGuid": "0cd1b102e3608ea06b309455eb3ae89d",
+                "path": "Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset"
+              },
+              "stamp": "sha256:ed3d059e627eaa56e06e9050b845329e7662de9bbeeec95cdae767ebc21d998a"
+            }
+          ],
+          "replay": {
+            "authoringId": "7dd0efa0-6634-4639-812e-4db07f37db04",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "c_EndingReached",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Conditions/EndingReached.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "df15dd7b-be04-4e22-98c2-ee783a06027f",
+                "global": "GlobalObjectId_V1-3-552cd24dca2d17643afbd89e937ffba8-11400000-0",
+                "assetGuid": "552cd24dca2d17643afbd89e937ffba8",
+                "path": "Assets/Hollowmere/Rules/Conditions/EndingReached.asset"
+              },
+              "stamp": "sha256:2605b85d42f5c24eee37c170b2742eeebb71bef00bf470e71fad213c9cff649e"
+            }
+          ],
+          "replay": {
+            "authoringId": "df15dd7b-be04-4e22-98c2-ee783a06027f",
+            "assetPath": "Assets/Hollowmere/Rules/Conditions/EndingReached.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_OddGrantsFavour",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d2a1a116-34a6-4f16-bd03-7575628b11d9",
+                "global": "GlobalObjectId_V1-3-e952c26493555ce73964aef5c959145a-11400000-0",
+                "assetGuid": "e952c26493555ce73964aef5c959145a",
+                "path": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset"
+              },
+              "stamp": "sha256:93387b95802d4700c01a9c6bbb3a6bbeaeec428f796cda5082bac6601d9d8ce9"
+            }
+          ],
+          "replay": {
+            "authoringId": "d2a1a116-34a6-4f16-bd03-7575628b11d9",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_FerryCrossing",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "421c017e-2867-4d58-821a-67045e416c1b",
+                "global": "GlobalObjectId_V1-3-a352f18a1dcae618b83742479b4bbcc5-11400000-0",
+                "assetGuid": "a352f18a1dcae618b83742479b4bbcc5",
+                "path": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset"
+              },
+              "stamp": "sha256:e600cbc08036907f04c08e806c26867b8ea05906c7caf70488ce6fa174ad7a8d"
+            }
+          ],
+          "replay": {
+            "authoringId": "421c017e-2867-4d58-821a-67045e416c1b",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_SilenceBell",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/SilenceBell.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1a6c7c41-797b-4e2b-8e84-c545bb34a6ee",
+                "global": "GlobalObjectId_V1-3-fb7b684f5e9afe019b15177a78021b99-11400000-0",
+                "assetGuid": "fb7b684f5e9afe019b15177a78021b99",
+                "path": "Assets/Hollowmere/Rules/Actions/SilenceBell.asset"
+              },
+              "stamp": "sha256:04d8d22626bda82a2eb302dd9452c097c4a03cdebb346a59eb6b9845611ed856"
+            }
+          ],
+          "replay": {
+            "authoringId": "1a6c7c41-797b-4e2b-8e84-c545bb34a6ee",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/SilenceBell.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_BuyLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              },
+              "stamp": "sha256:492901895f7df4f4af6efecef9fc94f14e4ba34cf64d5d5fa0cfd451866c52fb"
+            }
+          ],
+          "replay": {
+            "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_BuyOil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              },
+              "stamp": "sha256:af6f01c5a4e6f167e4e9fe2551620b47f396f634de1055f575a00c00656bba80"
+            }
+          ],
+          "replay": {
+            "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "a_BuyHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              },
+              "stamp": "sha256:4d0a18fb67956435eacbfd238941cc6d19b50a476e7959ade2e5ccba933e64cc"
+            }
+          ],
+          "replay": {
+            "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+            "assetPath": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:37.308Z",
+    "applied": "2026-10-05T05:23:37.644Z"
+  }
+}

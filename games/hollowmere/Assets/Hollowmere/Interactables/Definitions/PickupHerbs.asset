@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: PickupHerbs
+  m_EditorClassIdentifier: 
+  authoringId: 49c6ed2a-cba1-442f-92b0-30ec7e6b65ea
+  entity: {fileID: 11400000, guid: de700c80a95ee55288b017010f4b2253, type: 2}
+  kind: 2
+  initialState: idle
+  prompts:
+  - state: idle
+    text: Gather the marsh herbs
+  conditionRef: 
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 2.2
+  focusPriority: 2
+  focusHeight: 0.8
+  cue: sfx.ui.click
+  contentStamp: 

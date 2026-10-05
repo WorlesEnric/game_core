@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.8523441">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="394" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.852344" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1536" name="Hollowmere.P3_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.1/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.792076" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1664964" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1537" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.778782" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1538" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.777395" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1539" name="EditMode" fullname="Hollowmere.P3_1.EditMode" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.776151" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1540" name="Tests" fullname="Hollowmere.P3_1.EditMode.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.774911" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1533" name="P31PlayModeHooksTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-05 11:18:59Z" end-time="2026-10-05 11:18:59Z" duration="0.772787" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1535" name="TenPlayEditCycles" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles" methodname="TenPlayEditCycles" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Explicit" seed="650689276" result="Passed" start-time="2026-10-05 11:18:02Z" end-time="2026-10-05 11:18:59Z" duration="57.801792" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="_SKIPREASON" value="W-GAME-08 memory series; run with --filter TenPlayEditCycles" />
+                    <property name="Timeout" value="1800000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[GameCore Studio] stage: resumed cs_01M459YHH3QGAA80B8035JQ4ER -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AGWJFF6VT9BMZ319FMW45 -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[GameCore Studio] stage: resumed cs_01M45AS5MANWVMR0ZDQRNSKTPP -> Refused: Legacy record lacks authenticated job provenance; restage and explicitly admit.
+[P3.1] memory-cycles.json {"what":"W-GAME-08: Boot.unity Play/Edit cycles in the Editor; memory sampled after each exit (GC + UnloadUnusedAssetsImmediate)","revision":"editor","unity":"6000.0.75f1","cycles":[{"cycle":1,"playAllocated":284838746,"allocated":197557932,"reserved":650346496,"managed":704405504,"ms":5133,"allocatedGrowthPct":0.0,"reservedGrowthPct":0.0},{"cycle":2,"playAllocated":360606194,"allocated":277284018,"reserved":667123712,"managed":706318336,"ms":4898,"allocatedGrowthPct":40.36,"reservedGrowthPct":2.58},{"cycle":3,"playAllocated":280098165,"allocated":196792657,"reserved":667058176,"managed":706445312,"ms":3854,"allocatedGrowthPct":-0.39,"reservedGrowthPct":2.57},{"cycle":4,"playAllocated":280130577,"allocated":196816981,"reserved":667123712,"managed":706519040,"ms":3940,"allocatedGrowthPct":-0.38,"reservedGrowthPct":2.58},{"cycle":5,"playAllocated":280106638,"allocated":196814780,"reserved":667123712,"managed":707072000,"ms":3889,"allocatedGrowthPct":-0.38,"reservedGrowthPct":2.58},{"cycle":6,"playAllocated":280125560,"allocated":196815892,"reserved":667123712,"managed":707174400,"ms":4130,"allocatedGrowthPct":-0.38,"reservedGrowthPct":2.58},{"cycle":7,"playAllocated":280131734,"allocated":196821052,"reserved":667123712,"managed":707235840,"ms":4083,"allocatedGrowthPct":-0.37,"reservedGrowthPct":2.58},{"cycle":8,"playAllocated":280168664,"allocated":196842716,"reserved":667123712,"managed":707514368,"ms":4327,"allocatedGrowthPct":-0.36,"reservedGrowthPct":2.58},{"cycle":9,"playAllocated":280123106,"allocated":196810092,"reserved":650346496,"managed":707616768,"ms":5878,"allocatedGrowthPct":-0.38,"reservedGrowthPct":0.0},{"cycle":10,"playAllocated":280118476,"allocated":196813092,"reserved":650346496,"managed":707674112,"ms":4398,"allocatedGrowthPct":-0.38,"reservedGrowthPct":0.0}],"allocatedGrowthPctCycle10":-0.38,"reservedGrowthPctCycle10":0.0}
+[P3.1] memory cycles: allocated +-0.38%, reserved +0% at cycle 10 (/home/worlesenric/wkspace/gc-studio/p3.1/artifacts/studio/evidence/P3.1/memory-cycles.json)
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

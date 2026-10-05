@@ -41,7 +41,7 @@ namespace Hollowmere.Generated
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "2141c797a101a08dff74450a39c563bb49330b0ddffa971910a0497ab3c138f0";
+        public const string CatalogFingerprint = "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
@@ -147,6 +147,9 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.quest.plugin ('gameplay.quest.plugin').</summary>
         public static readonly FactoryKey QuestPluginKey = new FactoryKey(new Id128(0xCAF8A3CEF4D014EAUL, 0x9BA247BED2C9B516UL), 1U);
 
+        /// <summary>Generated key of gameplay.recipe.13778dd9-35bd-4e39-a90e-f001d6d1d5da ('gameplay.recipe.13778dd9-35bd-4e39-a90e-f001d6d1d5da').</summary>
+        public static readonly FactoryKey Recipe13778dd935bd4e39a90ef001d6d1d5da = new FactoryKey(new Id128(0x08703B575D056626UL, 0xC0511599E016E96CUL), 1U);
+
         /// <summary>Generated key of gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf ('gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf').</summary>
         public static readonly FactoryKey Recipeb30c7c024a114a929bf9b15f89b7acaf = new FactoryKey(new Id128(0x1214640284BCAF83UL, 0x0179DCC016BB71EEUL), 1U);
 
@@ -162,8 +165,23 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.recipe.ada7a792-63fb-480a-9445-3b61f5dece1b ('gameplay.recipe.ada7a792-63fb-480a-9445-3b61f5dece1b').</summary>
         public static readonly FactoryKey Recipeada7a79263fb480a94453b61f5dece1b = new FactoryKey(new Id128(0x4528FC8BC868A4E5UL, 0x1AEEA0F0476C7904UL), 1U);
 
+        /// <summary>Generated key of gameplay.recipe.e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c ('gameplay.recipe.e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c').</summary>
+        public static readonly FactoryKey Recipee0e2c42d7ed845a5a8914edcb8b0ae6c = new FactoryKey(new Id128(0x4A074C9A9FC349FEUL, 0x55929FCFF8F69684UL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.5ffeae11-f167-46ca-86d4-6d1b37687905 ('gameplay.recipe.5ffeae11-f167-46ca-86d4-6d1b37687905').</summary>
+        public static readonly FactoryKey Recipe5ffeae11f16746ca86d46d1b37687905 = new FactoryKey(new Id128(0x4ADC0A9525B7CBF2UL, 0x374A6AEAC3264F16UL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.37902cb4-be99-4267-90cb-c02bd295f8d1 ('gameplay.recipe.37902cb4-be99-4267-90cb-c02bd295f8d1').</summary>
+        public static readonly FactoryKey Recipe37902cb4be99426790cbc02bd295f8d1 = new FactoryKey(new Id128(0x55E6FD6286AC39EEUL, 0x74492B5A0708F2E9UL), 1U);
+
         /// <summary>Generated key of gameplay.recipe.acefbaad-340d-466f-9d66-214afb15646f ('gameplay.recipe.acefbaad-340d-466f-9d66-214afb15646f').</summary>
         public static readonly FactoryKey Recipeacefbaad340d466f9d66214afb15646f = new FactoryKey(new Id128(0x5DC088464FC3C5BBUL, 0xA6F9227ED1C291F3UL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.b6f71bc7-2c1f-4165-8f25-a249cfa316e5 ('gameplay.recipe.b6f71bc7-2c1f-4165-8f25-a249cfa316e5').</summary>
+        public static readonly FactoryKey Recipeb6f71bc72c1f41658f25a249cfa316e5 = new FactoryKey(new Id128(0x641E6D310F5510F4UL, 0x47D96FE2DC293F7FUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.81ae7773-9697-41d7-b790-2d0346b8fd58 ('gameplay.recipe.81ae7773-9697-41d7-b790-2d0346b8fd58').</summary>
+        public static readonly FactoryKey Recipe81ae7773969741d7b7902d0346b8fd58 = new FactoryKey(new Id128(0x679D9BAEF8E1E015UL, 0x4B6273F3CFFEB2CFUL), 1U);
 
         /// <summary>Generated key of gameplay.recipe.ce503024-4b28-4194-8865-8eec9dd6d8a7 ('gameplay.recipe.ce503024-4b28-4194-8865-8eec9dd6d8a7').</summary>
         public static readonly FactoryKey Recipece5030244b28419488658eec9dd6d8a7 = new FactoryKey(new Id128(0x7C091AD28AFDED58UL, 0x30515373FB50843DUL), 1U);
@@ -180,6 +198,9 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.recipe.68d2519f-2a40-439b-be2d-63d16581cd06 ('gameplay.recipe.68d2519f-2a40-439b-be2d-63d16581cd06').</summary>
         public static readonly FactoryKey Recipe68d2519f2a40439bbe2d63d16581cd06 = new FactoryKey(new Id128(0xBC769E8C4A068446UL, 0xF6AA6A06D91AD100UL), 1U);
 
+        /// <summary>Generated key of gameplay.recipe.f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b ('gameplay.recipe.f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b').</summary>
+        public static readonly FactoryKey Recipef90bdbd3d3c4413ea6a1454bafd3bc5b = new FactoryKey(new Id128(0xBD61557FF24FCFA2UL, 0x3FF19473839173B7UL), 1U);
+
         /// <summary>Generated key of gameplay.recipe.05b934c3-466a-4cbd-9ec5-e887ecf26794 ('gameplay.recipe.05b934c3-466a-4cbd-9ec5-e887ecf26794').</summary>
         public static readonly FactoryKey Recipe05b934c3466a4cbd9ec5e887ecf26794 = new FactoryKey(new Id128(0xBDCCA3D2C2235637UL, 0xC5E6A750C5F8F79FUL), 1U);
 
@@ -188,6 +209,27 @@ namespace Hollowmere.Generated
 
         /// <summary>Generated key of gameplay.recipe.193f7ebc-6242-4813-b1cc-6afeea0918b9 ('gameplay.recipe.193f7ebc-6242-4813-b1cc-6afeea0918b9').</summary>
         public static readonly FactoryKey Recipe193f7ebc62424813b1cc6afeea0918b9 = new FactoryKey(new Id128(0xC0E2B7ABC5329C0FUL, 0x7042D04B1521EE7AUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.bdecb271-eb2c-4fd8-94d5-c47c158b9a6d ('gameplay.recipe.bdecb271-eb2c-4fd8-94d5-c47c158b9a6d').</summary>
+        public static readonly FactoryKey Recipebdecb271eb2c4fd894d5c47c158b9a6d = new FactoryKey(new Id128(0xC7AAF95BD8EC027DUL, 0x59997B0472873DF8UL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.b341c519-f6b4-42b7-99ff-649bd5fb071f ('gameplay.recipe.b341c519-f6b4-42b7-99ff-649bd5fb071f').</summary>
+        public static readonly FactoryKey Recipeb341c519f6b442b799ff649bd5fb071f = new FactoryKey(new Id128(0xC9243340367C66C2UL, 0xBC7DB9EB94A4F0AFUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.fafbedd0-6061-4883-93da-4c2a1e6b1a21 ('gameplay.recipe.fafbedd0-6061-4883-93da-4c2a1e6b1a21').</summary>
+        public static readonly FactoryKey Recipefafbedd06061488393da4c2a1e6b1a21 = new FactoryKey(new Id128(0xCB40E1210C2BD2CEUL, 0x95E58E2F62FBE717UL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.3e5ad90c-f48f-43bc-aeeb-aa51360dc71d ('gameplay.recipe.3e5ad90c-f48f-43bc-aeeb-aa51360dc71d').</summary>
+        public static readonly FactoryKey Recipe3e5ad90cf48f43bcaeebaa51360dc71d = new FactoryKey(new Id128(0xD3DB555E2079D4BEUL, 0xB3DADAA99F3B697AUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2 ('gameplay.recipe.9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2').</summary>
+        public static readonly FactoryKey Recipe9e5589ccc56c4b2bade66aa6a11f1ec2 = new FactoryKey(new Id128(0xD78B11653154A456UL, 0x4E9A9570D75B914EUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.8f7c3953-8560-4072-8754-be36e8a94b06 ('gameplay.recipe.8f7c3953-8560-4072-8754-be36e8a94b06').</summary>
+        public static readonly FactoryKey Recipe8f7c3953856040728754be36e8a94b06 = new FactoryKey(new Id128(0xF44CC2471B41BEDFUL, 0x0755FE470B3BE8ACUL), 1U);
+
+        /// <summary>Generated key of gameplay.recipe.2e52c6af-c201-47b6-925d-9f53530eb275 ('gameplay.recipe.2e52c6af-c201-47b6-925d-9f53530eb275').</summary>
+        public static readonly FactoryKey Recipe2e52c6afc20147b6925d9f53530eb275 = new FactoryKey(new Id128(0xF7B2CAA99C6E6F7CUL, 0x2F8325356BAC54F8UL), 1U);
 
         /// <summary>Generated key of gameplay.interaction.system.command ('gameplay.interaction.system.command').</summary>
         public static readonly FactoryKey InteractionCommandSystemKey = new FactoryKey(new Id128(0x03305468046E2933UL, 0x1F03783EA3D7DAD5UL), 1U);
@@ -702,6 +744,10 @@ namespace Hollowmere.Generated
         public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] RecipeRegistrations =
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe13778dd935bd4e39a90ef001d6d1d5da,
+                "gameplay.recipe.13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+                new GameplayCatalogEntry(Recipe13778dd935bd4e39a90ef001d6d1d5da)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 Recipeb30c7c024a114a929bf9b15f89b7acaf,
                 "gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
                 new GameplayCatalogEntry(Recipeb30c7c024a114a929bf9b15f89b7acaf)),
@@ -722,9 +768,29 @@ namespace Hollowmere.Generated
                 "gameplay.recipe.ada7a792-63fb-480a-9445-3b61f5dece1b",
                 new GameplayCatalogEntry(Recipeada7a79263fb480a94453b61f5dece1b)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipee0e2c42d7ed845a5a8914edcb8b0ae6c,
+                "gameplay.recipe.e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+                new GameplayCatalogEntry(Recipee0e2c42d7ed845a5a8914edcb8b0ae6c)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe5ffeae11f16746ca86d46d1b37687905,
+                "gameplay.recipe.5ffeae11-f167-46ca-86d4-6d1b37687905",
+                new GameplayCatalogEntry(Recipe5ffeae11f16746ca86d46d1b37687905)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe37902cb4be99426790cbc02bd295f8d1,
+                "gameplay.recipe.37902cb4-be99-4267-90cb-c02bd295f8d1",
+                new GameplayCatalogEntry(Recipe37902cb4be99426790cbc02bd295f8d1)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 Recipeacefbaad340d466f9d66214afb15646f,
                 "gameplay.recipe.acefbaad-340d-466f-9d66-214afb15646f",
                 new GameplayCatalogEntry(Recipeacefbaad340d466f9d66214afb15646f)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipeb6f71bc72c1f41658f25a249cfa316e5,
+                "gameplay.recipe.b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+                new GameplayCatalogEntry(Recipeb6f71bc72c1f41658f25a249cfa316e5)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe81ae7773969741d7b7902d0346b8fd58,
+                "gameplay.recipe.81ae7773-9697-41d7-b790-2d0346b8fd58",
+                new GameplayCatalogEntry(Recipe81ae7773969741d7b7902d0346b8fd58)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 Recipece5030244b28419488658eec9dd6d8a7,
                 "gameplay.recipe.ce503024-4b28-4194-8865-8eec9dd6d8a7",
@@ -746,6 +812,10 @@ namespace Hollowmere.Generated
                 "gameplay.recipe.68d2519f-2a40-439b-be2d-63d16581cd06",
                 new GameplayCatalogEntry(Recipe68d2519f2a40439bbe2d63d16581cd06)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipef90bdbd3d3c4413ea6a1454bafd3bc5b,
+                "gameplay.recipe.f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+                new GameplayCatalogEntry(Recipef90bdbd3d3c4413ea6a1454bafd3bc5b)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 Recipe05b934c3466a4cbd9ec5e887ecf26794,
                 "gameplay.recipe.05b934c3-466a-4cbd-9ec5-e887ecf26794",
                 new GameplayCatalogEntry(Recipe05b934c3466a4cbd9ec5e887ecf26794)),
@@ -757,25 +827,67 @@ namespace Hollowmere.Generated
                 Recipe193f7ebc62424813b1cc6afeea0918b9,
                 "gameplay.recipe.193f7ebc-6242-4813-b1cc-6afeea0918b9",
                 new GameplayCatalogEntry(Recipe193f7ebc62424813b1cc6afeea0918b9)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipebdecb271eb2c4fd894d5c47c158b9a6d,
+                "gameplay.recipe.bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+                new GameplayCatalogEntry(Recipebdecb271eb2c4fd894d5c47c158b9a6d)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipeb341c519f6b442b799ff649bd5fb071f,
+                "gameplay.recipe.b341c519-f6b4-42b7-99ff-649bd5fb071f",
+                new GameplayCatalogEntry(Recipeb341c519f6b442b799ff649bd5fb071f)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipefafbedd06061488393da4c2a1e6b1a21,
+                "gameplay.recipe.fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+                new GameplayCatalogEntry(Recipefafbedd06061488393da4c2a1e6b1a21)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe3e5ad90cf48f43bcaeebaa51360dc71d,
+                "gameplay.recipe.3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+                new GameplayCatalogEntry(Recipe3e5ad90cf48f43bcaeebaa51360dc71d)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe9e5589ccc56c4b2bade66aa6a11f1ec2,
+                "gameplay.recipe.9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+                new GameplayCatalogEntry(Recipe9e5589ccc56c4b2bade66aa6a11f1ec2)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe8f7c3953856040728754be36e8a94b06,
+                "gameplay.recipe.8f7c3953-8560-4072-8754-be36e8a94b06",
+                new GameplayCatalogEntry(Recipe8f7c3953856040728754be36e8a94b06)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                Recipe2e52c6afc20147b6925d9f53530eb275,
+                "gameplay.recipe.2e52c6af-c201-47b6-925d-9f53530eb275",
+                new GameplayCatalogEntry(Recipe2e52c6afc20147b6925d9f53530eb275)),
         };
 
         /// <summary>Generated keys of RecipeRegistrations, in the same canonical order.</summary>
         public static readonly FactoryKey[] RecipeKeys =
         {
+            Recipe13778dd935bd4e39a90ef001d6d1d5da,
             Recipeb30c7c024a114a929bf9b15f89b7acaf,
             Recipe2e855e9641a64b39b5a056319b43c989,
             Recipeb69745cdc1d04d1384a4f1bc351f5948,
             Recipe58338d2c57214ba38c6e96f863268d8b,
             Recipeada7a79263fb480a94453b61f5dece1b,
+            Recipee0e2c42d7ed845a5a8914edcb8b0ae6c,
+            Recipe5ffeae11f16746ca86d46d1b37687905,
+            Recipe37902cb4be99426790cbc02bd295f8d1,
             Recipeacefbaad340d466f9d66214afb15646f,
+            Recipeb6f71bc72c1f41658f25a249cfa316e5,
+            Recipe81ae7773969741d7b7902d0346b8fd58,
             Recipece5030244b28419488658eec9dd6d8a7,
             Recipe2a8a3d762dea4c2c88a313be92ea473f,
             Recipe19b21d1c92034d9aa4fdcb3e57a6ac54,
             Reciped7081228f4974a3d811e0bb0e3c72807,
             Recipe68d2519f2a40439bbe2d63d16581cd06,
+            Recipef90bdbd3d3c4413ea6a1454bafd3bc5b,
             Recipe05b934c3466a4cbd9ec5e887ecf26794,
             Recipe18779563f74f4223947f19f0502c5a63,
             Recipe193f7ebc62424813b1cc6afeea0918b9,
+            Recipebdecb271eb2c4fd894d5c47c158b9a6d,
+            Recipeb341c519f6b442b799ff649bd5fb071f,
+            Recipefafbedd06061488393da4c2a1e6b1a21,
+            Recipe3e5ad90cf48f43bcaeebaa51360dc71d,
+            Recipe9e5589ccc56c4b2bade66aa6a11f1ec2,
+            Recipe8f7c3953856040728754be36e8a94b06,
+            Recipe2e52c6afc20147b6925d9f53530eb275,
         };
 
         /// <summary>
@@ -785,6 +897,12 @@ namespace Hollowmere.Generated
         /// </summary>
         public static readonly FactoryRegistration[] RecipeRegistrationsCatalogRegistrations =
         {
+            new FactoryRegistration(
+                Recipe13778dd935bd4e39a90ef001d6d1d5da,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
+                1U),
             new FactoryRegistration(
                 Recipeb30c7c024a114a929bf9b15f89b7acaf,
                 FactoryKind.LayoutApply,
@@ -816,10 +934,40 @@ namespace Hollowmere.Generated
                 new Id128(0x8C8436DD0C9F2D00UL, 0x1D30F4C71A3D56B3UL),
                 1U),
             new FactoryRegistration(
+                Recipee0e2c42d7ed845a5a8914edcb8b0ae6c,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0x0CEBBF98B5A343FFUL, 0xE58AC8300E70D6DBUL),
+                1U),
+            new FactoryRegistration(
+                Recipe5ffeae11f16746ca86d46d1b37687905,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDB74BB785DE26F02UL, 0x7BD0DDDBB2CC259FUL),
+                1U),
+            new FactoryRegistration(
+                Recipe37902cb4be99426790cbc02bd295f8d1,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDFD9DA441E86A9D8UL, 0xD71B911A1A879539UL),
+                1U),
+            new FactoryRegistration(
                 Recipeacefbaad340d466f9d66214afb15646f,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
                 new Id128(0x0B8EC0E8133F3EBCUL, 0xBB7CC36AE5AA7FF0UL),
+                1U),
+            new FactoryRegistration(
+                Recipeb6f71bc72c1f41658f25a249cfa316e5,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDFD9DA441E86A9D8UL, 0xD71B911A1A879539UL),
+                1U),
+            new FactoryRegistration(
+                Recipe81ae7773969741d7b7902d0346b8fd58,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xF6F363C85856E034UL, 0xC10785A52AD42CC4UL),
                 1U),
             new FactoryRegistration(
                 Recipece5030244b28419488658eec9dd6d8a7,
@@ -852,6 +1000,12 @@ namespace Hollowmere.Generated
                 new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
+                Recipef90bdbd3d3c4413ea6a1454bafd3bc5b,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDB74BB785DE26F02UL, 0x7BD0DDDBB2CC259FUL),
+                1U),
+            new FactoryRegistration(
                 Recipe05b934c3466a4cbd9ec5e887ecf26794,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
@@ -868,6 +1022,48 @@ namespace Hollowmere.Generated
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
                 new Id128(0x2600ADFF4FB65F3BUL, 0x03ECE5E0E192C300UL),
+                1U),
+            new FactoryRegistration(
+                Recipebdecb271eb2c4fd894d5c47c158b9a6d,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0x30124D31DD3A529AUL, 0x898495A04DCE9A83UL),
+                1U),
+            new FactoryRegistration(
+                Recipeb341c519f6b442b799ff649bd5fb071f,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0x3EE5C7EFD8E81DCEUL, 0x49796A4EE565054EUL),
+                1U),
+            new FactoryRegistration(
+                Recipefafbedd06061488393da4c2a1e6b1a21,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xE787116304BFE70AUL, 0x8E6E1AC7862F8EA9UL),
+                1U),
+            new FactoryRegistration(
+                Recipe3e5ad90cf48f43bcaeebaa51360dc71d,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDB74BB785DE26F02UL, 0x7BD0DDDBB2CC259FUL),
+                1U),
+            new FactoryRegistration(
+                Recipe9e5589ccc56c4b2bade66aa6a11f1ec2,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xDB74BB785DE26F02UL, 0x7BD0DDDBB2CC259FUL),
+                1U),
+            new FactoryRegistration(
+                Recipe8f7c3953856040728754be36e8a94b06,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0x30124D31DD3A529AUL, 0x898495A04DCE9A83UL),
+                1U),
+            new FactoryRegistration(
+                Recipe2e52c6afc20147b6925d9f53530eb275,
+                FactoryKind.LayoutApply,
+                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                new Id128(0xF6F363C85856E034UL, 0xC10785A52AD42CC4UL),
                 1U),
         };
 
@@ -4002,14 +4198,14 @@ namespace Hollowmere.Generated
         /// <summary>Every group's catalog registrations concatenated in declaration order.</summary>
         private static FactoryRegistration[] GroupCatalogRegistrations()
         {
-            FactoryRegistration[] all = new FactoryRegistration[58];
+            FactoryRegistration[] all = new FactoryRegistration[72];
             int offset = 0;
             Array.Copy(LayoutRegistrationsCatalogRegistrations, 0, all, offset, 22);
             offset += 22;
             Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 11);
             offset += 11;
-            Array.Copy(RecipeRegistrationsCatalogRegistrations, 0, all, offset, 14);
-            offset += 14;
+            Array.Copy(RecipeRegistrationsCatalogRegistrations, 0, all, offset, 28);
+            offset += 28;
             Array.Copy(SystemRegistrationsCatalogRegistrations, 0, all, offset, 11);
             offset += 11;
             return all;
@@ -4046,6 +4242,6 @@ namespace Hollowmere.Generated
         public const int SchemaCount = 25;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "d64acab45e034ab466615baa2d46c7a931904c8b4ba7826533a0a12b0b34ba69";
+        public const string CatalogFileHash = "dcec91a7e17d235e02182065dce0c14f1b4e4a07854b49223c400668a5817023";
     }
 }

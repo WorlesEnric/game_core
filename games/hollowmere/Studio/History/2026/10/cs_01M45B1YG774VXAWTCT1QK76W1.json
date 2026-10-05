@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B1YG774VXAWTCT1QK76W1",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Did you ever hear the bell? Gran says it rang every dusk before the flood.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Pip_hello.wav",
+        "artifact": {
+          "artifact": "sha256:f5686a5cde3a8572f78261fb892b7490466f31caee7d181d0a95536a10155aac"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "f5686a5cde3a8572f78261fb892b7490466f31caee7d181d0a95536a10155aac",
+      "name": "Pip_hello.wav",
+      "mediaType": "audio/wav",
+      "bytes": 222764,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Pip_hello.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-98bd640ca1f0638a7b10ccce20ebb545-8300000-0",
+                "assetGuid": "98bd640ca1f0638a7b10ccce20ebb545",
+                "path": "Assets/Hollowmere/Media/Voices/Pip_hello.wav"
+              },
+              "stamp": "sha256:f5686a5cde3a8572f78261fb892b7490466f31caee7d181d0a95536a10155aac"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:12.945Z",
+    "applied": "2026-10-05T06:12:13.049Z"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "cs_01M458913TBNR0P7KJF7V2S399",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.npc-roster] List Bram on the NPC roster",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "roster",
+      "tool": "assign",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "args": {
+        "field": "npcs",
+        "value": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+        "append": true
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "roster",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+                "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+                "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+                "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+              },
+              "args": {
+                "fields": {
+                  "npcs": [
+                    {
+                      "kind": "Definition",
+                      "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+                      "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+                      "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+                      "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+                      "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+                      "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+                      "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+                      "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+                      "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+                      "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+                      "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+                "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+                "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+                "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+              },
+              "stamp": "sha256:0bdbc906c2e42e4529da30a7151f748798a4df06c4fdf1117ee75897ba6dbf1b"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.264Z",
+    "applied": "2026-10-05T05:23:39.266Z"
+  }
+}

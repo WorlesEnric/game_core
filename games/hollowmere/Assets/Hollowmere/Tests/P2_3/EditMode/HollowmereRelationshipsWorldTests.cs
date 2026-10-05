@@ -60,16 +60,23 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             ImpactAnalysis impact = view.Impact!;
             Log("lantern impact: " + string.Join("; ", Describe(impact)));
 
-            Assert.That(impact.Affects(quest.Ref.IdentityKey), Is.True, "the quest reward (rewards[n].target, a nested reference)");
+            // P3.1: the lantern is the quest's stage-1 objective (collect it), no longer a reward.
+            Assert.That(impact.Affects(quest.Ref.IdentityKey), Is.True, "the quest objective (objectives[n].item, a nested reference)");
             ImpactRow? reward = null;
             foreach (ImpactRow row in impact.OfType("quest.quest"))
             {
                 reward = row;
             }
 
-            Assert.That(reward!.Field, Does.StartWith("rewards["), "the row names the reward field");
-            Assert.That(impact.Affects(loot.Ref.IdentityKey), Is.True, "the marsh loot table entry");
+            Assert.That(reward!.Field, Does.StartWith("objectives["), "the row names the objective field");
             Assert.That(impact.CountsByType.ContainsKey("quest.quest"), Is.True);
+
+            // P3.1's marsh loot table rolls coins, herbs and oil (the lantern is no longer loot): the oil flask's impact
+            // lists it.
+            IndexNode oil = NodeAt(Root + "/Items/OilFlask.asset");
+            view.SetRoots(new[] { oil.Ref.IdentityKey });
+            Log("oil flask impact: " + string.Join("; ", Describe(view.Impact!)));
+            Assert.That(view.Impact!.Affects(loot.Ref.IdentityKey), Is.True, "the marsh loot table entry");
 
             view.SetRoots(new[] { gateKey.Ref.IdentityKey });
             Log("gate key impact: " + string.Join("; ", Describe(view.Impact!)));

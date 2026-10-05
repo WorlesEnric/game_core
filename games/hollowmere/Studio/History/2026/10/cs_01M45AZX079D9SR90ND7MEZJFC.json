@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AZX079D9SR90ND7MEZJFC",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: A lantern, and lit. Fair enough. Mind the sinkholes: anything that glints out there is bait.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Hale_pass.wav",
+        "artifact": {
+          "artifact": "sha256:36500bb49fc837bb5c23abab2238d529cf86d45fa2e71007e3eedca73dff7342"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "36500bb49fc837bb5c23abab2238d529cf86d45fa2e71007e3eedca73dff7342",
+      "name": "Hale_pass.wav",
+      "mediaType": "audio/wav",
+      "bytes": 357164,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Hale_pass.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d63e6842bc488ef4695dd0209879f652-8300000-0",
+                "assetGuid": "d63e6842bc488ef4695dd0209879f652",
+                "path": "Assets/Hollowmere/Media/Voices/Hale_pass.wav"
+              },
+              "stamp": "sha256:36500bb49fc837bb5c23abab2238d529cf86d45fa2e71007e3eedca73dff7342"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:05.881Z",
+    "applied": "2026-10-05T06:11:06.028Z"
+  }
+}

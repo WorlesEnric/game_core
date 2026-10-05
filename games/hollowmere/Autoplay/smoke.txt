@@ -1,0 +1,11 @@
+# Hollowmere player smoke (P3.1): boot, start a new game, walk a few metres, quit 0 after ~600 frames.
+# Used by build_game_player.sh: -batchmode -nographics -frameLog <file> -autoplay smoke.txt
+waituntil ready timeout 90
+mark boot
+ui newgame
+waituntil ready timeout 90
+mark newgame
+walk 0 -9 timeout 15
+waitframes 450
+mark done
+quit 0

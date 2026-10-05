@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: PuntRepair
+  m_EditorClassIdentifier: 
+  authoringId: 53c4ce6e-afc1-4a06-a4b9-8eb38374f6ff
+  contentStamp: f49d99093a30b4b35c1c520cba90909b9b01b3eb49802285d46a3b64bedd4ed8
+  trigger: 12
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 0}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
+  triggerEntityId: 83d50830-abde-42e5-abee-45629e38d17c
+  triggerValue: 0
+  matchAnyValue: 1
+  conditionSet: {fileID: 0}
+  conditions:
+  - kind: 0
+    fact: {fileID: 11400000, guid: 8c3360ef591d03b089452f419e70a992, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 0
+    value: 0
+    legacySubject: {fileID: 0}
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  - kind: 1
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: fffb111048bcd5d6ea31bc57defa7c6d, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    rule: {fileID: 0}
+    conditionSet: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    index: 0
+    op: 5
+    value: 1
+    legacySubject: {fileID: 0}
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 3
+    fact: {fileID: 0}
+    item: {fileID: 11400000, guid: 344e1560f458dcce8b088aebc730d844, type: 2}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 0
+    fact: {fileID: 11400000, guid: 8c3360ef591d03b089452f419e70a992, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+    legacyTarget: {fileID: 0}
+  - kind: 13
+    fact: {fileID: 0}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: You seal the punt's seams with pitch from the oil flask. Use it again to
+      push off.
+    legacyTarget: {fileID: 0}
+  once: 1
+  cooldownMs: 0
+  maxFires: 0
+  priority: 1

@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: Bram
+  m_EditorClassIdentifier: 
+  authoringId: 06d8cd36-a0a2-47ca-93d0-8ca0d21b611d
+  contentStamp: ceb7a7181c391b727906c7ef545b49bcbd2990c418e2a02e300263abf78c2866
+  speaker: Bram
+  speakerEntityId: 2825db71-11a1-4155-b1db-9e7734111d9e
+  npcGraphRef: 
+  entry: 0
+  nodes:
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Welcome to the Drowned Lantern. Coin for goods, and no questions.
+    voiceClip: {fileID: 8300000, guid: 86608ff42b86350c6a2afddfa71219de, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: What will it be?
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: A lantern (4 coins)
+      condition: {fileID: 11400000, guid: 312f20932391eaf6ea780ae71f56382c, type: 2}
+      hideWhenUnavailable: 0
+    - text: An oil flask (2 coins)
+      condition: {fileID: 11400000, guid: 9a2aea3c3bfe56c71be5f263b0e6302e, type: 2}
+      hideWhenUnavailable: 0
+    - text: Marsh herbs (1 coin)
+      condition: {fileID: 11400000, guid: f10a72a8291c2c2be95c2e076e33a456, type: 2}
+      hideWhenUnavailable: 0
+    - text: Nothing, thanks.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: There you are. Keep it dry.
+    voiceClip: {fileID: 8300000, guid: 7c4fab1eb2876608a9f0702064b57a7a, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 4ad7a6abdd24836a2803a516c461c6a6, type: 2}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 749e4e68f4bec3647b34170983f99674, type: 2}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: d87f8d5db75ed7d6faa6ebe32f235106, type: 2}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Chew them when your legs give out.
+    voiceClip: {fileID: 8300000, guid: 389505aa044c01657a030c60c3bb6f10, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Suit yourself.
+    voiceClip: {fileID: 8300000, guid: dd07c82afc3c10677a4374cd6bb9b926, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 0
+    port: 0
+    option: 0
+    to: 1
+  - from: 1
+    port: 2
+    option: 0
+    to: 3
+  - from: 3
+    port: 0
+    option: 0
+    to: 2
+  - from: 1
+    port: 2
+    option: 1
+    to: 4
+  - from: 4
+    port: 0
+    option: 0
+    to: 2
+  - from: 1
+    port: 2
+    option: 2
+    to: 5
+  - from: 5
+    port: 0
+    option: 0
+    to: 6
+  - from: 1
+    port: 2
+    option: 3
+    to: 7

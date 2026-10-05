@@ -19,6 +19,12 @@
 // (through the UI runtime's restore path when the UI rig exists, else RootChanged directly) and every restore re-attaches
 // the narrative layer on the restored root's delivery owner (NarrativeComposer.Attach) and reinstalls the sessions.
 // ConfigureSaves(options) sets SaveServiceOptions.DeliveryFactory to the narrative delivery's owner (one owner per world).
+//
+// P3.1 (A11, additive): in the player, HollowmereApplication registers Hollowmere's definition at SubsystemRegistration,
+// so the application bootstrap composes the game root before this scene loads. Start then adopts that root (Adopted):
+// the UI/audio rig, plan, extensions and modules come from the registration, NarrativeComposer.Attach attaches the
+// narrative layer, and Install / Start run as for a booted root. Without an adoptable registration (Editor Play Mode,
+// -noRegister, New Game / Restart reloads) GameBoot boots its own root as before.
 #nullable enable
 using System;
 using GameCore.Gameplay.Interaction;
@@ -58,6 +64,25 @@ namespace Hollowmere.Boot
 
         /// <summary>The narrative world around <see cref="World"/>; null before Start or when the boot refused.</summary>
         public NarrativeWorld? Narrative { get; private set; }
+
+        /// <summary>The save service of the last <see cref="UseSaves"/> call (null before it).</summary>
+        public SaveService? Saves { get; private set; }
+
+        /// <summary>
+        /// Raised at the start of every <see cref="UseSaves"/> (before the UI-rig early return), so a trusted Editor
+        /// integration can bind Studio admission (R2-G request 4: capture, session readiness, live smoke) to the new
+        /// service. An instance event: nothing subscribes in a player build, and GameBoot references no Editor assembly.
+        /// </summary>
+        public event Action<GameBoot, SaveService>? SavesInstalled;
+
+        /// <summary>
+        /// The admission session readiness of <paramref name="service"/> (R2-G2's exact lambda): the world and its narrative
+        /// layer exist and the world's root is both the save service's active root and the application's current root.
+        /// Follows World and Narrative after every re-attach; a restore makes the restored root current (SADR-021, APP-1).
+        /// </summary>
+        public bool AdmissionReady(SaveService service) =>
+            service != null && World != null && Narrative != null
+            && ReferenceEquals(World.Root, service.ActiveRoot) && ReferenceEquals(World.Root, GameApplication.Current);
 
         /// <summary>The narrative modules of the world (their presenters, runner and commands).</summary>
         public HollowmereNarrativeModules? Modules { get; private set; }
@@ -143,6 +168,12 @@ namespace Hollowmere.Boot
                 return;
             }
 
+            HollowmereApplication? registered = FindAnyObjectByType<HollowmereApplication>();
+            if (registered != null && Adopt(registered))
+            {
+                return;
+            }
+
             var playerExtension = new PlayerWorldExtension(player);
             var npcExtension = new NpcWorldExtension(npcs);
             var interactionExtension = new InteractionWorldExtension(interactions);
@@ -186,6 +217,51 @@ namespace Hollowmere.Boot
             game.Root.Start();
         }
 
+        /// <summary>True when this boot adopted the root registered at SubsystemRegistration (HollowmereApplication, A11).</summary>
+        public bool Adopted { get; private set; }
+
+        /// <summary>
+        /// Adopts the registered root (P3.1, A11): true when the boot is handled here (adopted, or refused after the
+        /// hand-over); false when the registration is not adoptable and was discarded, so Start boots its own root.
+        /// </summary>
+        private bool Adopt(HollowmereApplication registered)
+        {
+            GameApplicationRoot? root = registered.AdoptableRoot(manifest, content, player, npcs, interactions, out string reason);
+            HollowmereComposition? composition = registered.Composition;
+            if (root == null || composition == null || content == null)
+            {
+                registered.Discard(reason.Length > 0 ? reason : "GameBoot has no content manifest");
+                return false;
+            }
+
+            registered.HandOver(transform);
+            PlayerExtension = composition.PlayerExtension;
+            NpcExtension = composition.NpcExtension;
+            InteractionExtension = composition.InteractionExtension;
+            Modules = composition.Modules;
+            try
+            {
+                NarrativeWorld game = NarrativeComposer.Attach(root, composition.Plan, content, composition.Modules.All, true);
+                Install(game);
+            }
+            catch (Exception refused) when (refused is InvalidOperationException || refused is ArgumentException)
+            {
+                Narrative = null;
+                World = null;
+                Player?.Dispose();
+                root.Stop("Hollowmere could not adopt the registered root");
+                Refuse("adopting the registered root failed: " + refused.Message);
+                return true;
+            }
+
+            GameplayWorldBehaviour holder = gameObject.AddComponent<GameplayWorldBehaviour>();
+            holder.World = World!;
+            root.Start();
+            Adopted = true;
+            Debug.Log("[Hollowmere] adopted the application root registered at SubsystemRegistration");
+            return true;
+        }
+
         /// <summary>The per-root half of the boot: streaming options, views, the P1.3 sessions and their wiring.</summary>
         private void Install(NarrativeWorld game)
         {
@@ -220,6 +296,8 @@ namespace Hollowmere.Boot
                 throw new ArgumentNullException(nameof(service));
             }
 
+            Saves = service;
+            SavesInstalled?.Invoke(this, service);
             Hollowmere.UiAudio.HollowmereUiAudio? rig = UiAudioBootstrap.RigOf(gameObject);
             if (rig != null)
             {

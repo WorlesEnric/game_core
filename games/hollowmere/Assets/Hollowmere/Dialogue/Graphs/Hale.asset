@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hale
   m_EditorClassIdentifier: 
   authoringId: a82ac490-3bac-45c7-9e27-65a59d7cc6cf
-  contentStamp: 5085f7b2e7ca4678fd787259ec04fb27542d7338a7b81dd8b1da31f18483e4d2
+  contentStamp: 8a18ba27aa2b34bc59033bff64b4102ca65ce7165edc782f9b71190715f78d1f
   speaker: Hale
   speakerEntityId: 3f2e423d-ec9f-4051-8713-662180be4db9
   npcGraphRef: dialogue.hale
@@ -28,11 +28,21 @@ MonoBehaviour:
     condition: {fileID: 11400000, guid: 469b59b723897eb2494ae3706f6c9802, type: 2}
     actions: {fileID: 0}
     options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: abc1982dda435320caeb533fec290a89, type: 2}
+    actions: {fileID: 0}
+    options: []
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: The marsh gate stays shut. Odd has the key.
-    voiceClip: {fileID: 0}
+    text: Halt. Blackmere eats folk who walk it dark. Come back with a lantern and
+      I will open the gate.
+    voiceClip: {fileID: 8300000, guid: d7588b358ad8ad43091865a2b5dc1783, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
@@ -40,8 +50,46 @@ MonoBehaviour:
   - kind: 0
     speaker: 
     speakerEntityId: 
-    text: The gate's open. Watch your step out there.
+    text: 'A lantern, and lit. Fair enough. Mind the sinkholes: anything that glints
+      out there is bait.'
+    voiceClip: {fileID: 8300000, guid: d63e6842bc488ef4695dd0209879f652, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
     voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: de277e8d1a615d2ff8aa2c0da24b5907, type: 2}
+    options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: 850520e0be842c7e9830bf255c4a9069, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The shrine burns again. First night in years I have not felt watched out
+      here.
+    voiceClip: {fileID: 8300000, guid: 88f6bf82ac23311a5abb7f6a5aa177cf, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The gate is open. Odd ferries from the jetty, if he likes you.
+    voiceClip: {fileID: 8300000, guid: 655bc2c22a34d85268956a5a074fc5f4, type: 3}
     portrait: {fileID: 0}
     condition: {fileID: 0}
     actions: {fileID: 0}
@@ -51,7 +99,27 @@ MonoBehaviour:
     port: 1
     option: 0
     to: 1
+  - from: 1
+    port: 1
+    option: 0
+    to: 2
+  - from: 1
+    port: 0
+    option: 0
+    to: 3
+  - from: 3
+    port: 0
+    option: 0
+    to: 4
   - from: 0
     port: 0
     option: 0
-    to: 2
+    to: 5
+  - from: 5
+    port: 0
+    option: 0
+    to: 6
+  - from: 5
+    port: 1
+    option: 0
+    to: 7

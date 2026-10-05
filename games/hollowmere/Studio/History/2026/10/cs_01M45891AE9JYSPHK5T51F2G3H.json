@@ -1,0 +1,223 @@
+{
+  "id": "cs_01M45891AE9JYSPHK5T51F2G3H",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.belfry-enclosure-village] Close the collapsed causeway to the belfry on the village side (ruin walls around the walk-in portal)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "w0",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          15.0263767,
+          0.0,
+          30.0527534
+        ],
+        "yaw": 206.565048,
+        "size": [
+          5.2,
+          3.2,
+          0.8
+        ],
+        "collider": true,
+        "name": "Collapsed Arch Front"
+      }
+    },
+    {
+      "opId": "w1",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          16.278574,
+          0.0,
+          32.557148
+        ],
+        "yaw": 206.565048,
+        "size": [
+          5.2,
+          3.2,
+          0.8
+        ],
+        "collider": true,
+        "name": "Collapsed Arch Back"
+      }
+    },
+    {
+      "opId": "w2",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          13.50585,
+          0.0,
+          32.37826
+        ],
+        "yaw": 296.565063,
+        "size": [
+          3.6,
+          3.2,
+          0.8
+        ],
+        "collider": true,
+        "name": "Collapsed Arch Right"
+      }
+    },
+    {
+      "opId": "w3",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          17.7991,
+          0.0,
+          30.231638
+        ],
+        "yaw": 296.565063,
+        "size": [
+          3.6,
+          3.2,
+          0.8
+        ],
+        "collider": true,
+        "name": "Collapsed Arch Left"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "w0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "w1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "w2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "w3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.480Z",
+    "applied": "2026-10-05T05:23:39.517Z"
+  }
+}

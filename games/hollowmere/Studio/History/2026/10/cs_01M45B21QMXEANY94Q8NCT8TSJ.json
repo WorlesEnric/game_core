@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B21QMXEANY94Q8NCT8TSJ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Gran says you light the shrine lanterns the way the sun walks: from the willow in the west to the water in the east.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Pip_shrine.wav",
+        "artifact": {
+          "artifact": "sha256:6e729b2ea30e993b687582d07437b0e9dc63c2014707ea455258314ca3e6a081"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "6e729b2ea30e993b687582d07437b0e9dc63c2014707ea455258314ca3e6a081",
+      "name": "Pip_shrine.wav",
+      "mediaType": "audio/wav",
+      "bytes": 384044,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Pip_shrine.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-c586f9e22dd50c9d4b9da9eabf02235d-8300000-0",
+                "assetGuid": "c586f9e22dd50c9d4b9da9eabf02235d",
+                "path": "Assets/Hollowmere/Media/Voices/Pip_shrine.wav"
+              },
+              "stamp": "sha256:6e729b2ea30e993b687582d07437b0e9dc63c2014707ea455258314ca3e6a081"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:16.252Z",
+    "applied": "2026-10-05T06:12:16.365Z"
+  }
+}

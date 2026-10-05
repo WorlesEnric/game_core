@@ -1,0 +1,303 @@
+{
+  "id": "cs_01M45894EMTFR6SH46ER9FVGHQ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.prop-skins] Texture the NPC body and the prop prefabs (lanterns, reeds, stones, crates, bell, signpost, bucket)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "skin_npc",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Cloth.mat"
+        ],
+        "childName": "Body"
+      }
+    },
+    {
+      "opId": "skin_lantern",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+        "global": "GlobalObjectId_V1-3-60ae29846299723c78e73baae1552e75-11400000-0",
+        "assetGuid": "60ae29846299723c78e73baae1552e75",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:5d43eba1112f37fc25d0bf2f37ef3a92a34c9a7c63b70b3129b8483fcf93ceca"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bronze.mat"
+        ],
+        "childName": ""
+      }
+    },
+    {
+      "opId": "skin_reed",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "2e52c6af-c201-47b6-925d-9f53530eb275",
+        "global": "GlobalObjectId_V1-3-de700c80a95ee55288b017010f4b2253-11400000-0",
+        "assetGuid": "de700c80a95ee55288b017010f4b2253",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:210894fcedd8a9d5ad922545c22321d6e7dc89ece52fae00085f9b4753af1b01"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "childName": ""
+      }
+    },
+    {
+      "opId": "skin_stone",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+        "global": "GlobalObjectId_V1-3-e070a9213e4093001b7fab85bdaa52e4-11400000-0",
+        "assetGuid": "e070a9213e4093001b7fab85bdaa52e4",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:b90c609f9493fced6bc12c9977a83b3dc8fa959af3e761b91c127cc2e8498eea"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "childName": ""
+      }
+    },
+    {
+      "opId": "skin_bell",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+        "global": "GlobalObjectId_V1-3-dd3e17cd1cd37adecbfdcd5193978e4c-11400000-0",
+        "assetGuid": "dd3e17cd1cd37adecbfdcd5193978e4c",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:450477a8d0adb3c4232954a06f5c887f7cb4a3f0d9477f146b376d2a9e5c89f1"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bronze.mat"
+        ],
+        "childName": ""
+      }
+    },
+    {
+      "opId": "skin_crate",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+        "global": "GlobalObjectId_V1-3-b143fbbb94f6cdb40b16ca2d2a51fdc8-11400000-0",
+        "assetGuid": "b143fbbb94f6cdb40b16ca2d2a51fdc8",
+        "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:25e2f8edf982d6e464b6d1b4080fafbc0d4c257f9c4dc9ac6c2bbb838f6d3b42"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "childName": ""
+      }
+    },
+    {
+      "opId": "skin_signpost",
+      "tool": "hollowmere.skinPrefab",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+        "global": "GlobalObjectId_V1-3-28421afb24106a6bf809f380e5edce51-11400000-0",
+        "assetGuid": "28421afb24106a6bf809f380e5edce51",
+        "path": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:64ef99182870b44f3631598bd8b0472db1c5d95cd1667ee3b3828aff7a150c77"
+      },
+      "args": {
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "childName": ""
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "skin_npc",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_lantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+                "global": "GlobalObjectId_V1-3-60ae29846299723c78e73baae1552e75-11400000-0",
+                "assetGuid": "60ae29846299723c78e73baae1552e75",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset"
+              },
+              "stamp": "sha256:5d43eba1112f37fc25d0bf2f37ef3a92a34c9a7c63b70b3129b8483fcf93ceca"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_reed",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "2e52c6af-c201-47b6-925d-9f53530eb275",
+                "global": "GlobalObjectId_V1-3-de700c80a95ee55288b017010f4b2253-11400000-0",
+                "assetGuid": "de700c80a95ee55288b017010f4b2253",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset"
+              },
+              "stamp": "sha256:210894fcedd8a9d5ad922545c22321d6e7dc89ece52fae00085f9b4753af1b01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_stone",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+                "global": "GlobalObjectId_V1-3-e070a9213e4093001b7fab85bdaa52e4-11400000-0",
+                "assetGuid": "e070a9213e4093001b7fab85bdaa52e4",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset"
+              },
+              "stamp": "sha256:b90c609f9493fced6bc12c9977a83b3dc8fa959af3e761b91c127cc2e8498eea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_bell",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+                "global": "GlobalObjectId_V1-3-dd3e17cd1cd37adecbfdcd5193978e4c-11400000-0",
+                "assetGuid": "dd3e17cd1cd37adecbfdcd5193978e4c",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset"
+              },
+              "stamp": "sha256:450477a8d0adb3c4232954a06f5c887f7cb4a3f0d9477f146b376d2a9e5c89f1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_crate",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+                "global": "GlobalObjectId_V1-3-b143fbbb94f6cdb40b16ca2d2a51fdc8-11400000-0",
+                "assetGuid": "b143fbbb94f6cdb40b16ca2d2a51fdc8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset"
+              },
+              "stamp": "sha256:25e2f8edf982d6e464b6d1b4080fafbc0d4c257f9c4dc9ac6c2bbb838f6d3b42"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "skin_signpost",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+                "global": "GlobalObjectId_V1-3-28421afb24106a6bf809f380e5edce51-11400000-0",
+                "assetGuid": "28421afb24106a6bf809f380e5edce51",
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset"
+              },
+              "stamp": "sha256:64ef99182870b44f3631598bd8b0472db1c5d95cd1667ee3b3828aff7a150c77"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.689Z",
+    "applied": "2026-10-05T05:23:42.758Z"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M458MM06KR538X26569BGSQN",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Traveller, you look half drowned yourself. Sit a moment. I am Maren, the healer here.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_greet.wav",
+        "artifact": {
+          "artifact": "sha256:bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d",
+      "name": "Maren_greet.wav",
+      "mediaType": "audio/wav",
+      "bytes": 345644,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_greet.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-f897124a7f0c7103ab101d1bc29dfcf5-8300000-0",
+                "assetGuid": "f897124a7f0c7103ab101d1bc29dfcf5",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_greet.wav"
+              },
+              "stamp": "sha256:bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:29:59.054Z",
+    "applied": "2026-10-05T05:29:59.177Z"
+  }
+}

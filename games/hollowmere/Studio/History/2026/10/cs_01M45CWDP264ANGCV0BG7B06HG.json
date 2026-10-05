@@ -1,0 +1,411 @@
+{
+  "id": "cs_01M45CWDP264ANGCV0BG7B06HG",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.quest] Restructure The Drowned Bell: Rumour, Lantern, Crossing, Belfry with three endings and a failure condition",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "quest",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+        "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+        "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+        "path": "Assets/Hollowmere/Quests/DrownedBell.asset",
+        "scope": "Definition",
+        "stamp": "sha256:1f5dad7f9f750cb5cdd4dedd03dad4382d604882a1703ffd6c0fbecb4d66c686"
+      },
+      "args": {
+        "fields": {
+          "title": "The Drowned Bell",
+          "branchNames": [
+            "let it sleep",
+            "ring the bell",
+            "free the echo"
+          ],
+          "stages": [
+            {
+              "title": "Rumour",
+              "description": "Healer Maren speaks of the Drowned Bell, silent since the flood.",
+              "next": 1
+            },
+            {
+              "title": "A light for the marsh",
+              "description": "Blackmere is dark. Find a lantern, buy one at the inn, or craft one at the tinker's bench.",
+              "next": 2
+            },
+            {
+              "title": "The crossing",
+              "description": "Get past Warden Hale's gate, then cross the black water: earn Odd's favour or mend the old punt.",
+              "next": 3
+            },
+            {
+              "title": "The drowned belfry",
+              "description": "Ring the bell with its clapper, or let it sleep.",
+              "next": -1
+            }
+          ],
+          "objectives": [
+            {
+              "stage": 0,
+              "kind": "Fact",
+              "graph": null,
+              "item": null,
+              "region": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset",
+              "required": 1,
+              "branch": 0,
+              "text": "Hear Maren out"
+            },
+            {
+              "stage": 1,
+              "kind": "Collect",
+              "graph": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "region": null,
+              "fact": null,
+              "required": 1,
+              "branch": 0,
+              "text": "Get a lantern (find, buy or craft one)"
+            },
+            {
+              "stage": 2,
+              "kind": "Fact",
+              "graph": null,
+              "item": null,
+              "region": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset",
+              "required": 1,
+              "branch": 0,
+              "text": "Pass Warden Hale's gate"
+            },
+            {
+              "stage": 2,
+              "kind": "Reach",
+              "graph": null,
+              "item": null,
+              "region": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+              "fact": null,
+              "required": 1,
+              "branch": 0,
+              "text": "Cross to the Drowned Belfry"
+            },
+            {
+              "stage": 3,
+              "kind": "Fact",
+              "graph": null,
+              "item": null,
+              "region": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset",
+              "required": 1,
+              "branch": 1,
+              "text": "Let the bell sleep"
+            },
+            {
+              "stage": 3,
+              "kind": "Fact",
+              "graph": null,
+              "item": null,
+              "region": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset",
+              "required": 1,
+              "branch": 2,
+              "text": "Ring the Drowned Bell"
+            },
+            {
+              "stage": 3,
+              "kind": "Fact",
+              "graph": null,
+              "item": null,
+              "region": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset",
+              "required": 1,
+              "branch": 3,
+              "text": "Ring the bell with the shrine alight"
+            }
+          ],
+          "rewards": [
+            {
+              "kind": "Fact",
+              "item": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset",
+              "value": 1,
+              "branch": 2
+            },
+            {
+              "kind": "Fact",
+              "item": null,
+              "fact": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset",
+              "value": 1,
+              "branch": 3
+            }
+          ],
+          "failConditions": "Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset"
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "quest",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+                "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+                "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+                "path": "Assets/Hollowmere/Quests/DrownedBell.asset"
+              },
+              "args": {
+                "fields": {
+                  "title": "The Drowned Bell",
+                  "branchNames": [
+                    "pay Odd",
+                    "persuade Odd"
+                  ],
+                  "stages": [
+                    {
+                      "title": "A silent bell",
+                      "description": "Maren asked you to find the bell's clapper.",
+                      "next": -1
+                    },
+                    {
+                      "title": "The marsh gate",
+                      "description": "Get past the marsh gate: pay Odd for the key, or persuade him.",
+                      "next": -1
+                    },
+                    {
+                      "title": "Ring the bell",
+                      "description": "Find the clapper in Blackmere Marsh and ring the Drowned Bell.",
+                      "next": -1
+                    },
+                    {
+                      "title": "Return to Maren",
+                      "description": "Tell Maren the bell has rung.",
+                      "next": -1
+                    }
+                  ],
+                  "objectives": [
+                    {
+                      "stage": 0,
+                      "kind": "Fact",
+                      "graph": null,
+                      "item": null,
+                      "region": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "8508a66a-cbc1-4729-9be5-fb7befe04391",
+                        "global": "GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0",
+                        "assetGuid": "c0058a7ebedf01ab3996bdb19fb6b8a5",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset"
+                      },
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Hear Maren out"
+                    },
+                    {
+                      "stage": 1,
+                      "kind": "Fact",
+                      "graph": null,
+                      "item": null,
+                      "region": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+                        "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+                        "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+                      },
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Open the marsh gate"
+                    },
+                    {
+                      "stage": 1,
+                      "kind": "Fact",
+                      "graph": null,
+                      "item": null,
+                      "region": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "0f06b03c-98f7-4b7a-b4c7-70950667b31a",
+                        "global": "GlobalObjectId_V1-3-d3b7d356633b6b09d852e26f0996d15f-11400000-0",
+                        "assetGuid": "d3b7d356633b6b09d852e26f0996d15f",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/odd_paid.asset"
+                      },
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 1,
+                      "text": "Pay Odd three old coins"
+                    },
+                    {
+                      "stage": 1,
+                      "kind": "Fact",
+                      "graph": null,
+                      "item": null,
+                      "region": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "bd21363a-d9b9-479c-ba80-dde87c541ae8",
+                        "global": "GlobalObjectId_V1-3-5e6a96fd4444b092d8de598f9ccd195e-11400000-0",
+                        "assetGuid": "5e6a96fd4444b092d8de598f9ccd195e",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset"
+                      },
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 2,
+                      "text": "Persuade Odd"
+                    },
+                    {
+                      "stage": 2,
+                      "kind": "Collect",
+                      "graph": null,
+                      "item": {
+                        "kind": "Definition",
+                        "authoringId": "e51c9d68-54de-4f7d-96e4-23b8807194ee",
+                        "global": "GlobalObjectId_V1-3-8c9c7994823468958836995b0fb06237-11400000-0",
+                        "assetGuid": "8c9c7994823468958836995b0fb06237",
+                        "path": "Assets/Hollowmere/Items/BellClapper.asset"
+                      },
+                      "region": null,
+                      "fact": null,
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Find the bell clapper"
+                    },
+                    {
+                      "stage": 2,
+                      "kind": "Reach",
+                      "graph": null,
+                      "item": null,
+                      "region": {
+                        "kind": "Definition",
+                        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                        "assetGuid": "832904035182b2712b3f6c244c515dea",
+                        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+                      },
+                      "fact": null,
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Reach the Drowned Belfry"
+                    },
+                    {
+                      "stage": 2,
+                      "kind": "Fact",
+                      "graph": null,
+                      "item": null,
+                      "region": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+                        "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+                        "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+                      },
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Ring the bell"
+                    },
+                    {
+                      "stage": 3,
+                      "kind": "Talk",
+                      "graph": {
+                        "kind": "Definition",
+                        "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+                        "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+                        "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+                        "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+                      },
+                      "item": null,
+                      "region": null,
+                      "fact": null,
+                      "targetEntityId": "",
+                      "required": 1,
+                      "branch": 0,
+                      "text": "Talk to Maren"
+                    }
+                  ],
+                  "rewards": [
+                    {
+                      "kind": "Item",
+                      "item": {
+                        "kind": "Definition",
+                        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                        "path": "Assets/Hollowmere/Items/Lantern.asset"
+                      },
+                      "fact": null,
+                      "value": 1,
+                      "branch": 0
+                    },
+                    {
+                      "kind": "Fact",
+                      "item": null,
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "9ad3fb8b-f42d-45fa-9fef-5d5ffb061752",
+                        "global": "GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0",
+                        "assetGuid": "d1df5cf368cc4f5198b9f871e51a4f47",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset"
+                      },
+                      "value": 1,
+                      "branch": 0
+                    },
+                    {
+                      "kind": "Item",
+                      "item": {
+                        "kind": "Definition",
+                        "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                        "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                        "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                        "path": "Assets/Hollowmere/Items/OldCoin.asset"
+                      },
+                      "fact": null,
+                      "value": 3,
+                      "branch": 1
+                    }
+                  ],
+                  "failConditions": null
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+                "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+                "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+                "path": "Assets/Hollowmere/Quests/DrownedBell.asset"
+              },
+              "stamp": "sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:09.053Z",
+    "applied": "2026-10-05T06:44:10.457Z"
+  }
+}

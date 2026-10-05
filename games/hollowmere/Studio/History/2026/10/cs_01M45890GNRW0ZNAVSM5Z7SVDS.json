@@ -1,0 +1,777 @@
+{
+  "id": "cs_01M45890GNRW0ZNAVSM5Z7SVDS",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.entity-looks] Create the entity looks of the pickups and story interactables",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "e_PickupLantern",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset",
+        "name": "PickupLanternEntity",
+        "authoringId": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Lantern.prefab",
+          "defaultScaleMilli": 1000,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_PickupHerbs",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset",
+        "name": "PickupHerbsEntity",
+        "authoringId": "2e52c6af-c201-47b6-925d-9f53530eb275",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Reed.prefab",
+          "defaultScaleMilli": 600,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_PickupCoins",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset",
+        "name": "PickupCoinsEntity",
+        "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Stone.prefab",
+          "defaultScaleMilli": 350,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_PickupClapper",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset",
+        "name": "PickupClapperEntity",
+        "authoringId": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Bell.prefab",
+          "defaultScaleMilli": 300,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_PickupOil",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset",
+        "name": "PickupOilEntity",
+        "authoringId": "fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+        "fields": {
+          "prefab": "Assets/Hollowmere/Interactables/Prefabs/WellBucket.prefab",
+          "defaultScaleMilli": 450,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_PickupMarshHerbs",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbsEntity.asset",
+        "name": "PickupMarshHerbsEntity",
+        "authoringId": "81ae7773-9697-41d7-b790-2d0346b8fd58",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Reed.prefab",
+          "defaultScaleMilli": 600,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostWest",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWestEntity.asset",
+        "name": "ShrinePostWestEntity",
+        "authoringId": "5ffeae11-f167-46ca-86d4-6d1b37687905",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Lantern.prefab",
+          "defaultScaleMilli": 1400,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostMiddle",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddleEntity.asset",
+        "name": "ShrinePostMiddleEntity",
+        "authoringId": "9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Lantern.prefab",
+          "defaultScaleMilli": 1400,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostEast",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset",
+        "name": "ShrinePostEastEntity",
+        "authoringId": "3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Lantern.prefab",
+          "defaultScaleMilli": 1400,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_OldPunt",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset",
+        "name": "OldPuntEntity",
+        "authoringId": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Signpost.prefab",
+          "defaultScaleMilli": 700,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_SinkholeGlint",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlintEntity.asset",
+        "name": "SinkholeGlintEntity",
+        "authoringId": "8f7c3953-8560-4072-8754-be36e8a94b06",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Stone.prefab",
+          "defaultScaleMilli": 500,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_DrownedSatchel",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset",
+        "name": "DrownedSatchelEntity",
+        "authoringId": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Crate.prefab",
+          "defaultScaleMilli": 450,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    },
+    {
+      "opId": "e_TinkersBench",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBenchEntity.asset",
+        "name": "TinkersBenchEntity",
+        "authoringId": "b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+        "fields": {
+          "prefab": "Assets/Hollowmere/World/Prefabs/Crate.prefab",
+          "defaultScaleMilli": 900,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "alive",
+            "tint"
+          ],
+          "interactionKind": ""
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "e_PickupLantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+                "global": "GlobalObjectId_V1-3-60ae29846299723c78e73baae1552e75-11400000-0",
+                "assetGuid": "60ae29846299723c78e73baae1552e75",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset"
+              },
+              "stamp": "sha256:5d43eba1112f37fc25d0bf2f37ef3a92a34c9a7c63b70b3129b8483fcf93ceca"
+            }
+          ],
+          "replay": {
+            "authoringId": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupLanternEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_PickupHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "2e52c6af-c201-47b6-925d-9f53530eb275",
+                "global": "GlobalObjectId_V1-3-de700c80a95ee55288b017010f4b2253-11400000-0",
+                "assetGuid": "de700c80a95ee55288b017010f4b2253",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset"
+              },
+              "stamp": "sha256:210894fcedd8a9d5ad922545c22321d6e7dc89ece52fae00085f9b4753af1b01"
+            }
+          ],
+          "replay": {
+            "authoringId": "2e52c6af-c201-47b6-925d-9f53530eb275",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupHerbsEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_PickupCoins",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+                "global": "GlobalObjectId_V1-3-e070a9213e4093001b7fab85bdaa52e4-11400000-0",
+                "assetGuid": "e070a9213e4093001b7fab85bdaa52e4",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset"
+              },
+              "stamp": "sha256:b90c609f9493fced6bc12c9977a83b3dc8fa959af3e761b91c127cc2e8498eea"
+            }
+          ],
+          "replay": {
+            "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_PickupClapper",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+                "global": "GlobalObjectId_V1-3-dd3e17cd1cd37adecbfdcd5193978e4c-11400000-0",
+                "assetGuid": "dd3e17cd1cd37adecbfdcd5193978e4c",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset"
+              },
+              "stamp": "sha256:450477a8d0adb3c4232954a06f5c887f7cb4a3f0d9477f146b376d2a9e5c89f1"
+            }
+          ],
+          "replay": {
+            "authoringId": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupClapperEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_PickupOil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+                "global": "GlobalObjectId_V1-3-064bebcc159e3c45a9519998e2926a7e-11400000-0",
+                "assetGuid": "064bebcc159e3c45a9519998e2926a7e",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset"
+              },
+              "stamp": "sha256:a90005854f4dfefd4e4df41d338c3a2e407bc6f709bcef03d21a5bb71678fbcd"
+            }
+          ],
+          "replay": {
+            "authoringId": "fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_PickupMarshHerbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbsEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "81ae7773-9697-41d7-b790-2d0346b8fd58",
+                "global": "GlobalObjectId_V1-3-eaa18d27dcc6a6049a51b4a3b610b6a3-11400000-0",
+                "assetGuid": "eaa18d27dcc6a6049a51b4a3b610b6a3",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbsEntity.asset"
+              },
+              "stamp": "sha256:210894fcedd8a9d5ad922545c22321d6e7dc89ece52fae00085f9b4753af1b01"
+            }
+          ],
+          "replay": {
+            "authoringId": "81ae7773-9697-41d7-b790-2d0346b8fd58",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/PickupMarshHerbsEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostWest",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWestEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5ffeae11-f167-46ca-86d4-6d1b37687905",
+                "global": "GlobalObjectId_V1-3-eb53f7306dbe96774946e2d5f1495fe1-11400000-0",
+                "assetGuid": "eb53f7306dbe96774946e2d5f1495fe1",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWestEntity.asset"
+              },
+              "stamp": "sha256:1b47c6257a80d052b4e2ef1bc8b74f576db5eae754088121ed585c0b86b5cde5"
+            }
+          ],
+          "replay": {
+            "authoringId": "5ffeae11-f167-46ca-86d4-6d1b37687905",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostWestEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostMiddle",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddleEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+                "global": "GlobalObjectId_V1-3-5378e6f60b1da6540b15c03420163020-11400000-0",
+                "assetGuid": "5378e6f60b1da6540b15c03420163020",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddleEntity.asset"
+              },
+              "stamp": "sha256:1b47c6257a80d052b4e2ef1bc8b74f576db5eae754088121ed585c0b86b5cde5"
+            }
+          ],
+          "replay": {
+            "authoringId": "9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostMiddleEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_ShrinePostEast",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+                "global": "GlobalObjectId_V1-3-1ab4d95d6ffe8caa29ad5a25a9ca9e74-11400000-0",
+                "assetGuid": "1ab4d95d6ffe8caa29ad5a25a9ca9e74",
+                "path": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset"
+              },
+              "stamp": "sha256:1b47c6257a80d052b4e2ef1bc8b74f576db5eae754088121ed585c0b86b5cde5"
+            }
+          ],
+          "replay": {
+            "authoringId": "3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_OldPunt",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+                "global": "GlobalObjectId_V1-3-28421afb24106a6bf809f380e5edce51-11400000-0",
+                "assetGuid": "28421afb24106a6bf809f380e5edce51",
+                "path": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset"
+              },
+              "stamp": "sha256:64ef99182870b44f3631598bd8b0472db1c5d95cd1667ee3b3828aff7a150c77"
+            }
+          ],
+          "replay": {
+            "authoringId": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/OldPuntEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_SinkholeGlint",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlintEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8f7c3953-8560-4072-8754-be36e8a94b06",
+                "global": "GlobalObjectId_V1-3-09e506b0ec5c07545bc522b6dc83a362-11400000-0",
+                "assetGuid": "09e506b0ec5c07545bc522b6dc83a362",
+                "path": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlintEntity.asset"
+              },
+              "stamp": "sha256:cccf9e446414a4a345a4001cf1ce0ae6bfd4359c598e6dfffe993b3275509396"
+            }
+          ],
+          "replay": {
+            "authoringId": "8f7c3953-8560-4072-8754-be36e8a94b06",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/SinkholeGlintEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_DrownedSatchel",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+                "global": "GlobalObjectId_V1-3-b143fbbb94f6cdb40b16ca2d2a51fdc8-11400000-0",
+                "assetGuid": "b143fbbb94f6cdb40b16ca2d2a51fdc8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset"
+              },
+              "stamp": "sha256:25e2f8edf982d6e464b6d1b4080fafbc0d4c257f9c4dc9ac6c2bbb838f6d3b42"
+            }
+          ],
+          "replay": {
+            "authoringId": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/DrownedSatchelEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "e_TinkersBench",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBenchEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+                "global": "GlobalObjectId_V1-3-a6be78279957368ee9ceeb01f2cec8e0-11400000-0",
+                "assetGuid": "a6be78279957368ee9ceeb01f2cec8e0",
+                "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBenchEntity.asset"
+              },
+              "stamp": "sha256:ea7aaf5b2409b1ac47eebf3d4bfd0c836353c05308149d41c021fce6837bce05"
+            }
+          ],
+          "replay": {
+            "authoringId": "b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+            "assetPath": "Assets/Hollowmere/Interactables/Definitions/TinkersBenchEntity.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:38.653Z",
+    "applied": "2026-10-05T05:23:38.883Z"
+  }
+}

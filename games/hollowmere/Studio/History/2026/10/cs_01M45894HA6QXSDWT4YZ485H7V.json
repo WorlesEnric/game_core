@@ -1,0 +1,429 @@
+{
+  "id": "cs_01M45894HA6QXSDWT4YZ485H7V",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.npc-tints] Give each NPC its own colours (tint overrides on the placed entities)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "tint_Maren",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "scope": "Instance",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#6f9a76"
+      }
+    },
+    {
+      "opId": "tint_Pip",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip",
+        "scope": "Instance",
+        "stamp": "sha256:df04e0e8c931c7ce15841f79c057a7654303ae3a146f674ed3546ceb73f64311"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#d8a23f"
+      }
+    },
+    {
+      "opId": "tint_Bram",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:548c87a792ce499bdada73f28b8a61b8fa09ec9a59852c380577e3abcd564a89"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#8e3d2f"
+      }
+    },
+    {
+      "opId": "tint_Hale",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+        "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+        "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+        "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+        "scope": "Instance",
+        "stamp": "sha256:604617df59c8e73a0bb70cb07381239ea05443ffda2734444548db0cc981fb89"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#52668c"
+      }
+    },
+    {
+      "opId": "tint_Odd",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+        "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+        "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+        "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+        "scope": "Instance",
+        "stamp": "sha256:02a39206090d9e68f4bed324ce655ec4f24fd7d029e8018fa91b6db7284dfdfc"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#6e5b44"
+      }
+    },
+    {
+      "opId": "tint_Belfry_Echo",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+        "global": "GlobalObjectId_V1-2-eacc91cb6333a388b939e0971f0cb7dd-1242074575-0",
+        "assetGuid": "eacc91cb6333a388b939e0971f0cb7dd",
+        "path": "Assets/Hollowmere/Regions/DrownedBelfry.unity#/Belfry Echo",
+        "scope": "Instance",
+        "stamp": "sha256:5d499cb0423c295a001d97c9b68e0edb72b1cf4e8fbc9bae89033af5a9e52086"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#a9c9ea"
+      }
+    },
+    {
+      "opId": "tint_coins",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1801231042-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Coins (square)",
+        "scope": "Instance",
+        "stamp": "sha256:ec7e886209a5f7e22e81c1306504dbd5b45c18e85d81a3350044a0adc01fc464"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#d6b03a"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "tint_Maren",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren"
+              },
+              "stamp": "sha256:0de9c3da366974639b51cfbf09b9082c213c5a37fb7ccc1a6b3bde296aaee7ea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_Pip",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip"
+              },
+              "stamp": "sha256:3307ab0ab5a01dd41e1f65ee196c1d0879e78a650213abd249d9e9d6d456fc78"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_Bram",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+              },
+              "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_Hale",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+              },
+              "stamp": "sha256:d3b368ce2bd89a33cbe86c2fedb73ceb407580c7c35c8a54b1b1ecd6134f9c27"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_Odd",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+              },
+              "stamp": "sha256:dee6b8421c156d323d266a4bfd4a1787d78d1223f52ef43fe659b0e36fc6e89d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_Belfry_Echo",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+                "global": "GlobalObjectId_V1-2-eacc91cb6333a388b939e0971f0cb7dd-1242074575-0",
+                "assetGuid": "eacc91cb6333a388b939e0971f0cb7dd",
+                "path": "Assets/Hollowmere/Regions/DrownedBelfry.unity#/Belfry Echo"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+                "global": "GlobalObjectId_V1-2-eacc91cb6333a388b939e0971f0cb7dd-1242074575-0",
+                "assetGuid": "eacc91cb6333a388b939e0971f0cb7dd",
+                "path": "Assets/Hollowmere/Regions/DrownedBelfry.unity#/Belfry Echo"
+              },
+              "stamp": "sha256:244ba925743d303c9bf419da1d1d352f662d03c6885cf056bb2e1f2a86bf5984"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "tint_coins",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1801231042-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Coins (square)"
+              },
+              "args": {
+                "fields": {
+                  "overrides": {
+                    "entries": []
+                  }
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1801231042-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Coins (square)"
+              },
+              "stamp": "sha256:8120311878ede6eb18f7354284228c2432abc063348d0852feee2a85991e7d54"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.775Z",
+    "applied": "2026-10-05T05:23:42.785Z"
+  }
+}

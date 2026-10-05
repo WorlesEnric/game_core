@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: OddPaidOnTrade
   m_EditorClassIdentifier: 
   authoringId: ebee54ff-745b-4c42-8f41-bb5bd5efadee
-  contentStamp: d75328f16b95c4319d3d32dfe737ce4f12f104cb37e361661db5be3421986b95
-  trigger: 4
-  triggerSubject: {fileID: 11400000, guid: 614b0b4c9d2b1381bb23d90334fca2c9, type: 2}
+  contentStamp: 326c8239ba264bc3d3937797a566526ff28bdcda24ec8b5559c4be72f2f4621b
+  trigger: 0
+  triggerFact: {fileID: 0}
+  triggerItem: {fileID: 0}
+  triggerVendor: {fileID: 11400000, guid: 614b0b4c9d2b1381bb23d90334fca2c9, type: 2}
+  triggerQuest: {fileID: 0}
+  triggerGraph: {fileID: 0}
+  triggerRegion: {fileID: 0}
+  triggerRule: {fileID: 0}
+  triggerWorldItem: {fileID: 0}
+  legacyTriggerSubject: {fileID: 0}
   triggerEntityId: 
   triggerValue: 1674190604
   matchAnyValue: 0
@@ -24,11 +32,19 @@ MonoBehaviour:
   actionSet: {fileID: 0}
   actions:
   - kind: 0
-    target: {fileID: 11400000, guid: d3b7d356633b6b09d852e26f0996d15f, type: 2}
+    fact: {fileID: 11400000, guid: d3b7d356633b6b09d852e26f0996d15f, type: 2}
+    item: {fileID: 0}
+    quest: {fileID: 0}
+    region: {fileID: 0}
+    graph: {fileID: 0}
+    actionSet: {fileID: 0}
+    worldItem: {fileID: 0}
+    vendor: {fileID: 0}
     inventory: {fileID: 0}
     entityId: 
     value: 1
     text: 
+    legacyTarget: {fileID: 0}
   once: 1
   cooldownMs: 0
   maxFires: 0

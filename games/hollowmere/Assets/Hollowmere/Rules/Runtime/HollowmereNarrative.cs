@@ -75,7 +75,8 @@ namespace Hollowmere.Narrative
 
         /// <summary>The placed NPC entities (P1.3's NPCs on P1.1's world).</summary>
         public const string MarenId = "da525107-c2c1-4626-ac08-5058a1e01c06";
-        public const string OddId = "feae7fb3-57f9-4711-8549-04fa8f161ac2";
+        /// <summary>Odd at the marsh jetty (P3.1 placed him there with npc.addAt; the village Odd feae7fb3-... was removed).</summary>
+        public const string OddId = "a8255407-3f1c-4aa5-b7e7-e6141e6d5534";
         public const string PipId = "508f7d78-7b44-42e8-8028-be4b2c9ee4b0";
         public const string HaleId = "3f2e423d-ec9f-4051-8713-662180be4db9";
         public const string EchoId = "a91b8bb5-cbd4-4872-871b-118e53cc465d";

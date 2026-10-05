@@ -254,8 +254,8 @@ namespace Hollowmere.P1_3.EditMode.Tests
             Assert.That(player.Stamina, Is.EqualTo(w.Player.Tuning.StaminaMax));
             Assert.That(player.Focus, Is.EqualTo(PlayerRules.NoFocus));
             Assert.That(player.RegionKey, Is.EqualTo(manifest.FindRegion(traveller.regionId)!.key));
-            Assert.That(w.Npcs.Records.Count, Is.EqualTo(5));
-            Assert.That(w.Interactions.Records.Count, Is.EqualTo(3));
+            Assert.That(w.Npcs.Records.Count, Is.EqualTo(6), "P1.3's five NPCs plus P3.1's Bram");
+            Assert.That(w.Interactions.Records.Count, Is.GreaterThanOrEqualTo(3), "P1.3's well, gate and bell, plus P3.1's interactables");
             InteractableRecord gate = w.Interactable(HollowmereGameplayAuthoring.GateName);
             Assert.That(w.Slot(gate.Target, InteractionSlots.Owner, InteractionSlots.State), Is.EqualTo(InteractableStates.Locked));
             NpcRecord pip = w.Npc("Pip");
