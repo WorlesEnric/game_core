@@ -51,6 +51,9 @@ import subprocess
 import sys
 import tarfile
 from pathlib import Path
+from xml.sax.saxutils import escape
+from path_policy import relative, contained, data_path, validate_meta
+from redact import redact
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE = HERE / "template"
@@ -59,6 +62,7 @@ SLOT_SCHEMA = "gamecore.studio.stage-slot/1"
 SLOT_ID = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
 CHANGE_SET_ID = re.compile(r"^cs_[0-7][0-9A-HJKMNP-TV-Z]{25}$")
 PACKAGE_NAME = re.compile(r"^[a-z0-9][a-z0-9.-]{2,213}$")
+SKIPPED_INPUT_DIRS_LOWER = {"editor", "plugins", "tests", "library", "temp", "logs", "obj", "bin"}
 SKIPPED_INPUT_DIRS = {"Editor", "Tests", "Library", "Temp", "Logs", "obj", "bin"}
 MAX_PACKAGE_BYTES = 64 * 1024 * 1024
 MAX_PACKAGE_FILES = 4000
@@ -114,9 +118,15 @@ def artifact_sha(value) -> str | None:
 
 def find_artifact(candidate: Path, entry: dict) -> Path:
     sha = entry["sha256"]
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{64}", sha):
+        raise SlotError("artifact_digest_invalid")
+    if entry.get("name") is not None:
+        relative(entry["name"])
+        if "/" in entry["name"]:
+            raise SlotError("artifact_name_invalid: expected basename")
     for name in filter(None, [entry.get("name"), sha, f"sha256-{sha}"]):
         for base in (candidate / "artifacts", candidate):
-            path = base / name
+            path = contained(candidate, ("artifacts/" if base != candidate else "") + name)
             if path.is_file():
                 if sha256_file(path) != sha:
                     raise SlotError(f"artifact {name} does not match its sha256 {sha}")
@@ -125,11 +135,11 @@ def find_artifact(candidate: Path, entry: dict) -> Path:
 
 
 def read_candidate(candidate: Path) -> dict:
-    change_set = load_json(candidate / "change-set.json")
+    change_set = load_json(contained(candidate, "change-set.json"))
     cs_id = change_set.get("id")
     if not isinstance(cs_id, str) or not CHANGE_SET_ID.match(cs_id):
         raise SlotError("change-set.json has no valid change-set id")
-    proposals = [op for op in change_set.get("operations", []) if op.get("tool") in ("mechanism.propose", "mechanism.admit")]
+    proposals = [op for op in change_set.get("operations", []) if op.get("tool") == "mechanism.propose"]
     if len(proposals) != 1:
         raise SlotError("a staged change set carries exactly one mechanism.propose operation")
     args = proposals[0].get("args") or {}
@@ -167,7 +177,7 @@ def read_candidate(candidate: Path) -> dict:
 def safe_members(archive: tarfile.TarFile):
     total = 0
     count = 0
-    for member in archive.getmembers():
+    for member in archive:
         name = member.name
         while name.startswith("./"):
             name = name[2:]
@@ -186,6 +196,8 @@ def safe_members(archive: tarfile.TarFile):
 
 
 def extract_package(archive_path: Path, target: Path) -> None:
+    if archive_path.stat().st_size > MAX_PACKAGE_BYTES:
+        raise SlotError("the compressed package archive is too large")
     data = archive_path.read_bytes()
     try:
         archive = tarfile.open(fileobj=io.BytesIO(data), mode="r:*")
@@ -234,6 +246,8 @@ def remove_tree(path: Path) -> None:
 
 def copy_tree(source: Path, target: Path, skip_dirs: set[str]) -> list[Path]:
     copied = []
+    if source.is_symlink() or any(p.is_symlink() for p in source.rglob("*")):
+        raise SlotError("stage_path_link: copy source contains links")
     for root, dirs, files in os.walk(source):
         dirs[:] = sorted(d for d in dirs if d not in skip_dirs)
         rel_root = Path(root).relative_to(source)
@@ -280,52 +294,60 @@ def build_manifest(source_project: Path, package: str, allow: dict) -> tuple[dic
     return {"dependencies": out, "testables": [package]}, pins
 
 
-def copy_settings(source_project: Path, project: Path) -> None:
-    settings = source_project / "ProjectSettings"
+def copy_settings(source_project: Path, project: Path) -> list[dict]:
+    settings = contained(source_project, "ProjectSettings")
     target = project / "ProjectSettings"
     target.mkdir(parents=True, exist_ok=True)
     for path in sorted(settings.iterdir()):
+        contained(source_project, path.relative_to(source_project).as_posix())
         if path.is_file() and path.name != "EditorBuildSettings.asset":
+            if path.suffix not in (".asset", ".txt", ".json"):
+                raise SlotError("stage_settings_invalid: executable project settings")
             shutil.copyfile(path, target / path.name)
-    render = source_project / "Assets" / "Settings"
-    if render.is_dir():
-        copy_tree(render, project / "Assets" / "Settings", set())
-        meta = source_project / "Assets" / "Settings.meta"
-        if meta.is_file():
-            shutil.copyfile(meta, project / "Assets" / "Settings.meta")
+    # Settings are trusted source YAML data, never an executable-content exemption.
+    render = contained(source_project, "Assets/Settings")
+    return copy_inputs(source_project, project, ["Assets/Settings"], settings=True) if render.is_dir() else []
 
 
-def copy_inputs(source_project: Path, project: Path, inputs: list[str]) -> list[dict]:
-    recorded = []
+def copy_inputs(source_project: Path, project: Path, inputs: list[str], settings=False) -> list[dict]:
+    recorded = {}
     for rel in inputs:
-        parts = rel.split("/")
-        if not rel.startswith("Assets/") or ".." in parts or rel.endswith("/") or "\\" in rel:
-            raise SlotError(f"stage input {rel!r} is not a project path under Assets/")
-        source = source_project / rel
-        target = project / rel
-        if source.is_dir():
-            copied = copy_tree(source, target, SKIPPED_INPUT_DIRS)
-        elif source.is_file():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, target)
-            copied = [target]
-        else:
-            raise SlotError(f"stage input {rel} does not exist in {source_project}")
-        meta = source_project / (rel + ".meta")
-        if meta.is_file():
-            shutil.copyfile(meta, project / (rel + ".meta"))
-            copied.append(project / (rel + ".meta"))
-        for path in copied:
-            recorded.append({"path": path.relative_to(project).as_posix(), "sha256": sha256_file(path)})
-            path.chmod(0o444)
-    recorded.sort(key=lambda r: r["path"])
-    return recorded
+        relative(rel)
+        if not rel.startswith("Assets/") or any(p.lower() in {"editor", "plugins"} for p in rel.split("/")):
+            raise SlotError("stage_input_executable: forbidden input path")
+        source = contained(source_project, rel)
+        paths = sorted(source.rglob("*")) if source.is_dir() else [source]
+        paths += [source_project / (rel + ".meta")] if (source_project / (rel + ".meta")).exists() else []
+        for src in paths:
+            name = src.relative_to(source_project).as_posix()
+            contained(source_project, name)
+            if src.is_dir():
+                if any(p.lower() in SKIPPED_INPUT_DIRS_LOWER for p in src.parts):
+                    raise SlotError("stage_input_executable: forbidden input directory")
+                continue
+            if not src.is_file():
+                raise SlotError("stage_input_missing")
+            if src.suffix == ".meta":
+                original = src.with_suffix("")
+                if not original.is_dir():
+                    data_path(name[:-5], settings)
+                validate_meta(src)
+            else:
+                data_path(name, settings)
+                if settings and src.suffix == ".asset" and not src.read_bytes().startswith(b"%YAML"):
+                    raise SlotError("stage_settings_invalid: expected Unity YAML")
+            dst = contained(project, name)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(src, dst)
+            recorded[name] = {"path": name, "sha256": sha256_file(dst)}
+            dst.chmod(0o444)
+    return [recorded[k] for k in sorted(recorded)]
 
 
 def write_dotnet(slot: Path, package_dir: Path, proposal: dict | None) -> dict | None:
     rules_info = (proposal or {}).get("rules") or {}
-    rules_dir = package_dir / rules_info.get("directory", "Rules")
-    tests_dir = package_dir / rules_info.get("tests", "Tests/Rules")
+    rules_dir = contained(package_dir, rules_info.get("directory", "Rules"))
+    tests_dir = contained(package_dir, rules_info.get("tests", "Tests/Rules"))
     if not rules_dir.is_dir() or not any(rules_dir.rglob("*.cs")):
         return None
     assembly = rules_info.get("assembly") or "StagedRules"
@@ -338,13 +360,13 @@ def write_dotnet(slot: Path, package_dir: Path, proposal: dict | None) -> dict |
     for name in ("Directory.Build.props",):
         shutil.copyfile(template / name, dotnet / name)
     rules = (template / "Rules.csproj.tmpl").read_text(encoding="utf-8")
-    rules = rules.replace("@@ASSEMBLY@@", assembly).replace("@@RULES_DIR@@", rules_dir.as_posix())
+    rules = rules.replace("@@ASSEMBLY@@", assembly).replace("@@RULES_DIR@@", escape(rules_dir.as_posix(), {'"': "&quot;"}))
     (dotnet / "Rules" / "Rules.csproj").write_text(rules, encoding="utf-8")
     has_tests = tests_dir.is_dir() and any(tests_dir.rglob("*.cs"))
     if has_tests:
         (dotnet / "Rules.Tests").mkdir(parents=True)
         tests = (template / "Rules.Tests.csproj.tmpl").read_text(encoding="utf-8")
-        tests = tests.replace("@@ASSEMBLY@@", assembly).replace("@@TESTS_DIR@@", tests_dir.as_posix())
+        tests = tests.replace("@@ASSEMBLY@@", assembly).replace("@@TESTS_DIR@@", escape(tests_dir.as_posix(), {'"': "&quot;"}))
         (dotnet / "Rules.Tests" / "Rules.Tests.csproj").write_text(tests, encoding="utf-8")
     return {"assembly": assembly, "rules": rules_dir.relative_to(package_dir).as_posix(),
             "tests": tests_dir.relative_to(package_dir).as_posix() if has_tests else None}
@@ -367,7 +389,7 @@ def make_slot(args) -> dict:
     allow = load_json(ALLOWLIST)
     slot = Path(args.slot_root).expanduser().resolve() / args.slot
     if args.candidate:
-        cand = read_candidate(Path(args.candidate).resolve())
+        cand = read_candidate(Path(args.candidate).absolute())
     else:
         if not args.change_set_id or not CHANGE_SET_ID.match(args.change_set_id):
             raise SlotError("--package-dir needs --change-set-id cs_<ULID>")
@@ -410,9 +432,13 @@ def make_slot(args) -> dict:
             if cand[key] is not None:
                 shutil.copyfile(cand[key], staged / "artifacts" / Path(cand[key]).name)
 
+    trusted = load_json(HERE / "template-manifest.json")
+    actual = {p.relative_to(TEMPLATE).as_posix(): sha256_file(p) for p in TEMPLATE.rglob("*") if p.is_file()}
+    if actual != trusted:
+        raise SlotError("stage_template_changed: trusted manifest mismatch")
     # Template (harness, EditorBuildSettings), then the source's settings.
     copy_tree(TEMPLATE / "project", project, set())
-    copy_settings(source_project, project)
+    settings_inputs = copy_settings(source_project, project)
     template_ebs = TEMPLATE / "project" / "ProjectSettings" / "EditorBuildSettings.asset"
     shutil.copyfile(template_ebs, project / "ProjectSettings" / "EditorBuildSettings.asset")
 
@@ -423,7 +449,7 @@ def make_slot(args) -> dict:
     if cand["packagePath"] is not None:
         extract_package(cand["packagePath"], work)
     else:
-        shutil.copytree(Path(args.package_dir).resolve(), work, dirs_exist_ok=True)
+        copy_tree(Path(args.package_dir).absolute(), work, set())
     package_json = work / "package.json"
     if not package_json.is_file():
         raise SlotError("the package has no package.json at its root")
@@ -447,6 +473,7 @@ def make_slot(args) -> dict:
     write_json(project / "Packages" / "manifest.json", manifest)
 
     inputs = copy_inputs(source_project, project, cand["stageInputs"])
+    inputs += settings_inputs
 
     smoke = (proposal or {}).get("smokeTest")
     if isinstance(smoke, str):
@@ -492,7 +519,7 @@ def make_slot(args) -> dict:
         "manifest": pins,
         "harness": harness,
         "dotnet": dotnet,
-        "allowUnsafe": ((proposal or {}).get("allowUnsafe") or {}).get("reason"),
+        "allowUnsafe": None,
         "blobs": (proposal or {}).get("blobs") or [],
         "source": {
             "project": source_project.as_posix(),
@@ -524,8 +551,8 @@ def main(argv: list[str]) -> int:
         return 2 if exit_.code else 0
     try:
         summary = make_slot(args)
-    except SlotError as error:
-        print(json.dumps({"ok": False, "error": str(error)}))
+    except (SlotError, ValueError, OSError, TypeError, KeyError) as error:
+        print(redact(json.dumps({"ok": False, "error": str(error)})).strip())
         return 1
     print(json.dumps(summary, sort_keys=True))
     return 0

@@ -1,0 +1,13 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /slot/analyzer/StageAnalyzer.csproj (in 171 ms).
+  Restored /slot/analyzer/Tests/StageAnalyzer.Tests.csproj (in 171 ms).
+  StageAnalyzer -> /slot/analyzer/bin/Debug/net8.0/StageAnalyzer.dll
+  StageAnalyzer.Tests -> /slot/analyzer/Tests/bin/Debug/net8.0/StageAnalyzer.Tests.dll
+Test run for /slot/analyzer/Tests/bin/Debug/net8.0/StageAnalyzer.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+stage_analyzer_error: invalid input or unavailable trusted analysis context
+stage_analyzer_error: invalid input or unavailable trusted analysis context
+
+Passed!  - Failed:     0, Passed:    43, Skipped:     0, Total:    43, Duration: 2 s - StageAnalyzer.Tests.dll (net8.0)
+Offline analyzer: restore + tests + pressure pass + negative findings PASS (network none)

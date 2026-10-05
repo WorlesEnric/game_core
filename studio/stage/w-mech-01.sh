@@ -9,7 +9,8 @@
 #
 # The sample candidate has a fixed change-set id, and the journal never applies one change set twice (an undone entry
 # stays undone). --reset-journal removes that one id from the project's Studio journal first (journal file, redo stack,
-# stage records) so the walk can be repeated on a scratch clone; never use it on a creator's project.
+# stage records) only when .gamecore-stage-scratch contains the exact absolute project path.
+# Create that marker explicitly on a scratch clone only; never use it on a creator's project.
 #
 # Every Unity Editor runs through studio/tools/unity-batch.sh (host-wide Unity lock, one Editor at a time, 600 s
 # silence watchdog, one retry on the known hang). The staged slot lives under GAMECORE_STAGE_ROOT
@@ -38,6 +39,10 @@ fail() { echo "W-MECH-01 FAILED: $*" >&2; exit 1; }
 
 [[ -d "${package_dir}" ]] && fail "${package_dir} exists before the admission; remove it first"
 if [[ -n "${reset_journal}" ]]; then
+  marker="${project}/.gamecore-stage-scratch"
+  if [[ ! -f "$marker" || -L "$marker" ]] || [[ "$(cat "$marker")" != "$project" ]]; then
+    fail "--reset-journal requires an operator-created .gamecore-stage-scratch marker containing the exact project path"
+  fi
   step "reset the journal entry of ${change_set}"
   python3 - "${project}" "${change_set}" <<'PY'
 import json, sys
