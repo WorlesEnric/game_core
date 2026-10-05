@@ -231,7 +231,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             Assert.That(Scenario(entry, StageAdmission.UndoScenario)!.Status, Is.EqualTo(ScenarioStatus.Pass));
 
             // Redo re-admits from the same retained, verified artifacts.
-            HistoryResult redo = new AdmissionHistoryHandler(_bed.Admission).Redo(_bed.Runtime.Journal.Read(candidate.Id)!);
+            HistoryResult redo = _bed.Runtime.History.Redo(candidate.Id);
             Assert.That(redo.Ok, Is.True, redo.Diagnostics.Count > 0 ? redo.Diagnostics[0].Message : string.Empty);
             Assert.That(File.Exists(Path.Combine(_bed.PackageDirectory, "package.json")), Is.True);
         }

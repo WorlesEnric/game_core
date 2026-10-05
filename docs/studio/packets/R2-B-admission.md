@@ -4,14 +4,14 @@ Branch: `codex/r2-b`. Exclusive implementation paths: core `Editor/Stage/**`, Ho
 
 ## Contracts published to other packets
 
-All types below are in `GameCore.Studio.Edit`, `GameCore.Studio.Core.Editor`.
+`StageCandidateRequest` is shared in `GameCore.Studio.Authoring.Agent`; the other types below are in `GameCore.Studio.Edit`, `GameCore.Studio.Core.Editor`.
 
 ### R2-D / R2-F: authenticated stage service
 
 `IStageService`:
 
 ```csharp
-Task<string> RequestStage(StageRequest request);
+Task<string> RequestStage(StageCandidateRequest request);
 Task<SignedVerdict> GetVerdict(string jobId);
 Task<StageVerification> VerifyVerdict(string jobId, StageVerificationRequest request);
 ```
@@ -20,24 +20,26 @@ Use the paired companion transport with its app authentication and `X-GameCore-P
 
 - `POST /v1/stage`: JSON `{changeSetId,projectId,sourceProject,sourceRevision,catalogRevision,packageDigest,proposalDigest,stageInputs:[...]}`. Digests are lowercase SHA-256 hex without `sha256:`. No `packageRef`, arbitrary `steps`, unsafe exemption, or host-confinement switch. `sourceProject` is the trusted client's project mapping. The companion loads the candidate/proposal from its owned ledger and checks the request digests and declared data inputs against it. Return 202 `{jobId}`; this invokes the seven-step change-set lane.
 - `GET /v1/stage/{jobId}/verdict`: return 200 `{jobId,signature,verdict:{...}}` only for the completed companion-issued record. Pending is 409 `stage_pending`; failed/unavailable sandbox produces `stage_failed` without an issuable verdict. `signature` is the companion's opaque HMAC, never a digest supplied by a worker.
-- `POST /v1/stage/{jobId}/verify`: body `{signedVerdict:{jobId,signature,verdict},expected:<the original StageRequest>}`. Verify the stored job and caller ownership, HMAC, and **every signed field** against the stored record. Match expected job/project/change-set/source/catalog/package/proposal/input bindings. Return 200 `{verified:true,jobId}` only for an authentic completed record; invalid records return `{verified:false,jobId}` or an HTTP refusal. Do not simply echo client fields or check that a signature is nonempty. A persisted job cannot be replaced with another revision's verdict.
+- `POST /v1/stage/{jobId}/verify`: body `{signedVerdict:{jobId,signature,verdict},expected:<the original StageCandidateRequest>}`. Verify the stored job and caller ownership, HMAC, and **every signed field** against the stored record. Match expected job/project/change-set/source/catalog/package/proposal/input bindings. Return 200 `{verified:true,jobId}` only for an authentic completed record; invalid records return `{verified:false,jobId}` or an HTTP refusal. Do not simply echo client fields or check that a signature is nonempty. A persisted job cannot be replaced with another revision's verdict.
 - The verdict uses `gamecore.studio.stage-verdict/1`, additionally requiring `jobId`, `projectId`, `sourceRevision`, `catalogRevision`, `confinement:"docker"|"host"`, `coldCache:boolean`. Existing `artifacts` package/proposal digests and `files` must describe exact bytes. Require `pass:true`, no partial/failure, explicit empty `forbiddenHits`, and exactly one passing result for each `scan`, `checkers`, `dotnet`, `unity-editmode`, `playmode-smoke`, `determinism`, `budget`. `budgetMs=360000`; warm jobs cannot exceed it. Cold-cache jobs may exceed once as enforced by the runner. HMAC covers all fields, including confinement/coldCache, step results, file hashes and catalog delta. The companion owns cache versioning by Unity version and kernel/gameplay version hash.
 
 `StageAdmission.BuildStageRequest(candidate, trustedSourceProject)` validates paths and builds the DTO. Configure `Options.StageService`, `ProjectId`, `SourceRevision`, `CatalogRevision` from trusted project context. `await admission.FetchVerdict(jobId, originalRequest)` fetches, verifies and retains an authorized in-memory verdict. `RecordVerdict(byte[])` is compatibility **evidence only**; `Admit(candidate, verdictBytes)` refuses. No local HMAC key is handed to Unity. After a reload, `RefreshPendingVerdicts()` authenticates pending jobs again; persisted bytes alone never regain trust. Configure `AllowHostConfinement` only from an explicit operator choice; default false.
 
 ### R2-A / R2-C / R2-E: generic history dispatch
 
-R2-B provisionally declares `IHistoryEntryHandler` in `Editor/Stage/AdmissionHistoryHandler.cs`:
+Core owns `IHistoryEntryHandler` in `Editor/Journal/`:
 
 ```csharp
-bool CanHandle(ChangeSet entry);
-HistoryResult Undo(ChangeSet entry, bool force);
-HistoryResult Redo(ChangeSet entry);
-HistoryResult Resume(ChangeSet entry);
-HistoryResult Rollback(ChangeSet entry);
+HistoryEntryKind Kind { get; } // Admission
+HistoryResult Handle(ChangeSet entry, HistoryAction action, bool force);
 ```
 
-`AdmissionHistoryHandler(StageAdmission)` implements all methods. It recognizes admit/remove journal entries. Mutation tools have no `AuthorOperation` attributes and are absent from the registry; do not re-add them to make generic replay work. `StageAdmission` performs the internal journaled file operation directly. Admission `Pending` means the journal remains Interrupted, never Applied/Undone. Force cannot bypass ownership or provenance.
+`StageAdmission` registers `AdmissionHistoryHandler` through `runtime.History.RegisterHandler(...)`
+on every runtime creation/rebuild. Undo/Redo/Resume/Rollback all route through `runtime.History`.
+The durable admission lifecycle retains Interrupted while Pending; its Finished event updates the
+redo stack only after verified Admitted/Undone. Force never bypasses provenance or ownership.
+Internal package installation/removal is performed by the admission state machine after its durable
+checkpoint (there are no discoverable mutation tools or generic engine replay).
 
 ### R2-G: services after game/domain reload
 
@@ -48,7 +50,7 @@ Game bootstrap must rebind the current project's `StageAdmission.Of(StudioServic
 - **R2-D**, `Packages/com.gamecore.studio.etos/Client/CompanionClient.cs` and Editor adapter: implement the exact async `IStageService` HTTP contract above; bind trusted project/source/catalog context after every reload. Replace artifact `RecordVerdict` calls with `FetchVerdict`. Refresh a retained job before redo after a fresh domain.
 - **R2-F**, `studio/agent/src/stage.rs` and stage verdict/router modules: implement the signed record and verify route above, scoped ownership, complete-step enforcement, Docker sandbox, versioned warm cache, and real Docker Unity licensing evidence. Never issue an unsigned or partial record.
 - **R2-A**, `Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs`: dispatch matching `IHistoryEntryHandler` before generic undo/redo/recovery; register `new AdmissionHistoryHandler(StageAdmission.Of(runtime))`. Preserve redo bookkeeping until asynchronous `StageAdmission.Finished` reports final Undone/Admitted. Reconcile the provisional interface into the agreed core location without duplicate declarations. Generic history must refuse an admission if no handler is registered; it must not mark it undone merely because no generic inverse is present.
-- **R2-C**, candidate coordinator and panel: build and send `StageRequest`, store job/request, fetch verified verdict, then enable the explicit creator Admit action. Show signed confinement and coldCache; host mode requires explicit opt-in and a warning. Route all history actions through R2-A dispatch.
+- **R2-C**, candidate coordinator and panel: build and send `StageCandidateRequest`, store job/request, fetch verified verdict, then enable the explicit creator Admit action. Show signed confinement and coldCache; host mode requires explicit opt-in and a warning. Route all history actions through R2-A dispatch.
 - **R2-G**, new `Packages/com.gamecore.gameplay.world/Editor/StudioAdmissionServices.cs`: expose `public static void BindAdmission(StudioRuntime runtime, Func<SaveService?> activeSaveService, Func<bool> sessionReady, Func<StageVerdict,bool> smokeTest)` and have the trusted game bootstrap call it after every domain/game-session startup. Bind the capture/session/smoke options above to the active restored root. A lambda captured only before compile does not survive reload. Smoke receives the verified verdict and may resolve its retained proposal digest through the runtime artifact store; never invoke an unverified proposal.
 - **R2-A**, `Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs`: extend the existing `SecretRedactor.Redact(string)` to D9's full prefix/JSON-key coverage. Stage verdict summaries, admission/compile result details, journal scenarios and checker diagnostics now call that shared implementation; no Stage-specific redactor is introduced. R2-F must redact child output before persistence/signing.
 
@@ -95,3 +97,19 @@ Capture retry is explicitly idempotent: `SaveServiceAdmissionCapture` validates/
 - Legacy `admit-after-play-*` records from the old code omit candidate/job provenance. They are detected and refused with `legacy_admission_incomplete`; automatically admitting them would recreate R2-09. Restage and explicitly Admit. Both the old Library location and the new Studio location are scanned. New capture requests persist the full pending record before capture/stop.
 - D9: the baseline shared core redactor lacks the full new token-prefix and JSON key-name rules. R2-A owns that expansion; Stage now uses the existing shared implementation for its display and diagnostic text.
 - D3: Docker 29.6.2 ran an offline, read-only-root probe using `localhost/gc-mechanic:current`, a read-only Unity Editor mount, slot-local HOME/write mount, no live project, and a read-only licence mount when present. Under the host-wide Unity lock it exited 127 in 5 s: `sandbox_unavailable: loader dependency missing (`libgtk-3.so.0`, `libgdk-3.so.0`); Unity licensing not reached`. The evidence writer discarded raw child output and recorded only fixed classification strings in `.unity-logs/docker-probe/r2-b-docker-license-20261005T143407-a1.log`. No verdict was issued and no host fallback was attempted for the probe. R2-F must supply the sandbox image dependencies and rerun licensing; host execution of trusted tests is not evidence of candidate confinement. Default admission refuses host verdicts.
+
+## R2-int1 contract reconciliation
+
+The provisional Stage interface is removed. `StageCandidateRequest` retains R2-A's local
+ProjectPath/RepoRoot context and R2-B's sourceProject, artifact digests and validated stageInputs.
+The six-argument local-context constructor has no artifact bindings; use BuildStageRequest before
+requesting admission. The full constructor is used for persisted admission verification records.
+
+R2-F's current HTTP boundary rejects sourceProject paths and resolves projectId from operator
+stage.projects configuration. Transport adapters must omit sourceProject (as well as local-only
+ProjectPath/RepoRoot) from POST /v1/stage; never send a host path as authority. The earlier POST
+shape above describes the local admission DTO, not an authorization to override that mapping.
+R2-D still owns the concrete authenticated transport binding.
+
+History integration and shared redaction are now present. The R2_15 regression calls the real
+HistoryService, checks its default redo selection, and retains exact package preimages.

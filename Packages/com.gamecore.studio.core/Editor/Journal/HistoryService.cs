@@ -91,6 +91,19 @@ namespace GameCore.Studio.Edit
                 : HistoryResult.Refused(entry.Id, DiagnosticCodes.NotConfigured, "No history handler is registered for " + kind + ".");
         }
 
+        internal void CompleteHandledEntry(string id)
+        {
+            ChangeSetState? state = _runtime.Journal.Read(id)?.EffectiveState;
+            if (state == ChangeSetState.Undone)
+            {
+                Redo_.Remove(id);
+                Redo_.Add(id);
+            }
+            else if (state == ChangeSetState.Applied) Redo_.Remove(id);
+            else return; // Pending transitions retain the previous redo bookkeeping.
+            SaveRedo();
+        }
+
         private string TransitionPath(string id) => Path.Combine(_runtime.Paths.HistoryRoot, "transitions", id + ".pending");
 
         private ApplyReport Transition(ChangeSet entry, ChangeSet work, string action, IReadOnlyDictionary<string, JObject>? replay, bool skip)
