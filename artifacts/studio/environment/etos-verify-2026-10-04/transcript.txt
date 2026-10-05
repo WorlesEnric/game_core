@@ -1,13 +1,13 @@
-# GameCore Studio etos W0 verification, 20261004T205506Z
+# GameCore Studio etos W0 verification, 20261004T233228Z
 host: worlesenric (Linux 7.0.0-31-generic), user worlesenric
 node root: /home/worlesenric/.local/share/etos-studio; binaries: /home/worlesenric/.local/opt/etos/bin
-etos source: 5fa113be2e4b8429983d035e212fdb0630e211fa (HEAD -> studio/bailian-tts, origin/studio/bailian-tts)
+etos source: 278ef9cf421f5e64e83a402960def0c51e3833c3 (HEAD -> studio/bailian-tts, origin/studio/bailian-tts)
 etos.lock:
   # GameCore Studio etos pin (docs/studio/04-etos-integration.md §8.1). Written by
   # studio/tools/host-build-etos.sh on the build host; do not edit by hand.
   [etos]
   base = "6c2c3f4ea238bd211f9c3e8e9a813b22a13bc9a8"
-  commit = "5fa113be2e4b8429983d035e212fdb0630e211fa"
+  commit = "278ef9cf421f5e64e83a402960def0c51e3833c3"
   branch = "studio/bailian-tts"
   rust = "1.97.1"
   build = "cargo build --release --locked -p etnode -p etcli; etcli for x86_64-unknown-linux-musl in rust:1.97.1-alpine"
@@ -16,10 +16,10 @@ etos.lock:
   version = "3"
   
   [sha256]
-  etosd = "3a683d0c8a84e7a00c657dfca960908629ae84fc7de387423f4fd02ec97a4b6a"
+  etosd = "dea3f57f72328b1537f85701d77c3de44578357170dc1c5805adac347f0e657b"
   etos = "bcabe343f501c7e0bffe2d7d583aefc30d6fbe34c00cf88859bde4df0964b467"
   etos-musl = "872b9079e6db9015bb87d1e5305296dda424f3ca8d85bdf866c2c5463bc4d3fd"
-game_core: 22e0cc93febdff48e68ff54ac62f42ff9c85d2b9 (HEAD -> worktree-agent-a397841371142d705, origin/worktree-agent-a397841371142d705)
+game_core: dd0b05cd16f42a793d9b6d090cdd1cf5e6578665 (HEAD -> worktree-agent-a397841371142d705, origin/worktree-agent-a397841371142d705)
 
 ## 1. node
 $ systemctl --user is-active etosd.service
@@ -40,10 +40,10 @@ installed verify 0.1.0 (GameCore Studio W0 verification)
 >> verify_agent: ok (key file /home/worlesenric/.local/share/etos-studio/agents/verify/key (mode 600))
 
 ## 3. generate.image
-$ POST /api/v1/ops/generate.image {"prompt":"A small stone well in a misty village square, painterly game concept art","size":"1024x1024","count":1,"max_cost_usd":0.1,"key":"verify-img-20261004T205506Z"}
+$ POST /api/v1/ops/generate.image {"prompt":"A small stone well in a misty village square, painterly game concept art","size":"1024x1024","count":1,"max_cost_usd":0.1,"key":"verify-img-20261004T233228Z"}
 HTTP 200
 {
-    "key": "verify-img-20261004T205506Z",
+    "key": "verify-img-20261004T233228Z",
     "op": "generate.image",
     "provider": "echo-images",
     "job_id": null,
@@ -59,42 +59,42 @@ HTTP 200
     },
     "refs": [
         {
-            "id": "ref_01m44b7jg0t7pjne89kwvmybbj",
+            "id": "ref_01m44m6j35ycg4m99bt8bd9yff",
             "name": "out.png",
             "kind": "pinned",
-            "size": 2338702,
+            "size": 2416601,
             "owner": "studio"
         }
     ]
 }
 
-$ GET /api/v1/files/ref_01m44b7jg0t7pjne89kwvmybbj -> image.png
-HTTP 200, 2338702 bytes
+$ GET /api/v1/files/ref_01m44m6j35ycg4m99bt8bd9yff -> image.png
+HTTP 200, 2416601 bytes
 image.png: PNG image data, 1536 x 1024, 8-bit/color RGB, non-interlaced
->> generate.image: ok (ref ref_01m44b7jg0t7pjne89kwvmybbj, 2338702 bytes)
+>> generate.image: ok (ref ref_01m44m6j35ycg4m99bt8bd9yff, 2416601 bytes)
 
 ## 4. describe
-$ POST /api/v1/ops/describe {"input":"ref_01m44b7jg0t7pjne89kwvmybbj","prompt":"Describe this image in two sentences."}
+$ POST /api/v1/ops/describe {"input":"ref_01m44m6j35ycg4m99bt8bd9yff","prompt":"Describe this image in two sentences."}
 HTTP 200
 {
     "provider": "echo-describe",
-    "text": "A moss-covered stone well with a wooden frame, shingled roof, rope spindle, and hanging bucket stands in the center of a wet cobblestone village square, with barrels, flowers, and a large tree nearby. Mist surrounds steep-roofed medieval buildings and a distant church tower, while warm window lamps, strings of triangular pennants, a hanging inn sign, and a wooden cart add detail to th
+    "text": "A roofed stone well with a wooden crank and hanging bucket stands at the center of a wet cobblestone square in a misty medieval village. Timber-and-stone houses, glowing lanterns and windows, autumn trees, a market stall, and a distant church steeple surround the square beneath an overcast sky.",
     "usage": {
         "unit": "image",
         "quantity": 1.0,
         "input_tokens": 2213,
-        "output_tokens": 90,
+        "output_tokens": 69,
         "cost_usd": 0.0
     }
 }
 
->> describe: ok (A moss-covered stone well with a wooden frame, shingled roof, rope spindle, and hanging bucket stands in the center of a)
+>> describe: ok (A roofed stone well with a wooden crank and hanging bucket stands at the center of a wet cobblestone square in a misty m)
 
 ## 5. tts
-$ POST /api/v1/ops/tts {"text":"Welcome to Hollowmere.","voice":"Cherry","key":"verify-tts-20261004T205506Z"}
+$ POST /api/v1/ops/tts {"text":"Welcome to Hollowmere.","voice":"Cherry","key":"verify-tts-20261004T233228Z"}
 HTTP 200
 {
-    "key": "verify-tts-20261004T205506Z",
+    "key": "verify-tts-20261004T233228Z",
     "op": "tts",
     "provider": "bailian-tts",
     "job_id": null,
@@ -110,29 +110,29 @@ HTTP 200
     },
     "refs": [
         {
-            "id": "ref_01m44b8a4k0yvssf2v4c047gxp",
+            "id": "ref_01m44m6sp8z6vdvdg68gjjvf55",
             "name": "out.wav",
             "kind": "pinned",
-            "size": 80684,
+            "size": 73004,
             "owner": "studio"
         }
     ]
 }
 
-$ GET /api/v1/files/ref_01m44b8a4k0yvssf2v4c047gxp -> welcome.wav
-HTTP 200, 80684 bytes
+$ GET /api/v1/files/ref_01m44m6sp8z6vdvdg68gjjvf55 -> welcome.wav
+HTTP 200, 73004 bytes
 welcome.wav: RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 24000 Hz
->> tts: ok (80684 bytes; RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 24000 Hz)
+>> tts: ok (73004 bytes; RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 24000 Hz)
 
 ## 6. realtime (studio-voice)
 $ python3 studio/etos/verify-agent/realtime_probe.py
-{"t_ms": 445, "event": {"type": "ready", "capabilities": ["duplex_audio", "manual_response", "context_replace", "response_cancel", "playback_truncate", "speech_detection", "input_transcript"], "audio_format": "pcm16", "sample_rate_hz": 24000}}
-{"t_ms": 4522, "event": {"type": "closed", "reason": "client closed"}}
+{"t_ms": 321, "event": {"type": "ready", "capabilities": ["duplex_audio", "manual_response", "context_replace", "response_cancel", "playback_truncate", "speech_detection", "input_transcript"], "audio_format": "pcm16", "sample_rate_hz": 24000}}
+{"t_ms": 4400, "event": {"type": "closed", "reason": "client closed"}}
 {"summary": {"events": ["ready", "closed"], "sent_chunks": 30, "ok": true}}
 >> realtime: ok ({"summary": {"events": ["ready", "closed"], "sent_chunks": 30, "ok": true}})
 
 ## 7. generate.3d (expected: not configured)
-$ POST /api/v1/ops/generate.3d {"prompt":"a wooden barrel","key":"verify-3d-20261004T205506Z"}
+$ POST /api/v1/ops/generate.3d {"prompt":"a wooden barrel","key":"verify-3d-20261004T233228Z"}
 HTTP 503
 {
     "code": "not_configured",
@@ -153,13 +153,7 @@ gamecore-studio 0.1.0 ready restarts 0
 $ GET /api/v1/agents/gamecore-studio/http/v1/hello (app key)
 HTTP 200
 {
-    "service": "gamecore-studio",
-    "version": "0.1.0",
-    "protocol": 1,
     "app": "gamecore-unity",
-    "node": "studio",
-    "sdk": "1.0.0",
-    "connected": true,
     "capabilities": [
         "requests",
         "candidates",
@@ -170,6 +164,9 @@ HTTP 200
         "voice",
         "stage"
     ],
+    "connected": true,
+    "node": "studio",
+    "protocol": 1,
     "providers": {
         "3d": "not_configured",
         "describe": "live",
@@ -177,112 +174,115 @@ HTTP 200
         "tts": "live",
         "voice": "unknown"
     },
-    "providersCheckedAt": 1791147393547,
+    "providersCheckedAt": 1791156779243,
+    "sdk": "1.0.0",
+    "service": "gamecore-studio",
+    "toolCatalogRevisions": [
+        "9629ec6f02d611a3fc9b559e8eaeeee9df939e2b33735a0978af40330106d71e",
+        "p05-cat-1"
+    ],
+    "version": "0.1.0",
     "workers": [
         "gc-designer",
         "gc-mechanic"
-    ],
-    "toolCatalogRevisions": [
-        "p05-cat-1"
-    ],
-    "indexRevision": null
+    ]
 }
 
->> hello: ok ({"service":"gamecore-studio","version":"0.1.0","protocol":1,"app":"gamecore-unity","node":"studio","sdk":"1.0.0","connected":true,"capabilities":["requests","candidates","artifacts","index","ops","eve)
+>> hello: ok ({"app":"gamecore-unity","capabilities":["requests","candidates","artifacts","index","ops","events","voice","stage"],"connected":true,"node":"studio","protocol":1,"providers":{"3d":"not_configured","de)
 $ (cd studio/agent && STUDIO_REAL_APP_KEY=/home/worlesenric/.config/gamecore-studio/app-key.json STUDIO_REAL_ETOS=/home/worlesenric/.local/opt/etos/bin/etos cargo test --test real_node -- --ignored --nocapture --test-threads 1)
->> real_node: FAILED (thread 'real_node_restart_recovery' (2524867) panicked at tests/real_node.rs:126:13: test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 484.43s )
-  | thread 'real_node_end_to_end' (2514960) panicked at tests/real_node.rs:126:13:
-  | cs_00000000000017911479345081 did not settle: {"attempt":0,"changeSetId":"cs_00000000000017911479345081","createdAt":1791147934784,"hasCandidate":false,"outcome":null,"requestId":"cs_00000000000017911479345081","seq":10,"state":"running","taskId":"t658160503cb112b318184111","taskStatus":"starting","tasks":["t658160503cb112b318184111"],"topic":"#agent/gamecore-studio/cs-cs_00000000000017911479345081","updatedAt":1791148090932,"worker":"gc-designer"}
-  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-  | FAILED
-  | test real_node_restart_recovery ... --- POST /v1/requests cs_00000000000017911481643063 -> 200: state "requested" task null
+>> real_node: ok (test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 102.92s outcomes: candidate candidate)
+  |   "changeSetId": "cs_00000000000017911568331472",
+  |   "createdAt": 1791156833151,
+  |   "hasCandidate": false,
+  |   "outcome": {
+  |     "code": "cancelled",
+  |     "message": "This task was cancelled (cancelled by the owner); I stopped working on it."
+  |   },
+  |   "requestId": "cs_00000000000017911568331472",
+  |   "seq": 41,
+  |   "state": "cancelled",
+  |   "taskId": "tdb871109ee1b2810a36b0297",
+  |   "taskStatus": "cancelled",
+  |   "tasks": [
+  |     "tdb871109ee1b2810a36b0297"
+  |   ],
+  |   "topic": "#agent/gamecore-studio/cs-00000000000017911568331472",
+  |   "updatedAt": 1791156833689,
+  |   "worker": "gc-designer"
+  | }
+  | --- WS /v1/voice first frame
+  | {
+  |   "audioFormat": "pcm16",
+  |   "maxChunkBytes": 24576,
+  |   "sampleRateHz": 24000,
+  |   "sessionId": "vs_1a109444dbe351e514bc314",
+  |   "type": "ready"
+  | }
+  |     voice: {"reason":"client closed","type":"closed"}
+  | --- POST /v1/ops/generate 3d -> 503
+  | {
+  |   "code": "not_configured",
+  |   "hint": "an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README",
+  |   "message": "3D model generation is not available on this node: no provider is configured"
+  | }
+  | --- POST /v1/index/delta -> 200
+  | {
+  |   "queued": 2,
+  |   "revision": 1,
+  |   "skipped": 0
+  | }
+  | --- POST /api/v1/query gc_entity (app key) -> 400
+  | {
+  |   "code": "unknown_table",
+  |   "hint": "list the tables with `ls /rg/catalog/` or the catalog operation",
+  |   "message": "there is no table `gc_entity`"
+  | }
+  | ok
+  | test real_node_restart_recovery ... --- POST /v1/requests cs_00000000000017911568372123 -> 200: state "running" task "t158e9b13fb1ee87db693a228"
   | --- etos agent restart gamecore-studio: restarted gamecore-studio
-  |   [ 0.8s] hello -> 503 "agent_starting"
-  |   [ 2.8s] hello -> 503 "agent_starting"
-  |   [ 3.1s] hello -> 503 "agent_starting"
-  |   [ 3.4s] hello -> 503 "agent_starting"
-  |   [ 3.7s] hello -> 503 "agent_starting"
-  |   [ 4.0s] hello -> 503 "agent_starting"
-  |   [ 4.3s] hello -> 503 "agent_starting"
-  |   [ 4.6s] hello -> 503 "agent_starting"
-  |   [ 4.9s] hello -> 503 "agent_starting"
-  |   [ 5.2s] hello -> 503 "agent_starting"
-  |   [ 5.5s] hello -> 503 "agent_starting"
-  |   [ 5.8s] hello -> 503 "agent_starting"
-  |   [ 6.1s] hello -> 503 "agent_starting"
-  |   [ 6.4s] hello -> 503 "agent_starting"
-  |   [ 6.7s] hello -> 503 "agent_starting"
-  |   [ 7.0s] hello -> 503 "agent_starting"
-  |   [ 7.3s] hello -> 503 "agent_starting"
-  |   [ 7.6s] hello -> 503 "agent_starting"
-  |   [ 9.4s] hello -> 503 "agent_starting"
-  |   [ 9.7s] hello -> 503 "agent_starting"
-  |   [10.0s] hello -> 503 "agent_starting"
-  |   [10.3s] hello -> 503 "agent_starting"
-  |   [10.7s] hello -> 503 "agent_starting"
-  |   [11.0s] hello -> 503 "agent_starting"
-  |   [11.4s] hello -> 503 "agent_starting"
-  |   [11.7s] hello -> 503 "agent_starting"
-  |   [12.0s] hello -> 503 "agent_starting"
-  |   [12.5s] hello -> 503 "agent_starting"
-  |   [12.8s] hello -> 503 "agent_starting"
-  |   [13.3s] hello -> 503 "agent_starting"
-  |   [13.6s] hello -> 503 "agent_starting"
-  |   [14.1s] hello -> 503 "agent_starting"
-  |   [14.4s] hello -> 503 "agent_starting"
-  |   [14.7s] hello -> 503 "agent_starting"
-  |   [15.0s] hello -> 503 "agent_starting"
-  |   [15.3s] hello -> 503 "agent_starting"
-  |   [15.6s] hello -> 503 "agent_starting"
-  |   [16.4s] hello -> 503 "agent_starting"
-  |   [16.7s] hello -> 503 "agent_starting"
-  |   [17.0s] hello -> 503 "agent_starting"
-  |   [17.3s] hello -> 503 "agent_starting"
-  |   [17.6s] hello -> 503 "agent_starting"
-  |   [17.9s] hello -> 503 "agent_starting"
-  |   [18.5s] hello -> 503 "agent_starting"
-  |   [18.8s] hello -> 503 "agent_starting"
-  |   [19.1s] hello -> 503 "agent_starting"
-  |   [19.4s] hello -> 503 "agent_starting"
-  |   [19.7s] hello -> 503 "agent_starting"
-  |   [20.1s] hello -> 503 "agent_starting"
-  |   [20.4s] hello -> 503 "agent_starting"
-  |   [21.0s] hello -> 503 "agent_starting"
-  |   [21.3s] hello -> 503 "agent_starting"
-  |   [21.9s] hello -> 503 "agent_starting"
-  |   [22.3s] hello -> 503 "agent_starting"
-  |   [22.6s] hello -> 503 "agent_starting"
-  |   [23.0s] hello -> 503 "agent_starting"
-  |   [23.3s] hello -> 503 "agent_starting"
-  |   [24.7s] new process ready
-  |   [  0.2s] "requested" attempt=0 task=null status=null
-  |   [100.6s] "running" attempt=0 task="t131be22ff26f0ef9309e9e9c" status="queued"
+  |   [ 0.0s] hello -> 503 "agent_starting"
+  |   [ 0.3s] new process ready
+  |   [  0.0s] "running" attempt=0 task="t158e9b13fb1ee87db693a228" status="running"
+  |   [ 44.9s] "candidate" attempt=0 task="t158e9b13fb1ee87db693a228" status="done"
+  | --- settled after the restart
+  | {
+  |   "attempt": 0,
+  |   "changeSetId": "cs_00000000000017911568372123",
+  |   "createdAt": 1791156837216,
+  |   "hasCandidate": true,
+  |   "outcome": {
+  |     "artifacts": 0,
+  |     "code": "candidate",
+  |     "operations": 1
+  |   },
+  |   "requestId": "cs_00000000000017911568372123",
+  |   "seq": 47,
+  |   "state": "candidate",
+  |   "taskId": "t158e9b13fb1ee87db693a228",
+  |   "taskStatus": "done",
+  |   "tasks": [
+  |     "t158e9b13fb1ee87db693a228"
+  |   ],
+  |   "topic": "#agent/gamecore-studio/cs-00000000000017911568372123",
+  |   "updatedAt": 1791156882526,
+  |   "worker": "gc-designer"
+  | }
+  | ok
   | 
-  | thread 'real_node_restart_recovery' (2524867) panicked at tests/real_node.rs:126:13:
-  | cs_00000000000017911481643063 did not settle: {"attempt":0,"changeSetId":"cs_00000000000017911481643063","createdAt":1791148165936,"hasCandidate":false,"outcome":null,"requestId":"cs_00000000000017911481643063","seq":12,"state":"running","taskId":"t131be22ff26f0ef9309e9e9c","taskStatus":"queued","tasks":["t131be22ff26f0ef9309e9e9c"],"topic":"#agent/gamecore-studio/cs-cs_00000000000017911481643063","updatedAt":1791148335270,"worker":"gc-designer"}
-  | FAILED
+  | test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 102.92s
   | 
-  | failures:
-  | 
-  | failures:
-  |     real_node_end_to_end
-  |     real_node_restart_recovery
-  | 
-  | test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 484.43s
-  | 
-  | error: test failed, to rerun pass `--test real_node`
 
 ## results
   service                ok                   etosd.service active
   node_status            ok                   
   verify_agent           ok                   key file /home/worlesenric/.local/share/etos-studio/agents/verify/key (mode 600)
-  generate.image         ok                   ref ref_01m44b7jg0t7pjne89kwvmybbj, 2338702 bytes
-  describe               ok                   A moss-covered stone well with a wooden frame, shingled roof, rope spindle, and hanging bucket stands in the center of a
-  tts                    ok                   80684 bytes; RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 24000 Hz
+  generate.image         ok                   ref ref_01m44m6j35ycg4m99bt8bd9yff, 2416601 bytes
+  describe               ok                   A roofed stone well with a wooden crank and hanging bucket stands at the center of a wet cobblestone square in a misty m
+  tts                    ok                   73004 bytes; RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 24000 Hz
   realtime               ok                   {"summary": {"events": ["ready", "closed"], "sent_chunks": 30, "ok": true}}
   generate.3d            blocked (expected)   not_configured
   verify_agent_removed   ok                   
-  hello                  ok                   {"service":"gamecore-studio","version":"0.1.0","protocol":1,"app":"gamecore-unity","node":"studio","sdk":"1.0.0","connected":true,"capabilities":["requests","candidates","artifacts","index","ops","eve
-  real_node              FAILED               thread 'real_node_restart_recovery' (2524867) panicked at tests/real_node.rs:126:13: test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 484.43s 
+  hello                  ok                   {"app":"gamecore-unity","capabilities":["requests","candidates","artifacts","index","ops","events","voice","stage"],"connected":true,"node":"studio","protocol":1,"providers":{"3d":"not_configured","de
+  real_node              ok                   test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 102.92s outcomes: candidate candidate
 
-verify.sh: some checks FAILED (/home/worlesenric/wkspace/gc-studio/p0.1-host-etos/artifacts/studio/environment/etos-verify-2026-10-04)
+verify.sh: all checks passed (/home/worlesenric/wkspace/gc-studio/p0.1-host-etos/artifacts/studio/environment/etos-verify-2026-10-04)
