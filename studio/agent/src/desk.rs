@@ -1285,6 +1285,7 @@ impl Desk {
                 &row.change_set_id,
                 &self.schema,
                 CatalogContext {
+                    index_slice: row.body.get("contextSlice"),
                     revision: &revision,
                     catalog: catalog.as_ref(),
                 },

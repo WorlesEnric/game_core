@@ -16,6 +16,7 @@ fn evaluate_json(candidate: Value, catalog: &Value) -> Evaluation {
         candidate["id"].as_str().unwrap(),
         &ChangeSetSchema::load(None).unwrap(),
         CatalogContext {
+            index_slice: None,
             revision: &catalog_revision(catalog),
             catalog: Some(catalog),
         },
