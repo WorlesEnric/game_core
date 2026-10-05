@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""Retain every attempt; XML/TRX dispositions, never stdout, determine suite acceptance."""
+import argparse
+import collections
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import shlex
+import subprocess
+import sys
+import time
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).resolve().parents[4]
+OUT = ROOT / 'artifacts/studio/verification'
+HOME = str(Path.home())
+RESULTS = []
+
+
+def scrub(value):
+    value = value.replace(HOME, '~')
+    value = re.sub(r'/(?:home|Users)/[^/\s<>"\']+', '~', value)
+    value = re.sub(r'\b(?:et[kpta]_[A-Za-z0-9_.~+/=-]+|sk-[A-Za-z0-9_-]+)', '[REDACTED]', value)
+    return re.sub(r'\bBearer\s+[^\s"\',;<>]+', '[AUTH REDACTED]', value, flags=re.I)
+
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
+
+
+def xml_counts(path):
+    root = ET.parse(path).getroot()
+    cases = [x for x in root.iter() if x.tag.split('}')[-1] in ('test-case', 'UnitTestResult')]
+    counts = collections.Counter(x.get('result', x.get('outcome', 'Unknown')) for x in cases)
+    bad_suites = [x.get('fullname', x.get('name', x.tag)) for x in root.iter()
+                  if x.tag in ('test-run', 'test-suite') and x.get('result') in ('Failed', 'Inconclusive')]
+    return {'total': len(cases), 'counts': dict(counts), 'failedSuites': bad_suites,
+            'nonpassing': [{'name': x.get('fullname', x.get('testName', 'unnamed')),
+                            'result': x.get('result', x.get('outcome', 'Unknown')),
+                            'detail': scrub(' '.join(x.itertext()).strip())}
+                           for x in cases if x.get('result', x.get('outcome')) != 'Passed']}
+
+
+def finish(folder, record):
+    # Unity writes XML/logs itself. Scrub text paths after exit; preserve original XML outcomes.
+    for path in folder.rglob('*'):
+        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json'):
+            data = path.read_text(errors='replace')
+            path.write_text(scrub(data))
+    (folder / 'result.json').write_text(scrub(json.dumps(record, indent=2)) + '\n')
+    (folder / 'README.md').write_text(scrub(
+        f"# {record['label']}\n\nVerdict: **{record['status']}**. {record.get('note', '')}\n\n"
+        f"Source revision: `{record['revision']}`; host: `{record['host']}`.\n"
+        f"Started: {record['started']}; ended: {record['ended']}; duration: {record['seconds']:.3f} s.\n\n"
+        f"Command (from repository root unless cwd specified):\n\n```sh\n{record['command']}\n```\n\n"
+        "Text evidence redacts credentials and substitutes `~` for absolute home paths. "
+        "XML dispositions are unchanged. Hashes describe these retained sanitized bytes.\n"))
+    paths = sorted(p for p in folder.rglob('*') if p.is_file() and p.name != 'SHA256SUMS')
+    (folder / 'SHA256SUMS').write_text(''.join(
+        f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(folder)}\n' for p in paths))
+
+
+def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None):
+    stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+    folder = OUT / row / f'{label}-{stamp}'
+    folder.mkdir(parents=True)
+    command = [str(x).replace('{out}', str(folder)) for x in command]
+    start = time.monotonic()
+    record = dict(label=label, revision=git('rev-parse', 'HEAD'), host=platform.node(),
+                  started=utc(), command=shlex.join(command), cwd=str(cwd))
+    child_env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', DOTNET_CLI_TELEMETRY_OPTOUT='1',
+                     DOTNET_NOLOGO='1', GC_STUDIO_UNITY_SLOTS='1', PROBE_RUNS='2')
+    child_env.update(env or {})
+    print(f"START {row}/{label}", flush=True)
+    with (folder / 'command.log').open('w') as log:
+        try:
+            proc = subprocess.Popen(command, cwd=cwd, env=child_env, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT, text=True, errors='replace')
+            for line in proc.stdout:
+                log.write(scrub(line)); log.flush()
+            rc = proc.wait(timeout=timeout)
+        except OSError as exc:
+            log.write(scrub(str(exc)) + '\n'); rc = 127
+    record.update(exitCode=rc, status='PASS' if rc == 0 else 'FAIL', ended=utc(), seconds=time.monotonic()-start)
+    if results:
+        paths = list(folder.glob(results))
+        record['suites'] = {}
+        malformed = []
+        for p in paths:
+            try:
+                record['suites'][str(p.relative_to(folder))] = xml_counts(p)
+            except (ET.ParseError, OSError) as exc:
+                malformed.append(f'{p.name}: {exc}')
+        if not paths:
+            record.update(status='FAIL', note='No result XML/TRX produced; no test pass claimed.')
+        elif malformed:
+            record.update(status='FAIL', note='Malformed XML/TRX: ' + '; '.join(malformed))
+        elif any(s['nonpassing'] or s['failedSuites'] or not s['total'] for s in record['suites'].values()):
+            has_failure = any(s['counts'].get('Failed') or s['failedSuites'] for s in record['suites'].values())
+            record.update(status='FAIL' if has_failure else 'BLOCKED', note='See XML dispositions and nonpassing case details in result.json.')
+    finish(folder, record)
+    RESULTS.append(record)
+    print(f"END {row}/{label}: {record['status']} ({record['seconds']:.1f}s)", flush=True)
+    return record
+
+
+def static():
+    run('W-TOOL-02', 'metadata', ['python3', 'tools/check_package_metadata.py'])
+    run('STATIC', 'csharp', ['python3', 'tools/check_game_core_csharp.py'])
+    run('STATIC', 'schemas', ['python3', 'tools/studio/emit_studio_schemas.py', '--check'])
+    run('STATIC', 'schema-mirror', ['diff', '-rq', 'docs/studio/schemas', 'studio/agent/schemas'])
+    for label, args in [('cargo-fmt', ['fmt', '--check']), ('cargo-clippy', ['clippy', '--all-targets', '--', '-D', 'warnings']),
+                        ('cargo-test', ['test'])]:
+        run('STATIC', label, [str(Path.home() / '.cargo/bin/cargo'), *args], cwd=ROOT / 'studio/agent')
+    run('STATIC', 'dotnet', ['dotnet', 'test', 'dotnet/GameCore.sln', '--logger', 'trx',
+                           '--results-directory', '{out}/trx'], results='trx/*.trx')
+    for label, path in [('stage-python', 'studio/stage/tests'), ('installer-python', 'studio/etos/tests')]:
+        run('STATIC', label, ['python3', '-m', 'unittest', 'discover', '-s', path, '-v'])
+    run('STATIC', 'host-python', [os.environ.get('P42_TEST_PYTHON', 'python3'), '-m', 'pytest', '-q', 'studio/tools/tests/test_r3_host.py', 'studio/etos/workers/tests'])
+    run('STATIC', 'stage-slot', ['python3', 'tools/check_stage_slot.py', '--self-test'])
+
+
+def unity_run(game, mode, label=None, test_filter='.*'):
+    return run('UNITY-' + game.upper(), label or mode.lower(), ['bash', 'studio/tools/unity-batch.sh',
+        '--project', ROOT / 'games' / game, '--log-dir', '{out}/logs', '--label', label or mode.lower(),
+        '--results', '{out}/results.xml', '--', '-runTests', '-testPlatform', mode, '-testFilter', test_filter],
+        results='results.xml', env={'GAMECORE_ETOS_AUTOSTART': '0'})
+
+
+def unity():
+    for game in ('hollowmere', 'cleanproof'):
+        for mode in ('EditMode', 'PlayMode'):
+            unity_run(game, mode)
+
+
+def bake():
+    for game, method, extra in (
+        ('hollowmere', 'Hollowmere.Authoring.HollowmereAuthoring.AuthorAllBatch', ['-p31MediaMaxCalls', '0', '-p31Report', '{out}/author-report.json']),
+        ('cleanproof', 'Saltmarsh.Authoring.SaltmarshAuthoring.AuthorAll', ['-quit'])):
+        run('W-PLUG-12', 'bake-' + game, ['bash', 'studio/tools/unity-batch.sh', '--project', ROOT / 'games' / game,
+            '--log-dir', '{out}/logs', '--label', 'bake-' + game, '--', '-executeMethod', method, *extra],
+            env={'GAMECORE_ETOS_AUTOSTART': '0'})
+
+
+def clean():
+    for mode in ('EditMode', 'PlayMode'):
+        unity_run('cleanproof', mode, 'clean-recheck-' + mode.lower())
+    run('W-CLEAN-02', 'package-diff', ['git', 'diff', '--exit-code', 'origin/main', '--', 'Packages/'])
+
+
+def perf():
+    # Bounded probes already assert gameplay invariants and print their observed timings.
+    # They do not qualify graphical B-FRAME, native-memory release, or a full p95 campaign.
+    for n in (1, 2):
+        unity_run('hollowmere', 'PlayMode', 'perf-probe-' + str(n),
+                  'Hollowmere\\.P1_1\\..*|Hollowmere\\.P1_3\\..*|Hollowmere\\.P1_7a\\..*')
+
+
+def security_scan():
+    prefixes = [b'et' + s for s in (b'k_', b't_', b'p_', b'a_')] + [b'sk' + b'-', b'Bearer' + b' ']
+    token = re.compile(b'|'.join(re.escape(p) for p in prefixes))
+    home = re.compile(rb'/(?:home|Users)/[^/\s<>"\']+')
+    tracked = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
+    paths = set(ROOT / p for p in tracked if p)
+    paths.update(p for p in OUT.rglob('*') if p.is_file())
+    matches = []
+    excluded = []
+    for path in sorted(paths):
+        relative = str(path.relative_to(ROOT))
+        if path.suffix == '.key' or path.name in ('providers.env', 'auth.json', 'GameCoreStudio.json') or path.is_symlink():
+            excluded.append(relative); continue
+        if not path.is_file(): continue
+        counts = collections.Counter()
+        previous = b''
+        with path.open('rb') as stream:
+            while chunk := stream.read(1024 * 1024):
+                data = previous + chunk
+                for m in token.finditer(data):
+                    if m.end() > len(previous): counts['prefix'] += 1
+                for m in home.finditer(data):
+                    if m.end() > len(previous): counts['absoluteHome'] += 1
+                previous = data[-256:]
+        if counts: matches.append({'file': relative, **counts})
+    # Settings are inspected only by this boolean detector; no values or content are emitted.
+    settings = []
+    for game in ('hollowmere', 'cleanproof'):
+        path = ROOT / 'games' / game / 'UserSettings/GameCoreStudio.json'
+        record = {'project': game, 'exists': path.exists()}
+        if path.exists():
+            data = path.read_bytes()
+            record['credentialPrefixPresent'] = bool(token.search(data))
+            try:
+                obj = json.loads(data)
+                record['unexpectedCredentialFields'] = [k for k in obj if re.search(r'password|secret|token|^key$|api.?key', k, re.I) and obj[k]]
+            except ValueError:
+                record['invalidJson'] = True
+        settings.append(record)
+    print(json.dumps({'scope': 'tracked repository plus all P4.2 artifacts; raw matches are NEVER printed',
+                      'filesScanned': len(paths), 'matches': matches, 'excludedSensitivePaths': excluded,
+                      'settings': settings}, indent=2))
+    return int(any(s.get('credentialPrefixPresent') or s.get('unexpectedCredentialFields') or s.get('invalidJson') for s in settings))
+
+
+def security():
+    run('W-ETOS-01', 'security-scan', ['python3', __file__, 'security-scan'])
+    for label, extra in [('proxy-missing-app', []), ('proxy-wrong-token', ['-H', 'X-Etos-App: gamecore-unity', '-H', 'X-Etos-Proxy-Token: invalid-p42-probe'])]:
+        run('W-ETOS-01', label, ['curl', '--silent', '--show-error', '--noproxy', '*', '--max-time', '10',
+             '--write-out', '\nHTTP %{http_code}\n', *extra, 'http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http/v1/hello'])
+
+
+def summary():
+    lines = ['# P4.2 verification summary', '', 'Matrix rows are accepted only by their row README; suite passes alone do not close workflows.', '',
+             '| Evidence | Verdict | Revision |', '|---|---|---|']
+    for p in sorted(OUT.glob('*/*/result.json')):
+        r = json.loads(p.read_text())
+        lines.append(f"| [{p.parent.relative_to(OUT)}]({p.parent.relative_to(OUT)}/README.md) | {r['status']} | {r['revision'][:12]} |")
+    (OUT / 'SUMMARY.md').write_text('\n'.join(lines) + '\n')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode', nargs='?', choices=('all', 'static', 'bake', 'unity', 'perf', 'clean', 'security', 'security-scan', 'summary'), default='all')
+    args = parser.parse_args()
+    if platform.system() != 'Linux':
+        parser.error('Qualification must run on the Linux build host.')
+    if os.environ.get('PROBE_RUNS', '2') != '2':
+        parser.error('Only PROBE_RUNS=2 is supported; no full performance campaign.')
+    if args.mode == 'security-scan': return security_scan()
+    if args.mode in ('all', 'static'): static()
+    if args.mode in ('all', 'bake'): bake()
+    if args.mode in ('all', 'unity'): unity()
+    if args.mode in ('all', 'perf'): perf()
+    if args.mode in ('all', 'clean'): clean()
+    if args.mode in ('all', 'security'): security()
+    summary()
+    return int(any(r['status'] != 'PASS' for r in RESULTS))
+
+
+if __name__ == '__main__':
+    sys.exit(main())

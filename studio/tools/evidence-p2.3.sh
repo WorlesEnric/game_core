@@ -48,12 +48,17 @@ fi
 host="${GC_STUDIO_HOST:-myubuntu}"
 remote_base="${GC_STUDIO_REMOTE_BASE:-wkspace/gc-studio}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-dest="${root}/artifacts/studio/evidence/P2.3"
+dest="${EVIDENCE_DEST:-${root}/artifacts/studio/evidence/P2.3}"
+on_host=0
+[[ "$(uname -s)" != Linux ]] || on_host=1
+host_exec() {
+  if (( on_host )); then bash -c "$2"; else command ssh "$@"; fi
+}
 stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 
 echo "-- P2.3 evidence for ${packet}/${project} on ${host}"
 set +e
-remote_out="$(ssh "${host}" \
+remote_out="$(host_exec "${host}" \
   "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1200}' EVIDENCE_SILENCE_TIMEOUT='${EVIDENCE_SILENCE_TIMEOUT:-600}' GCS_FLIP='${GCS_FLIP:-0}' NO_PLAY='${no_play}' bash -s" <<'HOST'
 set -euo pipefail
 unity="${UNITY_BIN:-${HOME}/Unity/Hub/Editor/6000.0.75f1/Editor/Unity}"
@@ -165,8 +170,12 @@ fi
 
 mkdir -p "${dest}"
 rm -f "${dest}"/*.png "${dest}/capture.json"
-scp -q "${host}:${out_dir}/*.png" "${host}:${out_dir}/capture.json" "${dest}/" || true
-ssh "${host}" "grep -E '\\[P2\\.3 evidence\\]|error CS|Exception' '${out_dir}/editor.log' | tail -n 120" > "${dest}/editor-excerpt.txt" 2>/dev/null || true
+if (( on_host )); then
+  cp -a "${out_dir}/." "${dest}/"
+else
+  scp -q "${host}:${out_dir}/*.png" "${host}:${out_dir}/capture.json" "${dest}/" || true
+fi
+host_exec "${host}" "grep -E '\\[P2\\.3 evidence\\]|error CS|Exception' '${out_dir}/editor.log' | tail -n 120" > "${dest}/editor-excerpt.txt" 2>/dev/null || true
 count=$(find "${dest}" -maxdepth 1 -name '*.png' | wc -l | tr -d ' ')
 echo "-- ${count} PNG(s) in ${dest} (editor rc ${editor_rc}); run directory ${host}:${out_dir}"
 if (( editor_rc != 0 || count < 6 )); then
