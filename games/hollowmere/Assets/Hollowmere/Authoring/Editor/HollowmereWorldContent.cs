@@ -488,7 +488,7 @@ namespace Hollowmere.Authoring
         private static JObject RuleFields(string trigger, string? subject, string entityId, JObject[] conditions, JObject[] actions, bool once, int priority = 0, int value = 0, bool any = true) => new JObject
         {
             ["trigger"] = trigger,
-            ["triggerSubject"] = subject,
+            ["triggerSubject"] = StudioAuthor.Str(subject),
             ["triggerEntityId"] = entityId,
             ["triggerValue"] = value,
             ["matchAnyValue"] = any,
@@ -645,7 +645,7 @@ namespace Hollowmere.Authoring
             ["vendor"] = vendor,
             ["item"] = item,
             ["count"] = count,
-            ["lootTable"] = loot,
+            ["lootTable"] = StudioAuthor.Str(loot),
         };
 
         private static void Boot(StudioAuthor a)

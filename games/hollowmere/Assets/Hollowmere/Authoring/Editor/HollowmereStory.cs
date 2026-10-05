@@ -37,7 +37,7 @@ namespace Hollowmere.Authoring
         public static JObject Cond(string kind, string? subject, string op, int value) => new JObject
         {
             ["kind"] = kind,
-            ["subject"] = subject,
+            ["subject"] = StudioAuthor.Str(subject),
             ["inventory"] = null,
             ["entityId"] = string.Empty,
             ["index"] = 0,
@@ -48,7 +48,7 @@ namespace Hollowmere.Authoring
         public static JObject Act(string kind, string? target, int value = 1, string text = "", string entityId = "") => new JObject
         {
             ["kind"] = kind,
-            ["target"] = target,
+            ["target"] = StudioAuthor.Str(target),
             ["inventory"] = null,
             ["entityId"] = entityId,
             ["value"] = value,
@@ -282,7 +282,7 @@ namespace Hollowmere.Authoring
         {
             ["stage"] = stage,
             ["kind"] = kind,
-            ["target"] = target,
+            ["target"] = StudioAuthor.Str(target),
             ["targetEntityId"] = string.Empty,
             ["required"] = required,
             ["branch"] = branch,

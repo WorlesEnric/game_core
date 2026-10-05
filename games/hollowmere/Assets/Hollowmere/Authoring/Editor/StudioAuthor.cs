@@ -231,6 +231,9 @@ namespace Hollowmere.Authoring
 
         public static JArray V2(float x, float y) => new JArray(x, y);
 
+        /// <summary>A JSON string, or a JSON null for a null string (Newtonsoft turns a null string into a String token).</summary>
+        public static JToken Str(string? value) => value == null ? JValue.CreateNull() : new JValue(value);
+
         public static JArray Color(float r, float g, float b, float a = 1f) => new JArray(r, g, b, a);
 
         public static JArray V3(Vector3 v) => new JArray(v.x, v.y, v.z);

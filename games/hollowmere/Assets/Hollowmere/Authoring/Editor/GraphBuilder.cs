@@ -52,7 +52,7 @@ namespace Hollowmere.Authoring
             var list = new JArray();
             foreach (var option in options)
             {
-                list.Add(new JObject { ["text"] = option.Text, ["condition"] = option.Condition, ["hideWhenUnavailable"] = false });
+                list.Add(new JObject { ["text"] = option.Text, ["condition"] = StudioAuthor.Str(option.Condition), ["hideWhenUnavailable"] = false });
             }
 
             return Add("Choice", string.Empty, prompt, null, null, null, list);
@@ -82,10 +82,10 @@ namespace Hollowmere.Authoring
                 ["speaker"] = speaker,
                 ["speakerEntityId"] = string.Empty,
                 ["text"] = text,
-                ["voiceClip"] = voice,
+                ["voiceClip"] = StudioAuthor.Str(voice),
                 ["portrait"] = null,
-                ["condition"] = condition,
-                ["actions"] = actions,
+                ["condition"] = StudioAuthor.Str(condition),
+                ["actions"] = StudioAuthor.Str(actions),
                 ["options"] = options,
             });
             return nodes.Count - 1;
