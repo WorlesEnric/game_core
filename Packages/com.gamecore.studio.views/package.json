@@ -1,0 +1,16 @@
+{
+  "name": "com.gamecore.studio.views",
+  "version": "1.0.0",
+  "displayName": "GameCore Studio Views",
+  "description": "GameCore Studio nonvisual views (docs/studio/02-architecture.md boundary A, SR-1.7): relationships, dialogue graph, quest graph, world/region flow, data tables and the changes/diagnostics/dependencies/history view. Every view reads the semantic index and the journal of com.gamecore.studio.core and edits only through change sets of existing tool ids applied by the ChangeSetEngine, so manual edits in views are journaled and undone exactly like agent edits. Editor-only and free of gameplay package dependencies: graph and quest layouts bind to authorable type ids and field names, and Play Mode reads go through a reflection bridge.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "studio",
+    "views"
+  ],
+  "dependencies": {
+    "com.gamecore.studio.core": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}
