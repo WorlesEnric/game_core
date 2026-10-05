@@ -1,0 +1,59 @@
+{
+  "changeSetId": "cs_01M45G3FWTZ2TNEZT0M20KQK2B",
+  "intent": {
+    "text": "Change the lantern quest to require two oil flasks.",
+    "origin": "agent"
+  },
+  "parent": null,
+  "worker": "design",
+  "toolCatalogRevision": "ebb5764ed08b6e6ac566a4d9bff90517c61196c5868df2883cb812c644f5f30d",
+  "contextBytes": 65531,
+  "contextTruncated": true,
+  "contextOmittedNodes": 3,
+  "selection": {
+    "id": "sel_01M45G3FWR9TG8Z9P0SHY1KZ8K",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Definition",
+        "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+        "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+        "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+        "path": "Assets/Hollowmere/Quests/DrownedBell.asset",
+        "stamp": "sha256:7647494ba5af2faade84e69b3bdb956de1c6bf1821fe55daa6241f3dccc2df6d"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "stamp": "sha256:e3206d52eb9cd8ef6cf9ac6c6db2c8e44ccb27ad68bd71ce0615d0427022f411"
+      }
+    ],
+    "frame": {
+      "camera": {
+        "position": [
+          -8.0,
+          0.75724995136260986,
+          -10.106704711914063
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fov": 60.0,
+        "aspect": 2.3308270676691731
+      },
+      "viewport": [
+        1240,
+        532
+      ],
+      "image": "sha256:ce11ec510d5a098edc80a18adb32dc412571eb7df9380de15030e3c596008b1f"
+    },
+    "indexRevision": 1
+  },
+  "attachments": []
+}

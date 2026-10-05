@@ -1,0 +1,9 @@
+{
+  "changeSetId": "cs_01M45FKA319D9C54HV6F0G46SM",
+  "question": "Which existing fact or condition indicates that the shrine is lit? None appears in the provided index slice, so I cannot reliably gate Odd’s new line.",
+  "answer": "There is no shrine in the game yet. Add a new fact shrine_lit (0 at the start) and one new line in Odd's dialogue graph that is only available when shrine_lit is 1, for example: \"So the old shrine burns again. The marsh feels less hungry tonight.\" Change nothing else.",
+  "afterSeconds": 167.5,
+  "tasks": [
+    "te4674ea132021d6758b199a3"
+  ]
+}

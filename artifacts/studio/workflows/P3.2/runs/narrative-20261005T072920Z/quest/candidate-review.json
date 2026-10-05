@@ -1,0 +1,26 @@
+{
+  "stage": "Invalid",
+  "gatewayStaged": true,
+  "summary": "2 ops: create x1, quest.addObjective x1",
+  "badges": [
+    "Edit-time",
+    "RequiresPlayStop"
+  ],
+  "problems": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op2"
+    }
+  ],
+  "stagedDiagnostics": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op2"
+    }
+  ],
+  "stagedOk": false
+}

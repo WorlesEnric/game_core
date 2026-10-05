@@ -1,0 +1,144 @@
+{
+  "revision": 1,
+  "nodes": 122,
+  "edges": 164,
+  "types": {
+    "audio.ambience": 3,
+    "audio.bank": 1,
+    "audio.musicState": 3,
+    "audio.set": 1,
+    "dialogue.graph": 5,
+    "entity.definition": 14,
+    "entity.instance": 16,
+    "entity.variant": 3,
+    "interaction.interactable": 3,
+    "interaction.roster": 1,
+    "inventory.inventory": 1,
+    "inventory.item": 4,
+    "inventory.lootTable": 1,
+    "inventory.vendor": 1,
+    "inventory.worldItem": 2,
+    "logic.actionSet": 7,
+    "logic.conditionSet": 6,
+    "logic.contentSet": 1,
+    "logic.rule": 6,
+    "narrative.fact": 9,
+    "npc.behaviour": 5,
+    "npc.definition": 5,
+    "npc.roster": 1,
+    "npc.schedule": 1,
+    "player.definition": 1,
+    "player.inputProfile": 1,
+    "quest.quest": 1,
+    "ui.document": 10,
+    "ui.flow": 1,
+    "ui.theme": 1,
+    "world.definition": 1,
+    "world.portal": 3,
+    "world.region": 3
+  },
+  "found": {
+    "Assets/Hollowmere/Npcs/Definitions/Maren.asset": {
+      "ref": "Definition(auth:b2252b06-3508-485b-abe4-9506dc0639a2)",
+      "node": "npc.definition",
+      "refsFrom": 2
+    },
+    "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset": {
+      "ref": "Definition(auth:ce503024-4b28-4194-8865-8eec9dd6d8a7)",
+      "node": "entity.definition",
+      "refsFrom": 1
+    },
+    "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset": {
+      "ref": "Definition(auth:dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5)",
+      "node": "npc.behaviour",
+      "refsFrom": null
+    },
+    "Assets/Hollowmere/Dialogue/Graphs/Maren.asset": {
+      "ref": "Definition(auth:8e52f233-3797-4396-89c4-24f00fceef8a)",
+      "node": "dialogue.graph",
+      "refsFrom": null
+    },
+    "Assets/Hollowmere/Items/Lantern.asset": {
+      "ref": "Definition(auth:6bb88144-376c-4507-8429-e78247b14e66)",
+      "node": "inventory.item",
+      "refsFrom": null
+    },
+    "Maren": {
+      "ref": "Entity(auth:da525107-c2c1-4626-ac08-5058a1e01c06)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+      ]
+    },
+    "Village Well": {
+      "ref": "Entity(auth:e3baad87-1923-4823-82fe-69c3cc399bf4)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+      ]
+    }
+  },
+  "slice": {
+    "bytes": 118172,
+    "nodes": [
+      "Maren [npc.definition]",
+      "MarenEntity [entity.definition]",
+      "MarenBehaviour [npc.behaviour]",
+      "Maren [dialogue.graph]",
+      "Lantern [inventory.item]",
+      "Maren [entity.instance]",
+      "Village Well [entity.instance]",
+      "NpcRoster [npc.roster]",
+      "HollowmereContent [logic.contentSet]",
+      "WellBucketEntity [entity.definition]",
+      "Odd [npc.definition]",
+      "Hale [npc.definition]",
+      "Pip [npc.definition]",
+      "BelfryEcho [npc.definition]",
+      "RingBell [logic.actionSet]",
+      "pip_asked [narrative.fact]",
+      "DrownedBell [quest.quest]",
+      "odd_paid [narrative.fact]",
+      "BellKeepsGateOpen [logic.rule]",
+      "BellRung [logic.conditionSet]",
+      "OddsStall [inventory.vendor]",
+      "OldCoins_Village [inventory.worldItem]",
+      "OldCoin [inventory.item]",
+      "MarenTrustsPlayer [logic.conditionSet]",
+      "MarenIntro [logic.actionSet]",
+      "OddPersuaded [logic.actionSet]",
+      "HasGateKey [logic.conditionSet]",
+      "PlayerInventory [inventory.inventory]",
+      "HasThreeOldCoins [logic.conditionSet]",
+      "OpenGate [logic.actionSet]",
+      "BellClapper_Marsh [inventory.worldItem]",
+      "GateOpen [logic.conditionSet]",
+      "MarshLoot [inventory.lootTable]",
+      "RingBellOnUse [logic.rule]",
+      "ReturnToMaren [logic.rule]",
+      "heard_rumour [narrative.fact]",
+      "maren_grateful [narrative.fact]",
+      "belfry_echo_freed [narrative.fact]",
+      "Hollowmere [world.definition]",
+      "Hale [dialogue.graph]",
+      "Odd [dialogue.graph]",
+      "GateKeyOpensGate [logic.rule]",
+      "BelfryEcho [dialogue.graph]",
+      "odd_persuaded [narrative.fact]",
+      "MarenTrust [logic.actionSet]",
+      "PipAsked [logic.actionSet]",
+      "gate_open [narrative.fact]",
+      "Pip [dialogue.graph]",
+      "EchoFreedAmbience [logic.rule]",
+      "maren_trusts_player [narrative.fact]",
+      "GateKey [inventory.item]",
+      "BellClapper [inventory.item]",
+      "bell_rung [narrative.fact]",
+      "OddPaidOnTrade [logic.rule]",
+      "HasBellClapper [logic.conditionSet]",
+      "EchoFreed [logic.actionSet]",
+      "VillageWell [interaction.interactable]"
+    ],
+    "truncated": false
+  }
+}

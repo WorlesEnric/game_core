@@ -63,6 +63,7 @@ namespace Hollowmere.P3_2.Workflows
                 case "robe2": return Robe(true);
                 case "narrative": return Narrative();
                 case "reopen": return Reopen();
+                case "persist": return Persist();
                 case "voice": return Voice();
                 case "batch": return Batch();
                 case "honesty": return Honesty();
@@ -398,9 +399,67 @@ namespace Hollowmere.P3_2.Workflows
 
         // ------------------------------------------------------------------------------------------------ reopen
 
+        /// <summary>
+        /// W-AI-06 session 1 when the narrative session applied nothing: journaled Studio change sets that did apply
+        /// (generate.image import, `bind` of the icon as a Sprite on the Lantern item, tts import) are made and the project
+        /// is saved, so session 2 (reopen) checks the journal and the files across a real Editor restart.
+        /// </summary>
+        private static IReadOnlyList<Step> Persist()
+        {
+            string icon = Generated + "/lantern_icon.png";
+            string sprite = Generated + "/lantern_icon_sprite.png";
+            string wav = Generated + "/maren_line.wav";
+            string[] paths = { LanternItem, icon, sprite, wav };
+            return new[]
+            {
+                S.OpenScene(S.VillageScene), S.Relayout(),
+                S.WaitGateway(),
+                S.Do("hashes before", () =>
+                {
+                    St.Set("persist.before", S.Hashes(paths));
+                    return true;
+                }),
+                S.SelectAsset(LanternItem),
+                S.Do("generate lantern icon", () => GenerateImage("icon", "A small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background.", icon, 0.25)),
+                S.Do("bind lantern icon", () => AssignIcon("icon", LanternItem, sprite)),
+                S.Do("tts voice line", () => GenerateSpeech("voice-line", wav)),
+                S.Do("save project", () =>
+                {
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
+                    JObject applied = new JObject();
+                    foreach (string tag in new[] { "icon", "icon-assign", "voice-line" })
+                    {
+                        string id = S.IdOf(tag);
+                        applied[tag] = new JObject { ["changeSetId"] = id, ["state"] = id.Length == 0 ? "none" : S.Context.Runtime.Journal.Read(id)?.EffectiveState.ToString() };
+                    }
+
+                    JObject doc = new JObject
+                    {
+                        ["session"] = "persist",
+                        ["tags"] = new JArray("icon", "icon-assign", "voice-line"),
+                        ["paths"] = new JArray(paths),
+                        ["applied"] = applied,
+                        ["before"] = St.Get("persist.before")?.DeepClone(),
+                        ["after"] = S.Hashes(paths),
+                        ["savedUtc"] = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture),
+                    };
+                    Directory.CreateDirectory(Path.Combine(WorkflowRunner.ProjectRoot, Shared));
+                    File.WriteAllText(Path.Combine(WorkflowRunner.ProjectRoot, Shared, "narrative.json"), doc.ToString());
+                    WorkflowRunner.Json("persist/saved.json", doc);
+                    StudioHistoryWindow.Open();
+                    WorkflowRunner.Shot("persist-saved", "Project saved with three applied journal entries (icon import, bind, voice line) for the W-AI-06 reopen run: " + applied.ToString(Newtonsoft.Json.Formatting.None), doc);
+                    WorkflowRunner.Recording(false);
+                    return true;
+                }),
+            };
+        }
+
+        private static string[] _reopenPaths = { OddGraph, HudDoc, Quest, LanternItem };
+
         private static IReadOnlyList<Step> Reopen()
         {
-            string[] tags = { "quest", "hud", "odd-line" };
+            string[] tags = SavedTags();
             List<Step> steps = new List<Step>
             {
                 S.OpenScene(S.VillageScene), S.Relayout(),
@@ -414,7 +473,7 @@ namespace Hollowmere.P3_2.Workflows
 
                     JObject saved = JObject.Parse(File.ReadAllText(file));
                     St.Set("saved", saved);
-                    JObject check = new JObject { ["hashesNow"] = S.Hashes(OddGraph, HudDoc, Quest, LanternItem), ["journal"] = new JObject() };
+                    JObject check = new JObject { ["session"] = saved["session"]?.DeepClone() ?? "narrative", ["hashesNow"] = S.Hashes(ReopenPaths()), ["journal"] = new JObject() };
                     foreach (string tag in tags)
                     {
                         string id = (string?)saved["applied"]?[tag]?["changeSetId"] ?? string.Empty;
@@ -457,13 +516,38 @@ namespace Hollowmere.P3_2.Workflows
                 AssetDatabase.SaveAssets();
                 EditorSceneManager.SaveOpenScenes();
                 JObject saved = (JObject)St.Get("saved")!;
-                JObject now = S.Hashes(OddGraph, HudDoc, Quest, LanternItem);
+                JObject now = S.Hashes(ReopenPaths());
                 JObject result = new JObject { ["before"] = saved["before"]?.DeepClone(), ["now"] = now, ["backToBefore"] = JToken.DeepEquals(saved["before"], now) };
                 WorkflowRunner.Json("reopen/final.json", result);
                 WorkflowRunner.Shot("reopen-final", "After undo -> redo -> undo of every narrative edit: assets back to the pre-edit hashes: " + result["backToBefore"] + ".", result);
                 return true;
             }));
             return steps;
+        }
+
+        /// <summary>The tags of the saved session (Library/P3_2/narrative.json), in apply order; undo walks them backwards.</summary>
+        private static string[] SavedTags()
+        {
+            string file = Path.Combine(WorkflowRunner.ProjectRoot, Shared, "narrative.json");
+            if (File.Exists(file) && JObject.Parse(File.ReadAllText(file))["tags"] is JArray tags)
+            {
+                string[] list = tags.Select(t => (string)t!).ToArray();
+                Array.Reverse(list);
+                return list;
+            }
+
+            return new[] { "quest", "hud", "odd-line" };
+        }
+
+        private static string[] ReopenPaths()
+        {
+            string file = Path.Combine(WorkflowRunner.ProjectRoot, Shared, "narrative.json");
+            if (File.Exists(file) && JObject.Parse(File.ReadAllText(file))["paths"] is JArray paths)
+            {
+                return paths.Select(t => (string)t!).ToArray();
+            }
+
+            return _reopenPaths;
         }
 
         private static bool AppliedEntry(string tag) => JournalState(tag) == ChangeSetState.Applied;
@@ -483,7 +567,7 @@ namespace Hollowmere.P3_2.Workflows
         private static bool ConsistencyCheck(string label)
         {
             AssetDatabase.SaveAssets();
-            JObject now = S.Hashes(OddGraph, HudDoc, Quest, LanternItem);
+            JObject now = S.Hashes(ReopenPaths());
             WorkflowRunner.Json("reopen/hashes-" + label + ".json", now);
             return true;
         }
@@ -1500,7 +1584,7 @@ namespace Hollowmere.P3_2.Workflows
                 ["field"] = "icon",
                 ["artifact"] = new JObject { ["artifact"] = artifact },
                 ["path"] = spritePath,
-                ["importer"] = new JObject { ["textureType"] = "Sprite" },
+                ["importer"] = new JObject { ["textureType"] = "Sprite", ["spriteImportMode"] = "Single" },
             });
             string hex = artifact.Substring("sha256:".Length);
             ArtifactRef carried = new ArtifactRef(hex, St.Str("artifactType." + tag).Length > 0 ? St.Str("artifactType." + tag) : "image/png", (long)St.Num("artifactBytes." + tag), Path.GetFileName(spritePath), null, "source");

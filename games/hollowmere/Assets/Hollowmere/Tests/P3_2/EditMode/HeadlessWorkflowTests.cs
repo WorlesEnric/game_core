@@ -158,7 +158,17 @@ namespace Hollowmere.P3_2.Headless
             {
                 UnityEngine.Object item = AssetDatabase.LoadMainAssetAtPath(LanternItem);
                 AuthoringRef target = H.Runtime.Resolver.BuildRef(item, null, true)!;
-                ChangeSet set = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Assign the generated lantern icon (headless)", IntentOrigin.Manual), new[] { new Operation("op1", "assign", target, new JObject { ["field"] = "icon", ["value"] = iconPath }) });
+                ArtifactRef source = icon.Result.Artifact!;
+                string spritePath = Folder + "/lantern_icon_headless_sprite.png";
+                Operation bind = new Operation("op1", "bind", target, new JObject
+                {
+                    ["field"] = "icon",
+                    ["artifact"] = new JObject { ["artifact"] = "sha256:" + source.Sha256 },
+                    ["path"] = spritePath,
+                    ["importer"] = new JObject { ["textureType"] = "Sprite", ["spriteImportMode"] = "Single" },
+                });
+                ChangeSet set = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Bind the generated lantern icon (headless)", IntentOrigin.Manual), new[] { bind },
+                    artifacts: new[] { new ArtifactRef(source.Sha256, source.MediaType, source.Bytes, "lantern_icon_headless_sprite.png", null, "source") });
                 ApplyReport report = H.Runtime.Engine.Apply(set);
                 assign["state"] = report.State.ToString();
                 assign["ms"] = Math.Round(report.Milliseconds, 1);

@@ -1,0 +1,32 @@
+{
+  "stage": "Invalid",
+  "ok": false,
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "create",
+      "diagnostics": []
+    },
+    {
+      "opId": "op2",
+      "tool": "quest.addObjective",
+      "diagnostics": [
+        {
+          "code": "ScopeNotAllowed",
+          "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+          "hint": "Set the target ref's scope to one of the allowed scopes.",
+          "where": "op2"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op2"
+    }
+  ],
+  "previewMs": 127.2
+}

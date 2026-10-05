@@ -1,0 +1,36 @@
+{
+  "result": "needs_clarification",
+  "changeSetId": "cs_01M45FRDVGR23PV4TFV6MSAFZB",
+  "requests": [
+    "cs_01M45FKA319D9C54HV6F0G46SM",
+    "cs_01M45FRDVGR23PV4TFV6MSAFZB"
+  ],
+  "tasks": [
+    "te4674ea132021d6758b199a3",
+    "tb2c186da6539f7ff26ecab18"
+  ],
+  "row": {
+    "state": "needs_clarification",
+    "label": "needs_clarification",
+    "worker": "gc-designer",
+    "etosStatus": "done",
+    "localState": "",
+    "progress": "question: The available operations cannot reference a newly created shrine_lit fact from a dialogue condition in the same change set. Should I instead gate Odd’s line on the existing bell_rung fact, or wait until Studio supports linking newly created facts?",
+    "waitingReason": "",
+    "question": "The available operations cannot reference a newly created shrine_lit fact from a dialogue condition in the same change set. Should I instead gate Odd’s line on the existing bell_rung fact, or wait until Studio supports linking newly created facts?",
+    "parent": "cs_01M45FKA319D9C54HV6F0G46SM",
+    "diagnostics": []
+  },
+  "view": {
+    "state": "needs_clarification",
+    "taskStatus": "done",
+    "attempt": 0,
+    "local": null,
+    "outcome": {
+      "code": "needs_clarification",
+      "question": "The available operations cannot reference a newly created shrine_lit fact from a dialogue condition in the same change set. Should I instead gate Odd’s line on the existing bell_rung fact, or wait until Studio supports linking newly created facts?"
+    },
+    "outcomeLabel": "needs_clarification",
+    "diagnostics": []
+  }
+}

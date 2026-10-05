@@ -14,8 +14,8 @@ runs="${1:-${root}/artifacts/studio/workflows/P3.2/runs}"
 python3 - "${runs}" "${root}/artifacts/studio/workflows/P3.2/summary.json" <<'PY'
 import glob, json, os, re, sys
 runs, out = sys.argv[1], sys.argv[2]
-rate_in = float(os.environ.get("P32_USD_IN", "5"))
-rate_out = float(os.environ.get("P32_USD_OUT", "20"))
+rate_in = float(os.environ.get("P32_USD_IN", "2.5"))
+rate_out = float(os.environ.get("P32_USD_OUT", "15"))
 rate = {"image": float(os.environ.get("P32_USD_IMAGE", "0.04")), "tts": float(os.environ.get("P32_USD_TTS", "0.002")),
         "voice": float(os.environ.get("P32_USD_VOICE", "0.01")), "describe": float(os.environ.get("P32_USD_DESCRIBE", "0.02"))}
 
@@ -106,7 +106,9 @@ for run in sorted(glob.glob(os.path.join(runs, "*"))):
     summary["runs"].append(entry)
 usd = tot["input_tokens"] / 1e6 * rate_in + tot["output_tokens"] / 1e6 * rate_out + sum(tot[{"image": "images"}.get(k, k)] * rate[k] for k in rate)
 all_lags = sorted(summary.pop("allLags", []))
-summary["totals"] = {**tot, "estimatedUsd": round(usd, 2),
+media_usd = sum(tot[{"image": "images"}.get(k, k)] * rate[k] for k in rate)
+high = tot["input_tokens"] / 1e6 * 5 + tot["output_tokens"] / 1e6 * 20 + media_usd
+summary["totals"] = {**tot, "estimatedUsd": round(usd, 2), "estimatedUsdHigh": round(high, 2),
                      "stateVisibleLagMs": {"n": len(all_lags), "p95": all_lags[max(0, -(-len(all_lags) * 95 // 100) - 1)] if all_lags else None,
                                            "max": all_lags[-1] if all_lags else None,
                                            "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"}}
@@ -119,5 +121,5 @@ for r in summary["runs"]:
             r["run"], r["workflow"], q.get("tag"), q.get("result"), ",".join(q.get("tasks") or []), q.get("submitToAcceptedMs"), q.get("submitToFirstEventMs"),
             q.get("submitToCandidateMs"), q.get("previewMs"), q.get("applyMs"), q.get("undoMs"), q.get("cancelAckMs"), q.get("visibleLagP95Ms"), q.get("visibleLagMaxMs"), q.get("visibleLagN")))
 print()
-print("Totals: %(tasks)d task(s), %(input_tokens)d input + %(output_tokens)d output tokens, %(images)d image(s), %(tts)d tts, %(voice)d voice session(s), %(describe)d describe; estimated USD %(estimatedUsd)s" % summary["totals"])
+print("Totals: %(tasks)d task(s), %(input_tokens)d input + %(output_tokens)d output tokens, %(images)d image(s), %(tts)d tts, %(voice)d voice session(s), %(describe)d describe; estimated USD %(estimatedUsd)s (high estimate %(estimatedUsdHigh)s)" % summary["totals"])
 PY

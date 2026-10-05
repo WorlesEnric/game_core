@@ -1,13 +1,98 @@
 {
   "assumedRates": {
-    "inputPerM": 5.0,
-    "outputPerM": 20.0,
+    "inputPerM": 2.5,
+    "outputPerM": 15.0,
     "image": 0.04,
     "tts": 0.002,
     "voice": 0.01,
     "describe": 0.02
   },
   "runs": [
+    {
+      "run": "robe-20261005T055032Z",
+      "workflow": "robe",
+      "revision": "38891db6265b8145014e44e9b2f69312f82b3a68",
+      "exit": 1,
+      "tasks": [
+        "t0d55d526d33714d30204b784",
+        "t8a544b1e2b54dc00c8b818f8"
+      ],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "candidate",
+          "tasks": [
+            "t0d55d526d33714d30204b784",
+            "t8a544b1e2b54dc00c8b818f8"
+          ],
+          "submitToAcceptedMs": 522,
+          "submitToFirstEventMs": 209,
+          "submitToCandidateMs": 135001,
+          "candidateImportMs": 121.1,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 132,
+          "visibleLagMaxMs": 132,
+          "visibleLagN": 6
+        }
+      ]
+    },
+    {
+      "run": "robe2-20261005T064834Z",
+      "workflow": "robe2",
+      "revision": "5a651839046809bc41f8ee0189fd1bedbd5fcf46",
+      "exit": 0,
+      "tasks": [],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "refused",
+          "tasks": [],
+          "submitToAcceptedMs": 165,
+          "submitToFirstEventMs": 313,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": null,
+          "visibleLagMaxMs": null,
+          "visibleLagN": 0
+        }
+      ]
+    },
+    {
+      "run": "robe2-20261005T070105Z",
+      "workflow": "robe2",
+      "revision": "ae494b8dcd4831644c6471a1999b2f7a9b38763c",
+      "exit": 1,
+      "tasks": [
+        "t73ad0f6f20ac65571b2ddff9"
+      ],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t73ad0f6f20ac65571b2ddff9"
+          ],
+          "submitToAcceptedMs": 1013,
+          "submitToFirstEventMs": 395,
+          "submitToCandidateMs": 106311,
+          "candidateImportMs": 112.5,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 302,
+          "visibleLagMaxMs": 302,
+          "visibleLagN": 3
+        }
+      ]
+    },
     {
       "run": "text-20261005T052459Z",
       "workflow": "text",
@@ -59,21 +144,175 @@
           "visibleLagN": 6
         }
       ]
+    },
+    {
+      "run": "text2-20261005T053552Z",
+      "workflow": "text2",
+      "revision": "2ff643604ec9f227d3c4a045db91c68d1a2b98ff",
+      "exit": 1,
+      "tasks": [
+        "t0e47053edf5ea6ac27f85a9b",
+        "t6fc7ab0f2e4ca22b1ef914b3",
+        "td6670495ac94353ea2c57572",
+        "td6d2750514d1f12813feb8aa",
+        "tef89e4b197000d0ec921818f"
+      ],
+      "requests": [
+        {
+          "tag": "clarify2",
+          "result": "needs_clarification",
+          "tasks": [
+            "td6670495ac94353ea2c57572",
+            "t0e47053edf5ea6ac27f85a9b"
+          ],
+          "submitToAcceptedMs": 442,
+          "submitToFirstEventMs": 86,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 101,
+          "visibleLagMaxMs": 101,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "ferryman2",
+          "result": "needs_clarification",
+          "tasks": [
+            "td6d2750514d1f12813feb8aa",
+            "tef89e4b197000d0ec921818f"
+          ],
+          "submitToAcceptedMs": 346,
+          "submitToFirstEventMs": 132,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 120,
+          "visibleLagMaxMs": 120,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "move-patrol2",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t6fc7ab0f2e4ca22b1ef914b3"
+          ],
+          "submitToAcceptedMs": 451,
+          "submitToFirstEventMs": 141,
+          "submitToCandidateMs": 85214,
+          "candidateImportMs": 51.0,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 114,
+          "visibleLagMaxMs": 114,
+          "visibleLagN": 3
+        }
+      ]
+    },
+    {
+      "run": "text2-20261005T060332Z",
+      "workflow": "text2",
+      "revision": "f0c1b14079c54953697b9def91064190cacc8fc0",
+      "exit": 255,
+      "tasks": [
+        "t69738f23b0fe0fd52531db74",
+        "t9a55f92f3c2b97e40e881186"
+      ],
+      "requests": []
+    },
+    {
+      "run": "text2-20261005T061054Z",
+      "workflow": "text2",
+      "revision": "ff43da577bea84aa95d089358ef99125fe360a7a",
+      "exit": 1,
+      "tasks": [
+        "t049950b27c7d9695ddc850f8",
+        "t10cfcf004d69d6da2dbcb456",
+        "t2ffc0841d756f3e0e3f5ade6",
+        "t35d405baff469fed8508809a",
+        "tb1fea55ca92175c876b9a7d3"
+      ],
+      "requests": [
+        {
+          "tag": "clarify2",
+          "result": "needs_clarification",
+          "tasks": [
+            "t2ffc0841d756f3e0e3f5ade6",
+            "t35d405baff469fed8508809a"
+          ],
+          "submitToAcceptedMs": 575,
+          "submitToFirstEventMs": 77,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 1217,
+          "visibleLagMaxMs": 1217,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "ferryman2",
+          "result": "candidate",
+          "tasks": [
+            "t049950b27c7d9695ddc850f8",
+            "t10cfcf004d69d6da2dbcb456"
+          ],
+          "submitToAcceptedMs": 1022,
+          "submitToFirstEventMs": 509,
+          "submitToCandidateMs": 611617,
+          "candidateImportMs": 125.0,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 10130,
+          "visibleLagMaxMs": 10130,
+          "visibleLagN": 7
+        },
+        {
+          "tag": "move-patrol2",
+          "result": "candidate_invalid",
+          "tasks": [
+            "tb1fea55ca92175c876b9a7d3"
+          ],
+          "submitToAcceptedMs": 494,
+          "submitToFirstEventMs": 181,
+          "submitToCandidateMs": 217155,
+          "candidateImportMs": 631.0,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 10089,
+          "visibleLagMaxMs": 10089,
+          "visibleLagN": 4
+        }
+      ]
     }
   ],
   "totals": {
-    "input_tokens": 445906,
-    "output_tokens": 4345,
-    "tasks": 4,
-    "images": 0,
-    "tts": 0,
+    "input_tokens": 2330062,
+    "output_tokens": 23973,
+    "tasks": 19,
+    "images": 5,
+    "tts": 3,
     "voice": 0,
     "describe": 0,
-    "estimatedUsd": 2.32,
+    "estimatedUsd": 6.39,
+    "estimatedUsdHigh": 12.34,
     "stateVisibleLagMs": {
-      "n": 12,
-      "p95": 154,
-      "max": 154,
+      "n": 53,
+      "p95": 8283,
+      "max": 10130,
       "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"
     }
   }
