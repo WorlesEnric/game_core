@@ -48,7 +48,7 @@ namespace GameCore.Gameplay.World
         [AuthorField(Doc = "Display name.")]
         [SerializeField] private string displayName = string.Empty;
 
-        [AuthorRef(Category = AuthorRefCategories.AssetScene, Structural = true, Doc = "The region scene, by project path (Assets/.../X.unity).")]
+        [AuthorField(Type = "artifact", Structural = true, Doc = "Project-relative path of the region scene (Assets/.../X.unity).")]
         [SerializeField] private string scenePath = string.Empty;
 
         [AuthorField(Unit = "m", Doc = "Centre of the region's bounds (world space).")]

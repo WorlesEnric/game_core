@@ -45,7 +45,7 @@ namespace GameCore.Gameplay.Npc
 
         // Legacy (P1.3): the graph as a string id resolved by P1.4 (a graph's npcGraphRef alias, an authoring id or a
         // name). Read only when `dialogue` is empty; authoring.migrateRefs moves it into `dialogue` and clears it.
-        [SerializeField, HideInInspector, AuthorField(Doc = "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it.")] private string dialogueGraph = string.Empty;
+        [SerializeField, HideInInspector, AuthorRef(Category = "dialogue.graph", Required = false, Doc = "Legacy (P1.3) graph id (a graph's npcGraphRef alias, authoring id or name), read only while `dialogue` is empty; authoring.migrateRefs moves it into `dialogue` and clears it.")] private string dialogueGraph = string.Empty;
 
         [AuthorRef(Category = "entity.variant", Required = false, Doc = "Appearance: one of the entity definition's variants (empty: the definition itself).")]
         [SerializeField] private VariantDefinition? appearance;

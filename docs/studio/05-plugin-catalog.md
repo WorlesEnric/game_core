@@ -49,12 +49,19 @@ Conventions:
   `interaction.addExaminable/addTrigger/setStates`, `dialogue.setFact/preview`, `quest.simulate`,
   `inventory.setStock`, `logic.test`, `ui.addScreen`, `audio.generateSfx`). `dialogue.graphView` and
   `world.flowView` are struck: they are Studio views (P2.3), not authoring tools. `ui.editText` is still to build.
+- **Pure tools.** `dialogue.preview`, `quest.simulate`, `quest.inspectRuntime`, `logic.explain`, `logic.test`,
+  `logic.whyNot` and `interaction.explain` are `[AuthorOperation(ReadOnly = true)]`: they change nothing, so
+  `ToolRegistry.Invoke` runs them directly and returns their output; every other gameplay tool goes through a change set.
+- **Engine binding.** Every gameplay tool binds all its parameters through `ChangeSetEngine`: the target is the first
+  `[Authorable]` parameter and every other parameter is an `[AuthorArg]` (references by category). `world.addPortal`
+  targets the portal (optional `region` argument; default: the portal's region whose scene is open) and
+  `world.setSpawnPoint` targets the region definition (its scene marker is updated when the scene is open).
 - **Media tools.** The shared `ToolTier` has no Agent member, so `dialogue.generateVoice` and `audio.generate*` are
   `Compose` tools with the prerequisite `agent.media`.
 - **References (B1).** Every cross-definition reference is an `[AuthorRef]` whose category is the target's
   `[Authorable]` type id (`dialogue.graph`, `logic.conditionSet`, `logic.actionSet`, `narrative.fact`,
   `quest.quest`, `inventory.item`, `inventory.vendor`, `world.region`, ...). Non-type categories: `entity.instance`
-  (a placed entity by authoring id), `asset.scene` (scene path), `audio.clip` (a bank clip id or an AudioClip),
+  (a placed entity by authoring id), `audio.clip` (a bank clip id or an AudioClip),
   `audio.musicState` (a state id). The P1.4 pseudo-category `narrative.subject` is gone: conditions, actions, rule
   triggers, objectives and rewards hold one typed field per kind. `authoring.migrateRefs` rewrites older content.
 - **Definitions (B2).** Row 1: `RegionDefinition` has bounds, neighbours, named spawn points and an ambience ref;
