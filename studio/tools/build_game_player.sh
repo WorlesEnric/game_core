@@ -35,8 +35,11 @@
 #   UNITY                  Editor binary on the host (default: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity)
 #   GC_STUDIO_UNITY_SLOTS  host-wide concurrent batchmode Editors allowed (default: 3)
 #
-# Exit codes: 0 build succeeded (and the gate passed with --gate); 1 build failed; 4 the gate failed; 2 bad usage or
-# missing clone.
+# After a successful build the player smoke runs the built player headless (-batchmode -nographics -frameLog
+# build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt) and records it in build-summary.json ("smoke").
+#
+# Exit codes: 0 build succeeded (and the gate passed with --gate); 1 build failed; 5 the player smoke failed; 4 the gate
+# failed; 2 bad usage or missing clone.
 set -euo pipefail
 
 usage() {
@@ -191,6 +194,43 @@ cat "${build_root}/build-summary.json"
 if [[ "${result}" != "succeeded" ]]; then
   echo "RESULT build_game_player ${packet}: FAIL (build; revision ${revision})"
   exit 1
+fi
+
+# Player smoke: the built player headless (-batchmode -nographics) runs games/hollowmere/Autoplay/smoke.txt (boot,
+# new game, ~600 frames) with a frame log and must exit 0 within 300 s.
+smoke_dir="${build_root}/smoke"
+rm -rf "${smoke_dir}"
+mkdir -p "${smoke_dir}/saves"
+smoke_start="$(date +%s)"
+smoke_rc=0
+timeout --signal=TERM --kill-after=30 300 "${exe}" -batchmode -nographics \
+  -frameLog "${smoke_dir}/frame-log.csv" -autoplay "${project}/Autoplay/smoke.txt" -saveDir "${smoke_dir}/saves" \
+  -logFile "${smoke_dir}/player.log" < /dev/null > "${smoke_dir}/stdout.txt" 2>&1 || smoke_rc=$?
+smoke_seconds=$(( $(date +%s) - smoke_start ))
+smoke_frames=0
+if [[ -f "${smoke_dir}/frame-log.csv" ]]; then
+  smoke_frames=$(( $(wc -l < "${smoke_dir}/frame-log.csv") - 1 ))
+fi
+echo "-- player smoke: exit ${smoke_rc}, ${smoke_seconds}s, ${smoke_frames} frame-log rows; $(grep -E '\[autoplay\] (FAILED|finished|quit)' "${smoke_dir}/player.log" 2>/dev/null | tail -n 1 || true)"
+python3 - "${build_root}/build-summary.json" "${smoke_rc}" "${smoke_seconds}" "${smoke_frames}" <<'PY'
+import json, sys
+path, rc, seconds, frames = sys.argv[1:5]
+with open(path, encoding="utf-8") as handle:
+    summary = json.load(handle)
+summary["smoke"] = {
+    "command": "Hollowmere.x86_64 -batchmode -nographics -frameLog build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt",
+    "exit": int(rc),
+    "seconds": int(seconds),
+    "frameLogRows": int(frames),
+    "result": "pass" if int(rc) == 0 and int(frames) >= 600 else "fail",
+}
+with open(path, "w", encoding="utf-8") as handle:
+    json.dump(summary, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+PY
+if (( smoke_rc != 0 || smoke_frames < 600 )); then
+  echo "RESULT build_game_player ${packet}: build PASS, player smoke FAIL (exit ${smoke_rc}, ${smoke_frames} frames; ${smoke_dir}/player.log)"
+  exit 5
 fi
 
 if (( gate == 0 )); then

@@ -867,11 +867,19 @@ namespace Hollowmere.Authoring.Tools
 
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), path)))
             {
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+                Mesh? imported = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+                if (imported != null)
+                {
+                    return imported;
+                }
+
                 throw new ArgumentException("HM-DRS-003: mesh asset " + path + " exists on disk but is not imported yet; refresh the AssetDatabase and re-run");
             }
 
             EnsureFolder(MeshFolder);
             Mesh built = ProceduralMeshes.Build(kind, size);
+            built.name = Path.GetFileNameWithoutExtension(path);
             AssetDatabase.CreateAsset(built, path);
             return built;
         }
@@ -890,7 +898,11 @@ namespace Hollowmere.Authoring.Tools
                 for (int f = 0; f < filters.Length; f++)
                 {
                     Mesh? shared = filters[f].sharedMesh;
-                    if (shared != null && string.Equals(AssetDatabase.GetAssetPath(shared), path, StringComparison.Ordinal))
+                    // A mesh created earlier in the same change set has no asset path until the batch is imported; it
+                    // carries the file name of its asset.
+                    string sharedPath = shared != null ? AssetDatabase.GetAssetPath(shared) : string.Empty;
+                    if (shared != null && (string.Equals(sharedPath, path, StringComparison.Ordinal)
+                        || (sharedPath.Length == 0 && string.Equals(shared.name, Path.GetFileNameWithoutExtension(path), StringComparison.Ordinal))))
                     {
                         return shared;
                     }

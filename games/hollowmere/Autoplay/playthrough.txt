@@ -1,0 +1,215 @@
+# Hollowmere recorded playthrough (P3.1 W-GAME-07): menu -> new game -> Thornwick Village (Maren, coins, Bram's lantern)
+# -> Warden Hale's gate -> Blackmere Marsh (shrine puzzle, clapper, save) -> Odd's ferry -> the Drowned Belfry (the Echo,
+# the bell) -> Ending C -> restart -> load the mid-quest save -> quit. About ten and a half minutes at walking pace.
+# Positions are world metres (village centre 0,0; marsh 200,0; belfry 100,200).
+
+waituntil ready timeout 120
+mark menu
+wait 6
+ui newgame
+waituntil ready timeout 120
+mark new-game
+wait 4
+
+# --- Thornwick Village --------------------------------------------------------------------------------------------
+log a look around the square
+face 30
+wait 3
+face -40
+wait 3
+face 0
+walk -2 -6
+walk -6 -6
+mark maren
+waituntil prompt Maren timeout 30
+interact
+waituntil dialogue active timeout 10
+wait 4
+advance
+wait 5
+advance
+wait 3
+choose 1
+wait 6
+advance
+waituntil dialogue none timeout 10
+waituntil fact heard_rumour >= 1 timeout 10
+wait 2
+
+mark coins
+walk 1 -4
+walk 4 -4.2
+face 0
+waituntil prompt coins timeout 10
+interact
+waituntil item OldCoin >= 5 timeout 10
+wait 2
+
+mark bram
+walk 6 -8
+walk 9.3 -13
+face 90
+waituntil prompt Bram timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 3
+advance
+wait 2
+choose 0
+wait 3
+advance
+waituntil dialogue none timeout 10
+waituntil item Lantern >= 1 timeout 10
+wait 2
+interact
+waituntil dialogue active timeout 10
+wait 2
+advance
+wait 2
+choose 2
+wait 3
+advance
+waituntil dialogue none timeout 10
+wait 2
+
+log the healer's garden and the barn on the way out
+walk 4 -6
+walk 2 6
+walk -6 12
+face 0
+wait 4
+walk 2 4
+walk 12 1
+walk 22 0
+face 90
+wait 2
+mark gate
+walk 30 0
+walk 37 0 timeout 30
+waituntil region Blackmere timeout 30
+
+# --- Blackmere Marsh ----------------------------------------------------------------------------------------------
+mark marsh
+wait 5
+walk 167.5 2.4
+face 0
+waituntil prompt Hale timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 4
+advance
+waituntil dialogue none timeout 10
+waituntil fact gate_open >= 1 timeout 10
+wait 2
+walk 168.2 2
+face 90
+waituntil prompt gate timeout 10
+interact
+wait 3
+walk 172 2
+walk 180 2
+mark shrine
+walk 192 -1
+walk 199 2.4
+face 0
+waituntil prompt west timeout 10
+interact
+waituntil fact shrine_post_1 >= 1 timeout 10
+wait 3
+walk 203 -0.5
+walk 206 0.4
+face 0
+waituntil prompt middle timeout 10
+interact
+waituntil fact shrine_post_2 >= 1 timeout 10
+wait 3
+walk 209 -1.5
+walk 214 -1
+walk 213 2.4
+face 0
+waituntil prompt east timeout 10
+interact
+waituntil fact shrine_lit >= 1 timeout 10
+mark shrine-lit
+wait 6
+
+mark clapper
+walk 213 -2
+walk 200 -3
+walk 194 4
+walk 194 7.4
+face 0
+waituntil prompt clapper timeout 10
+interact
+waituntil item BellClapper >= 1 timeout 10
+wait 2
+ui save.1
+waituntil slot 1 timeout 20
+mark saved
+wait 3
+
+log the satchel in the reeds
+walk 190 -6
+walk 186 -14.6
+face 180
+waituntil prompt satchel timeout 10
+interact
+wait 4
+
+mark odd
+walk 192 0
+walk 200 16
+walk 212 19.5
+walk 219.5 21
+face 90
+waituntil prompt Odd timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 5
+advance
+wait 3
+choose 0
+waituntil region Belfry timeout 30
+
+# --- The Drowned Belfry -------------------------------------------------------------------------------------------
+mark belfry
+wait 6
+face 0
+wait 3
+walk 100 189
+face 0
+waituntil prompt Echo timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 5
+advance
+wait 4
+choose 0
+wait 5
+advance
+waituntil dialogue none timeout 10
+walk 103 191
+walk 101.5 195.6
+face -20
+waituntil prompt bell timeout 15
+mark ring
+interact
+waituntil fact bell_rung >= 1 timeout 10
+waituntil ending timeout 30
+mark ending
+wait 14
+
+# --- Restart and the mid-quest save -------------------------------------------------------------------------------
+ui restart
+waituntil ready timeout 120
+mark restarted
+wait 6
+ui load.1
+waituntil restored timeout 60
+mark loaded
+wait 4
+walk 196 0
+face 90
+wait 6
+mark done
+quit 0
