@@ -1,7 +1,8 @@
 {
-  "name": "Hollowmere.P1_5.PlayMode.Tests",
-  "rootNamespace": "Hollowmere.P1_5.PlayMode.Tests",
+  "name": "Hollowmere.Game",
+  "rootNamespace": "Hollowmere.Game",
   "references": [
+    "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Gameplay.Audio",
     "GameCore.Gameplay.Contracts",
@@ -21,24 +22,22 @@
     "GameCore.Unity.App",
     "GameCore.Unity.Runtime",
     "Hollowmere.Boot",
-    "Hollowmere.Narrative",
     "Hollowmere.Checkpoint",
+    "Hollowmere.Narrative",
     "Hollowmere.UiAudio",
     "Unity.Collections",
     "Unity.Entities",
-    "UnityEngine.TestRunner"
+    "Unity.InputSystem",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
-  "overrideReferences": true,
-  "precompiledReferences": [
-    "nunit.framework.dll"
-  ],
-  "autoReferenced": false,
-  "defineConstraints": [
-    "UNITY_INCLUDE_TESTS"
-  ],
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
   "versionDefines": [],
   "noEngineReferences": false
 }

@@ -1,0 +1,17 @@
+<!-- Hollowmere player preservation roots (P3.1; IL2CPP, managed stripping Low).
+
+     Most of the game survives stripping because real code reaches it: the scenes and assets reference every
+     MonoBehaviour/ScriptableObject type, the gameplay plugins are composed through direct generic registrations
+     (ManagedSystemRegistration<TSystem>, recipe/factory delegates), and the checkpoint codecs are direct references.
+
+     The one entry point no managed call site keeps alive is the generated world catalog:
+     GameCore.Gameplay.World.GameplayCatalog.TryBuild resolves the catalog class by the full name the bake recorded in
+     the region manifest (RegionManifest.CatalogTypeName, "Hollowmere.Generated.HollowmereCatalog") with
+     Assembly.GetType and invokes its public static BuildCatalog() by reflection (GameplayBoot.cs), so gameplay code
+     never references the generated assembly. Without this entry the linker removes the whole assembly and the player
+     boots with "catalog type not found". The assembly is generated (World/Generated), so it is preserved whole.
+
+     Newtonsoft.Json is only referenced by Editor-only Studio assemblies, so nothing is needed for it here. -->
+<linker>
+  <assembly fullname="Hollowmere.World.Generated" preserve="all" />
+</linker>
