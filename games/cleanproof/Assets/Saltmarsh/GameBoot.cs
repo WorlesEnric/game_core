@@ -16,7 +16,7 @@ namespace Saltmarsh.Boot
     {
         [SerializeField] private RegionManifest? manifest;
 
-        [Tooltip("The baked narrative content (Rules/SaltmarshContent.content.asset).")]
+        [Tooltip("The baked narrative content (Content/SaltmarshContent.content.asset).")]
         [SerializeField] private GameplayContentManifest? content;
 
         [Tooltip("Keep the neighbours of the focus region resident (overrides the world's setting when enabled).")]
@@ -107,7 +107,7 @@ namespace Saltmarsh.Boot
 
             if (content == null)
             {
-                Refuse("GameBoot has no narrative content manifest; run the Saltmarsh narrative bake (Rules/SaltmarshContent)");
+                Refuse("GameBoot has no narrative content manifest; run the Saltmarsh narrative bake (Content/SaltmarshContent)");
                 return;
             }
 

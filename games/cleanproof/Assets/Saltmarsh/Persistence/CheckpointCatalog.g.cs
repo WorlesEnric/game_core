@@ -1,3 +1,4 @@
+// Game-owned checkpoint serializers; array tables return fresh values, without mutable static storage.
 
 #nullable enable
 using System;
@@ -22,7 +23,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public const string CatalogFingerprint = "2d931c984b3bcf3f995a0f88bc82708b0d07e4395fcad44019ebc033126a0eb5";
 
-        public static readonly Id128[] SupportedFeatureIds =
+        public static Id128[] SupportedFeatureIds => new Id128[]
         {
             new Id128(0x9138C1DCDA9A0A87UL, 0x2360071679D5859AUL),
         };
@@ -53,7 +54,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public static readonly FactoryKey CommandRecordSerializerKey = new FactoryKey(new Id128(0xEFE5AB3007E3F7B8UL, 0x21D96F9264AB31EFUL), 1U);
 
-        public static readonly SchemaRegistration[] SchemaRegistrations =
+        public static SchemaRegistration[] SchemaRegistrations => new SchemaRegistration[]
         {
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0x1BB5C533DAB84E76UL, 0x04C8B98F1B97066AUL)), 1U),
@@ -161,7 +162,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class ScopeRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -493,7 +494,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class CursorRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -705,7 +706,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class SlotRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -978,7 +979,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class SelectionRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -1246,7 +1247,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class ClockRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -1692,7 +1693,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class GrantRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -2239,7 +2240,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class InstallRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -2762,7 +2763,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class MessageRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -3472,7 +3473,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class OutboxRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
                 new GeneratedFieldSlot(2, WireType.UInt32, true),
@@ -4131,7 +4132,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class TargetRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -4461,7 +4462,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class RngRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -4714,7 +4715,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class HeaderRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -5663,7 +5664,7 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public sealed class CommandRecordSerializer : GeneratedSerializerBase
         {
-            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            private static GeneratedFieldSlot[] DeclaredFieldSlots => new GeneratedFieldSlot[]
             {
                 new GeneratedFieldSlot(1, WireType.UInt64, true),
                 new GeneratedFieldSlot(2, WireType.UInt64, true),
@@ -6136,7 +6137,7 @@ namespace Saltmarsh.GeneratedCheckpoint
             }
         }
 
-        public static readonly ISchemaSerializer[] Serializers =
+        public static ISchemaSerializer[] Serializers => new ISchemaSerializer[]
         {
             new ScopeRecordSerializer(),
             new CursorRecordSerializer(),
@@ -6197,6 +6198,6 @@ namespace Saltmarsh.GeneratedCheckpoint
 
         public const int SchemaCount = 13;
 
-        public const string CatalogFileHash = "08d43a031cd41a968daf1ea86633fc826956ae64a8a717e6d999d77e5cd5d2d9";
+        public const string CatalogFileHash = "6967e5b7c0ce68e64da0aae0e7c49835b5d40c8fec244dbf0d37a3e831f0582d";
     }
 }

@@ -55,6 +55,7 @@ namespace Saltmarsh.Authoring
 
         public static void AuthorAll()
         {
+            if (!SceneManager.GetSceneByPath(BootPath).isLoaded) EditorSceneManager.OpenScene(BootPath, OpenSceneMode.Single);
             using var runtime = StudioRuntime.Create(new StudioRuntimeOptions { SearchFolders = new[] { Root } });
             foreach (string phase in new[] { "world", "narrative", "presentation", "bake", "boot" })
             {
@@ -114,8 +115,8 @@ namespace Saltmarsh.Authoring
         {
             if (AssetDatabase.LoadAssetAtPath<WorldDefinition>(WorldPath) != null) return;
             Directory.CreateDirectory(Root + "/Regions");
-            var scratch = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            EditorSceneManager.SaveScene(scratch, BootPath);
+            var scratch = SceneManager.GetSceneByPath(BootPath);
+            SceneManager.SetActiveScene(scratch);
             var world = Asset<WorldDefinition>(WorldPath);
             string[] names = { "Harbour", "Dunes", "Lighthouse" };
             foreach (string name in names)
@@ -164,10 +165,22 @@ namespace Saltmarsh.Authoring
                 }
                 EditorSceneManager.SaveScene(scene); Dirty(region);
             }
-            for(int i=0;i<3;i++) WorldTools.ConnectRegions(world,Region(names[i]),Region(names[(i+1)%3]),string.Empty);
+            for(int i=0;i<3;i++)
+            {
+                var from=Region(names[i]); var to=Region(names[(i+1)%3]);
+                var portal=WorldTools.ConnectRegions(world,from,to,string.Empty);
+                foreach(var end in new[]{from,to})
+                {
+                    var scene=SceneManager.GetSceneByPath(end.ScenePath);
+                    SceneManager.SetActiveScene(scene);
+                    var marker=scene.GetRootGameObjects().SelectMany(o=>o.GetComponentsInChildren<AuthoredRegion>()).Single();
+                    WorldTools.AddPortal(marker,portal,marker.transform.position+new Vector3(end==from?25:-25,0,i*8-8),0,2.5f);
+                    EditorSceneManager.SaveScene(scene);
+                }
+            }
             Dirty(world); Dirty(roster); Dirty(interactions);
             AssetDatabase.SaveAssets();
-            EditorSceneManager.OpenScene(BootPath,OpenSceneMode.Single);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByPath(BootPath));
         }
         private static EntityDefinition Entity(string name, Color color)
         {
@@ -230,7 +243,7 @@ namespace Saltmarsh.Authoring
                 else if(person=="Ada") { int action=graph.AddNode(new DialogueNodeEntry{kind=DialogueNodeKind.Action,actions=intro}); graph.Link(line,DialoguePort.Next,0,action); }
                 var npc=Load<NpcDefinition>(Root+"/World/"+person+"Npc.asset"); npc.SetDialogue(graph); Dirty(npc); Dirty(graph);
             }
-            var condition=Definition<ConditionSetDefinition>(set,"HasWire"); condition.Configure(ConditionMode.All,new[]{ConditionEntry.Of(ConditionKind.ItemCount,items[2],CompareOp.GreaterOrEqual,1)});
+            var condition=Definition<ConditionSetDefinition>(set,"HasWire"); condition.Configure(ConditionMode.All,new[]{ConditionEntry.Of(ConditionKind.ItemCount,items[2],CompareOp.GreaterOrEqual,1),ConditionEntry.Of(ConditionKind.QuestStage,quest,CompareOp.Equal,2)});
             var lever=Load<InteractableDefinition>(Root+"/World/BeaconSwitch.asset"); lever.SetCondition(condition,null,CompareOp.NotEqual,0); lever.SetActions(light,""); Dirty(lever);
             var consequence=Definition<RuleDefinition>(set,"SafeHarbour"); consequence.ConfigureTrigger(TriggerKind.QuestCompleted,quest,"",true,0);
             consequence.SetActions(null,new[]{ActionEntry.Text(ActionKind.ShowMessage,"The returning boats follow your light."),ActionEntry.Text(ActionKind.PlayAudio,"music.coast")}); consequence.ConfigureLimits(true,0,0,0);
@@ -238,7 +251,8 @@ namespace Saltmarsh.Authoring
         }
         private static void Boot()
         {
-            var scene=EditorSceneManager.OpenScene(BootPath,OpenSceneMode.Single);
+            var scene=SceneManager.GetSceneByPath(BootPath);
+            SceneManager.SetActiveScene(scene);
             var existing=Object.FindFirstObjectByType<GameBoot>();
             if(existing==null)
             {

@@ -25,12 +25,19 @@ namespace Saltmarsh.Tests
             Assert.That(records.Length,Is.EqualTo(journal+5),"all five phases use ChangeSetEngine.Apply");
             foreach(string file in records.OrderByDescending(File.GetLastWriteTimeUtc).Take(5))
             {
-                var row=Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(file));
-                Assert.That((string?)row["state"],Is.EqualTo("Applied"),file);
+                var row=GameCore.Studio.Model.StudioJson.Deserialize<GameCore.Studio.Model.ChangeSet>(File.ReadAllText(file));
+                Assert.That(row.EffectiveState,Is.EqualTo(GameCore.Studio.Model.ChangeSetState.Applied),file);
             }
             Assert.That(AssetDatabase.FindAssets("t:RegionDefinition",new[]{Root}).Length,Is.EqualTo(3));
             Assert.That(AssetDatabase.FindAssets("t:NpcDefinition",new[]{Root}).Length,Is.EqualTo(3));
             Assert.That(AssetDatabase.FindAssets("t:ItemDefinition",new[]{Root}).Length,Is.EqualTo(4));
+        }
+        [Test]
+        public void W_CLEAN_01_AllTwelveGroupsAreDiscoverable()
+        {
+            using var runtime=GameCore.Studio.Edit.StudioRuntime.Create();
+            foreach(string tool in new[]{"world.connectRegions","entity.place","player.tuneMovement","npc.setDialogue","interaction.setStates","dialogue.addLine","quest.addStage","inventory.grantStarting","logic.test","ui.bind","audio.assignClip","save.testRoundTrip"})
+                Assert.That(runtime.Registry.Find(tool),Is.Not.Null,tool);
         }
         [Test]
         public void W_CLEAN_02_BakeVerifyDetectsStaleOutput()
