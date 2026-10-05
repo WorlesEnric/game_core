@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement class="gcs-first-run">
+        <ui:Label text="GameCore Studio" class="gcs-title" />
+        <ui:VisualElement name="first-run-page-0" class="gcs-first-run__page">
+            <ui:Label text="The Studio Viewport shows the game: the player's camera while a GameCore world runs in Play Mode, a Studio free camera otherwise. It has three modes; Tab cycles them, the toolbar shows which one is active." />
+            <ui:Label text="Play: keyboard and mouse go to the game while the viewport is focused. Esc or Tab gives them back to the Studio." />
+            <ui:Label text="Select: click an object, Shift-click to add, Ctrl-click (Cmd on macOS) to toggle, drag a marquee (the Full toggle requires full containment). When several objects lie under the cursor a list opens, nearest first, with occluded ones marked. Right-click points at the ground; the marker becomes part of the selection. Drag an axis of the move gizmo to move the selection: one journaled change per drag." />
+            <ui:Label text="Inspect: hovering shows the authoring card - type, name, authoring id, definition and whether the target is stale." />
+        </ui:VisualElement>
+        <ui:VisualElement name="first-run-page-1" class="gcs-first-run__page">
+            <ui:Label text="Prompt: type what you want in the bar under the viewport and press Ctrl+Enter (Cmd+Enter). The request carries your selection, a bounded slice of the project index and the tool catalog. Voice: hold the Mic button to talk, or click it to toggle; the final transcript lands in the text field and is never sent until you press Send." />
+            <ui:Label text="Status chips show which providers (image, tts, voice, 3d, describe) are live, not configured or blocked. When Send is disabled the reason is shown next to it." />
+            <ui:Label text="Tasks lists every request with its etos state, elapsed time and worker. Cancel stops a running task; a clarification question can be answered inline." />
+        </ui:VisualElement>
+        <ui:VisualElement name="first-run-page-2" class="gcs-first-run__page">
+            <ui:Label text="Candidates: agent work arrives as a candidate change set. Preview stages it with ghost objects (toggle before/after), Compare shows property diffs, images and audio, Apply runs it with the chosen policy (AllOrNothing or BestEffort) and Reject sends your reason back. Conflicts can be rebased or skipped per operation." />
+            <ui:Label text="Context shows the generated inspector and the tools for the selection. Every edit - typed, dragged or proposed by an agent - goes through the same edit engine and lands in History, where Undo and Redo work on journal entries." />
+            <ui:Label text="Settings: GameCore/Studio/Settings (journal location, ghost material, picking options, agent gateway)." />
+        </ui:VisualElement>
+        <ui:VisualElement class="gcs-row">
+            <ui:Button name="first-run-back" text="Back" />
+            <ui:Button name="first-run-next" text="Next" />
+            <ui:Label name="first-run-counter" text="1 / 3" />
+            <ui:VisualElement class="gcs-grow" />
+            <ui:Toggle name="first-run-dont-show" label="Don't show again" />
+            <ui:Button name="first-run-done" text="Done" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,19 @@
+{
+  "comment": "A candidate whose artifact bytes do not match the digest: the UI must mark it invalid and import nothing.",
+  "requestId": "req_fixture_tampered",
+  "toolCatalogRevision": "$catalog",
+  "changeSet": {
+    "id": "$csid",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": { "text": "Change the greeting", "origin": "agent" },
+    "operations": [
+      { "opId": "op1", "tool": "set", "target": "$ref:npc", "args": { "field": "greeting", "value": "Tampered" } }
+    ],
+    "artifacts": [
+      { "sha256": "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb", "mediaType": "text/plain", "bytes": 41, "name": "notes.txt", "role": "notes" }
+    ]
+  },
+  "artifactBodies": {
+    "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb": "dGFtcGVyZWQgYnl0ZXMK"
+  }
+}

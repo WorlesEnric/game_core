@@ -353,7 +353,7 @@ namespace GameCore.Studio.Edit
                 null,
                 Arg("description", ValueTypes.String, true, "What the mechanism should do."),
                 Arg("context", ValueTypes.Ref + ValueTypes.ArraySuffix, false, "Authored things the mechanism relates to."),
-                Arg("options", ValueTypes.Object, false, "Worker options.")))
+                Arg("options", ValueTypes.Object, false, "Worker options."), Arg("package", ValueTypes.Artifact, false, "The staged package archive (worker candidates; read by the staging lane)."), Arg("proposal", ValueTypes.Artifact, false, "The proposal.json artifact (worker candidates)."), Arg("stageInputs", ValueTypes.String + ValueTypes.ArraySuffix, false, "Project paths copied into the stage slot (worker candidates; P2.4).")))
         {
         }
 

@@ -1,0 +1,30 @@
+{
+    "name": "GameCore.Studio.UI.Editor.Tests",
+    "rootNamespace": "GameCore.Studio.UI.Tests",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.UI.Editor",
+        "GameCore.Studio.Core.Tests.Fixtures",
+        "GameCore.Studio.UI.Tests.Fixtures",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
