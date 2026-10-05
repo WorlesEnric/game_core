@@ -1,6 +1,10 @@
-// GameCore.Gameplay.Save.Editor - the save schema validator (P1.7b, B5): stable codes over SaveSchemaDefinition.Validate.
+// GameCore.Gameplay.Save.Editor - the save schema validator (P1.7b, B5): stable codes over SaveSchemaDefinition.Validate,
+// plus the check that no two distinct owner/slot/schema names derive the same kernel key (StableNameKeyDerivation), which
+// would make two slots share one checkpoint row.
 #nullable enable
+using System;
 using System.Collections.Generic;
+using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
 
 namespace GameCore.Gameplay.Save
@@ -32,7 +36,34 @@ namespace GameCore.Gameplay.Save
                 diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.SaveSchemaInvalid, schema.AuthoringId, validation.Problems[i]));
             }
 
+            var derived = new Dictionary<Id128, string>();
+            for (int i = 0; i < schema.slotSchemas.Count; i++)
+            {
+                SaveSlotSchemaEntry entry = schema.slotSchemas[i];
+                CheckDerivedKey(schema, derived, entry.owner, diagnostics);
+                CheckDerivedKey(schema, derived, entry.slot, diagnostics);
+                CheckDerivedKey(schema, derived, entry.schema, diagnostics);
+            }
+
             return diagnostics;
+        }
+
+        private static void CheckDerivedKey(SaveSchemaDefinition schema, Dictionary<Id128, string> derived, string name, List<GameplayDiagnostic> diagnostics)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return;
+            }
+
+            Id128 key = StableNameKeyDerivation.Derive(name);
+            if (derived.TryGetValue(key, out string? other) && !string.Equals(other, name, StringComparison.Ordinal))
+            {
+                diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.SaveSchemaInvalid, schema.AuthoringId,
+                    "'" + name + "' and '" + other + "' derive the same kernel key"));
+                return;
+            }
+
+            derived[key] = name;
         }
     }
 }
