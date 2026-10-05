@@ -338,10 +338,10 @@ namespace GameCore.Studio.Views
                 return new GameplayCommandResult(GameplayCommandStatus.Unsupported, "the running world has no narrative plugins (no NarrativeWorld found; " + _found + ")");
             }
 
-            object? started = Invoke(starter, "TryStart", new object?[] { speakerEntityId ?? string.Empty, graphRef ?? string.Empty });
+            object? started = InvokeCommand(starter, "TryStart", new object?[] { speakerEntityId ?? string.Empty, graphRef ?? string.Empty }, false);
             if (started == null)
             {
-                return new GameplayCommandResult(GameplayCommandStatus.Unsupported, _diagnostic.Length > 0 ? _diagnostic : starter.GetType().Name + " returned no conversation result");
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, _diagnostic.Length > 0 ? _diagnostic : starter.GetType().Name + " returned no conversation result");
             }
 
             if (!(Get(started, "Started") is bool ok))
@@ -364,7 +364,7 @@ namespace GameCore.Studio.Views
                 return new GameplayCommandResult(GameplayCommandStatus.Unsupported, "the running world exposes no Commands/Focus");
             }
 
-            object? receipt = Invoke(commands, "Travel", new[] { focus, regionId, string.Empty });
+            object? receipt = InvokeCommand(commands, "Travel", new[] { focus, regionId, string.Empty }, true);
             if (receipt == null)
                 return new GameplayCommandResult(GameplayCommandStatus.Refused, _diagnostic.Length > 0 ? _diagnostic : "BridgeContractMismatch: Travel returned no receipt");
             object? result = Get(receipt, "Result");
@@ -630,15 +630,52 @@ namespace GameCore.Studio.Views
             return true;
         }
 
+        private object? InvokeCommand(object target, string name, object?[] args, bool travel)
+        {
+            _diagnostic = string.Empty;
+            MethodInfo? method = FindMethod(target.GetType(), name, args);
+            if (method == null) return null;
+            Type result = method.ReturnType;
+            Type? detail = MemberType(result, travel ? "Result" : "Detail");
+            bool compatible = MemberType(result, travel ? "Admitted" : "Started") == typeof(bool)
+                && (travel ? detail != null && MemberType(detail, "Kind")?.IsEnum == true : detail == typeof(string));
+            if (!compatible)
+            {
+                _diagnostic = "BridgeContractMismatch: incompatible return type for " + target.GetType().FullName + "." + name;
+                return null;
+            }
+            return Call(target, method, args);
+        }
+
+        private Type? MemberType(Type type, string name)
+        {
+            try
+            {
+                PropertyInfo? property = type.GetProperty(name, Public);
+                if (property != null && property.GetIndexParameters().Length == 0 && property.GetMethod != null) return property.PropertyType;
+                return type.GetField(name, Public)?.FieldType;
+            }
+            catch (AmbiguousMatchException error)
+            {
+                RecordFailure(name, error);
+                return null;
+            }
+        }
+
         private object? Invoke(object target, string name, object?[] args)
         {
             _diagnostic = string.Empty;
             MethodInfo? method = FindMethod(target.GetType(), name, args);
             if (method == null) return null;
+            return Call(target, method, args);
+        }
+
+        private object? Call(object target, MethodInfo method, object?[] args)
+        {
             try { return method.Invoke(target, args); }
             catch (Exception error) when (error is TargetInvocationException || error is ArgumentException || error is MethodAccessException)
             {
-                RecordFailure(name, error);
+                RecordFailure(method.Name, error);
                 return null;
             }
         }

@@ -106,6 +106,11 @@ namespace GameCore.Studio.Views.Canvas
             RegisterCallback<PointerUpEvent>(OnPointerUp);
             RegisterCallback<KeyDownEvent>(OnKeyDown);
             RegisterCallback<DetachFromPanelEvent>(_ => StopTicker());
+            RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                if (LayoutPending && _layoutTicker == null)
+                    _layoutTicker = schedule.Execute(() => StepLayout(LayoutBudgetMs)).Every(1);
+            });
         }
 
         private enum Gesture
@@ -205,7 +210,8 @@ namespace GameCore.Studio.Views.Canvas
             _frameWhenLaidOut = frame || previous.Count == 0;
             if (_layout != null)
             {
-                StepLayout(LayoutBudgetMs * 0.5);
+                // Large graphs start on the next scheduled slice; keep initial card projection below a frame.
+                if (_nodes.Count <= MaxCards) StepLayout(LayoutBudgetMs * 0.5);
                 if (!_layout.Done && panel != null)
                 {
                     _layoutTicker = schedule.Execute(() => StepLayout(LayoutBudgetMs)).Every(1);
@@ -213,7 +219,7 @@ namespace GameCore.Studio.Views.Canvas
             }
             else
             {
-                Rebuild();
+                Rebuild(!_frameWhenLaidOut);
                 if (_frameWhenLaidOut)
                 {
                     FrameAll();
@@ -233,7 +239,7 @@ namespace GameCore.Studio.Views.Canvas
             if (done)
             {
                 StopTicker();
-                Rebuild();
+                Rebuild(!_frameWhenLaidOut);
                 if (_frameWhenLaidOut)
                 {
                     _frameWhenLaidOut = false;
@@ -307,7 +313,9 @@ namespace GameCore.Studio.Views.Canvas
         }
 
         /// <summary>Re-indexes positions, repaints edges and rebinds the visible cards.</summary>
-        public void Rebuild()
+        public void Rebuild() => Rebuild(true);
+
+        private void Rebuild(bool refresh)
         {
             foreach (List<CanvasNode> bucket in _grid.Values)
             {
@@ -342,7 +350,7 @@ namespace GameCore.Studio.Views.Canvas
             _edgeLayer.style.width = _worldMax.x - _worldMin.x;
             _edgeLayer.style.height = _worldMax.y - _worldMin.y;
             _edgeLayer.MarkDirtyRepaint();
-            Refresh();
+            if (refresh) Refresh();
         }
 
         /// <summary>Rebinds the cards of the visible rect (cheap; runs on pan, zoom, selection and data changes).</summary>

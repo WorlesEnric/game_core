@@ -112,9 +112,12 @@ namespace GameCore.Studio.Views.Tests
             RelationshipsCanvas.Show(canvas, neighbourhood);
             double setGraph = watch.Elapsed.TotalMilliseconds;
             int frames = 1;
+            double maxLayoutFrame = 0;
             while (canvas.LayoutPending && frames < 10000)
             {
+                watch.Restart();
                 canvas.StepLayout(GraphCanvas.LayoutBudgetMs);
+                maxLayoutFrame = System.Math.Max(maxLayoutFrame, watch.Elapsed.TotalMilliseconds);
                 frames++;
             }
 
@@ -142,12 +145,13 @@ namespace GameCore.Studio.Views.Tests
             int framedCards = canvas.VisibleCardCount;
             UnityEngine.Debug.Log("[P2.3] 2000-node relationships: index graph " + buildGraph.ToString("0.0") + " ms, neighbourhood " + neighbourhood.Milliseconds.ToString("0.0")
                 + " ms, SetGraph " + setGraph.ToString("0.0") + " ms, layout " + layout.Steps + " slices max " + layout.MaxStepMilliseconds.ToString("0.00")
-                + " ms total " + layout.TotalMilliseconds.ToString("0.0") + " ms, refresh max " + maxRefresh.ToString("0.00") + " ms, warm zoom bytes/frame " + (allocated / 30.0).ToString("0.0") + ", edge regroup bytes/frame " + (edgeAllocated / 30.0).ToString("0.0") + ", cards framed-all "
+                + " ms, whole layout frame max " + maxLayoutFrame.ToString("0.00") + " ms total " + layout.TotalMilliseconds.ToString("0.0") + " ms, refresh max " + maxRefresh.ToString("0.00") + " ms, warm zoom bytes/frame " + (allocated / 30.0).ToString("0.0") + ", edge regroup bytes/frame " + (edgeAllocated / 30.0).ToString("0.0") + ", cards framed-all "
                 + compactCards + " (compact " + compact + "), cards at root " + framedCards + " (compact " + canvas.IsCompact + ")");
 
+            Assert.That(maxLayoutFrame, Is.LessThan(16.0), "the whole layout frame includes final rebuild and card refresh");
             Assert.That(layout.MaxStepMilliseconds, Is.LessThan(16.0), "one layout slice per editor frame stays under 16 ms");
             Assert.That(maxRefresh, Is.LessThan(16.0), "a pan/zoom refresh stays under 16 ms");
-            Assert.That(setGraph, Is.LessThan(16.0), "SetGraph builds the cards and runs one half-budget layout slice synchronously");
+            Assert.That(setGraph, Is.LessThan(16.0), "initial graph projection stays below one frame; large layouts start in the next slice");
             Assert.That(framedCards, Is.LessThanOrEqualTo(GraphCanvas.MaxCards), "cards are virtualised");
         }
     }

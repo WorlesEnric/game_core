@@ -34,6 +34,11 @@ namespace GameCore.Studio.Views.Tests
             public Receipt Travel(string focus, int region, string portal) => throw new InvalidOperationException("wrong overload");
         }
         public sealed class WrongCommands { public Receipt Travel(string focus, string region, string portal) => new Receipt(); }
+        public sealed class WrongReturnCommands
+        {
+            public int Calls { get; private set; }
+            public string Travel(int focus, string region, string portal) { Calls++; return "accepted"; }
+        }
         public sealed class ThrowCommands { public Receipt Travel(int focus, string region, string portal) => throw new ArgumentException("bad argument"); }
         public sealed class GameplayWorld
         {
@@ -91,6 +96,10 @@ namespace GameCore.Studio.Views.Tests
             GameplayCommandResult result = bridge.Travel("region");
             Assert.That(result.Status, Is.EqualTo(GameplayCommandStatus.Refused));
             Assert.That(result.Detail, Does.Contain("BridgeContractMismatch"));
+            WrongReturnCommands wrongReturn = new WrongReturnCommands();
+            world.Commands = wrongReturn;
+            Assert.That(bridge.Travel("region").Detail, Does.Contain("BridgeContractMismatch"));
+            Assert.That(wrongReturn.Calls, Is.Zero, "validate the return contract before invoking");
             world.Commands = new ThrowCommands();
             result = bridge.Travel("region");
             Assert.That(result.Status, Is.EqualTo(GameplayCommandStatus.Refused));
