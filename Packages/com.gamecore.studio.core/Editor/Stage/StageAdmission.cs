@@ -19,7 +19,7 @@ namespace GameCore.Studio.Edit
         {
             Succeeded = succeeded;
             ReloadPending = reloadPending;
-            Detail = detail;
+            Detail = new SecretRedactor().Redact(detail);
             Errors = errors ?? Array.Empty<string>();
         }
 
@@ -58,6 +58,7 @@ namespace GameCore.Studio.Edit
     /// <summary>Captures and restores the running game around an admission (SaveService through the game's hook).</summary>
     public interface IAdmissionCapture
     {
+        /// <summary>Capture once per slot. Retries must validate/reuse an existing checkpoint, never overwrite it.</summary>
         bool TryCapture(string slot, out string? problem);
 
         bool TryRestore(string slot, out string? problem);
@@ -68,6 +69,7 @@ namespace GameCore.Studio.Edit
     {
         Pending,
         Capture,
+        AfterCapture,
         StopPlay,
         Compile,
         Reload,
@@ -149,7 +151,7 @@ namespace GameCore.Studio.Edit
         {
             ChangeSetId = changeSetId;
             Outcome = outcome;
-            Detail = detail;
+            Detail = new SecretRedactor().Redact(detail);
         }
 
         public string ChangeSetId { get; }
@@ -756,6 +758,7 @@ namespace GameCore.Studio.Edit
         /// <summary>The change set with <paramref name="scenario"/> replaced (or added).</summary>
         public static ChangeSet WithScenario(ChangeSet entry, string scenario, ScenarioStatus status, string detail)
         {
+            detail = new SecretRedactor().Redact(detail);
             List<ValidationScenario> validation = new List<ValidationScenario>();
             foreach (ValidationScenario existing in entry.Validation ?? Array.Empty<ValidationScenario>())
             {

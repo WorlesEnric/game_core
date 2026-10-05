@@ -179,7 +179,7 @@ namespace GameCore.Studio.Edit
                 }
 
                 text.Append(')');
-                return text.ToString();
+                return new GameCore.Studio.Authoring.SecretRedactor().Redact(text.ToString());
             }
         }
 

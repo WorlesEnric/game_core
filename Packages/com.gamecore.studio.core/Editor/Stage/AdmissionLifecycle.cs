@@ -180,6 +180,7 @@ namespace GameCore.Studio.Edit
                         case "capture":
                             if (Options.Capture == null) return Waiting(id, "Awaiting game capture service registration.");
                             if (!Options.Capture.TryCapture((string)p["captureSlot"]!, out _)) return BeginRollback(id, p, "capture_failed");
+                            Fault(AdmissionFaultPoint.AfterCapture, id);
                             Checkpoint(id, p, "stop-play", AdmissionFaultPoint.StopPlay);
                             continue;
                         case "stop-play":

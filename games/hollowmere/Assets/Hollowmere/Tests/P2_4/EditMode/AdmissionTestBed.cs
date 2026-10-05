@@ -84,7 +84,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
         public bool TryCapture(string slot, out string? problem)
         {
-            Captured.Add(slot);
+            if (!Captured.Contains(slot)) Captured.Add(slot);
             problem = null;
             return true;
         }

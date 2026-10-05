@@ -34,6 +34,18 @@ namespace Hollowmere.R2_B.Tests
         }
 
         [Test]
+        public void R2_09_VerdictAndAdmissionDiagnosticsUseSharedRedactor()
+        {
+            string sensitive = "etk_fixturecredential";
+            var result = new AdmissionResult(_candidate.Id, AdmissionOutcome.Refused, sensitive);
+            Assert.That(result.Detail, Does.Not.Contain(sensitive));
+            byte[] bytes = Mutate(json => { json["steps"]![0]!["status"] = "fail"; json["steps"]![0]!["detail"] = sensitive; });
+            Assert.That(StageVerdict.Parse(bytes, out _)!.Summary, Does.Not.Contain(sensitive));
+            var entry = StageAdmission.WithScenario(_candidate, "stage", ScenarioStatus.Fail, sensitive);
+            Assert.That(entry.Validation![0].Detail, Does.Not.Contain(sensitive));
+        }
+
+        [Test]
         public void R2_09_SelfAuthoredVerdictBytesNeverAuthorize()
         {
             AdmissionResult result = _bed.Admission.Admit(_candidate, _bytes);
@@ -228,6 +240,7 @@ namespace Hollowmere.R2_B.Tests
         }
 
         [TestCase(AdmissionFaultPoint.Capture)]
+        [TestCase(AdmissionFaultPoint.AfterCapture)]
         [TestCase(AdmissionFaultPoint.StopPlay)]
         [TestCase(AdmissionFaultPoint.RestorePlay)]
         [TestCase(AdmissionFaultPoint.RestoreCapture)]
@@ -257,6 +270,7 @@ namespace Hollowmere.R2_B.Tests
             Assert.That(done.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), done.Detail);
             Assert.That(playing, Is.True);
             Assert.That(capture.Restored.Count, Is.EqualTo(1));
+            Assert.That(capture.Captured.Count, Is.EqualTo(1), "retry preserves the original checkpoint");
         }
 
         [Test]
