@@ -19,3 +19,141 @@ voice,ops}.rs`, P0.5 note s4). Branch `worktree-agent-ade08c7cbb82eacb1`, based 
 | `games/hollowmere/Assets/Hollowmere/Tests/P2_2/**` | asmdef `GameCore.Studio.Hollowmere.P2_2.Tests`: `EtosGatewayTests` (fake), `EtosLiveTests` (live, env-gated), `GatewayHarness` |
 | `studio/tools/live-etos-tests.sh` | host live verification (dotnet + Unity live tests, PipeWire virtual mic, redaction scan) |
 | `artifacts/studio/evidence/P2.2/**` | redacted live evidence |
+| `games/hollowmere/Assets/Hollowmere/Generated/P2_2/` | `wooden_well_icon.png` (256×256, 85,344 B) and `welcome_to_thornwick.wav` produced by the final live run |
+
+## Verified (host myubuntu; Unity 6000.0.75f1, one instance at a time; dotnet 8.0.425)
+
+| Check | Result |
+|---|---|
+| `studio/tools/dotnet-test.sh p2.2 dotnet/tests/GameCore.Studio.Etos.Client.Tests` | **58 passed**, 5 skipped (the live tests, env-gated), 0 failed; 3 s |
+| `studio/tools/unity-compile.sh p2.2 games/hollowmere --tests EditMode --filter GameCore.Studio.Hollowmere.P2_2.Tests.EtosGatewayTests` | compile clean, **15/15 passed** (each test 0.0-0.4 s) |
+| `studio/tools/live-etos-tests.sh p2.2` (final run `live-20261005T023249Z`) | dotnet live **5/5**; Unity live **3/4**: the failing assertion is row (e), blocked by a companion defect |
+| `tools/check_game_core_csharp.py`, `tools/check_package_metadata.py` (Mac, static) | ok |
+
+dotnet tests: routes (every companion route, idempotent submit, `stale_context` → catalog → `ledger_conflict`, no
+null written, pre-send validation, get/list/cancel, candidate + verified download, server-side tamper, test-hook
+tamper, size mismatch, index delta, generate with `max_cost_usd` default and explicit, describe, 3D refusal, stage,
+error passthrough with codes and diagnostics, forbidden agent, wrong key, unreachable node, status-derived codes),
+events (ticket path without query and single use, resume after drop with no gap, cursor persisted across streams,
+request lifecycle order, stopped node retried with backoff), backoff schedule and jitter, redaction (every credential
+shape, key-file reading, server-echoed secrets, logs and exceptions), voice framing (PCM clamp, 24 KiB split with
+gapless seq, accumulator, 48 kHz stereo WAV → 24 kHz mono, level) and the voice session against the fake (partials,
+final, stop, refusal code), fixture replay (every recorded answer parses, carries no credential, and behaves the
+same when served by the fake).
+
+EditMode tests (fake companion, Hollowmere runtime with a temporary state root): submit → events → candidate →
+verified artifact → `ArtifactStore.Put` → `Stage(Candidate)` → journal → apply; tampered bytes refused before
+retention; null in a candidate refused as `candidate_invalid`; a foreign candidate listed but never staged; stale
+catalog resent once with the full catalog; status from hello on the main thread and registration in
+`StudioServiceRegistry.AgentGateway`; unreachable node reported as `transport`; `asset.generate` (image → staged
+`asset.import` candidate, mesh → `not_configured` at once); media adapter import through a journaled `asset.import`,
+describe, 3D and SFX refusals; long-op re-issue after a `transport` timeout with identical bodies and no re-issue of a
+refusal; voice frames, partials and finals on the main thread; voice refusal code; scene-context transforms; the
+main-thread queue; settings hold only the path and logs never carry a credential.
+
+Live rows (details, run history and timings in
+[artifacts/studio/evidence/P2.2/README.md](artifacts/studio/evidence/P2.2/README.md)):
+
+| Row | Final |
+|---|---|
+| (a) hello | pass |
+| (b) NPC "move two metres north" → staging | pass (real `gc-designer` task; `move` z -12 → -10; staged Candidate, then rejected) |
+| (c) icon PNG | pass |
+| (d) TTS WAV | pass |
+| (e) describe | **blocked**: companion defect, repro in the evidence README |
+| (f) 3D refusal | pass (`not_configured`, 503, hint kept) |
+| (g) events resume | pass |
+| (h) cancel | pass |
+| (i) tampered artifact refused before Put | pass |
+| (j) voice (WAV and Editor microphone via PipeWire) | pass; W-VOICE-01 is not blocked: `UnityEngine.Microphone` sees the `pw-loopback` source in the batchmode Editor |
+| W-ETOS-02 authority | another agent: 404 `agent_unknown` (only one agent is installed, so `forbidden` cannot be shown for another agent); agent-only route: 403 `forbidden` |
+
+## API
+
+`GameCore.Studio.Etos`:
+
+- `EtosAgentGateway(CompanionClient, StudioRuntime, MainThreadQueue, ICursorStore, EtosGatewayOptions?, IStudioLog?)`
+  implements `GameCore.Studio.Authoring.IAgentGateway` (P1.6: `GenerateAsset`, `ProposeMechanism`) and
+  `GameCore.Studio.Authoring.Agent.IAgentGateway`. Extras: `Start()`, `Tick()`, `RefreshStatusAsync()`,
+  `RecoverAsync()`, `ImportCandidateAsync(id)`, `Apply(id)`, `Reject(id, reason)`, `Staged`, `CandidateStaged`,
+  `IsOwn(id)`, `Hello`, `Events`, `Queue`, `CreateVoiceSession(IPcmSource)`, `GenerateWithReplayAsync`.
+- `AgentRequestBuilder`: `SnapshotOf(runtime, objects)`, `Build(runtime, selection, intent, attachments?, mode)`
+  (slice depth 2, 64 KB), `ForObjects(runtime, objects, intent)` (adds `scene-context.json` for scene objects),
+  `SceneContext(...)`, `ToBody(...)`.
+- `EtosMediaGenerator(IAgentGateway, StudioRuntime, MainThreadQueue)`: `GenerateImageAsync` (optional Studio-side
+  square down-sample), `GenerateSpeechAsync`, `DescribeAsync`, `Generate3dAsync`, `GenerateSoundEffectAsync`
+  (`not_configured`), `ImportOnMain`.
+- `EtosVoiceSession` (`IVoiceSession`) over an `IPcmSource`: `MicrophoneCapture(device?)`,
+  `WavPcmSource(wav, trailingSilence, speed)`.
+- `EtosStudioSession` (ScriptableSingleton): `Start()`, `Stop()`, `Gateway`, `Problem`, `TestConnectionAsync(settings)`.
+- `EtosSettings` (`UserSettings/GameCoreStudio.json`, section `etos`), `EtosSettingsProvider`, `RedactingStudioLog`,
+  `MainThreadQueue`.
+
+P2.1 reaches the UI-facing gateway with `AgentGatewayLookup.From(StudioServices.Runtime.Services.AgentGateway)`
+without referencing this package.
+
+## Decisions and deviations
+
+1. **Two interfaces, one object.** P1.6 already owns `GameCore.Studio.Authoring.IAgentGateway` (tool-facing). The
+   brief's names live in `GameCore.Studio.Authoring.Agent` (`AgentContracts.cs`, the shared file); the etos gateway
+   implements both and is registered into the existing `StudioServiceRegistry.AgentGateway` slot. If P2.1 adds the
+   same file, the integrator keeps one copy: the brief's names are unchanged; members added here are
+   `ProviderStatus.Problem/CheckedAtUtc/For()`, `AgentRequest.ChangeSetId`, `RequestView.Intent/Progress/LocalState/
+   Diagnostics/OutcomeLabel`, `OpRequest.ChangeSetId`, `OpResult.Text/Name/Provider/State`, `TranscriptUpdate.Role`,
+   `AgentGatewayLookup`. Interface events are declared nullable (`Action<T>?`).
+2. **Settings file, not EditorPrefs.** 04 s8 puts the key-file path and base URL in `UserSettings/GameCoreStudio.json`
+   (per user, git-ignored); `GAMECORE_ETOS_KEY_FILE` overrides it; the default is `~/.config/gamecore-studio/app-key.json`
+   (where P0.1 paired the key). The key is never written (Save refuses any credential shape); the settings page shows
+   only `etk_…[redacted]… (68 chars)`.
+3. **Client asmdef is Editor-only** (`includePlatforms: Editor`, `noEngineReferences`), so no player contains etos
+   code; the same sources build as `netstandard2.1` under dotnet. It references nothing from studio.core (JObject
+   DTOs); typed conversion happens in the Editor assembly.
+4. **`ClientWebSocket` works** in the Linux Editor (Mono) and under .NET 8; no WebSocket client is vendored. The fake
+   companion uses a socket-level HTTP/WebSocket server because `HttpListener` WebSocket support differs between Mono
+   and .NET.
+5. **Only this project's candidates are imported.** The companion ledger is shared by every client of the app; a
+   fresh journal would otherwise import every old candidate (found in live run 2). Requests submitted here are kept
+   in `EtosStudioSession` (last 256) and survive reloads; others are listed, never staged.
+6. **Scene-context attachment.** The semantic index carries authored fields, not transforms; the live worker asked
+   for the NPC's position twice. Requests built with `ForObjects` attach `scene-context.json`
+   (`gamecore.studio.scenecontext/1`: ref, name, hierarchy path, scene, world position/rotation, local scale, axes).
+   The axes block states +Z north, +X east, +Y up: a Studio convention written down here (the repository had none);
+   the worker used it as intended (z -12 → -10).
+7. **Long-op re-issue.** A companion `transport` error on image/tts/3d is re-issued with the identical body for up to
+   6 min (5 s apart): the companion derives the same etos effect key and etops looks the job up instead of submitting
+   again (`crates/etops/src/service.rs`). Pending job states are looked up the same way; failed or unknown states come
+   back as refusals (unknown is never success). After the P0.5 reinstall (configurable `ops_timeout_secs`) the final
+   run needed no re-issue; it stays as a fallback.
+8. **Studio-side down-sample.** The image provider returns 1024-class PNGs (~1.4 MB); `GenerateImageAsync(...,
+   squareSize: 256)` box-filters on the CPU (works with `-nographics`) and imports the derived bytes under their own
+   sha256; the provider's sha256 is recorded in the evidence.
+9. **Reject reason is journal/log only.** The companion has no route for a reject reason (04 s2); `Reject` marks the
+   journal entry Rejected and logs the reason.
+10. **Batchmode.** The session does not auto-start in batchmode unless `GAMECORE_ETOS_AUTOSTART=1` (tests build their
+    own gateway).
+11. **Checker workaround.** `tools/check_game_core_csharp.py`'s CS0161 heuristic treats `async Task` methods as
+    non-void, so eight `async Task` bodies end with an explicit `return;` (legal C#; the checker is outside P2.2).
+12. **Voice start retry in the live test only.** In one run the realtime provider refused session setup
+    (`bad_response`); the live tests retry a session start up to 3 times on that code and record every attempt. The
+    product raises the error to the UI and never retries a voice session by itself.
+
+## Blocked / known issues
+
+- **Row (e) describe: companion defect.** `studio/agent/src/ops.rs` passes `max_cost_usd` into the etops `describe`
+  input; etops refuses the unknown field. Repro and fix location are in the evidence README. The client sends
+  `max_cost_usd` as required; omitting it would not help (the companion inserts its default).
+- **Submit latency** on the loaded host was 15-30 s (the companion opens the etos task before answering); the client
+  timeout is 60 s.
+- **Unity Library.** A fresh p2.2 Library hung three times right after `Package Manager log level set to [2]` (no log
+  for 600 s); seeding `~/wkspace/gc-studio/p2.2/games/hollowmere/Library` from the warm P1.6 copy fixed it (host-side
+  only).
+- **Live run 4** lost its dotnet stage to the P0.5 companion reinstall (external; recorded in the evidence README).
+
+## Running it
+
+- Unit: `studio/tools/dotnet-test.sh p2.2 dotnet/tests/GameCore.Studio.Etos.Client.Tests`;
+  `studio/tools/unity-compile.sh p2.2 games/hollowmere --tests EditMode --filter GameCore.Studio.Hollowmere.P2_2.Tests.EtosGatewayTests`.
+- Live (host, real node; spends a few cents): `studio/tools/live-etos-tests.sh p2.2` writes
+  `artifacts/studio/evidence/P2.2/live-<stamp>/`; copy it back, plus any regenerated assets under
+  `games/hollowmere/Assets/Hollowmere/Generated/P2_2/`.
+- Editor: Project Settings → GameCore Studio → ETOS (key file, Test connection, Open node UI at `http://127.0.0.1:7400`).
