@@ -74,6 +74,12 @@ namespace GameCore.Studio.Authoring
         string SceneKey(Scene scene);
     }
 
+    /// <summary>Optional cache authority: all current asset source keys and their imported-content fingerprints.</summary>
+    public interface IAuthoringSourceFingerprints
+    {
+        IReadOnlyDictionary<string, string> AssetFingerprints();
+    }
+
     /// <summary>Source-key helpers shared by sources and the index.</summary>
     public static class AuthoringSourceKeys
     {
