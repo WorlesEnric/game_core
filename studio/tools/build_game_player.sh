@@ -35,7 +35,7 @@
 #   UNITY                  Editor binary on the host (default: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity)
 #   GC_STUDIO_UNITY_SLOTS  host-wide concurrent batchmode Editors allowed (default: 3)
 #
-# After a successful build the player smoke runs the built player headless (-batchmode -nographics -frameLog
+# After a successful build the player smoke runs the built player headless under xvfb-run -a (-batchmode -nographics -frameLog
 # build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt) and records it in build-summary.json ("smoke").
 #
 # Exit codes: 0 build succeeded (and the gate passed with --gate); 1 build failed; 5 the player smoke failed; 4 the gate
@@ -203,7 +203,14 @@ rm -rf "${smoke_dir}"
 mkdir -p "${smoke_dir}/saves"
 smoke_start="$(date +%s)"
 smoke_rc=0
-timeout --signal=TERM --kill-after=30 300 "${exe}" -batchmode -nographics \
+# The Unity 6 Linux player selects its window backend even under -nographics and crashes (SIGSEGV in PlayerMain,
+# "window backend is (null)") when no X display is reachable, as in a non-interactive ssh session: run it under a
+# private virtual display (xvfb-run -a), never on the shared :1.
+smoke_launcher=()
+if command -v xvfb-run >/dev/null 2>&1; then
+  smoke_launcher=(xvfb-run -a)
+fi
+timeout --signal=TERM --kill-after=30 300 "${smoke_launcher[@]}" "${exe}" -batchmode -nographics \
   -frameLog "${smoke_dir}/frame-log.csv" -autoplay "${project}/Autoplay/smoke.txt" -saveDir "${smoke_dir}/saves" \
   -logFile "${smoke_dir}/player.log" < /dev/null > "${smoke_dir}/stdout.txt" 2>&1 || smoke_rc=$?
 smoke_seconds=$(( $(date +%s) - smoke_start ))
@@ -218,7 +225,7 @@ path, rc, seconds, frames = sys.argv[1:5]
 with open(path, encoding="utf-8") as handle:
     summary = json.load(handle)
 summary["smoke"] = {
-    "command": "Hollowmere.x86_64 -batchmode -nographics -frameLog build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt",
+    "command": "xvfb-run -a Hollowmere.x86_64 -batchmode -nographics -frameLog build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt",
     "exit": int(rc),
     "seconds": int(seconds),
     "frameLogRows": int(frames),

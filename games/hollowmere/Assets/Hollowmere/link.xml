@@ -14,4 +14,9 @@
      Newtonsoft.Json is only referenced by Editor-only Studio assemblies, so nothing is needed for it here. -->
 <linker>
   <assembly fullname="Hollowmere.World.Generated" preserve="all" />
+  <!-- The application bootstrap is found by the Entities world initialization through reflection over the
+       ICustomBootstrap implementations, never by a managed call site (A11: Hollowmere registers its definition with it). -->
+  <assembly fullname="GameCore.Unity.Adapters">
+    <type fullname="GameCore.Unity.Adapters.GameCoreApplicationBootstrap" preserve="all" />
+  </assembly>
 </linker>

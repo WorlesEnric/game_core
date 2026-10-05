@@ -207,13 +207,11 @@ namespace Hollowmere.Boot
         /// </summary>
         private bool Adopt(HollowmereApplication registered)
         {
-            GameApplicationRoot? root = registered.AdoptableRoot(manifest, content, player, npcs, interactions);
+            GameApplicationRoot? root = registered.AdoptableRoot(manifest, content, player, npcs, interactions, out string reason);
             HollowmereComposition? composition = registered.Composition;
             if (root == null || composition == null || content == null)
             {
-                registered.Discard(composition == null
-                    ? "the registration has no composition (" + registered.Failure + ")"
-                    : "the live root is not the registered Ready root, or GameBoot holds other assets than Resources/" + HollowmereApplicationAssets.ResourcePath);
+                registered.Discard(reason.Length > 0 ? reason : "GameBoot has no content manifest");
                 return false;
             }
 

@@ -26,6 +26,7 @@ using GameCore.Gameplay.Npc;
 using GameCore.Gameplay.Player;
 using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Logic;
+using GameCore.Unity.Adapters;
 using GameCore.Unity.App;
 using Hollowmere.Narrative;
 using UnityEngine;
@@ -208,16 +209,34 @@ namespace Hollowmere.Boot
         /// The registered root GameBoot may adopt: the live, not yet started root composed from this composition's
         /// definition, booted for the same assets GameBoot holds; else null.
         /// </summary>
-        public GameApplicationRoot? AdoptableRoot(RegionManifest? manifest, GameplayContentManifest? content, PlayerDefinition? player, NpcRoster? npcs, InteractionRoster? interactions)
+        public GameApplicationRoot? AdoptableRoot(RegionManifest? manifest, GameplayContentManifest? content, PlayerDefinition? player, NpcRoster? npcs, InteractionRoster? interactions, out string reason)
         {
             GameApplicationRoot? root = GameApplication.Current;
-            if (Composition == null || Assets == null || root == null || !ReferenceEquals(root.Definition, Composition.Definition)
-                || root.State != GameApplicationState.Ready || !Assets.Matches(manifest, content, player, npcs, interactions))
+            reason = string.Empty;
+            if (Composition == null || Assets == null)
             {
-                return null;
+                reason = "the registration has no composition (" + Failure + ")";
+            }
+            else if (root == null)
+            {
+                reason = "the application bootstrap composed no root (bootstraps " + GameCoreApplicationBootstrap.BootstrapCount
+                    + ", last code " + GameCoreApplicationBootstrap.LastCode + ", last failed " + GameCoreApplicationBootstrap.LastBootFailed
+                    + ", detail '" + GameCoreApplicationBootstrap.LastDetail + "', boot failure " + (GameApplication.LastFailure?.ToString() ?? "none") + ")";
+            }
+            else if (!ReferenceEquals(root.Definition, Composition.Definition))
+            {
+                reason = "the live root " + root + " was not composed from the registered definition";
+            }
+            else if (root.State != GameApplicationState.Ready)
+            {
+                reason = "the registered root is " + root.State + ", not Ready";
+            }
+            else if (!Assets.Matches(manifest, content, player, npcs, interactions))
+            {
+                reason = "GameBoot holds other assets than Resources/" + HollowmereApplicationAssets.ResourcePath;
             }
 
-            return root;
+            return reason.Length == 0 ? root : null;
         }
 
         /// <summary>Hands the rig to <paramref name="boot"/> and retires this object (the composition is consumed).</summary>
