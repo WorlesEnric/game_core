@@ -92,7 +92,9 @@ namespace GameCore.Gameplay.World
             return receipt;
         }
 
-        public CommandAdmissionReceipt Spawn(TargetId target, bool? visible = null) =>
+        public CommandAdmissionReceipt Spawn(TargetId target) => Spawn(target, null);
+
+        public CommandAdmissionReceipt Spawn(TargetId target, bool? visible) =>
             Submit(EntityDeclarations.SpawnRoute, target, EntityDeclarations.SpawnCommand, EntityCommand.EncodeSpawn(visible));
 
         public CommandAdmissionReceipt Despawn(TargetId target) =>
@@ -491,7 +493,10 @@ namespace GameCore.Gameplay.World
             world.Worlds.AnchorTarget.IsDefault ? 0 : world.Slots.ReadOrDefault(world.Worlds.AnchorTarget, GameplaySlots.WorldOwner, GameplaySlots.SpawnOrdinal, 0);
 
         /// <summary>Spawns one entity of a baked definition in a region at a pose (mm, mrad); visibility defaults to the definition.</summary>
-        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail, bool? visible = null)
+        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail) =>
+            TrySpawn(definitionId, regionId, x, y, z, yaw, out target, out detail, null);
+
+        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail, bool? visible)
         {
             target = default(TargetId);
             ManifestDefinition? definition = world.Manifest.FindDefinition(definitionId);

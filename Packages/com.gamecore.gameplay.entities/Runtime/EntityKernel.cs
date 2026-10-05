@@ -1,7 +1,7 @@
 // GameCore.Gameplay.Entities - the entities plugin's kernel half: payloads, recipes, the per-world module and the
 // command system (P1.1; P-024, P-032, P-042, P-044).
 //
-//   entity.spawn       (no argument)   a dead entity becomes alive and visible       -> EntitySpawned
+//   entity.spawn       (no argument)   a dead entity becomes alive; visibility is retained       -> EntitySpawned
 //   entity.despawn     (no argument)   an alive entity becomes dead (logical)        -> EntityDespawned
 //   entity.setVariant  (int variant)   selects one of the definition's variants      -> EntityVariantChanged
 //
@@ -39,7 +39,11 @@ namespace GameCore.Gameplay.Entities
         {
         }
 
-        public EntityCommand(int value, int requestId, bool? visible = null)
+        public EntityCommand(int value, int requestId) : this(value, requestId, null)
+        {
+        }
+
+        public EntityCommand(int value, int requestId, bool? visible)
         {
             SpawnVisible = visible;
             Value = value;
@@ -94,7 +98,7 @@ namespace GameCore.Gameplay.Entities
 
             if (!reader.HasLength(EntityCommand.Length))
             {
-                throw new FormatException("an entity command is " + EntityCommand.Length + " or " + EntityCommand.LengthWithRequest + " bytes");
+                throw new FormatException("an entity command is " + EntityCommand.Length + " or " + EntityCommand.LengthWithRequest + " bytes (12 with spawn visibility)");
             }
 
             return new EntityCommand(reader.Int32());
