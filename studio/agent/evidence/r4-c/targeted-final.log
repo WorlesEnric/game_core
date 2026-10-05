@@ -1,0 +1,50 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r4-c/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 25s
+     Running tests/companion.rs (studio/agent/target/debug/deps/companion-8455471aa95cbf08)
+
+running 30 tests
+test r2_19_legacy_stage_extractor_is_retired ... ok
+test p42_ops_01_retained_unconfigured_3d_precedes_budget ... ok
+test r3_d14_retained_budget_refuses_unpriced_before_provider_call ... ok
+test proxy_token_and_app_are_checked_and_follow_restarts ... ok
+test etos_task_refusal_passes_through ... ok
+test r3_d14_priced_budget_binds_quantity_and_provider ... ok
+test a_degraded_model_is_named_in_the_outcome ... ok
+test r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs ... ok
+test invalid_candidate_without_reask_is_terminal ... ok
+test ops_generate_stores_artifacts_and_passes_refusals ... ok
+test r3_d24_unregistered_project_has_registration_hint ... ok
+test r3_d3b_hello_negotiates_before_project_header ... ok
+test r2_25_all_routes_isolate_apps_and_projects_and_replay_cursors ... ok
+test p42_live_01_ambiguous_scope_reasks_exactly_once ... ok
+test r4_tariffs_operator_cap_pair_ledger_and_hot_reload ... FAILED
+test digest_mismatch_is_reasked_once_with_parent ... ok
+test requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped ... ok
+test p42_live_01_published_candidate_uses_request_index_slice ... ok
+test index_deltas_are_coalesced_and_delivered ... ok
+test requests_are_idempotent_and_conflicts_refused ... ok
+test catalog_rules_are_reasked_and_a_refused_reask_settles_invalid ... ok
+test voice_session_ready_transcripts_and_close ... ok
+test unresolved_requests_are_followed_at_most_three_more_times ... ok
+test request_task_candidate_with_verified_artifacts ... ok
+test voice_refusal_passes_through ... ok
+test restart_resumes_from_the_ledger_without_reopening ... ok
+test cancel_reports_the_etos_status ... ok
+test a_slow_task_open_is_reread_not_failed ... ok
+test a_slow_media_op_is_held_up_to_the_op_timeout ... ok
+test r3_d23_retained_sample_signed_app_stage_and_tamper_refusals ... ok
+
+failures:
+
+---- r4_tariffs_operator_cap_pair_ledger_and_hot_reload stdout ----
+
+thread 'r4_tariffs_operator_cap_pair_ledger_and_hot_reload' (3912059) panicked at tests/companion.rs:2160:5:
+assertion failed: api.get("/v1/hello").await.1["tariffs"].as_array().unwrap().is_empty()
+
+
+failures:
+    r4_tariffs_operator_cap_pair_ledger_and_hot_reload
+
+test result: FAILED. 29 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.10s
+
+error: test failed, to rerun pass `--test companion`

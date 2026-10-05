@@ -1,15 +1,19 @@
-# Capped image/describe calls remain budget_unpriced: the node's image tariff is
-# output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
+# A standalone TTS-only example. The installer derives ops_prices from ops.toml's
+# provider/cost and # @studio provenance annotations. Echo needs an explicit operator
+# total estimate; publisher token prices do not establish a reseller total tariff.
 [[ops_prices]]
+source = "published"
+url = "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+model = "qwen3-tts-flash"
 op = "tts"
 provider = "bailian-tts"
 unit = "bailian_character"
 # Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
-# Mainland Qwen3-TTS-Flash: $0.114682 / 10,000 characters, checked 2026-10-05.
+# Mainland Qwen3-TTS-Flash: $0.114682 / 10,000 characters, checked 2026-10-06.
 per_unit = 0.0000114682
 
 # Copy the required keys into the companion state directory's config.toml.
-# This is an example only; no installed service configuration is changed by R2-F.
+# This example does not itself alter the installed service configuration.
 [stage]
 confinement = "docker"
 docker_image = "gamecore-stage:6000.0.75f1-v1"

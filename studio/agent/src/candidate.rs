@@ -51,6 +51,8 @@ pub const STALE_CONTEXT: &str = "StaleContext";
 /// The tool catalog a candidate is checked against.
 #[derive(Debug, Clone, Copy)]
 pub struct CatalogContext<'a> {
+    /// The request-owned semantic index slice, never candidate-supplied metadata.
+    pub index_slice: Option<&'a Value>,
     /// The request's `toolCatalogRevision` (lowercase hex).
     pub revision: &'a str,
     /// The catalog held for that revision, if any.
@@ -587,11 +589,27 @@ fn catalog_rules(
                         .at_op(&op.op_id),
                     );
                 }
-                // Companion has the request catalog, but no complete index. Use the declared
-                // target type; Unity additionally intersects with the actual indexed type.
-                let type_entry = tool
-                    .get("targetType")
-                    .and_then(Value::as_str)
+                // Same identity precedence as AuthoringRef.SameTarget in core. Indexed
+                // type wins over a generic (or less specific) tool declaration.
+                let indexed_node = ctx
+                    .index_slice
+                    .and_then(|slice| slice.get("nodes"))
+                    .and_then(Value::as_array)
+                    .and_then(|nodes| {
+                        nodes.iter().find(|node| {
+                            node.get("ref")
+                                .and_then(|r| {
+                                    serde_json::from_value::<crate::model::AuthoringRef>(r.clone())
+                                        .ok()
+                                })
+                                .is_some_and(|r| same_target(&r, t))
+                        })
+                    });
+                let indexed_type = indexed_node
+                    .and_then(|node| node.get("type"))
+                    .and_then(Value::as_str);
+                let type_entry = indexed_type
+                    .or_else(|| tool.get("targetType").and_then(Value::as_str))
                     .and_then(|id| {
                         catalog
                             .get("objectTypes")
@@ -609,6 +627,17 @@ fn catalog_rules(
                     allowed.retain(|scope| type_scopes.contains(scope));
                 }
                 if t.scope.is_none() {
+                    // The index records whether this is an instance or prefab. Use it
+                    // only inside the already permitted tool/type intersection.
+                    if let (Some(allowed), Some(scope)) = (
+                        &mut allowed,
+                        indexed_node
+                            .filter(|_| tool.get("targetType").and_then(Value::as_str).is_none())
+                            .and_then(|node| node.pointer("/ref/scope"))
+                            .and_then(Value::as_str),
+                    ) {
+                        allowed.retain(|choice| *choice == scope);
+                    }
                     if let Some(scope) = allowed
                         .as_ref()
                         .filter(|choices| choices.len() == 1)
@@ -641,6 +670,37 @@ fn catalog_rules(
         }
     }
     d
+}
+
+// Keep in step with core AuthoringRef.SameTarget; a disagreement in stronger
+// identifiers must never fall back to a weaker identifier.
+fn same_target(a: &crate::model::AuthoringRef, b: &crate::model::AuthoringRef) -> bool {
+    if a.kind != b.kind {
+        return false;
+    }
+    if a.kind == crate::model::RefKind::Location {
+        return a
+            .location
+            .as_ref()
+            .zip(b.location.as_ref())
+            .is_some_and(|(a, b)| a.region == b.region && a.position == b.position);
+    }
+    for (left, right) in [(&a.authoring_id, &b.authoring_id), (&a.global, &b.global)] {
+        if let (Some(left), Some(right)) = (left, right) {
+            return left == right;
+        }
+    }
+    if let (Some(left), Some(right)) = (&a.asset_guid, &b.asset_guid) {
+        return left == right
+            && a.path
+                .as_ref()
+                .zip(b.path.as_ref())
+                .is_none_or(|(a, b)| a == b);
+    }
+    a.path
+        .as_ref()
+        .zip(b.path.as_ref())
+        .is_some_and(|(a, b)| a == b)
 }
 
 /// Whether a re-ask can help: not for a catalog the companion cannot confirm.
@@ -734,6 +794,7 @@ mod tests {
 
     fn ctx() -> CatalogContext<'static> {
         CatalogContext {
+            index_slice: None,
             revision: &REVISION,
             catalog: Some(&CATALOG),
         }
@@ -965,6 +1026,7 @@ mod tests {
         ));
         // A catalog that is gone, or that does not hash to the revision, is stale; no re-ask.
         let gone = CatalogContext {
+            index_slice: None,
             revision: &REVISION,
             catalog: None,
         };
@@ -978,6 +1040,7 @@ mod tests {
         let other =
             json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
         let wrong = CatalogContext {
+            index_slice: None,
             revision: &REVISION,
             catalog: Some(&other),
         };

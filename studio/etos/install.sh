@@ -43,10 +43,12 @@ while [ "$#" -gt 0 ]; do
         --register-project)
             exec python3 "$HERE/install-state.py" --root "$ROOT" register "$2" "$3" ;;
         --apply-prices)
-            exec python3 "$HERE/install-state.py" --root "$ROOT" prices ;;
+            shift; exec python3 "$HERE/install-state.py" --root "$ROOT" prices "$@" ;;
         *) echo "unknown argument: $1" >&2; exit 2 ;;
     esac
 done
+
+python3 "$HERE/install-state.py" --root "$ROOT" validate-prices
 
 export ETOS_ROOT="$ROOT"
 export PATH="$BIN:$PATH"
@@ -111,6 +113,8 @@ step "configuration"
 place "$(render "$HERE/etos.toml.tmpl")" "$ROOT/etos.toml" 600 restart
 place "$(render "$HERE/models.toml.tmpl")" "$ROOT/models.toml" 600 restart
 place "$(render "$HERE/ops.toml.tmpl")" "$ROOT/ops.toml" 600 restart
+# Synchronize companion provider/model aliases and provenance from these same prices.
+python3 "$HERE/install-state.py" --root "$ROOT" prices
 tmp="$(mktemp)"; cp "$BIN/etos-musl" "$tmp"
 place "$tmp" "$ROOT/bin/etos" 755
 

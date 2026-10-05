@@ -182,6 +182,10 @@ namespace GameCore.Studio.Model
             if (choices == null) return null;
             HashSet<AuthorScope> allowed = new HashSet<AuthorScope>(choices);
             if (typeScopes != null) allowed.IntersectWith(typeScopes);
+            // Generic tools rely on the indexed object's concrete placement scope.
+            // A typed tool retains its declared tool/type scope contract.
+            AuthorScope? indexedScope = tool.TargetType == null ? _index?.FindNode(target)?.Ref.Scope : null;
+            if (indexedScope.HasValue) allowed.IntersectWith(new[] { indexedScope.Value });
             if (allowed.Count != 1) return null;
             foreach (AuthorScope scope in allowed) return scope;
             return null;

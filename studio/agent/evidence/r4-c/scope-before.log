@@ -1,0 +1,46 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r4-c/studio/agent)
+warning: missing documentation for the crate
+  --> tests/r4_c.rs:1:1
+   |
+ 1 | / #![allow(clippy::unwrap_used, clippy::expect_used)]
+ 2 | | use gamecore_studio::candidate::{CatalogContext, Evaluation, Fetched, evaluate, reaskable};
+ 3 | | use gamecore_studio::schema::ChangeSetSchema;
+ 4 | | use gamecore_studio::util::{catalog_revision, sha256_hex};
+...  |
+31 | |     assert!(reaskable(&d));
+32 | | }
+   | |_^
+   |
+   = note: requested on the command line with `-W missing-docs`
+
+warning: `gamecore-studio` (test "r4_c") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.15s
+     Running tests/r4_c.rs (studio/agent/target/debug/deps/r4_c-424de33cadca0046)
+
+running 2 tests
+test p42_live_01_retained_generic_move_infers_indexed_instance ... FAILED
+test p42_live_01_missing_or_ambiguous_index_refuses_and_reasks ... FAILED
+
+failures:
+
+---- p42_live_01_retained_generic_move_infers_indexed_instance stdout ----
+
+thread 'p42_live_01_retained_generic_move_infers_indexed_instance' (3847182) panicked at tests/r4_c.rs:21:5:
+assertion `left == right` failed
+  left: Null
+ right: "Instance"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- p42_live_01_missing_or_ambiguous_index_refuses_and_reasks stdout ----
+
+thread 'p42_live_01_missing_or_ambiguous_index_refuses_and_reasks' (3847181) panicked at tests/r4_c.rs:29:64:
+missing type must refuse
+
+
+failures:
+    p42_live_01_missing_or_ambiguous_index_refuses_and_reasks
+    p42_live_01_retained_generic_move_infers_indexed_instance
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+error: test failed, to rerun pass `--test r4_c`

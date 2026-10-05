@@ -262,6 +262,7 @@ async fn hello(
     let welcome = s.agent.welcome();
     let (providers, checked) = s.ops.providers().await;
     Ok(out(&Hello {
+        tariffs: s.ops.tariffs(),
         service: s.cfg.agent.clone(),
         version: crate::VERSION.to_string(),
         protocol: crate::PROTOCOL,

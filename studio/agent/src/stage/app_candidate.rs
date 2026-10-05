@@ -169,6 +169,7 @@ impl super::StageRunner {
             &req.change_set_id,
             &schema,
             CatalogContext {
+                index_slice: None,
                 revision: catalog_revision,
                 catalog: Some(&payload.tool_catalog),
             },

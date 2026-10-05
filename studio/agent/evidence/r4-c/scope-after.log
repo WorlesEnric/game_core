@@ -1,0 +1,24 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r4-c/studio/agent)
+warning: missing documentation for the crate
+  --> tests/r4_c.rs:1:1
+   |
+ 1 | / #![allow(clippy::unwrap_used, clippy::expect_used)]
+ 2 | | use gamecore_studio::candidate::{CatalogContext, Evaluation, Fetched, evaluate, reaskable};
+ 3 | | use gamecore_studio::schema::ChangeSetSchema;
+ 4 | | use gamecore_studio::util::{catalog_revision, sha256_hex};
+...  |
+51 | |     assert!(reaskable(&d));
+52 | | }
+   | |_^
+   |
+   = note: requested on the command line with `-W missing-docs`
+
+warning: `gamecore-studio` (test "r4_c") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6m 23s
+     Running tests/r4_c.rs (studio/agent/target/debug/deps/r4_c-424de33cadca0046)
+
+running 2 tests
+test p42_live_01_missing_or_ambiguous_index_refuses_and_reasks ... ok
+test p42_live_01_retained_generic_move_infers_indexed_instance ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s

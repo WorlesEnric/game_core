@@ -1,0 +1,25 @@
+    Blocking waiting for file lock on build directory
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r4-c/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.84s
+     Running tests/companion.rs (studio/agent/target/debug/deps/companion-8455471aa95cbf08)
+
+running 1 test
+test p42_ops_01_retained_unconfigured_3d_precedes_budget ... FAILED
+
+failures:
+
+---- p42_ops_01_retained_unconfigured_3d_precedes_budget stdout ----
+
+thread 'p42_ops_01_retained_unconfigured_3d_precedes_budget' (3850184) panicked at tests/companion.rs:2081:9:
+assertion `left == right` failed: {"code":"budget_unpriced","hint":"configure ops_prices in the companion config.toml and the matching node provider tariff","message":"no verified price for 3d and the selected provider"}
+  left: String("budget_unpriced")
+ right: "not_configured"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    p42_ops_01_retained_unconfigured_3d_precedes_budget
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.36s
+
+error: test failed, to rerun pass `--test companion`

@@ -1,12 +1,24 @@
 //! Operator-owned prices, used before a capped operation can reach the node.
 use crate::error::{ApiError, ApiResult};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 
 /// A price for a specific operation/provider. Unknown prices are never zero.
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct OpPrice {
+    /// Binding provenance: published or operator. Missing provenance is unpriced.
+    #[serde(default)]
+    pub source: String,
+    /// Provider list-price URL for published tariffs.
+    #[serde(default)]
+    pub url: String,
+    /// Explicit operator declaration for estimates.
+    #[serde(default)]
+    pub note: String,
+    /// Provider model pinned by the installed node configuration (not a caller override).
+    #[serde(default)]
+    pub model: String,
     /// Studio operation: image, tts, 3d or describe.
     pub op: String,
     /// Provider pinned into the downstream request.
@@ -17,16 +29,48 @@ pub struct OpPrice {
     pub unit: String,
 }
 
+impl OpPrice {
+    /// Only declared, positive tariffs can bind a ceiling.
+    pub fn verified(&self) -> bool {
+        self.per_unit.is_finite()
+            && self.per_unit > 0.0
+            && match self.source.as_str() {
+                "published" => self.url.starts_with("https://") && self.url.len() > 8,
+                "operator" => {
+                    !self.note.trim().is_empty() && !self.note.contains("SET_BY_OPERATOR")
+                }
+                _ => false,
+            }
+    }
+    /// Public provenance for diagnostics and ledger entries.
+    pub fn tariff(&self) -> Value {
+        json!({"kind":self.source,"provider":self.provider,"model":self.model,
+            "unit":self.unit,"perUnitUsd":self.per_unit,"url":self.url,"note":self.note})
+    }
+}
+
+/// A binding preflight charge, retained with the operation's idempotency key.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Charge {
+    /// Tariff provenance, including kind.
+    pub tariff: Value,
+    /// Billable units in the bounded request.
+    pub quantity: f64,
+    /// USD charged under this binding tariff (operator values are estimates).
+    pub cost_usd: f64,
+}
+
 /// Check an estimate and pin its provider so a caller cannot select an unpriced fallback.
 pub fn check(
     prices: &[OpPrice],
     op: &str,
     input: &mut Map<String, Value>,
     max: f64,
-) -> ApiResult<()> {
+) -> ApiResult<Charge> {
     let requested = input.get("provider").and_then(Value::as_str);
     let price = prices.iter().find(|p| p.op == op && requested.is_none_or(|r| r == p.provider)
-        && p.per_unit.is_finite() && p.per_unit > 0.0).ok_or_else(||
+        && p.verified()).ok_or_else(||
         ApiError::new(axum::http::StatusCode::CONFLICT, "budget_unpriced", format!("no verified price for {op} and the selected provider"))
             .with_hint("configure ops_prices in the companion config.toml and the matching node provider tariff"))?;
     // Parameters or input references can change a provider's tariff. Such variants need a
@@ -82,10 +126,14 @@ pub fn check(
             "over_budget",
             format!("{op} estimate ${estimate} exceeds max_cost_usd ${max}"),
         )
-        .with_data(json!({"estimatedCostUsd":estimate,"maxCostUsd":max})));
+        .with_data(json!({"estimatedCostUsd":estimate,"maxCostUsd":max,"tariff":price.tariff()})));
     }
     input.insert("provider".into(), json!(price.provider));
-    Ok(())
+    Ok(Charge {
+        tariff: price.tariff(),
+        quantity,
+        cost_usd: estimate,
+    })
 }
 
 // Alibaba's published counting rule: Han characters count twice; SSML markup is
@@ -104,6 +152,10 @@ mod tests {
             assert_eq!(bailian_characters(text), count);
         }
         let prices = vec![OpPrice {
+            source: "published".into(),
+            url: "https://www.alibabacloud.com/help/en/model-studio/model-pricing".into(),
+            note: String::new(),
+            model: "qwen3-tts-flash".into(),
             op: "tts".into(),
             provider: "bailian-tts".into(),
             unit: "bailian_character".into(),
@@ -117,5 +169,29 @@ mod tests {
             "over_budget"
         );
         assert!(check(&prices, "tts", &mut input, 0.00005).is_ok());
+    }
+    #[test]
+    fn r4_tariff_provenance_missing_placeholder_and_invalid_refuse() {
+        let base = json!({"op":"image","provider":"echo-images","model":"gpt-image-2","unit":"image","per_unit":0.02});
+        for (source, url, note, valid) in [
+            ("", "", "", false),
+            ("published", "", "", false),
+            ("published", "https://provider.example/prices", "", true),
+            ("operator", "", "", false),
+            ("operator", "", "SET_BY_OPERATOR", false),
+            ("operator", "", "Operator estimate including input", true),
+        ] {
+            let mut raw = base.clone();
+            raw["source"] = json!(source);
+            raw["url"] = json!(url);
+            raw["note"] = json!(note);
+            let price: OpPrice = serde_json::from_value(raw).unwrap();
+            let mut input = json!({"prompt":"swatch"}).as_object().unwrap().clone();
+            let result = check(&[price], "image", &mut input, 0.02);
+            assert_eq!(result.is_ok(), valid, "{source} {note}");
+            if !valid {
+                assert_eq!(result.unwrap_err().code(), "budget_unpriced");
+            }
+        }
     }
 }

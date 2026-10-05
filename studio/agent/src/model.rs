@@ -787,6 +787,9 @@ pub type ProviderStatus = String;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Hello {
+    /// Verified operation tariffs; each exposes tariff.kind.
+    #[serde(default)]
+    pub tariffs: Vec<Value>,
     /// `gamecore-studio`.
     pub service: String,
     /// Companion version.
@@ -848,6 +851,9 @@ pub struct GenerateRequest {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GenerateResponse {
+    /// Binding local ledger charge and tariff provenance.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub charge: Option<crate::pricing::Charge>,
     /// The op as asked.
     pub op: String,
     /// The etos operation run (`generate.image`).
