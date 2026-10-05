@@ -510,7 +510,10 @@ impl Diagnostic {
 
     /// The rule a companion finding names (the message up to the first `:`), else the code.
     pub fn rule(&self) -> &str {
-        if let Some((rule, _)) = self.message.split_once(':').filter(|_| self.code == CANDIDATE_INVALID)
+        if let Some((rule, _)) = self
+            .message
+            .split_once(':')
+            .filter(|_| self.code == CANDIDATE_INVALID)
         {
             return rule;
         }
@@ -790,6 +793,10 @@ pub struct Hello {
     pub version: String,
     /// Protocol version.
     pub protocol: u32,
+    /// Minimum supported Studio contract, negotiated before project-scoped calls.
+    pub minimum_client_contract: u32,
+    /// First client revision carrying mandatory project authority.
+    pub minimum_client_revision: String,
     /// The calling app.
     pub app: String,
     /// The node's name (from the welcome).

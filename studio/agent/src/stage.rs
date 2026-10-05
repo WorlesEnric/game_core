@@ -9,6 +9,7 @@
 //! Candidate execution defaults to Docker confinement with no network or live project mount.
 //! The operator CLI is `gamecore-studio stage run|gc|discard|scan`; every log is redacted.
 
+pub mod app_candidate;
 pub mod cli;
 pub mod env;
 pub mod pipeline;
@@ -166,6 +167,8 @@ impl StageRunner {
     /// Probe the configured lane at startup; unavailable confinement remains a refusal,
     /// while ordinary companion routes continue serving.
     pub fn probe_startup(self: &Arc<Self>) {
+        tracing::warn!(registered_projects = ?self.cfg.projects.keys().collect::<Vec<_>>(),
+            "stage project registration: use studio/etos/install.sh --register-project <id> <absolute-project-path> for missing projects");
         if self.cfg.projects.is_empty() {
             return;
         }
@@ -222,6 +225,7 @@ impl StageRunner {
                 "projectId must match X-GameCore-Project; sourceProject paths are not accepted",
             ));
         }
+        let path = self.registered_project(project)?;
         let request = self.ledger.request(&req.change_set_id)?;
         if request.app != owner {
             return Err(ApiError::not_found("no candidate"));
@@ -232,10 +236,7 @@ impl StageRunner {
         if req.action.as_deref() == Some("discard") {
             return self.discard(&req);
         }
-        let path =
-            self.cfg.projects.get(project).ok_or_else(|| {
-                ApiError::stage_failed("project is not registered in stage.projects")
-            })?;
+
         let catalog = req
             .catalog_revision
             .as_deref()
@@ -267,6 +268,13 @@ impl StageRunner {
         let mut local = req;
         local.source_project = Some(path.display().to_string());
         self.submit_change_set(&local)
+    }
+
+    /// Resolve only an operator-registered stable project identity.
+    pub fn registered_project(&self, project: &str) -> ApiResult<&PathBuf> {
+        self.cfg.projects.get(project).ok_or_else(|| ApiError::new(
+            StatusCode::CONFLICT, "stage_project_unregistered", format!("project {project} is not registered in stage.projects"))
+            .with_hint(format!("studio/etos/install.sh --register-project {project} <absolute-project-path>; then reload the companion through the integrator")))
     }
 
     /// Operator/test entry point. The legacy packageRef extractor has been retired.
@@ -500,6 +508,14 @@ impl StageRunner {
                 let mut record = v.to_value();
                 if let Ok(request) = self.ledger.request(&v.change_set_id) {
                     let owner: Value = serde_json::from_str(&request.app).unwrap_or(Value::Null);
+                    record["origin"] = json!(if request.worker == "app" {
+                        "app"
+                    } else {
+                        "agent"
+                    });
+                    record["candidateDigest"] = json!(crate::util::sha256_hex(
+                        crate::util::canonical_json(change_set).as_bytes()
+                    ));
                     record["jobId"] = json!(id);
                     record["projectId"] = owner[1].clone();
                     record["app"] = owner[0].clone();
@@ -608,7 +624,27 @@ impl StageRunner {
     }
 
     fn finish(&self, id: &str, state: &str, verdict: &Value) {
-        match self.ledger.update_stage(id, state, None, Some(verdict)) {
+        let mut record = verdict.clone();
+        // Failed jobs have provenance too; never mutate an already signed record.
+        let request = self
+            .ledger
+            .stage(id)
+            .ok()
+            .and_then(|job| self.ledger.request(&job.change_set_id).ok())
+            .filter(|_| record.get("signature").is_none());
+        if let Some(request) = request {
+            record["origin"] = json!(if request.worker == "app" {
+                "app"
+            } else {
+                "agent"
+            });
+            if let Ok(candidate) = self.ledger.candidate(&request.change_set_id) {
+                record["candidateDigest"] = json!(crate::util::sha256_hex(
+                    crate::util::canonical_json(&candidate.change_set).as_bytes()
+                ));
+            }
+        }
+        match self.ledger.update_stage(id, state, None, Some(&record)) {
             Ok(job) => self.emit(&job),
             Err(e) => tracing::error!(job = id, error = %e, "cannot record the stage verdict"),
         }

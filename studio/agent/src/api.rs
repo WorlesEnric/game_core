@@ -110,6 +110,10 @@ pub fn router(state: AppState) -> Router {
         .route("/v1/events", get(events))
         .route("/v1/voice", get(voice))
         .route("/v1/stage", post(stage))
+        .route(
+            "/v1/stage/app-candidate",
+            post(crate::stage::app_candidate::submit),
+        )
         .route("/v1/stage/{job}", get(stage_job))
         .route("/v1/stage/{job}/verdict", get(stage_verdict))
         .route("/v1/stage/{job}/verify", post(stage_verify))
@@ -197,10 +201,16 @@ async fn authenticate(State(s): State<AppState>, mut req: Request, next: Next) -
         .get("X-GameCore-Project")
         .and_then(|v| v.to_str().ok())
         .and_then(normalize_sha256);
+    // Hello is authenticated but does not require project authority: old clients must
+    // be able to discover the contract before attempting scoped routes.
+    let project = project.or_else(|| (req.uri().path() == "/v1/hello").then(String::new));
     let Some(project) = project else {
-        return ApiError::bad_request(
-            "X-GameCore-Project must be this project's stable SHA-256 identity",
+        return ApiError::new(
+            StatusCode::UPGRADE_REQUIRED,
+            "client_upgrade_required",
+            "X-GameCore-Project is required by Studio contract 2",
         )
+        .with_hint("update the Studio packages to client revision 4635746 or later")
         .into_response();
     };
     // JSON tuple encoding cannot collide if an app name contains separators.
@@ -255,6 +265,8 @@ async fn hello(
         service: s.cfg.agent.clone(),
         version: crate::VERSION.to_string(),
         protocol: crate::PROTOCOL,
+        minimum_client_contract: 2,
+        minimum_client_revision: "4635746".into(),
         app: serde_json::from_str::<Value>(&app)
             .ok()
             .and_then(|v| v[0].as_str().map(str::to_string))
@@ -271,6 +283,7 @@ async fn hello(
             "events",
             "voice",
             "stage",
+            "stage.app-candidate.signed/1",
         ]
         .iter()
         .map(|c| c.to_string())
@@ -465,7 +478,9 @@ async fn stage(
     let id = body["changeSetId"]
         .as_str()
         .ok_or_else(|| ApiError::bad_request("changeSetId required"))?;
-    own_request(&s, id, &app)?;
+    if s.ledger.request(id).is_ok() {
+        own_request(&s, id, &app)?;
+    }
     let answer = s.stage.request_owned(body, &app)?;
     Ok((answer.status, out(&answer.body)).into_response())
 }
