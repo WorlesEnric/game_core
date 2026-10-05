@@ -132,8 +132,65 @@ P1.2 restore: every P1.3 state is a slot.
 
 ## Verified
 
-(filled in below from the host runs)
+All runs were on myubuntu at commit c32ed10, with result files under `~/wkspace/gc-studio/p1.3/`. Nothing ran on the Mac.
+
+| Run | Command | Result |
+| --- | --- | --- |
+| Rules | `studio/tools/dotnet-test.sh p1.3 dotnet/tests/GameCore.Rules.Gameplay.Tests` | **123/123 passed** in 0.5 s of test time (215 s wall). P1.3 tests: Player 28 (PlayerRules 13, PlanarMath 10, FocusRules 5), Npc 13, Interaction 12. TRX: `dotnet/tests/GameCore.Rules.Gameplay.Tests/TestResults/p13-rules-final.trx` |
+| Content (run 1) | `unity-compile.sh p1.3 games/hollowmere --tests EditMode --filter P13ContentTests` | **3/3 passed**. Author+bake took 13.3 s: 3 regions, 14 definitions, 37 entities, catalog fingerprint `e3e57cf7…61e`. The produced content was committed on the host as 4dfc5cc. |
+| EditMode (all) | `unity-compile.sh p1.3 games/hollowmere --tests EditMode` | **33/33 passed** (P1.1 16, P1.3 17), 4.6 s of test time. Log: `.unity-logs/games_hollowmere-editmode-20261005T094037-a1.log`. The working tree stayed clean afterwards: the re-bake was byte-identical and `Verify` passed. |
+| PlayMode (all) | `unity-compile.sh p1.3 games/hollowmere --tests PlayMode` | **2/2 passed**: P1.1 `ThreeRegionLoop` (3.8 s) and `PlayerWalkAndInteract` (0.37 s). Log: `.unity-logs/games_hollowmere-playmode-20261005T093812-a1.log` |
+
+`PlayerWalkAndInteract` boots the real `Boot.unity` with a synthetic intent source and the frame time pinned to 0.1 s. It checks, in order:
+
+1. Two fresh boots given 90 scripted frames (walk, run, jump, turn) produce identical player slots on every frame.
+2. Walking to the well makes the focus pick it, the prompt reads "Examine the well", and Interact commits `InteractionSucceeded` with `uses = 1`.
+3. Maren commits `NpcArrived`.
+4. Running to the village→marsh portal with the CharacterController triggers travel through `PortalProbe` (65 frames), and the player adopts the marsh region.
+5. `interact.use` on the Causeway Gate is refused with `interaction.locked`.
+6. There is one sanctioned pump per frame: 81 frames and 81 pumps, with no duplicate or bypass and no load failures.
+
+The B-FRAME timings below are informational. They come from batchmode -nographics, so they are not player frame times:
+
+| B-FRAME | Time |
+| --- | --- |
+| boot | 136 / 138 ms (17 / 16 frames) |
+| scripted run | 90 frames in 24 / 27 ms |
+| run to portal and travel | 65 frames in 18 ms |
+| `resolutions` (CharacterController) | 170 |
+| `ungrounded` | 2, while the marsh scene loaded under the arrival pose |
+
+The EditMode P1.3 tests cover:
+
+- **Content**: authoring and bake, `Verify`, a NavMesh in every region, Boot and build settings.
+- **Kernel**, on the baked world with the three extensions:
+  - seeding;
+  - player moves equal `PlayerRules.Move` step by step;
+  - NPC patrol equals `NpcLogicalMover.Advance` frame by frame, with `NpcArrived`;
+  - unloaded NPCs advance at the stride;
+  - talking to Odd with the null conversation starter;
+  - well success, an out-of-range refusal and a locked-gate refusal;
+  - an attach without seeding leaves the slots alone.
+- **Tools**: tuneMovement, setCamera, setPatrol, setSchedule, setStates and linkCondition round trips through Undo, plus refusals by GP code.
+  - Placements stay inside the region only.
+  - Every definition and tool carries the mirror attributes.
+  - The three catalog contributors are discovered, in package order.
 
 ## Left open
 
-(filled in below)
+- **Run binding**: `Input/Player.inputactions` needs a `Run` action, owned by the input owner or P1.5. Until it exists, running is scripted only.
+- **P1.4**:
+  - Install an `IConditionEvaluator` that answers `narrative.fact.gate_open`; the gate then opens.
+  - Install an `IConversationStarter` in place of the null one.
+  - Supply `IActionRunner`. The bell has no action ref yet; link one with `interaction.linkCondition`.
+- **P1.5**:
+  - `IPromptPresenter` (prompt UI).
+  - `IFeedbackSink` (cues).
+  - `IFootstepSink` (footstep audio).
+  - `IUiIntentSink` (pause, journal and inventory intents raised by the adapter).
+- **NPC visuals**:
+  - The NPC capsules have no Animator controller, so `NpcAnimatorBinder` is idle until one exists.
+  - The NavMesh is baked once. Re-bake it by deleting `Npcs/NavMesh/<Region>.asset` and re-running the authoring.
+- **Rig ownership**: the rig prefab is not an authored entity. If Studio should edit it, it needs an Authorable wrapper.
+- **Pip's day/night switch** (60 s at 20 ms per step = 3000 steps) is covered by the rules tests. The PlayMode test does not wait for it.
+- **Host runs**: the host is heavily loaded. The first content run hung twice in Editor start-up and passed on a retry, as described in docs/operator/editor-hang.md.
