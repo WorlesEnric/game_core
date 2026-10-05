@@ -1,0 +1,28 @@
+{
+  "name": "GameCore.Unity.App.Editor.Tests",
+  "rootNamespace": "GameCore.Unity.App.Tests",
+  "references": [
+    "GameCore.Unity.App",
+    "GameCore.Contracts",
+    "GameCore.Composition",
+    "GameCore.Derivation",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Runtime",
+    "GameCore.Unity.Adapters",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

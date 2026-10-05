@@ -58,7 +58,7 @@ namespace GameCore.Unity.App
         private static readonly Action<UnityWorldHost> ComposeHook = ComposeRegistered;
         private static readonly Func<GameCoreApplicationCompositionRoot> RootFactoryHook = CreateRegisteredRoot;
 
-        /// <summary>The live root booted by either path, or null.</summary>
+        /// <summary>The live root booted by either path or adopted by a successful restore, or null.</summary>
         public static GameApplicationRoot? Current { get; private set; }
 
         /// <summary>The most recent boot failure, or null when the most recent boot succeeded.</summary>
@@ -349,6 +349,19 @@ namespace GameCore.Unity.App
                     GameApplicationBootCode.CompositionFault, DiagnosticCode.ApplyFault, "prepare",
                     exception.GetType().Name + ": " + exception.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Transfers application ownership during SaveService's main-thread, callback-free active-root swap.
+        /// Call before stopping the old root: its lifecycle observers must already see the replacement, and
+        /// NotifyStopped must not clear it. Restoring a secondary or scratch world is not an application boot.
+        /// </summary>
+        internal static void AdoptRestoredRoot(GameApplicationRoot previous, GameApplicationRoot restored)
+        {
+            if (ReferenceEquals(Current, previous))
+            {
+                Current = restored;
             }
         }
 
