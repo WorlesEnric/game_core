@@ -232,3 +232,105 @@ Host command: `bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere
 - D3 confinement/licence qualification belongs to the stage service packets. This packet launches only the requested test Editor under unity-batch's host lock, and issues no staging verdict; no Docker/host staging claim is made.
 - Canvas measurements are headless Editor CPU/managed-allocation measurements, not graphical GPU frame or playthrough qualification. Graphical evidence was explicitly excluded for this packet.
 CORE-RENAME: Renamed ChangeSetEngineTests.World to FakeWorld and all uses in that file; no other core test references found. python3 tools/check_gate_sources.py with the exact seven --file arguments from tools/run_w7_gate.sh exited 0 (unresolved: none); python3 tools/check_game_core_csharp.py exited 0 (1,136 C# files). Checker unchanged; Unity not started.
+
+## R3 — core workflow corrections (R3-A)
+
+Branch `codex/r3-a`, base `ed76089`, Linux build host `myubuntu`. This appendix is the
+R3-A packet report; the exclusive-path brief permits this note, not root `PACKET.md`
+or the older shared package notes. No paid/node operation, service restart, credential
+file, or sibling checkout is part of this work.
+
+### R3 fixes
+
+| Finding | Fix | Regression |
+|---|---|---|
+| D1 | Cache v3 binds projection scope/contributor code and per-asset imported dependency fingerprints. Startup inventories additions, changes, moves and deletions; only affected assets are reprojected, loaded scenes/stages refreshed. Fingerprints describe the projected content, so saving an already stale index cannot bless unseen disk changes. Custom sources without fingerprint support rebuild. | `R3CoreRegressionTests.D1_DefinitionAddedAfterCacheAppearsWithoutManualRebuild`, `D1_ChangedDeletedAndMovedAssetsInvalidateOnlyTheirCachedSources` |
+| D4 | Candidate/model validation enforces GP-ENT-004 specifically for the `entity.applyOverride` instance tint string: six hex digits or empty to clear. Refusal is `InvalidArgs`, op id, `data.contract=GP-ENT-004`, expected/actual values. General Unity Color values retain alpha support. | `R3WorkflowTests.D4_RetainedEightDigitInstanceTintFailsCandidateValidation`, `D4_InstanceTintContractDoesNotChangeGeneralColorSupport` (5 cases); `Hollowmere.R3_A.RetainedWorkflowTests.D4_ProductionCatalogRefusesRetainedTintBeforeApply` |
+| D5 | Infer a missing scope only from a singleton tool/type intersection (actual indexed type when available). Preserve explicit scopes and reject empty/ambiguous intersections. `NormalizeScopes` returns an immutable copy; engine stages/applies/journals that copy. `ChangeSetValidator.Inferences` and `StagedChangeSet.Inferences` retain non-blocking `ScopeInferred` diagnostics with `data.inferred=true` and `data.scope`; engine logs the evidence. | `R3WorkflowTests.D5_RetainedMissingScopeIsAcceptedOnlyForOneAllowedScope`, `D5_InferenceIsRecordedAndDoesNotMutateTheCandidate`, `D5_IntersectToolWithActualIndexedTypeAndRefuseEmptyIntersection`; `RetainedWorkflowTests.D5_ProductionQuestSingletonInfersButRobeRemainsAmbiguous` |
+| D20 | Successful replans advance matching baseVersions (both ref.stamp and stamp); unrebased/shared reads keep their old witnesses. Stage and immediate pre-apply checks attribute target/argument read conflicts to their operations, letting BestEffort apply independent operations and retain per-op outcomes. A stale unassigned/shared read or catalog revision still refuses the whole plan. | `R3CoreRegressionTests.D20_RebaseRefreshesOnlySuccessfullyReplannedBaseVersions`, `D20_BestEffortRefusesStaleTargetAndAppliesIndependentOperations`, `D20_SelectiveRebaseLeavesOtherStaleTargetsRefused`, `D20_UnselectedSharedReadStillRefusesBestEffort`, `D20_StaleArgumentReadRefusesItsReaderButKeepsIndependentWork`; existing R2-05 tests |
+| D8 | Allow `spriteImportMode: Single` and finite `spritePixelsPerUnit` in `(0,16384]`, only together with `textureType: Sprite`. Existing enum/filter checks and power-of-two maxTextureSize `[32,16384]` remain. Apply textureType first and convert Single to the importer's enum or integer property type. Unsupported properties, other sprite modes, executable/custom imports and out-of-range values remain refused. | `R3CoreRegressionTests.D8_SafeSpriteSettingsAcceptedAndUnsafeSettingsRefused`; `RetainedWorkflowTests.D8_GeneratedImageBindsAsSpriteAndUndoRestoresItemAndFile` |
+| D21 core | `SemanticIndexService.ResolvePromptReferences` finds bounded whole-name/id mentions, excludes selected objects, preserves duplicate-name ambiguity, and returns minimal ref/type/name plus `world.posX/Y/Z` in metres. Actual UTF-8 bytes, omitted nodes and truncation are reported. | `R3CoreRegressionTests.D21_CoreProvidesBoundedPromptReferenceResolver`, `D21_DisplayNamesAndDuplicateNamesRemainExplicit` (retained prompt, unselected well, id/display-name lookup, duplicate names and byte cap) |
+
+### Retained reproductions
+
+Tests read the committed JSON under `artifacts/studio/workflows/P3.2/runs/` directly:
+
+- D1: `text2-20261005T053552Z/ferryman2/request-index-slice.json` proves the missing
+  `npc.definition` projection; temporary authored assets reproduce missed startup events.
+- D4/D5: `robe-20261005T055032Z/robe/candidate.json`,
+  `robe2-20261005T070105Z/robe/candidate.json`, and
+  `narrative-20261005T072920Z/quest/candidate.json`.
+- D8: `harness-20261005T130114Z/headless-h2-media.json` records the exact importer refusal;
+  deterministic PNG bytes reproduce import/bind/undo without a provider call.
+- D20: `batch2-20261005T104639Z/ring/candidate.json`, `rebased.json`, and
+  `apply-best-effort-report.json`. Only identities/stamps are remapped to temporary
+  scene objects; the three requested move operations and arguments are retained.
+- D21: `batch-20261005T100136Z/ring/request.json` supplies the exact well-referencing prompt.
+
+The retained robe retry is **still correctly ambiguous** in the production catalog:
+`entity.instance` and `entity.applyOverride` both allow Instance and Prefab. The retained
+quest operation has a singleton Definition scope and is the production inference case.
+The synthetic singleton catalog test isolates the robe-shaped missing-scope rule without
+weakening the production catalog.
+
+### Requests to other packets
+
+- **R3 UI owner**, `Packages/com.gamecore.studio.ui/Editor/Prompt/AgentRequestBuilder.cs`: call `runtime.Index.ResolvePromptReferences(text, closure, byteCap, maxObjects)` → `IndexSlice`; merge its minimal nodes into the request slice and its refs into `SceneContext` before existing redaction/packing, sharing the existing total byte/object caps and propagating `Truncated`/`OmittedNodes` (do not add them to the edit selection).
+- **R3 companion owner**, `studio/agent/src/candidate.rs::catalog_rules`: mirror singleton tool/type scope intersection, normalized target scope and non-blocking `ScopeInferred {inferred:true,scope}` evidence, plus the GP-ENT-004 instance-tint precheck; otherwise the companion may reject missing scopes before Unity receives the candidate.
+- **UI diagnostics owner**, candidate review: display `StagedChangeSet.Inferences` as informational evidence, separate from `AllDiagnostics`/blocking findings; do not interpret `ScopeInferred` as a refusal.
+
+### Verification
+
+- Model baseline: the two retained D4/D5 regressions fail on `ed76089` production
+  sources (`/tmp/r3-a-model-before/r3-before.trx`).
+- Model after fixes: **113 passed, 0 failed, 0 skipped**, including all existing model
+  suites (`/tmp/r3-a-model-after/r3-after.trx`).
+- Unity baseline on `ed76089` production sources with the new tests: **18 total,
+  7 passed, 11 failed, 0 skipped/inconclusive**. Each finding has a failing regression;
+  unsafe importer settings and the stale shared-read control remain refused.
+  XML `.unity-logs/r3-a-baseline.xml` (12.231 s of tests).
+- First full fixed Unity run: **159 total, 158 passed, 1 failed, 0 skipped/inconclusive**.
+  XML `.unity-logs/r3-a-full.xml`. Binding already succeeded; the sole failure compared
+  Unity 6's `SpriteImportMode.Single` enum to integer `1`. The assertion and importer
+  enum/int conversion were corrected; this failed XML remains retained as failed evidence.
+- Final full Unity run on production code `757577ac`: **159 passed, 0 failed,
+  0 skipped/inconclusive**, Editor exit 0. XML `.unity-logs/r3-a-final.xml`, 25.666 s
+  of tests, 152 s Editor duration. Core 83/83, P1.6 discovery 2/2, R2-B admission 71/71,
+  R3-A Hollowmere integration 3/3. This includes the Sprite bind **and undo** assertions.
+- XML SHA-256: baseline `304234e6f5df728238a1078620924f1b2d66ea1c7a1c7f0c769af9d6aa365398`;
+  first fixed run `5d2cab2b773241958e91747693d3fa0d11b65870fddd981b10257c70d9c10a89`;
+  final `82d7d7587cefa855383f1f1bbff20ff5494361c2cc45a7043e3fccededd3a72b`.
+- Final model TRX: `/tmp/r3-a-model-final/r3-final.trx`, **113/113 passed**.
+  `python3 tools/studio/emit_studio_schemas.py --check`: all six schemas current, no schema edits.
+- `python3 tools/check_package_metadata.py`: 42 packages, 91 package assemblies, pass.
+  `python3 tools/check_game_core_csharp.py`: 1,143 C# files, pass. `git diff --check`: pass.
+
+The full Unity filter retains the brief's expression and adds
+`GameCore\.Studio\.Edit.*|GameCore\.Studio\.Hollowmere\.Tests.*`: these are the actual core
+and P1.6 namespaces. Required-case assertions also name the new Sprite bind/undo and
+BestEffort regressions. All Editors ran through `studio/tools/unity-batch.sh`, one slot
+at a time under the unchanged host-wide limit.
+
+Startup evidence: the first cold invocation timed out twice before compilation
+(`r3-a-before`, no XML). A cache-only probe was stopped before test dispatch. The
+successful baseline invocation used a private UPM cache provisioned/verified from the
+repository's pinned public cache manifest, plus pinned Unity reference metadata from
+`~/.cache/gamecore-studio/stage/_warm/Library`; no project/candidate assemblies, sibling
+checkout, host configuration or credentials were copied. `/tmp/r3-a-unity` sets only
+`UPM_CACHE_ROOT=/tmp/r3-a-upm` and `DOTNET_PROCESSOR_COUNT=4` before execing the installed
+Unity 6000.0.75f1. The normal watchdog, lock and test arguments remain in force. Baseline
+Editor duration was 1,110 s; the first full fixed Editor run was 357 s after slot wait.
+These startup failures are not counted as tests or passes.
+
+### Left open
+
+- D21 request assembly is outside R3-A's exclusive paths. Core's tested resolver is
+  supplied above; the UI owner must integrate it before a real request includes the well.
+- Companion candidate prevalidation is outside this packet. No live workflow claim is
+  made from local candidate replay, and no paid operation was used.
+
+The final diff excludes the automatically generated `Tests/R3_A.meta` parent-folder
+metadata, which is outside the brief's `Tests/R3_A/**` path; the test scripts, asmdef
+and all metadata inside that directory are retained. Unity recreates parent-folder
+metadata on import. The unrelated generated `Tests/R2_D.meta` was also removed after
+Editor exit; the pre-existing untracked `.codex/` directory is untouched.
