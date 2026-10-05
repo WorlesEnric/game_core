@@ -141,7 +141,10 @@ if (( build_rc == 0 )) && [[ -f "${exe}" ]]; then
   result="succeeded"
   (cd "${output}" && sha256sum Hollowmere.x86_64) > "${build_root}/sha256.txt"
   exe_sha="$(cut -d' ' -f1 "${build_root}/sha256.txt")"
-  (cd "${output}" && find . -type f ! -name data-manifest.txt -printf '%P\n' | LC_ALL=C sort | \
+  # The shipped files only: IL2CPP's *_BackUpThisFolder_ButDontShipItWithYourGame (generated C++, symbols) and
+  # *_BurstDebugInformation_DoNotShip stay next to the build but are not part of the player.
+  (cd "${output}" && find . -type f ! -name data-manifest.txt ! -path '*_ButDontShipItWithYourGame/*' \
+    ! -path '*_DoNotShip/*' -printf '%P\n' | LC_ALL=C sort | \
     while IFS= read -r file; do sha256sum "${file}"; done) > "${build_root}/data-manifest.txt"
 else
   echo "build failed (unity-batch exit ${build_rc}); see ${build_root}/build.log" > "${build_root}/sha256.txt"
@@ -153,11 +156,17 @@ import json, os, sys
 root, output, revision, unity, result, rc, seconds, exe_sha = sys.argv[1:9]
 files = []
 size = 0
+not_shipped = 0
 for base, _, names in os.walk(output):
+    rel = os.path.relpath(base, output)
+    shipped = not (rel.split(os.sep)[0].endswith("_ButDontShipItWithYourGame") or rel.split(os.sep)[0].endswith("_DoNotShip"))
     for name in names:
         path = os.path.join(base, name)
-        files.append(path)
-        size += os.path.getsize(path)
+        if shipped:
+            files.append(path)
+            size += os.path.getsize(path)
+        else:
+            not_shipped += os.path.getsize(path)
 report = {}
 report_path = os.path.join(output, "build-report.json")
 if os.path.exists(report_path):
@@ -178,6 +187,7 @@ summary = {
     "executableBytes": os.path.getsize(exe) if os.path.exists(exe) else 0,
     "outputBytes": size,
     "fileCount": len(files),
+    "notShippedBytes": not_shipped,
     "buildReport": {k: report.get(k) for k in ("result", "platform", "scriptingBackend", "managedStripping", "totalSize", "totalTimeSeconds", "errors", "warnings", "development")},
 }
 with open(os.path.join(root, "build-summary.json"), "w", encoding="utf-8") as handle:
