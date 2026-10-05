@@ -76,7 +76,8 @@ impl ApiError {
     }
 
     /// The same error with a structured witness.
-    pub fn with_data(mut self, data: serde_json::Value) -> ApiError {
+    pub fn with_data(mut self, mut data: serde_json::Value) -> ApiError {
+        crate::redact::redact_value(&mut data);
         self.body.data = Some(Box::new(data));
         self
     }
@@ -175,7 +176,11 @@ impl From<etos_sdk::Error> for ApiError {
 
 impl From<crate::ledger::LedgerError> for ApiError {
     fn from(e: crate::ledger::LedgerError) -> ApiError {
-        ApiError::internal(format!("ledger: {e}"))
+        match e {
+            crate::ledger::LedgerError::NotFound(_) => ApiError::not_found("no owned resource"),
+            crate::ledger::LedgerError::Conflict(message) => ApiError::ledger_conflict(message),
+            other => ApiError::internal(format!("ledger: {other}")),
+        }
     }
 }
 

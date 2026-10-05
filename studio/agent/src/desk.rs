@@ -410,7 +410,9 @@ impl Desk {
                     })?;
             }
             None => {
-                if self.ledger.catalog(&revision)?.is_none() {
+                if !self.ledger.owns("catalog", &revision, app)?
+                    || self.ledger.catalog(&revision)?.is_none()
+                {
                     return Err(ApiError::stale_context(format!(
                         "the companion holds no tool catalog revision {revision}"
                     ))
@@ -418,6 +420,7 @@ impl Desk {
                 }
             }
         }
+        self.ledger.grant("catalog", &revision, app)?;
         if req.attachments.len() > MAX_ATTACHMENTS {
             return Err(ApiError::bad_request(format!(
                 "at most {MAX_ATTACHMENTS} attachments"
@@ -481,7 +484,8 @@ impl Desk {
                 // follower waits on the same per-request lock, so it cannot open twice.
                 let me = Arc::clone(self);
                 let id = rid.clone();
-                let mut opening = tokio::spawn(async move { me.open_attempt(&id, 0).await });
+                let mut opening =
+                    crate::blocking::spawn(async move { me.open_attempt(&id, 0).await });
                 match tokio::time::timeout(SUBMIT_WAIT, &mut opening).await {
                     Ok(Ok(Ok(()))) => {}
                     Ok(Ok(Err(e))) if !is_retryable(&e) => {
@@ -814,7 +818,7 @@ impl Desk {
         let id = rid.to_string();
         f.insert(
             rid.to_string(),
-            tokio::spawn(async move { me.follow(id).await }),
+            crate::blocking::spawn(async move { me.follow(id).await }),
         );
     }
 

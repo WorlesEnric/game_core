@@ -44,11 +44,7 @@ pub const MAX_CHUNK: usize = 24 * 1024;
 #[derive(Debug, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 enum ClientMsg {
-    Audio {
-        #[serde(default)]
-        seq: Option<u64>,
-        pcm16: String,
-    },
+    Audio { seq: u64, pcm16: String },
     Stop,
 }
 
@@ -272,7 +268,6 @@ impl VoiceBridge {
         .await;
 
         let mut seq: u64 = 0;
-        let mut last_client: Option<u64> = None;
         let mut chunks: u64 = 0;
         let mut audio_bytes: u64 = 0;
         let mut transcripts: u64 = 0;
@@ -291,14 +286,10 @@ impl VoiceBridge {
                     match msg {
                         Some(Ok(Message::Text(text))) => match serde_json::from_str::<ClientMsg>(text.as_str()) {
                             Ok(ClientMsg::Audio { seq: cseq, pcm16 }) => {
-                                if let (Some(prev), Some(c)) = (last_client, cseq)
-                                    && c != prev + 1
-                                {
+                                if cseq != seq {
                                     send(&mut tx, json!({"type": "error", "code": "audio_gap",
-                                        "message": format!("client chunk {c} follows {prev}")})).await;
-                                }
-                                if cseq.is_some() {
-                                    last_client = cseq;
+                                        "message": format!("expected chunk {seq}, got {cseq}")})).await;
+                                    continue;
                                 }
                                 let bytes = match STANDARD.decode(pcm16.as_bytes()) {
                                     Ok(b) if b.len() > MAX_CHUNK => {
@@ -453,7 +444,7 @@ mod tests {
         assert_eq!(MAX_CHUNK * 4 / 3, 32 * 1024);
         let m: ClientMsg =
             serde_json::from_str(r#"{"type":"audio","seq":3,"pcm16":"AAA="}"#).unwrap();
-        assert!(matches!(m, ClientMsg::Audio { seq: Some(3), .. }));
+        assert!(matches!(m, ClientMsg::Audio { seq: 3, .. }));
         assert!(matches!(
             serde_json::from_str::<ClientMsg>(r#"{"type":"stop"}"#).unwrap(),
             ClientMsg::Stop

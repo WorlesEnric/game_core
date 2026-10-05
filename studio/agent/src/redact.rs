@@ -9,7 +9,7 @@
 use std::io::Write;
 
 /// Prefixes of etos credentials.
-const PREFIXES: &[&str] = &["etk_", "ett_", "etp_", "eta_"];
+const PREFIXES: &[&str] = &["etk_", "ett_", "etp_", "eta_", "sk-"];
 
 fn token_char(c: char) -> bool {
     c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | '~' | '+' | '/' | '=')
@@ -17,6 +17,8 @@ fn token_char(c: char) -> bool {
 
 /// `text` with every etos credential and bearer value replaced by `[redacted]`.
 pub fn redact(text: &str) -> String {
+    let cleaned = redact_json_fields(text).0;
+    let text = cleaned.as_str();
     let mut out = String::with_capacity(text.len());
     let mut rest = text;
     'outer: while !rest.is_empty() {
@@ -44,7 +46,7 @@ pub fn redact(text: &str) -> String {
                     .find(|(_, c)| !token_char(*c))
                     .map(|(i, _)| i)
                     .unwrap_or(after.len());
-                if end >= 4 {
+                if end > 0 {
                     out.push_str(p);
                     out.push_str("[redacted]");
                     rest = &after[end..];
@@ -59,6 +61,151 @@ pub fn redact(text: &str) -> String {
         rest = chars.as_str();
     }
     out
+}
+
+// Also handles JSON fragments embedded in log lines, including escaped string values.
+fn redact_json_fields(text: &str) -> (String, bool) {
+    let bytes = text.as_bytes();
+    let mut out = String::new();
+    let mut pos = 0;
+    while pos < bytes.len() {
+        if bytes[pos] != b'"' {
+            let c = text[pos..].chars().next().unwrap_or(' ');
+            out.push(c);
+            pos += c.len_utf8();
+            continue;
+        }
+        let start = pos;
+        pos += 1;
+        while pos < bytes.len() {
+            if bytes[pos] == b'\\' {
+                pos = (pos + 2).min(bytes.len());
+            } else if bytes[pos] == b'"' {
+                pos += 1;
+                break;
+            } else {
+                pos += 1;
+            }
+        }
+        let key_end = pos;
+        let key = serde_json::from_str::<String>(&text[start..key_end])
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        if bytes.get(pos) != Some(&b':')
+            || !["key", "token", "secret"].iter().any(|k| key.contains(k))
+        {
+            out.push_str(&text[start..pos]);
+            continue;
+        }
+        pos += 1;
+        while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        out.push_str(&text[start..pos]);
+        // A secret-valued object/array is consumed as a whole using serde's stream offset.
+        let mut stream =
+            serde_json::Deserializer::from_str(&text[pos..]).into_iter::<serde_json::Value>();
+        if stream.next().is_some_and(|v| v.is_ok()) {
+            pos += stream.byte_offset();
+            out.push_str("\"[redacted]\"");
+        } else {
+            // Incomplete JSON must not reveal a partial credential.
+            out.push_str("\"[redacted]\"");
+            return (out, true);
+        }
+    }
+    (out, false)
+}
+
+/// A bounded log sink. Exhausting the cap fails the child rather than allocating unbounded
+/// memory when its transcript is read back. The bytes reaching this sink are already redacted.
+pub struct BoundedLog<W> {
+    writer: W,
+    remaining: usize,
+}
+impl<W: Write> BoundedLog<W> {
+    /// At most 8 MiB per child stream.
+    pub fn new(writer: W) -> Self {
+        Self {
+            writer,
+            remaining: 8 * 1024 * 1024,
+        }
+    }
+}
+impl<W: Write> Write for BoundedLog<W> {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        if bytes.len() > self.remaining {
+            return Err(std::io::Error::other("stage log limit exceeded"));
+        }
+        let written = self.writer.write(bytes)?;
+        self.remaining -= written;
+        Ok(written)
+    }
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.writer.flush()
+    }
+}
+
+/// Stream through the shared redactor before the first durable write. Incomplete sensitive
+/// JSON values are buffered across lines; a 64 KiB bound fails closed instead of leaking
+/// a continuation or allocating unbounded memory.
+pub fn copy_redacted(mut input: impl std::io::Read, mut output: impl Write) -> std::io::Result<()> {
+    let mut chunk = [0u8; 4096];
+    let mut line = Vec::new();
+    loop {
+        let n = input.read(&mut chunk)?;
+        if n == 0 {
+            break;
+        }
+        for b in &chunk[..n] {
+            if line.len() >= 65536 {
+                return Err(std::io::Error::other("stage log record exceeds 64 KiB"));
+            }
+            if *b == b'\n' {
+                if redact_json_fields(&String::from_utf8_lossy(&line)).1 {
+                    line.push(b'\n');
+                    continue;
+                }
+                output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
+                output.write_all(b"\n")?;
+                output.flush()?;
+                line.clear();
+            } else {
+                line.push(*b);
+            }
+        }
+    }
+    output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
+    output.flush()
+}
+
+/// Recursively sanitize structured exception/evidence payloads with the same policy.
+pub fn redact_value(value: &mut serde_json::Value) {
+    match value {
+        serde_json::Value::Object(object) => {
+            for (key, value) in object {
+                let key = key.to_ascii_lowercase();
+                if ["key", "token", "secret"]
+                    .iter()
+                    .any(|part| key.contains(part))
+                {
+                    *value = "[redacted]".into();
+                } else {
+                    redact_value(value);
+                }
+            }
+        }
+        serde_json::Value::Array(array) => {
+            for value in array {
+                redact_value(value);
+            }
+        }
+        serde_json::Value::String(text) => *text = redact(text),
+        _ => {}
+    }
 }
 
 /// A `tracing-subscriber` writer to standard error that redacts each write.
@@ -108,6 +255,29 @@ mod tests {
     use super::*;
 
     #[test]
+    fn r2_19_stream_and_json_secrets_are_redacted_before_write() {
+        let raw = br#"{"nested":{"apiKey":"plain-password","secret":{"value":123}},"message":"sk-abcdefgh"}
+Bearer abcdef
+"#;
+        let mut output = Vec::new();
+        copy_redacted(
+            &b"{\"apiKey\":\n\"multiline-private-value\"}\n"[..],
+            &mut output,
+        )
+        .unwrap();
+        assert!(!String::from_utf8_lossy(&output).contains("multiline-private-value"));
+        copy_redacted(&raw[..], &mut output).unwrap();
+        let oversized = format!("{{\"apiKey\":\n\"{}", "private".repeat(10000));
+        let mut bounded = Vec::new();
+        assert!(copy_redacted(oversized.as_bytes(), &mut bounded).is_err());
+        assert!(bounded.is_empty());
+        let text = String::from_utf8(output).unwrap();
+        for secret in ["plain-password", "123", "abcdefgh", "abcdef"] {
+            assert!(!text.contains(secret), "{text}");
+        }
+    }
+
+    #[test]
     fn keys_tokens_and_bearers_are_redacted() {
         assert_eq!(
             redact("key etk_0123456789abcdef in use"),
@@ -123,8 +293,8 @@ mod tests {
             "authorization: bearer [redacted]"
         );
         assert_eq!(redact("etp_welcome"), "etp_[redacted]");
-        // Short words that merely start like a prefix stay.
-        assert_eq!(redact("etk_ab"), "etk_ab");
+        // Short or partial credential values are also masked.
+        assert_eq!(redact("etk_ab"), "etk_[redacted]");
         assert_eq!(redact("plain text, ünïcode"), "plain text, ünïcode");
     }
 }

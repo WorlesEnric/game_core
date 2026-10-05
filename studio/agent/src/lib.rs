@@ -21,6 +21,7 @@
 
 pub mod api;
 pub mod app;
+pub mod blocking;
 pub mod candidate;
 pub mod config;
 pub mod desk;
