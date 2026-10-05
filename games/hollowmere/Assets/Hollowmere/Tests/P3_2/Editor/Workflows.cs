@@ -993,7 +993,7 @@ namespace Hollowmere.P3_2.Workflows
             foreach ((string name, string tool, object?[] args) in new[]
             {
                 ("gate-interaction-explain", "interaction.explain", new object?[] { gateInteractable, string.Empty }),
-                ("gate-interaction-explain-with-key", "interaction.explain", new object?[] { gateInteractable, "item.e1d08e53-755f-4d05-a23d-c84d98a29897=1" }),
+                ("gate-interaction-explain-holding-item", "interaction.explain", new object?[] { gateInteractable, "item.e1d08e53-755f-4d05-a23d-c84d98a29897=1" }),
                 ("gate-why-not", "logic.whyNot", new object?[] { content, gateInteractable, string.Empty }),
                 ("rule-explain", "logic.explain", new object?[] { AssetDatabase.LoadMainAssetAtPath(GateRule) }),
                 ("quest-inspect-runtime", "quest.inspectRuntime", new object?[] { AssetDatabase.LoadMainAssetAtPath(Quest), string.Empty }),
