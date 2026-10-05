@@ -358,12 +358,36 @@ def self_test() -> int:
         slot = make("R2_12_Link")
         (slot / "project/Assets/linked").symlink_to(source, target_is_directory=True)
         expect("R2_12_Link", bool(check_slot(slot)))
+        slot = make("R2_11_PrecompiledPlugin")
+        plugin = slot / "project/Packages/com.example.plate/plugin.dll"
+        plugin.write_bytes(b"not executable test fixture")
+        doc = load_json(slot / "stage.json")
+        doc["files"].append({"path": "plugin.dll", "sha256": sha256_file(plugin)})
+        (slot / "stage.json").write_text(json.dumps(doc))
+        expect("R2_11_PrecompiledPlugin", bool(check_slot(slot)))
+        for label, importer in [("R2_12_ImporterKindMismatch", "NativeFormatImporter:\n  externalObjects: {}\n"),
+                                ("R2_12_ImporterExternalObject", "TextureImporter:\n  externalObjects: {script: 1}\n")]:
+            meta = source / "bad.png.meta"
+            meta.write_text(importer)
+            refused = False
+            try:
+                validate_meta(meta)
+            except ValueError:
+                refused = True
+            expect(label, refused)
         import importlib.util
         spec = importlib.util.spec_from_file_location("make_slot", STAGE / "make-slot.py")
         maker = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(maker)
+        outside = source.parent / "outside.json"
+        outside.write_text("delivered artifact")
+        (source / "artifacts").mkdir()
+        (source / "artifacts/linked.json").symlink_to(outside)
+        (source / "Assets/Editor").mkdir(parents=True)
+        (source / "Assets/Editor/Hook.cs").write_text("class Hook {}")
         for label, action in [
-            ("R2_08_ArtifactTraversal", lambda: maker.find_artifact(source, {"sha256": "a" * 64, "name": "../outside"})),
+            ("R2_08_ArtifactTraversal", lambda: maker.find_artifact(source, {"sha256": sha256_file(outside), "name": "../outside.json"})),
+            ("R2_08_ArtifactLink", lambda: maker.find_artifact(source, {"sha256": sha256_file(outside), "name": "linked.json"})),
             ("R2_13_RulesTraversal", lambda: maker.write_dotnet(Path(tmp), source, {"rules": {"directory": "../outside"}})),
             ("R2_13_XmlInjection", lambda: maker.write_dotnet(Path(tmp), source, {"rules": {"tests": 'x"/>'}})),
             ("R2_12_ExplicitEditor", lambda: maker.copy_inputs(source, Path(tmp), ["Assets/Editor"])),

@@ -12,6 +12,31 @@ from redact import redact
 
 
 class HostTests(unittest.TestCase):
+    def test_R2_17_UnownedCountAndStalePid(self):
+        import fcntl
+        spec = importlib.util.spec_from_file_location('host_processes', STAGE / 'host-processes.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            slots, proc = root / 'slots', root / 'proc'
+            slots.mkdir(); proc.mkdir()
+            for pid, parent, name, args in [(10, 0, 'bash', ''), (11, 10, 'timeout', ''),
+                                           (20, 11, 'Unity', '-batchmode'), (30, 0, 'Unity', ''),
+                                           (40, 0, 'Unity', ''), (50, 20, 'Unity', 'AssetImportWorker')]:
+                path = proc / str(pid); path.mkdir()
+                (path / 'stat').write_text(f'{pid} ({name}) S {parent}')
+                (path / 'comm').write_text(name)
+                (path / 'cmdline').write_text(args)
+            owner = slots / 'slot1.owner'
+            owner.write_text('old-format pid=10 caller=unity-batch')
+            self.assertEqual(3, module.count_unowned(slots, proc))
+            with (slots / 'slot1.lock').open('a') as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX)
+                self.assertEqual(2, module.count_unowned(slots, proc))
+                owner.write_text('pid=99999999')
+                self.assertEqual(3, module.count_unowned(slots, proc))
+
     def test_R2_19_RedactorAllForms(self):
         for prefix in ('etk_', 'ett_', 'etp_', 'eta_', 'Bearer ', 'sk-'):
             self.assertNotIn('sentinel', redact(prefix + 'sentinel'))

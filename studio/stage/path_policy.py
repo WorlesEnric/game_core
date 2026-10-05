@@ -47,5 +47,19 @@ def validate_meta(path: Path) -> None:
             'DefaultImporter', 'TextureImporter', 'AudioImporter', 'ModelImporter',
             'TextScriptImporter', 'NativeFormatImporter'}:
         raise ValueError('stage_importer_forbidden: unsupported importer')
-    if re.search(r'^[ \t]*(externalObjects|userData):[ \t]*[^{}\s]', text, re.M):
-        raise ValueError('stage_importer_forbidden: custom importer settings')
+    asset = path.with_suffix("")
+    extension = asset.suffix.lower()
+    expected = ({"DefaultImporter"} if asset.is_dir() else
+                {"TextureImporter"} if extension in {".png", ".jpg", ".jpeg", ".webp"} else
+                {"AudioImporter"} if extension in {".wav", ".ogg", ".mp3"} else
+                {"ModelImporter"} if extension == ".fbx" else
+                {"ModelImporter", "DefaultImporter"} if extension in {".glb", ".gltf"} else
+                {"NativeFormatImporter"} if extension == ".asset" else
+                {"TextScriptImporter", "DefaultImporter"})
+    if importers[0] not in expected:
+        raise ValueError('stage_importer_forbidden: importer does not match data type')
+    for key, value in re.findall(r'^[ \t]*(externalObjects|userData|assetBundleName|assetBundleVariant):([^\r\n]*)$', text, re.M):
+        if (key == 'externalObjects' and value.strip() != '{}') or (key != 'externalObjects' and value.strip() not in ('', '\"\"', "''")):
+            raise ValueError('stage_importer_forbidden: custom importer settings')
+    if re.search(r'^[ \t]*(script|m_Script|scriptFileID):', text, re.M):
+        raise ValueError('stage_importer_forbidden: importer script reference')

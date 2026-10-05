@@ -13,39 +13,17 @@
 # the script re-runs itself on the host over non-interactive ssh; run on the host, it works directly. Owner
 # rule: Unity never runs on the Mac.
 #
-# What it does on the host:
-#   * waits for one of at most GC_STUDIO_UNITY_SLOTS (default 3) host-wide Unity batchmode slots: a slot is a
-#     flock on ~/wkspace/gc-studio/.unity-slots/slot<N>.lock (released automatically when this script exits,
-#     even on a crash), and a slot is only taken while fewer than that many batchmode Editors run host-wide
-#     (Editors started by other tools count too);
-#   * without --tests: Unity -batchmode -nographics -quit -projectPath <copy> -logFile <log>, i.e. package
-#     resolution, import and script compilation, no -executeMethod;
-#   * with --tests: Unity -batchmode -nographics -runTests -testPlatform <mode> -testResults <xml>
-#     [-testFilter <regex>] (no -quit: the test runner quits by itself);
-#   * bounds every Editor run with `timeout --kill-after=60 ${UNITY_TIMEOUT:-1500}` and with a log-silence
-#     watchdog (no log growth for ${UNITY_SILENCE_TIMEOUT:-600}s, the repository's hang-detection threshold; the
-#     known hang also strikes after "Batchmode quit successfully invoked"), and retries exactly once on a
-#     timeout or silence kill (exit 124/137), per docs/operator/editor-hang.md; any other non-zero exit is never
-#     retried and a killed run is never a pass;
-#   * prints the error lines of the log (compiler errors, package resolution errors, test failures);
-#   * keeps logs and result XML in ~/wkspace/gc-studio/<packet-name>/.unity-logs/.
-#
-# Environment:
-#   GC_STUDIO_HOST         ssh host when run off-host (default: myubuntu)
-#   GC_STUDIO_REMOTE_BASE  directory under the host home (default: wkspace/gc-studio)
-#   GC_STUDIO_UNITY_SLOTS  host-wide concurrent batchmode Editors allowed (default: 3)
-#   UNITY                  Editor binary on the host (default: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity)
-#   UNITY_TIMEOUT          seconds per Editor attempt (default: 1500)
-#   UNITY_SILENCE_TIMEOUT  seconds without log growth before an attempt is killed as hung (default: 600; 0 = off)
-#
-# Exit codes: 0 compiled with no error (and the result XML has 0 failed and >0 passed; Inconclusive and ignored tests
-# are listed but do not fail the run, even though Unity may exit 2); 1 compile error, failed test, missing
-# test results, zero selected tests (a filter that matches nothing is not a pass) or a timeout on both
-# attempts; 2 bad usage or missing project copy.
+# Delegates all host execution to unity-batch.sh: one shared atomic reservation across interactive and
+# batch Editors, at most three host-wide, timeout/silence retry, TERM forwarding and streaming redaction.
+# Without --tests it compiles with -quit; with --tests it preserves the test runner's XML disposition.
+# Repeat --require-test <fullname> to require designated acceptance cases to appear and pass.
+# Skipped/inconclusive/zero cases are partial or NotRun, never PASS. Logs/XML live in .unity-logs/.
+# Operator environment: GC_STUDIO_HOST, GC_STUDIO_REMOTE_BASE, GC_STUDIO_UNITY_SLOTS, UNITY,
+# UNITY_TIMEOUT and UNITY_SILENCE_TIMEOUT. See unity-batch.sh for defaults and exit codes.
 set -euo pipefail
 
 usage() {
-  sed -n '2,44p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
+  sed -n '2,/^set -/p' "${BASH_SOURCE[0]:-$0}" | sed '/^set -/d' 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
   exit 2
 }
 

@@ -11,35 +11,25 @@
 #   studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir /tmp/l --label admit -- \
 #       -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit
 #
-# This is the lock protocol of studio/tools/unity-compile.sh, factored for callers that are not a packet clone
-# (the P2.4 stage runner launches batchmode Editors on staging slots under ~/.cache, and on the live project for
-# admission). It uses THE SAME lock directory and rules, so all callers share the host budget:
-#   * at most GC_STUDIO_UNITY_SLOTS (default 3) batchmode Editors host-wide: a slot is a flock on
-#     ~/${GC_STUDIO_REMOTE_BASE:-wkspace/gc-studio}/.unity-slots/slot<N>.lock (released when this script exits,
-#     even on a crash), and a slot is only taken while fewer than that many batchmode Editors run host-wide
-#     (Editors started by any tool count; asset import workers do not);
-#   * this script holds exactly one slot and runs exactly one Editor at a time;
-#   * every attempt is bounded by `timeout --kill-after=60 <timeout>` and by a log-silence watchdog
-#     (UNITY_SILENCE_TIMEOUT, default 600 s: the repository's hang threshold, docs/operator/editor-hang.md);
-#   * a timeout or silence kill (exit 124/137) is retried exactly once (the known package-resolve /
-#     pre-dispatch hang); any other exit is never retried and a killed run is never a pass.
-# Extra Unity args are appended after `-batchmode -nographics -projectPath <dir> -logFile <log>`; add `-quit`
-# yourself for a plain compile (the test runner and an -executeMethod that calls EditorApplication.Exit quit by
-# themselves). With --results, `-testResults <xml>` is added and a missing/empty XML is reported.
+# All four launchers source unity-slot.sh. Its allocator mutex covers reservation plus the count of
+# interactive/batch Editors and outstanding reservations (AssetImportWorker children are excluded).
+# At most three host-wide Editors; this wrapper holds one reservation until its child is reaped.
+# Each attempt has a deadline and a silence watchdog; timeouts retry once unless --attempts 1.
+# Logs use -logFile - and run-redacted.py: stdout/stderr are redacted before any durable write.
+# TERM/INT/HUP reach the entire child process group, with KILL after eight seconds if necessary.
+# Add -quit for a plain compile; tests and StageCommandLine entries exit themselves.
+# --require-test <fullname> is repeatable with --results; every selected and required XML case must pass.
+# Skipped, inconclusive, absent and malformed results never count as acceptance.
 #
-# Environment:
-#   UNITY                  Editor binary (default: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity)
-#   GC_STUDIO_REMOTE_BASE  directory under $HOME holding .unity-slots (default: wkspace/gc-studio)
-#   GC_STUDIO_UNITY_SLOTS  host-wide concurrent batchmode Editors allowed (default: 3)
-#   UNITY_SILENCE_TIMEOUT  seconds without log growth before an attempt is killed as hung (default 600; 0 = off)
-#
-# Output: the Editor's error lines, then one line `RESULT <label>: PASS|FAIL|TIMEOUT (unity exit <n>, <s>s,
-# attempts <a>, log <path>)`. Exit codes: 0 Editor exit 0; 1 Editor exit non-zero (or no results XML when
-# --results was given); 124 timed out on every attempt; 2 bad usage or missing Editor/project.
+# Operator environment: UNITY (Editor command), GC_STUDIO_REMOTE_BASE (default wkspace/gc-studio),
+# GC_STUDIO_UNITY_SLOTS (1..3, default 3), UNITY_TIMEOUT (default 1500 seconds),
+# UNITY_SILENCE_TIMEOUT (default 600 seconds; 0 disables silence detection).
+# Service launches must use trusted tool configuration and reserve outside the Docker sandbox.
+# Exit: 0 successful compile/all-passed XML; 1 failure or partial/missing XML; 124 timeout; 2 usage.
 set -euo pipefail
 
 usage() {
-  sed -n '2,40p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
+  sed -n '2,/^set -/p' "${BASH_SOURCE[0]:-$0}" | sed '/^set -/d' 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
   exit 2
 }
 
@@ -175,6 +165,9 @@ if [[ -n "${errors}" ]]; then
   printf '%s\n' "${errors}" | sed 's/^/   /'
 fi
 
+if grep -qE 'error CS[0-9]+|Scripts have compiler errors|Compilation failed' "$log" 2>/dev/null; then
+  if (( rc != 124 && rc != 137 )); then rc=1; fi
+fi
 verdict="PASS"
 exit_code=0
 if (( rc == 124 || rc == 137 )); then
