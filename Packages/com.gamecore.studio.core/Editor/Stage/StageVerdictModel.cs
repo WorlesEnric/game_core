@@ -1,11 +1,5 @@
 #nullable enable
-// GameCore.Studio.Edit - the stage verdict as the editor reads it (P2.4, docs/studio/03 s8, studio/stage/README.md).
-//
-// The verdict is produced by the companion's staging lane (studio/agent/src/stage/verdict.rs,
-// schema gamecore.studio.stage-verdict/1): canonical JSON whose SHA-256 is the verdict id (verdictRef). The editor never
-// trusts a verdict it was merely told about: the bytes are retained in Studio/Artifacts under their digest, parsed here,
-// and checked against the change set being admitted (VerdictCheck): pass=true, the same change set, and a sha256 match
-// for every code artifact (the package archive, the proposal) and for every file the archive holds.
+// Parsed bytes are untrusted; only StageAdmission can attach companion verification.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -48,7 +42,7 @@ namespace GameCore.Studio.Edit
 
         private StageVerdict(JObject document, string digest)
         {
-            Document = document;
+            _document = (JObject)document.DeepClone();
             Digest = digest;
             ChangeSetId = (string?)document["changeSetId"] ?? string.Empty;
             Slot = (string?)document["slot"] ?? string.Empty;
@@ -114,7 +108,12 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>The verdict document.</summary>
-        public JObject Document { get; }
+        private readonly JObject _document;
+        public JObject Document => (JObject)_document.DeepClone();
+        internal bool CompanionVerified { get; set; }
+        internal bool HostAllowed { get; set; }
+        public string Confinement => (string?)_document["confinement"] ?? string.Empty;
+        public bool ColdCache => _document["coldCache"]?.Type == JTokenType.Boolean && _document["coldCache"]!.Value<bool>();
 
         /// <summary>The verdict id: SHA-256 (lowercase hex) of its bytes.</summary>
         public string Digest { get; }
@@ -223,6 +222,7 @@ namespace GameCore.Studio.Edit
     /// <summary>Why a verdict does not admit a change set (journal <c>data.reason</c>).</summary>
     public static class VerdictReasons
     {
+        public const string Untrusted = "verdict_untrusted";
         public const string Missing = "verdict_missing";
         public const string Failed = "verdict_failed";
         public const string Mismatch = "artifact_mismatch";
@@ -243,6 +243,33 @@ namespace GameCore.Studio.Edit
                 return VerdictReasons.Missing;
             }
 
+            if (!verdict.CompanionVerified)
+            {
+                message = "Verdict must be fetched and verified by the authenticated companion stage service.";
+                return VerdictReasons.Untrusted;
+            }
+            if (verdict.Confinement != "docker" && !(verdict.Confinement == "host" && verdict.HostAllowed))
+            {
+                message = "Host confinement requires explicit operator opt-in; unknown confinement is refused.";
+                return VerdictReasons.Untrusted;
+            }
+            var required = new HashSet<string>(new[] { "scan", "checkers", "dotnet", "unity-editmode", "playmode-smoke", "determinism", "budget" }, StringComparer.Ordinal);
+            foreach (StageVerdictStep step in verdict.Steps)
+            {
+                if (step.Status != "pass" || !required.Remove(step.Id))
+                {
+                    message = "Every mandatory stage step must pass exactly once.";
+                    return VerdictReasons.Failed;
+                }
+            }
+            if (required.Count != 0 || verdict.Document["forbiddenHits"] is not JArray hits || hits.Count != 0
+                || verdict.Document["coldCache"]?.Type != JTokenType.Boolean || verdict.BudgetMs != 360000
+                || verdict.DurationMs < 0 || (!verdict.ColdCache && verdict.DurationMs > 360000))
+            {
+                message = "Incomplete, forbidden, or over-budget verdict.";
+                return VerdictReasons.Failed;
+            }
+
             if (!string.Equals(verdict.ChangeSetId, changeSetId, StringComparison.Ordinal))
             {
                 message = "The verdict " + verdict.Digest + " is for change set " + verdict.ChangeSetId + ", not " + changeSetId + ".";
@@ -261,7 +288,7 @@ namespace GameCore.Studio.Edit
                 return VerdictReasons.Mismatch;
             }
 
-            if (proposalSha != null && (!verdict.Artifacts.TryGetValue("proposal", out string? stagedProposal) || !string.Equals(stagedProposal, proposalSha, StringComparison.Ordinal)))
+            if (proposalSha == null || !verdict.Artifacts.TryGetValue("proposal", out string? stagedProposal) || !string.Equals(stagedProposal, proposalSha, StringComparison.Ordinal))
             {
                 message = "The proposal artifact sha256:" + proposalSha + " is not the one the verdict covers.";
                 return VerdictReasons.Mismatch;
