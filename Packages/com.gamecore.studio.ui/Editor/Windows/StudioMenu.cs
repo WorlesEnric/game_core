@@ -16,14 +16,17 @@ namespace GameCore.Studio.UI
             OpenStudio(EditorGUIUtility.GetMainWindowPosition());
         }
 
-        /// <summary>Opens and tiles the Studio windows inside <paramref name="area"/> (screen rectangle).</summary>
-        public static void OpenStudio(Rect area)
+        /// <summary>
+        /// Opens and tiles the Studio windows inside <paramref name="area"/> (screen rectangle). Windows that were already
+        /// open keep their place unless <paramref name="reposition"/> is set.
+        /// </summary>
+        public static void OpenStudio(Rect area, bool reposition = false)
         {
-            bool viewportExisted = HasOpenInstances<StudioViewportWindow>();
-            bool contextExisted = HasOpenInstances<StudioContextWindow>();
-            bool tasksExisted = HasOpenInstances<StudioTasksWindow>();
-            bool candidatesExisted = HasOpenInstances<StudioCandidatesWindow>();
-            bool historyExisted = HasOpenInstances<StudioHistoryWindow>();
+            bool viewportExisted = !reposition && HasOpenInstances<StudioViewportWindow>();
+            bool contextExisted = !reposition && HasOpenInstances<StudioContextWindow>();
+            bool tasksExisted = !reposition && HasOpenInstances<StudioTasksWindow>();
+            bool candidatesExisted = !reposition && HasOpenInstances<StudioCandidatesWindow>();
+            bool historyExisted = !reposition && HasOpenInstances<StudioHistoryWindow>();
 
             float top = area.y + 60f;
             float height = Mathf.Max(480f, area.height - 80f);

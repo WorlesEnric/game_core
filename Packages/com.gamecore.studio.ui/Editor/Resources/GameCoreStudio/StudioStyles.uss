@@ -337,12 +337,16 @@
     white-space: normal;
 }
 
+.gcs-prompt__chips {
+    flex-shrink: 0;
+}
+
 .gcs-prompt__reason {
-    flex-grow: 1;
     font-size: 11px;
     opacity: 0.75;
-    -unity-text-align: middle-right;
+    -unity-text-align: middle-left;
     white-space: normal;
+    margin: 1px 4px;
 }
 
 /* ---------------------------------------------------------------- lists */

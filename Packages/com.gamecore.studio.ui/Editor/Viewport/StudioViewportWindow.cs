@@ -181,6 +181,7 @@ namespace GameCore.Studio.UI
                 _gizmo.Cancel();
             }
 
+            UpdateHoverVisuals();
             UpdateMoveTool();
             RefreshToolbar();
         }

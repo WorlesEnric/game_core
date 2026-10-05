@@ -114,7 +114,7 @@ namespace Hollowmere.P2_1.Evidence
                 case 0:
                     EditorSceneManager.OpenScene(VillageScene, OpenSceneMode.Single);
                     // The layout tiles over a 1600x900 area (the host's main editor window may be small).
-                    StudioMenu.OpenStudio(new Rect(40f, 40f, 1600f, 900f));
+                    StudioMenu.OpenStudio(new Rect(40f, 40f, 1600f, 900f), true);
                     return true;
                 case 1:
                 {
@@ -133,6 +133,7 @@ namespace Hollowmere.P2_1.Evidence
 
                 case 2:
                     CloseFirstRun();
+                    StudioUiSettings.FirstRunDone = true;
                     Shot(step, "studio-layout", "GameCore/Studio/Open Studio over Thornwick Village (Edit mode, free camera framed on " + clock.TargetName + ").");
                     return true;
                 case 3:
@@ -145,15 +146,16 @@ namespace Hollowmere.P2_1.Evidence
                         throw new InvalidOperationException("No placed entity on screen.");
                     }
 
-                    IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(rect.Value.center, SelectionOp.Replace);
+                    string how = SelectTarget(viewport, target!, rect.Value.center, SelectionOp.Replace);
                     StudioContextWindow.Open();
-                    Shot(step, "select-click", "Select mode: click on " + clock.TargetName + " (" + candidates.Count + " candidate(s)); the context panel shows the generated inspector and tools.");
+                    Shot(step, "select-click", "Select mode: click on " + clock.TargetName + " (" + how + "); the overlap list shows every object under the cursor and the context panel the generated inspector and tools.");
                     return true;
                 }
 
                 case 4:
                 {
                     StudioViewportWindow viewport = Viewport();
+                    viewport.Overlap?.Hide();
                     viewport.SetMode(ViewportMode.Inspect);
                     GameObject? target = Find(clock.TargetName);
                     Rect? rect = target == null ? null : viewport.ScreenRectOf(target);
@@ -182,7 +184,9 @@ namespace Hollowmere.P2_1.Evidence
                     Rect area = viewport.ImageRect;
                     GameObject? well = Find(clock.TargetName);
                     Vector2? ground = well == null ? null : viewport.Project(well.transform.position + new Vector3(2.5f, 0f, -1.5f));
-                    LocationPick location = viewport.PointAtLocation(ground ?? new Vector2(area.width * 0.5f, area.height * 0.8f));
+                    Vector2 point = ground.HasValue && area.Contains(ground.Value) ? ground.Value : new Vector2(area.width * 0.5f, area.height * 0.9f);
+                    viewport.Overlap?.Hide();
+                    LocationPick location = viewport.PointAtLocation(point);
                     Shot(step, "point-at", "Right-click point-at: " + (location.Hit ? location.Source + " location marker" : "no ground hit") + " added to the selection.");
                     return true;
                 }
@@ -307,28 +311,7 @@ namespace Hollowmere.P2_1.Evidence
                             continue;
                         }
 
-                        IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(rect.Value.center, op);
-                        string how = "nearest";
-                        if (candidates.Count > 0 && !IsPartOf(candidates[0], target!))
-                        {
-                            foreach (PickCandidate candidate in candidates)
-                            {
-                                if (IsPartOf(candidate, target!))
-                                {
-                                    // What the user does when the nearest hit is not what they meant: pick it from the overlap list.
-                                    if (op == SelectionOp.Add)
-                                    {
-                                        viewport.Context.Selection.Set(new[] { candidates[0].Ref }, SelectionOp.Toggle);
-                                    }
-
-                                    viewport.Picker.Choose(candidate, false, op == SelectionOp.Add ? SelectionOp.Add : SelectionOp.Replace);
-                                    how = "from the overlap list";
-                                    break;
-                                }
-                            }
-                        }
-
-                        picked.Add(target!.name + " (" + candidates.Count + " candidate(s), " + how + ")");
+                        picked.Add(target!.name + " (" + SelectTarget(viewport, target!, rect.Value.center, op) + ")");
                     }
 
                     viewport.Overlap?.Hide();
@@ -457,6 +440,35 @@ namespace Hollowmere.P2_1.Evidence
         }
 
         private static GameObject? Find(string name) => string.IsNullOrEmpty(name) ? null : GameObject.Find(name);
+
+        /// <summary>
+        /// Clicks at <paramref name="point"/>; when the nearest candidate is not <paramref name="target"/>, picks the target
+        /// from the overlap list as a user would. Returns how it was selected.
+        /// </summary>
+        private static string SelectTarget(StudioViewportWindow viewport, GameObject target, Vector2 point, SelectionOp op)
+        {
+            IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(point, op);
+            if (candidates.Count == 0 || IsPartOf(candidates[0], target))
+            {
+                return candidates.Count + " candidate(s), nearest";
+            }
+
+            foreach (PickCandidate candidate in candidates)
+            {
+                if (IsPartOf(candidate, target))
+                {
+                    if (op == SelectionOp.Add)
+                    {
+                        viewport.Context.Selection.Set(new[] { candidates[0].Ref }, SelectionOp.Toggle);
+                    }
+
+                    viewport.Picker.Choose(candidate, false, op == SelectionOp.Add ? SelectionOp.Add : SelectionOp.Replace);
+                    return candidates.Count + " candidate(s), chosen from the overlap list";
+                }
+            }
+
+            return candidates.Count + " candidate(s), target not under the cursor";
+        }
 
         private static bool IsPartOf(PickCandidate candidate, GameObject target)
         {

@@ -86,17 +86,18 @@ namespace GameCore.Studio.UI
             row.Add(_send);
 
             VisualElement footer = new VisualElement();
-            footer.AddToClassList("gcs-row");
+            footer.AddToClassList("gcs-wrap-row");
             Add(footer);
             _chips = new VisualElement { name = "provider-chips" };
             _chips.AddToClassList("gcs-row");
+            _chips.AddToClassList("gcs-prompt__chips");
             footer.Add(_chips);
             _attachmentsRow = new VisualElement { name = "attachments" };
             _attachmentsRow.AddToClassList("gcs-row");
             footer.Add(_attachmentsRow);
             _reason = new Label { name = "prompt-reason" };
             _reason.AddToClassList("gcs-prompt__reason");
-            footer.Add(_reason);
+            Add(_reason);
 
             RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
             RegisterCallback<DragPerformEvent>(OnDragPerform);
