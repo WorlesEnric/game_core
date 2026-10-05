@@ -64,7 +64,8 @@ namespace Hollowmere.P3_2.Workflows
                 case "narrative": return Narrative();
                 case "reopen": return Reopen();
                 case "persist": return Persist();
-                case "voice": return Voice();
+                case "voice": return Voice(false);
+                case "voice2": return Voice(true);
                 case "batch": return Batch(false);
                 case "batch2": return Batch(true);
                 case "honesty": return Honesty();
@@ -575,19 +576,17 @@ namespace Hollowmere.P3_2.Workflows
 
         // ------------------------------------------------------------------------------------------------- voice
 
-        private static IReadOnlyList<Step> Voice()
+        /// <summary>
+        /// Voice workflow. Attempt 1 speaks the destructive command first, then the move; the second push-to-talk on the same
+        /// EtosVoiceSession never connects (its _channel is not cleared after stop, EtosVoiceSession.cs:73), so the move
+        /// produced no transcript. The retry speaks the move first (a fresh session) and the destructive command second.
+        /// </summary>
+        private static IReadOnlyList<Step> Voice(bool retry)
         {
-            return new[]
+            Step[] head = { S.OpenScene(S.VillageScene), S.Relayout(), S.WaitGateway(), S.Select("Village Well"), S.Do("speak prompts (tts)", () => SpeakPrompts()),
+                S.Do("counts before", () => { St.Set("countsBefore", Counts()); return true; }) };
+            Step[] destructive =
             {
-                S.OpenScene(S.VillageScene), S.Relayout(),
-                S.WaitGateway(),
-                S.Select("Village Well"),
-                S.Do("speak prompts (tts)", () => SpeakPrompts()),
-                S.Do("counts before", () =>
-                {
-                    St.Set("countsBefore", Counts());
-                    return true;
-                }),
                 S.Do("voice destructive", () => VoiceTake("destructive", "destructive.wav")),
                 S.Wait("settle after destructive", 10),
                 S.Do("nothing happened", () =>
@@ -601,18 +600,27 @@ namespace Hollowmere.P3_2.Workflows
                     prompt.Text = string.Empty;
                     return true;
                 }),
+            };
+            Step[] move =
+            {
                 S.Do("voice move", () => VoiceTake("move", "move.wav")),
                 S.Do("send transcript", () => SendCurrent("voice-move")),
                 S.Await("voice-move", PositionAnswer),
                 S.Do("preview voice-move", () => Guard("voice-move", () => S.Preview("voice-move").Run())),
                 S.Do("apply voice-move", () => Guard("voice-move", () => S.Apply("voice-move").Run())),
                 S.Do("undo voice-move", () => Guard("voice-move", () => AppliedOr("voice-move", () => S.Undo("voice-move").Run()))),
-                S.Note("reject leftovers", () =>
-                {
-                    RejectIfOpen("voice-move");
-                    WorkflowRunner.Recording(false);
-                }),
+                S.Do("counts after move", () => { St.Set("countsBefore", Counts()); return true; }),
             };
+            Step tail = S.Note("reject leftovers", () =>
+            {
+                RejectIfOpen("voice-move");
+                WorkflowRunner.Recording(false);
+            });
+            List<Step> steps = new List<Step>(head);
+            steps.AddRange(retry ? move : destructive);
+            steps.AddRange(retry ? destructive : move);
+            steps.Add(tail);
+            return steps;
         }
 
         private static JObject Counts()
