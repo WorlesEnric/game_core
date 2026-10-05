@@ -217,8 +217,42 @@ impl Sandbox {
         Ok(cmd)
     }
 
+    /// Verify both the pinned archives and expanded compiler inputs before launching Docker.
+    pub fn verify_cache(&self) -> Result<(), String> {
+        let script = self
+            .packages
+            .parent()
+            .ok_or("trusted repository missing")?
+            .join("studio/stage/cache.py");
+        let output = Command::new("/usr/bin/python3")
+            .env_clear()
+            .envs(super::env::stage_env())
+            .arg(script)
+            .arg(&self.cache)
+            .arg("--verify")
+            .output()
+            .map_err(|e| e.to_string())?;
+        if output.status.success() {
+            Ok(())
+        } else {
+            Err("cache_invalid: provision the exact versioned cache with studio/stage/provision-cache.sh".into())
+        }
+    }
+
     /// Run the exact command in the selected boundary; all output is redacted on write.
     pub fn run(&self, original: &Command, log: &Path, timeout: Duration) -> ChildOutcome {
+        let verified = match self.mode {
+            Confinement::Docker => self.verify_cache(),
+            Confinement::Host => Ok(()),
+        };
+        if let Err(error) = verified {
+            return ChildOutcome {
+                code: None,
+                timed_out: false,
+                output: error,
+                elapsed: Duration::ZERO,
+            };
+        }
         let requested = Path::new(original.get_program());
         let executable = if self.mode == Confinement::Docker
             && requested.file_name().is_some_and(|n| n == "dotnet")
@@ -438,6 +472,24 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 mod tests {
     use super::*;
     #[test]
+    fn r2_11_stage_int_launcher_refuses_missing_cache_before_execution() {
+        let dir = tempfile::tempdir().unwrap();
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .ancestors()
+            .nth(2)
+            .unwrap();
+        let sandbox = Sandbox::defaults(&dir.path().join("slot"), &dir.path().join("cache"), repo);
+        let out = sandbox.run(
+            &Command::new("must-never-execute"),
+            &dir.path().join("log"),
+            Duration::from_secs(1),
+        );
+        assert!(!out.ok());
+        assert!(out.output.contains("cache_invalid"));
+        assert!(!sandbox.slot.exists());
+    }
+
+    #[test]
     fn r2_f2_licensing_command_mounts_only_private_state_and_fixed_identity() {
         use std::os::unix::fs::MetadataExt;
         let temp = tempfile::tempdir().unwrap();
@@ -534,6 +586,18 @@ mod tests {
             .parent()
             .unwrap();
         let sandbox = Sandbox::defaults(&dir.path().join("slot"), &dir.path().join("cache"), repo);
+        assert!(
+            Command::new(repo.join("studio/stage/provision-cache.sh"))
+                .arg(&sandbox.cache)
+                .arg("--offline-from")
+                .arg(
+                    PathBuf::from(std::env::var_os("HOME").unwrap())
+                        .join(".cache/gamecore-studio/stage-int/bootstrap-nuget")
+                )
+                .status()
+                .unwrap()
+                .success()
+        );
         std::fs::create_dir_all(&sandbox.slot).unwrap();
         let outside = dir.path().join("outside-sentinel");
         std::fs::write(&outside, "host-only").unwrap();
