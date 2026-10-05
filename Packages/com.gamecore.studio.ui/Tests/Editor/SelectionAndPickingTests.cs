@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Fixtures;
+using GameCore.Studio.UI.Tests.Fixtures;
 using GameCore.Studio.Model;
 using NUnit.Framework;
 using UnityEditor;
