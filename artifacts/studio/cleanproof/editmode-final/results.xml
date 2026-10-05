@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.3409537">
+  <test-suite type="TestSuite" id="1000" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.340954" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1005" name="Saltmarsh.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.EditMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.335240" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="878394" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.334965" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="Tests" fullname="Saltmarsh.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.334847" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="CleanProofAuthoringTests" fullname="Saltmarsh.Tests.CleanProofAuthoringTests" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:33Z" duration="2.334038" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1003" name="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AllTwelveGroupsAreDiscoverable" methodname="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="106299956" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:30Z" duration="0.123320" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" methodname="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="1897811433" result="Passed" start-time="2026-10-05 07:44:30Z" end-time="2026-10-05 07:44:32Z" duration="2.121086" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M45GAYSKQM81MAHRY2FNK61D -> Applied (1 op(s), 699.4 ms)
+[GameCore.Studio/engine] applied cs_01M45GAZNPKSP1378ZAFD195FG -> Applied (1 op(s), 138.0 ms)
+[GameCore.Studio/engine] applied cs_01M45GAZT2J3NRJ4N8V69HDBDD -> Applied (1 op(s), 309.3 ms)
+[GameCore.Studio/engine] applied cs_01M45GB03VNH8W7BB8E59KW8FY -> Applied (1 op(s), 135.3 ms)
+[GameCore.Studio/engine] applied cs_01M45GB086S3FT8QMWMRKX8FHC -> Applied (1 op(s), 5.1 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+[GameCore.Studio/engine] applied cs_01M45GB09T2MCNMH6T82E5VTR1 -> Applied (1 op(s), 149.6 ms)
+[GameCore.Studio/engine] applied cs_01M45GB0GYSE7CGV59A38P94V4 -> Applied (1 op(s), 36.0 ms)
+[GameCore.Studio/engine] applied cs_01M45GB0J3W3V0Q117SYYYHS20 -> Applied (1 op(s), 8.9 ms)
+[GameCore.Studio/engine] applied cs_01M45GB0JEY4TGG3XYF4V1Q165 -> Applied (1 op(s), 43.0 ms)
+[GameCore.Studio/engine] applied cs_01M45GB0KT1STRS1ZN52N93HAY -> Applied (1 op(s), 5.9 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+]]></output>
+            </test-case>
+            <test-case id="1004" name="W_CLEAN_02_BakeVerifyDetectsStaleOutput" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_02_BakeVerifyDetectsStaleOutput" methodname="W_CLEAN_02_BakeVerifyDetectsStaleOutput" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="1347372448" result="Passed" start-time="2026-10-05 07:44:32Z" end-time="2026-10-05 07:44:33Z" duration="0.079556" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Saltmarsh/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

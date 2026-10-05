@@ -1,0 +1,133 @@
+{
+    "generator": "GameCore.Gameplay.Audio.Editor.ProceduralAudioGenerator",
+    "version": 1,
+    "sampleRate": 22050,
+    "bitsPerSample": 16,
+    "channels": 1,
+    "clips": [
+        {
+            "id": "ambience.Harbour",
+            "file": "Harbour.wav",
+            "recipe": 0,
+            "seconds": 3.0,
+            "seed": 101,
+            "peak": 0.3499999940395355,
+            "loop": true,
+            "frequency": 440.0,
+            "decay": 8.0,
+            "noise": 0.30000001192092898,
+            "noiseCutoffHz": 300.0,
+            "swellCycles": 1.0,
+            "swellDepth": 0.30000001192092898,
+            "tones": [
+                80.0
+            ],
+            "toneGain": 0.11999999731779099,
+            "pulseHz": 0.0,
+            "pulsesPerLoop": 0,
+            "pulseGain": 0.0,
+            "pulseDecay": 12.0
+        },
+        {
+            "id": "ambience.Dunes",
+            "file": "Dunes.wav",
+            "recipe": 0,
+            "seconds": 3.0,
+            "seed": 102,
+            "peak": 0.3499999940395355,
+            "loop": true,
+            "frequency": 440.0,
+            "decay": 8.0,
+            "noise": 0.30000001192092898,
+            "noiseCutoffHz": 800.0,
+            "swellCycles": 1.0,
+            "swellDepth": 0.30000001192092898,
+            "tones": [
+                110.0
+            ],
+            "toneGain": 0.11999999731779099,
+            "pulseHz": 0.0,
+            "pulsesPerLoop": 0,
+            "pulseGain": 0.0,
+            "pulseDecay": 12.0
+        },
+        {
+            "id": "ambience.Lighthouse",
+            "file": "Lighthouse.wav",
+            "recipe": 0,
+            "seconds": 3.0,
+            "seed": 103,
+            "peak": 0.3499999940395355,
+            "loop": true,
+            "frequency": 440.0,
+            "decay": 8.0,
+            "noise": 0.30000001192092898,
+            "noiseCutoffHz": 1300.0,
+            "swellCycles": 1.0,
+            "swellDepth": 0.30000001192092898,
+            "tones": [
+                140.0
+            ],
+            "toneGain": 0.11999999731779099,
+            "pulseHz": 0.0,
+            "pulsesPerLoop": 0,
+            "pulseGain": 0.0,
+            "pulseDecay": 12.0
+        },
+        {
+            "id": "music.coast",
+            "file": "Coast.wav",
+            "recipe": 0,
+            "seconds": 4.0,
+            "seed": 210,
+            "peak": 0.30000001192092898,
+            "loop": true,
+            "frequency": 440.0,
+            "decay": 8.0,
+            "noise": 0.05000000074505806,
+            "noiseCutoffHz": 800.0,
+            "swellCycles": 1.0,
+            "swellDepth": 0.30000001192092898,
+            "tones": [
+                220.0,
+                330.0,
+                440.0
+            ],
+            "toneGain": 0.20000000298023225,
+            "pulseHz": 0.0,
+            "pulsesPerLoop": 0,
+            "pulseGain": 0.0,
+            "pulseDecay": 12.0
+        }
+    ],
+    "outputs": [
+        {
+            "id": "ambience.Harbour",
+            "file": "Harbour.wav",
+            "samples": 66150,
+            "bytes": 132344,
+            "sha256": "c36ce318c9f8ad2026647773d0ea0ca0eaea34b3998d1dc2138f290829a2aba4"
+        },
+        {
+            "id": "ambience.Dunes",
+            "file": "Dunes.wav",
+            "samples": 66150,
+            "bytes": 132344,
+            "sha256": "f17dafc25c780edf1258760065d6845df66edf569879ad57ad96a0673ef58592"
+        },
+        {
+            "id": "ambience.Lighthouse",
+            "file": "Lighthouse.wav",
+            "samples": 66150,
+            "bytes": 132344,
+            "sha256": "30f80570cf53780b9624bf04202022095f28c9ab439b316661a59f278ca558dd"
+        },
+        {
+            "id": "music.coast",
+            "file": "Coast.wav",
+            "samples": 88200,
+            "bytes": 176444,
+            "sha256": "6a2ae7edb9800e7f7d9760488fd8335d30265f25d4a08820c4c71585e6e8400a"
+        }
+    ]
+}

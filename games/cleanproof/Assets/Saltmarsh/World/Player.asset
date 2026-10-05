@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86450edce38a4200b112df49117cd7b2, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  authoringId: dc4d3bab-306d-09cd-8441-5dcc612552a2
+  entity: {fileID: 11400000, guid: 74102d3d3b1cc2f7d942910df8395371, type: 2}
+  input: {fileID: 11400000, guid: 85f3f81dcda32a5ebb72a07285a6333a, type: 2}
+  rig: {fileID: 0}
+  walkSpeed: 2.5
+  runSpeed: 5.5
+  jumpHeight: 1
+  gravity: 18
+  stepMilliseconds: 20
+  moveWindowMilliseconds: 100
+  staminaMax: 1000
+  staminaDrainPerSecond: 200
+  staminaRegenPerSecond: 150
+  staminaRegenDelayMilliseconds: 800
+  jumpCost: 150
+  height: 1.8
+  radius: 0.35
+  stepOffset: 0.35
+  slopeLimit: 45
+  interactRange: 2.5
+  focusHalfAngle: 60
+  strideLength: 0.75
+  cameraDistance: 5
+  cameraHeight: 1.6
+  cameraPitchMin: -30
+  cameraPitchMax: 70
+  cameraCollisionRadius: 0.25
+  contentStamp: 

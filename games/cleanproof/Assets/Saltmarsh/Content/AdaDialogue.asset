@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: AdaDialogue
+  m_EditorClassIdentifier: 
+  authoringId: 48b91997-d5d1-1661-ed63-f4dd15ba8ed2
+  contentStamp: e0adbc0503ec7b308755b619cb1cd2c0b5a960545b83b82f2674bfbf36ed144d
+  speaker: Ada
+  speakerEntityId: 333b1aa6-bca2-1343-057a-dea3c29414ad
+  npcGraphRef: 
+  entry: 0
+  nodes:
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The beacon has gone dark. Will you carry our signal?
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 824a015092dd41c59bd8a4576eddc135, type: 2}
+    options: []
+  edges:
+  - from: 0
+    port: 0
+    option: 0
+    to: 1

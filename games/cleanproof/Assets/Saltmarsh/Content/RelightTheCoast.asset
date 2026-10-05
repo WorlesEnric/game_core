@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0777d9c87449d79026fe3345e29259, type: 3}
+  m_Name: RelightTheCoast
+  m_EditorClassIdentifier: 
+  authoringId: 0468846c-9b21-b856-d273-de13d522b6bb
+  contentStamp: 2f9bea3ae65a74c8c05430e21cc5bda932ceab4a58dd115e67855b9d87899d3e
+  title: Relight the Coast
+  stages:
+  - title: Answer the signal
+    description: Speak with Ada in the harbour.
+    next: -1
+  - title: Choose a lens
+    description: Neri offers a spare; Sol can help recover sea glass.
+    next: -1
+  - title: Light the coast
+    description: Take copper wire to the lighthouse and restore its beacon.
+    next: -1
+  objectives:
+  - stage: 0
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: 7f4cfd773d89b9ae1966972720da4689, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Accept Ada's request
+    legacyTarget: {fileID: 0}
+  - stage: 1
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: d763babf24927b543a8991eee7e9348d, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 1
+    text: Recover sea glass
+    legacyTarget: {fileID: 0}
+  - stage: 1
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: b72e338453801873787e8fde8800ac4d, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 2
+    text: Use the spare lens
+    legacyTarget: {fileID: 0}
+  - stage: 2
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: 46e345fa4851296eea80a459ab1a5f41, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Restore the beacon
+    legacyTarget: {fileID: 0}
+  rewards:
+  - kind: 1
+    item: {fileID: 11400000, guid: 4da92df8dcb6bc0e1a72aabe3f542d8b, type: 2}
+    fact: {fileID: 0}
+    legacyTarget: {fileID: 0}
+    value: 1
+    branch: 0
+  - kind: 2
+    item: {fileID: 0}
+    fact: {fileID: 11400000, guid: bee3ab7e90b5bb3658015686bf9bd3a7, type: 2}
+    legacyTarget: {fileID: 0}
+    value: 1
+    branch: 0
+  failConditions: {fileID: 0}
+  branchNames:
+  - Recover sea glass
+  - Use the keeper's spare
+  prerequisites: []
+  completionActions: {fileID: 0}
+  failActions: {fileID: 0}

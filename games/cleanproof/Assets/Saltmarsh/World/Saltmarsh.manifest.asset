@@ -1,0 +1,188 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e05f2cfdad4dd08516fda5498e5103, type: 3}
+  m_Name: Saltmarsh.manifest
+  m_EditorClassIdentifier: 
+  format: gamecore.gameplay-manifest/1
+  worldId: 0e658722-0a97-7568-0540-42f978711f0b
+  worldName: Saltmarsh
+  startRegionId: 821ccdba-4169-7881-afc6-00e326eac331
+  focusEntityId: 6e47b1dd-9286-54fd-9bc9-f6e4c7ac5c9c
+  preloadNeighbours: 0
+  catalogFingerprint: dc065b6713edef43011947758e4b0a4e609b94bcf2525121fe8765b6fed15c3c
+  catalogTypeName: Saltmarsh.Generated.SaltmarshCatalog
+  bakeReportHash: 99ab109c95246f8f8e584050c9342bd2226d3871f988eea68d97c97c5de8a497
+  regions:
+  - authoringId: 1fd0aaa4-c6a6-c7ee-cfc8-9834b31a4620
+    name: Lighthouse
+    scenePath: Assets/Saltmarsh/Regions/Lighthouse.unity
+    key: 1804444331
+    spawnX: 200000
+    spawnY: 0
+    spawnZ: -8000
+    spawnYaw: 0
+  - authoringId: 821ccdba-4169-7881-afc6-00e326eac331
+    name: Harbour
+    scenePath: Assets/Saltmarsh/Regions/Harbour.unity
+    key: 1512072919
+    spawnX: 0
+    spawnY: 0
+    spawnZ: -8000
+    spawnYaw: 0
+  - authoringId: b3e1fd9f-6051-69a1-550e-f98c4353dbab
+    name: Dunes
+    scenePath: Assets/Saltmarsh/Regions/Dunes.unity
+    key: 404123661
+    spawnX: 100000
+    spawnY: 0
+    spawnZ: -8000
+    spawnYaw: 0
+  portals:
+  - authoringId: 46350fae-a26f-4ef8-abd5-bf865b7e8e7b
+    name: Harbour_Dunes
+    key: 326108966
+    regionA: 821ccdba-4169-7881-afc6-00e326eac331
+    regionB: b3e1fd9f-6051-69a1-550e-f98c4353dbab
+    arrivalAX: 25000
+    arrivalAY: 0
+    arrivalAZ: -5500
+    arrivalAYaw: 0
+    arrivalBX: 75000
+    arrivalBY: 0
+    arrivalBZ: -5500
+    arrivalBYaw: 0
+    conditionRef: 
+  - authoringId: 58de2288-99c3-4c37-b551-f9901baae027
+    name: Dunes_Lighthouse
+    key: 1020287377
+    regionA: b3e1fd9f-6051-69a1-550e-f98c4353dbab
+    regionB: 1fd0aaa4-c6a6-c7ee-cfc8-9834b31a4620
+    arrivalAX: 125000
+    arrivalAY: 0
+    arrivalAZ: 2500
+    arrivalAYaw: 0
+    arrivalBX: 175000
+    arrivalBY: 0
+    arrivalBZ: 2500
+    arrivalBYaw: 0
+    conditionRef: 
+  - authoringId: 63d6f4bb-80fb-4b12-bb3e-f29059dacf16
+    name: Lighthouse_Harbour
+    key: 658226975
+    regionA: 1fd0aaa4-c6a6-c7ee-cfc8-9834b31a4620
+    regionB: 821ccdba-4169-7881-afc6-00e326eac331
+    arrivalAX: 225000
+    arrivalAY: 0
+    arrivalAZ: 10500
+    arrivalAYaw: 0
+    arrivalBX: -25000
+    arrivalBY: 0
+    arrivalBZ: 10500
+    arrivalBYaw: 0
+    conditionRef: 
+  definitions:
+  - authoringId: 50949844-be21-143c-699c-e4853e8a011b
+    name: BeaconEntity
+    definition: {fileID: 11400000, guid: c45ad4b9672c8a53884962358fdb99ec, type: 2}
+    contentStamp: 7e491713b5041f8322451176f5c285ca6ab3559881b8a0e3760740b05c295469
+    structuralStamp: b752e12b6fd1ee2eca4ef4c20b979909e23cae1c4cf066666065414717cf09f3
+    variantCount: 1
+  - authoringId: 6bf8834c-1e81-48e9-8f15-74034bb17543
+    name: AdaEntity
+    definition: {fileID: 11400000, guid: 61e656d0d509d16448cddc59de927732, type: 2}
+    contentStamp: 5a3980045d3bac2ffeb06c3c619330bdf4240c7e3c85ed7878f2ee3b3f2331ec
+    structuralStamp: a46679f9c563cb3a6fbd1b003767e46745abab154aabceeaba2a1cbe23c31c7f
+    variantCount: 1
+  - authoringId: 85bf21e1-8621-d9d6-50ae-69b7808ee48c
+    name: SolEntity
+    definition: {fileID: 11400000, guid: 83a21c22c1ede1a86b690b7be77c2001, type: 2}
+    contentStamp: 55568fa96aa4f694c9bf40a6a66c511c133e6163a1b7b7dd7ed7e5408183b091
+    structuralStamp: 0e7f8ae97e08baed167a050b92b645245c5afa2ddca845a7bbd582fd83ee2713
+    variantCount: 1
+  - authoringId: c9818f0d-1189-eab2-25d2-fa6d560c895e
+    name: CourierEntity
+    definition: {fileID: 11400000, guid: 74102d3d3b1cc2f7d942910df8395371, type: 2}
+    contentStamp: 805e0c8491cb63edb104a1525c1c2aabe3148ec7d558dbfc82e3bdfa96998ef6
+    structuralStamp: 91c213e73e424e553df52623c071f5943f25bb1bd9bde0296bd8408a4ee9557b
+    variantCount: 1
+  - authoringId: ff185cb2-bec2-2e20-ffb1-d97f5b105ad7
+    name: NeriEntity
+    definition: {fileID: 11400000, guid: 261d70b898dcc14be9fe51712f136b72, type: 2}
+    contentStamp: c74888d84964a2ad327dd9958e759c35058c37d60f2a9cb525680a28db9d4fd4
+    structuralStamp: c6e6b9d55aeecf45c8cdd768035bd02ff908b707df08942def7d963c1b840159
+    variantCount: 1
+  entities:
+  - authoringId: 8e3bfa79-41cb-b055-f1e6-590c410c1ab4
+    name: Beacon
+    regionId: 1fd0aaa4-c6a6-c7ee-cfc8-9834b31a4620
+    definitionId: 50949844-be21-143c-699c-e4853e8a011b
+    x: 200000
+    y: 0
+    z: 5000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: d5727fc5-d0b7-78ac-40d8-161e471767fa
+    name: Sol
+    regionId: 1fd0aaa4-c6a6-c7ee-cfc8-9834b31a4620
+    definitionId: 85bf21e1-8621-d9d6-50ae-69b7808ee48c
+    x: 203000
+    y: 0
+    z: 0
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 333b1aa6-bca2-1343-057a-dea3c29414ad
+    name: Ada
+    regionId: 821ccdba-4169-7881-afc6-00e326eac331
+    definitionId: 6bf8834c-1e81-48e9-8f15-74034bb17543
+    x: 3000
+    y: 0
+    z: 0
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 6e47b1dd-9286-54fd-9bc9-f6e4c7ac5c9c
+    name: Courier
+    regionId: 821ccdba-4169-7881-afc6-00e326eac331
+    definitionId: c9818f0d-1189-eab2-25d2-fa6d560c895e
+    x: 0
+    y: 0
+    z: -8000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: ebfbddff-ef5d-68f5-cead-bc99b8a0dcfe
+    name: Neri
+    regionId: b3e1fd9f-6051-69a1-550e-f98c4353dbab
+    definitionId: ff185cb2-bec2-2e20-ffb1-d97f5b105ad7
+    x: 103000
+    y: 0
+    z: 0
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
