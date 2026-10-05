@@ -215,11 +215,16 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(followUp.Intent, Does.Contain("The iron one"));
 
             _bed.Gateway.Emit(TestAgentGateway.View(id, "failed", request.Intent.Text, outcome: new JObject { ["code"] = "task_failed", ["message"] = "worker crashed" }, seq: 4));
-            _bed.Gateway.Emit(TestAgentGateway.View("cs_unknown_state", "teleported", "?", seq: 1));
+            string followUpId = followUp.ChangeSetId!;
+            _bed.Gateway.Emit(TestAgentGateway.View(followUpId, "teleported", "?", seq: 1));
+            _bed.Gateway.Emit(TestAgentGateway.View("cs_other_client", "candidate", "Somebody else's request", hasCandidate: true, seq: 9));
+            _bed.Gateway.EmitCandidate("cs_other_client", "cs_other_client");
             _bed.Context.Tick();
             Assert.That(row.State, Is.EqualTo(AgentRequestState.TaskFailed));
             Assert.That(row.Diagnostics(), Has.Some.Matches<Diagnostic>(d => d.Code == "task_failed"));
-            Assert.That(_bed.Context.Tasks.Find("cs_unknown_state")!.State, Is.EqualTo(AgentRequestState.Unresolved), "an unknown state is never shown as success");
+            Assert.That(_bed.Context.Tasks.Find(followUpId)!.State, Is.EqualTo(AgentRequestState.Unresolved), "an unknown state is never shown as success");
+            Assert.That(_bed.Context.Tasks.Find("cs_other_client"), Is.Null, "another client's request on the shared ledger is not listed");
+            Assert.That(_bed.Context.Candidates.Entries, Is.Empty, "nor reviewed");
         }
 
         [Test]

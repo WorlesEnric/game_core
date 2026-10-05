@@ -131,6 +131,17 @@ namespace GameCore.Studio.UI
             return null;
         }
 
+        /// <summary>
+        /// Whether this project submitted the request, as the gateway knows it (<c>IsOwn</c>); null when the gateway
+        /// cannot tell. The companion's ledger is shared by every client of the app, so the etos gateway lists other
+        /// clients' requests too; the UI shows and reviews only its own.
+        /// </summary>
+        public static bool? IsOwn(IAgentGateway gateway, string requestId)
+        {
+            MethodInfo? isOwn = gateway.GetType().GetMethod("IsOwn", Public, null, new[] { typeof(string) }, null);
+            return isOwn == null ? (bool?)null : isOwn.Invoke(gateway, new object[] { requestId }) is bool own && own;
+        }
+
         /// <summary>True when the gateway imports and stages this request's candidate by itself (etos AutoImport of an own request).</summary>
         public static bool ImportsItself(IAgentGateway gateway, string requestId)
         {

@@ -48,6 +48,9 @@ namespace Hollowmere.P2_1.Evidence
         /// <summary>The one prompt sent to the real gateway (gc-designer), with the Village Well selected.</summary>
         private const string LivePrompt = "Move this well one metre to the east";
 
+        /// <summary>The answer given when the worker asks for a clarification.</summary>
+        private const string LiveAnswer = "East is +X in this project (scene-context.json axes). Move the Village Well exactly 1 metre along +X; change nothing else.";
+
         /// <summary>How long the live request may take before the run records it as unanswered.</summary>
         private const double LiveTimeoutSeconds = 540;
 
@@ -289,6 +292,36 @@ namespace Hollowmere.P2_1.Evidence
                     bool final = row != null && (row.State == AgentRequestState.TaskFailed || row.State == AgentRequestState.Refused || row.State == AgentRequestState.Cancelled
                         || row.State == AgentRequestState.Unresolved || row.State == AgentRequestState.CandidateInvalid || row.State == AgentRequestState.NeedsClarification);
                     double waited = EditorApplication.timeSinceStartup - clock.LiveStartedAt;
+                    if (row != null && entry == null && row.State == AgentRequestState.NeedsClarification && !clock.Answered && waited < LiveTimeoutSeconds)
+                    {
+                        // The worker asked a question: answer it from the tray as a creator would (a new request whose
+                        // parent is the first one), then keep waiting for the follow-up's candidate.
+                        StudioTasksWindow.Open();
+                        TaskTrayView? tray = EditorWindow.GetWindow<StudioTasksWindow>().View;
+                        if (tray == null)
+                        {
+                            throw new InvalidOperationException("The task tray is not open.");
+                        }
+
+                        tray.Select(row.changeSetId);
+                        Shot(step, "live-clarification", "The worker (" + row.worker + ") asked for a clarification after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s: \"" + row.question + "\"; the tray shows it with the inline answer.");
+                        string parent = row.changeSetId;
+                        _ = tray.Answer(row, LiveAnswer);
+                        TaskRow? followUp = null;
+                        foreach (TaskRow candidateRow in context.Tasks.Rows)
+                        {
+                            if (candidateRow.parent == parent)
+                            {
+                                followUp = candidateRow;
+                            }
+                        }
+
+                        clock.Answered = true;
+                        clock.LiveId = followUp?.changeSetId ?? clock.LiveId;
+                        Log(step, "live-answer", "Answered \"" + LiveAnswer + "\" as " + clock.LiveId + " (parent " + parent + ").", null);
+                        return false;
+                    }
+
                     if (entry == null && !final && waited < LiveTimeoutSeconds)
                     {
                         if (clock.Waits++ % 8 == 0)
@@ -308,7 +341,7 @@ namespace Hollowmere.P2_1.Evidence
                     StudioTasksWindow.Open();
                     string outcome = entry != null
                         ? "candidate " + entry.Stage + (entry.GatewayStaged ? " (staged by the etos gateway, adopted by the panel)" : string.Empty) + ": " + entry.Summary
-                        : row != null ? "request " + row.StateLabel + (row.Diagnostics().Count > 0 ? " - " + row.Diagnostics()[0].Code + ": " + row.Diagnostics()[0].Message : string.Empty) : "no answer";
+                        : row != null ? "request " + row.StateLabel + (row.question.Length > 0 ? " (\"" + row.question + "\")" : string.Empty) + (row.Diagnostics().Count > 0 ? " - " + row.Diagnostics()[0].Code + ": " + row.Diagnostics()[0].Message : string.Empty) : "no answer";
                     Shot(step, "live-request", "Live gateway round trip for \"" + LivePrompt + "\" (" + clock.LiveId + ") after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s: " + outcome
                         + (row != null ? "; worker " + row.worker + ", etos " + row.etosStatus + ", tasks " + string.Join(",", row.taskIds) : string.Empty) + ".");
                     if (entry == null)
@@ -666,6 +699,15 @@ namespace Hollowmere.P2_1.Evidence
         [SerializeField]
         private double liveStartedAt;
 
+        [SerializeField]
+        private bool answered;
+
+        public bool Answered
+        {
+            get => answered;
+            set => answered = value;
+        }
+
         public string LiveId
         {
             get => liveId;
@@ -720,6 +762,7 @@ namespace Hollowmere.P2_1.Evidence
             candidateId = string.Empty;
             liveId = string.Empty;
             liveStartedAt = 0;
+            answered = false;
         }
     }
 }

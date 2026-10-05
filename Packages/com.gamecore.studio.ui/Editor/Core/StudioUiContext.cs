@@ -127,9 +127,14 @@ namespace GameCore.Studio.UI
         public void HandleRequest(RequestView view)
         {
             EventsSeen++;
+            IAgentGateway gateway = Gateway;
+            if (!IsOwn(gateway, view))
+            {
+                return;
+            }
+
             AgentRequestInfo info = AgentRequestInfo.From(view);
             Tasks.Apply(info);
-            IAgentGateway gateway = Gateway;
             switch (view.LocalState)
             {
                 case "staged":
@@ -159,11 +164,26 @@ namespace GameCore.Studio.UI
             }
         }
 
+        /// <summary>
+        /// True for requests this project submitted: a tray row exists, or the gateway says so (a gateway that cannot
+        /// tell is trusted). Other clients' requests on the shared companion ledger are neither listed nor reviewed.
+        /// </summary>
+        public bool IsOwn(IAgentGateway gateway, RequestView view)
+        {
+            return Tasks.Find(view.ChangeSetId) != null || GatewayExtras.IsOwn(gateway, view.RequestId) != false;
+        }
+
         /// <summary>Handles a candidate notice on the main thread: fetched here unless the gateway imports it itself.</summary>
         public void HandleCandidate(CandidateNotice notice)
         {
             EventsSeen++;
-            if (!GatewayExtras.ImportsItself(Gateway, notice.RequestId))
+            IAgentGateway gateway = Gateway;
+            if (Tasks.Find(notice.ChangeSetId) == null && GatewayExtras.IsOwn(gateway, notice.RequestId) == false)
+            {
+                return;
+            }
+
+            if (!GatewayExtras.ImportsItself(gateway, notice.RequestId))
             {
                 Observe(ReceiveCandidate(notice.RequestId, notice.ChangeSetId));
             }
@@ -189,7 +209,7 @@ namespace GameCore.Studio.UI
             IAgentGateway gateway = Gateway;
             try
             {
-                Tasks.Refresh(gateway);
+                Tasks.Refresh(gateway, view => IsOwn(gateway, view));
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {

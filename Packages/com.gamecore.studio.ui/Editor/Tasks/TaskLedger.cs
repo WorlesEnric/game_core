@@ -308,22 +308,26 @@ namespace GameCore.Studio.UI
         /// Merges every request the gateway knows (P2.2 recovers them from the companion after a domain reload). Rows
         /// the gateway does not know keep their last local state. Returns the number of requests merged.
         /// </summary>
-        public int Refresh(IAgentGateway gateway)
+        public int Refresh(IAgentGateway gateway, Func<RequestView, bool>? include = null)
         {
             if (gateway == null)
             {
                 throw new ArgumentNullException(nameof(gateway));
             }
 
-            IReadOnlyList<RequestView> requests = gateway.Requests;
-            foreach (RequestView view in requests)
+            int merged = 0;
+            foreach (RequestView view in gateway.Requests)
             {
-                Apply(AgentRequestInfo.From(view));
+                if (include == null || include(view))
+                {
+                    Apply(AgentRequestInfo.From(view));
+                    merged++;
+                }
             }
 
             Refreshes++;
             Changed?.Invoke();
-            return requests.Count;
+            return merged;
         }
 
         /// <summary>Removes closed rows (keeps open ones).</summary>

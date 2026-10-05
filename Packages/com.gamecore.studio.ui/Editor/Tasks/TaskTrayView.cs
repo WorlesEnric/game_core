@@ -71,7 +71,8 @@ namespace GameCore.Studio.UI
             int reported;
             try
             {
-                reported = _context.Tasks.Refresh(_context.Gateway);
+                IAgentGateway gateway = _context.Gateway;
+                reported = _context.Tasks.Refresh(gateway, view => _context.IsOwn(gateway, view));
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
