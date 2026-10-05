@@ -61,6 +61,12 @@ namespace GameCore.Studio.Views.Evidence
         [NonSerialized]
         private int _resizeTries;
 
+        [NonSerialized]
+        private int _grabTries;
+
+        [NonSerialized]
+        private EditorWindow? _repin;
+
         private static readonly IReadOnlyList<string> Shots = new[]
         {
             "01-relationships-maren", "02-relationships-impact-lantern", "03-dialogue-maren-preview", "04-quests-drowned-bell",
@@ -417,6 +423,17 @@ namespace GameCore.Studio.Views.Evidence
             window.position = new Rect(40f, 40f, size.x, size.y);
         }
 
+        private static void Repin()
+        {
+            EditorWindow? window = instance._repin;
+            instance._repin = null;
+            if (window != null)
+            {
+                Pin(window);
+                window.Repaint();
+            }
+        }
+
         private void CloseWindow()
         {
             if (_window != null)
@@ -469,6 +486,21 @@ namespace GameCore.Studio.Views.Evidence
             int width = Mathf.RoundToInt(rect.width);
             int height = Mathf.RoundToInt(rect.height);
             Color[]? pixels = GrabWindow(window, out int grabWidth, out int grabHeight, out string? problem);
+            if (pixels != null && grabWidth < StudioViewIds.DefaultWidth - 2 && _grabTries < 6)
+            {
+                // The host view has not followed the window's size (the window manager kept the creation size):
+                // release the pin, move and resize, then pin again on the next editor tick.
+                _grabTries++;
+                window.minSize = new Vector2(100f, 100f);
+                window.maxSize = new Vector2(4000f, 4000f);
+                window.position = new Rect(60f, 60f, 800f, 500f);
+                _repin = window;
+                EditorApplication.delayCall += Repin;
+                _waitUntil = EditorApplication.timeSinceStartup + 1.5;
+                return;
+            }
+
+            _grabTries = 0;
             if (pixels != null && !IsBlank(pixels))
             {
                 long grabbed = WritePng(pixels, grabWidth, grabHeight, path);
