@@ -6,7 +6,8 @@
 //! `Ops::generate`, which used to post `generate`), with an etops idempotency `key` derived from the change set and the spec (a lost answer is
 //! looked up by etops, never generated twice). Every operation carries a cost ceiling: the
 //! call's `max_cost_usd`, else the configured `ops_max_cost_usd`; with neither the call is
-//! refused. The operation runs on its own client timeout (`ops_timeout_secs`, default 300 s;
+//! refused. `describe` is the exception: its etops input has no `max_cost_usd` (etops refuses
+//! unknown fields), so the ceiling is not sent and a ceiling of 0 refuses it here. The operation runs on its own client timeout (`ops_timeout_secs`, default 300 s;
 //! `generate.image` on a slow provider takes well over the SDK's 30 s default): the caller's
 //! request is held until the node answers. Past the timeout the answer is 504 `transport` with
 //! the operation's `key` in the hint and in `data`; resending the identical request asks etops
@@ -229,22 +230,28 @@ impl MediaOps {
                 "`output` is chosen by the node, not the caller",
             ));
         }
-        let max = match req.max_cost_usd.or(self.default_ceiling) {
-            Some(m) if m.is_finite() && m >= 0.0 => m,
-            Some(_) => {
-                return Err(ApiError::bad_request(
-                    "max_cost_usd is a non-negative number",
-                ));
+        let ceiling = req.max_cost_usd.or(self.default_ceiling);
+        if ceiling.is_some_and(|m| !m.is_finite() || m < 0.0) {
+            return Err(ApiError::bad_request(
+                "max_cost_usd is a non-negative number",
+            ));
+        }
+        if op == "describe" {
+            // etops' describe input has no `max_cost_usd` (it refuses unknown fields): the
+            // ceiling is enforced here, where 0 means "no paid calls".
+            if ceiling == Some(0.0) {
+                return Err(
+                    ApiError::bad_request("describe is refused under a cost ceiling of 0")
+                        .with_hint("send a positive max_cost_usd, or raise ops_max_cost_usd"),
+                );
             }
-            None => {
-                return Err(ApiError::bad_request("max_cost_usd is required")
-                    .with_hint("send a cost ceiling in USD, or configure ops_max_cost_usd"));
-            }
+            return self.describe(&req, input).await;
+        }
+        let Some(max) = ceiling else {
+            return Err(ApiError::bad_request("max_cost_usd is required")
+                .with_hint("send a cost ceiling in USD, or configure ops_max_cost_usd"));
         };
         input.insert("max_cost_usd".into(), json!(max));
-        if op == "describe" {
-            return self.describe(&req, input, max).await;
-        }
         let key = match input.get("key").and_then(Value::as_str) {
             Some(k) => k.to_string(),
             None => {
@@ -343,7 +350,7 @@ impl MediaOps {
             etos_op: op.to_string(),
             provider,
             state: answer.get("state").cloned().filter(|v| !v.is_null()),
-            max_cost_usd: max,
+            max_cost_usd: Some(max),
             artifacts,
             text: None,
             key: Some(key),
@@ -362,7 +369,6 @@ impl MediaOps {
         &self,
         req: &GenerateRequest,
         mut input: Map<String, Value>,
-        max: f64,
     ) -> ApiResult<GenerateResponse> {
         if let Some(sha) = input.remove("artifact") {
             let sha = sha
@@ -401,7 +407,7 @@ impl MediaOps {
                 .and_then(Value::as_str)
                 .map(str::to_string),
             state: Some(json!("succeeded")),
-            max_cost_usd: max,
+            max_cost_usd: None,
             artifacts: Vec::new(),
             text: answer
                 .get("text")

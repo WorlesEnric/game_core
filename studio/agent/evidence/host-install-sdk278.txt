@@ -1,0 +1,33 @@
+== preflight
+  binaries in /home/worlesenric/.local/opt/etos/bin, docker reachable, user manager running
+== node root /home/worlesenric/.local/share/etos-studio
+  unchanged: /home/worlesenric/.local/share/etos-studio (initialized)
+== configuration
+  unchanged: /home/worlesenric/.local/share/etos-studio/etos.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/models.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/ops.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/bin/etos
+== provider environment
+== service etosd.service
+  unchanged: /home/worlesenric/.config/systemd/user/etosd.service
+  unchanged: etosd.service enabled
+  unchanged: linger for worlesenric
+  unchanged: etosd.service running
+  healthy: etos node status ok, SDK API answers on 127.0.0.1:7410
+== images
+  skipped (--skip-images)
+== workers
+  unchanged: worker gc-designer
+  unchanged: worker gc-mechanic
+== companion agent gamecore-studio
+  changed: /home/worlesenric/wkspace/gc-studio/p05/studio/etos/agent/bin/gamecore-studio -> ../../../agent/target/release/gamecore-studio
+    upgraded gamecore-studio from 0.1.0 to 0.1.0
+    updated worker gc-designer
+    updated worker gc-mechanic
+  changed: agent gamecore-studio upgraded (manifest, instructions or binary changed)
+  agent state: ready
+== Unity app gamecore-unity
+  unchanged: app gamecore-unity installed
+  unchanged: /home/worlesenric/.config/gamecore-studio/app-key.json (paired)
+
+install.sh: 2 change(s) applied

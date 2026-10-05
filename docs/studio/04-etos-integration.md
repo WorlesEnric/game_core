@@ -98,6 +98,9 @@ companion `config.toml`), because `generate.image` blocks until done and outlive
 give the same key, and etops answers a known key with the finished result instead of generating again. The etos proxy
 between Unity and the companion must allow a request this long.
 
+`max_cost_usd` goes only to `generate.image`, `tts` and `generate.3d`. etops' `describe` input has no such field and
+refuses unknown fields, so the companion omits it and refuses `describe` itself when the ceiling is 0 (P0.5).
+
 Partial speech: transcript events carry `revision` and `done`; only `done=true` text is placed in the prompt box.
 No voice utterance triggers a tool directly.
 

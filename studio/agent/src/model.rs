@@ -769,8 +769,10 @@ pub struct GenerateRequest {
     /// `describe`, `artifact` (a stored digest) or `input` (an etos reference) names the file.
     #[serde(default)]
     pub spec: Map<String, Value>,
-    /// Cost ceiling (`max_cost_usd` of etops). Required unless the companion is configured
-    /// with a default ceiling (`ops_max_cost_usd`); sent with every operation.
+    /// Cost ceiling (`max_cost_usd` of etops). For image, tts and 3d it is required unless the
+    /// companion is configured with a default ceiling (`ops_max_cost_usd`) and is sent with
+    /// the operation. `describe`'s etops input has no such field: it is not sent, and a
+    /// ceiling of 0 refuses the call in the companion.
     #[serde(default, rename = "max_cost_usd", alias = "maxCostUsd")]
     pub max_cost_usd: Option<f64>,
     /// The change set the asset is for (also makes the op idempotent per spec).
@@ -792,8 +794,9 @@ pub struct GenerateResponse {
     /// The etops job state (`succeeded`, `failed`, ...), verbatim.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<Value>,
-    /// The ceiling sent with the operation.
-    pub max_cost_usd: f64,
+    /// The ceiling sent with the operation (absent for `describe`, whose input has none).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub max_cost_usd: Option<f64>,
     /// Produced files, verified and stored.
     #[serde(default)]
     pub artifacts: Vec<StoredArtifact>,

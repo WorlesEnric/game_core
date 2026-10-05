@@ -1087,10 +1087,26 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         .cloned()
         .unwrap();
     assert!(b["input"].as_str().unwrap().starts_with("ref_"));
-    assert_eq!(
-        b["max_cost_usd"], 0.02,
-        "every operation carries the ceiling"
+    assert!(
+        b.get("max_cost_usd").is_none(),
+        "describe's etops input has no max_cost_usd: {b}"
     );
+    assert!(v.get("max_cost_usd").is_none(), "{v}");
+    // Without any ceiling describe still runs (none configured here); a ceiling of 0 refuses it.
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}}),
+        )
+        .await;
+    assert_eq!(s, 200, "{v}");
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}, "max_cost_usd": 0.0}),
+        )
+        .await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
     // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
     node.lock().wrong_digest_ops.push("generate.image".into());
     let (s, v) = api
