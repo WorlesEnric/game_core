@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="17" result="Passed" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.7508697">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="1318" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.750870" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1784" name="GameCore.Persistence.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.1b/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Persistence.Tests.dll" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.736335" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3062126" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1785" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.736017" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1786" name="Persistence" fullname="GameCore.Persistence" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.735912" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1787" name="Tests" fullname="GameCore.Persistence.Tests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.735800" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1766" name="SaveRestoreTests" fullname="GameCore.Persistence.Tests.SaveRestoreTests" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.734991" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1772" name="ACorruptFileIsRefusedByItsChecksum" fullname="GameCore.Persistence.Tests.SaveRestoreTests.ACorruptFileIsRefusedByItsChecksum" methodname="ACorruptFileIsRefusedByItsChecksum" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="977052295" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.419341" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1773" name="AHeaderThatNamesAnotherDocumentIsACorruptSlot" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AHeaderThatNamesAnotherDocumentIsACorruptSlot" methodname="AHeaderThatNamesAnotherDocumentIsACorruptSlot" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="311617086" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.023494" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1771" name="AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" methodname="AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="759017052" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.012947" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1778" name="AnOldFormatCheckpointLoadsAtStepZeroAndReportsIt" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AnOldFormatCheckpointLoadsAtStepZeroAndReportsIt" methodname="AnOldFormatCheckpointLoadsAtStepZeroAndReportsIt" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="990002866" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.053308" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1776" name="ARecipeAtAnotherRevisionIsATypedRefusalNamingBothRevisions" fullname="GameCore.Persistence.Tests.SaveRestoreTests.ARecipeAtAnotherRevisionIsATypedRefusalNamingBothRevisions" methodname="ARecipeAtAnotherRevisionIsATypedRefusalNamingBothRevisions" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="543192404" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.016643" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1777" name="ARestoreDuringAnUnsafeStateIsRefused" fullname="GameCore.Persistence.Tests.SaveRestoreTests.ARestoreDuringAnUnsafeStateIsRefused" methodname="ARestoreDuringAnUnsafeStateIsRefused" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="89553689" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.021020" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1775" name="ASaveFromAnotherCatalogIsRefusedUnlessTheBuildDeclaresItCompatible" fullname="GameCore.Persistence.Tests.SaveRestoreTests.ASaveFromAnotherCatalogIsRefusedUnlessTheBuildDeclaresItCompatible" methodname="ASaveFromAnotherCatalogIsRefusedUnlessTheBuildDeclaresItCompatible" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1693002036" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.011834" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1770" name="AV1SaveIsMigratedToV2OnRestore" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AV1SaveIsMigratedToV2OnRestore" methodname="AV1SaveIsMigratedToV2OnRestore" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1277238847" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.011842" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1767" name="CaptureThenRestore_GivesAnEqualSlotHash_TheSameStepAndDomainTime_AndANewWorld" fullname="GameCore.Persistence.Tests.SaveRestoreTests.CaptureThenRestore_GivesAnEqualSlotHash_TheSameStepAndDomainTime_AndANewWorld" methodname="CaptureThenRestore_GivesAnEqualSlotHash_TheSameStepAndDomainTime_AndANewWorld" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="407901443" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.014838" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[P1.2-RESTORE-1 build=built; origin(Continued,step=3,debt=0,domain=2.5,issuers=0); targets=1 slots=2 (dormant 1, pruned 0) seededScopes=0 installs=1 importScopes=0 rootBoundaries=0 modes=0 publications=1 noChange=0 clocks=0 wakes=0 rng=0 nextStep=0 commands=0 outbox=0; ms create=0.437 compose=0.031 seed=0.026 replay=0.608 modules=0.002 total=1.109
+]]></output>
+              </test-case>
+              <test-case id="1768" name="FixedStepRetainedDebtIsRestoredAndOwedAtTheFirstRunningSample" fullname="GameCore.Persistence.Tests.SaveRestoreTests.FixedStepRetainedDebtIsRestoredAndOwedAtTheFirstRunningSample" methodname="FixedStepRetainedDebtIsRestoredAndOwedAtTheFirstRunningSample" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="956769420" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.008501" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1769" name="IssuerSequencesContinueAboveTheSavedHighWaterMark" fullname="GameCore.Persistence.Tests.SaveRestoreTests.IssuerSequencesContinueAboveTheSavedHighWaterMark" methodname="IssuerSequencesContinueAboveTheSavedHighWaterMark" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1396229500" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.013405" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1774" name="MissingSlotsInvalidNamesAndDeletesAreTyped" fullname="GameCore.Persistence.Tests.SaveRestoreTests.MissingSlotsInvalidNamesAndDeletesAreTyped" methodname="MissingSlotsInvalidNamesAndDeletesAreTyped" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="892291352" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.006715" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1779" name="SaveCommandsRaiseOneEventEachAndTheCatalogListsSlots" fullname="GameCore.Persistence.Tests.SaveRestoreTests.SaveCommandsRaiseOneEventEachAndTheCatalogListsSlots" methodname="SaveCommandsRaiseOneEventEachAndTheCatalogListsSlots" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1010895327" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.010936" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1781" name="SaveSchemaDefinitionBuildsTheCatalogAndNamesMissingMigrationBodies" fullname="GameCore.Persistence.Tests.SaveRestoreTests.SaveSchemaDefinitionBuildsTheCatalogAndNamesMissingMigrationBodies" methodname="SaveSchemaDefinitionBuildsTheCatalogAndNamesMissingMigrationBodies" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1151136875" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.004448" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1780" name="StudioInspectAndRoundTripOperationsReportWithoutChangingTheGame" fullname="GameCore.Persistence.Tests.SaveRestoreTests.StudioInspectAndRoundTripOperationsReportWithoutChangingTheGame" methodname="StudioInspectAndRoundTripOperationsReportWithoutChangingTheGame" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1704695693" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.009687" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1782" name="TheRestoreHookSeamSuppliesTheProductionBuilder" fullname="GameCore.Persistence.Tests.SaveRestoreTests.TheRestoreHookSeamSuppliesTheProductionBuilder" methodname="TheRestoreHookSeamSuppliesTheProductionBuilder" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="1622778556" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.003206" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1783" name="TwoHundredTargetsRestoreWithPublicationsIndependentOfTheTargetCount" fullname="GameCore.Persistence.Tests.SaveRestoreTests.TwoHundredTargetsRestoreWithPublicationsIndependentOfTheTargetCount" methodname="TwoHundredTargetsRestoreWithPublicationsIndependentOfTheTargetCount" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="346924910" result="Passed" start-time="2026-10-05 17:24:44Z" end-time="2026-10-05 17:24:44Z" duration="0.080180" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[P1.2-RESTORE-200 capture_ms=17.47 restore_ms=58.202 document_bytes=139117 build=built; origin(Continued,step=1,debt=0,domain=0,issuers=0); targets=200 slots=400 (dormant 200, pruned 0) seededScopes=0 installs=1 importScopes=0 rootBoundaries=0 modes=0 publications=1 noChange=0 clocks=0 wakes=0 rng=0 nextStep=0 commands=0 outbox=0; ms create=0.705 compose=0.04 seed=1.148 replay=43.604 modules=0.004 total=45.515
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

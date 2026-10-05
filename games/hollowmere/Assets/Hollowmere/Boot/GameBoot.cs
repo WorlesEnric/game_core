@@ -154,6 +154,14 @@ namespace Hollowmere.Boot
             playerCamera = orbitCamera;
         }
 
+        private UnityEngine.ThreadPriority previousLoadingPriority;
+
+        private void Awake()
+        {
+            previousLoadingPriority = Application.backgroundLoadingPriority;
+            Application.backgroundLoadingPriority = UnityEngine.ThreadPriority.Low;
+        }
+
         private void Start()
         {
             if (manifest == null)
@@ -271,6 +279,7 @@ namespace Hollowmere.Boot
                 world.Streamer.PreloadNeighbours = true;
             }
 
+            world.UseSceneLoader(new DeferredRegionLoader(new UnitySceneLoader(), () => Time.frameCount, Time.frameCount + 3));
             world.Streamer.Observe(destroyCancellationToken);
             world.CreateViews(transform);
             Camera? orbit = playerCamera != null ? playerCamera : Camera.main;
@@ -352,6 +361,7 @@ namespace Hollowmere.Boot
 
         private void OnDestroy()
         {
+            Application.backgroundLoadingPriority = previousLoadingPriority;
             NarrativeWorld? game = Narrative;
             Narrative = null;
             World = null;

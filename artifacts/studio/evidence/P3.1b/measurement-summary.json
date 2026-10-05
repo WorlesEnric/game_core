@@ -1,0 +1,52 @@
+{
+  "runtimeRevision": "2151e274855ce7c03611bb3fbffa8246371668da",
+  "host": "myubuntu / worlesenric",
+  "date": "2026-10-06",
+  "attempts": 2,
+  "completedAttempts": 1,
+  "qualification": "partial: profiles differ; graphical RTX/1080p gate not qualified",
+  "videoPredatesFixes": true,
+  "runs": [
+    {
+      "name": "run1",
+      "exit": 3,
+      "complete": false,
+      "profile": "-batchmode -nographics; Null Device",
+      "failure": "autoplay line 223: approach timed out at (103.38, 184.78), 7.08 m from Belfry Echo",
+      "countsAsAttempt": 1,
+      "p95Ms": 0.692,
+      "over100OutsideTransitions": 8,
+      "belfryHitchMs": 2.587,
+      "manualSave": {
+        "saveCommandFrame": 1265098,
+        "savedMarkerFrame": 1265115,
+        "windowFrames": 23,
+        "maxDtMs": 31.84,
+        "over100": 0,
+        "captureMainThreadMs": 28.982
+      },
+      "steadySeconds": 661.593
+    },
+    {
+      "name": "run2",
+      "exit": 0,
+      "complete": true,
+      "profile": "Xvfb device-enabled batchmode",
+      "countsAsAttempt": 2,
+      "p95Ms": 1.284,
+      "over100OutsideTransitions": 0,
+      "belfryHitchMs": 7.404,
+      "manualSave": {
+        "saveCommandFrame": 456882,
+        "savedMarkerFrame": 456886,
+        "windowFrames": 10,
+        "maxDtMs": 29.013,
+        "over100": 0,
+        "captureMainThreadMs": 27.141
+      },
+      "steadySeconds": 612.58,
+      "requestedDisplay": "1920x1080",
+      "actualDeviceAndSize": "640x480 llvmpipe (LLVM 20.1.2; 256 bits) OpenGLCore"
+    }
+  ]
+}

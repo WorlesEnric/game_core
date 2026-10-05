@@ -1,0 +1,38 @@
+== Hollowmere Linux player build ==
+clone    : /home/worlesenric/wkspace/gc-studio/p3.1b
+revision : 2151e274855ce7c03611bb3fbffa8246371668da
+unity    : /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity (6000.0.75f1)
+output   : /home/worlesenric/wkspace/gc-studio/p3.1b/build/HollowmereLinux
+-- attempt 1/2: Unity (arguments withheld from logs)
+RESULT build: PASS (unity exit 0, 568s, attempts 1, log /home/worlesenric/wkspace/gc-studio/p3.1b/.unity-logs/build-20261006T012835-3080555-a1.log)
+HOLLOWMERE-BUILD result=Succeeded size=1912935358 seconds=422.1 errors=0 warnings=7 output=/home/worlesenric/wkspace/gc-studio/p3.1b/build/HollowmereLinux/Hollowmere.x86_64
+-- sha256.txt:
+aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70  Hollowmere.x86_64
+-- data-manifest.txt: 36 files
+-- build-summary.json:
+{
+  "buildReport": {
+    "development": false,
+    "errors": 0,
+    "managedStripping": "Low",
+    "platform": "StandaloneLinux64",
+    "result": "Succeeded",
+    "scriptingBackend": "IL2CPP",
+    "totalSize": 1912935358,
+    "totalTimeSeconds": 422.146,
+    "warnings": 7
+  },
+  "buildSeconds": 569,
+  "executable": "HollowmereLinux/Hollowmere.x86_64",
+  "executableBytes": 14784,
+  "executableSha256": "aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70",
+  "fileCount": 36,
+  "notShippedBytes": 1736992400,
+  "outputBytes": 176338000,
+  "result": "succeeded",
+  "revision": "2151e274855ce7c03611bb3fbffa8246371668da",
+  "unityBatchExit": 0,
+  "unityVersion": "6000.0.75f1"
+}
+-- player smoke: exit 0, 3s, 5356 frame-log rows; [autoplay] quit 0 at frame 5352
+RESULT build_game_player p3.1b: PASS (revision 2151e274855ce7c03611bb3fbffa8246371668da, 569s, exe sha256 aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70)

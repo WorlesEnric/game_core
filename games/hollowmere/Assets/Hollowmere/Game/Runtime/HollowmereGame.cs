@@ -163,7 +163,14 @@ namespace Hollowmere.Game
         private void LateUpdate()
         {
             Director?.Tick();
+            // The clapper is acquired before the ferry conversation. Preload through the streamer's legal residency
+            // transitions during that preparation, then release the neighbours immediately on leaving the marsh.
+            if (World != null)
+                World.Streamer.PreloadNeighbours = ShouldPreloadBelfry(CurrentRegionId(), Director?.ItemCount("BellClapper") ?? 0);
         }
+
+        public static bool ShouldPreloadBelfry(string region, int clappers) =>
+            region == "7f21b99a-8e74-412f-a1da-5f7d60843080" && clappers > 0;
 
         // ------------------------------------------------------------------ saves
 
