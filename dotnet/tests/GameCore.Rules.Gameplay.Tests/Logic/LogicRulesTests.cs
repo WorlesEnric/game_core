@@ -330,15 +330,17 @@ namespace GameCore.Rules.Gameplay.Tests.Narrative
         }
 
         [Test]
-        public void NullSeams_AreHeadlessDefaults()
+        public void Seams_ConvertInteractionContexts_AndDefaultHeadless()
         {
-            var evaluator = new NullConditionEvaluator();
-            EvaluationContext none = EvaluationContext.None;
-            Assert.That(evaluator.Evaluate(string.Empty, none, out string _), Is.True);
-            Assert.That(evaluator.Evaluate("narrative.fact.gate_open", none, out string why), Is.False);
-            Assert.That(why, Does.Contain("no logic system"));
-            Assert.That(new NullActionRunner().TryRun("x", none), Is.False);
-            Assert.That(new NullConversationStarter().TryStart("npc", "graph"), Is.False);
+            const string gate = "0b44e6c8-4c3c-483f-9202-57dc00024a20";
+            var interaction = new InteractionContext(gate, 0, 77, 0, new EmptySlots());
+            EvaluationContext converted = EvaluationContext.FromInteraction(interaction);
+            Assert.That(converted.ActorKey, Is.EqualTo(77));
+            Assert.That(converted.SubjectAuthoringId, Is.EqualTo(gate));
+            Assert.That(converted.SubjectKey, Is.EqualTo(AuthoringIds.StableKey(gate)), "a missing target key is derived from the id");
+            Assert.That(converted.Subject, Is.EqualTo(AuthoringIds.TargetIdFor(gate)));
+            Assert.That(EvaluationContext.FromInteraction(null).SubjectKey, Is.EqualTo(0));
+            Assert.That(EvaluationContext.FromInteraction(new InteractionContext("x", 5, 1, 0, new EmptySlots())).SubjectKey, Is.EqualTo(5));
             Assert.That(new NotConfiguredMediaGateway().RequestVoiceLine(new VoiceGenerationRequest("g", 1, "Maren", "hi", string.Empty)).Status,
                 Is.EqualTo(MediaGenerationStatus.NotConfigured));
             var messages = new NullNarrativeMessageSink();
@@ -347,6 +349,15 @@ namespace GameCore.Rules.Gameplay.Tests.Narrative
             var view = new NullDialogueView();
             Assert.That(view.Last.Active, Is.False);
             Assert.That(EvaluationContext.ForSubject("not-an-id").SubjectKey, Is.EqualTo(0));
+        }
+
+        private sealed class EmptySlots : ICommittedSlotReader
+        {
+            public bool TryRead(TargetId target, OwnerId owner, SlotId slot, out int value)
+            {
+                value = 0;
+                return false;
+            }
         }
     }
 }

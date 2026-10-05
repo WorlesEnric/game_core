@@ -22,6 +22,9 @@ namespace GameCore.Gameplay.Dialogue
         [AuthorField(Type = "authoringId", Doc = "Default speaker entity authoring id (optional).")]
         [SerializeField] private string speakerEntityId = string.Empty;
 
+        [AuthorField(Doc = "The NPC graph reference this graph answers to (NpcDefinition.dialogueGraph, e.g. dialogue.maren; optional).")]
+        [SerializeField] private string npcGraphRef = string.Empty;
+
         [AuthorField(Min = 0, Doc = "Entry node index.")]
         [SerializeField] private int entry;
 
@@ -37,6 +40,8 @@ namespace GameCore.Gameplay.Dialogue
 
         public string SpeakerEntityId => speakerEntityId;
 
+        public string NpcGraphRef => npcGraphRef;
+
         public int Entry => entry;
 
         public IReadOnlyList<DialogueNodeEntry> Nodes => nodes;
@@ -49,6 +54,9 @@ namespace GameCore.Gameplay.Dialogue
             speakerEntityId = defaultSpeakerEntityId ?? string.Empty;
             entry = entryNode;
         }
+
+        /// <summary>Names the NPC graph reference (P1.3's NpcDefinition.dialogueGraph) that starts this graph.</summary>
+        public void AnswerTo(string graphRef) => npcGraphRef = graphRef ?? string.Empty;
 
         /// <summary>Appends a node and returns its index.</summary>
         public int AddNode(DialogueNodeEntry node)

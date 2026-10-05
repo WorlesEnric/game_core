@@ -25,7 +25,6 @@ using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
-using Seams = GameCore.Gameplay.Contracts.Narrative;
 
 namespace GameCore.Gameplay.Logic
 {
@@ -323,7 +322,8 @@ namespace GameCore.Gameplay.Logic
 
         public NarrativeDelivery Delivery { get; }
 
-        public INarrativeFeedbackSink Feedback { get; private set; } = new NullNarrativeFeedbackSink();
+        /// <summary>Where playAudio actions go (P1.3's IFeedbackSink; P1.5 renders the cues).</summary>
+        public IFeedbackSink Feedback { get; private set; } = new NullFeedbackSink();
 
         public INarrativeMessageSink Messages { get; private set; } = new NullNarrativeMessageSink();
 
@@ -337,7 +337,7 @@ namespace GameCore.Gameplay.Logic
         public IReadOnlyList<IPresentationBinder> Presenters => presenters;
 
         /// <summary>Replaces the playAudio sink (P1.5).</summary>
-        public void UseFeedback(INarrativeFeedbackSink sink) => Feedback = sink ?? throw new ArgumentNullException(nameof(sink));
+        public void UseFeedback(IFeedbackSink sink) => Feedback = sink ?? throw new ArgumentNullException(nameof(sink));
 
         /// <summary>Replaces the showMessage sink (P1.5).</summary>
         public void UseMessages(INarrativeMessageSink sink) => Messages = sink ?? throw new ArgumentNullException(nameof(sink));
@@ -394,14 +394,14 @@ namespace GameCore.Gameplay.Logic
 
         public GameApplicationRoot Root => World.Root;
 
-        /// <summary>IConditionEvaluator over committed state (P1.3's interactables call it).</summary>
+        /// <summary>P1.3's IConditionEvaluator over committed state (hand it to InteractionModule.Conditions).</summary>
         public NarrativeConditionEvaluator Conditions { get; }
 
-        /// <summary>IActionRunner (P1.3's interactables call it after a committed use).</summary>
+        /// <summary>P1.3's IActionRunner (hand it to InteractionDispatcher.Actions).</summary>
         public NarrativeActionRunner Actions { get; }
 
-        /// <summary>IConversationStarter, set by the dialogue module (null-object until then).</summary>
-        public Seams.IConversationStarter Conversations { get; set; } = new Seams.NullConversationStarter();
+        /// <summary>P1.3's IConversationStarter, set by the dialogue module (hand it to NpcConversationDispatcher).</summary>
+        public IConversationStarter Conversations { get; set; } = new NullConversationStarter();
 
         public IExplainSource Explain => Runtime.Explain;
 

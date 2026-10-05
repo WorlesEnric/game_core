@@ -7,8 +7,9 @@
 // in authoring-id order, the fact table in name order, and a SHA-256 content hash. Write stamps every definition and
 // writes <set>.content.asset next to the set when anything changed; Verify recomputes and compares, writing nothing.
 //
-// Each narrative package's own extension adds its plugin's catalog registrations when the world has narrative content,
-// so a world without a content set bakes to exactly the P1.1 catalog.
+// The catalog registrations of the four narrative plugins come in through P1.3's IGameplayCatalogContributor (one
+// contributor per package: LogicCatalogContributor here, DialogueCatalogContributor, QuestCatalogContributor and
+// InventoryCatalogContributor in the other packages), whether or not the world has a content set.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -89,20 +90,6 @@ namespace GameCore.Gameplay.Logic.Editor
 
         /// <summary>True when the world has narrative content (the narrative packages then contribute their catalog entries).</summary>
         public static bool HasContent(WorldDefinition world) => FindContentSets(world, out List<string> _).Count > 0;
-
-        /// <summary>Adds one narrative plugin's catalog registrations.</summary>
-        public static void AddCatalog(GameplayBakeContext context, NarrativeCatalogSet set)
-        {
-            for (int i = 0; i < set.Schemas.Count; i++)
-            {
-                context.AddSchema(set.Schemas[i]);
-            }
-
-            for (int i = 0; i < set.Entries.Count; i++)
-            {
-                context.AddEntry(set.Entries[i]);
-            }
-        }
 
         /// <summary>Every package converter, found with TypeCache.</summary>
         public static List<INarrativeContentConverter> Converters()
@@ -366,6 +353,13 @@ namespace GameCore.Gameplay.Logic.Editor
         }
     }
 
+    /// <summary>The logic plugin's catalog registrations (P1.3's catalog contribution seam).</summary>
+    public sealed class LogicCatalogContributor : IGameplayCatalogContributor
+    {
+        public GameplayCatalogContribution Contribution =>
+            new GameplayCatalogContribution("com.gamecore.gameplay.logic", NarrativeCatalogNames.Logic.Schemas, NarrativeCatalogNames.Logic.Entries);
+    }
+
     /// <summary>The logic package's bake extension: the content manifest and the logic plugin's catalog registrations.</summary>
     public sealed class LogicBakeExtension : IGameplayBakeExtension
     {
@@ -373,7 +367,7 @@ namespace GameCore.Gameplay.Logic.Editor
 
         public string ExtensionId => "gameplay.narrative.logic";
 
-        public void Contribute(GameplayBakeContext context)
+        public void Plan(GameplayBakeContext context)
         {
             List<GameplayContentSet> sets = NarrativeBake.FindContentSets(context.World, out List<string> paths);
             if (sets.Count == 0)
@@ -388,7 +382,6 @@ namespace GameCore.Gameplay.Logic.Editor
                 return;
             }
 
-            NarrativeBake.AddCatalog(context, NarrativeCatalogNames.Logic);
             var diagnostics = new List<GameplayDiagnostic>();
             NarrativeBakePlan plan = NarrativeBake.Plan(sets[0], paths[0], context.World.AuthoringId, diagnostics);
             for (int i = 0; i < diagnostics.Count; i++)
@@ -415,7 +408,7 @@ namespace GameCore.Gameplay.Logic.Editor
             }
         }
 
-        /// <summary>The plan of the last Contribute (EditMode tests read the models from it).</summary>
+        /// <summary>The plan of the last Plan (EditMode tests read the models from it).</summary>
         public static NarrativeBakePlan? PlanOf(GameplayBakeContext context) =>
             context.TryGet(PlanKey, out NarrativeBakePlan? plan) ? plan : null;
     }

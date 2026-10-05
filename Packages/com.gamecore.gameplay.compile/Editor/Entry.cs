@@ -3,13 +3,14 @@
 // Bake reads one WorldDefinition and its region scenes (WorldReader), validates the model (BakeValidator), and only
 // when nothing is wrong writes, in this order:
 //
-//   1. <dir>/Catalog/<World>Catalog.catalog.json   the gamecore.catalog-description/1 document
+//   1. <dir>/Catalog/<World>Catalog.catalog.json   the gamecore.catalog-description/1 document (static registrations
+//                                                  plus every discovered IGameplayCatalogContributor, P1.3 seam)
 //   2. <generated dir>/<World>Catalog.g.cs (+ coverage)  through the content compiler (CatalogGenerator)
 //   3. <dir>/Catalog/<World>.bake.json            the canonical bake report, carrying the catalog fingerprint
 //   4. <dir>/<World>.manifest.asset               the RegionManifest the runtime boots from
 //   5. the content stamp of every entity definition (only when it changed)
-//   6. the outputs of every bake extension (IGameplayBakeExtension, P1.4), which also add their plugins' catalog
-//      registrations to the description in step 1 and are verified by Verify
+//   6. the outputs of every bake extension (IGameplayBakeExtension, P1.4: the narrative content manifest), planned
+//      together with the bake's diagnostics and checked by Verify
 //
 // Everything is sorted by authoring id, every id is GUID-derived and every text file is LF/UTF-8 without BOM, so two
 // bakes of the same content are byte-identical. Verify recomputes everything in memory and compares it with the files
@@ -322,7 +323,7 @@ namespace GameCore.Gameplay.Compile
             WorldReadResult read = WorldReader.Read(world);
             var diagnostics = new List<GameplayDiagnostic>(read.Diagnostics);
             diagnostics.AddRange(BakeValidator.Validate(read.World));
-            GameplayBakeContext extensions = GameplayBakeExtensions.Contribute(world, paths, read.World);
+            GameplayBakeContext extensions = GameplayBakeExtensions.Plan(world, paths, read.World);
             diagnostics.AddRange(extensions.Diagnostics);
             if (diagnostics.Count > 0)
             {
@@ -330,7 +331,7 @@ namespace GameCore.Gameplay.Compile
                 return null;
             }
 
-            string description = CatalogDescriptionWriter.Write(read.World, paths.Naming, extensions.Schemas, extensions.Entries);
+            string description = CatalogDescriptionWriter.Write(read.World, paths.Naming, CatalogContributionDiscovery.Discover());
             CatalogCompilationResult compiled = CatalogDescriptionReader.Read(description);
             if (!compiled.Succeeded)
             {

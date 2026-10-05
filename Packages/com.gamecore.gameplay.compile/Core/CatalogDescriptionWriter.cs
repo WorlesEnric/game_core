@@ -2,7 +2,8 @@
 //
 // The description is the content compiler's input. It always declares the static gameplay registrations
 // (GameplayCatalogNames: the two plugin factories, the two command systems, the recipe appliers, the slot layouts and
-// the five one-field schemas) and, per baked entity definition, one LayoutApply registration
+// the five one-field schemas), then the registrations gameplay packages contribute (GameplayCatalogContribution, P1.3
+// seam, in package-name order), and, per baked entity definition, one LayoutApply registration
 // `gameplay.recipe.<authoring id>` whose implementation id is the first sixteen bytes of the definition's content hash.
 // A definition edit therefore changes exactly one registration and the catalog fingerprint, which is how a running
 // game detects a stale catalog (GP-CMP-004), and adding a definition adds exactly one registration.
@@ -49,20 +50,15 @@ namespace GameCore.Gameplay.Compile
         /// <summary>The stable name (without prefix) of a definition's recipe registration.</summary>
         public static string RecipeName(string definitionId) => GameplayCatalogNames.DefinitionRecipePrefix + definitionId;
 
-        public static string Write(BakedWorld world, CatalogNaming naming) =>
-            Write(world, naming, Array.Empty<GameplayCatalogNames.SchemaName>(), Array.Empty<GameplayCatalogNames.EntryName>());
+        public static string Write(BakedWorld world, CatalogNaming naming) => Write(world, naming, null);
 
         /// <summary>
-        /// The description with extra registrations of plugin packages (GameplayBakeExtensions, P1.4): extra schemas
-        /// follow the static ones, extra entries follow the static ones of their group. With none it is byte-identical
-        /// to <see cref="Write(BakedWorld, CatalogNaming)"/>.
+        /// The description with the registrations of <paramref name="contributions"/> (P1.3 seam: gameplay packages that
+        /// add kernel plugins) appended after the static ones, in package-name order.
         /// </summary>
-        public static string Write(
-            BakedWorld world,
-            CatalogNaming naming,
-            IReadOnlyList<GameplayCatalogNames.SchemaName> extraSchemas,
-            IReadOnlyList<GameplayCatalogNames.EntryName> extraEntries)
+        public static string Write(BakedWorld world, CatalogNaming naming, IEnumerable<GameplayCatalogContribution>? contributions)
         {
+            IReadOnlyList<GameplayCatalogContribution> extra = GameplayCatalogContributions.Canonical(contributions);
             if (world == null)
             {
                 throw new ArgumentNullException(nameof(world));
@@ -84,15 +80,9 @@ namespace GameCore.Gameplay.Compile
 
             json.BeginArray("schemas");
             var schemas = new List<GameplayCatalogNames.SchemaName>(GameplayCatalogNames.Schemas);
-            if (extraSchemas != null)
+            for (int c = 0; c < extra.Count; c++)
             {
-                schemas.AddRange(extraSchemas);
-            }
-
-            var entries = new List<GameplayCatalogNames.EntryName>(GameplayCatalogNames.StaticEntries);
-            if (extraEntries != null)
-            {
-                entries.AddRange(extraEntries);
+                schemas.AddRange(extra[c].Schemas);
             }
 
             for (int i = 0; i < schemas.Count; i++)
@@ -122,6 +112,12 @@ namespace GameCore.Gameplay.Compile
             json.EndArray();
 
             json.BeginArray("groups");
+            var entries = new List<GameplayCatalogNames.EntryName>(GameplayCatalogNames.StaticEntries);
+            for (int c = 0; c < extra.Count; c++)
+            {
+                entries.AddRange(extra[c].Entries);
+            }
+
             WriteStaticGroup(json, entries, "PluginFactory", "PluginRegistrations", "PluginKeys", "TryGetPlugin");
             WriteStaticGroup(json, entries, "SystemFactory", "SystemRegistrations", "SystemKeys", "TryGetSystem");
             WriteStaticGroup(json, entries, "LayoutApply", "LayoutRegistrations", "LayoutKeys", "TryGetLayout");
@@ -152,7 +148,8 @@ namespace GameCore.Gameplay.Compile
             json.BeginArray("entries");
         }
 
-        private static void WriteStaticGroup(CanonicalJson json, IReadOnlyList<GameplayCatalogNames.EntryName> entries, string kind, string table, string keys, string lookup)
+        private static void WriteStaticGroup(
+            CanonicalJson json, IReadOnlyList<GameplayCatalogNames.EntryName> entries, string kind, string table, string keys, string lookup)
         {
             WriteGroupHeader(json, kind, table, keys, lookup);
             for (int i = 0; i < entries.Count; i++)

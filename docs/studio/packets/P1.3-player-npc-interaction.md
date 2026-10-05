@@ -1,0 +1,196 @@
+# P1.3 player-npc-interaction
+
+Plugin catalog rows 3 (player), 4 (NPCs) and 5 (interaction), plus the Hollowmere content that uses them.
+Branch `worktree-agent-a1885e5fa6b8a204c` (base main 444e266). Host clone: `myubuntu:~/wkspace/gc-studio/p1.3`.
+
+## Delivered
+
+| Area | Where |
+| --- | --- |
+| Pure rules (int32 mm / mrad / ms, SADR-004) | `Packages/com.gamecore.rules.gameplay/Runtime/{Player,Npc,Interaction}/` |
+| dotnet tests | `dotnet/tests/GameCore.Rules.Gameplay.Tests/{Player,Npc,Interaction}/` |
+| Contracts (additive) | `Packages/com.gamecore.gameplay.contracts/Runtime/{PlayerContracts,NpcContracts,InteractionContracts,PlayerNpcInteractionCodes}.cs` |
+| Player plugin | `Packages/com.gamecore.gameplay.player/` |
+| NPC plugin | `Packages/com.gamecore.gameplay.npc/` |
+| Interaction plugin | `Packages/com.gamecore.gameplay.interaction/` |
+| Hollowmere content and authoring | `games/hollowmere/Assets/Hollowmere/{Player,Npcs,Interactables}/`, `Regions/*.unity` (added to), `Boot/` |
+| EditMode and PlayMode tests | `games/hollowmere/Assets/Hollowmere/Tests/P1_3/` |
+
+### Player (`com.gamecore.gameplay.player`)
+
+- **Slots** (`player.owner`): `posX`, `posY`, `posZ` (mm), `yaw` (mrad), `stamina`, `focus` (interactable/NPC key, -1 = none), `regionKey`, `regenDelayMs`.
+- **Routes**: `player.move{dx,dy,dz,yaw,flags}`, `player.interact`, `player.setFocus{key}`.
+- **Events**: `PlayerMoved`, `PlayerFocusChanged{old,new}`, `PlayerInteractRequested{focus,playerKey}`.
+- **System**: `PlayerCommandSystem` is a DisableAutoCreation managed system. It applies `PlayerRules.Move`, which clamps the move, drains stamina while running, pays for jumps and regenerates stamina. When the world kernel moved the traveller to another region it first adopts `world.pos` and `world.region`, so portal travel and restores win.
+- **Authoritative-pose loop**:
+  1. `PlayerInputAdapter` (an `IGameplayInputSource`) samples an `IPlayerIntentSource`: `InputSystemIntentSource` in play, a synthetic source in tests.
+  2. It asks an `IPlayerMotionResolver` where the committed pose may move this frame.
+  3. It submits that displacement as one `player.move`.
+  4. In play the resolver is `PlayerLocomotion`. The CharacterController rig is teleported to the committed pose, then a ground probe runs, then gravity, jump and `Move`.
+  5. Headless, in EditMode, or without a rig, a kinematic resolver is used instead.
+  6. Views and the camera follow the committed slots only (P-045).
+- **Binders** (all headless-safe):
+  - `PlayerLocomotion`: rig, view follow, footsteps by stride.
+  - `ThirdPersonCamera`: orbit, sphere-cast collision, pitch limits.
+  - `InteractionFocus`: ranks `IInteractableSource` candidates from committed slots with `FocusRules.Rank` and submits `player.setFocus`; the prompt goes to `IPromptPresenter`.
+  - `PortalProbe`: box-tests every `RegionPortal` against the committed pose and calls `RequestPortalTravel`; it replaces the physics trigger, which never fires headless.
+- **Authoring**: `PlayerDefinition` (`player.definition`), `InputProfile` (`player.inputProfile`).
+- **Editor tools**: `player.setSpawn`, `player.tuneMovement`, `player.setCamera`, `player.validator`.
+- **Entry point**: `PlayerSession.Install(world, extension, camera, intents?, rigPrefab?)`.
+
+### NPC (`com.gamecore.gameplay.npc`)
+
+- **Slots** (`npc.owner`): `state`, `behaviour`, `patrolIndex`, `mood`, `schedulePhase`, `targetX/Z`, logical `posX/Z`, `yaw`, `timerMs`.
+- **Routes**: `npc.setBehaviour`, `npc.goTo`, `npc.face`, `npc.setMood`, `npc.converse{holdMs}`.
+- **Events**: `NpcArrived{index,x,z,prevState}`, `NpcStateChanged`, `NpcUpdated`.
+- **System**: `NpcCommandSystem` advances every NPC with `NpcLogicalMover` in key order, every step. NPCs in non-resident regions advance every `unloadedStride` steps by the same amount of time. Schedules use step-derived world time: `step * stepMs + startOffset`, modulo the day length.
+- **Binders**:
+  - `NavMeshAgentBinder` (`updatePosition=false`): the view steers to the logical pose and warps when it drifts more than 1.5 m.
+  - `NpcAnimatorBinder`.
+  - `NpcBubbleBinder`: name and state bubble.
+- **Talk**: `NpcConversationDispatcher` handles `PlayerInteractRequested` on an NPC key.
+  1. It calls `IConversationStarter.TryStart(npcAuthoringId, graphRef)` (P1.4).
+  2. It submits `npc.converse` and faces the player.
+  3. With the default `NullConversationStarter`, it logs `GP-NPC-020` and holds converse for `converseSeconds`.
+- **Authoring**: `NpcDefinition`, `BehaviourDefinition` (idle, patrol or custom), `ScheduleDefinition` (phases by world time), `NpcRoster`.
+- **Editor tools**: `npc.addAt`, `npc.setPatrol`, `npc.setSchedule`, `npc.setBehaviour`, `npc.validator`.
+
+### Interaction (`com.gamecore.gameplay.interaction`)
+
+- **Slots** (`interaction.owner`): `interact.state`, `uses`, `cooldownMs`, `occupants`.
+- **Routes**: `interact.use{actor,actorKey,target}`, `interact.setState`, `interact.trigger`.
+- **Events**: `InteractionSucceeded{actor,new,uses,old}`, `InteractionRefused{actor,code,state}`, `InteractableStateChanged`, `TriggerEntered`, `TriggerExited`.
+- **Refusals are committed events**, readable on the event stream and replayable. The codes are:
+  - `interaction.locked`, `interaction.cooling-down`, `interaction.uses-exhausted`, `interaction.broken`, `interaction.already-used`
+  - `interaction.condition-failed`, `interaction.out-of-range`, `interaction.unchanged`, `interaction.invalid-state`, `interaction.not-interactable`
+- **Condition refs**: evaluated through `IConditionEvaluator`, which P1.4 provides.
+  - While Locked, the condition is the unlock condition. With the null evaluator, a locked door stays locked.
+  - Otherwise it is a precondition.
+- **Action refs and cues**: they run after a committed success through `IActionRunner` and `IFeedbackSink`.
+- **Presentation**: `InteractableBinder`, `InteractionDispatcher` (turns `player.interact` on a focused interactable into `interact.use`), `TriggerVolume`, `ProximityInteractor`.
+- **Authoring**: `InteractableDefinition` (door, gate, examinable, point or switch; states, prompts, refs), `TriggerDefinition`, `InteractionRoster`.
+- **Editor tools**: `interaction.addDoor`, `interaction.addExaminable`, `interaction.addTrigger`, `interaction.setStates`, `interaction.linkCondition`, `interaction.validator`.
+
+### Hollowmere content (made by `HollowmereGameplayAuthoring.AuthorAndBake`, idempotent)
+
+- **Player**:
+  - `Player/Player.prefab` is the rig: a CharacterController and a camera target.
+  - `Player/InputProfile.asset` points at `Input/Player.inputactions`.
+  - In `Player/PlayerDefinition.asset`, the entity is P1.1's Traveller, so the traveller is the player.
+- **NPCs** use `Npcs/Prefabs/NpcCapsule.prefab`, a capsule with a name bubble.
+  - **Maren** (village): patrols (-8,-12) ↔ (-8,-4).
+  - **Odd** (village): idle.
+  - **Pip** (village): day/night schedule `PipDayNight`, with a 120 s day. Patrol from 0 s, idle at (10,0,-2) from 60 s.
+  - **Hale** (marsh): idle.
+  - **Belfry Echo** (belfry): idle.
+- **NavMesh**: one `NavMeshSurface` per region scene. It covers an 80×30×80 volume and is built from render meshes, with entity proxies excluded. The data lives in `Npcs/NavMesh/<Region>.asset`.
+- **Interactables**:
+  - **Village Well**: an examinable bucket at the well.
+  - **Causeway Gate**: in the marsh, 2.8 m from the village-portal arrival. It is locked by `narrative.fact.gate_open`.
+  - **Drowned Bell**: a switch on P1.1's bell.
+- **Boot**:
+  - `Boot.unity`'s `GameBoot` boots the three world extensions and installs the sessions.
+  - `Boot/Debug/**` is removed: the DebugTravelKeys and DebugFlyCamera components and their asmdef.
+  - `EditorBuildSettings` contains Boot plus the three regions.
+
+## Seams in P1.1 code (integrator: please review)
+
+Edits outside the P1.3 paths, kept minimal and additive:
+
+1. **World extensions**: `Packages/com.gamecore.gameplay.world/Runtime/GameplayWorldExtension.cs` is new.
+   - It adds `IGameplayWorldExtension`, `GameplayPluginMount`, `GameplaySystem` and `GameplayEventCursor`.
+   - `WorldBuilder` changes:
+     - `WorldBuildOptions` gains `Extensions`, `MaxEventsPerStep` and `MaxRetainedEvents`.
+     - `Build` validates each extension and adds its routes, lanes, readers, plugins and systems, with a boot step `mount-<name>`.
+     - `Attach` calls `extension.Attach(world, seedSlots)`.
+   - `GameplayWorld.Shutdown` detaches extensions in reverse order.
+   - Without extensions, the world is unchanged.
+2. **Catalog contributions**:
+   - `Packages/com.gamecore.gameplay.compile/Core/CatalogContributions.cs` is new: `IGameplayCatalogContributor` and `GameplayCatalogContributions.Canonical`.
+   - `Editor/CatalogContributionDiscovery.cs` is new and discovers contributors through TypeCache.
+   - `CatalogDescriptionWriter.Write(world, naming, contributions)` is a new overload.
+   - `Entry` passes the discovered contributions.
+   - Packages add their schemas and entries to the generated catalog without editing the compiler.
+3. **Removing `Boot/Debug`** (a deliverable) required editing `World/Editor/HollowmereWorldAuthoring.cs` and its asmdef.
+   - The using directive, the two debug components and the asmdef reference are removed.
+
+P1.2 restore: every P1.3 state is a slot.
+
+- `IGameplayWorldExtension.Attach(world, seedSlots: false)` never writes slots.
+- The player system adopts the world pose on a region mismatch, so a restored `world.pos` wins.
+
+## Decisions
+
+- **Player identity**: the player is P1.1's Traveller placement, so focus, streaming and portals stay the world's.
+  - `PlayerDefinition.entity` must equal the focus entity's definition, or GP-PLY-001 / GP-PLY-007 is raised.
+  - The CharacterController rig is a separate, non-authored prefab used only for move resolution.
+- **Focus from committed slots**, not physics, so it is identical headless, in EditMode and in replays.
+- **Use range before lock**: an out-of-range use of a locked gate reports `interaction.out-of-range`.
+- **Commands per frame**: the adapter submits one `player.move` per frame, including an idle move. A command-driven world therefore steps once per frame while the player exists, and NPCs and cooldowns advance with it.
+- **No Run action yet**: `Input/Player.inputactions` (not a P1.3 path) has no `Run` action. `InputSystemIntentSource` looks it up optionally, so running is reachable from scripted sources only until P1.5 or the input owner adds a `Run` binding.
+- **World time** for schedules is derived from the step, not wall time, so it is deterministic and restorable.
+
+## Verified
+
+All runs were on myubuntu at commit c32ed10, with result files under `~/wkspace/gc-studio/p1.3/`. Nothing ran on the Mac.
+
+| Run | Command | Result |
+| --- | --- | --- |
+| Rules | `studio/tools/dotnet-test.sh p1.3 dotnet/tests/GameCore.Rules.Gameplay.Tests` | **123/123 passed** in 0.5 s of test time (215 s wall). P1.3 tests: Player 28 (PlayerRules 13, PlanarMath 10, FocusRules 5), Npc 13, Interaction 12. TRX: `dotnet/tests/GameCore.Rules.Gameplay.Tests/TestResults/p13-rules-final.trx` |
+| Content (run 1) | `unity-compile.sh p1.3 games/hollowmere --tests EditMode --filter P13ContentTests` | **3/3 passed**. Author+bake took 13.3 s: 3 regions, 14 definitions, 37 entities, catalog fingerprint `e3e57cf7…61e`. The produced content was committed on the host as 4dfc5cc. |
+| EditMode (all) | `unity-compile.sh p1.3 games/hollowmere --tests EditMode` | **33/33 passed** (P1.1 16, P1.3 17), 4.6 s of test time. Log: `.unity-logs/games_hollowmere-editmode-20261005T094037-a1.log`. The working tree stayed clean afterwards: the re-bake was byte-identical and `Verify` passed. |
+| PlayMode (all) | `unity-compile.sh p1.3 games/hollowmere --tests PlayMode` | **2/2 passed**: P1.1 `ThreeRegionLoop` (3.8 s) and `PlayerWalkAndInteract` (0.37 s). Log: `.unity-logs/games_hollowmere-playmode-20261005T093812-a1.log` |
+
+`PlayerWalkAndInteract` boots the real `Boot.unity` with a synthetic intent source and the frame time pinned to 0.1 s. It checks, in order:
+
+1. Two fresh boots given 90 scripted frames (walk, run, jump, turn) produce identical player slots on every frame.
+2. Walking to the well makes the focus pick it, the prompt reads "Examine the well", and Interact commits `InteractionSucceeded` with `uses = 1`.
+3. Maren commits `NpcArrived`.
+4. Running to the village→marsh portal with the CharacterController triggers travel through `PortalProbe` (65 frames), and the player adopts the marsh region.
+5. `interact.use` on the Causeway Gate is refused with `interaction.locked`.
+6. There is one sanctioned pump per frame: 81 frames and 81 pumps, with no duplicate or bypass and no load failures.
+
+The B-FRAME timings below are informational. They come from batchmode -nographics, so they are not player frame times:
+
+| B-FRAME | Time |
+| --- | --- |
+| boot | 136 / 138 ms (17 / 16 frames) |
+| scripted run | 90 frames in 24 / 27 ms |
+| run to portal and travel | 65 frames in 18 ms |
+| `resolutions` (CharacterController) | 170 |
+| `ungrounded` | 2, while the marsh scene loaded under the arrival pose |
+
+The EditMode P1.3 tests cover:
+
+- **Content**: authoring and bake, `Verify`, a NavMesh in every region, Boot and build settings.
+- **Kernel**, on the baked world with the three extensions:
+  - seeding;
+  - player moves equal `PlayerRules.Move` step by step;
+  - NPC patrol equals `NpcLogicalMover.Advance` frame by frame, with `NpcArrived`;
+  - unloaded NPCs advance at the stride;
+  - talking to Odd with the null conversation starter;
+  - well success, an out-of-range refusal and a locked-gate refusal;
+  - an attach without seeding leaves the slots alone.
+- **Tools**: tuneMovement, setCamera, setPatrol, setSchedule, setStates and linkCondition round trips through Undo, plus refusals by GP code.
+  - Placements stay inside the region only.
+  - Every definition and tool carries the mirror attributes.
+  - The three catalog contributors are discovered, in package order.
+
+## Left open
+
+- **Run binding**: `Input/Player.inputactions` needs a `Run` action, owned by the input owner or P1.5. Until it exists, running is scripted only.
+- **P1.4**:
+  - Install an `IConditionEvaluator` that answers `narrative.fact.gate_open`; the gate then opens.
+  - Install an `IConversationStarter` in place of the null one.
+  - Supply `IActionRunner`. The bell has no action ref yet; link one with `interaction.linkCondition`.
+- **P1.5**:
+  - `IPromptPresenter` (prompt UI).
+  - `IFeedbackSink` (cues).
+  - `IFootstepSink` (footstep audio).
+  - `IUiIntentSink` (pause, journal and inventory intents raised by the adapter).
+- **NPC visuals**:
+  - The NPC capsules have no Animator controller, so `NpcAnimatorBinder` is idle until one exists.
+  - The NavMesh is baked once. Re-bake it by deleting `Npcs/NavMesh/<Region>.asset` and re-running the authoring.
+- **Rig ownership**: the rig prefab is not an authored entity. If Studio should edit it, it needs an Authorable wrapper.
+- **Pip's day/night switch** (60 s at 20 ms per step = 3000 steps) is covered by the rules tests. The PlayMode test does not wait for it.
+- **Host runs**: the host is heavily loaded. The first content run hung twice in Editor start-up and passed on a retry, as described in docs/operator/editor-hang.md.

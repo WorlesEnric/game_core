@@ -20,7 +20,7 @@ namespace Hollowmere.Generated
     public static class HollowmereCatalogCoverage
     {
         /// <summary>Number of generated registration entries this exercise resolves by key.</summary>
-        public const int RegistrationCount = 34;
+        public const int RegistrationCount = 32;
 
         /// <summary>
         /// Resolves every generated registration through the table's own generated lookup method and checks that a
@@ -32,7 +32,7 @@ namespace Hollowmere.Generated
             failure = string.Empty;
             int exercised = 0;
 
-            // LayoutRegistrations (LayoutApply, 15 entries)
+            // LayoutRegistrations (LayoutApply, 8 entries)
             for (int i = 0; i < HollowmereCatalog.LayoutRegistrations.Length; i++)
             {
                 FactoryKey key = HollowmereCatalog.LayoutRegistrations[i].Key;
@@ -45,7 +45,7 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // PluginRegistrations (PluginFactory, 6 entries)
+            // PluginRegistrations (PluginFactory, 5 entries)
             for (int i = 0; i < HollowmereCatalog.PluginRegistrations.Length; i++)
             {
                 FactoryKey key = HollowmereCatalog.PluginRegistrations[i].Key;
@@ -58,7 +58,7 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // RecipeRegistrations (LayoutApply, 7 entries)
+            // RecipeRegistrations (LayoutApply, 14 entries)
             for (int i = 0; i < HollowmereCatalog.RecipeRegistrations.Length; i++)
             {
                 FactoryKey key = HollowmereCatalog.RecipeRegistrations[i].Key;
@@ -71,7 +71,7 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // SystemRegistrations (SystemFactory, 6 entries)
+            // SystemRegistrations (SystemFactory, 5 entries)
             for (int i = 0; i < HollowmereCatalog.SystemRegistrations.Length; i++)
             {
                 FactoryKey key = HollowmereCatalog.SystemRegistrations[i].Key;
@@ -97,125 +97,100 @@ namespace Hollowmere.Generated
             failure = string.Empty;
             int exercised = 0;
 
-            // gameplay.logic.serializer.domain-rule (schema 0646108e2c9b02c3de2817bd30ee7e0f version 1)
+            // gameplay.npc.serializer.config (schema 1f1b4fc9193f8e1733bc1db6de6d0134 version 1)
             {
-                HollowmereCatalog.LogicRuleDomainSerializer serializer = new HollowmereCatalog.LogicRuleDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.LogicRuleDomainValue(9U));
+                HollowmereCatalog.NpcConfigSerializer serializer = new HollowmereCatalog.NpcConfigSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.NpcConfigValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
-                    failure = "gameplay.logic.serializer.domain-rule: the generated document failed validation with " + validateError.ToString();
+                    failure = "gameplay.npc.serializer.config: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.LogicRuleDomainValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.NpcConfigValue read, out EnvelopeError readError))
                 {
-                    failure = "gameplay.logic.serializer.domain-rule: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    failure = "gameplay.npc.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
                 }
 
                 if (!(read.SchemaVersion == 9U))
                 {
-                    failure = "gameplay.logic.serializer.domain-rule: a declared field did not survive the generated round trip";
+                    failure = "gameplay.npc.serializer.config: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
                 exercised++;
             }
 
-            // gameplay.quest.serializer.domain-quest (schema 38d15112d28acadb6465397519364557 version 1)
+            // gameplay.interaction.serializer.domain-interactable (schema 2169d0baa981113cde1059c43dd1fd13 version 1)
             {
-                HollowmereCatalog.QuestDomainSerializer serializer = new HollowmereCatalog.QuestDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.QuestDomainValue(9U));
+                HollowmereCatalog.InteractionDomainSerializer serializer = new HollowmereCatalog.InteractionDomainSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.InteractionDomainValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
-                    failure = "gameplay.quest.serializer.domain-quest: the generated document failed validation with " + validateError.ToString();
+                    failure = "gameplay.interaction.serializer.domain-interactable: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.QuestDomainValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.InteractionDomainValue read, out EnvelopeError readError))
                 {
-                    failure = "gameplay.quest.serializer.domain-quest: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    failure = "gameplay.interaction.serializer.domain-interactable: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
                 }
 
                 if (!(read.SchemaVersion == 9U))
                 {
-                    failure = "gameplay.quest.serializer.domain-quest: a declared field did not survive the generated round trip";
+                    failure = "gameplay.interaction.serializer.domain-interactable: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
                 exercised++;
             }
 
-            // gameplay.dialogue.serializer.domain-graph (schema 3afb67258a3dda2def658105a47fc26a version 1)
+            // gameplay.player.serializer.config (schema 591e4c60589dd3cc036f8ef9b6b36583 version 1)
             {
-                HollowmereCatalog.DialogueGraphDomainSerializer serializer = new HollowmereCatalog.DialogueGraphDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.DialogueGraphDomainValue(9U));
+                HollowmereCatalog.PlayerConfigSerializer serializer = new HollowmereCatalog.PlayerConfigSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.PlayerConfigValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
-                    failure = "gameplay.dialogue.serializer.domain-graph: the generated document failed validation with " + validateError.ToString();
+                    failure = "gameplay.player.serializer.config: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.DialogueGraphDomainValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.PlayerConfigValue read, out EnvelopeError readError))
                 {
-                    failure = "gameplay.dialogue.serializer.domain-graph: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    failure = "gameplay.player.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
                 }
 
                 if (!(read.SchemaVersion == 9U))
                 {
-                    failure = "gameplay.dialogue.serializer.domain-graph: a declared field did not survive the generated round trip";
+                    failure = "gameplay.player.serializer.config: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
                 exercised++;
             }
 
-            // gameplay.logic.serializer.config (schema 4b5734672d486b6a91b9802f79a74e09 version 1)
+            // gameplay.interaction.serializer.config (schema 6c702eda39f2982117ee001ce9516d37 version 1)
             {
-                HollowmereCatalog.LogicConfigSerializer serializer = new HollowmereCatalog.LogicConfigSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.LogicConfigValue(9U));
+                HollowmereCatalog.InteractionConfigSerializer serializer = new HollowmereCatalog.InteractionConfigSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.InteractionConfigValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
-                    failure = "gameplay.logic.serializer.config: the generated document failed validation with " + validateError.ToString();
+                    failure = "gameplay.interaction.serializer.config: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.LogicConfigValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.InteractionConfigValue read, out EnvelopeError readError))
                 {
-                    failure = "gameplay.logic.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    failure = "gameplay.interaction.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
                 }
 
                 if (!(read.SchemaVersion == 9U))
                 {
-                    failure = "gameplay.logic.serializer.config: a declared field did not survive the generated round trip";
-                    return exercised;
-                }
-
-                exercised++;
-            }
-
-            // gameplay.inventory.serializer.domain-world-item (schema 4edba65df9246fdbed60cdc2ed88b816 version 1)
-            {
-                HollowmereCatalog.WorldItemDomainSerializer serializer = new HollowmereCatalog.WorldItemDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.WorldItemDomainValue(9U));
-                if (!serializer.TryValidate(written, out EnvelopeError validateError))
-                {
-                    failure = "gameplay.inventory.serializer.domain-world-item: the generated document failed validation with " + validateError.ToString();
-                    return exercised;
-                }
-
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.WorldItemDomainValue read, out EnvelopeError readError))
-                {
-                    failure = "gameplay.inventory.serializer.domain-world-item: the generated serializer failed to re-read its own document with " + readError.ToString();
-                    return exercised;
-                }
-
-                if (!(read.SchemaVersion == 9U))
-                {
-                    failure = "gameplay.inventory.serializer.domain-world-item: a declared field did not survive the generated round trip";
+                    failure = "gameplay.interaction.serializer.config: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
@@ -247,31 +222,6 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // gameplay.quest.serializer.config (schema 7b9ec8ce112e6fc07530c359352c41ff version 1)
-            {
-                HollowmereCatalog.QuestConfigSerializer serializer = new HollowmereCatalog.QuestConfigSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.QuestConfigValue(9U));
-                if (!serializer.TryValidate(written, out EnvelopeError validateError))
-                {
-                    failure = "gameplay.quest.serializer.config: the generated document failed validation with " + validateError.ToString();
-                    return exercised;
-                }
-
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.QuestConfigValue read, out EnvelopeError readError))
-                {
-                    failure = "gameplay.quest.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
-                    return exercised;
-                }
-
-                if (!(read.SchemaVersion == 9U))
-                {
-                    failure = "gameplay.quest.serializer.config: a declared field did not survive the generated round trip";
-                    return exercised;
-                }
-
-                exercised++;
-            }
-
             // gameplay.entities.serializer.domain-entity (schema 7e9832f89fea7930769a8da69c625eb6 version 1)
             {
                 HollowmereCatalog.EntityDomainSerializer serializer = new HollowmereCatalog.EntityDomainSerializer();
@@ -297,50 +247,25 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // gameplay.inventory.serializer.domain-inventory (schema 95008c0e39a2fe353887dc478908698d version 1)
+            // gameplay.player.serializer.domain-player (schema ae4de82841137791564467a29c5bee08 version 1)
             {
-                HollowmereCatalog.InventoryDomainSerializer serializer = new HollowmereCatalog.InventoryDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.InventoryDomainValue(9U));
+                HollowmereCatalog.PlayerDomainSerializer serializer = new HollowmereCatalog.PlayerDomainSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.PlayerDomainValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
-                    failure = "gameplay.inventory.serializer.domain-inventory: the generated document failed validation with " + validateError.ToString();
+                    failure = "gameplay.player.serializer.domain-player: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.InventoryDomainValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.PlayerDomainValue read, out EnvelopeError readError))
                 {
-                    failure = "gameplay.inventory.serializer.domain-inventory: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    failure = "gameplay.player.serializer.domain-player: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
                 }
 
                 if (!(read.SchemaVersion == 9U))
                 {
-                    failure = "gameplay.inventory.serializer.domain-inventory: a declared field did not survive the generated round trip";
-                    return exercised;
-                }
-
-                exercised++;
-            }
-
-            // gameplay.dialogue.serializer.domain-state (schema 9723cd74e6b88c9031b8fa1d1767395e version 1)
-            {
-                HollowmereCatalog.DialogueStateDomainSerializer serializer = new HollowmereCatalog.DialogueStateDomainSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.DialogueStateDomainValue(9U));
-                if (!serializer.TryValidate(written, out EnvelopeError validateError))
-                {
-                    failure = "gameplay.dialogue.serializer.domain-state: the generated document failed validation with " + validateError.ToString();
-                    return exercised;
-                }
-
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.DialogueStateDomainValue read, out EnvelopeError readError))
-                {
-                    failure = "gameplay.dialogue.serializer.domain-state: the generated serializer failed to re-read its own document with " + readError.ToString();
-                    return exercised;
-                }
-
-                if (!(read.SchemaVersion == 9U))
-                {
-                    failure = "gameplay.dialogue.serializer.domain-state: a declared field did not survive the generated round trip";
+                    failure = "gameplay.player.serializer.domain-player: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
@@ -366,56 +291,6 @@ namespace Hollowmere.Generated
                 if (!(read.SchemaVersion == 9U))
                 {
                     failure = "gameplay.world.serializer.config: a declared field did not survive the generated round trip";
-                    return exercised;
-                }
-
-                exercised++;
-            }
-
-            // gameplay.dialogue.serializer.config (schema c02eb03e6678a1720470abee65689dbe version 1)
-            {
-                HollowmereCatalog.DialogueConfigSerializer serializer = new HollowmereCatalog.DialogueConfigSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.DialogueConfigValue(9U));
-                if (!serializer.TryValidate(written, out EnvelopeError validateError))
-                {
-                    failure = "gameplay.dialogue.serializer.config: the generated document failed validation with " + validateError.ToString();
-                    return exercised;
-                }
-
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.DialogueConfigValue read, out EnvelopeError readError))
-                {
-                    failure = "gameplay.dialogue.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
-                    return exercised;
-                }
-
-                if (!(read.SchemaVersion == 9U))
-                {
-                    failure = "gameplay.dialogue.serializer.config: a declared field did not survive the generated round trip";
-                    return exercised;
-                }
-
-                exercised++;
-            }
-
-            // gameplay.inventory.serializer.config (schema cd2052cbaa743793e449cb926eb1c8fd version 1)
-            {
-                HollowmereCatalog.InventoryConfigSerializer serializer = new HollowmereCatalog.InventoryConfigSerializer();
-                byte[] written = serializer.Serialize(new HollowmereCatalog.InventoryConfigValue(9U));
-                if (!serializer.TryValidate(written, out EnvelopeError validateError))
-                {
-                    failure = "gameplay.inventory.serializer.config: the generated document failed validation with " + validateError.ToString();
-                    return exercised;
-                }
-
-                if (!serializer.TryDeserialize(written, out HollowmereCatalog.InventoryConfigValue read, out EnvelopeError readError))
-                {
-                    failure = "gameplay.inventory.serializer.config: the generated serializer failed to re-read its own document with " + readError.ToString();
-                    return exercised;
-                }
-
-                if (!(read.SchemaVersion == 9U))
-                {
-                    failure = "gameplay.inventory.serializer.config: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 
@@ -466,6 +341,31 @@ namespace Hollowmere.Generated
                 if (!(read.SchemaVersion == 9U))
                 {
                     failure = "gameplay.world.serializer.domain-placement: a declared field did not survive the generated round trip";
+                    return exercised;
+                }
+
+                exercised++;
+            }
+
+            // gameplay.npc.serializer.domain-npc (schema fe98b27ba9917261398580b36f108750 version 1)
+            {
+                HollowmereCatalog.NpcDomainSerializer serializer = new HollowmereCatalog.NpcDomainSerializer();
+                byte[] written = serializer.Serialize(new HollowmereCatalog.NpcDomainValue(9U));
+                if (!serializer.TryValidate(written, out EnvelopeError validateError))
+                {
+                    failure = "gameplay.npc.serializer.domain-npc: the generated document failed validation with " + validateError.ToString();
+                    return exercised;
+                }
+
+                if (!serializer.TryDeserialize(written, out HollowmereCatalog.NpcDomainValue read, out EnvelopeError readError))
+                {
+                    failure = "gameplay.npc.serializer.domain-npc: the generated serializer failed to re-read its own document with " + readError.ToString();
+                    return exercised;
+                }
+
+                if (!(read.SchemaVersion == 9U))
+                {
+                    failure = "gameplay.npc.serializer.domain-npc: a declared field did not survive the generated round trip";
                     return exercised;
                 }
 

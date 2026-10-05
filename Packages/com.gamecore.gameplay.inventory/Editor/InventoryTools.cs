@@ -126,25 +126,10 @@ namespace GameCore.Gameplay.Inventory.Editor
         public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
     }
 
-    /// <summary>Adds the inventory plugin's catalog registrations to a world with narrative content.</summary>
-    public sealed class InventoryBakeExtension : IGameplayBakeExtension
+    /// <summary>The inventory plugin's catalog registrations (P1.3's catalog contribution seam).</summary>
+    public sealed class InventoryCatalogContributor : IGameplayCatalogContributor
     {
-        public string ExtensionId => "gameplay.narrative.inventory";
-
-        public void Contribute(GameplayBakeContext context)
-        {
-            if (NarrativeBake.HasContent(context.World))
-            {
-                NarrativeBake.AddCatalog(context, NarrativeCatalogNames.Inventory);
-            }
-        }
-
-        public void Write(GameplayBakeContext context, ICollection<string> changedFiles)
-        {
-        }
-
-        public void Verify(GameplayBakeContext context, ICollection<GameplayDiagnostic> mismatches)
-        {
-        }
+        public GameplayCatalogContribution Contribution =>
+            new GameplayCatalogContribution("com.gamecore.gameplay.inventory", NarrativeCatalogNames.Inventory.Schemas, NarrativeCatalogNames.Inventory.Entries);
     }
 }

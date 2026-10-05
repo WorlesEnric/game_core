@@ -14,7 +14,6 @@ using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Inventory;
 using GameCore.Rules.Gameplay.Logic;
-using Seams = GameCore.Gameplay.Contracts.Narrative;
 
 namespace GameCore.Gameplay.Inventory
 {
@@ -203,10 +202,10 @@ namespace GameCore.Gameplay.Inventory
     public sealed class WorldItemBinder : IPresentationBinder
     {
         private readonly NarrativeRuntime runtime;
-        private readonly Seams.IActionRunner actions;
+        private readonly NarrativeActionRunner actions;
         private readonly Dictionary<int, int> lastTaken = new Dictionary<int, int>();
 
-        public WorldItemBinder(NarrativeRuntime runtime, Seams.IActionRunner actions)
+        public WorldItemBinder(NarrativeRuntime runtime, NarrativeActionRunner actions)
         {
             this.runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             this.actions = actions ?? throw new ArgumentNullException(nameof(actions));

@@ -282,25 +282,10 @@ namespace GameCore.Gameplay.Dialogue.Editor
         public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
     }
 
-    /// <summary>Adds the dialogue plugin's catalog registrations to a world with narrative content.</summary>
-    public sealed class DialogueBakeExtension : IGameplayBakeExtension
+    /// <summary>The dialogue plugin's catalog registrations (P1.3's catalog contribution seam).</summary>
+    public sealed class DialogueCatalogContributor : IGameplayCatalogContributor
     {
-        public string ExtensionId => "gameplay.narrative.dialogue";
-
-        public void Contribute(GameplayBakeContext context)
-        {
-            if (NarrativeBake.HasContent(context.World))
-            {
-                NarrativeBake.AddCatalog(context, NarrativeCatalogNames.Dialogue);
-            }
-        }
-
-        public void Write(GameplayBakeContext context, ICollection<string> changedFiles)
-        {
-        }
-
-        public void Verify(GameplayBakeContext context, ICollection<GameplayDiagnostic> mismatches)
-        {
-        }
+        public GameplayCatalogContribution Contribution =>
+            new GameplayCatalogContribution("com.gamecore.gameplay.dialogue", NarrativeCatalogNames.Dialogue.Schemas, NarrativeCatalogNames.Dialogue.Entries);
     }
 }

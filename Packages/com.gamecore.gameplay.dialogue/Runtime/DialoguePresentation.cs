@@ -1,7 +1,8 @@
 // GameCore.Gameplay.Dialogue - the runtime half: conversation starter, presenter and voice line player (P1.4).
 //
-//   DialogueRunner     IConversationStarter (P1.3's NPC talk interaction calls TryStart) plus Choose/Advance/Interrupt:
-//                      each submits one typed dialogue command; nothing changes until the next pump commits it
+//   DialogueRunner     P1.3's IConversationStarter (NpcConversationDispatcher calls TryStart with the NPC's placed
+//                      entity and its NpcDefinition.dialogueGraph ref, e.g. dialogue.maren) plus Start/Choose/Advance/
+//                      Interrupt: each submits one typed dialogue command; nothing changes until the next pump commits it
 //   DialoguePresenter  reads the committed dialogue slots after each pump and pushes a DialogueViewModel to the
 //                      IDialogueView (P1.5 renders it) whenever the conversation serial changes
 //   VoiceLinePlayer    on a new committed line with a voice clip, asks the IVoiceLinePlayer to play it; stops it when
@@ -17,12 +18,11 @@ using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Dialogue;
 using GameCore.Rules.Gameplay.Logic;
-using Seams = GameCore.Gameplay.Contracts.Narrative;
 
 namespace GameCore.Gameplay.Dialogue
 {
     /// <summary>Starts and drives conversations with typed commands.</summary>
-    public sealed class DialogueRunner : Seams.IConversationStarter
+    public sealed class DialogueRunner : IConversationStarter
     {
         private readonly NarrativeRuntime runtime;
 
@@ -36,20 +36,36 @@ namespace GameCore.Gameplay.Dialogue
         public int Refused { get; private set; }
 
         /// <summary>
-        /// Submits dialogue.start for <paramref name="dialogueGraphRef"/> (authoring id or name) with the NPC as speaker
-        /// and the player as listener. False when the graph is unknown or the command was not admitted.
+        /// P1.3's form: starts the conversation and asks the NPC to hold converse for its definition's default hold (the
+        /// conversation itself runs until the player ends it; the NPC hold is presentation only).
         /// </summary>
-        public bool TryStart(string npcAuthoringId, string dialogueGraphRef)
+        public ConversationStart TryStart(string npcAuthoringId, string graphRef)
         {
-            if (!runtime.Models.TryResolve(dialogueGraphRef ?? string.Empty, out int key) || !runtime.Models.TryGetGraph(key, out DialogueGraphModel? graph) || graph == null)
+            bool started = Start(npcAuthoringId, graphRef, out string detail);
+            return new ConversationStart(started, 0, detail);
+        }
+
+        /// <summary>
+        /// Submits dialogue.start for <paramref name="graphRef"/> (authoring id, name, or the NPC graph ref such as
+        /// dialogue.maren) with the NPC as speaker and the player as listener. False when the graph is unknown or the
+        /// command was not admitted.
+        /// </summary>
+        public bool Start(string npcAuthoringId, string graphRef) => Start(npcAuthoringId, graphRef, out string _);
+
+        public bool Start(string npcAuthoringId, string graphRef, out string detail)
+        {
+            if (!runtime.Models.TryResolve(graphRef ?? string.Empty, out int key) || !runtime.Models.TryGetGraph(key, out DialogueGraphModel? graph) || graph == null)
             {
                 Refused++;
+                detail = NarrativeDiagnosticCodes.GraphUnknown + ": no baked dialogue graph '" + graphRef + "' (NPC " + npcAuthoringId + ")";
                 return false;
             }
 
             int speaker = NarrativeRefs.EntityKey(npcAuthoringId);
-            return Count(runtime.Submitter.Submit(DialogueIds.StartRoute, runtime.Index.StateTarget, DialogueIds.StartCommand,
+            bool admitted = Count(runtime.Submitter.Submit(DialogueIds.StartRoute, runtime.Index.StateTarget, DialogueIds.StartCommand,
                 NarrativeCommands.DialogueStart(graph.Key, speaker != 0 ? speaker : graph.SpeakerKey, runtime.ActorKey)));
+            detail = admitted ? string.Empty : "dialogue.start for " + graph.Name + " was not admitted";
+            return admitted;
         }
 
         public bool Choose(int option) =>

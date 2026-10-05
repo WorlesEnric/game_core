@@ -27,6 +27,10 @@ namespace GameCore.Gameplay.Dialogue
                 {
                     conversion.Models.AddGraph(model, graph.AuthoringId);
                     conversion.Models.Alias(graph.DefinitionName, model.Key);
+                    if (graph.NpcGraphRef.Length > 0)
+                    {
+                        conversion.Models.Alias(graph.NpcGraphRef, model.Key);
+                    }
                 }
             }
         }

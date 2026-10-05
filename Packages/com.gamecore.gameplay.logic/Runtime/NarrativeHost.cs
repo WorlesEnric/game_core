@@ -309,7 +309,7 @@ namespace GameCore.Gameplay.Logic
             string source = "actions:" + set.Name;
             if (action.Kind == ActionKind.PlayAudio)
             {
-                runtime.Feedback.OnFeedback(new NarrativeFeedbackCue(action.Text, source, values[2]));
+                runtime.Feedback.OnFeedback(new FeedbackCue(runtime.Index.EntityAuthoringIdOf(values[2]), action.Text, 0, 0, 0, 0));
             }
             else
             {

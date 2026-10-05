@@ -1,17 +1,17 @@
-// GameCore.Gameplay.Contracts.Narrative - the seams between the narrative plugins (P1.4) and the packages around them.
+// GameCore.Gameplay.Contracts.Narrative - the narrative plugins' own seams (P1.4); the interaction seams are P1.3's.
 //
-//   IConversationStarter   implemented by the dialogue package; the NPC package (P1.3) starts a conversation with it
-//   IConditionEvaluator    implemented by the logic package; interaction (P1.3) and dialogue evaluate condition refs
-//   IActionRunner          implemented by the logic package; interaction (P1.3) runs action refs after a committed use
-//   INarrativeFeedbackSink audio/VFX cues of logic actions (playAudio) - P1.5 renders them
-//   INarrativeMessageSink  messages of logic actions (showMessage) - P1.5 shows them; the null sink records a diagnostic
+// P1.3's contracts (GameCore.Gameplay.Contracts) declare IConversationStarter, IConditionEvaluator, IActionRunner and
+// IFeedbackSink; the dialogue package implements the first, the logic package the next two, and playAudio actions go to
+// an IFeedbackSink. What only the narrative plugins need lives here:
+//
+//   EvaluationContext      the evaluator's and runner's richer context (actor, subject key/id/target);
+//                          FromInteraction converts P1.3's InteractionContext
+//   INarrativeMessageSink  messages of logic actions (showMessage) - P1.5 shows them; the null sink records them
 //   IVoiceLinePlayer       voice-line requests of the dialogue presenter - P1.5 plays them
 //   IExplainSource         the logic package's explain trace (last evaluations and why they failed) for Studio
 //   IMediaGenerationGateway  dialogue.generateVoice delegates to it; the default answers NotConfigured until P2.2
 //
-// The first three keep the signatures of the P1.4 brief. P1.3 declares interfaces with the same simple names in
-// GameCore.Gameplay.Contracts; these live in the Narrative namespace so both compile side by side, and the narrative
-// packages always name them through a namespace alias. Every seam has a null object that is the default.
+// Every seam has a null object that is the default.
 #nullable enable
 using System.Collections.Generic;
 using GameCore.Contracts;
@@ -43,6 +43,20 @@ namespace GameCore.Gameplay.Contracts.Narrative
 
         public TargetId Subject { get; }
 
+        /// <summary>The context of one of P1.3's interactions: the interactable as subject, its actor key as actor.</summary>
+        public static EvaluationContext FromInteraction(InteractionContext? context)
+        {
+            if (context == null)
+            {
+                return None;
+            }
+
+            string id = context.TargetAuthoringId;
+            bool valid = AuthoringIds.IsValid(id);
+            int key = context.TargetKey != 0 ? context.TargetKey : (valid ? AuthoringIds.StableKey(id) : 0);
+            return new EvaluationContext(context.ActorKey, key, id, default(TargetId), valid ? AuthoringIds.TargetIdFor(id) : default(TargetId));
+        }
+
         /// <summary>No actor and no subject: conditions about the player and world state only.</summary>
         public static EvaluationContext None => new EvaluationContext(0, 0, string.Empty, default(TargetId), default(TargetId));
 
@@ -60,118 +74,6 @@ namespace GameCore.Gameplay.Contracts.Narrative
                 subjectAuthoringId,
                 default(TargetId),
                 AuthoringIds.TargetIdFor(subjectAuthoringId));
-        }
-    }
-
-    /// <summary>Starts a conversation with an NPC. Implemented by the dialogue package.</summary>
-    public interface IConversationStarter
-    {
-        /// <param name="npcAuthoringId">Authoring id of the NPC's placed entity (may be empty for a scripted speaker).</param>
-        /// <param name="dialogueGraphRef">Authoring id (or asset name) of the dialogue graph.</param>
-        bool TryStart(string npcAuthoringId, string dialogueGraphRef);
-    }
-
-    /// <summary>The default conversation starter: no dialogue system; nothing starts.</summary>
-    public sealed class NullConversationStarter : IConversationStarter
-    {
-        public int Requests { get; private set; }
-
-        public bool TryStart(string npcAuthoringId, string dialogueGraphRef)
-        {
-            Requests++;
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Evaluates a condition reference over committed state: a ConditionSetDefinition (authoring id or name), or a fact
-    /// shorthand <c>narrative.fact.&lt;name&gt;</c> (true when non-zero) / <c>narrative.fact.&lt;name&gt;&gt;=N</c>.
-    /// </summary>
-    public interface IConditionEvaluator
-    {
-        /// <summary>True when the conditions hold; otherwise false with the first failed condition described.</summary>
-        bool Evaluate(string conditionSetRef, in EvaluationContext ctx, out string failedCondition);
-    }
-
-    /// <summary>The default evaluator: an empty reference holds, any other reference fails ("no logic system").</summary>
-    public sealed class NullConditionEvaluator : IConditionEvaluator
-    {
-        public int Evaluations { get; private set; }
-
-        public bool Evaluate(string conditionSetRef, in EvaluationContext ctx, out string failedCondition)
-        {
-            Evaluations++;
-            if (string.IsNullOrEmpty(conditionSetRef))
-            {
-                failedCondition = string.Empty;
-                return true;
-            }
-
-            failedCondition = "no logic system is installed to evaluate '" + conditionSetRef + "'";
-            return false;
-        }
-    }
-
-    /// <summary>Runs an action reference (an ActionSetDefinition, or a built-in action such as <c>inventory.pickup</c>).</summary>
-    public interface IActionRunner
-    {
-        /// <summary>
-        /// True when the run was handed to the world (a command was admitted); the actions take effect in later steps,
-        /// exactly once, through the logic plugin's outbox.
-        /// </summary>
-        bool TryRun(string actionSetRef, in EvaluationContext ctx);
-    }
-
-    /// <summary>The default action runner: runs nothing.</summary>
-    public sealed class NullActionRunner : IActionRunner
-    {
-        public int Runs { get; private set; }
-
-        public bool TryRun(string actionSetRef, in EvaluationContext ctx)
-        {
-            Runs++;
-            return false;
-        }
-    }
-
-    /// <summary>One audio/VFX cue raised by a logic action (presentation only).</summary>
-    public sealed class NarrativeFeedbackCue
-    {
-        public NarrativeFeedbackCue(string cue, string source, int subjectKey)
-        {
-            Cue = cue ?? string.Empty;
-            Source = source ?? string.Empty;
-            SubjectKey = subjectKey;
-        }
-
-        /// <summary>The cue id, e.g. <c>ambience.belfry.calm</c>.</summary>
-        public string Cue { get; }
-
-        /// <summary>What raised it, e.g. <c>rule:echo_freed_ambience</c>.</summary>
-        public string Source { get; }
-
-        public int SubjectKey { get; }
-    }
-
-    /// <summary>Receives the cues of playAudio actions (P1.5).</summary>
-    public interface INarrativeFeedbackSink
-    {
-        void OnFeedback(NarrativeFeedbackCue cue);
-    }
-
-    /// <summary>The default feedback sink: keeps the cues it saw.</summary>
-    public sealed class NullNarrativeFeedbackSink : INarrativeFeedbackSink
-    {
-        private readonly List<NarrativeFeedbackCue> cues = new List<NarrativeFeedbackCue>();
-
-        public IReadOnlyList<NarrativeFeedbackCue> Cues => cues;
-
-        public void OnFeedback(NarrativeFeedbackCue cue)
-        {
-            if (cue != null && cues.Count < 256)
-            {
-                cues.Add(cue);
-            }
         }
     }
 

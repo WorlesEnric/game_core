@@ -18,9 +18,9 @@ MonoBehaviour:
   startRegionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
   focusEntityId: 90f935f8-12d5-4278-b336-107b081e1dfd
   preloadNeighbours: 0
-  catalogFingerprint: 7156618c6a5392f94df3cd3dffa2ff68eb59773bf834416bf9fd4d4bb6f1a332
+  catalogFingerprint: e3e57cf7d58feed0ad8ea28cf9d615374b7da08a9e5719fec0caccc3cf71b61e
   catalogTypeName: Hollowmere.Generated.HollowmereCatalog
-  bakeReportHash: 0900dc7ab295b4fc42e60f575c2b758fac5840905455179689005d58deb44d6d
+  bakeReportHash: 0a2e5f89cb7250f5b645107842296bf6a3cdbab0acffac0f9f9ba87c14ac9ff4
   regions:
   - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
     name: Thornwick Village
@@ -102,20 +102,55 @@ MonoBehaviour:
     definition: {fileID: 11400000, guid: 0bdcbdc77a8fe6e64bb1d135d9b9ff27, type: 2}
     contentStamp: 9bb98190c06b04c187d9218a2833c5d9e8e897c8b8aca14ba0a14934db56223f
     variantCount: 1
+  - authoringId: 19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54
+    name: WellBucketEntity
+    definition: {fileID: 11400000, guid: 30fd77047fcfeb484a281c97ce32f960, type: 2}
+    contentStamp: dc5f5bc786d47bc83aa1de6af4ab4af6663d6a0e00456f0a834e6bc8c200719e
+    variantCount: 1
+  - authoringId: 2a8a3d76-2dea-4c2c-88a3-13be92ea473f
+    name: BelfryEchoEntity
+    definition: {fileID: 11400000, guid: da0512e079b8b8726926a321501301dd, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    variantCount: 1
+  - authoringId: 2e855e96-41a6-4b39-b5a0-56319b43c989
+    name: PipEntity
+    definition: {fileID: 11400000, guid: 2970f8269becd59aea9228da6f3781cc, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    variantCount: 1
   - authoringId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
     name: Crate
     definition: {fileID: 11400000, guid: 7904be7b2e80d2fb4b0a170cae2fcc57, type: 2}
     contentStamp: 2adc9cde53c408f520951781ead083f132e2c76e1f5ff51ade48fd3b659a0bb3
     variantCount: 2
+  - authoringId: 68d2519f-2a40-439b-be2d-63d16581cd06
+    name: HaleEntity
+    definition: {fileID: 11400000, guid: 8925e4c338fef6c91879d6e770181bdf, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    variantCount: 1
   - authoringId: acefbaad-340d-466f-9d66-214afb15646f
     name: Stone
     definition: {fileID: 11400000, guid: 59f550ace0092d66a8c292df84a423e7, type: 2}
     contentStamp: 2759395ed49c610d4d09103d84b5abb76b0f76215ff23007dd3235c5e5cb73a1
     variantCount: 1
+  - authoringId: ada7a792-63fb-480a-9445-3b61f5dece1b
+    name: CausewayGateEntity
+    definition: {fileID: 11400000, guid: e4e13730b5bfc49b5a30784b04d65ffa, type: 2}
+    contentStamp: e6330a261e4598deb22c11b653a1cc80eb232241573d02d9e4a94983a4e7c6ae
+    variantCount: 1
+  - authoringId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
+    name: OddEntity
+    definition: {fileID: 11400000, guid: c85061092bd3b67cc84cae5e7bd3a3bb, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    variantCount: 1
   - authoringId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
     name: Reed
     definition: {fileID: 11400000, guid: 772847e89f0fd59f59429d20ade552e8, type: 2}
     contentStamp: bc8b0ed35828c5586db8b83e229a6b12fad7bc3a93a4ee6aca9e577fc428c371
+    variantCount: 1
+  - authoringId: ce503024-4b28-4194-8865-8eec9dd6d8a7
+    name: MarenEntity
+    definition: {fileID: 11400000, guid: 1a0820b9c500f9195a0c9ab649618e27, type: 2}
+    contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
     variantCount: 1
   - authoringId: d7081228-f497-4a3d-811e-0bb0e3c72807
     name: Signpost
@@ -131,6 +166,19 @@ MonoBehaviour:
     y: 0
     z: -16000
     yaw: 524
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 508f7d78-7b44-42e8-8028-be4b2c9ee4b0
+    name: Pip
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 2e855e96-41a6-4b39-b5a0-56319b43c989
+    x: 5000
+    y: 0
+    z: 3000
+    yaw: 1571
     variant: 0
     scaleMilli: 1000
     visible: 1
@@ -255,6 +303,19 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: da525107-c2c1-4626-ac08-5058a1e01c06
+    name: Maren
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: ce503024-4b28-4194-8865-8eec9dd6d8a7
+    x: -8000
+    y: 0
+    z: -8000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: e0981979-d2fd-4cbc-8261-2e2f83eab806
     name: Lantern West
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -268,6 +329,19 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: e3baad87-1923-4823-82fe-69c3cc399bf4
+    name: Village Well
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54
+    x: 0
+    y: 0
+    z: -1900
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: e74544f2-0c65-40fa-aec5-5126b86754d1
     name: Stone 3
     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
@@ -276,6 +350,19 @@ MonoBehaviour:
     y: 0
     z: -5663
     yaw: 5655
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: feae7fb3-57f9-4711-8549-04fa8f161ac2
+    name: Odd
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
+    x: -8000
+    y: 0
+    z: 6000
+    yaw: 3142
     variant: 0
     scaleMilli: 1000
     visible: 1
@@ -328,6 +415,19 @@ MonoBehaviour:
     y: 0
     z: 193757
     yaw: 785
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: a91b8bb5-cbd4-4872-871b-118e53cc465d
+    name: Belfry Echo
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: 2a8a3d76-2dea-4c2c-88a3-13be92ea473f
+    x: 100000
+    y: 0
+    z: 191000
+    yaw: 0
     variant: 0
     scaleMilli: 1000
     visible: 1
@@ -398,6 +498,19 @@ MonoBehaviour:
     visible: 1
     alive: 1
     overrides: []
+  - authoringId: 0b44e6c8-4c3c-483f-9202-57dc00024a20
+    name: Causeway Gate
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: ada7a792-63fb-480a-9445-3b61f5dece1b
+    x: 169500
+    y: 0
+    z: 2000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
   - authoringId: 26d3a9df-8316-4c10-8c33-b82ba8f68d38
     name: Reed 4
     regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
@@ -419,6 +532,19 @@ MonoBehaviour:
     y: 0
     z: -14000
     yaw: 1893
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 3f2e423d-ec9f-4051-8713-662180be4db9
+    name: Hale
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 68d2519f-2a40-439b-be2d-63d16581cd06
+    x: 196000
+    y: 0
+    z: 4000
+    yaw: 4712
     variant: 0
     scaleMilli: 1000
     visible: 1

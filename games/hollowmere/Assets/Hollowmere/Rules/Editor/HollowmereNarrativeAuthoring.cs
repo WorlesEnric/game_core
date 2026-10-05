@@ -9,7 +9,7 @@
 //                                                 stall (the gate key for three old coins), Old Coins x3 in the village,
 //                                                 the Bell Clapper in the marsh, the marsh loot table
 //   Assets/Hollowmere/Quests/DrownedBell.asset    four stages; stage 1 is passed by paying Odd or persuading him
-//   Assets/Hollowmere/Rules/*.asset               condition sets, action sets, rules, the content set
+//   Assets/Hollowmere/Rules/*.asset               condition sets, action sets, six rules, the content set
 //   Assets/Hollowmere/Rules/HollowmereContent.content.asset   bake output (content manifest)
 //
 // Every asset carries a fixed authoring id, so re-authoring after a delete reproduces the same keys. The script is
@@ -17,8 +17,10 @@
 // changed). Graphs, the quest and the stock are authored through the P1.4 tools (dialogue.addLine/addChoice/
 // linkCondition, quest.addStage/addObjective/linkReward, inventory.grantStarting/placeItem/setStock, logic.addRule).
 //
-// Hollowmere has no gate or NPC entities yet (P1.3 adds NPCs): the NPCs speak by name, and the marsh gate is the fixed
-// subject id GateId that the gate interaction (P1.3's interactable, or the PlayMode test) passes to the evaluator.
+// The NPCs and interactables are P1.3's: every graph speaks for a placed NPC entity and answers to its NpcDefinition's
+// dialogueGraph ref (dialogue.maren, ...); the Causeway Gate is locked by narrative.fact.gate_open, which the
+// GateKeyOpensGate rule sets once the player holds the gate key; ringing the bell is the RingBellOnUse rule on P1.3's
+// successful interaction with the Drowned Bell (condition HasBellClapper).
 #nullable enable
 using System.Collections.Generic;
 using GameCore.Gameplay.Compile;
@@ -154,7 +156,7 @@ namespace Hollowmere.NarrativeEditor
                 ActionSetDefinition openGate = Actions("OpenGate", "42f181e3-ef95-4ce3-82e7-2c2d0b79d494",
                     ActionEntry.Of(ActionKind.SetFact, gateOpen, 1),
                     ActionEntry.Text(ActionKind.PlayAudio, "sfx.gate.creak"));
-                Actions("RingBell", "0207a68e-bc01-457e-a2d4-69736a0658f0",
+                ActionSetDefinition ringBell = Actions("RingBell", "0207a68e-bc01-457e-a2d4-69736a0658f0",
                     ActionEntry.Of(ActionKind.SetFact, bellRung, 1),
                     ActionEntry.Text(ActionKind.PlayAudio, "sfx.bell.toll"));
                 ActionSetDefinition marenIntro = Actions("MarenIntro", "266d333d-2e6d-47e6-8e71-8004cf7f4aca",
@@ -169,9 +171,6 @@ namespace Hollowmere.NarrativeEditor
                     ActionEntry.Of(ActionKind.SetFact, echoFreed, 1));
                 ActionSetDefinition pipAsk = Actions("PipAsked", "ca415c6a-b951-4501-b70f-594d657bb5a9",
                     ActionEntry.Of(ActionKind.SetFact, pipAsked, 1));
-                _ = openGate;
-                _ = hasGateKey;
-                _ = hasClapper;
 
                 DialogueGraphDefinition maren = Maren(bellRungSet, marenIntro, marenTrust);
                 Odd(threeCoins, marenTrustsSet, oddPersuade);
@@ -179,7 +178,7 @@ namespace Hollowmere.NarrativeEditor
                 Hale(gateOpenSet);
                 Echo(bellRungSet, echoFree);
                 Quest(maren);
-                Rules();
+                Rules(hasGateKey, openGate, hasClapper, ringBell);
             }
 
             private void Facts()
@@ -232,7 +231,7 @@ namespace Hollowmere.NarrativeEditor
 
             private DialogueGraphDefinition Maren(ConditionSetDefinition bellRungSet, ActionSetDefinition intro, ActionSetDefinition trust)
             {
-                DialogueGraphDefinition g = Graph("Maren", "8e52f233-3797-4396-89c4-24f00fceef8a", "Maren");
+                DialogueGraphDefinition g = Graph("Maren", "8e52f233-3797-4396-89c4-24f00fceef8a", "Maren", HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef);
                 int branch = Node(g, DialogueNodeKind.Branch, string.Empty);
                 DialogueTools.LinkCondition(g, branch, bellRungSet);
                 int greet = DialogueTools.AddLine(g, "Traveller! The Drowned Bell has been silent since the flood took the old belfry.");
@@ -254,7 +253,7 @@ namespace Hollowmere.NarrativeEditor
 
             private void Odd(ConditionSetDefinition threeCoins, ConditionSetDefinition marenTrustsSet, ActionSetDefinition persuade)
             {
-                DialogueGraphDefinition g = Graph("Odd", "aa779457-076d-496c-84b5-72019a826681", "Odd");
+                DialogueGraphDefinition g = Graph("Odd", "aa779457-076d-496c-84b5-72019a826681", "Odd", HollowmereNarrative.OddId, HollowmereNarrative.OddGraphRef);
                 int offer = DialogueTools.AddLine(g, "The gate key? Three old coins, and no haggling.");
                 int choice = DialogueTools.AddChoice(g, new List<string> { "Here are three coins.", "Maren sent me. She trusts me.", "Not now." }, null, offer);
                 DialogueTools.LinkCondition(g, choice, threeCoins, 0);
@@ -270,7 +269,7 @@ namespace Hollowmere.NarrativeEditor
 
             private void Pip(ActionSetDefinition ask)
             {
-                DialogueGraphDefinition g = Graph("Pip", "dc88c507-3b24-44ea-8eb8-fcb35dcf733e", "Pip");
+                DialogueGraphDefinition g = Graph("Pip", "dc88c507-3b24-44ea-8eb8-fcb35dcf733e", "Pip", HollowmereNarrative.PipId, HollowmereNarrative.PipGraphRef);
                 int hello = DialogueTools.AddLine(g, "Did you ever hear the bell? I never have.");
                 int choice = DialogueTools.AddChoice(g, new List<string> { "Where is the clapper?", "Bye, Pip." }, null, hello);
                 int askNode = ActionNode(g, ask, -1);
@@ -281,7 +280,7 @@ namespace Hollowmere.NarrativeEditor
 
             private void Hale(ConditionSetDefinition gateOpenSet)
             {
-                DialogueGraphDefinition g = Graph("Hale", "a82ac490-3bac-45c7-9e27-65a59d7cc6cf", "Hale");
+                DialogueGraphDefinition g = Graph("Hale", "a82ac490-3bac-45c7-9e27-65a59d7cc6cf", "Hale", HollowmereNarrative.HaleId, HollowmereNarrative.HaleGraphRef);
                 int branch = Node(g, DialogueNodeKind.Branch, string.Empty);
                 DialogueTools.LinkCondition(g, branch, gateOpenSet);
                 int shut = DialogueTools.AddLine(g, "The marsh gate stays shut. Odd has the key.");
@@ -293,7 +292,7 @@ namespace Hollowmere.NarrativeEditor
 
             private void Echo(ConditionSetDefinition bellRungSet, ActionSetDefinition free)
             {
-                DialogueGraphDefinition g = Graph("BelfryEcho", "b9b85886-492d-40a3-9edb-02c9d9a417b0", "Belfry Echo");
+                DialogueGraphDefinition g = Graph("BelfryEcho", "b9b85886-492d-40a3-9edb-02c9d9a417b0", "Belfry Echo", HollowmereNarrative.EchoId, HollowmereNarrative.EchoGraphRef);
                 int branch = Node(g, DialogueNodeKind.Branch, string.Empty);
                 DialogueTools.LinkCondition(g, branch, bellRungSet);
                 int silent = DialogueTools.AddLine(g, "...silent... the bell is silent...");
@@ -326,8 +325,22 @@ namespace Hollowmere.NarrativeEditor
                 Save(quest);
             }
 
-            private void Rules()
+            private void Rules(ConditionSetDefinition hasGateKey, ActionSetDefinition openGate, ConditionSetDefinition hasClapper, ActionSetDefinition ringBell)
             {
+                RuleDefinition unlock = Create<RuleDefinition>(RulesDir + "/GateKeyOpensGate.asset", "GateKeyOpensGate", "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318");
+                unlock.ConfigureTrigger(TriggerKind.ItemGranted, gateKey, string.Empty, true, 0);
+                unlock.SetConditions(hasGateKey, null);
+                unlock.SetActions(openGate, null);
+                unlock.ConfigureLimits(true, 0, 0, 0);
+                Save(unlock);
+
+                RuleDefinition ring = Create<RuleDefinition>(RulesDir + "/RingBellOnUse.asset", "RingBellOnUse", "6c1d9e42-8b7a-4f35-a0d3-e2f914b67c50");
+                ring.ConfigureTrigger(TriggerKind.Interacted, null, HollowmereNarrative.BellId, true, 0);
+                ring.SetConditions(hasClapper, null);
+                ring.SetActions(ringBell, null);
+                ring.ConfigureLimits(true, 0, 0, 0);
+                Save(ring);
+
                 RuleDefinition gateStays = Create<RuleDefinition>(RulesDir + "/BellKeepsGateOpen.asset", "BellKeepsGateOpen", "12fd6b07-8dab-4d77-a1dc-ce30262983a5");
                 gateStays.ConfigureTrigger(TriggerKind.FactSet, bellRung, string.Empty, false, 1);
                 gateStays.SetActions(null, new[] { ActionEntry.Of(ActionKind.SetFact, gateOpen, 1) });
@@ -395,10 +408,11 @@ namespace Hollowmere.NarrativeEditor
                 return actions;
             }
 
-            private DialogueGraphDefinition Graph(string asset, string id, string speaker)
+            private DialogueGraphDefinition Graph(string asset, string id, string speaker, string npcEntityId, string npcGraphRef)
             {
                 DialogueGraphDefinition graph = Create<DialogueGraphDefinition>(GraphsDir + "/" + asset + ".asset", asset, id);
-                graph.Configure(speaker, string.Empty, 0);
+                graph.Configure(speaker, npcEntityId, 0);
+                graph.AnswerTo(npcGraphRef);
                 return graph;
             }
 

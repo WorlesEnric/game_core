@@ -22,6 +22,7 @@ using GameCore.Gameplay.Logic.Editor;
 using GameCore.Gameplay.Quest;
 using GameCore.Gameplay.Quest.Editor;
 using GameCore.Gameplay.World;
+using GameCore.Rules.Gameplay.Dialogue;
 using GameCore.Rules.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Quest;
 using Hollowmere.Narrative;
@@ -56,7 +57,7 @@ namespace Hollowmere.P1_4.EditMode.Tests
             Assert.That(content.OfKind(NarrativeKinds.Item).Count, Is.EqualTo(4));
             Assert.That(content.OfKind(NarrativeKinds.Vendor).Count, Is.EqualTo(1));
             Assert.That(content.OfKind(NarrativeKinds.WorldItem).Count, Is.EqualTo(2));
-            Assert.That(content.OfKind(NarrativeKinds.Rule).Count, Is.EqualTo(4));
+            Assert.That(content.OfKind(NarrativeKinds.Rule).Count, Is.EqualTo(6));
             for (int i = 0; i < content.Entries.Count; i++)
             {
                 ContentEntry entry = content.Entries[i];
@@ -138,10 +139,16 @@ namespace Hollowmere.P1_4.EditMode.Tests
             Assert.That(models.FactCount, Is.EqualTo(9));
             Assert.That(models.GraphCount, Is.EqualTo(5));
             Assert.That(models.QuestCount, Is.EqualTo(1));
-            Assert.That(models.RuleCount, Is.EqualTo(4));
+            Assert.That(models.RuleCount, Is.EqualTo(6));
+            foreach (string npcGraphRef in new[] { HollowmereNarrative.MarenGraphRef, HollowmereNarrative.OddGraphRef, HollowmereNarrative.PipGraphRef,
+                HollowmereNarrative.HaleGraphRef, HollowmereNarrative.EchoGraphRef })
+            {
+                Assert.That(models.TryResolve(npcGraphRef, out int graphKey) && models.TryGetGraph(graphKey, out DialogueGraphModel? _), Is.True,
+                    "P1.3's NpcDefinition.dialogueGraph " + npcGraphRef + " resolves to a baked graph");
+            }
             Assert.That(models.WorldItemCount, Is.EqualTo(2));
             Assert.That(models.PlayerInventory, Is.Not.Null);
-            Assert.That(models.TryResolve(HollowmereNarrative.GateCondition, out int _), Is.True);
+            Assert.That(models.TryResolve(HollowmereNarrative.BellCondition, out int _), Is.True);
             Assert.That(models.TryResolve(HollowmereNarrative.ClapperWorldItem, out int _), Is.True);
             Assert.That(models.TryGetFactByName("pip_asked", out FactModel? pip) && pip != null && !pip.Persistent, Is.True);
         }

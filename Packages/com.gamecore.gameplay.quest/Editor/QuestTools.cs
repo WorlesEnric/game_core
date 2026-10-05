@@ -261,25 +261,10 @@ namespace GameCore.Gameplay.Quest.Editor
         public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
     }
 
-    /// <summary>Adds the quest plugin's catalog registrations to a world with narrative content.</summary>
-    public sealed class QuestBakeExtension : IGameplayBakeExtension
+    /// <summary>The quest plugin's catalog registrations (P1.3's catalog contribution seam).</summary>
+    public sealed class QuestCatalogContributor : IGameplayCatalogContributor
     {
-        public string ExtensionId => "gameplay.narrative.quest";
-
-        public void Contribute(GameplayBakeContext context)
-        {
-            if (NarrativeBake.HasContent(context.World))
-            {
-                NarrativeBake.AddCatalog(context, NarrativeCatalogNames.Quest);
-            }
-        }
-
-        public void Write(GameplayBakeContext context, ICollection<string> changedFiles)
-        {
-        }
-
-        public void Verify(GameplayBakeContext context, ICollection<GameplayDiagnostic> mismatches)
-        {
-        }
+        public GameplayCatalogContribution Contribution =>
+            new GameplayCatalogContribution("com.gamecore.gameplay.quest", NarrativeCatalogNames.Quest.Schemas, NarrativeCatalogNames.Quest.Entries);
     }
 }

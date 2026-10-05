@@ -33,8 +33,8 @@ namespace GameCore.Gameplay.Logic
 
         public static readonly StageId Stage = NarrativePluginSpec.StageOf(Stem);
 
-        /// <summary>The schema of P1.3's successful interaction event (decoded by name, no type dependency).</summary>
-        public static readonly SchemaRef InteractionSucceededEvent = GameplayIds.Schema("interaction.event.succeeded", 1U);
+        /// <summary>The schema of P1.3's successful interaction event (InteractionSlots.SucceededEvent).</summary>
+        public static readonly SchemaRef InteractionSucceededEvent = InteractionSlots.SucceededEvent;
 
         /// <summary>A fresh spec of the logic plugin (slots do not depend on content).</summary>
         public static NarrativePluginSpec Spec()

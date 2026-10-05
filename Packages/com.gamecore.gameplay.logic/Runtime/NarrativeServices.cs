@@ -4,13 +4,12 @@
 //   ExplainTrace                  IExplainSource: the last 256 evaluations (rule fires and skips from the logic stage,
 //                                 direct evaluations from the evaluator) with the first failed condition and every
 //                                 input read - what Studio's inspect.explain shows
-//   NarrativeConditionEvaluator   IConditionEvaluator over committed slots: a condition set (authoring id or name) or a
-//                                 fact shorthand narrative.fact.<name>[op N]
-//   NarrativeActionRunner         IActionRunner: an action set (submitted as logic.runActions, delivered once each by
-//                                 the outbox) or the built-in inventory.pickup
-//
-// The P1.4 brief's signatures are kept; the same simple names exist in GameCore.Gameplay.Contracts (P1.3), so they are
-// always named here through the Seams alias.
+//   NarrativeConditionEvaluator   P1.3's IConditionEvaluator over committed slots: a condition set (authoring id or
+//                                 name) or a fact shorthand narrative.fact.<name>[op N] (the Causeway Gate's lock
+//                                 condition is narrative.fact.gate_open); Evaluate(ref, in EvaluationContext, out failed)
+//                                 is the richer form with the failed condition
+//   NarrativeActionRunner         P1.3's IActionRunner: an action set (submitted as logic.runActions, delivered once each
+//                                 by the outbox) or the built-in inventory.pickup; TryRun reports admission
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,6 @@ using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Rules.Gameplay.Inventory;
 using GameCore.Rules.Gameplay.Logic;
-using Seams = GameCore.Gameplay.Contracts.Narrative;
 
 namespace GameCore.Gameplay.Logic
 {
@@ -103,7 +101,7 @@ namespace GameCore.Gameplay.Logic
     }
 
     /// <summary>Evaluates condition references over committed state.</summary>
-    public sealed class NarrativeConditionEvaluator : Seams.IConditionEvaluator
+    public sealed class NarrativeConditionEvaluator : IConditionEvaluator
     {
         public const string FactPrefix = "narrative.fact.";
 
@@ -115,6 +113,37 @@ namespace GameCore.Gameplay.Logic
         }
 
         public int Evaluations { get; private set; }
+
+        /// <summary>
+        /// P1.3's form: True/False for a known reference (an empty reference holds), Unknown for a reference the bake does
+        /// not declare - so an unknown unlock condition keeps a lock closed and an unknown precondition does not block.
+        /// </summary>
+        public ConditionVerdict Evaluate(string conditionRef, InteractionContext context)
+        {
+            if (!IsKnown(conditionRef))
+            {
+                Evaluations++;
+                return ConditionVerdict.Unknown;
+            }
+
+            return Evaluate(conditionRef, EvaluationContext.FromInteraction(context), out string _) ? ConditionVerdict.True : ConditionVerdict.False;
+        }
+
+        /// <summary>True when the reference is empty, a declared condition set, or a parsable shorthand of a declared fact.</summary>
+        public bool IsKnown(string conditionRef)
+        {
+            if (string.IsNullOrEmpty(conditionRef))
+            {
+                return true;
+            }
+
+            if (conditionRef.StartsWith(FactPrefix, StringComparison.Ordinal))
+            {
+                return TryParseFact(conditionRef.Substring(FactPrefix.Length), runtime.Models, out ConditionSetModel? _, out string _);
+            }
+
+            return runtime.Models.TryResolve(conditionRef, out int key) && runtime.Models.TryGet(key, out ConditionSetModel? _);
+        }
 
         public bool Evaluate(string conditionSetRef, in EvaluationContext ctx, out string failedCondition)
         {
@@ -197,7 +226,7 @@ namespace GameCore.Gameplay.Logic
     }
 
     /// <summary>Runs action references: action sets through the logic stage, and the built-in inventory.pickup.</summary>
-    public sealed class NarrativeActionRunner : Seams.IActionRunner
+    public sealed class NarrativeActionRunner : IActionRunner
     {
         /// <summary>The built-in action that picks up the subject world item into the player's inventory.</summary>
         public const string Pickup = "inventory.pickup";
@@ -213,6 +242,15 @@ namespace GameCore.Gameplay.Logic
         public int Runs { get; private set; }
 
         public int Refused { get; private set; }
+
+        /// <summary>P1.3's form, called after a committed interaction success.</summary>
+        public void Run(string actionRef, InteractionContext context)
+        {
+            if (!string.IsNullOrEmpty(actionRef))
+            {
+                TryRun(actionRef, EvaluationContext.FromInteraction(context));
+            }
+        }
 
         public bool TryRun(string actionSetRef, in EvaluationContext ctx)
         {
@@ -278,8 +316,8 @@ namespace GameCore.Gameplay.Logic
     }
 
     /// <summary>
-    /// Interaction until P1.3's interact.use is merged: evaluate a subject's condition, then run its action (the shape of
-    /// P1.3's flow, where the interaction system evaluates in-step and runs the action after the committed use).
+    /// A scripted interaction without an interactable: evaluate a subject's condition, then run its action - the shape of
+    /// P1.3's flow (which evaluates in-step and runs the action after the committed use), for tools and tests.
     /// </summary>
     public static class NarrativeInteractions
     {

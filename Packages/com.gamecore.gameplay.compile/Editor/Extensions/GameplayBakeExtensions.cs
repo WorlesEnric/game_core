@@ -1,18 +1,17 @@
 // GameCore.Gameplay.Compile.Editor - the bake extension point (P1.4; additive hook for plugin packages).
 //
 // Entry.Bake / Entry.Verify bake the world (regions, portals, entity definitions) and the catalog the world boots with.
-// Plugin packages beyond entities and world (dialogue, quest, inventory, logic, and later ones) need two things from
-// the same bake: their catalog registrations (plugin factory, command system, applier, layouts, schemas) in the
-// generated catalog, and their own definition outputs written and verified together with the world's. An extension:
+// A plugin package's catalog registrations come in through P1.3's IGameplayCatalogContributor; what this hook adds is
+// the package's own definition outputs, written and verified together with the world's (P1.4: the narrative content
+// manifest of the world's GameplayContentSet). An extension:
 //
-//   Contribute  (Bake and Verify) validates the package's content for this world and adds catalog schemas/entries;
+//   Plan        (Bake and Verify) validates the package's content for this world and computes its outputs in memory;
 //               any diagnostic refuses the bake exactly like a world diagnostic
 //   Write       (Bake only, after the world outputs) writes the package's outputs; changed paths are reported
 //   Verify      (Verify only) compares the package's outputs on disk with the recomputed ones, writing nothing
 //
 // Extensions are found with TypeCache (every non-abstract IGameplayBakeExtension with a parameterless constructor),
-// instantiated once per bake, and run in ordinal ExtensionId order, so the description stays deterministic. With no
-// extension contributing anything the catalog description is byte-identical to the P1.1 output.
+// instantiated once per bake and run in ordinal ExtensionId order. A project without extensions bakes as before.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -28,8 +27,8 @@ namespace GameCore.Gameplay.Compile
         /// <summary>Stable id (ordinal order of the run), e.g. <c>gameplay.logic</c>.</summary>
         string ExtensionId { get; }
 
-        /// <summary>Validates and contributes catalog registrations (Bake and Verify).</summary>
-        void Contribute(GameplayBakeContext context);
+        /// <summary>Validates the package's content and computes its outputs (Bake and Verify).</summary>
+        void Plan(GameplayBakeContext context);
 
         /// <summary>Writes the package's outputs (Bake only); adds every changed path to <paramref name="changedFiles"/>.</summary>
         void Write(GameplayBakeContext context, ICollection<string> changedFiles);
@@ -41,10 +40,6 @@ namespace GameCore.Gameplay.Compile
     /// <summary>What the extensions of one bake share.</summary>
     public sealed class GameplayBakeContext
     {
-        private readonly List<GameplayCatalogNames.SchemaName> schemas = new List<GameplayCatalogNames.SchemaName>();
-        private readonly List<GameplayCatalogNames.EntryName> entries = new List<GameplayCatalogNames.EntryName>();
-        private readonly HashSet<string> schemaNames = new HashSet<string>(StringComparer.Ordinal);
-        private readonly HashSet<string> entryNames = new HashSet<string>(StringComparer.Ordinal);
         private readonly List<GameplayDiagnostic> diagnostics = new List<GameplayDiagnostic>();
         private readonly Dictionary<string, object> state = new Dictionary<string, object>(StringComparer.Ordinal);
         private readonly List<IGameplayBakeExtension> extensions = new List<IGameplayBakeExtension>();
@@ -62,31 +57,9 @@ namespace GameCore.Gameplay.Compile
 
         public BakedWorld Baked { get; }
 
-        public IReadOnlyList<GameplayCatalogNames.SchemaName> Schemas => schemas;
-
-        public IReadOnlyList<GameplayCatalogNames.EntryName> Entries => entries;
-
         public IReadOnlyList<GameplayDiagnostic> Diagnostics => diagnostics;
 
         public IReadOnlyList<IGameplayBakeExtension> Extensions => extensions;
-
-        /// <summary>Adds a catalog schema once (by schema name); the static gameplay schemas are always present.</summary>
-        public void AddSchema(GameplayCatalogNames.SchemaName schema)
-        {
-            if (schema != null && schemaNames.Add(schema.Schema))
-            {
-                schemas.Add(schema);
-            }
-        }
-
-        /// <summary>Adds a catalog entry once (by registration name).</summary>
-        public void AddEntry(GameplayCatalogNames.EntryName entry)
-        {
-            if (entry != null && entryNames.Add(entry.Name))
-            {
-                entries.Add(entry);
-            }
-        }
 
         public void AddDiagnostic(GameplayDiagnostic diagnostic)
         {
@@ -96,7 +69,7 @@ namespace GameCore.Gameplay.Compile
             }
         }
 
-        /// <summary>Per-extension scratch state between Contribute and Write/Verify.</summary>
+        /// <summary>Per-extension scratch state between Plan and Write/Verify.</summary>
         public void Put(string key, object value) => state[key] = value;
 
         public bool TryGet<T>(string key, out T? value)
@@ -139,8 +112,8 @@ namespace GameCore.Gameplay.Compile
             return found;
         }
 
-        /// <summary>Runs Contribute of every extension; an extension that throws becomes a diagnostic.</summary>
-        public static GameplayBakeContext Contribute(WorldDefinition world, BakePaths paths, BakedWorld baked)
+        /// <summary>Runs Plan of every extension; an extension that throws becomes a diagnostic.</summary>
+        public static GameplayBakeContext Plan(WorldDefinition world, BakePaths paths, BakedWorld baked)
         {
             var context = new GameplayBakeContext(world, paths, baked);
             List<IGameplayBakeExtension> extensions = Discover();
@@ -149,7 +122,7 @@ namespace GameCore.Gameplay.Compile
                 context.Use(extensions[i]);
                 try
                 {
-                    extensions[i].Contribute(context);
+                    extensions[i].Plan(context);
                 }
                 catch (Exception exception)
                 {
