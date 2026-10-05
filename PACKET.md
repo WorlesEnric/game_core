@@ -50,3 +50,37 @@ Host command: `bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere
 - The two inherited model schema/registry failures cannot be corrected inside R2-E's exclusive paths.
 - D3 confinement/licence qualification belongs to the stage service packets. This packet launches only the requested test Editor under unity-batch's host lock, and issues no staging verdict; no Docker/host staging claim is made.
 - Canvas measurements are headless Editor CPU/managed-allocation measurements, not graphical GPU frame or playthrough qualification. Graphical evidence was explicitly excluded for this packet.
+
+## R2-E-merge
+
+Merged `origin/main` `de2d9593287542cba8d097f0b0061b1dc3628f53` into `codex/r2-e` on the Linux build host. The two conflicting core files (`Editor/Tools/ReflectedTool.cs` and `Runtime/Authoring/AuthoringMetadata.cs`) take main's content exactly; the entire `Packages/com.gamecore.studio.core` tree is identical to main. Views continue through the existing public seams. No core change was needed or requested for this merge.
+
+The packet-note rename conflict is resolved by preserving main's complete R2-A/core/integration report and the complete R2-E views report in `docs/studio/packets/R2-A-core-edit-recovery.md`. The branch's views report is also retained here. Earlier verification and open-item statements are historical; the merged-main verification below supersedes their test results.
+
+Verification commands:
+
+```sh
+bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
+  --log-dir "$PWD/.unity-logs" --label r2-e-merge \
+  --results "$PWD/.unity-logs/r2-e-merge.xml" -- \
+  -runTests -testPlatform EditMode -testFilter 'GameCore\.Studio\..*|Hollowmere\..*'
+python3 tools/check_package_metadata.py
+python3 tools/check_game_core_csharp.py
+git diff origin/main --check
+```
+
+- Package metadata: passed, 41 packages / 89 assemblies.
+- C# static checks: passed, 1,101 files.
+- Diff whitespace check against main: passed. The full staged merge diff reports only pre-existing main whitespace in five P1_7c `.meta` files and `studio/stage/run-redacted.py`; those unrelated files retain main's content.
+
+- First full-suite XML: `.unity-logs/r2-e-merge-first.xml`, **325 passed, 1 failed, 5 skipped, 0 inconclusive** (331 cases; 226.807 seconds). Unity exited 2 after 1,440 seconds including compilation/import/shutdown; wrapper exited 1. SHA256: `d9cd5cf226e93e1b563a9986bf8769d84d1323f2fef0dd2cba8785269f5d5173`. Log: `.unity-logs/r2-e-merge-20261005T155621-924471-a1.log`.
+  - Failure: `R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict` exhausted the views checker's 30-second subprocess deadline during heavy host I/O. The standalone repository checker passed. `PackageMetadataCheck` now allows a bounded 120 seconds off the UI thread, preserving timeout refusal, redaction, exit/report validation and cleanup. No test assertion or core code changed.
+  - The unchanged 2,000-node test passed: setup 5.6 ms; max layout slice 8.89 ms; max whole layout frame 9.23 ms; max refresh 0.22 ms; warm zoom and edge regrouping both 0 bytes/frame. The 16 ms limits remain unchanged; no median adaptation was necessary.
+- Final full-suite command uses the same filter and project with `--label r2-e-merge-final --results "$PWD/.unity-logs/r2-e-merge-final.xml" --timeout 1800 --attempts 1`. Only one Editor is launched at a time by this task through the shared host slot allocator.
+
+- Final full-suite XML: `.unity-logs/r2-e-merge-final.xml`, **326 passed, 0 failed, 5 skipped, 0 inconclusive**, 331 total; XML duration 91.796 seconds. Unity exited 0 after 485 seconds, one attempt. SHA256: `09ae71568723b565745fa22e34279490328f076e79f05a56f81f9c2206048572`. Log: `.unity-logs/r2-e-merge-final-20261005T163958-1007180-a1.log`.
+  - All 41 views cases, all 28 P1_7b cases and all 60 R2_B cases passed. The actual repository-checker case passed in 0.187 seconds.
+  - Exactly the expected skips: four `GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests` cases (`B_NpcRequest_ReachesStaging`, `C_D_E_F_I_MediaOps`, `J_Voice_FromASpokenWav`, `J_Voice_FromTheEditorMicrophone`) require the opt-in live ETOS environment; `Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless` requires a graphics device.
+  - Main's strict wrapper reports `FAIL` / exit 1 and `PARTIAL/NotRun` because it rejects any skipped case. The parsed case-level XML meets this packet's explicit acceptance requirement; skipped tests are not counted as passed. The wrapper was not modified.
+  - Unchanged 2,000-node regression passed again: setup **7.8 ms**, max layout slice **8.13 ms**, max whole layout frame **12.05 ms**, max refresh **0.33 ms**; warm zoom and edge regrouping **0 bytes/frame**, root framing 36 cards (cap 300). All original 16 ms and allocation assertions remain intact; no median adaptation or threshold relaxation was needed.
+- Both requested Python checks passed again after the timeout fix (41 packages / 89 assemblies; 1,101 C# files). Generated Hollowmere asset mutations from the test fixtures were restored from the merged index after the Editor exited. The pre-existing untracked `.codex/` launcher files remain untouched. The core package remains byte-for-byte identical to main.

@@ -1,0 +1,9 @@
+D3 candidate-free Docker probe, 2026-10-05, Unity 6000.0.75f1.
+Image: public.ecr.aws/ubuntu/ubuntu:24.04 (a54764b5b6340c272ffb45e303fe4c8064bbdfb76d732b325b79ae6b92900e4c).
+Network: none. Root filesystem: read-only. Live project: not mounted.
+Installed UnityEntitlementLicense.xml mounted read-only; contents not inspected.
+Host allocator used; Editor exit 198 after 56 seconds; no verdict, no host fallback.
+
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+No valid Unity Editor license found. Please activate your license.

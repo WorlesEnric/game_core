@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GameCore.Contracts;
+using GameCore.Composition;
 using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Contracts.Narrative;
@@ -184,6 +185,9 @@ namespace GameCore.Gameplay.Logic
             IngressProducer = GameplayIds.Key(stem + ".ingress");
             RecipeSchema = GameplayIds.Schema(stem + ".schema.recipe", 1U);
         }
+
+        /// <summary>Per-install tuning defaults; field values are captured with composition and restored unchanged.</summary>
+        public ConfigDocument ConfigDefaults { get; set; } = ConfigDocument.Empty;
 
         public string Stem { get; }
 
@@ -934,7 +938,7 @@ namespace GameCore.Gameplay.Logic
                 return false;
             }
 
-            if (tap != null && !tap.HasRoom(schemas.Count))
+            if (tap is IGameplayDeliveryBudget budget ? !budget.HasRoomFor(schemas, payloads) : tap != null && !tap.HasRoom(schemas.Count))
             {
                 return false;
             }

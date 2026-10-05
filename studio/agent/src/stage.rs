@@ -1,41 +1,31 @@
 //! The staging lane (P2.4; 03 §8, 04 §6): generated code is staged and validated in an
 //! isolated Unity project + dotnet workspace (a *slot*) before it can affect the live editor.
 //!
-//! `POST /v1/stage` takes two shapes:
+//! HTTP staging is candidate-only: `{changeSetId, projectId, sourceRevision, catalogRevision}`.
+//! Project paths come from operator configuration. The authenticated app/project owns jobs,
+//! artifacts and slot roots. Only full passing service records receive an installation HMAC.
+//! Legacy packageRef extraction is refused. See evidence/PACKET.md for the wire contract.
 //!
-//! * **`{changeSetId, slot?, steps?, sourceProject?}`** — the staging lane. The candidate
-//!   (validated change set + artifacts, from the ledger and the content store) is written to a
-//!   slot under `~/.cache/gamecore-studio/stage/<slot>/` (`GAMECORE_STAGE_ROOT`) and the
-//!   pipeline ([`pipeline`]) runs: forbidden-content scan, repository checkers, dotnet,
-//!   batchmode Unity EditMode, PlayMode smoke, determinism, B-STAGE budget. The answer is a
-//!   job; the job's `verdict` is the [`verdict::StageVerdict`] plus its `verdictRef` (the
-//!   SHA-256 of the verdict's canonical JSON, also stored as an artifact). One stage per slot,
-//!   one slot per change set; slots older than seven days are collected, and
-//!   `{changeSetId, action: "discard"}` (the creator rejected the change set) removes its slot.
-//! * **`{changeSetId, packageRef}`** — the legacy shell (P0.5): the package archive is
-//!   extracted and `<command> <slot> <package-dir> <changeSetId>` runs (`studio/stage/stage.sh`
-//!   wraps the lane's CLI); its last JSON stdout line is the verdict.
-//!
-//! The CLI is `gamecore-studio stage run|gc|discard|scan` ([`cli`]). Every child process gets
-//! `env_clear()` plus the allowlist of [`env`] (no provider keys); every log is redacted.
+//! Candidate execution defaults to Docker confinement with no network or live project mount.
+//! The operator CLI is `gamecore-studio stage run|gc|discard|scan`; every log is redacted.
 
 pub mod cli;
 pub mod env;
 pub mod pipeline;
+pub mod sandbox;
 pub mod scan;
+pub mod signing;
 pub mod slot;
 pub mod verdict;
 
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
-use std::process::Stdio;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use std::time::Duration;
 
 use axum::http::StatusCode;
 use serde::Deserialize;
 use serde_json::{Value, json};
-use tokio::sync::Notify;
 
 pub use env::stage_env;
 
@@ -43,7 +33,7 @@ use crate::config::StageConfig;
 use crate::error::{ApiError, ApiResult, STAGE_FAILED};
 use crate::events::EventHub;
 use crate::ledger::{Ledger, LedgerError};
-use crate::model::{StageJobView, StageRequest};
+use crate::model::StageJobView;
 use crate::redact::redact;
 use crate::store::ArtifactStore;
 use crate::util::{new_id, normalize_sha256, now_ms, valid_change_set_id};
@@ -66,6 +56,15 @@ pub fn parse_verdict(stdout: &str) -> Option<Value> {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct StageRunRequest {
+    /// Stable project SHA-256, identical to X-GameCore-Project.
+    #[serde(default)]
+    pub project_id: Option<String>,
+    /// Expected source revision, checked against the trusted checkout.
+    #[serde(default)]
+    pub source_revision: Option<String>,
+    /// Catalog revision bound to the validated candidate request.
+    #[serde(default)]
+    pub catalog_revision: Option<String>,
     /// The change set to stage (a candidate the companion validated).
     pub change_set_id: String,
     /// The slot (default: the slot holding the change set, else `cs-<ulid>`).
@@ -98,11 +97,9 @@ pub struct StageRunner {
     ledger: Arc<Ledger>,
     hub: EventHub,
     store: ArtifactStore,
-    work: PathBuf,
+    state_dir: PathBuf,
     root: PathBuf,
     repo: Option<PathBuf>,
-    free: Mutex<Vec<String>>,
-    released: Notify,
 }
 
 impl std::fmt::Debug for StageRunner {
@@ -155,24 +152,54 @@ impl StageRunner {
         root: PathBuf,
         repo: Option<PathBuf>,
     ) -> Arc<StageRunner> {
-        let free = cfg.slots.iter().rev().cloned().collect();
         Arc::new(StageRunner {
             cfg,
             ledger,
             hub,
             store,
-            work: state_dir.join("stage"),
+            state_dir: state_dir.to_path_buf(),
             root,
             repo,
-            free: Mutex::new(free),
-            released: Notify::new(),
         })
+    }
+
+    /// Probe the configured lane at startup; unavailable confinement remains a refusal,
+    /// while ordinary companion routes continue serving.
+    pub fn probe_startup(self: &Arc<Self>) {
+        if self.cfg.projects.is_empty() {
+            return;
+        }
+        let me = self.clone();
+        tokio::task::spawn_blocking(move || {
+            let Some(repo) = &me.repo else { return };
+            let mut sandbox = sandbox::Sandbox::defaults(
+                &me.root.join(".startup-probe"),
+                &me.root.join("_warm/probe"),
+                repo,
+            );
+            sandbox.mode = me.cfg.confinement;
+            sandbox.image = me.cfg.docker_image.clone();
+            if let Err(error) = sandbox.probe() {
+                tracing::warn!(error = %redact(&error), "stage_failed{{sandbox_unavailable}} at startup");
+            }
+        });
     }
 
     /// Mark jobs a previous process left unfinished as failed.
     pub fn settle_interrupted(&self) {
         if let Ok(ids) = self.ledger.unfinished_stages() {
             for id in ids {
+                if let Some((job, repo)) = self.ledger.stage(&id).ok().zip(self.repo.as_ref()) {
+                    let dir = job
+                        .slot
+                        .as_ref()
+                        .filter(|slot| slot::valid_slot_id(slot))
+                        .map(|slot| self.owner_root(&job.change_set_id).join(slot));
+                    if let Some(dir) = dir {
+                        sandbox::Sandbox::defaults(&dir, &self.root.join("_warm"), repo)
+                            .stop_container();
+                    }
+                }
                 let v = json!({"code": STAGE_FAILED, "message": "interrupted by a companion restart",
                                "hint": "stage the package again"});
                 let _ = self.ledger.update_stage(&id, "failed", None, Some(&v));
@@ -180,75 +207,115 @@ impl StageRunner {
         }
     }
 
-    fn command(&self) -> ApiResult<PathBuf> {
-        match &self.cfg.command {
-            Some(p) if p.is_file() => Ok(p.clone()),
-            Some(p) => Err(ApiError::stage_failed(format!(
-                "the staging command {} does not exist",
-                p.display()
-            ))
-            .with_hint("P2.4 provides studio/stage/stage.sh; set [stage] command in <state>/config.toml or GAMECORE_STUDIO_STAGE_COMMAND")),
-            None => Err(ApiError::stage_failed("no staging command is configured").with_hint(
-                "P2.4 provides studio/stage/stage.sh; set [stage] command in <state>/config.toml or GAMECORE_STUDIO_STAGE_COMMAND",
-            )),
+    /// Typed authenticated stage request. Source paths and compiler overrides are never
+    /// accepted over HTTP; the operator registers project mappings in stage.projects.
+    pub fn request_owned(self: &Arc<Self>, body: Value, owner: &str) -> ApiResult<StageAnswer> {
+        let req: StageRunRequest = serde_json::from_value(body.clone())
+            .map_err(|e| ApiError::bad_request(e.to_string()))?;
+        let identity: Value = serde_json::from_str(owner)
+            .map_err(|_| ApiError::bad_request("invalid project owner"))?;
+        let project = identity[1]
+            .as_str()
+            .ok_or_else(|| ApiError::bad_request("project identity required"))?;
+        if req.project_id.as_deref() != Some(project) || req.source_project.is_some() {
+            return Err(ApiError::bad_request(
+                "projectId must match X-GameCore-Project; sourceProject paths are not accepted",
+            ));
         }
+        let request = self.ledger.request(&req.change_set_id)?;
+        if request.app != owner {
+            return Err(ApiError::not_found("no candidate"));
+        }
+        if !matches!(req.action.as_deref(), None | Some("stage" | "discard")) {
+            return Err(ApiError::bad_request("action is stage or discard"));
+        }
+        if req.action.as_deref() == Some("discard") {
+            return self.discard(&req);
+        }
+        let path =
+            self.cfg.projects.get(project).ok_or_else(|| {
+                ApiError::stage_failed("project is not registered in stage.projects")
+            })?;
+        let catalog = req
+            .catalog_revision
+            .as_deref()
+            .and_then(normalize_sha256)
+            .ok_or_else(|| ApiError::bad_request("catalogRevision required"))?;
+        if request.body["toolCatalogRevision"]
+            .as_str()
+            .and_then(normalize_sha256)
+            != Some(catalog)
+        {
+            return Err(ApiError::stale_context(
+                "catalog revision does not match the candidate",
+            ));
+        }
+        let revision = std::process::Command::new("/usr/bin/git")
+            .env_clear()
+            .envs(stage_env())
+            .args(["-C"])
+            .arg(path)
+            .args(["rev-parse", "HEAD"])
+            .output()
+            .map_err(|e| ApiError::stage_failed(e.to_string()))?;
+        let revision = String::from_utf8_lossy(&revision.stdout).trim().to_string();
+        if req.source_revision.as_deref() != Some(revision.as_str()) || revision.len() != 40 {
+            return Err(ApiError::stale_context(
+                "sourceRevision does not match the registered source checkout",
+            ));
+        }
+        let mut local = req;
+        local.source_project = Some(path.display().to_string());
+        self.submit_change_set(&local)
     }
 
-    /// `POST /v1/stage`, either shape.
+    /// Operator/test entry point. The legacy packageRef extractor has been retired.
     pub fn request(self: &Arc<Self>, body: Value) -> ApiResult<StageAnswer> {
-        if body.get("packageRef").is_some() {
-            let req: StageRequest = serde_json::from_value(body)
-                .map_err(|e| ApiError::bad_request(format!("the body does not fit: {e}")))?;
-            let job = self.submit(&req)?;
-            return Ok(StageAnswer {
-                status: StatusCode::ACCEPTED,
-                body: serde_json::to_value(job).unwrap_or(Value::Null),
-            });
-        }
         let req: StageRunRequest = serde_json::from_value(body)
             .map_err(|e| ApiError::bad_request(format!("the body does not fit: {e}")))?;
         match req.action.as_deref() {
             None | Some("stage") => self.submit_change_set(&req),
             Some("discard") => self.discard(&req),
-            Some(other) => Err(ApiError::bad_request(format!(
-                "action {other:?} is not stage or discard"
-            ))),
+            Some(_) => Err(ApiError::bad_request("action is stage or discard")),
         }
     }
 
-    /// The legacy shell: `POST /v1/stage {changeSetId, packageRef}`.
-    pub fn submit(self: &Arc<Self>, req: &StageRequest) -> ApiResult<StageJobView> {
-        if !valid_change_set_id(&req.change_set_id) {
-            return Err(ApiError::bad_request("changeSetId is not a change-set id"));
+    /// Retrieve the issued record only. Partial and failed jobs have no attestation.
+    pub fn signed_verdict(&self, job: &str) -> ApiResult<Value> {
+        let row = self.ledger.stage(job)?;
+        let record = row
+            .verdict
+            .ok_or_else(|| ApiError::not_found("no issued verdict"))?;
+        let steps = record["steps"].as_array();
+        let mandatory = steps.is_some_and(|steps| {
+            steps.len() == verdict::STEP_IDS.len()
+                && verdict::STEP_IDS.iter().all(|id| {
+                    steps
+                        .iter()
+                        .any(|s| s["id"] == *id && s["status"] == "pass")
+                })
+        });
+        if record["signature"].is_string()
+            && record["pass"] == true
+            && record["partial"] != true
+            && mandatory
+            && record["jobId"] == job
+            && record["forbiddenHits"]
+                .as_array()
+                .is_some_and(Vec::is_empty)
+            && signing::verify(&self.state_dir, &record).map_err(ApiError::internal)?
+        {
+            Ok(record)
+        } else {
+            Err(ApiError::not_found("no issued passing verdict"))
         }
-        let sha = normalize_sha256(&req.package_ref)
-            .ok_or_else(|| ApiError::bad_request("packageRef is a sha256 digest"))?;
-        let command = self.command()?;
-        let package = self
-            .store
-            .path_of(&sha)
-            .map_err(|e| ApiError::bad_request(e.to_string()))?;
-        if !package.is_file() {
-            return Err(ApiError::not_found(format!("no stored artifact {sha}")));
-        }
-        let now = now_ms();
-        let job = StageJobView {
-            job_id: new_id("stg"),
-            change_set_id: req.change_set_id.clone(),
-            package_ref: sha,
-            state: "queued".into(),
-            slot: None,
-            verdict: None,
-            created_at: now,
-            updated_at: now,
-        };
-        self.ledger.insert_stage(&job)?;
-        self.emit(&job);
-        let me = self.clone();
-        let id = job.job_id.clone();
-        let cs = job.change_set_id.clone();
-        tokio::spawn(async move { me.run(id, command, package, cs).await });
-        Ok(job)
+    }
+
+    /// Verify against both the installation key and the exact issued ledger record.
+    pub fn verify_verdict(&self, job: &str, record: &Value) -> ApiResult<bool> {
+        let issued = self.signed_verdict(job)?;
+        Ok(&issued == record
+            && signing::verify(&self.state_dir, record).map_err(ApiError::internal)?)
     }
 
     fn repo(&self) -> ApiResult<PathBuf> {
@@ -258,11 +325,20 @@ impl StageRunner {
         })
     }
 
+    fn owner_root(&self, change_set: &str) -> PathBuf {
+        self.ledger
+            .request(change_set)
+            .ok()
+            .filter(|row| serde_json::from_str::<Value>(&row.app).is_ok_and(|v| v.is_array()))
+            .map(|row| self.root.join(crate::util::sha256_hex(row.app.as_bytes())))
+            .unwrap_or_else(|| self.root.clone())
+    }
+
     fn discard(&self, req: &StageRunRequest) -> ApiResult<StageAnswer> {
         if !valid_change_set_id(&req.change_set_id) {
             return Err(ApiError::bad_request("changeSetId is not a change-set id"));
         }
-        let holding = slot::slots(&self.root)
+        let holding = slot::slots(&self.owner_root(&req.change_set_id))
             .into_iter()
             .find(|d| slot::slot_change_set(d).as_deref() == Some(req.change_set_id.as_str()));
         let Some(dir) = holding else {
@@ -271,11 +347,8 @@ impl StageRunner {
                 body: json!({"changeSetId": req.change_set_id, "discarded": false}),
             });
         };
-        if slot::is_locked(&dir) {
-            return Err(ApiError::ledger_conflict(
-                "the change set is being staged; discard it when the stage ends",
-            ));
-        }
+        let _lock =
+            slot::SlotLock::acquire(&dir, slot::MAX_SLOT_AGE).map_err(ApiError::ledger_conflict)?;
         let name = dir
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
@@ -325,20 +398,32 @@ impl StageRunner {
                 "the change set carries no mechanism.propose with a package artifact",
             )
         })?;
-        let collected = slot::gc(&self.root, slot::MAX_SLOT_AGE);
+        let root = self.owner_root(&req.change_set_id);
+        let collected = slot::gc(&root, slot::MAX_SLOT_AGE);
         if !collected.is_empty() {
             tracing::info!(slots = ?collected, "collected staging slots older than seven days");
         }
-        let slot_id = slot::resolve_slot(&self.root, &req.change_set_id, req.slot.as_deref())
+        let slot_id = slot::resolve_slot(&root, &req.change_set_id, req.slot.as_deref())
             .map_err(ApiError::ledger_conflict)?;
-        if slot::is_locked(&self.root.join(&slot_id)) {
+        if slot::is_locked(&root.join(&slot_id)) {
             return Err(ApiError::ledger_conflict(format!(
                 "slot {slot_id} is being staged; one stage per slot"
             )));
         }
         let mut opts =
             pipeline::StageOptions::from_env(&repo, &slot_id, pipeline::SlotSource::Existing);
-        opts.root = self.root.clone();
+        opts.root = root;
+        opts.expected_source_revision = req.source_revision.clone();
+        opts.sandbox.mode = self.cfg.confinement;
+        opts.sandbox.image = self.cfg.docker_image.clone();
+        // Service lane has fixed tool paths. CLI overrides remain operator-only.
+        opts.tools.python = PathBuf::from("/usr/bin/python3");
+        opts.tools.dotnet = std::env::var_os("HOME")
+            .map(PathBuf::from)
+            .map(|p| p.join(".dotnet/dotnet"))
+            .filter(|p| p.is_file())
+            .unwrap_or_else(|| PathBuf::from("/usr/bin/dotnet"));
+        opts.budget = Duration::from_secs(360);
         opts.steps = steps;
         if let Some(p) = &req.source_project {
             opts.source_project = PathBuf::from(p);
@@ -412,9 +497,30 @@ impl StageRunner {
         let _ = std::fs::remove_dir_all(&incoming);
         let (state, value) = match outcome {
             Ok(v) => {
+                let mut record = v.to_value();
+                if let Ok(request) = self.ledger.request(&v.change_set_id) {
+                    let owner: Value = serde_json::from_str(&request.app).unwrap_or(Value::Null);
+                    record["jobId"] = json!(id);
+                    record["projectId"] = owner[1].clone();
+                    record["app"] = owner[0].clone();
+                    record["sourceRevision"] = json!(v.runner.source_commit);
+                    record["catalogRevision"] = request.body["toolCatalogRevision"].clone();
+                    record["packageDigest"] = json!(
+                        v.artifacts
+                            .iter()
+                            .find(|a| a.role == "package")
+                            .map(|a| &a.sha256)
+                    );
+                    record["proposalDigest"] = json!(
+                        v.artifacts
+                            .iter()
+                            .find(|a| a.role == "proposal")
+                            .map(|a| &a.sha256)
+                    );
+                }
                 let bytes = v.bytes();
                 let stored = self.store.put(&bytes, None).map(|(sha, _)| sha);
-                let mut value = v.to_value();
+                let mut value = record;
                 if let Some(o) = value.as_object_mut() {
                     match stored {
                         Ok(sha) => {
@@ -437,6 +543,43 @@ impl StageRunner {
                         );
                     }
                 }
+                if v.pass {
+                    let required = [
+                        "jobId",
+                        "projectId",
+                        "app",
+                        "sourceRevision",
+                        "catalogRevision",
+                        "packageDigest",
+                        "proposalDigest",
+                    ];
+                    if required
+                        .iter()
+                        .any(|key| !value[*key].as_str().is_some_and(|v| !v.is_empty()))
+                    {
+                        self.finish(
+                            id,
+                            "failed",
+                            &json!({"code": STAGE_FAILED,"reason":"missing_attestation_binding"}),
+                        );
+                        return;
+                    }
+                    value = match signing::sign(&self.state_dir, value) {
+                        Ok(record) => record,
+                        Err(error) => {
+                            self.finish(id, "failed", &json!({"code":STAGE_FAILED,"reason":"signing_unavailable","message":redact(&error)}));
+                            return;
+                        }
+                    };
+                }
+                if let Some((request, reference)) = self
+                    .ledger
+                    .request(&v.change_set_id)
+                    .ok()
+                    .zip(value["verdictRef"].as_str())
+                {
+                    let _ = self.ledger.grant("artifact", reference, &request.app);
+                }
                 tracing::info!(job = id, pass = v.pass, slot = %v.slot, ms = v.duration_ms, "stage verdict");
                 (
                     if v.failure.is_some() {
@@ -449,7 +592,7 @@ impl StageRunner {
             }
             Err(message) => (
                 "failed",
-                json!({"code": STAGE_FAILED, "message": redact(&message),
+                json!({"code": STAGE_FAILED, "reason": if message.contains("sandbox_unavailable") { "sandbox_unavailable" } else { "stage_error" }, "message": redact(&message),
                        "hint": "see the slot's out/logs and the companion log"}),
             ),
         };
@@ -464,175 +607,10 @@ impl StageRunner {
         );
     }
 
-    async fn take_slot(&self) -> String {
-        loop {
-            let notified = self.released.notified();
-            if let Ok(mut f) = self.free.lock()
-                && let Some(s) = f.pop()
-            {
-                return s;
-            }
-            notified.await;
-        }
-    }
-
-    fn give_slot(&self, slot: String) {
-        if let Ok(mut f) = self.free.lock() {
-            f.push(slot);
-        }
-        self.released.notify_one();
-    }
-
     fn finish(&self, id: &str, state: &str, verdict: &Value) {
         match self.ledger.update_stage(id, state, None, Some(verdict)) {
             Ok(job) => self.emit(&job),
             Err(e) => tracing::error!(job = id, error = %e, "cannot record the stage verdict"),
-        }
-    }
-
-    async fn run(self: Arc<Self>, id: String, command: PathBuf, package: PathBuf, cs: String) {
-        let slot = self.take_slot().await;
-        match self.ledger.update_stage(&id, "running", Some(&slot), None) {
-            Ok(job) => self.emit(&job),
-            Err(e) => tracing::error!(job = %id, error = %e, "cannot record the stage start"),
-        }
-        let (state, verdict) = self.execute(&id, &slot, &command, &package, &cs).await;
-        self.give_slot(slot);
-        self.finish(&id, state, &verdict);
-    }
-
-    async fn execute(
-        &self,
-        id: &str,
-        slot: &str,
-        command: &Path,
-        package: &Path,
-        change_set_id: &str,
-    ) -> (&'static str, Value) {
-        let fail = |message: String, hint: &str, extra: Value| {
-            let mut v = json!({"code": STAGE_FAILED, "message": redact(&message), "hint": hint});
-            if let (Some(o), Value::Object(e)) = (v.as_object_mut(), extra) {
-                o.extend(e);
-            }
-            ("failed", v)
-        };
-        let dir = self.work.join(id).join("package");
-        if let Err(e) = std::fs::create_dir_all(&dir) {
-            return fail(
-                format!("cannot create {}: {e}", dir.display()),
-                "check the state directory",
-                json!({}),
-            );
-        }
-        let head = std::fs::read(package)
-            .map(|b| b.into_iter().take(300).collect::<Vec<u8>>())
-            .unwrap_or_default();
-        let flags = if head.starts_with(&[0x1f, 0x8b]) {
-            "-xzf"
-        } else if head.len() >= 262 && &head[257..262] == b"ustar" {
-            "-xf"
-        } else {
-            return fail(
-                "the package artifact is not a .tar.gz or .tar".into(),
-                "the mechanic writes /outputs/package.tgz (tar czf) and lists it in the change set",
-                json!({}),
-            );
-        };
-        let untar = tokio::process::Command::new("tar")
-            .arg(flags)
-            .arg(package)
-            .arg("-C")
-            .arg(&dir)
-            .env_clear()
-            .envs(stage_env())
-            .output()
-            .await;
-        match untar {
-            Ok(o) if o.status.success() => {}
-            Ok(o) => {
-                return fail(
-                    format!("tar failed: {}", String::from_utf8_lossy(&o.stderr)),
-                    "the package archive is damaged",
-                    json!({}),
-                );
-            }
-            Err(e) => {
-                return fail(
-                    format!("cannot run tar: {e}"),
-                    "install tar on the host",
-                    json!({}),
-                );
-            }
-        }
-        let started = std::time::Instant::now();
-        let child = tokio::process::Command::new(command)
-            .arg(slot)
-            .arg(&dir)
-            .arg(change_set_id)
-            .env_clear()
-            .envs(stage_env())
-            .stdin(Stdio::null())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .kill_on_drop(true)
-            .spawn();
-        let child = match child {
-            Ok(c) => c,
-            Err(e) => {
-                return fail(
-                    format!("cannot start {}: {e}", command.display()),
-                    "check that the command is executable",
-                    json!({}),
-                );
-            }
-        };
-        tracing::info!(job = id, slot, command = %command.display(), "staging");
-        let out = tokio::time::timeout(
-            Duration::from_secs(self.cfg.timeout_s),
-            child.wait_with_output(),
-        )
-        .await;
-        let out = match out {
-            Ok(Ok(o)) => o,
-            Ok(Err(e)) => {
-                return fail(
-                    format!("the staging command failed: {e}"),
-                    "see the companion log",
-                    json!({}),
-                );
-            }
-            Err(_) => {
-                return fail(
-                    format!(
-                        "the staging command did not finish within {} s",
-                        self.cfg.timeout_s
-                    ),
-                    "the stage script has its own 10-minute watchdog; check for an Editor hang",
-                    json!({"durationMs": started.elapsed().as_millis() as u64}),
-                );
-            }
-        };
-        let stdout = String::from_utf8_lossy(&out.stdout);
-        let stderr = String::from_utf8_lossy(&out.stderr);
-        let tail: String = {
-            let chars: Vec<char> = stderr.chars().collect();
-            chars[chars.len().saturating_sub(2000)..].iter().collect()
-        };
-        let code = out.status.code();
-        match parse_verdict(&stdout) {
-            Some(mut v) => {
-                if let Some(o) = v.as_object_mut() {
-                    o.entry("exitCode").or_insert(json!(code));
-                    o.entry("durationMs")
-                        .or_insert(json!(started.elapsed().as_millis() as u64));
-                }
-                ("done", v)
-            }
-            None => fail(
-                format!("the staging command printed no JSON verdict (exit {code:?})"),
-                "stage.sh must print the verdict object as its last stdout line",
-                json!({"exitCode": code, "stderrTail": redact(&tail)}),
-            ),
         }
     }
 }

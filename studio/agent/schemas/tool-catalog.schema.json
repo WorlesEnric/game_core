@@ -211,8 +211,14 @@
           },
           "type": "array"
         },
+        "readOnly": {
+          "type": "boolean"
+        },
         "runtimeApply": {
           "$ref": "#/$defs/RuntimeApply"
+        },
+        "runtimeOnly": {
+          "type": "boolean"
         },
         "scopes": {
           "items": {

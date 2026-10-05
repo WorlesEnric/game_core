@@ -222,6 +222,7 @@ namespace GameCore.Studio.Model.Tests
                 "StaleTarget", "Conflict", "UnknownTool", "InvalidArgs", "MissingPrerequisite", "ScopeNotAllowed",
                 "ValidationFailed", "Refused", "CandidateInvalid", "StaleContext", "StageFailed", "LedgerConflict",
                 "NotConfigured", "OutcomeUnknown", "Blocked",
+                "MediaTypeForbidden", "MediaPathForbidden", "MediaImporterInvalid", "ArtifactSourceForbidden",
             };
             Assert.That(DiagnosticCodes.All, Is.EqualTo(expected));
             Assert.That(DiagnosticCodes.All, Is.Unique);

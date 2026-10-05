@@ -13,6 +13,15 @@ using GameCore.Contracts;
 
 namespace GameCore.Gameplay.Contracts
 {
+    /// <summary>Exact outbox admission for a proposed batch; implemented by the world's delivery owner.</summary>
+    public interface IGameplayDeliveryBudget
+    {
+        int CountActionDemand(string actionRef, string subjectAuthoringId, int subjectKey, int actorKey);
+
+        bool HasRoomFor(System.Collections.Generic.IReadOnlyList<SchemaRef> schemas,
+            System.Collections.Generic.IReadOnlyList<FrozenPayload> payloads, int actionDemands = 0);
+    }
+
     /// <summary>The gameplay time base: milliseconds derived from the logical step (or the fixed-step domain clock).</summary>
     public static class GameplayClock
     {

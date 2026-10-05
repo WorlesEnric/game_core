@@ -108,75 +108,48 @@ pub fn resolve_slot(
     }
 }
 
-/// The exclusive lock of one stage on one slot (removed on drop).
+/// Exclusive advisory lock on a permanent inode outside the deletable slot tree.
 #[derive(Debug)]
 pub struct SlotLock {
-    path: PathBuf,
+    _file: std::fs::File,
+}
+
+fn lock_path(slot_dir: &Path) -> Result<PathBuf, String> {
+    let parent = slot_dir.parent().ok_or("slot has no parent")?;
+    let name = slot_dir.file_name().ok_or("slot has no name")?;
+    let locks = parent.join(".locks");
+    std::fs::create_dir_all(&locks).map_err(|e| e.to_string())?;
+    Ok(locks.join(name))
 }
 
 impl SlotLock {
-    /// Take the lock of `slot_dir` (creating the directory). A lock left by a process that no
-    /// longer runs (Linux: no `/proc/<pid>`; elsewhere: older than `stale_after`) is replaced.
-    pub fn acquire(slot_dir: &Path, stale_after: Duration) -> Result<SlotLock, String> {
-        std::fs::create_dir_all(slot_dir)
-            .map_err(|e| format!("cannot create {}: {e}", slot_dir.display()))?;
-        let path = slot_dir.join(LOCK_NAME);
-        for _ in 0..2 {
-            match std::fs::OpenOptions::new()
-                .write(true)
-                .create_new(true)
-                .open(&path)
-            {
-                Ok(mut f) => {
-                    use std::io::Write;
-                    let _ = writeln!(f, "{}", std::process::id());
-                    return Ok(SlotLock { path });
-                }
-                Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
-                    if lock_is_stale(&path, stale_after) {
-                        let _ = std::fs::remove_file(&path);
-                        continue;
-                    }
-                    let holder = std::fs::read_to_string(&path).unwrap_or_default();
-                    return Err(format!(
-                        "slot {} is being staged (pid {}); one stage per slot",
-                        slot_dir
-                            .file_name()
-                            .map(|n| n.to_string_lossy().into_owned())
-                            .unwrap_or_default(),
-                        holder.trim()
-                    ));
-                }
-                Err(e) => return Err(format!("cannot lock {}: {e}", path.display())),
-            }
-        }
-        Err(format!("cannot lock {}", path.display()))
+    /// Acquire without unlinking even empty or malformed diagnostic records. Kernel locks
+    /// release on process death; PID reuse cannot confer ownership.
+    pub fn acquire(slot_dir: &Path, _stale_after: Duration) -> Result<SlotLock, String> {
+        use std::io::Write;
+        let path = lock_path(slot_dir)?;
+        let mut file = std::fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)
+            .map_err(|e| e.to_string())?;
+        file.try_lock()
+            .map_err(|_| "one stage per slot: slot is being staged".to_string())?;
+        let mut token = [0u8; 16];
+        getrandom::fill(&mut token).map_err(|e| e.to_string())?;
+        file.set_len(0).map_err(|e| e.to_string())?;
+        writeln!(file, "{} {}", std::process::id(), hex::encode(token))
+            .map_err(|e| e.to_string())?;
+        file.sync_all().map_err(|e| e.to_string())?;
+        Ok(SlotLock { _file: file })
     }
 }
 
-impl Drop for SlotLock {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_file(&self.path);
-    }
-}
-
-fn lock_is_stale(path: &Path, stale_after: Duration) -> bool {
-    let pid = std::fs::read_to_string(path)
-        .ok()
-        .and_then(|t| t.trim().parse::<u32>().ok());
-    if Path::new("/proc/self").is_dir() {
-        return match pid {
-            Some(p) => !Path::new(&format!("/proc/{p}")).exists(),
-            None => true,
-        };
-    }
-    age(path).is_some_and(|a| a > stale_after)
-}
-
-/// True when a stage holds the slot's lock.
+/// Whether another operation holds the permanent lock inode.
 pub fn is_locked(slot_dir: &Path) -> bool {
-    let path = slot_dir.join(LOCK_NAME);
-    path.exists() && !lock_is_stale(&path, MAX_SLOT_AGE)
+    SlotLock::acquire(slot_dir, MAX_SLOT_AGE).is_err()
 }
 
 fn age(path: &Path) -> Option<Duration> {
@@ -235,9 +208,9 @@ fn set_owner_writable(p: &Path) {
 pub fn gc(root: &Path, max_age: Duration) -> Vec<String> {
     let mut removed = Vec::new();
     for dir in slots(root) {
-        if is_locked(&dir) {
+        let Ok(_lock) = SlotLock::acquire(&dir, MAX_SLOT_AGE) else {
             continue;
-        }
+        };
         if slot_age(&dir).is_some_and(|a| a > max_age) && remove_slot(&dir).is_ok() {
             removed.push(
                 dir.file_name()
@@ -305,6 +278,37 @@ mod tests {
         );
         assert_eq!(resolve_slot(root, other, Some("s3")).unwrap(), "s3");
         assert!(resolve_slot(root, other, Some("../x")).is_err());
+    }
+
+    #[test]
+    fn r2_16_unparsable_locked_inode_survives_acquisition_and_gc() {
+        use std::os::unix::fs::MetadataExt;
+        let dir = tempfile::tempdir().unwrap();
+        let slot = make(dir.path(), "race", CS);
+        let path = lock_path(&slot).unwrap();
+        let file = std::fs::OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&path)
+            .unwrap();
+        file.lock().unwrap(); // Deliberately empty diagnostic record, as during acquisition.
+        let inode = file.metadata().unwrap().ino();
+        let mut contenders = Vec::new();
+        for _ in 0..8 {
+            let slot = slot.clone();
+            contenders.push(std::thread::spawn(move || {
+                for _ in 0..100 {
+                    assert!(SlotLock::acquire(&slot, Duration::ZERO).is_err());
+                }
+            }));
+        }
+        assert!(gc(dir.path(), Duration::ZERO).is_empty());
+        for contender in contenders {
+            contender.join().unwrap();
+        }
+        assert_eq!(std::fs::metadata(path).unwrap().ino(), inode);
+        assert!(slot.exists());
     }
 
     #[test]

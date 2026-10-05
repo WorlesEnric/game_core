@@ -656,7 +656,7 @@ namespace GameCore.Studio.Edit
                         OperationResult result;
                         try
                         {
-                            if (!operation.Live && operation.Target != null && (operation.Tool is ReflectedTool || operation.Operation.Tool == "set" || operation.Operation.Tool == "assign" || operation.Operation.Tool == "bind"))
+                            if (!operation.Live && !operation.Tool!.ReadOnly && operation.Target != null && (operation.Tool is ReflectedTool || operation.Operation.Tool == "set" || operation.Operation.Tool == "assign" || operation.Operation.Tool == "bind"))
                             {
                                 EditContext preparation = new EditContext(_runtime, changeSet, operation.Operation, operation.Target, true, hints);
                                 AuthoringTypeInfo? info = _runtime.Identity.Describe(operation.Target);

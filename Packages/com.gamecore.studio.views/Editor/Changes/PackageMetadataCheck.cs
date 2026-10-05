@@ -72,7 +72,9 @@ namespace GameCore.Studio.Views
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-                if (!process.WaitForExit(30000))
+                // Repository traversal can exceed 30 seconds during a cold import on a busy build host.
+                // This runs off the UI thread; retain a bounded deadline and fail closed on timeout.
+                if (!process.WaitForExit(120000))
                 {
                     process.Kill();
                     process.WaitForExit();

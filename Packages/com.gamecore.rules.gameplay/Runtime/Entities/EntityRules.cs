@@ -91,15 +91,18 @@ namespace GameCore.Rules.Gameplay.Entities
         public static EntityState Placed(int variant, int scaleMilli, bool visible, bool alive) =>
             new EntityState(alive ? 1 : 0, variant, scaleMilli, visible ? 1 : 0);
 
-        /// <summary>Spawn: a dead entity becomes alive and visible; its variant and scale are kept.</summary>
-        public static EntityTransition Spawn(EntityState state)
+        /// <summary>Spawn: a dead entity becomes alive; its visibility, variant and scale are kept.</summary>
+        public static EntityTransition Spawn(EntityState state) => Spawn(state, true);
+
+        /// <summary>Spawn with an explicit visibility override, or null to retain the definition/committed default.</summary>
+        public static EntityTransition Spawn(EntityState state, bool? visible)
         {
             if (state.IsAlive)
             {
                 return EntityTransition.Refuse(EntityRefusal.AlreadyAlive, state);
             }
 
-            return EntityTransition.Accept(state.WithAlive(true).WithVisible(true));
+            return EntityTransition.Accept(visible.HasValue ? state.WithAlive(true).WithVisible(visible.Value) : state.WithAlive(true));
         }
 
         /// <summary>Despawn: an alive entity becomes dead. Logical only; every other slot survives.</summary>

@@ -118,8 +118,8 @@ namespace GameCore.Studio.Edit
                 target ??= instance;
             }
 
-            AuthoringTypeInfo? info = target == null ? null : context.Identity.Describe(target);
-            JObject? before = info == null || ReadOnly ? null : ToolSupport.CaptureMembers(context, target!, info);
+            AuthoringTypeInfo? info = target == null || ReadOnly ? null : context.Identity.Describe(target);
+            JObject? before = info == null ? null : ToolSupport.CaptureMembers(context, target!, info);
             if (target != null && !ReadOnly)
             {
                 context.RecordUndo(target);

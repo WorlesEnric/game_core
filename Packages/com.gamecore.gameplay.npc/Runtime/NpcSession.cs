@@ -215,6 +215,8 @@ namespace GameCore.Gameplay.Npc
 
         public NavMeshAgentBinder? Navigation { get; private set; }
 
+        public NpcAppearanceBinder? Appearance { get; private set; }
+
         /// <summary>Adds the talk dispatcher (input) and, when the world has views, the NPC binders.</summary>
         public static NpcSession Install(GameplayWorld world, NpcWorldExtension extension, IConversationStarter? conversations = null)
         {
@@ -240,6 +242,7 @@ namespace GameCore.Gameplay.Npc
             PrefabViewBinder? views = world.Views;
             if (views != null)
             {
+                session.Appearance = new NpcAppearanceBinder(views, extension);
                 session.Navigation = new NavMeshAgentBinder(views, extension);
                 world.AddBinder(session.Navigation);
                 world.AddBinder(new NpcAnimatorBinder(views, extension));

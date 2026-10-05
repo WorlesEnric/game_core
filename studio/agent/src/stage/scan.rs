@@ -24,6 +24,8 @@ pub const RULES: &[&str] = &[
     "reflection-emit",
     "process-start",
     "file-write",
+    "file-access",
+    "editor-hook",
     "editor-in-runtime",
     "dllimport",
     "native-plugin",
@@ -52,9 +54,9 @@ pub struct Hit {
 /// What the scan needs to know about the package.
 #[derive(Debug, Clone, Default)]
 pub struct ScanContext {
-    /// The package name (`file-write` allows paths under `Assets/<name>/` and `Packages/<name>/`).
+    /// The package name used by diagnostics; it never grants filesystem authority.
     pub package: String,
-    /// The reason the package gives for `unsafe` code (`proposal.allowUnsafe.reason`); `None` forbids it.
+    /// Legacy proposal reason retained for decoding only; unsafe code is always refused.
     pub allow_unsafe: Option<String>,
     /// Paths (relative to the package root) of large binaries the package declares.
     pub blobs: BTreeSet<String>,
@@ -399,17 +401,6 @@ fn statement_string(tokens: &[Token], i: usize) -> Option<&str> {
     None
 }
 
-fn statement_mentions(tokens: &[Token], i: usize, name: &str) -> bool {
-    for t in tokens.iter().skip(i).take(64) {
-        match &t.tok {
-            Tok::Ident(s) if s == name => return true,
-            Tok::Punct(';') | Tok::Punct('{') | Tok::Punct('}') => return false,
-            _ => {}
-        }
-    }
-    false
-}
-
 const FILE_WRITES: &[&str] = &[
     "WriteAllText",
     "WriteAllBytes",
@@ -626,31 +617,13 @@ fn excerpt_of(lines: &[&str], line: usize) -> String {
     }
 }
 
-/// `redact` plus `sk-` style provider keys.
+/// Compatibility entry point: all masking uses the shared companion redactor.
 pub fn mask_secrets(text: &str) -> String {
-    let mut out = String::with_capacity(text.len());
-    let mut rest = text;
-    while let Some(pos) = rest.find("sk-") {
-        out.push_str(&rest[..pos]);
-        let after = &rest[pos + 3..];
-        let end = after
-            .char_indices()
-            .find(|(_, c)| !(c.is_ascii_alphanumeric() || *c == '-' || *c == '_'))
-            .map(|(i, _)| i)
-            .unwrap_or(after.len());
-        if end >= 8 {
-            out.push_str("sk-[redacted]");
-        } else {
-            out.push_str(&rest[pos..pos + 3 + end]);
-        }
-        rest = &after[end..];
-    }
-    out.push_str(rest);
-    out
+    redact(text)
 }
 
 /// Scans one C# source.
-pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanContext) -> Vec<Hit> {
+pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, _ctx: &ScanContext) -> Vec<Hit> {
     let lexed = lex(text);
     let tokens = &lexed.tokens;
     let lines: Vec<&str> = text.lines().collect();
@@ -665,10 +638,6 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             });
         }
     };
-    let allowed_prefixes = [
-        format!("Assets/{}/", ctx.package),
-        format!("Packages/{}/", ctx.package),
-    ];
     let in_editor_folder = rel.split('/').rev().skip(1).any(|p| p == "Editor");
     for (i, t) in tokens.iter().enumerate() {
         let line = t.line;
@@ -697,13 +666,24 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             || (WRITER_TYPES.contains(&name)
                 && ident(i.checked_sub(1).and_then(|p| tokens.get(p))) == Some("new"));
         if file_call {
-            let exempt = statement_string(tokens, i)
-                .is_some_and(|s| allowed_prefixes.iter().any(|p| s.starts_with(p.as_str())))
-                || statement_mentions(tokens, i, "persistentDataPath");
-            if !exempt {
-                add("file-write", line);
-            }
+            add("file-write", line);
         }
+        if [
+            "InitializeOnLoad",
+            "InitializeOnLoadMethod",
+            "AssetPostprocessor",
+            "AssetModificationProcessor",
+            "DidReloadScripts",
+            "MenuItem",
+        ]
+        .contains(&name)
+        {
+            add("editor-hook", line);
+        }
+        if ["File", "Directory", "FileStream", "StreamReader"].contains(&name) {
+            add("file-access", line);
+        }
+
         // editor-in-runtime
         if name == "UnityEditor"
             && !editor_assembly
@@ -717,13 +697,9 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             add("dllimport", line);
         }
         // unsafe
-        if (name == "unsafe"
+        if name == "unsafe"
             || name == "stackalloc"
-            || (name == "fixed" && punct(tokens.get(i + 1), '(')))
-            && ctx
-                .allow_unsafe
-                .as_deref()
-                .is_none_or(|r| r.trim().is_empty())
+            || (name == "fixed" && punct(tokens.get(i + 1), '('))
         {
             add("unsafe", line);
         }
@@ -756,23 +732,18 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
 }
 
 /// Scans an assembly definition (`allowUnsafeCode`, Editor references from runtime assemblies).
-pub fn scan_asmdef(rel: &str, text: &str, ctx: &ScanContext) -> Vec<Hit> {
+pub fn scan_asmdef(rel: &str, text: &str, _ctx: &ScanContext) -> Vec<Hit> {
     let mut hits = Vec::new();
     let Ok(doc) = serde_json::from_str::<Value>(text) else {
         return hits;
     };
     let editor_only = is_editor_only(&doc);
-    if doc.get("allowUnsafeCode").and_then(Value::as_bool) == Some(true)
-        && ctx
-            .allow_unsafe
-            .as_deref()
-            .is_none_or(|r| r.trim().is_empty())
-    {
+    if doc.get("allowUnsafeCode").and_then(Value::as_bool) == Some(true) {
         hits.push(Hit {
             rule: "unsafe".into(),
             path: rel.into(),
             line: 0,
-            excerpt: "allowUnsafeCode: true without a declared allowUnsafe reason".into(),
+            excerpt: "allowUnsafeCode is forbidden".into(),
         });
     }
     if !editor_only {
@@ -1190,6 +1161,22 @@ mod tests {
     }
 
     #[test]
+    fn r2_11_textual_paths_and_editor_hooks_never_bypass_prefilter() {
+        for source in [
+            r#"File.WriteAllText("Assets/com.test/../../Editor/evil.cs", "x");"#,
+            r#"File.WriteAllText("/outside", Application.persistentDataPath);"#,
+            "[InitializeOnLoad] class Evil {}",
+            "class Evil : AssetPostprocessor {}",
+            "File.ReadAllText(path);",
+        ] {
+            assert!(
+                !scan_csharp("Editor/Evil.cs", source, true, &ctx()).is_empty(),
+                "{source}"
+            );
+        }
+    }
+
+    #[test]
     fn legitimate_code_is_not_a_hit() {
         let clean = r#"#nullable enable
 // Process.Start in a comment, System.Net in a comment, unsafe in a comment.
@@ -1210,8 +1197,6 @@ namespace Hollowmere.Mechanism.PressurePlate
         static int Local(int x) { static int Inner(int y) => y; return Inner(x); }
         public static IReadOnlyList<int> Slots() { return new List<int> { 1 }; }
         private static readonly Func<int, int> Square = static x => x * x;
-        public static void Save() { System.IO.File.WriteAllText("Assets/com.hollowmere.mechanism.pressureplate/x.json", "y"); }
-        public static void Persist() { File.WriteAllText(System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "p"), "y"); }
         public static void Res() { UnityEngine.Resources.Load("Plates/Default"); }
         public static string Url = "sk-short";
     }
@@ -1245,11 +1230,14 @@ namespace Hollowmere.Mechanism.PressurePlate
     }
 
     #[test]
-    fn unsafe_needs_a_declared_reason() {
+    fn r2_11_unsafe_reason_never_grants_authority() {
         let src = "class A { unsafe void F() {} }";
         let mut with_reason = ctx();
         with_reason.allow_unsafe = Some("SIMD ring buffer".into());
-        assert!(scan_csharp("Runtime/A.cs", src, false, &with_reason).is_empty());
+        assert_eq!(
+            scan_csharp("Runtime/A.cs", src, false, &with_reason).len(),
+            1
+        );
         with_reason.allow_unsafe = Some("  ".into());
         assert_eq!(
             scan_csharp("Runtime/A.cs", src, false, &with_reason).len(),
@@ -1331,7 +1319,7 @@ namespace Hollowmere.Mechanism.PressurePlate
 
     #[test]
     fn rule_list_is_complete() {
-        assert_eq!(RULES.len(), 12);
+        assert_eq!(RULES.len(), 14);
         let unique: BTreeSet<&&str> = RULES.iter().collect();
         assert_eq!(unique.len(), RULES.len());
     }

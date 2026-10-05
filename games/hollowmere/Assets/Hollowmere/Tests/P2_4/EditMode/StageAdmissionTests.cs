@@ -45,7 +45,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             SortedDictionary<string, byte[]> files = AdmissionTestBed.PackageFiles();
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out _, out _);
 
-            AdmissionResult result = _bed.Admission.Admit(candidate);
+            AdmissionResult result = _bed.Admit(candidate);
 
             Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.Refused), result.Detail);
             Assert.That(result.Reason, Is.EqualTo(VerdictReasons.Missing), result.Detail);
@@ -57,7 +57,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
             // A failing verdict is refused too.
             ChangeSet second = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
-            AdmissionResult failed = _bed.Admission.Admit(second, _bed.Verdict(second.Id, packageSha, proposalSha, files, pass: false));
+            AdmissionResult failed = _bed.Admit(second, _bed.Verdict(second.Id, packageSha, proposalSha, files, pass: false));
             Assert.That(failed.Outcome, Is.EqualTo(AdmissionOutcome.Refused));
             Assert.That(failed.Reason, Is.EqualTo(VerdictReasons.Failed), failed.Detail);
             Assert.That(Scenario(_bed.Runtime.Journal.Read(second.Id)!, StageAdmission.VerdictScenario)!.Status, Is.EqualTo(ScenarioStatus.Fail));
@@ -70,7 +70,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
             byte[] verdict = _bed.Verdict(candidate.Id, packageSha, proposalSha, files);
 
-            AdmissionResult result = _bed.Admission.Admit(candidate, verdict);
+            AdmissionResult result = _bed.Admit(candidate, verdict);
 
             Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), result.Detail + " " + string.Join(" | ", _bed.Log.Lines));
             foreach (KeyValuePair<string, byte[]> file in files)
@@ -104,7 +104,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(tampered), out string packageSha, out string proposalSha);
 
             // The verdict names the delivered archive but its staged files differ from what the archive now holds.
-            AdmissionResult fileMismatch = _bed.Admission.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, staged));
+            AdmissionResult fileMismatch = _bed.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, staged));
             Assert.That(fileMismatch.Outcome, Is.EqualTo(AdmissionOutcome.Refused), fileMismatch.Detail);
             Assert.That(fileMismatch.Reason, Is.EqualTo(VerdictReasons.Mismatch), fileMismatch.Detail);
             Assert.That(fileMismatch.Detail, Does.Contain("Runtime/Plate.cs"));
@@ -112,12 +112,12 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
             // A verdict for another archive digest.
             ChangeSet other = _bed.Candidate(AdmissionTestBed.TarGz(tampered), out _, out string otherProposal);
-            AdmissionResult digestMismatch = _bed.Admission.Admit(other, _bed.Verdict(other.Id, new string('c', 64), otherProposal, tampered));
+            AdmissionResult digestMismatch = _bed.Admit(other, _bed.Verdict(other.Id, new string('c', 64), otherProposal, tampered));
             Assert.That(digestMismatch.Reason, Is.EqualTo(VerdictReasons.Mismatch), digestMismatch.Detail);
 
             // A verdict for another change set.
             ChangeSet third = _bed.Candidate(AdmissionTestBed.TarGz(staged), out string thirdPackage, out string thirdProposal);
-            AdmissionResult wrongChangeSet = _bed.Admission.Admit(third, _bed.Verdict(IdDerivation.NewChangeSetId(), thirdPackage, thirdProposal, staged));
+            AdmissionResult wrongChangeSet = _bed.Admit(third, _bed.Verdict(IdDerivation.NewChangeSetId(), thirdPackage, thirdProposal, staged));
             Assert.That(wrongChangeSet.Outcome, Is.EqualTo(AdmissionOutcome.Refused));
             Assert.That(Directory.Exists(_bed.PackageDirectory), Is.False);
             Assert.That(_bed.Compiler.Requests, Is.Empty);
@@ -130,7 +130,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
             _bed.Compiler.Fail = true;
 
-            AdmissionResult result = _bed.Admission.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
+            AdmissionResult result = _bed.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
 
             Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.RolledBack), result.Detail);
             Assert.That(result.Reason, Is.EqualTo("compile_failed"));
@@ -155,7 +155,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
                 }
             };
 
-            AdmissionResult result = _bed.Admission.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
+            AdmissionResult result = _bed.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
 
             Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.RolledBack), result.Detail);
             Assert.That(result.Reason, Is.EqualTo("fault"));
@@ -171,7 +171,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
             byte[] verdict = _bed.Verdict(candidate.Id, packageSha, proposalSha, files);
             _bed.Catalog.World = new string('d', 64);
 
-            AdmissionResult result = _bed.Admission.Admit(candidate, verdict);
+            AdmissionResult result = _bed.Admit(candidate, verdict);
 
             Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.RolledBack), result.Detail);
             Assert.That(result.Reason, Is.EqualTo("catalog_mismatch"));
@@ -185,28 +185,31 @@ namespace Hollowmere.P2_4.EditMode.Tests
             FakeCapture capture = new FakeCapture();
             _bed.Admission.Options.PlayModeProbe = () => playing;
             _bed.Admission.Options.StopPlayMode = () => playing = false;
+            _bed.Admission.Options.StartPlayMode = () => playing = true;
+            _bed.Admission.Options.SessionReady = () => true;
             SortedDictionary<string, byte[]> files = AdmissionTestBed.PackageFiles();
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
             byte[] verdict = _bed.Verdict(candidate.Id, packageSha, proposalSha, files);
 
-            AdmissionResult refused = _bed.Admission.Admit(candidate, verdict);
+            AdmissionResult refused = _bed.Admit(candidate, verdict);
             Assert.That(refused.Outcome, Is.EqualTo(AdmissionOutcome.Refused));
             Assert.That(refused.Reason, Is.EqualTo("play_mode"));
             Assert.That(playing, Is.True, "a plain Admit never stops the game");
 
-            AdmissionResult noHook = _bed.Admission.Admit(candidate, null, captureAndStop: true);
+            AdmissionResult noHook = _bed.Admit(candidate, null, captureAndStop: true);
             Assert.That(noHook.Reason, Is.EqualTo("capture_failed"), "capture & stop without a capture hook is refused");
             Assert.That(playing, Is.True);
             Assert.That(Directory.Exists(_bed.PackageDirectory), Is.False);
 
             _bed.Admission.Options.Capture = capture;
-            AdmissionResult admitted = _bed.Admission.Admit(candidate, null, captureAndStop: true);
+            AdmissionResult admitted = _bed.Admit(candidate, null, captureAndStop: true);
+            if (admitted.Outcome == AdmissionOutcome.Pending) admitted = _bed.Admission.Resume(candidate.Id);
             Assert.That(admitted.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), admitted.Detail);
-            Assert.That(playing, Is.False, "Play Mode was stopped after the capture");
+            Assert.That(playing, Is.True, "Play Mode resumed after the capture");
             Assert.That(capture.Captured, Is.EqualTo(new[] { "admit-" + candidate.Id.ToLowerInvariant() }));
             Assert.That(admitted.CaptureSlot, Is.EqualTo(capture.Captured[0]));
             Assert.That(_bed.Admission.RestoreCapture(admitted.CaptureSlot!, out string? problem), Is.True, problem);
-            Assert.That(capture.Restored, Is.EqualTo(capture.Captured));
+            Assert.That(capture.Restored, Is.EqualTo(new[] { capture.Captured[0], capture.Captured[0] }));
         }
 
         [Test]
@@ -214,7 +217,7 @@ namespace Hollowmere.P2_4.EditMode.Tests
         {
             SortedDictionary<string, byte[]> files = AdmissionTestBed.PackageFiles();
             ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
-            AdmissionResult admitted = _bed.Admission.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
+            AdmissionResult admitted = _bed.Admit(candidate, _bed.Verdict(candidate.Id, packageSha, proposalSha, files));
             Assert.That(admitted.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), admitted.Detail);
             Assert.That(_bed.Admission.LiveHash(null, out _), Is.EqualTo(admitted.Predicted));
 

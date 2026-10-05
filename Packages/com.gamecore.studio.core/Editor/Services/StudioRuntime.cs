@@ -71,6 +71,7 @@ namespace GameCore.Studio.Edit
             Engine = new ChangeSetEngine(this, options.Engine);
             Queue = new ApplyQueue(() => Engine.IsApplying);
             History = new HistoryService(this);
+            StageAdmission.Of(this);
             References = new NestedReferenceContributor(this);
             Index.Contributors.Add(References);
             if (options.LoadIndexCache)

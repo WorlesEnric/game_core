@@ -26,8 +26,8 @@
 //     which keeps a replay of stale outbox rows (P1.4's DrownedBell replay) answered AlreadyApplied.
 //   * Every port carries a request id: grant, consume, pickup, buy, set-fact, dialogue-start, quest-start/advance/
 //     complete/fail/objective, logic-evaluate, run-actions, entity-spawn/despawn/set-variant, world-travel and
-//     player-restore-stamina. Presentation ports (play-audio, show-message) present at most once per obligation within
-//     a session; after a restore an unsettled presentation obligation presents again (at least once, documented).
+//     player-restore-stamina. Presentation ports (play-audio, show-message) complete their acknowledgement pass before
+//     Pump returns, so checkpoint/restore uses the same retained terminals as gameplay effects (P1.7c).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -171,6 +171,7 @@ namespace GameCore.Gameplay.Logic
         {
             code = DiagnosticCode.None;
             detail = string.Empty;
+            if (runtime.Delivery.SettlingPresentations) return DestinationOutcome.Unavailable;
             if (!NarrativeDelivery.TryDecode(attempt.PayloadBytes(), ints, out TargetId target, out int[] values))
             {
                 code = DiagnosticCode.UnsupportedVersion;
@@ -259,7 +260,12 @@ namespace GameCore.Gameplay.Logic
     public sealed class NarrativePresentationPort : IDestinationPort
     {
         private readonly NarrativeRuntime runtime;
-        private readonly HashSet<Id128> applied = new HashSet<Id128>();
+        // Receipts live only between the two synchronous phases of Pump; retained truth lives in the outbox.
+        private readonly HashSet<Id128> receipts = new HashSet<Id128>();
+
+        internal bool HasReceipts => receipts.Count != 0;
+
+        internal void ClearReceipts() => receipts.Clear();
 
         public NarrativePresentationPort(NarrativeRuntime runtime, string name, SchemaRef schema)
         {
@@ -281,10 +287,14 @@ namespace GameCore.Gameplay.Logic
         {
             code = DiagnosticCode.None;
             detail = string.Empty;
-            if (applied.Contains(attempt.OutboxId))
+            if (!runtime.Delivery.Owner.Outbox.TryGet(attempt.OutboxId, out DeliveryObligation? obligation)
+                || obligation == null || obligation.IsTerminal)
             {
                 return DestinationOutcome.AlreadyApplied;
             }
+
+            if (receipts.Remove(attempt.OutboxId)) return DestinationOutcome.AlreadyApplied;
+            if (runtime.Delivery.SettlingPresentations) return DestinationOutcome.Unavailable;
 
             if (!NarrativeDelivery.TryDecode(attempt.PayloadBytes(), 3, out TargetId _, out int[] values)
                 || !runtime.Models.TryGet(values[0], out ActionSetModel? set) || set == null
@@ -306,7 +316,7 @@ namespace GameCore.Gameplay.Logic
                 runtime.Messages.Show(new NarrativeMessage(action.Text, source));
             }
 
-            applied.Add(attempt.OutboxId);
+            receipts.Add(attempt.OutboxId);
             Presented++;
             return DestinationOutcome.Applied;
         }
@@ -316,14 +326,14 @@ namespace GameCore.Gameplay.Logic
     /// The narrative outbox of one world (P1.7a, A1): the world's one delivery owner, the in-step obligation recorder
     /// (IGameplayStepTap) and the destination ports.
     /// </summary>
-    public sealed class NarrativeDelivery : IGameplayStepTap, IDisposable
+    public sealed class NarrativeDelivery : IGameplayStepTap, IGameplayDeliveryBudget, IDisposable
     {
         public const int Capacity = 256;
         public const int TerminalRetention = 128;
         public const int MaxObligationsPerPass = 64;
 
-        /// <summary>Obligations reserved per committed event when a command asks for room (refuse before mutation).</summary>
-        public const int ReservePerEvent = 4;
+        private bool counting;
+        private int counted;
 
         public static readonly SchemaRef PlayAudioSchema = GameplayIds.Schema("logic.delivery.play-audio", 1U);
         public static readonly SchemaRef ShowMessageSchema = GameplayIds.Schema("logic.delivery.show-message", 1U);
@@ -374,6 +384,8 @@ namespace GameCore.Gameplay.Logic
         public WorldDeliveryOwner Owner { get; }
 
         public int Pass { get; private set; }
+
+        internal bool SettlingPresentations { get; private set; }
 
         /// <summary>Obligations recorded in-step (every kind).</summary>
         public int Described { get; private set; }
@@ -450,11 +462,30 @@ namespace GameCore.Gameplay.Logic
 
             Pass++;
             Owner.DispatchOpenObligations(MaxObligationsPerPass);
+            bool needsSettlement = false;
+            foreach (IDestinationPort port in ports.Values)
+                if (port is NarrativePresentationPort presentation && presentation.HasReceipts) needsSettlement = true;
+            if (!needsSettlement) return;
+
+            // Complete synchronous receipts in this host boundary. Suppress new effects/submissions during this
+            // bounded acknowledgement-only sweep (at most Capacity visits, in addition to the normal 64 attempts).
+            SettlingPresentations = true;
+            try { Owner.DispatchOpenObligations(Capacity); }
+            finally { SettlingPresentations = false; }
         }
 
         /// <summary>Reinstates outbox records (a restore, or a replay test); every reinstated obligation is delivered again, at most once in effect.</summary>
         public bool Reinstate(IReadOnlyList<OutboxRecordValue> rows, out string detail)
         {
+            // Replaying historical rows into this live session must not reopen a presentation already settled here.
+            // Fresh restore owners have no terminals yet and use the terminal rows in the checkpoint itself.
+            var presented = new HashSet<Id128>();
+            for (int i = 0; i < rows.Count; i++)
+            {
+                if (Owner.Outbox.TryGet(rows[i].OutboxId, out DeliveryObligation? old) && old != null && old.IsTerminal
+                    && (old.Key.DestinationId.Equals(DestinationOf("play-audio")) || old.Key.DestinationId.Equals(DestinationOf("show-message"))))
+                    presented.Add(rows[i].OutboxId);
+            }
             bool ok = Owner.TryReinstate(rows, out DiagnosticCode code, out detail);
             if (!ok && detail.Length == 0)
             {
@@ -463,12 +494,17 @@ namespace GameCore.Gameplay.Logic
 
             if (ok)
             {
+                foreach (Id128 id in presented) Owner.Adapter.TryAcknowledge(id, out DiagnosticCode _, out string _);
                 claimed.Clear();
                 foreach (IDestinationPort port in ports.Values)
                 {
                     if (port is NarrativeCommandPort command)
                     {
                         command.ClearPending();
+                    }
+                    else if (port is NarrativePresentationPort presentation)
+                    {
+                        presentation.ClearReceipts();
                     }
                 }
             }
@@ -487,8 +523,35 @@ namespace GameCore.Gameplay.Logic
                 return true;
             }
 
-            long wanted = (long)Math.Max(0, obligations) * ReservePerEvent;
+            long wanted = Math.Max(0, obligations);
             return Owner.Outbox.OpenCount + wanted <= Owner.Outbox.Capacity;
+        }
+
+        public int CountActionDemand(string actionRef, string subjectAuthoringId, int subjectKey, int actorKey)
+        {
+            counting = true;
+            counted = 0;
+            try
+            {
+                OnActionDemand(actionRef, subjectAuthoringId, subjectKey, actorKey, 0, default(OperationId));
+                return counted;
+            }
+            finally { counting = false; }
+        }
+
+        /// <summary>Counts the manifest-selected actions, rewards, matching triggers and edge objectives with the same
+        /// decoder used on commit. Required room = their sum plus direct interaction action demands; terminals use no room.</summary>
+        public bool HasRoomFor(IReadOnlyList<SchemaRef> schemas, IReadOnlyList<FrozenPayload> payloads, int actionDemands = 0)
+        {
+            if (schemas.Count != payloads.Count) throw new ArgumentException("one payload per schema is required");
+            counting = true;
+            counted = Math.Max(0, actionDemands);
+            try
+            {
+                for (int i = 0; i < schemas.Count; i++) OnCommitted(schemas[i], payloads[i], default(OperationId));
+                return HasRoom(counted);
+            }
+            finally { counting = false; }
         }
 
         public void OnCommitted(SchemaRef schema, FrozenPayload payload, OperationId causal)
@@ -505,7 +568,7 @@ namespace GameCore.Gameplay.Logic
                     bool described = schema.Equals(LogicIds.ActionDueEvent) ? DescribeAction(e, causal) : DescribeReward(e, causal);
                     if (!described)
                     {
-                        Undescribable++;
+                        if (!counting) Undescribable++;
                     }
                 }
             }
@@ -534,21 +597,21 @@ namespace GameCore.Gameplay.Logic
 
                 if (!models.TryGetWorldItem(worldItem, out WorldItemModel? item) || item == null || !runtime.Index.TryInventoryTarget(0, out TargetId inventory))
                 {
-                    Undescribable++;
+                    if (!counting) Undescribable++;
                     return false;
                 }
 
-                ActionDemands++;
+                if (!counting) ActionDemands++;
                 return Obligate("pickup", InventoryIds.PickupCommand, inventory, causal, item.Key, RequestSlot);
             }
 
             if (!models.TryResolve(actionRef, out int key) || !models.TryGet(key, out ActionSetModel? set) || set == null)
             {
-                Undescribable++;
+                if (!counting) Undescribable++;
                 return false;
             }
 
-            ActionDemands++;
+            if (!counting) ActionDemands++;
             return Obligate("run-actions", LogicIds.RunActionsCommand, runtime.Index.HubTarget, causal, set.Key, actor, subjectKey, RequestSlot);
         }
 
@@ -793,7 +856,7 @@ namespace GameCore.Gameplay.Logic
                     continue;
                 }
 
-                Triggered++;
+                if (!counting) Triggered++;
                 Obligate("logic-evaluate", LogicIds.EvaluateCommand, target, causal, actor, subject, (int)kind, key, value, RequestSlot);
             }
         }
@@ -831,8 +894,8 @@ namespace GameCore.Gameplay.Logic
                         continue;
                     }
 
-                    Signals++;
-                    Obligate("quest-objective", QuestIds.SetObjectiveCommand, target, causal, update.Objective, update.Count, RequestSlot);
+                    if (!counting) Signals++;
+                    Obligate("quest-objective", QuestIds.SetObjectiveCommand, target, causal, update.Objective, -1, RequestSlot);
                 }
             }
         }
@@ -900,6 +963,12 @@ namespace GameCore.Gameplay.Logic
         /// </summary>
         private bool Obligate(string portName, SchemaRef schema, TargetId target, OperationId causal, params int[] values)
         {
+            if (counting)
+            {
+                counted = checked(counted + 1);
+                return true;
+            }
+
             WorldMessagePlane? plane = runtime.Host.Messages;
             LogicalStepId step = plane != null ? plane.ExecutingStep : runtime.Host.CurrentStep;
             if (step.Value != ordinalStep)

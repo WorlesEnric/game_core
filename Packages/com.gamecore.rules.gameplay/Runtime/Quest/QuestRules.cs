@@ -166,7 +166,9 @@ namespace GameCore.Rules.Gameplay.Quest
             ConditionSetModel? failConditions,
             IReadOnlyList<string>? branchNames,
             IReadOnlyList<int>? prerequisites,
-            IReadOnlyList<int>? dependents)
+            IReadOnlyList<int>? dependents,
+            ActionSetModel? completionActions = null,
+            ActionSetModel? failureActions = null)
         {
             Key = key;
             Name = name ?? string.Empty;
@@ -177,7 +179,13 @@ namespace GameCore.Rules.Gameplay.Quest
             BranchNames = branchNames ?? Array.Empty<string>();
             Prerequisites = prerequisites ?? Array.Empty<int>();
             Dependents = dependents ?? Array.Empty<int>();
+            CompletionActions = completionActions;
+            FailureActions = failureActions;
         }
+
+        public ActionSetModel? CompletionActions { get; }
+
+        public ActionSetModel? FailureActions { get; }
 
         public int Key { get; }
 

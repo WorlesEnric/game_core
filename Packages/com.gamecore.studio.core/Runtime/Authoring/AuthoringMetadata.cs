@@ -146,8 +146,8 @@ namespace GameCore.Studio.Authoring
                 Requires = Get<string>(mirror, "Requires"),
                 RequiresOnTarget = Get<string>(mirror, "RequiresOnTarget"),
                 TargetKinds = kinds,
-                ReadOnly = Raw(mirror, "ReadOnly") is bool readOnly && readOnly,
-                RuntimeOnly = Raw(mirror, "RuntimeOnly") is bool runtimeOnly && runtimeOnly,
+                ReadOnly = Flag(mirror, "ReadOnly", false),
+                RuntimeOnly = Flag(mirror, "RuntimeOnly", false),
             };
         }
 

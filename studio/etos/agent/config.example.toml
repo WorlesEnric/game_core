@@ -1,0 +1,10 @@
+# Copy the required keys into the companion state directory's config.toml.
+# This is an example only; no installed service configuration is changed by R2-F.
+[stage]
+confinement = "docker"
+docker_image = "gamecore-stage:6000.0.75f1-v1"
+# Degraded environments can explicitly choose confinement = "host".
+# There is no automatic fallback. Admission UI must warn for host verdicts.
+
+[stage.projects]
+# "<stable SHA-256 project id>" = "/absolute/path/to/Unity/project"

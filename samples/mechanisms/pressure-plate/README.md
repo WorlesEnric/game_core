@@ -207,3 +207,12 @@ The first EditMode attempt failed on a missing `using` in `PressurePlateSmoke.cs
 * **Checker path rule.** `tools/check_game_core_csharp.py` does not scan `samples/`. If it ever does, its
   "UnityEngine reference outside the Unity project" rule would flag the Unity-facing package files at this path.
   Installed under `games/hollowmere/Packages/` they pass every rule.
+
+## R2 host-tooling corrections
+
+The sample generator now emits fresh catalog-array properties and recomputes `CatalogFileHash`; no shared mutable
+static array receives a generated-code exemption. `make-catalog.py --check` and `make-candidate.py --check` reproduce
+these bytes. The sample smoke world is constructed in code, so candidates now declare an empty `stageInputs` list;
+the previous live World/Regions asset directories are unnecessary and violate the data-only input contract.
+Candidate IDs remain fixed fixtures. Use a fresh scratch project for repeated journal acceptance; never reset a
+creator's journal. See [the host packet](../../../studio/stage/PACKET.md) for semantic scan and offline test evidence.

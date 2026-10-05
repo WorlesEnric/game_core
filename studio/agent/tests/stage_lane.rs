@@ -42,6 +42,9 @@ fn lane() -> Lane {
     let root = dir.path().join("slots");
     let runner = StageRunner::with_paths(
         StageConfig {
+            confinement: gamecore_studio::stage::sandbox::Confinement::Host,
+            docker_image: "unused-test".into(),
+            projects: Default::default(),
             command: None,
             slots: vec!["1".into()],
             timeout_s: 60,
@@ -268,4 +271,33 @@ async fn bad_lane_requests_are_refused() {
         .request(json!({"changeSetId": "cs_01JAPP0000000000000000SAN3", "action": "discard"}))
         .unwrap();
     assert_eq!(a.body["discarded"], false);
+}
+
+#[tokio::test(flavor = "multi_thread")]
+async fn r2_11_missing_semantic_analyzer_fails_dotnet_without_executing_candidate() {
+    let l = lane();
+    let cs = "cs_01JAPP0000000000000000SAN9";
+    put_candidate(&l, cs, CLEAN);
+    let answer = l
+        .runner
+        .request(json!({"changeSetId":cs,"steps":["scan","checkers","dotnet"]}))
+        .unwrap();
+    let job = wait_job(&l, answer.body["jobId"].as_str().unwrap()).await;
+    let verdict = &job["verdict"];
+    assert_eq!(verdict["pass"], false, "{job}");
+    assert_eq!(verdict["confinement"], "host");
+    assert!(verdict["signature"].is_null());
+    assert!(
+        verdict["steps"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|s| s["id"] == "dotnet" && s["status"] == "fail"),
+        "{job}"
+    );
+    assert!(
+        l.runner
+            .signed_verdict(answer.body["jobId"].as_str().unwrap())
+            .is_err()
+    );
 }

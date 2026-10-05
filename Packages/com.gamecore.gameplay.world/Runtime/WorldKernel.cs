@@ -630,7 +630,9 @@ namespace GameCore.Gameplay.World
                 0,
                 0);
             FrozenPayload leftEvent = WorldEvent.Encode(message.Target, from, travel.Destination, portalKey, 0);
-            if (!plane.Commit(left, WorldDeclarations.RegionLeftEvent, leftEvent, plane.ExecutingStep, out string _))
+            if ((module.StepTap is IGameplayDeliveryBudget budget && !budget.HasRoomFor(
+                    new[] { WorldDeclarations.RegionLeftEvent, WorldDeclarations.RegionEnteredEvent }, new[] { leftEvent, leftEvent }))
+                || !plane.Commit(left, WorldDeclarations.RegionLeftEvent, leftEvent, plane.ExecutingStep, out string _))
             {
                 Refuse(module, plane, message, DiagnosticCode.BudgetExceeded, "world.travel", WorldRefusalCodes.MalformedCommand, "the step's event budget is spent");
                 return;

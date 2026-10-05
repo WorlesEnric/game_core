@@ -80,16 +80,9 @@ impl StepResult {
         }
     }
 
-    /// True when the step may stand in a passing verdict: it passed, or it was skipped as not
-    /// applicable (`facts.notApplicable`).
+    /// Every mandatory step must actually pass; semantic scan is mandatory even without rules.
     pub fn acceptable(&self) -> bool {
-        match self.status {
-            StepStatus::Pass => true,
-            StepStatus::Fail => false,
-            StepStatus::Skipped => {
-                self.facts.get("notApplicable").and_then(Value::as_bool) == Some(true)
-            }
-        }
+        self.status == StepStatus::Pass
     }
 }
 
@@ -166,6 +159,12 @@ pub struct RunnerInfo {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StageVerdict {
+    /// Actual OS confinement, always recorded.
+    #[serde(default)]
+    pub confinement: String,
+    /// First use of this Unity/package-version cache.
+    #[serde(default)]
+    pub cold_cache: bool,
     /// [`VERDICT_SCHEMA`].
     pub schema: String,
     /// The staged change set.
@@ -211,6 +210,7 @@ impl StageVerdict {
         self.pass = !self.partial
             && self.failure.is_none()
             && all_present
+            && self.steps.len() == STEP_IDS.len()
             && self.forbidden_hits.is_empty()
             && self.steps.iter().all(StepResult::acceptable);
     }
@@ -261,10 +261,17 @@ mod tests {
             .collect();
         steps[2] = StepResult {
             facts: json!({"notApplicable": true}),
-            ..StepResult::new("dotnet", StepStatus::Skipped, 0, "no rules half")
+            ..StepResult::new(
+                "dotnet",
+                StepStatus::Pass,
+                0,
+                "semantic scan passed; no rules half",
+            )
         };
         steps[0].log_ref = Some("a".repeat(64));
         let mut v = StageVerdict {
+            confinement: "docker".into(),
+            cold_cache: false,
             schema: VERDICT_SCHEMA.into(),
             change_set_id: "cs_01JAPP0000000000000000PXAT".into(),
             slot: "cs-01japp0000000000000000pxat".into(),
@@ -314,7 +321,7 @@ mod tests {
         assert_eq!(value["steps"][0]["durationMs"], 10);
         assert_eq!(value["steps"][0]["logRef"], "a".repeat(64));
         assert!(value["steps"][1].get("logRef").is_none());
-        assert_eq!(value["steps"][2]["status"], "skipped");
+        assert_eq!(value["steps"][2]["status"], "pass");
         assert_eq!(
             value["catalogDelta"]["mechanisms"][0]["catalogType"],
             "Hollowmere.Mechanism.PressurePlate.PressurePlateCatalog"
@@ -337,6 +344,19 @@ mod tests {
         assert_eq!(a.verdict_ref(), b.verdict_ref());
         b.files[0].sha256 = "0".repeat(64);
         assert_ne!(a.verdict_ref(), b.verdict_ref());
+    }
+
+    #[test]
+    fn r2_09_not_applicable_never_bypasses_a_mandatory_step() {
+        let mut verdict = sample();
+        verdict.steps[2].status = StepStatus::Skipped;
+        verdict.steps[2].facts = json!({"notApplicable":true});
+        verdict.settle();
+        assert!(!verdict.pass);
+        let mut verdict = sample();
+        verdict.steps.push(verdict.steps[0].clone());
+        verdict.settle();
+        assert!(!verdict.pass);
     }
 
     #[test]
