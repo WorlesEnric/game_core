@@ -1,0 +1,88 @@
+{
+  "revision": 51,
+  "project": "hollowmere",
+  "nodes": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "scope": "Instance",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "type": "entity.instance",
+      "name": "Maren",
+      "fields": {
+        "overrides": {
+          "value": {
+            "Entries": [],
+            "Count": 0
+          },
+          "type": "object"
+        },
+        "variant": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "definition",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+            "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+            "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+            "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "scope": "Instance",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      },
+      "type": "entity.instance",
+      "name": "Village Well",
+      "fields": {
+        "overrides": {
+          "value": {
+            "Entries": [],
+            "Count": 0
+          },
+          "type": "object"
+        },
+        "variant": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "definition",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+            "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+            "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+            "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+      }
+    }
+  ]
+}

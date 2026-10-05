@@ -412,6 +412,61 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         });
 
+        /// <summary>
+        /// Evidence for the context the worker receives: the Studio index's node counts by type, whether each given
+        /// asset (and scene object) has an index node, and the slice the request builder would send for them.
+        /// </summary>
+        public static Step IndexProbe(string label, string[] assets, string[] objects) => new Step("index probe " + label, () =>
+        {
+            StudioUiContext context = Context;
+            SemanticIndex snapshot = context.Runtime.Index.Snapshot();
+            JObject types = new JObject();
+            foreach (IGrouping<string, IndexNode> group in snapshot.Nodes.GroupBy(n => n.Type).OrderBy(g => g.Key))
+            {
+                types[group.Key] = group.Count();
+            }
+
+            List<AuthoringRef> refs = new List<AuthoringRef>();
+            JObject found = new JObject();
+            foreach (string path in assets)
+            {
+                UnityEngine.Object? asset = AssetDatabase.LoadMainAssetAtPath(path);
+                AuthoringRef? reference = asset == null ? null : context.Selection.RefOf(asset);
+                IndexNode? node = reference == null ? null : context.Runtime.Index.FindNode(reference);
+                found[path] = new JObject { ["ref"] = reference?.ToString(), ["node"] = node?.Type, ["refsFrom"] = node?.Refs?.Count };
+                if (reference != null)
+                {
+                    refs.Add(reference);
+                }
+            }
+
+            foreach (string name in objects)
+            {
+                GameObject? go = Find(name);
+                AuthoringRef? reference = go == null ? null : context.Selection.RefOf(go);
+                IndexNode? node = reference == null ? null : context.Runtime.Index.FindNode(reference);
+                found[name] = new JObject { ["ref"] = reference?.ToString(), ["node"] = node?.Type, ["refs"] = node?.Refs == null ? null : new JArray(node.Refs.Select(r => r.Field + " -> " + r.To.Path).ToArray()) };
+                if (reference != null)
+                {
+                    refs.Add(reference);
+                }
+            }
+
+            IndexSlice slice = context.Runtime.Index.Slice(refs, 2, 256 * 1024);
+            JObject doc = new JObject
+            {
+                ["revision"] = snapshot.Revision,
+                ["nodes"] = snapshot.Nodes.Count,
+                ["edges"] = snapshot.Edges?.Count ?? 0,
+                ["types"] = types,
+                ["found"] = found,
+                ["slice"] = new JObject { ["bytes"] = slice.Bytes, ["nodes"] = new JArray(slice.Index.Nodes.Select(n => n.Name + " [" + n.Type + "]").ToArray()), ["truncated"] = slice.Truncated },
+            };
+            WorkflowRunner.Json("index-probe-" + label + ".json", doc);
+            WorkflowRunner.Log("index-probe", "Index: " + snapshot.Nodes.Count + " nodes; slice for " + label + ": " + slice.Index.Nodes.Count + " node(s).", doc);
+            return true;
+        });
+
         /// <summary>Adds project assets to the current selection (Ctrl-click in the Project window).</summary>
         public static Step AddAsset(params string[] paths) => new Step("add asset " + string.Join(", ", paths.Select(Path.GetFileNameWithoutExtension)), () =>
         {
@@ -435,7 +490,12 @@ namespace Hollowmere.P3_2.Workflows
             StudioViewportWindow viewport = Viewport();
             GameObject anchor = Require(near);
             Vector3 world = anchor.transform.position + offset;
-            FrameOn(new List<GameObject> { anchor }, 1.5f);
+            // Orbit the free camera to look down at the spot (what a creator does before right-clicking the ground).
+            viewport.Renderer.ForceFreeCamera = true;
+            Camera free = viewport.Renderer.FreeCamera;
+            free.transform.position = world + new Vector3(0f, 9f, -9f);
+            free.transform.LookAt(world);
+            viewport.RenderNow();
             Rect area = viewport.ImageRect;
             List<Vector2> points = new List<Vector2>();
             Vector2? projected = viewport.Project(world);
@@ -444,16 +504,32 @@ namespace Hollowmere.P3_2.Workflows
                 points.Add(projected.Value);
             }
 
-            points.Add(new Vector2(area.width * 0.62f, area.height * 0.82f));
-            points.Add(new Vector2(area.width * 0.5f, area.height * 0.9f));
-            points.Add(new Vector2(area.width * 0.35f, area.height * 0.85f));
+            points.Add(new Vector2(area.x + (area.width * 0.5f), area.y + (area.height * 0.5f)));
+            points.Add(new Vector2(area.x + (area.width * 0.5f), area.y + (area.height * 0.8f)));
             viewport.Overlap?.Hide();
             LocationPick location = viewport.PointAtLocation(points[0]);
             JArray tries = new JArray();
             foreach (Vector2 point in points)
             {
                 location = viewport.PointAtLocation(point);
-                tries.Add(new JObject { ["point"] = new JArray(Math.Round(point.x, 1), Math.Round(point.y, 1)), ["hit"] = location.Hit, ["source"] = location.Source.ToString() });
+                PickingService picking = viewport.Picking;
+                Ray ray = picking.RayAt(point);
+                tries.Add(new JObject
+                {
+                    ["point"] = new JArray(Math.Round(point.x, 1), Math.Round(point.y, 1)),
+                    ["hit"] = location.Hit,
+                    ["source"] = location.Source.ToString(),
+                    ["camera"] = picking.Camera != null ? picking.Camera.name : null,
+                    ["cameraPos"] = picking.Camera != null ? Vec(picking.Camera.transform.position) : null,
+                    ["cameraFwd"] = picking.Camera != null ? Vec(picking.Camera.transform.forward) : null,
+                    ["far"] = picking.Camera != null ? picking.Camera.farClipPlane : (float?)null,
+                    ["imageRect"] = area.ToString(),
+                    ["pickViewport"] = picking.Viewport.ToString(),
+                    ["rayOrigin"] = Vec(ray.origin),
+                    ["rayDir"] = Vec(ray.direction),
+                    ["groundHeight"] = picking.Options.GroundHeight,
+                    ["maxDistance"] = picking.Options.MaxDistance,
+                });
                 if (location.Hit)
                 {
                     break;

@@ -246,7 +246,9 @@ namespace Hollowmere.P3_2.Workflows
             {
                 S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
+                S.IndexProbe("robe", new[] { MarenNpc, MarenEntity, MarenBehaviour, MarenGraph, LanternItem }, new[] { "Maren", "Village Well" }),
                 S.Select("Maren"),
+                S.AddAsset(MarenNpc, MarenEntity),
                 S.Do("hashes before robe", () => HashStep("robe", "before", MarenBehaviour, MarenNpc, MarenEntity)),
                 S.Note("roster before robe", () => Roster("robe", "before")),
                 S.Note("viewport before robe", () => ViewportPng("robe", "before")),

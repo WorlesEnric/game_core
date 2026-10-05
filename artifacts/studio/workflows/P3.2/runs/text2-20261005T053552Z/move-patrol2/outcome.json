@@ -1,0 +1,49 @@
+{
+  "result": "candidate_invalid",
+  "changeSetId": "cs_01M4595DCVDFMPHPS5T1J56JCF",
+  "requests": [
+    "cs_01M4595DCVDFMPHPS5T1J56JCF"
+  ],
+  "tasks": [
+    "t6fc7ab0f2e4ca22b1ef914b3"
+  ],
+  "row": {
+    "state": "candidate",
+    "label": "candidate",
+    "worker": "gc-designer",
+    "etosStatus": "done",
+    "localState": "stage_refused",
+    "progress": "done: Wrote `/outputs/changeset.json` proposing to move Maren two metres north and set a looping patrol around the village well. Verified the JSON and both operations against the tool catalog; the proposal has not been applied.",
+    "waitingReason": "",
+    "question": "",
+    "parent": "",
+    "diagnostics": [
+      {
+        "code": "MissingPrerequisite",
+        "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+        "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+        "where": "op2"
+      }
+    ]
+  },
+  "view": {
+    "state": "candidate",
+    "taskStatus": "done",
+    "attempt": 0,
+    "local": "stage_refused",
+    "outcome": {
+      "artifacts": 0,
+      "code": "candidate",
+      "operations": 2
+    },
+    "outcomeLabel": "candidate",
+    "diagnostics": [
+      {
+        "code": "MissingPrerequisite",
+        "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+        "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+        "where": "op2"
+      }
+    ]
+  }
+}

@@ -37,7 +37,7 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" && "$(uname -s)" != "Linux" ]]; then
   if [[ -n "${out_dir}" ]]; then
     dest="${root}/artifacts/studio/workflows/P3.2/runs/$(basename "${out_dir}")"
     mkdir -p "${dest}"
-    scp -q -r "${host}:${out_dir}/." "${dest}/"
+    rsync -a --exclude "editor-a*.log" "${host}:${out_dir}/" "${dest}/" || rc=1
     echo "-- copied the run folder to ${dest}"
   fi
   exit "${rc}"

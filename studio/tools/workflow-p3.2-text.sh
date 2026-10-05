@@ -7,8 +7,21 @@
 #      (move / npc.setPatrol) previewed with ghosts and compared -> applied (journal entry) -> undone from History;
 #   c) W-AI-02: right-click point-at near the well, "Add a ferryman NPC here who talks about the bell." -> candidate ->
 #      applied -> roster/describe of what was created -> undone.
-# Usage: studio/tools/workflow-p3.2-text.sh [--packet <name>]   (run from the Mac after sync-to-host.sh, or on the host)
+# Attempts (both recorded in artifacts/studio/workflows/P3.2):
+#   --attempt 1   the scene objects only (workflow `text`): the worker cannot target npc.setPatrol because the context
+#                 slice of a placed NPC does not contain its npc.definition, and asks for it;
+#   --attempt 2   (default) the same prompts with the NPC definitions also selected in the Project window, and Odd's
+#                 definition next to the point-at location for the ferryman (workflow `text2`).
+# Usage: studio/tools/workflow-p3.2-text.sh [--attempt 1|2] [--packet <name>]
 # Output: a run folder (keyframes, recording.mp4, run-log.jsonl, timeline.jsonl, per-request JSON, etos usage); see
-# studio/tools/workflow-p3.2-lib.sh. Spends model time on gc-designer (2-4 tasks).
+# studio/tools/workflow-p3.2-lib.sh. Spends model time on gc-designer (3-6 tasks).
 set -euo pipefail
-exec bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/workflow-p3.2-lib.sh" text "$@"
+workflow="text2"
+args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --attempt) [[ "$2" == "1" ]] && workflow="text" || workflow="text2"; shift 2 ;;
+    *) args+=("$1"); shift ;;
+  esac
+done
+exec bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/workflow-p3.2-lib.sh" "${workflow}" "${args[@]+"${args[@]}"}"
