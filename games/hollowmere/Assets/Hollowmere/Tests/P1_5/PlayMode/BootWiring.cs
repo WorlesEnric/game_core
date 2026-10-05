@@ -27,6 +27,18 @@ namespace Hollowmere.P1_5.PlayMode.Tests
         private const string BootScene = "Assets/Hollowmere/Boot/Boot.unity";
         private const int MaxFrames = 300;
 
+        /// <summary>Destroys Boot.unity's GameBoot (its OnDestroy stops the root), also when the test was ignored.</summary>
+        [UnityTearDown]
+        public IEnumerator TearDown()
+        {
+            GameBoot? boot = Object.FindAnyObjectByType<GameBoot>();
+            if (boot != null)
+            {
+                Object.Destroy(boot.gameObject);
+                yield return null;
+            }
+        }
+
         [UnityTest]
         public IEnumerator BootSceneWiresUiAndAudioIntoTheP13Sessions()
         {
