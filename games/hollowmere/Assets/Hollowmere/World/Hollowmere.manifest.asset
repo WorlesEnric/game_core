@@ -18,9 +18,9 @@ MonoBehaviour:
   startRegionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
   focusEntityId: 90f935f8-12d5-4278-b336-107b081e1dfd
   preloadNeighbours: 0
-  catalogFingerprint: 1f170173e8100f2cb0fb4e9b02254370231899f7bedcda8d171a5d165553dd91
+  catalogFingerprint: d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18
   catalogTypeName: Hollowmere.Generated.HollowmereCatalog
-  bakeReportHash: a6ace9387daf448ecb1a72d7ddc1e9a075e2ad56eb36a3672a999d9dda6ca013
+  bakeReportHash: 1b273bf2c3afb98d290c4d6825f2e4dbf826df644c1b07186266e6ba7582ceac
   regions:
   - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
     name: Thornwick Village
@@ -60,6 +60,7 @@ MonoBehaviour:
     arrivalBY: 0
     arrivalBZ: 0
     arrivalBYaw: 1571
+    conditionRef: 
   - authoringId: 75251765-e092-4fa4-981d-b2258693ec31
     name: BlackmereMarsh_DrownedBelfry
     key: 326991361
@@ -73,6 +74,7 @@ MonoBehaviour:
     arrivalBY: 0
     arrivalBZ: 170931
     arrivalBYaw: 5820
+    conditionRef: 
   - authoringId: 89836cc9-4d04-4634-90ad-1f52cd0698df
     name: DrownedBelfry_ThornwickVillage
     key: 1973623197
@@ -86,146 +88,175 @@ MonoBehaviour:
     arrivalBY: 0
     arrivalBZ: 29069
     arrivalBYaw: 3605
+    conditionRef: 
   definitions:
   - authoringId: 05b934c3-466a-4cbd-9ec5-e887ecf26794
     name: Bell
     definition: {fileID: 11400000, guid: 1d4b2e8101dbaea66a3fb54c1fc9e507, type: 2}
     contentStamp: 7ab8a57185fab2735b12fb126a990e23a22ce1f0a3218e2e5d198b4066b28e98
+    structuralStamp: 3c11f0416eed64384d875d67eabe98c5891bea346a4d7a76e42213b2ba5886e9
     variantCount: 2
   - authoringId: 13778dd9-35bd-4e39-a90e-f001d6d1d5da
     name: BramEntity
     definition: {fileID: 11400000, guid: 26dcffb30564d3a8e87c681d023454ec, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: 18779563-f74f-4223-947f-19f0502c5a63
     name: Lantern
     definition: {fileID: 11400000, guid: b2a9c9d308ca808c7968da017d5b089f, type: 2}
     contentStamp: 0c14854565b9a313764e4ce50b842616d6b227e65a46adfca67a1dba08438aa7
+    structuralStamp: 3de6a1c808e470435a325bae916fa8681b2f9838d21ae71ec841c933c6d06ce1
     variantCount: 2
   - authoringId: 193f7ebc-6242-4813-b1cc-6afeea0918b9
     name: Traveller
     definition: {fileID: 11400000, guid: 0bdcbdc77a8fe6e64bb1d135d9b9ff27, type: 2}
     contentStamp: 9bb98190c06b04c187d9218a2833c5d9e8e897c8b8aca14ba0a14934db56223f
+    structuralStamp: 2600adff4fb65f3b03ece5e0e192c300f7be45ebace2ddc2473690d57b3b87c6
     variantCount: 1
   - authoringId: 19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54
     name: WellBucketEntity
     definition: {fileID: 11400000, guid: 30fd77047fcfeb484a281c97ce32f960, type: 2}
     contentStamp: dc5f5bc786d47bc83aa1de6af4ab4af6663d6a0e00456f0a834e6bc8c200719e
+    structuralStamp: f6dafe12297cd6b24db4e44855faef22c82571bc041b38b20e52efafac23e357
     variantCount: 1
   - authoringId: 2a8a3d76-2dea-4c2c-88a3-13be92ea473f
     name: BelfryEchoEntity
     definition: {fileID: 11400000, guid: da0512e079b8b8726926a321501301dd, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: 2e52c6af-c201-47b6-925d-9f53530eb275
     name: PickupHerbsEntity
     definition: {fileID: 11400000, guid: de700c80a95ee55288b017010f4b2253, type: 2}
     contentStamp: b08d9438fbb90d27c2c44ce5282899cef4dc06f4894fcc7498efa9d5d03a57c0
+    structuralStamp: f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83
     variantCount: 1
   - authoringId: 2e855e96-41a6-4b39-b5a0-56319b43c989
     name: PipEntity
     definition: {fileID: 11400000, guid: 2970f8269becd59aea9228da6f3781cc, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: 37902cb4-be99-4267-90cb-c02bd295f8d1
     name: DrownedSatchelEntity
     definition: {fileID: 11400000, guid: b143fbbb94f6cdb40b16ca2d2a51fdc8, type: 2}
     contentStamp: 05b3a5e55d65149907ae8337e84214e8f5ed2a83482eefcc77300d9693f47c64
+    structuralStamp: dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf
     variantCount: 1
   - authoringId: 3e5ad90c-f48f-43bc-aeeb-aa51360dc71d
     name: ShrinePostEastEntity
     definition: {fileID: 11400000, guid: 1ab4d95d6ffe8caa29ad5a25a9ca9e74, type: 2}
     contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
     name: Crate
     definition: {fileID: 11400000, guid: 7904be7b2e80d2fb4b0a170cae2fcc57, type: 2}
     contentStamp: 2adc9cde53c408f520951781ead083f132e2c76e1f5ff51ade48fd3b659a0bb3
+    structuralStamp: db635bfeff6cb63d8bb808a36b810861aacba6f27697ac514ecbb2c433286746
     variantCount: 2
   - authoringId: 5ffeae11-f167-46ca-86d4-6d1b37687905
     name: ShrinePostWestEntity
     definition: {fileID: 11400000, guid: eb53f7306dbe96774946e2d5f1495fe1, type: 2}
     contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: 68d2519f-2a40-439b-be2d-63d16581cd06
     name: HaleEntity
     definition: {fileID: 11400000, guid: 8925e4c338fef6c91879d6e770181bdf, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: 81ae7773-9697-41d7-b790-2d0346b8fd58
     name: PickupMarshHerbsEntity
     definition: {fileID: 11400000, guid: eaa18d27dcc6a6049a51b4a3b610b6a3, type: 2}
     contentStamp: b08d9438fbb90d27c2c44ce5282899cef4dc06f4894fcc7498efa9d5d03a57c0
+    structuralStamp: f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83
     variantCount: 1
   - authoringId: 8f7c3953-8560-4072-8754-be36e8a94b06
     name: SinkholeGlintEntity
     definition: {fileID: 11400000, guid: 09e506b0ec5c07545bc522b6dc83a362, type: 2}
     contentStamp: 43000f88eb00d2f19b24b406271d7111f35285d060f2cfc81b2bd59aa0686600
+    structuralStamp: 30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5
     variantCount: 1
   - authoringId: 9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2
     name: ShrinePostMiddleEntity
     definition: {fileID: 11400000, guid: 5378e6f60b1da6540b15c03420163020, type: 2}
     contentStamp: 6aa11620059191cb253dca5379d4fce706ebb07acaf9675cbf32ea06f6a725fb
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: acefbaad-340d-466f-9d66-214afb15646f
     name: Stone
     definition: {fileID: 11400000, guid: 59f550ace0092d66a8c292df84a423e7, type: 2}
     contentStamp: 2759395ed49c610d4d09103d84b5abb76b0f76215ff23007dd3235c5e5cb73a1
+    structuralStamp: 0b8ec0e8133f3ebcbb7cc36ae5aa7ff0dbb54d2973dbfde98c11bff97be02a98
     variantCount: 1
   - authoringId: ada7a792-63fb-480a-9445-3b61f5dece1b
     name: CausewayGateEntity
     definition: {fileID: 11400000, guid: e4e13730b5bfc49b5a30784b04d65ffa, type: 2}
     contentStamp: e6330a261e4598deb22c11b653a1cc80eb232241573d02d9e4a94983a4e7c6ae
+    structuralStamp: 8c8436dd0c9f2d001d30f4c71a3d56b3458a62dd69e03da39c48a812cdd8b6ea
     variantCount: 1
   - authoringId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
     name: OddEntity
     definition: {fileID: 11400000, guid: c85061092bd3b67cc84cae5e7bd3a3bb, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: b341c519-f6b4-42b7-99ff-649bd5fb071f
     name: OldPuntEntity
     definition: {fileID: 11400000, guid: 28421afb24106a6bf809f380e5edce51, type: 2}
     contentStamp: 1f36ff042b51f88ded8b568c24f7a499b98a999caabc9b9130b8d1b956c1ab50
+    structuralStamp: 3ee5c7efd8e81dce49796a4ee565054eebc52b8e4b9b07e3624dc0ee0a3cde92
     variantCount: 1
   - authoringId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
     name: Reed
     definition: {fileID: 11400000, guid: 772847e89f0fd59f59429d20ade552e8, type: 2}
     contentStamp: bc8b0ed35828c5586db8b83e229a6b12fad7bc3a93a4ee6aca9e577fc428c371
+    structuralStamp: 6774e23be712d4e00df62aece426e5632dc6fd7dd882bb4f30f7a93e19ff9776
     variantCount: 1
   - authoringId: b6f71bc7-2c1f-4165-8f25-a249cfa316e5
     name: TinkersBenchEntity
     definition: {fileID: 11400000, guid: a6be78279957368ee9ceeb01f2cec8e0, type: 2}
     contentStamp: 8c18bd3f4b3bc578a3201c636e5c22054ba1ecea1ce1f98476529e9466359226
+    structuralStamp: dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf
     variantCount: 1
   - authoringId: bdecb271-eb2c-4fd8-94d5-c47c158b9a6d
     name: PickupCoinsEntity
     definition: {fileID: 11400000, guid: e070a9213e4093001b7fab85bdaa52e4, type: 2}
     contentStamp: ff78ae55a05731e45f42f78efc825df4f97c58ac7df1290b105d42a4c6f1d892
+    structuralStamp: 30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5
     variantCount: 1
   - authoringId: ce503024-4b28-4194-8865-8eec9dd6d8a7
     name: MarenEntity
     definition: {fileID: 11400000, guid: 1a0820b9c500f9195a0c9ab649618e27, type: 2}
     contentStamp: 9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854
+    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
     variantCount: 1
   - authoringId: d7081228-f497-4a3d-811e-0bb0e3c72807
     name: Signpost
     definition: {fileID: 11400000, guid: 6823d6f31a6524606825fca1a7107720, type: 2}
     contentStamp: d8eb40a3f2087b5cb0a07f1fc4542553ed0d72f83d637d933015e5f00e19bb80
+    structuralStamp: 339361070744b5918a91e3abb69e38fb98f3d915bcfd035462c2da41d4dd2eb8
     variantCount: 1
   - authoringId: e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c
     name: PickupClapperEntity
     definition: {fileID: 11400000, guid: dd3e17cd1cd37adecbfdcd5193978e4c, type: 2}
     contentStamp: c5c219cd306e27f694f578a78b0852e27a8e23449598172336fd4f0480312593
+    structuralStamp: 0cebbf98b5a343ffe58ac8300e70d6dbaf06a6c0fa8ecbcfe632b0243c0ea4a3
     variantCount: 1
   - authoringId: f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b
     name: PickupLanternEntity
     definition: {fileID: 11400000, guid: 60ae29846299723c78e73baae1552e75, type: 2}
     contentStamp: f2aad259e1fa9111791c06ee6b5441a9f643611222b03aee816f8b76668ed4c0
+    structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
     variantCount: 1
   - authoringId: fafbedd0-6061-4883-93da-4c2a1e6b1a21
     name: PickupOilEntity
     definition: {fileID: 11400000, guid: 064bebcc159e3c45a9519998e2926a7e, type: 2}
     contentStamp: 41dc328f79b899191fb105814d803dfdbddc21ddca1a0bceae13221478df8d40
+    structuralStamp: e787116304bfe70a8e6e1ac7862f8ea9e8a1ba026af018cf12b2680a4bc16ce3
     variantCount: 1
   entities:
   - authoringId: 0e714e11-b708-4dfa-a7d5-5ddb99f8724b

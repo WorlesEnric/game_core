@@ -1,0 +1,32 @@
+{
+  "id": "cs_01M459TDC76ZHZM7J20Y9AE0B5",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:closure.application-registration] Place the boot assets under Resources so the player registers Hollowmere at SubsystemRegistration (P1.7a A11)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "register",
+      "tool": "hollowmere.registerApplication",
+      "args": {}
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "register",
+      "status": "Applied"
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:50:37.448Z",
+    "applied": "2026-10-05T05:50:37.626Z"
+  }
+}
