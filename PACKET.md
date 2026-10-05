@@ -13,7 +13,7 @@ Branch `codex/r2-c`; Linux build host myubuntu. `git fetch origin && git merge o
 - R2-40: Reject tooltip says reason is recorded locally.
 - R2-01 consumer: gizmo origin and axes project PreviewTransform while dragging, preserving the real target.
 - R2-22/D9: shared core SecretRedactor at UI labels, tooltips, output JSON, logs/exceptions, task persistence and evidence writes; imported inspector strings sanitized without committing masks.
-- Walking evidence: dispatch New Game, wait for HUD and settled world, focus the image, measure committed world.posX/posZ. Evidence shell requires the corresponding successful measurement. Graphical run deliberately not invoked.
+- Walking evidence (`EvidenceContractTests.test_R2_29_WalkingRequiresHudRoutingAndCommittedPose`): dispatch New Game, wait for HUD and settled world, focus the image, measure committed world.posX/posZ. Evidence shell requires the corresponding successful measurement. Graphical run deliberately not invoked.
 
 ## Tests
 
@@ -28,7 +28,43 @@ Branch `codex/r2-c`; Linux build host myubuntu. `git fetch origin && git merge o
 - R2-22/R2-40: `R2_22_40_PanelSinksRedactSecretsAndRejectReasonIsLocal`.
 - R2-37: existing `ViewportWindowTests.Render_TargetMatchesTheViewportArea` now has the honest skip disposition.
 
-Verification in progress: C# policy and exact package metadata checks passed; shell syntax and diff whitespace passed. Hollowmere requested filter `GameCore\.Studio\.UI.*|Hollowmere\.P2_1.*` queued through `unity-batch.sh` under the shared host allocator. Result counts will be read from XML.
+## Verification
+
+Host only; Unity 6000.0.75f1 through `unity-batch.sh`, at most one held Editor slot. Test arguments match
+`unity-compile.sh`: `-runTests -testPlatform EditMode -testFilter 'GameCore\.Studio\.UI.*|Hollowmere\.P2_1.*'`;
+`--results` supplies the wrapper-owned `-testResults` path (a first invocation repeating that reserved argument
+was rejected before launching Unity).
+
+- Fixed implementation at `c5968bb9`: XML `.unity-logs/r2-c-ui-final.xml`: **49 total, 47 passed, 0 failed,
+  2 skipped, 0 inconclusive**, test duration 28.166 s; Editor exit 0. The wrapper returns partial/exit 1 because
+  graphical skips are not acceptance passes. UI: 44 passed + 2 skipped; Hollowmere P2_1: 3 passed.
+- Explicit skips: `R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers` (no graphics device to create
+  an event-delivering window) and `Render_TargetMatchesTheViewportArea`. Both name R2-H graphical qualification.
+  Headless ownership, key-state reset and low-level suppression tests pass.
+- Before/after proof: restored the original Editor implementation from parent `de2d9593`, keeping only an identity
+  `StudioStyles.Safe` shim so the new evidence caller compiles. Current regression tests and their honest graphics
+  skip declarations remained unchanged. `.unity-logs/r2-c-before.xml`: **16 total, 13 failed, 1 passed, 2 skipped**.
+  The sole pass is the host-without-opt-in refusal negative control. Every implementation file was restored from
+  byte backups and `git diff --exit-code -- Packages/com.gamecore.studio.ui/Editor` passed afterward.
+- `python3 Packages/com.gamecore.studio.ui/Tests/Host/test_evidence_contract.py`: **1 passed** (seven cases);
+  tests only the evidence report footer, never launches Unity/ETOS. Running it against the parent evidence script
+  failed all seven assertions. Host evidence: `/tmp/r2-c-before-evidence-test.log`.
+- `python3 tools/check_game_core_csharp.py`: pass, 1,098 C# files.
+- `python3 tools/check_package_metadata.py`: pass, 41 packages / 89 package assemblies, exact dependencies.
+- `bash -n studio/tools/evidence-p2.1.sh` and `git diff --check`: pass.
+- Initial cold compile stopped on two incorrect test selection-ID calls and a missing evidence assembly reference;
+  corrected without touching other packets. First executable suite: 46 passed / 2 input-test failures / 1 graphics
+  skip. Those failures established that queued keyboard input and UI Toolkit window delivery are unavailable under
+  this headless runner. The headless test now directly checks state/reset/event handling; the window test explicitly
+  skips without a graphics device. No product failure was suppressed.
+
+Final restored-source run at `c5968bb9`, `.unity-logs/r2-c-restored.xml`: **49 total, 47 passed, 0 failed, 2 skipped, 0 inconclusive**; test duration 12.391609 s, Editor exit 0, 296 s host run. The same two graphical tests are explicitly skipped. All restored implementation bytes match the committed sources.
+
+XML SHA-256:
+
+- `r2-c-ui-final.xml`: `aabaefc52dd328f8bd9f796bcc628e063047eaac37557e2b11c4c909cd04059d`.
+- `r2-c-before.xml`: `c534a414125f4a24b2647eb365d1d6e5aa78bc3daa6982d5867e8af753eab0d9`.
+- `r2-c-restored.xml`: `9dda6e02abfa3646b5c6af42f6bb9f03a967f32d660e358967e865746089a0b0`.
 
 ## Requests to other packets
 
