@@ -119,7 +119,7 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(window.RenderNow(), Is.True);
             RenderTexture texture = window.Texture!;
             float scale = EditorGUIUtility.pixelsPerPoint;
-            Rect area = window.Area.contentRect;
+            Rect area = window.Area!.contentRect;
             Assert.That(texture.width, Is.EqualTo(Mathf.RoundToInt(area.width * scale)));
             Assert.That(texture.height, Is.EqualTo(Mathf.RoundToInt(area.height * scale)));
             Assert.That(window.Renderer.Renders, Is.GreaterThan(0));

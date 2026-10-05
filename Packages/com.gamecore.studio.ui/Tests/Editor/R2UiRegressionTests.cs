@@ -144,7 +144,7 @@ namespace GameCore.Studio.UI.Tests
             string json = Encoding.UTF8.GetString(scene.Data);
             Assert.That(JObject.Parse(json)["truncated"]!.Value<bool>(), Is.True);
             Assert.That(json, Does.Not.Contain("etk_sensitive"));
-            var selection = new SelectionSnapshot(IdDerivation.NewSelectionId(), GameCore.Studio.Model.SelectionMode.Edit, new[] { targets[0] }, 0);
+            var selection = new SelectionSnapshot("sel_" + IdDerivation.NewChangeSetId().Substring(3), GameCore.Studio.Model.SelectionMode.Edit, new[] { targets[0] }, 0);
             PreparedRequest request = _bed.Context.Requests.Build("inspect", selection);
             Assert.That(Encoding.UTF8.GetByteCount(StudioJson.Serialize(request.Request.ContextSlice, false)), Is.LessThanOrEqualTo(512));
             Assert.That(request.ContextTruncated, Is.True);
@@ -155,7 +155,7 @@ namespace GameCore.Studio.UI.Tests
         {
             string path = Path.Combine(_bed.StateRoot, "large.bin");
             using (FileStream file = File.Create(path)) file.SetLength(9 * 1024 * 1024);
-            var selection = new SelectionSnapshot(IdDerivation.NewSelectionId(), GameCore.Studio.Model.SelectionMode.Edit, Array.Empty<AuthoringRef>(), 0);
+            var selection = new SelectionSnapshot("sel_" + IdDerivation.NewChangeSetId().Substring(3), GameCore.Studio.Model.SelectionMode.Edit, Array.Empty<AuthoringRef>(), 0);
             PromptAttachment fileRef = AgentRequestBuilder.AttachmentFor(path);
             Assert.Throws<ArgumentException>(() => _bed.Context.Requests.Build("inspect", selection, attachments: new[] { fileRef, fileRef }));
             Assert.Throws<ArgumentException>(() => _bed.Context.Requests.Build("inspect", selection, attachments: Enumerable.Repeat(fileRef, 9).ToArray()));
