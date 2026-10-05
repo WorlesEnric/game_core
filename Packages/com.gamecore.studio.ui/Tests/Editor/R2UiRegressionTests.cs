@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UIElements;
+using UnityEngine.TestTools;
 
 namespace GameCore.Studio.UI.Tests
 {
@@ -196,33 +198,62 @@ namespace GameCore.Studio.UI.Tests
             finally { InputSystem.RemoveDevice(keyboard); }
         }
 
-        [Test]
-        public void R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers()
+        [UnityTest]
+        public IEnumerator R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers()
         {
-            if (!ViewportRenderer.CanRender) Assert.Ignore("R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required.");
+            if (!ViewportRenderer.CanRender) Assert.Ignore("R2-29: window event delivery requires a graphical Editor.");
             StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
             try
             {
-                window.UseContext(_bed.Context); window.Show(); window.EnsureGui();
-                VisualElement image = window.rootVisualElement.Q("viewport-image");
-                VisualElement prompt = window.rootVisualElement.Q<TextField>("prompt-input");
-                VisualElement button = window.rootVisualElement.Q<Button>("mode-select");
-                foreach (VisualElement control in new[] { prompt, button, image })
+                window.UseContext(_bed.Context); window.Show(); window.EnsureGui(); window.Focus();
+                yield return null;
+                VisualElement root = window.rootVisualElement;
+                VisualElement image = root.Q("viewport-image");
+                TextField prompt = root.Q<TextField>("prompt-input");
+                VisualElement button = root.Q<Button>("mode-select");
+                int downs = 0, ups = 0, imageDowns = 0, imageUps = 0, promptBubbleDowns = 0;
+                image.RegisterCallback<KeyDownEvent>(_ => imageDowns++);
+                image.RegisterCallback<KeyUpEvent>(_ => imageUps++);
+                prompt.RegisterCallback<KeyDownEvent>(_ => promptBubbleDowns++);
+                // Observe delivery before TextInput consumes Tab in its own default/callback handling.
+                // A bubbling callback on TextField is not an event-delivery witness.
+                root.RegisterCallback<KeyDownEvent>(_ => downs++, TrickleDown.TrickleDown);
+                root.RegisterCallback<KeyUpEvent>(_ => ups++, TrickleDown.TrickleDown);
+                foreach (VisualElement control in new[] { (VisualElement)prompt, button, image })
                 {
                     window.SetMode(ViewportMode.Select);
-                    int downs = 0, ups = 0;
-                    control.RegisterCallback<KeyDownEvent>(_ => downs++);
-                    control.RegisterCallback<KeyUpEvent>(_ => ups++);
                     control.Focus();
-                    using (KeyDownEvent down = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.Tab })) control.SendEvent(down);
-                    using (KeyUpEvent up = KeyUpEvent.GetPooled(new Event { type = EventType.KeyUp, keyCode = KeyCode.Tab })) control.SendEvent(up);
-                    Assert.That(downs, Is.EqualTo(1), "real UI Toolkit event delivery");
-                    Assert.That(ups, Is.EqualTo(1));
-                    Assert.That(window.Mode, Is.EqualTo(control == image ? ViewportMode.Inspect : ViewportMode.Select));
+                    yield return null;
+                    VisualElement? focused = root.focusController.focusedElement as VisualElement;
+                    Assert.That(focused != null && (focused == control || control.Contains(focused)), Is.True,
+                        "focus must settle on " + control.name + " before dispatch");
+                    int beforeDowns = downs, beforeUps = ups, beforeImageDowns = imageDowns, beforeImageUps = imageUps;
+                    using (KeyDownEvent down = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.Tab })) focused!.SendEvent(down);
+                    using (KeyUpEvent up = KeyUpEvent.GetPooled(new Event { type = EventType.KeyUp, keyCode = KeyCode.Tab })) focused!.SendEvent(up);
+                    Assert.That(downs - beforeDowns, Is.EqualTo(1), "P42-UI-01: trickle-down delivery to " + control.name);
+                    Assert.That(ups - beforeUps, Is.EqualTo(1), "key-up delivery to " + control.name);
+                    Assert.That(imageDowns - beforeImageDowns, Is.EqualTo(control == image ? 1 : 0), "control keys must never enter the image event path");
+                    Assert.That(imageUps - beforeImageUps, Is.EqualTo(control == image ? 1 : 0), "control key-ups must never enter the image event path");
+                    Assert.That(window.Mode, Is.EqualTo(control == image ? ViewportMode.Inspect : ViewportMode.Select),
+                        "only viewport focus may invoke viewport shortcuts");
+                    Debug.Log("[R4-B key delivery] " + control.name + " down=1 up=1 imageDowns=" + (imageDowns - beforeImageDowns)
+                        + " imageUps=" + (imageUps - beforeImageUps) + " promptBubbleDowns=" + promptBubbleDowns + " mode=" + window.Mode);
                 }
-                window.Routing.Update(true);
+                // Text input itself must still work without entering viewport handlers.
                 prompt.Focus();
-                Assert.That(window.Routing.Active, Is.False, "image FocusOut synchronously releases input");
+                yield return null;
+                using (KeyDownEvent down = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.W, character = 'w' }))
+                    ((VisualElement)root.focusController.focusedElement).SendEvent(down);
+                Assert.That(prompt.value, Does.Contain("w"));
+                image.Focus();
+                yield return null;
+                window.Routing.Update(true);
+                bool releasedDuringFocusOut = false;
+                image.RegisterCallback<FocusOutEvent>(_ => releasedDuringFocusOut = !window.Routing.Active);
+                prompt.Focus();
+                yield return null;
+                Assert.That(releasedDuringFocusOut, Is.True, "routing must release synchronously during image FocusOut");
+                Assert.That(window.Routing.Active, Is.False, "image FocusOut releases input");
             }
             finally { window.Close(); }
         }

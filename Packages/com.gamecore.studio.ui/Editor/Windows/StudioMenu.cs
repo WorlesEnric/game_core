@@ -23,6 +23,7 @@ namespace GameCore.Studio.UI
         /// </summary>
         public static void OpenStudio(Rect area, bool reposition = false)
         {
+            StudioAgentGateways.EnsureSessionStarted();
             bool viewportExisted = !reposition && HasOpenInstances<StudioViewportWindow>();
             bool contextExisted = !reposition && HasOpenInstances<StudioContextWindow>();
             bool tasksExisted = !reposition && HasOpenInstances<StudioTasksWindow>();
@@ -98,25 +99,72 @@ namespace GameCore.Studio.UI
         }
     }
 
-    // The window manager can override placement during Show. Reapply once on the next Editor update.
+    // Show and X11 ConfigureNotify can race across several updates. Stop once placement is stable,
+    // or after five seconds / 120 updates, so a constrained WM cannot keep fighting the creator.
     internal sealed class StudioDeferredLayout : ScriptableSingleton<StudioDeferredLayout>
     {
-        private readonly Dictionary<EditorWindow, Rect> _pending = new Dictionary<EditorWindow, Rect>();
+        public const double TimeoutSeconds = 5;
+        public const double StableSeconds = 0.5;
+        private readonly Dictionary<EditorWindow, Placement> _pending = new Dictionary<EditorWindow, Placement>();
+
+        private sealed class Placement
+        {
+            public Rect Rect;
+            public double Started;
+            public double StableSince;
+            public int StableUpdates;
+            public int Updates;
+        }
+
+        public int PendingCount => _pending.Count;
 
         public void Place(EditorWindow window, Rect rect)
         {
+            double now = EditorApplication.timeSinceStartup;
             window.position = rect;
-            _pending[window] = rect;
+            _pending[window] = new Placement { Rect = rect, Started = now, StableSince = now };
             EditorApplication.update -= Apply;
             EditorApplication.update += Apply;
         }
 
-        private void Apply()
+        private void Apply() => Advance(EditorApplication.timeSinceStartup);
+
+        // Explicit clock keeps deadline/stability regressions deterministic without sleeping an Editor.
+        public void Advance(double now)
         {
-            EditorApplication.update -= Apply;
-            foreach (KeyValuePair<EditorWindow, Rect> item in _pending)
-                if (item.Key != null && item.Key.position != item.Value) item.Key.position = item.Value;
-            _pending.Clear();
+            var completed = new List<EditorWindow>();
+            foreach (KeyValuePair<EditorWindow, Placement> item in _pending)
+            {
+                EditorWindow window = item.Key;
+                Placement placement = item.Value;
+                if (window == null) { completed.Add(window); continue; }
+                placement.Updates++;
+                if (window.position == placement.Rect)
+                {
+                    placement.StableUpdates++;
+                    if (placement.StableUpdates >= 3 && now - placement.StableSince >= StableSeconds)
+                    {
+                        completed.Add(window);
+                        continue;
+                    }
+                }
+                else
+                {
+                    placement.StableUpdates = 0;
+                    placement.StableSince = now;
+                }
+
+                if (now - placement.Started >= TimeoutSeconds || placement.Updates >= 120)
+                {
+                    Debug.LogWarning("GameCore Studio [layout_timeout]: " + window.GetType().Name
+                        + " requested " + placement.Rect + ", observed " + window.position
+                        + "; placement did not settle within 5 seconds / 120 updates. Move the window manually or reopen Studio.");
+                    completed.Add(window);
+                }
+                else if (window.position != placement.Rect) window.position = placement.Rect;
+            }
+            foreach (EditorWindow window in completed) _pending.Remove(window);
+            if (_pending.Count == 0) EditorApplication.update -= Apply;
         }
 
         private void OnDisable()
@@ -125,5 +173,4 @@ namespace GameCore.Studio.UI
             _pending.Clear();
         }
     }
-
 }

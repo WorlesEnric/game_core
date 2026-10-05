@@ -179,7 +179,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
             Debug.Log("[P3.1] memory cycles: allocated +" + lastAllocated.ToString(CultureInfo.InvariantCulture) + "%, reserved +"
                 + lastReserved.ToString(CultureInfo.InvariantCulture) + "% at cycle 10 (" + output + ")");
             SessionState.EraseString(MemoryKey);
-            Assert.That(lastAllocated, Is.LessThan(25.0), "allocated memory grows by less than 25% over ten cycles");
+            Assert.That(lastAllocated, Is.LessThan(15.0), "allocated memory grows by less than 15% over ten cycles");
         }
     }
 }
