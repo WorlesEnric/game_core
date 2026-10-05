@@ -8,7 +8,7 @@
 //!                                  [--verdict-out FILE]
 //! gamecore-studio stage gc [--root DIR] [--max-age-days N]
 //! gamecore-studio stage discard <slot> [--root DIR]
-//! gamecore-studio stage scan <package-dir> [--package NAME] [--allow-unsafe REASON]
+//! gamecore-studio stage scan <package-dir> [--package NAME] [--allow-unsafe REASON] [--repo DIR]
 //! ```
 //!
 //! `run` prints one line per step on stderr and the verdict's canonical JSON as the last
@@ -32,7 +32,7 @@ const USAGE: &str = "usage:
                                    [--steps scan,checkers,...] [--budget-s N] [--force] [--verdict-out FILE]
   gamecore-studio stage gc [--root DIR] [--max-age-days N]
   gamecore-studio stage discard <slot> [--root DIR]
-  gamecore-studio stage scan <package-dir> [--package NAME] [--allow-unsafe REASON]";
+  gamecore-studio stage scan <package-dir> [--package NAME] [--allow-unsafe REASON] [--repo DIR]";
 
 struct Args {
     positional: Vec<String>,
@@ -267,21 +267,37 @@ fn discard(a: &Args) -> i32 {
 }
 
 fn scan_cmd(a: &Args) -> i32 {
-    if let Err(e) = a.check(&["package", "allow-unsafe"]) {
+    if let Err(e) = a.check(&["package", "allow-unsafe", "repo"]) {
         return fail(&e);
     }
     let [dir] = a.positional.as_slice() else {
         return fail("scan takes exactly one package directory");
     };
+    // The documented exemptions of the checkout's allowlist apply, as in `stage run`.
+    let exemptions = match a
+        .get("repo")
+        .map(PathBuf::from)
+        .or_else(pipeline::discover_repo)
+    {
+        Some(repo) => match scan::load_exemptions(&repo.join("studio/stage/allowlist.json")) {
+            Ok(list) => list,
+            Err(e) => return fail(&e),
+        },
+        None => Vec::new(),
+    };
     let ctx = ScanContext {
         package: a.get("package").unwrap_or_default().to_string(),
         allow_unsafe: a.get("allow-unsafe").map(str::to_string),
         blobs: BTreeSet::new(),
+        exemptions,
     };
     match scan::scan_package(std::path::Path::new(dir), &ctx) {
         Ok(report) => {
             for h in &report.hits {
                 eprintln!("   {} {}:{} {}", h.rule, h.path, h.line, h.excerpt);
+            }
+            for (id, h) in &report.exempted {
+                eprintln!("   exempt[{id}] {} {}:{}", h.rule, h.path, h.line);
             }
             println!(
                 "{}",

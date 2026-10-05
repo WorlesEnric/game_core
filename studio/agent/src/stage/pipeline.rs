@@ -527,7 +527,22 @@ impl Run<'_> {
     fn step_scan(&mut self) {
         let t = Instant::now();
         let mut log = StepLog::new();
+        let exemptions =
+            match scan::load_exemptions(&self.opts.repo.join("studio/stage/allowlist.json")) {
+                Ok(list) => list,
+                Err(e) => {
+                    let result = StepResult::new(
+                        "scan",
+                        StepStatus::Fail,
+                        ms(t.elapsed()),
+                        format!("the stage allowlist is invalid: {e}"),
+                    );
+                    self.finish(result, log);
+                    return;
+                }
+            };
         let ctx = ScanContext {
+            exemptions,
             package: self.package(),
             allow_unsafe: self.record["allowUnsafe"].as_str().map(str::to_string),
             blobs: self.record["blobs"]
@@ -544,6 +559,12 @@ impl Run<'_> {
             Ok(report) => {
                 for h in &report.hits {
                     log.line(format!("{} {}:{} {}", h.rule, h.path, h.line, h.excerpt));
+                }
+                for (id, h) in &report.exempted {
+                    log.line(format!(
+                        "exempt[{id}] {} {}:{} {}",
+                        h.rule, h.path, h.line, h.excerpt
+                    ));
                 }
                 log.line(format!(
                     "scanned {} file(s), {} byte(s): {} hit(s)",
@@ -566,7 +587,12 @@ impl Run<'_> {
                         rules.into_iter().collect::<Vec<_>>().join(", ")
                     )
                 };
-                let facts = json!({"files": report.files, "bytes": report.bytes, "hits": report.hits.len()});
+                let mut exempted: std::collections::BTreeMap<&str, usize> = Default::default();
+                for (id, _) in &report.exempted {
+                    *exempted.entry(id.as_str()).or_default() += 1;
+                }
+                let facts = json!({"files": report.files, "bytes": report.bytes,
+                    "hits": report.hits.len(), "exempted": exempted});
                 self.hits = report.hits;
                 StepResult {
                     facts,

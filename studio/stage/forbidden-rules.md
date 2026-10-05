@@ -29,6 +29,20 @@ The scan reads C# through a small lexer, not regular expressions. Comments, stri
 `tools/check_stage_slot.py` then checks the slot itself: the manifest allowlist, embedded files equal to
 `stage.json`, and no stray assets.
 
-No rule was relaxed for the pressure-plate sample, and `studio/stage/allowlist.json` lists only Unity packages and
-the denied Studio and qualification packages. If a legitimate mechanism package is blocked by a checker rule, add
-an explicit allowlist entry with a written reason. Do not change the rule.
+## Documented exemptions (`studio/stage/allowlist.json` `scanExemptions`)
+
+No rule is relaxed. If a legitimate mechanism package is blocked by a rule, the fix is an explicit allowlist entry
+with a written reason, never a change to the rule. An entry matches only when all of these hold:
+
+- the rule is the one named;
+- the file name ends with `pathSuffix`;
+- the file sits directly in a folder named `directory`;
+- the file's first ten lines contain `header`;
+- the offending line contains `excerptContains`.
+
+An exempted hit is not discarded. It is still written to the scan log as `exempt[<id>] ...` and counted in the
+step's `facts.exempted`. The runner refuses an entry that names an unknown rule or has no reason or no header.
+
+| id | rule | covers | reason (summary) |
+|----|------|--------|------------------|
+| `generated-catalog-tables` | `static-mutable` | `static readonly` lines in `Generated/*.g.cs` with the CatalogEmitter header | The repository's catalog emitter writes its tables as `static readonly T[]`, exactly as in every gameplay package. Nothing writes them after type initialisation, and the determinism step still guards against shared state. stage_real found the need on the pressure plate: 14 hits, all emitter tables. |
