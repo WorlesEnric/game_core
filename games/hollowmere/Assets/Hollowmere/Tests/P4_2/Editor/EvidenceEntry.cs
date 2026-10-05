@@ -30,6 +30,16 @@ namespace Hollowmere.P4_2
             StudioUiEvidence.Run();
         }
 
+        public static void RunStage()
+        {
+            string file = Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? string.Empty,
+                ".config", "gamecore-studio", "app-key.json");
+            Environment.SetEnvironmentVariable(EtosCredentials.KeyFileVariable, file);
+            bool started = EtosStudioSession.Start();
+            Debug.Log("[P4.2] Explicit paired stage startup: " + started + "; " + EtosStudioSession.Problem);
+            Hollowmere.P3_2.Workflows.WorkflowRunner.Run();
+        }
+
         private static void Guard()
         {
             int step = SessionState.GetInt(StepKey, -1);

@@ -101,6 +101,10 @@ def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, exp
     child_env.update({k: str(v).replace('{out}', str(folder)) for k, v in (env or {}).items()})
     print(f"START {row}/{label}", flush=True)
     with (folder / 'command.log').open('w') as log, (editor_lease() if editor else contextlib.nullcontext()):
+        record['queuedAtRevision'] = record['revision']
+        record['revision'] = git('rev-parse', 'HEAD')
+        record['executionStarted'] = utc()
+        record['sourceDiffSha256'] = hashlib.sha256(subprocess.check_output(['git', 'diff', '--', 'Packages', 'games', 'studio/agent/src', 'studio/stage'], cwd=ROOT)).hexdigest()
         try:
             proc = subprocess.Popen(command, cwd=cwd, env=child_env, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True, errors='replace')
