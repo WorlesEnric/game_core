@@ -201,6 +201,7 @@ namespace GameCore.Gameplay.Audio
             services.Register<IVolumeSettingsSink>(this);
             services.Register<IVoiceLinePlayer>(Voice);
             services.Register<IFeedbackSink>(Sfx);
+            services.Register<IFootstepSink>(Sfx);
             world.AddBinder(binder);
             world.AddInput(this);
             Present();

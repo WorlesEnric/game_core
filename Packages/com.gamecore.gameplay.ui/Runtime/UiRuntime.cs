@@ -215,11 +215,19 @@ namespace GameCore.Gameplay.Ui
 
         // ------------------------------------------------------------------ presentation interfaces
 
-        public void Show(string text, bool enabled)
+        /// <summary>IPromptPresenter (P1.3's InteractionFocus): shows the focused interactable's prompt.</summary>
+        public void Show(PromptRequest prompt)
         {
-            Models.Prompt.Text = text;
-            Models.Prompt.Enabled = enabled;
-            Models.Prompt.Visible = !string.IsNullOrEmpty(text);
+            if (prompt == null)
+            {
+                Hide();
+                return;
+            }
+
+            Models.Prompt.Text = prompt.Text;
+            Models.Prompt.Kind = prompt.Kind;
+            Models.Prompt.Enabled = true;
+            Models.Prompt.Visible = prompt.Text.Length > 0;
         }
 
         public void Hide()
@@ -240,8 +248,16 @@ namespace GameCore.Gameplay.Ui
 
         public void Update(InventoryViewModel vm) => Models.Inventory.Apply(vm);
 
-        /// <summary>A player intent: opens/closes screens through ui.open/ui.close, or activates the dialogue choice.</summary>
-        public void Raise(UiIntent intent)
+        /// <summary>IUiIntentSink (P1.3's PlayerInputAdapter): Pause, Journal or Inventory opens/closes screens through ui.open/ui.close.</summary>
+        public void Raise(UiIntent intent) => RaiseIntent((int)intent);
+
+        /// <summary>UI navigation submit (UiInput): activates the focused control or the selected dialogue choice.</summary>
+        public void Confirm() => RaiseIntent(UiIntentRules.Confirm);
+
+        /// <summary>UI navigation cancel (UiInput): closes the current overlay screen; never skips a dialogue line.</summary>
+        public void Cancel() => RaiseIntent(UiIntentRules.Cancel);
+
+        private void RaiseIntent(int intent)
         {
             UiCommandIssuer? issuer = Commands;
             if (issuer == null)
@@ -252,23 +268,20 @@ namespace GameCore.Gameplay.Ui
             UiScreen screen = issuer.State().ScreenValue;
             if (screen == UiScreen.Hud && Models.Dialogue.Visible)
             {
-                if (intent == UiIntent.Confirm)
+                if (intent == UiIntentRules.Confirm)
                 {
                     Dispatcher.Dispatch(Models.Dialogue.HasChoices ? "choose.selected" : "advance");
                     return;
                 }
 
-                if (intent == UiIntent.Pause || intent == UiIntent.Cancel)
+                if (intent == UiIntentRules.Cancel)
                 {
                     // Pause stays available during a conversation; Cancel does not skip a line.
-                    if (intent == UiIntent.Cancel)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
-            UiIntentRules.Effect effect = UiIntentRules.Map(screen, (int)intent, out UiScreen open);
+            UiIntentRules.Effect effect = UiIntentRules.Map(screen, intent, out UiScreen open);
             switch (effect)
             {
                 case UiIntentRules.Effect.Open:

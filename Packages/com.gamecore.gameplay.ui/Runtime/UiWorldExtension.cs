@@ -19,14 +19,16 @@ using GameCore.Unity.Runtime.Integration;
 namespace GameCore.Gameplay.Ui
 {
     /// <summary>The UI plugin mounted with a gameplay world.</summary>
-    public sealed class UiWorldExtension : IGameplayWorldExtension
+    public sealed class UiWorldExtension : IGameplayWorldExtension, IGameplayWorldTargets
     {
-        private readonly CatalogPluginDeclaration declaration;
+        private readonly GameplayPluginMount[] plugins;
+        private readonly GameplaySystem[] systems;
 
         public UiWorldExtension(UiScreen startScreen)
         {
             StartScreen = startScreen;
-            declaration = new CatalogPluginDeclaration(UiDeclarations.Manifest(), null);
+            plugins = new[] { new GameplayPluginMount(new CatalogPluginDeclaration(UiDeclarations.Manifest(), null), UiDeclarations.Instance) };
+            systems = new[] { new GameplaySystem(UiDeclarations.CommandSystem, UiDeclarations.CommandSystemRegistration()) };
         }
 
         /// <summary>The screen a freshly booted world starts on (the main menu in a game, the HUD in some tests).</summary>
@@ -40,17 +42,13 @@ namespace GameCore.Gameplay.Ui
 
         public string Name => "ui";
 
-        public CatalogPluginDeclaration Declaration => declaration;
+        public IReadOnlyList<GameplayPluginMount> Plugins => plugins;
 
-        public PluginInstanceId Instance => UiDeclarations.Instance;
+        public IReadOnlyList<GameplaySystem> Systems => systems;
 
-        public FactoryKey CommandSystem => UiDeclarations.CommandSystem;
+        public IReadOnlyList<CommandRoute> Routes => UiDeclarations.Routes();
 
-        public SystemRegistration CommandSystemRegistration() => UiDeclarations.CommandSystemRegistration();
-
-        public IReadOnlyList<CommandRoute> Routes() => UiDeclarations.Routes();
-
-        public IReadOnlyList<MessageBufferDescriptor> Lanes() => UiDeclarations.Lanes();
+        public IReadOnlyList<MessageBufferDescriptor> Lanes => UiDeclarations.Lanes();
 
         public void BindReaders(CommandPayloadReaders readers) => UiReaders.BindInto(readers);
 
@@ -80,17 +78,27 @@ namespace GameCore.Gameplay.Ui
             return new[] { new GameplayExtensionTarget("session", PresentationSlots.UiSessionTarget(manifest.WorldId), UiDeclarations.SessionRecipe) };
         }
 
-        public void Attach(GameApplicationRoot root, GameplayWorld world, bool seedSlots)
-        {
-            if (root == null)
-            {
-                throw new ArgumentNullException(nameof(root));
-            }
+        /// <summary>Raised when the world shuts down (GameplayWorld.Shutdown), before its root stops.</summary>
+        public event Action<GameplayWorld>? Detached;
 
+        public void Validate(RegionManifest manifest)
+        {
+            if (manifest == null)
+            {
+                throw new ArgumentNullException(nameof(manifest));
+            }
+        }
+
+        public void Detach(GameplayWorld world) => Detached?.Invoke(world);
+
+        public void Attach(GameplayWorld world, bool seedSlots)
+        {
             if (world == null)
             {
                 throw new ArgumentNullException(nameof(world));
             }
+
+            GameApplicationRoot root = world.Root;
 
             TargetId session = PresentationSlots.UiSessionTarget(world.Manifest.WorldId);
             if (seedSlots)

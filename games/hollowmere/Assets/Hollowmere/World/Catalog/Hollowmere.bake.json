@@ -5,7 +5,7 @@
   "startRegionId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
   "focusEntityId": "90f935f8-12d5-4278-b336-107b081e1dfd",
   "preloadNeighbours": false,
-  "catalogFingerprint": "712954923adcad87b18782d975b6590f443ad3f5c6d259fd356e6741bf98a2c4",
+  "catalogFingerprint": "e3e57cf7d58feed0ad8ea28cf9d615374b7da08a9e5719fec0caccc3cf71b61e",
   "definitions": [
     {
       "id": "05b934c3-466a-4cbd-9ec5-e887ecf26794",
@@ -50,6 +50,45 @@
       ]
     },
     {
+      "id": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+      "name": "WellBucketEntity",
+      "contentHash": "dc5f5bc786d47bc83aa1de6af4ab4af6663d6a0e00456f0a834e6bc8c200719e",
+      "revision": 15879511723650350024,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+      "name": "BelfryEchoEntity",
+      "contentHash": "9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854",
+      "revision": 11432079688151228049,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+      "name": "PipEntity",
+      "contentHash": "9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854",
+      "revision": 11432079688151228049,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
       "id": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
       "name": "Crate",
       "contentHash": "2adc9cde53c408f520951781ead083f132e2c76e1f5ff51ade48fd3b659a0bb3",
@@ -58,6 +97,19 @@
       "variants": [
         "d23d9f8e-5862-4612-a4dc-3c82dad38f18"
       ],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "68d2519f-2a40-439b-be2d-63d16581cd06",
+      "name": "HaleEntity",
+      "contentHash": "9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854",
+      "revision": 11432079688151228049,
+      "variantCount": 1,
+      "variants": [],
       "overridableFields": [
         "scaleMilli",
         "tint",
@@ -78,10 +130,49 @@
       ]
     },
     {
+      "id": "ada7a792-63fb-480a-9445-3b61f5dece1b",
+      "name": "CausewayGateEntity",
+      "contentHash": "e6330a261e4598deb22c11b653a1cc80eb232241573d02d9e4a94983a4e7c6ae",
+      "revision": 16587613011368581342,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+      "name": "OddEntity",
+      "contentHash": "9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854",
+      "revision": 11432079688151228049,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
       "id": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
       "name": "Reed",
       "contentHash": "bc8b0ed35828c5586db8b83e229a6b12fad7bc3a93a4ee6aca9e577fc428c371",
       "revision": 13585969001773188440,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+      "name": "MarenEntity",
+      "contentHash": "9ea6e7e818365e913d15d521bbd2c0314f1d844c4c9093457c591a8b7333e854",
+      "revision": 11432079688151228049,
       "variantCount": 1,
       "variants": [],
       "overridableFields": [
@@ -170,6 +261,20 @@
       "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
       "definition": "d7081228-f497-4a3d-811e-0bb0e3c72807",
       "pose": "4000,0,-16000@524",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+      "name": "Pip",
+      "target": "aa8f508884f47abf8543fc26801bff46",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+      "pose": "5000,0,3000@1571",
       "variant": 0,
       "scaleMilli": 1000,
       "visible": true,
@@ -305,6 +410,20 @@
       ]
     },
     {
+      "id": "da525107-c2c1-4626-ac08-5058a1e01c06",
+      "name": "Maren",
+      "target": "b10beda5c00213510a8dd809f9a82a6c",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+      "pose": "-8000,0,-8000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
       "id": "e0981979-d2fd-4cbc-8261-2e2f83eab806",
       "name": "Lantern West",
       "target": "7f58586a8b982aef310a1769f30f7ea5",
@@ -319,12 +438,40 @@
       ]
     },
     {
+      "id": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+      "name": "Village Well",
+      "target": "9b514a9666ac9979b8d5c72c243d370e",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+      "pose": "0,0,-1900@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
       "id": "e74544f2-0c65-40fa-aec5-5126b86754d1",
       "name": "Stone 3",
       "target": "d07d1bae90e3fe8423f07f4c81f41a12",
       "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
       "definition": "acefbaad-340d-466f-9d66-214afb15646f",
       "pose": "4114,0,-5663@5655",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+      "name": "Odd",
+      "target": "af062aebff2922cc48bbb2845dfc135f",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+      "pose": "-8000,0,6000@3142",
       "variant": 0,
       "scaleMilli": 1000,
       "visible": true,
@@ -381,6 +528,20 @@
       "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
       "definition": "acefbaad-340d-466f-9d66-214afb15646f",
       "pose": "95757,0,193757@785",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+      "name": "Belfry Echo",
+      "target": "553e76413b7f9f001a4ee5191d096611",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+      "pose": "100000,0,191000@0",
       "variant": 0,
       "scaleMilli": 1000,
       "visible": true,
@@ -459,6 +620,20 @@
       ]
     },
     {
+      "id": "0b44e6c8-4c3c-483f-9202-57dc00024a20",
+      "name": "Causeway Gate",
+      "target": "8d55f63ebff9065932749e99f9219f36",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "ada7a792-63fb-480a-9445-3b61f5dece1b",
+      "pose": "169500,0,2000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
       "id": "26d3a9df-8316-4c10-8c33-b82ba8f68d38",
       "name": "Reed 4",
       "target": "bd45cfd95cc87abab89b6f464ff0e989",
@@ -479,6 +654,20 @@
       "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
       "definition": "acefbaad-340d-466f-9d66-214afb15646f",
       "pose": "198000,0,-14000@1893",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "3f2e423d-ec9f-4051-8713-662180be4db9",
+      "name": "Hale",
+      "target": "c0917e4014b5b5d797c888fea7f3235f",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "68d2519f-2a40-439b-be2d-63d16581cd06",
+      "pose": "196000,0,4000@4712",
       "variant": 0,
       "scaleMilli": 1000,
       "visible": true,

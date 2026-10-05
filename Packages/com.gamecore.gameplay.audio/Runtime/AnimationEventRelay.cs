@@ -60,7 +60,7 @@ namespace GameCore.Gameplay.Audio
 
             Vector3 at = transform.position;
             Relayed++;
-            sink.Play(id, new System.Numerics.Vector3(at.x, at.y, at.z));
+            sink.OnFeedback(new FeedbackCue(name, id, 0, GameplayUnits.ToMillimetres(at.x), GameplayUnits.ToMillimetres(at.y), GameplayUnits.ToMillimetres(at.z)));
         }
     }
 }

@@ -28,27 +28,51 @@ namespace GameCore.Gameplay.Ui
         /// <summary>Bytes one lane holds per step: the largest UI payload is 8 bytes.</summary>
         public const int LaneByteCapacity = 256;
 
-        public static readonly Id128 OwnerPackage = GameplayIds.Id(GameplayCatalogNames.UiPackage);
+        public const string CatalogPackage = "package.ui";
+        public const string CatalogPlugin = "ui.plugin";
+        public const string CatalogCommandSystem = "ui.system.command";
+        public const string CatalogSessionApplier = "ui.session-applier";
+        public const string CatalogSessionLayout = "ui.layout.session";
+        public const string CatalogConfigSchema = "ui.schema.config";
+        public const string CatalogSessionDomainSchema = "ui.domain.session";
+
+        public static readonly Id128 OwnerPackage = GameplayIds.Id(CatalogPackage);
 
         public static readonly PluginTypeId PluginType = GameplayIds.PluginType("ui.plugin-type");
 
         public static readonly PluginInstanceId Instance = GameplayIds.Instance("ui.instance");
 
-        public static readonly FactoryKey PluginFactory = GameplayIds.Key(GameplayCatalogNames.UiPlugin);
+        public static readonly FactoryKey PluginFactory = GameplayIds.Key(CatalogPlugin);
 
-        public static readonly SchemaRef ConfigSchema = GameplayIds.Schema(GameplayCatalogNames.UiConfigSchema, 1U);
+        public static readonly SchemaRef ConfigSchema = GameplayIds.Schema(CatalogConfigSchema, 1U);
 
-        public static readonly SchemaRef SessionDomain = GameplayIds.Schema(GameplayCatalogNames.UiSessionDomainSchema, 1U);
+        public static readonly SchemaRef SessionDomain = GameplayIds.Schema(CatalogSessionDomainSchema, 1U);
 
-        public static readonly FactoryKey SessionLayout = GameplayIds.Key(GameplayCatalogNames.UiSessionLayout);
+        public static readonly FactoryKey SessionLayout = GameplayIds.Key(CatalogSessionLayout);
 
-        public static readonly FactoryKey SessionApplier = GameplayIds.Key(GameplayCatalogNames.UiSessionApplier);
+        public static readonly FactoryKey SessionApplier = GameplayIds.Key(CatalogSessionApplier);
 
         public static readonly OwnerId Owner = PresentationSlots.UiOwner;
 
         public static readonly StageId Stage = GameplayIds.Stage("ui.stage.command");
 
-        public static readonly FactoryKey CommandSystem = GameplayIds.Key(GameplayCatalogNames.UiCommandSystem);
+        public static readonly FactoryKey CommandSystem = GameplayIds.Key(CatalogCommandSystem);
+
+        /// <summary>The schemas this package contributes to the generated catalog (one UInt32 field each).</summary>
+        public static IReadOnlyList<GameplayCatalogNames.SchemaName> CatalogSchemas { get; } = System.Array.AsReadOnly(new[]
+        {
+            new GameplayCatalogNames.SchemaName(CatalogConfigSchema, "ui.serializer.config", "UiConfig", CatalogPackage),
+            new GameplayCatalogNames.SchemaName(CatalogSessionDomainSchema, "ui.serializer.domain-session", "UiSessionDomain", CatalogPackage),
+        });
+
+        /// <summary>The static registrations this package contributes to the generated catalog.</summary>
+        public static IReadOnlyList<GameplayCatalogNames.EntryName> CatalogEntries { get; } = System.Array.AsReadOnly(new[]
+        {
+            new GameplayCatalogNames.EntryName("PluginFactory", CatalogPlugin, "UiPluginKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("SystemFactory", CatalogCommandSystem, "UiCommandSystemKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("LayoutApply", CatalogSessionApplier, "UiSessionApplierKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("LayoutApply", CatalogSessionLayout, "UiSessionLayoutKey", CatalogPackage),
+        });
 
         public static readonly SchemaRef SessionRecipeSchema = GameplayIds.Schema("ui.schema.session-recipe", 1U);
 

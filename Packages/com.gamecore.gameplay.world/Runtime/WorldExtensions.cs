@@ -1,12 +1,9 @@
-// GameCore.Gameplay.World - world extensions: further gameplay plugins mounted with the baked world (P1.5).
+// GameCore.Gameplay.World - world extension additions: session targets and extension sources (P1.5).
 //
-// WorldBuilder composes the entities and world plugins of P1.1. A plugin package that adds authoritative slots of its
-// own (UI flow, audio settings, ...) contributes one IGameplayWorldExtension through WorldBuildOptions.Extensions:
-// its plugin declaration, routes, lanes, payload readers, command system and recipes join the application definition,
-// its session targets are seeded under the world (root) scope, the plugin is mounted at the world scope after the two
-// core plugins, and Attach hands the extension the booted root so it can seed its slots and give its command system its
-// per-world module. Attach also runs for a root composed by a restore (seedSlots false), so an extension rebinds to a
-// restored world exactly like the core plugins do. The catalog must register the extension's plugin factory, command
+// The extension seam itself is P1.3's IGameplayWorldExtension (GameplayWorldExtension.cs). A plugin whose authoritative
+// slots live on a session target of its own rather than on a baked entity (UI flow, audio settings) also implements
+// IGameplayWorldTargets: WorldBuilder adds its spawn recipes to the recipe catalog and seeds its targets under the world
+// (root) scope before the plugins are mounted. The catalog must register the extension's plugin factory, command
 // system, appliers, layouts and schemas (GameplayCatalogNames); a missing registration refuses the boot (P-009).
 //
 // IGameplayWorldExtensionSource lets a game's boot code obtain the extensions (and their presentation) of a content
@@ -14,10 +11,7 @@
 #nullable enable
 using System.Collections.Generic;
 using GameCore.Contracts;
-using GameCore.Execution.Messages;
-using GameCore.Unity.App;
 using GameCore.Unity.Runtime;
-using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Gameplay.World
 {
@@ -40,38 +34,16 @@ namespace GameCore.Gameplay.World
         public DefinitionRef Recipe { get; }
     }
 
-    /// <summary>A further gameplay plugin mounted with the baked world.</summary>
-    public interface IGameplayWorldExtension
+    /// <summary>
+    /// Implemented by an <see cref="IGameplayWorldExtension"/> that owns session targets: its recipes join the recipe
+    /// catalog and its targets are seeded under the world scope at boot.
+    /// </summary>
+    public interface IGameplayWorldTargets
     {
-        /// <summary>Stable extension name (boot step names, diagnostics).</summary>
-        string Name { get; }
-
-        CatalogPluginDeclaration Declaration { get; }
-
-        PluginInstanceId Instance { get; }
-
-        /// <summary>The command system's factory key (its dispatch kind is ManagedSystem).</summary>
-        FactoryKey CommandSystem { get; }
-
-        SystemRegistration CommandSystemRegistration();
-
-        IReadOnlyList<CommandRoute> Routes();
-
-        IReadOnlyList<MessageBufferDescriptor> Lanes();
-
-        void BindReaders(CommandPayloadReaders readers);
-
         IReadOnlyList<SpawnRecipe> Recipes();
 
         /// <summary>Targets seeded under the world scope, in a deterministic order.</summary>
         IReadOnlyList<GameplayExtensionTarget> Targets(RegionManifest manifest);
-
-        /// <summary>
-        /// Called once per root, right after the core plugins are attached, while the world is still Ready (paused):
-        /// seed slots when <paramref name="seedSlots"/> is true (a restored root already holds its committed values) and
-        /// hand the command system its per-world module.
-        /// </summary>
-        void Attach(GameApplicationRoot root, GameplayWorld world, bool seedSlots);
     }
 
     /// <summary>

@@ -11,8 +11,9 @@
 //   * the entities and world plugins are mounted at the world scope, so every target - including a region whose scene
 //     is not loaded - is a live kernel target from the first committed boundary;
 //   * the two command systems, their routes, lanes and readers are registered; the world is command-driven;
-//   * further plugins (WorldBuildOptions.Extensions, P1.5) join with their routes, lanes, readers, systems, recipes and
-//     world-scope targets, and are mounted after the two core plugins (see WorldExtensions.cs).
+//   * every IGameplayWorldExtension of the options adds its plugins (mounted at the world scope after the two above),
+//     systems, routes, lanes and readers (P1.3 seam); an extension that also implements IGameplayWorldTargets adds its
+//     recipes and seeds its world-scope session targets (P1.5, see WorldExtensions.cs).
 //
 // After boot, Attach seeds every target's slots from the manifest (entities: alive/variant/scale/visible; placement:
 // region/pose; regions: residency = Unloaded, visits = 0) while the world is still paused, and hands each command
@@ -67,11 +68,14 @@ namespace GameCore.Gameplay.World
         /// <summary>Refuse to build when the catalog fingerprint differs from the one the manifest was baked with.</summary>
         public bool RequireMatchingCatalog { get; set; } = true;
 
-        /// <summary>
-        /// Further gameplay plugins mounted with the world (P1.5, see <see cref="IGameplayWorldExtension"/>), in mount
-        /// order after the entities and world plugins.
-        /// </summary>
+        /// <summary>Further gameplay plugins composed into the world (P1.3 seam; see IGameplayWorldExtension).</summary>
         public List<IGameplayWorldExtension> Extensions { get; } = new List<IGameplayWorldExtension>();
+
+        /// <summary>Committed events one step may stage (P-045); extensions with per-step events raise it.</summary>
+        public int MaxEventsPerStep { get; set; } = 32;
+
+        /// <summary>Committed events the world retains for readers (P-045).</summary>
+        public int MaxRetainedEvents { get; set; } = 512;
 
         /// <summary>
         /// The presentation service registry of the world (P1.5). It belongs to the plan, so it survives a root
@@ -83,11 +87,6 @@ namespace GameCore.Gameplay.World
     /// <summary>A built (not yet booted) gameplay world: the application definition and what Attach needs.</summary>
     public sealed class WorldBuildPlan
     {
-        internal WorldBuildPlan(RegionManifest manifest, GameApplicationDefinition definition, GameplayPresentationFrame frame, Id128 issuer)
-            : this(manifest, definition, frame, issuer, Array.Empty<IGameplayWorldExtension>(), new PresentationServices())
-        {
-        }
-
         internal WorldBuildPlan(
             RegionManifest manifest,
             GameApplicationDefinition definition,
@@ -104,7 +103,7 @@ namespace GameCore.Gameplay.World
             Presentation = presentation;
         }
 
-        /// <summary>The extensions mounted with this world (P1.5), in mount order.</summary>
+        /// <summary>The extensions composed into this world, in composition order.</summary>
         public IReadOnlyList<IGameplayWorldExtension> Extensions { get; }
 
         /// <summary>The world's presentation service registry (P1.5).</summary>
@@ -189,13 +188,17 @@ namespace GameCore.Gameplay.World
             }
 
             var extensions = new List<IGameplayWorldExtension>(settings.Extensions);
-            List<CommandRoute> routes = Concat(EntityDeclarations.Routes(), WorldDeclarations.Routes());
-            List<MessageBufferDescriptor> lanes = Concat(EntityDeclarations.Lanes(), WorldDeclarations.Lanes());
+            var routes = Concat(EntityDeclarations.Routes(), WorldDeclarations.Routes());
+            var lanes = Concat(EntityDeclarations.Lanes(), WorldDeclarations.Lanes());
             for (int i = 0; i < extensions.Count; i++)
             {
-                routes.AddRange(extensions[i].Routes());
-                lanes.AddRange(extensions[i].Lanes());
-                recipes.AddRange(extensions[i].Recipes());
+                extensions[i].Validate(manifest);
+                routes.AddRange(extensions[i].Routes);
+                lanes.AddRange(extensions[i].Lanes);
+                if (extensions[i] is IGameplayWorldTargets withTargets)
+                {
+                    recipes.AddRange(withTargets.Recipes());
+                }
             }
 
             var plane = new MessagePlaneRegistration(
@@ -204,8 +207,8 @@ namespace GameCore.Gameplay.World
                 null,
                 maxPendingRequests: 64,
                 maxRetainedResults: 64,
-                maxRetainedEvents: 512,
-                maxEventsPerStep: 32,
+                maxRetainedEvents: settings.MaxRetainedEvents,
+                maxEventsPerStep: settings.MaxEventsPerStep,
                 nextStepCapacity: 4);
             var readers = new CommandPayloadReaders();
             EntityReaders.BindInto(readers);
@@ -220,12 +223,16 @@ namespace GameCore.Gameplay.World
             var entitiesDeclaration = new CatalogPluginDeclaration(entities, ConfigDocument.Empty);
             var worldDeclaration = new CatalogPluginDeclaration(worldPlugin, ConfigDocument.Empty);
 
-            ScheduleDispatchKindTable dispatchKinds = new ScheduleDispatchKindTable()
+            var dispatchKinds = new ScheduleDispatchKindTable()
                 .Add(EntityDeclarations.CommandSystem, SystemDispatchKind.ManagedSystem)
                 .Add(WorldDeclarations.CommandSystem, SystemDispatchKind.ManagedSystem);
             for (int i = 0; i < extensions.Count; i++)
             {
-                dispatchKinds.Add(extensions[i].CommandSystem, SystemDispatchKind.ManagedSystem);
+                IReadOnlyList<GameplaySystem> systems = extensions[i].Systems;
+                for (int s = 0; s < systems.Count; s++)
+                {
+                    dispatchKinds.Add(systems[s].Key, SystemDispatchKind.ManagedSystem);
+                }
             }
 
             GameApplicationDefinition.Builder builder = new GameApplicationDefinition.Builder(settings.Name)
@@ -236,13 +243,7 @@ namespace GameCore.Gameplay.World
                 .WithPropagation(PropagationMode.Automatic)
                 .WithRootScope(root)
                 .AddSystem(EntityDeclarations.CommandSystemRegistration())
-                .AddSystem(WorldDeclarations.CommandSystemRegistration());
-            for (int i = 0; i < extensions.Count; i++)
-            {
-                builder.AddPlugin(extensions[i].Declaration).AddSystem(extensions[i].CommandSystemRegistration());
-            }
-
-            builder
+                .AddSystem(WorldDeclarations.CommandSystemRegistration())
                 .WithDispatchKinds(dispatchKinds)
                 .WithMessages(plane, readers)
                 .WithRecipes(new SpawnRecipeCatalog(recipes))
@@ -289,7 +290,12 @@ namespace GameCore.Gameplay.World
 
             for (int i = 0; i < extensions.Count; i++)
             {
-                IReadOnlyList<GameplayExtensionTarget> targets = extensions[i].Targets(manifest);
+                if (!(extensions[i] is IGameplayWorldTargets withTargets))
+                {
+                    continue;
+                }
+
+                IReadOnlyList<GameplayExtensionTarget> targets = withTargets.Targets(manifest);
                 for (int t = 0; t < targets.Count; t++)
                 {
                     builder.AddBootStep(GameApplicationBootStep.Seed(
@@ -301,11 +307,27 @@ namespace GameCore.Gameplay.World
             builder.AddBootStep(GameApplicationBootStep.Apply("mount-world", Mount(worldDeclaration, WorldDeclarations.Instance, root)));
             for (int i = 0; i < extensions.Count; i++)
             {
-                builder.AddBootStep(GameApplicationBootStep.Apply(
-                    "mount-" + extensions[i].Name, Mount(extensions[i].Declaration, extensions[i].Instance, root)));
+                IGameplayWorldExtension extension = extensions[i];
+                for (int p = 0; p < extension.Plugins.Count; p++)
+                {
+                    builder.AddPlugin(extension.Plugins[p].Declaration);
+                }
+
+                for (int s = 0; s < extension.Systems.Count; s++)
+                {
+                    builder.AddSystem(extension.Systems[s].Registration);
+                }
+
+                for (int p = 0; p < extension.Plugins.Count; p++)
+                {
+                    GameplayPluginMount mount = extension.Plugins[p];
+                    builder.AddBootStep(GameApplicationBootStep.Apply(
+                        "mount-" + extension.Name + (extension.Plugins.Count > 1 ? "-" + p : string.Empty),
+                        Mount(mount.Declaration, mount.Instance, root)));
+                }
             }
 
-            return new WorldBuildPlan(manifest, builder.Build(), frame, issuer, extensions, settings.Presentation);
+            return new WorldBuildPlan(manifest, builder.Build(), frame, issuer, extensions.AsReadOnly(), settings.Presentation);
         }
 
         /// <summary>
@@ -378,7 +400,7 @@ namespace GameCore.Gameplay.World
             var world = new GameplayWorld(root, plan, entityModule, worldModule);
             for (int i = 0; i < plan.Extensions.Count; i++)
             {
-                plan.Extensions[i].Attach(root, world, seedSlots);
+                plan.Extensions[i].Attach(world, seedSlots);
             }
 
             plan.Frame.Attach(world);

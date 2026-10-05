@@ -242,7 +242,7 @@ namespace GameCore.Gameplay.Ui
         {
             if (click.target is Button && Runtime != null && Runtime.World != null)
             {
-                Runtime.World.Presentation.Get<IFeedbackSink>()?.Play(ClickFeedback, default(System.Numerics.Vector3));
+                Runtime.World.Presentation.Get<IFeedbackSink>()?.OnFeedback(new FeedbackCue(string.Empty, ClickFeedback, 0, 0, 0, 0));
             }
         }
 

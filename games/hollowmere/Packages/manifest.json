@@ -10,7 +10,10 @@
     "com.gamecore.gameplay.contracts": "file:../../../Packages/com.gamecore.gameplay.contracts",
     "com.gamecore.gameplay.entities": "file:../../../Packages/com.gamecore.gameplay.entities",
     "com.gamecore.gameplay.integration": "file:../../../Packages/com.gamecore.gameplay.integration",
+    "com.gamecore.gameplay.interaction": "file:../../../Packages/com.gamecore.gameplay.interaction",
     "com.gamecore.gameplay.narrative": "file:../../../Packages/com.gamecore.gameplay.narrative",
+    "com.gamecore.gameplay.npc": "file:../../../Packages/com.gamecore.gameplay.npc",
+    "com.gamecore.gameplay.player": "file:../../../Packages/com.gamecore.gameplay.player",
     "com.gamecore.gameplay.rewards": "file:../../../Packages/com.gamecore.gameplay.rewards",
     "com.gamecore.gameplay.save": "file:../../../Packages/com.gamecore.gameplay.save",
     "com.gamecore.gameplay.traversal": "file:../../../Packages/com.gamecore.gameplay.traversal",
@@ -47,5 +50,8 @@
     "com.unity.render-pipelines.universal": "17.0.4",
     "com.unity.test-framework": "1.6.0",
     "com.unity.toolchain.linux-x86_64": "2.0.11"
-  }
+  },
+  "testables": [
+    "com.gamecore.studio.core"
+  ]
 }

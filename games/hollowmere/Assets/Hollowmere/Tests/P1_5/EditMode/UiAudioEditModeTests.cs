@@ -331,7 +331,7 @@ namespace Hollowmere.P1_5.EditMode.Tests
                 Assert.That(panel.Selected, Is.EqualTo(0));
                 h.Ui.Navigate(0, -1);
                 Assert.That(panel.Selected, Is.EqualTo(2), "down skips the disabled choice");
-                h.Ui.Raise(UiIntent.Confirm);
+                h.Ui.Confirm();
                 Assert.That(input.Chosen, Is.EqualTo(new List<int> { 2 }));
                 view.Hide();
                 Assert.That(panel.Visible, Is.False);
@@ -385,8 +385,14 @@ namespace Hollowmere.P1_5.EditMode.Tests
                 Assert.That(audio.Sfx.Missing, Is.EqualTo(1));
                 h.World.Presentation.Get<IVoiceLinePlayer>()!.Stop();
                 h.PumpUntil(() => audio.Voice.Stopped == 1, "voice stopped");
-                h.World.Presentation.Get<IFeedbackSink>()!.Play("footstep", new System.Numerics.Vector3(0f, 0f, 0f));
-                Assert.That(audio.Sfx.Played, Is.EqualTo(2), "feedback ids resolve through the sfx. prefix");
+                h.World.Presentation.Get<IFootstepSink>()!.OnFootstep(new FootstepEvent("player", 0, 0, 0, 0, false));
+                Assert.That(audio.Sfx.Played, Is.EqualTo(2), "footsteps resolve through the sfx. prefix");
+                IFeedbackSink cues = h.World.Presentation.Get<IFeedbackSink>()!;
+                cues.OnFeedback(new FeedbackCue(string.Empty, "ui.click", 0, 0, 0, 0));
+                Assert.That(audio.Sfx.Played, Is.EqualTo(3), "interaction cues resolve through the sfx. prefix");
+                Assert.That(audio.Sfx.LastId, Is.EqualTo("sfx.ui.click"));
+                cues.OnFeedback(new FeedbackCue("gate", "refused:GP-INT-003", 0, 0, 0, 0));
+                Assert.That(audio.Sfx.Missing, Is.EqualTo(2), "Hollowmere's bank has no refused clip");
                 TestContext.Out.WriteLine("P1.5-AUDIO accepted=" + audio.Extension.Module!.Accepted + " refused=" + audio.Extension.Module!.Refused);
             }
         }

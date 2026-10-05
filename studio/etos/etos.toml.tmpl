@@ -1,0 +1,47 @@
+# GameCore Studio etos node (docs/studio/04-etos-integration.md §8). Rendered into
+# <root>/etos.toml by studio/etos/install.sh, which substitutes only @NODE_NAME@ and @OWNER@.
+# No secret belongs here: provider keys are resolved by etosd from its environment
+# (~/.config/gamecore-studio/providers.env, loaded by the etosd.service user unit).
+
+models = "models.toml"
+ops = "ops.toml"
+share_roots = []
+
+[node]
+name = "@NODE_NAME@"
+owner = "@OWNER@"
+local = true
+
+[gateway]
+# The embedded gateway's web UI, loopback only.
+listen = "127.0.0.1:7400"
+
+[containers]
+runtime = "docker"
+default_image = "localhost/etos-default:latest"
+etos_binary = "bin/etos"            # the static musl etos (studio/tools/host-build-etos.sh)
+ready_timeout = "180s"
+sockets = "unix"
+
+[broker]
+# Containers reach the credential broker on the docker0 bridge address. On Linux Docker does
+# not add host.docker.internal, so the authority is explicit (etos crates/etnode/src/daemon.rs).
+listen = "172.17.0.1:7411"
+authority = "172.17.0.1:7411"
+
+[ssh]
+web = false                         # no browser terminals on this node
+
+[api]
+listen = "127.0.0.1:7410"           # the SDK API: the companion agent and the Unity app key
+agent_budget_usd = 10.0             # each agent's default ops budget
+
+[actors]
+confinement = "sandbox"
+
+[limits]
+native_steps = 8
+agent_steps = 8
+python_processes = 4
+js_processes = 4
+subagent_containers = 4

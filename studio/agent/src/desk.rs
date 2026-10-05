@@ -101,6 +101,9 @@ enum Flow {
 pub struct Desk {
     cfg: Arc<Config>,
     client: Client,
+    /// `client` with the task-open timeout and no SDK retries: a timed-out open is resolved
+    /// by the desk (an idempotent re-open by request id), never by a blind repeat.
+    opener: Client,
     ledger: Arc<Ledger>,
     hub: EventHub,
     store: ArtifactStore,
@@ -116,6 +119,41 @@ impl std::fmt::Debug for Desk {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Desk").finish_non_exhaustive()
     }
+}
+
+/// How long `POST /v1/requests` waits for the task to open before answering (the open goes
+/// on in the background).
+const SUBMIT_WAIT: Duration = Duration::from_secs(30);
+
+/// Pause before re-reading a task whose open timed out.
+const OPEN_REREAD_DELAY: Duration = Duration::from_secs(5);
+
+/// A `POST /tasks` that timed out on the client side (the SDK's transport error).
+fn is_open_timeout(e: &ApiError) -> bool {
+    e.code() == "transport" && e.body.message.contains("timed out")
+}
+
+/// The reason a task stalled or failed, when its text names a degraded model (etos marks a
+/// model degraded after availability failures: 401/503, `auth_unavailable`, ...).
+fn model_degraded(text: &str) -> bool {
+    let t = text.to_ascii_lowercase();
+    t.contains("degraded")
+        || t.contains("auth_unavailable")
+        || t.contains("access token has been revoked")
+        || (t.contains("model")
+            && (t.contains("http 401") || t.contains("http 503") || t.contains("unavailable")))
+}
+
+/// Add `reason: "model_degraded"` and the model's error text to an outcome when one of the
+/// texts names a degraded model.
+fn with_model_reason(mut outcome: Value, texts: &[Option<&str>]) -> Value {
+    if let Some(t) = texts.iter().flatten().find(|t| model_degraded(t))
+        && let Some(o) = outcome.as_object_mut()
+    {
+        o.insert("reason".into(), json!("model_degraded"));
+        o.insert("modelError".into(), json!(redact(t)));
+    }
+    outcome
 }
 
 fn is_retryable(e: &ApiError) -> bool {
@@ -227,9 +265,13 @@ impl Desk {
         indexer: Arc<Indexer>,
     ) -> Result<Arc<Desk>, String> {
         let (stop, _) = watch::channel(false);
+        let opener = client
+            .with_timeout(Duration::from_secs(cfg.task_open_timeout_secs))
+            .with_retries(0);
         Ok(Arc::new(Desk {
             cfg,
             client,
+            opener,
             ledger,
             hub,
             store,
@@ -434,19 +476,26 @@ impl Desk {
                 self.hub.notify(cursor);
                 self.record_changeset(&view);
                 tracing::info!(request = %rid, worker = %view.worker, "request recorded");
-                let opened =
-                    tokio::time::timeout(Duration::from_secs(30), self.open_attempt(&rid, 0)).await;
-                match opened {
-                    Ok(Ok(())) => {}
-                    Ok(Err(e)) if !is_retryable(&e) => {
+                // The open runs detached: answering the HTTP call must never drop a
+                // `POST /tasks` in flight (etos launches the task inside that request). The
+                // follower waits on the same per-request lock, so it cannot open twice.
+                let me = Arc::clone(self);
+                let id = rid.clone();
+                let mut opening = tokio::spawn(async move { me.open_attempt(&id, 0).await });
+                match tokio::time::timeout(SUBMIT_WAIT, &mut opening).await {
+                    Ok(Ok(Ok(()))) => {}
+                    Ok(Ok(Err(e))) if !is_retryable(&e) => {
                         // Settled by open_attempt; the refusal passes through.
                         return Err(e);
                     }
-                    Ok(Err(e)) => {
+                    Ok(Ok(Err(e))) => {
                         tracing::warn!(request = %rid, error = %e, "task not opened yet; the follower retries");
                     }
+                    Ok(Err(e)) => {
+                        tracing::error!(request = %rid, error = %e, "the open task panicked; the follower retries");
+                    }
                     Err(_) => {
-                        tracing::warn!(request = %rid, "opening the task takes long; the follower continues");
+                        tracing::warn!(request = %rid, "opening the task takes long; it continues in the background");
                     }
                 }
                 self.spawn_follower(&rid);
@@ -629,11 +678,24 @@ impl Desk {
             return Ok(());
         }
         let result = self.open_inner(&row, &att).await;
-        if let Err(e) = &result
-            && !is_retryable(e)
-        {
-            tracing::warn!(request = rid, attempt, error = %e, "task refused");
-            self.settle_refusal(rid, attempt, e)?;
+        match &result {
+            Err(e) if is_open_timeout(e) => {
+                // Not a failure: etos may still be launching the task. The next open repeats
+                // the same request id, which etos answers with the task it opened (if any).
+                tracing::warn!(request = rid, attempt, error = %e, "the task open timed out; re-reading it by request id");
+                let _ = self.update(
+                    rid,
+                    RequestUpdate {
+                        task_status: Some(Some("opening".into())),
+                        ..RequestUpdate::default()
+                    },
+                );
+            }
+            Err(e) if !is_retryable(e) => {
+                tracing::warn!(request = rid, attempt, error = %e, "task refused");
+                self.settle_refusal(rid, attempt, e)?;
+            }
+            _ => {}
         }
         result
     }
@@ -698,7 +760,7 @@ impl Desk {
             row.change_set_id, att.attempt
         );
         let info = self
-            .client
+            .opener
             .tasks()
             .open(&TaskRequest {
                 worker: row.worker.clone(),
@@ -835,6 +897,13 @@ impl Desk {
             let Some(task) = att.task_id.clone() else {
                 match self.open_attempt(&rid, row.attempt).await {
                     Ok(()) => continue,
+                    Err(e) if is_open_timeout(&e) => {
+                        // Give a slow launch time to land before asking again.
+                        if self.sleep_or_stop(OPEN_REREAD_DELAY).await {
+                            return;
+                        }
+                        continue;
+                    }
                     Err(e) if is_retryable(&e) => {
                         tracing::warn!(request = %rid, error = %e, "cannot open the task yet");
                         if self.sleep_or_stop(backoff).await {
@@ -972,9 +1041,9 @@ impl Desk {
                         RequestUpdate {
                             state: Some(state),
                             task_status: Some(Some(status.clone())),
-                            outcome: Some(Some(json!({"code": code,
-                                "message": redact(&info.error.unwrap_or_else(|| format!("etos says {status} but the final record never arrived on the topic"))),
-                                "result": info.result}))),
+                            outcome: Some(Some(with_model_reason(json!({"code": code,
+                                "message": redact(&info.error.clone().unwrap_or_else(|| format!("etos says {status} but the final record never arrived on the topic"))),
+                                "result": info.result}), &[info.error.as_deref()]))),
                             ..RequestUpdate::default()
                         },
                     ).map(|_| Flow::Exit)
@@ -998,12 +1067,24 @@ impl Desk {
                 } else {
                     RequestState::Running
                 };
-                if changed || current.state != state {
+                // A waiting task whose error names a degraded model says so in the outcome.
+                let degraded = (state == RequestState::Waiting)
+                    .then(|| info.error.as_deref().filter(|e| model_degraded(e)))
+                    .flatten()
+                    .map(|e| {
+                        json!({"code": "waiting", "reason": "model_degraded", "text": redact(e),
+                               "modelError": redact(e)})
+                    });
+                let new_outcome = degraded.is_some()
+                    && current.outcome.as_ref().and_then(|o| o.get("reason"))
+                        != Some(&json!("model_degraded"));
+                if changed || current.state != state || new_outcome {
                     self.update(
                         rid,
                         RequestUpdate {
                             state: Some(state),
                             task_status: Some(Some(status.clone())),
+                            outcome: degraded.map(Some),
                             ..RequestUpdate::default()
                         },
                     )
@@ -1067,14 +1148,16 @@ impl Desk {
                 } else {
                     "waiting"
                 };
+                let outcome = with_model_reason(
+                    json!({"code": "waiting", "reason": reason, "text": text}),
+                    &[Some(&text)],
+                );
                 self.update(
                     rid,
                     RequestUpdate {
                         state: Some(RequestState::Waiting),
                         task_status: Some(Some("waiting".into())),
-                        outcome: Some(Some(
-                            json!({"code": "waiting", "reason": reason, "text": text}),
-                        )),
+                        outcome: Some(Some(outcome)),
                         ..RequestUpdate::default()
                     },
                 )
@@ -1083,10 +1166,10 @@ impl Desk {
             Some(RecordStatus::Failed) => {
                 self.emit("task_progress", rid, progress("failed"));
                 // The node closes a cancelled task with a `failed` record: ask etos which.
-                let cancelled = match self.client.tasks().get(task).await {
-                    Ok(info) => info.status == "cancelled",
+                let (cancelled, task_error) = match self.client.tasks().get(task).await {
+                    Ok(info) => (info.status == "cancelled", info.error.map(|e| redact(&e))),
                     Err(e) if e.is_retryable() => return Flow::Retry,
-                    Err(_) => false,
+                    Err(_) => (false, None),
                 };
                 let upd = if cancelled {
                     RequestUpdate {
@@ -1096,10 +1179,25 @@ impl Desk {
                         ..RequestUpdate::default()
                     }
                 } else {
+                    // The record's text is the task's reason; etos's own error (when it has
+                    // one and says more) is appended, and a degraded model is named.
+                    let message = match &task_error {
+                        Some(e) if !e.is_empty() && !text.contains(e.as_str()) => {
+                            if text.is_empty() {
+                                e.clone()
+                            } else {
+                                format!("{text} (etos: {e})")
+                            }
+                        }
+                        _ => text.clone(),
+                    };
                     RequestUpdate {
                         state: Some(RequestState::Failed),
                         task_status: Some(Some("failed".into())),
-                        outcome: Some(Some(json!({"code": "task_failed", "message": text}))),
+                        outcome: Some(Some(with_model_reason(
+                            json!({"code": "task_failed", "message": message}),
+                            &[Some(&text), task_error.as_deref()],
+                        ))),
                         ..RequestUpdate::default()
                     }
                 };
@@ -1503,6 +1601,47 @@ impl Desk {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn degraded_models_are_named_in_outcomes() {
+        let o = with_model_reason(
+            json!({"code": "task_failed", "message": "x"}),
+            &[
+                Some("the turn failed"),
+                Some("model marked degraded model=echo/claude-opus-5-5"),
+            ],
+        );
+        assert_eq!(o["reason"], "model_degraded");
+        assert!(
+            o["modelError"]
+                .as_str()
+                .unwrap_or_default()
+                .contains("degraded")
+        );
+        assert!(model_degraded(
+            "HTTP 503: auth_unavailable: no auth available (providers=claude, model=claude-opus-5-5)"
+        ));
+        assert!(model_degraded(
+            "HTTP 401 OAuth access token has been revoked."
+        ));
+        let plain = with_model_reason(
+            json!({"code": "task_failed"}),
+            &[Some("tests failed"), None],
+        );
+        assert!(plain.get("reason").is_none());
+        let t = ApiError::new(
+            axum::http::StatusCode::BAD_GATEWAY,
+            "transport",
+            "POST /tasks timed out after 180000 ms",
+        );
+        assert!(is_open_timeout(&t) && is_retryable(&t));
+        let down = ApiError::new(
+            axum::http::StatusCode::BAD_GATEWAY,
+            "transport",
+            "cannot reach the node",
+        );
+        assert!(!is_open_timeout(&down));
+    }
 
     #[test]
     fn body_limit_covers_the_attachment_budget() {

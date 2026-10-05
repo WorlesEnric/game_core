@@ -1,0 +1,25 @@
+{
+  "name": "com.gamecore.gameplay.interaction",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Interaction",
+  "description": "Catalog row 5 of the gameplay plugin library (P1.3): interactables and triggers. Kernel half: the interaction plugin with the interact.state, uses, cooldownMs (and occupants) slots, the interact.use{actor,target}, interact.setState and interact.trigger routes and the InteractionSucceeded/InteractionRefused{code}/InteractableStateChanged/TriggerEntered/TriggerExited events; a DisableAutoCreation system applies the pure interaction rules, evaluating condition refs through IConditionEvaluator (null: always allowed, a locked door stays locked) and counting cooldowns down per step. Presentation: InteractableBinder (collider, per-state look), the interaction dispatcher (player.interact on a focused interactable becomes interact.use; committed successes run action refs through IActionRunner and cues through IFeedbackSink), TriggerVolume and ProximityInteractor (trigger enter/exit from committed positions). Authoring: InteractableDefinition (door/gate/examinable/point/switch, states, prompts, condition and action refs), TriggerDefinition, InteractionRoster; Editor tools interaction.addDoor/addExaminable/addTrigger, interaction.setStates, interaction.linkCondition and the interaction validator.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "interaction"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

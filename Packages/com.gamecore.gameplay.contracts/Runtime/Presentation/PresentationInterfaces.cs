@@ -1,49 +1,17 @@
-// GameCore.Gameplay.Contracts - presentation interfaces shared by the gameplay plugin library (P1.3/P1.4/P1.5).
+// GameCore.Gameplay.Contracts - presentation interfaces shared by the gameplay plugin library (P1.4/P1.5).
 //
-// Declared additively by P1.5 under the names and shapes the plan fixes; P1.3 (player: prompt, intents, feedback) and
-// P1.4 (dialogue, journal, inventory, voice) call them, P1.5 (UI Toolkit and audio) implements them, and the
-// integrator reconciles same-named declarations. Every member is engine-free: positions are System.Numerics.Vector3
-// in metres (this assembly has no engine reference), view models are plain classes of strings, ints and arrays.
+// P1.3's contracts own the player-facing seams (PlayerContracts.cs: IPromptPresenter, UiIntent/IUiIntentSink,
+// IFootstepSink; InteractionContracts.cs: IFeedbackSink), which P1.5 implements. The view and voice interfaces below
+// (IDialogueView, IJournalView, IInventoryView, IVoiceLinePlayer) are declared additively by P1.5 under the names the
+// plan fixes, until P1.4's declarations land; the integrator reconciles same-named declarations. Every member is
+// engine-free: view models are plain classes of strings, ints and arrays.
 //
 // A presentation interface never writes authoritative state. The input interfaces (IDialogueInput, IInventoryInput,
 // IVolumeSettingsSink) are the other direction: the UI calls them with a player's choice, and their implementation
 // (the owning gameplay package) turns it into that package's typed command.
 #nullable enable
-using System.Numerics;
-
 namespace GameCore.Gameplay.Contracts
 {
-    /// <summary>The interaction prompt of the focused interactable (P1.3 InteractionFocus calls it).</summary>
-    public interface IPromptPresenter
-    {
-        /// <summary>Shows <paramref name="text"/>; <paramref name="enabled"/> false shows it greyed (condition not met).</summary>
-        void Show(string text, bool enabled);
-
-        void Hide();
-    }
-
-    /// <summary>A UI intent the player raised (P1.3's PlayerInputAdapter: Pause, Journal, Inventory, Interact/Confirm, Cancel).</summary>
-    public enum UiIntent
-    {
-        Pause = 0,
-        Journal = 1,
-        Inventory = 2,
-        Confirm = 3,
-        Cancel = 4,
-    }
-
-    /// <summary>Receives the player's UI intents (implemented by the UI package).</summary>
-    public interface IUiIntentSink
-    {
-        void Raise(UiIntent intent);
-    }
-
-    /// <summary>Plays a presentation-only feedback (footstep, door creak, pickup) at a point in metres.</summary>
-    public interface IFeedbackSink
-    {
-        void Play(string feedbackId, Vector3 at);
-    }
-
     /// <summary>The dialogue panel (P1.4's DialoguePresenter calls it on LineShown/ChoiceOffered/DialogueEnded).</summary>
     public interface IDialogueView
     {

@@ -34,14 +34,16 @@ namespace GameCore.Gameplay.Audio
     }
 
     /// <summary>The audio plugin mounted with a gameplay world.</summary>
-    public sealed class AudioWorldExtension : IGameplayWorldExtension
+    public sealed class AudioWorldExtension : IGameplayWorldExtension, IGameplayWorldTargets
     {
-        private readonly CatalogPluginDeclaration declaration;
+        private readonly GameplayPluginMount[] plugins;
+        private readonly GameplaySystem[] systems;
 
         public AudioWorldExtension(AudioWorldSettings settings)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            declaration = new CatalogPluginDeclaration(AudioDeclarations.Manifest(), null);
+            plugins = new[] { new GameplayPluginMount(new CatalogPluginDeclaration(AudioDeclarations.Manifest(), null), AudioDeclarations.Instance) };
+            systems = new[] { new GameplaySystem(AudioDeclarations.CommandSystem, AudioDeclarations.CommandSystemRegistration()) };
         }
 
         public AudioWorldSettings Settings { get; }
@@ -52,17 +54,13 @@ namespace GameCore.Gameplay.Audio
 
         public string Name => "audio";
 
-        public CatalogPluginDeclaration Declaration => declaration;
+        public IReadOnlyList<GameplayPluginMount> Plugins => plugins;
 
-        public PluginInstanceId Instance => AudioDeclarations.Instance;
+        public IReadOnlyList<GameplaySystem> Systems => systems;
 
-        public FactoryKey CommandSystem => AudioDeclarations.CommandSystem;
+        public IReadOnlyList<CommandRoute> Routes => AudioDeclarations.Routes();
 
-        public SystemRegistration CommandSystemRegistration() => AudioDeclarations.CommandSystemRegistration();
-
-        public IReadOnlyList<CommandRoute> Routes() => AudioDeclarations.Routes();
-
-        public IReadOnlyList<MessageBufferDescriptor> Lanes() => AudioDeclarations.Lanes();
+        public IReadOnlyList<MessageBufferDescriptor> Lanes => AudioDeclarations.Lanes();
 
         public void BindReaders(CommandPayloadReaders readers) => AudioReaders.BindInto(readers);
 
@@ -109,17 +107,27 @@ namespace GameCore.Gameplay.Audio
             return zones;
         }
 
-        public void Attach(GameApplicationRoot root, GameplayWorld world, bool seedSlots)
-        {
-            if (root == null)
-            {
-                throw new ArgumentNullException(nameof(root));
-            }
+        /// <summary>Raised when the world shuts down (GameplayWorld.Shutdown), before its root stops.</summary>
+        public event Action<GameplayWorld>? Detached;
 
+        public void Validate(RegionManifest manifest)
+        {
+            if (manifest == null)
+            {
+                throw new ArgumentNullException(nameof(manifest));
+            }
+        }
+
+        public void Detach(GameplayWorld world) => Detached?.Invoke(world);
+
+        public void Attach(GameplayWorld world, bool seedSlots)
+        {
             if (world == null)
             {
                 throw new ArgumentNullException(nameof(world));
             }
+
+            GameApplicationRoot root = world.Root;
 
             RegionManifest manifest = world.Manifest;
             TargetId session = PresentationSlots.AudioSessionTarget(manifest.WorldId);

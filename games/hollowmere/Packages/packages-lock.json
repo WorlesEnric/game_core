@@ -37,6 +37,7 @@
       "dependencies": {
         "com.gamecore.composition": "1.0.0",
         "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
         "com.gamecore.gameplay.contracts": "1.0.0",
         "com.gamecore.gameplay.entities": "1.0.0",
         "com.gamecore.gameplay.world": "1.0.0",
@@ -110,6 +111,24 @@
         "com.unity.entities": "1.4.6"
       }
     },
+    "com.gamecore.gameplay.interaction": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.interaction",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
     "com.gamecore.gameplay.narrative": {
       "version": "file:../../../Packages/com.gamecore.gameplay.narrative",
       "depth": 0,
@@ -124,6 +143,43 @@
         "com.unity.burst": "1.8.28",
         "com.unity.collections": "2.6.6",
         "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.gameplay.npc": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.npc",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.gameplay.player": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.player",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6",
+        "com.unity.inputsystem": "1.19.0"
       }
     },
     "com.gamecore.gameplay.rewards": {
@@ -176,6 +232,7 @@
       "dependencies": {
         "com.gamecore.composition": "1.0.0",
         "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
         "com.gamecore.gameplay.contracts": "1.0.0",
         "com.gamecore.gameplay.entities": "1.0.0",
         "com.gamecore.gameplay.save": "1.0.0",
@@ -251,7 +308,10 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
+        "com.gamecore.composition": "1.0.0",
         "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },

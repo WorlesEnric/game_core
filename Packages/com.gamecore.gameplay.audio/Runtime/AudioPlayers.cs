@@ -189,9 +189,18 @@ namespace GameCore.Gameplay.Audio
         public CrossfadeGains Tick(long nowMs) => loops.Tick(nowMs);
     }
 
-    /// <summary>Pooled 3D AudioSources for one-shots; also the presentation-only feedback sink (footsteps, UI clicks).</summary>
-    public sealed class SfxPool : IFeedbackSink
+    /// <summary>
+    /// Pooled 3D AudioSources for one-shots; also the presentation-only feedback sink (interaction cues, UI clicks) and
+    /// footstep sink of P1.3's contracts.
+    /// </summary>
+    public sealed class SfxPool : IFeedbackSink, IFootstepSink
     {
+        /// <summary>The prefix of an interaction cue for a refused interaction ("refused:&lt;code&gt;").</summary>
+        public const string RefusedCuePrefix = "refused:";
+
+        /// <summary>The feedback id every refused interaction plays.</summary>
+        public const string RefusedFeedback = "refused";
+
         private readonly List<AudioSource> sources = new List<AudioSource>();
         private readonly Func<AudioSetDefinition?> set;
         private readonly Func<AudioGroup, AudioMixerGroup?> groups;
@@ -213,8 +222,32 @@ namespace GameCore.Gameplay.Audio
 
         public void AttachSource(AudioSource source) => sources.Add(source ?? throw new ArgumentNullException(nameof(source)));
 
-        /// <summary>IFeedbackSink: plays a feedback id (or its prefixed bank id) at a point in metres.</summary>
-        public void Play(string feedbackId, System.Numerics.Vector3 at) => PlayId(feedbackId, at.X, at.Y, at.Z, true);
+        /// <summary>The feedback id a footstep plays (resolved through the set's feedback prefix like every feedback id).</summary>
+        public string FootstepId { get; set; } = "footstep";
+
+        /// <summary>
+        /// IFeedbackSink: plays the cue's id (or its prefixed bank id) at the cue's point (millimetres); every
+        /// "refused:&lt;code&gt;" cue plays <see cref="RefusedFeedback"/>.
+        /// </summary>
+        public void OnFeedback(FeedbackCue cue)
+        {
+            string id = cue.Cue ?? string.Empty;
+            if (id.StartsWith(RefusedCuePrefix, StringComparison.Ordinal))
+            {
+                id = RefusedFeedback;
+            }
+
+            if (id.Length == 0)
+            {
+                return;
+            }
+
+            PlayId(id, cue.X / 1000f, cue.Y / 1000f, cue.Z / 1000f, true);
+        }
+
+        /// <summary>IFootstepSink: plays <see cref="FootstepId"/> at the footstep's point (millimetres).</summary>
+        public void OnFootstep(FootstepEvent footstep) =>
+            PlayId(FootstepId, footstep.X / 1000f, footstep.Y / 1000f, footstep.Z / 1000f, true);
 
         /// <summary>Plays a bank clip id at a point in metres; <paramref name="tryPrefix"/> also tries the set's feedback prefix.</summary>
         public bool PlayId(string id, float x, float y, float z, bool tryPrefix)

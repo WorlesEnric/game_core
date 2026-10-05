@@ -1,0 +1,60 @@
+# GameCore Studio operation providers (docs/studio/04-etos-integration.md §5). Rendered into
+# <root>/ops.toml by studio/etos/install.sh (no substitutions). Keys are credential references
+# resolved by etosd from its environment; none is written here.
+#
+# Prices (`[providers.cost]`) are not configured: no verified price list. `max_cost_usd` checks
+# therefore estimate 0 until an operator adds `per_unit`.
+
+# Voice input: transcript-only realtime sessions (the companion never sends response_create).
+[[realtime]]
+name = "studio-voice"
+kind = "bailian-omni"
+model = "qwen3-omni-flash-realtime"
+credential = "env:BAILIAN_API_KEY"
+turn_detection = "semantic_vad"
+vad_threshold = 0.5
+
+# Image generation: Echo, OpenAI-compatible /images/generations. Both options were accepted by
+# the provider on 2026-10-04 (artifacts/studio/environment/provider-probe-2026-10-04.md).
+[[providers]]
+name = "echo-images"
+family = "image"
+kind = "openai-images"
+base_url = "https://api.echo-coding.com/v1"
+credential = "env:ECHO_API_KEY"
+model = "gpt-image-2"
+options = { quality = "low", response_format = "b64_json" }
+[providers.limits]
+timeout = "300s"
+max_outputs = 4
+
+# Image description: a vision chat model of models.toml.
+[[providers]]
+name = "echo-describe"
+family = "describe"
+kind = "chat"
+model = "echo/gpt-5.6-sol"
+
+# Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
+[[providers]]
+name = "bailian-tts"
+family = "tts"
+kind = "bailian-tts"
+base_url = "https://dashscope.aliyuncs.com/api/v1"
+credential = "env:BAILIAN_API_KEY"
+model = "qwen3-tts-flash"
+options = { voice = "Cherry", language_type = "English" }
+[providers.limits]
+timeout = "120s"
+
+# 3D generation (family "3d", kind "predictions") is deliberately absent: no provider
+# credential exists on this host (SADR-020). `POST /ops/generate.3d` therefore answers
+# `not_configured`, which Studio shows as blocked. To enable it, an operator adds e.g.:
+#
+# [[providers]]
+# family = "3d"
+# kind = "predictions"
+# base_url = "https://api.replicate.com/v1"
+# credential = "env:REPLICATE_API_TOKEN"
+# model = "<owner>/<model>"
+# input = { prompt = "{{prompt}}", image = "{{reference}}" }

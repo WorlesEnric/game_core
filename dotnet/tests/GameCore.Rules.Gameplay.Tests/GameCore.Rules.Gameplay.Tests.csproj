@@ -29,6 +29,8 @@
     <!-- P1.5: rules tests of the UI flow and audio halves (Runtime/Ui, Runtime/Audio). -->
     <Compile Include="Ui/**/*.cs" />
     <Compile Include="Audio/**/*.cs" />
+    <!-- P1.3: player, NPC and interaction rules tests. -->
+    <Compile Include="Player/**/*.cs;Npc/**/*.cs;Interaction/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>

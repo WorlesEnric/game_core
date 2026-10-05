@@ -127,14 +127,18 @@ namespace GameCore.Gameplay.Ui
     /// <summary>The interaction prompt (IPromptPresenter).</summary>
     public sealed class PromptViewModel : UiViewModel
     {
-        private static readonly string[] Names = { nameof(Text), nameof(Visible), nameof(Enabled) };
+        private static readonly string[] Names = { nameof(Text), nameof(Kind), nameof(Visible), nameof(Enabled) };
         private string text = string.Empty;
+        private string kind = string.Empty;
         private bool visible;
         private bool enabled = true;
 
         public override IReadOnlyList<string> PropertyNames => Names;
 
         [CreateProperty] public string Text { get => text; set => Set(ref text, value ?? string.Empty, nameof(Text)); }
+
+        /// <summary>PromptRequest.Kind: "npc", "door", "gate", "examinable", "point" or "switch".</summary>
+        [CreateProperty] public string Kind { get => kind; set => Set(ref kind, value ?? string.Empty, nameof(Kind)); }
 
         [CreateProperty] public bool Visible { get => visible; set => Set(ref visible, value, nameof(Visible)); }
 

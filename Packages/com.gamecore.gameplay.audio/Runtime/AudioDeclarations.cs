@@ -32,27 +32,51 @@ namespace GameCore.Gameplay.Audio
         /// <summary>Bytes one lane holds per step: the largest audio payload is 16 bytes.</summary>
         public const int LaneByteCapacity = 512;
 
-        public static readonly Id128 OwnerPackage = GameplayIds.Id(GameplayCatalogNames.AudioPackage);
+        public const string CatalogPackage = "package.audio";
+        public const string CatalogPlugin = "audio.plugin";
+        public const string CatalogCommandSystem = "audio.system.command";
+        public const string CatalogSessionApplier = "audio.session-applier";
+        public const string CatalogSessionLayout = "audio.layout.session";
+        public const string CatalogConfigSchema = "audio.schema.config";
+        public const string CatalogSessionDomainSchema = "audio.domain.session";
+
+        public static readonly Id128 OwnerPackage = GameplayIds.Id(CatalogPackage);
 
         public static readonly PluginTypeId PluginType = GameplayIds.PluginType("audio.plugin-type");
 
         public static readonly PluginInstanceId Instance = GameplayIds.Instance("audio.instance");
 
-        public static readonly FactoryKey PluginFactory = GameplayIds.Key(GameplayCatalogNames.AudioPlugin);
+        public static readonly FactoryKey PluginFactory = GameplayIds.Key(CatalogPlugin);
 
-        public static readonly SchemaRef ConfigSchema = GameplayIds.Schema(GameplayCatalogNames.AudioConfigSchema, 1U);
+        public static readonly SchemaRef ConfigSchema = GameplayIds.Schema(CatalogConfigSchema, 1U);
 
-        public static readonly SchemaRef SessionDomain = GameplayIds.Schema(GameplayCatalogNames.AudioSessionDomainSchema, 1U);
+        public static readonly SchemaRef SessionDomain = GameplayIds.Schema(CatalogSessionDomainSchema, 1U);
 
-        public static readonly FactoryKey SessionLayout = GameplayIds.Key(GameplayCatalogNames.AudioSessionLayout);
+        public static readonly FactoryKey SessionLayout = GameplayIds.Key(CatalogSessionLayout);
 
-        public static readonly FactoryKey SessionApplier = GameplayIds.Key(GameplayCatalogNames.AudioSessionApplier);
+        public static readonly FactoryKey SessionApplier = GameplayIds.Key(CatalogSessionApplier);
 
         public static readonly OwnerId Owner = PresentationSlots.AudioOwner;
 
         public static readonly StageId Stage = GameplayIds.Stage("audio.stage.command");
 
-        public static readonly FactoryKey CommandSystem = GameplayIds.Key(GameplayCatalogNames.AudioCommandSystem);
+        public static readonly FactoryKey CommandSystem = GameplayIds.Key(CatalogCommandSystem);
+
+        /// <summary>The schemas this package contributes to the generated catalog (one UInt32 field each).</summary>
+        public static IReadOnlyList<GameplayCatalogNames.SchemaName> CatalogSchemas { get; } = System.Array.AsReadOnly(new[]
+        {
+            new GameplayCatalogNames.SchemaName(CatalogConfigSchema, "audio.serializer.config", "AudioConfig", CatalogPackage),
+            new GameplayCatalogNames.SchemaName(CatalogSessionDomainSchema, "audio.serializer.domain-session", "AudioSessionDomain", CatalogPackage),
+        });
+
+        /// <summary>The static registrations this package contributes to the generated catalog.</summary>
+        public static IReadOnlyList<GameplayCatalogNames.EntryName> CatalogEntries { get; } = System.Array.AsReadOnly(new[]
+        {
+            new GameplayCatalogNames.EntryName("PluginFactory", CatalogPlugin, "AudioPluginKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("SystemFactory", CatalogCommandSystem, "AudioCommandSystemKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("LayoutApply", CatalogSessionApplier, "AudioSessionApplierKey", CatalogPackage),
+            new GameplayCatalogNames.EntryName("LayoutApply", CatalogSessionLayout, "AudioSessionLayoutKey", CatalogPackage),
+        });
 
         public static readonly SchemaRef SessionRecipeSchema = GameplayIds.Schema("audio.schema.session-recipe", 1U);
 

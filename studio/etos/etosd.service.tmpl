@@ -1,0 +1,24 @@
+# GameCore Studio etos node (docs/studio/04-etos-integration.md §8.7, SADR-019). Rendered into
+# ~/.config/systemd/user/etosd.service by studio/etos/install.sh (@ROOT@, @BIN@, @ENVFILE@).
+[Unit]
+Description=GameCore Studio etos node (etosd)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=ETOS_ROOT=@ROOT@
+Environment=RUST_LOG=info
+# Provider keys (mode 0600, generated on this host by studio/tools/host-providers-env.sh).
+EnvironmentFile=@ENVFILE@
+# Providers are reached directly (both answer over IPv4 from this host); the user manager's
+# desktop proxy variables are not inherited, so etosd's egress is the same in every session.
+UnsetEnvironment=http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY no_proxy NO_PROXY
+ExecStart=@BIN@/etosd run --root @ROOT@
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=mixed
+
+[Install]
+WantedBy=default.target

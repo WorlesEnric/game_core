@@ -4,8 +4,8 @@
 // three Input System actions created in code (no asset edit): Navigate (arrows, WASD, d-pad, left stick) moves the
 // selection of the dialogue choices and of the save/load, journal and inventory lists; Submit (Enter, Space, gamepad
 // south) chooses the highlighted dialogue choice or advances a line while a conversation is shown; Cancel (Backspace,
-// gamepad east) raises UiIntent.Cancel. Pause, Journal and Inventory belong to the player's action map and arrive as
-// IUiIntentSink intents. Created only when a graphics device exists (UiRoot).
+// gamepad east) closes the current overlay (UiRuntime.Cancel). Pause, Journal and Inventory belong to the player's action
+// map and arrive as IUiIntentSink intents (P1.3's UiIntent). Created only when a graphics device exists (UiRoot).
 #nullable enable
 using System;
 using GameCore.Gameplay.Contracts;
@@ -71,12 +71,12 @@ namespace GameCore.Gameplay.Ui
 
             if (dialogue && submit.WasPressedThisFrame())
             {
-                runtime.Raise(UiIntent.Confirm);
+                runtime.Confirm();
             }
 
             if (cancel.WasPressedThisFrame())
             {
-                runtime.Raise(UiIntent.Cancel);
+                runtime.Cancel();
             }
         }
 
