@@ -107,13 +107,22 @@ namespace Hollowmere.P3_1.EditMode.Tests
             Assert.That(freshBoot.Saves!.Directory, Is.EqualTo(saveDirectory));
             bed.Reconfigure();
             smoke = HollowmereStudioAdmission.Bind(bed.Runtime, freshBoot, freshBoot.Saves!);
+            AdmissionResult? finished = null;
+            bed.Admission.Finished += result =>
+            {
+                if (result.ChangeSetId == candidate.Id)
+                {
+                    finished = result;
+                }
+            };
             AdmissionResult done = Resume(candidate.Id);
             int polledFrames = 0;
-            for (; polledFrames < 1200 && done.Outcome == AdmissionOutcome.Pending; polledFrames++)
+            for (; polledFrames < 1200 && done.Outcome == AdmissionOutcome.Pending && finished == null; polledFrames++)
             {
-                yield return null; // R2-B's polled smoke: the active world advances the proposal's 120 steps on its own pump
-                done = bed.Admission.Resume(candidate.Id);
+                yield return null; // R2-B polls the smoke each Editor update; the active world steps on its own pump
             }
+
+            done = finished ?? done;
 
             Debug.Log("[P3.1] admission after the restart: " + done.Outcome + " (" + done.Reason + ") " + done.Detail + " after " + polledFrames
                 + " polled frame(s); smoke " + smoke.LastReport);

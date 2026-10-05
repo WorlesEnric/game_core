@@ -270,7 +270,7 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             Assert.That(pumps, Is.EqualTo(elapsedFrames).Within(1), "one sanctioned pump per frame");
             Assert.That(root.PumpCounter.Violations, Is.EqualTo(0), root.PumpCounter.LastViolation);
             Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(1), "ending B's one reward, granted once");
-            Assert.That(game.Delivery.Owner.RejectedCount, Is.EqualTo(0), "no obligation was refused");
+            Assert.That(game.Delivery.Owner.RejectedCount, Is.EqualTo(0), "no obligation was refused: " + string.Join(" | ", timings));
             Assert.That(acknowledgedBefore, Is.GreaterThan(0));
             Assert.That(modules.Logic.Fired, Is.GreaterThanOrEqualTo(3), "the bell, its ending and the gate-keeping rules fired");
 #else
@@ -391,6 +391,6 @@ namespace Hollowmere.P1_4.PlayMode.Tests
         }
 
         private void Timing(string phase, long ms, int frames) =>
-            timings.Add(phase + " " + ms.ToString(CultureInfo.InvariantCulture) + "ms/" + frames.ToString(CultureInfo.InvariantCulture) + "f");
+            timings.Add(phase + " " + ms.ToString(CultureInfo.InvariantCulture) + "ms/" + frames.ToString(CultureInfo.InvariantCulture) + "f" + (world != null ? " rejected=" + world.Delivery.Owner.RejectedCount.ToString(CultureInfo.InvariantCulture) : string.Empty));
     }
 }

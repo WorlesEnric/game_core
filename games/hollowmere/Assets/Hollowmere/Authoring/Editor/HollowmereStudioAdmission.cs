@@ -95,7 +95,13 @@ namespace Hollowmere.Authoring
                 () => service,
                 () => boot != null && boot.AdmissionReady(service),
                 verdict => StudioAdmissionServices.RunSmokeTest(runtime, verdict, (type, method, steps) => smoke.RunAdmittedSmokeEntry(verdict, type, method, steps)));
-            StageAdmission.Of(runtime).Options.PollSmokeTest = verdict =>
+            AdmissionOptions options = StageAdmission.Of(runtime).Options;
+
+            // R2-B charges one polling frame per Editor update against SmokeTestFrameBudget (default 120). An entry observes
+            // its proposal's steps on the world's own pump, so the allowance must cover them with slack for the Editor
+            // and player loops not stepping in lockstep.
+            options.SmokeTestFrameBudget = Math.Max(options.SmokeTestFrameBudget, HollowmereAdmittedSmoke.FrameBudget);
+            options.PollSmokeTest = verdict =>
             {
                 if (!ReferenceEquals(StageAdmission.Of(runtime).VerdictOf(verdict.ChangeSetId), verdict))
                 {
@@ -143,6 +149,12 @@ namespace Hollowmere.Authoring
         /// <summary>The pressure plate sample's package.</summary>
         public const string PressurePlatePackage = "com.hollowmere.mechanism.pressureplate";
 
+        /// <summary>The largest proposal step count a registered entry accepts (the sample's is 120).</summary>
+        public const int MaxSteps = 120;
+
+        /// <summary>The polling-frame allowance the binding asks R2-B for: twice <see cref="MaxSteps"/>.</summary>
+        public const int FrameBudget = 2 * MaxSteps;
+
         private static readonly IReadOnlyList<Entry> Entries = Array.AsReadOnly(new[]
         {
             new Entry(PressurePlateType, "Begin", PressurePlatePackage),
@@ -172,6 +184,12 @@ namespace Hollowmere.Authoring
         {
             Runs++;
             string? failure = Check(verdict, type, method, steps, out string detail);
+            if (failure == null)
+            {
+                GameApplicationRoot root = boot.World!.Root;
+                observations[verdict.Digest] = new Observation(root, root.PumpCounter.SanctionedPumps);
+            }
+
             LastReport = (failure == null ? "pass: " + detail : "fail: " + failure) + " [" + type + "." + method + ", steps " + steps.ToString(CultureInfo.InvariantCulture) + "]";
             if (failure == null)
             {
@@ -187,7 +205,8 @@ namespace Hollowmere.Authoring
 
         /// <summary>
         /// R2-B's polled smoke for the same trusted entry: Pending until the active root advanced <paramref name="steps"/>
-        /// sanctioned frames since the first poll (a restored root restarts the count), then the live assertions again,
+        /// sanctioned frames since the synchronous run (else the first poll; a replaced root restarts the count), then the
+        /// live assertions again,
         /// round trip included -> Passed or Failed. Never pumps the world.
         /// </summary>
         public AdmissionSmokeStatus PollAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)
@@ -269,9 +288,9 @@ namespace Hollowmere.Authoring
                 return "the verdict did not pass";
             }
 
-            if (steps <= 0)
+            if (steps <= 0 || steps > MaxSteps)
             {
-                return "steps must be positive";
+                return "steps must be within 1.." + MaxSteps.ToString(CultureInfo.InvariantCulture);
             }
 
             return LiveWorld(steps, roundTrip, out detail);
