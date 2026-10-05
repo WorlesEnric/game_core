@@ -1,0 +1,34 @@
+Command: studio/agent/target/debug/gamecore-studio stage run r2-f2-pressure-final --candidate /home/worlesenric/wkspace/gc-studio/r2-f2/samples/mechanisms/pressure-plate/candidate --source-project /home/worlesenric/wkspace/gc-studio/r2-f2/games/hollowmere --root /home/worlesenric/.cache/gamecore-studio/r2-f2/stage --repo /home/worlesenric/wkspace/gc-studio/r2-f2 --verdict-out /home/worlesenric/.cache/gamecore-studio/r2-f2/pressure-verdict-final.json
+Exit: 1 (failed mandatory dotnet step; no passing/signed verdict).
+-- stage r2-f2-pressure-final (root /home/worlesenric/.cache/gamecore-studio/r2-f2/stage, source /home/worlesenric/wkspace/gc-studio/r2-f2/games/hollowmere, budget 360 s)
+   scan            pass       15 ms  52 file(s) clean
+   checkers        pass      202 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          FAIL     1816 ms  semantic analyzer missing, failed, or reported forbidden code
+   unity-editmode  skip        0 ms  skipped: dotnet failed
+   playmode-smoke  skip        0 ms  skipped: dotnet failed
+   determinism     skip        0 ms  skipped: dotnet failed
+   budget          pass        0 ms  19 s within B-STAGE 360 s
+RESULT stage r2-f2-pressure-final: FAIL (19866 ms of 360000 ms; verdict 3714168dc819eda2f6a3817aa561d046588168ae6757462a6356a33a1871a254 at /home/worlesenric/.cache/gamecore-studio/r2-f2/stage/r2-f2-pressure-final/out/verdict.json)
+dotnet step:
+$ Roslyn semantic analyzer  (exit Some(1), 1802 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+/home/worlesenric/.cache/gamecore-studio/r2-f2/stage/r2-f2-pressure-final/semantic-analyzer/StageAnalyzer.csproj : error NU1100: Unable to resolve 'Microsoft.CodeAnalysis.CSharp (>= 4.5.0)' for 'net8.0'.
+
+The build failed. Fix the build errors and run again.
+
+Private .licensing-* directories remaining in slot: 0

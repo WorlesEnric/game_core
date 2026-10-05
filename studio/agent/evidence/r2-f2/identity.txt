@@ -1,0 +1,24 @@
+ENGINE: /usr/bin/docker --config /home/worlesenric/.cache/gamecore-studio/r2-f2/docker-client run --rm --pull=never --name r2-f2-identity --network none --read-only --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=512 --user 1000:1000 --env HOME=/home/worlesenric --env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --mount type=bind,src=/home/worlesenric/.cache/gamecore-studio/r2-f2/identity,dst=/home/worlesenric/.cache/gamecore-studio/r2-f2/identity --mount type=bind,src=/home/worlesenric/.cache/gamecore-studio/r2-f2/identity/home,dst=/home/worlesenric --mount type=bind,src=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor,dst=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor,readonly --tmpfs /tmp:rw,nosuid,nodev --workdir /home/worlesenric/.cache/gamecore-studio/r2-f2/identity/project --hostname worlesenric --mount type=bind,src=/etc/machine-id,dst=/etc/machine-id,readonly gamecore-stage:6000.0.75f1-v1 /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity <unity-batch arguments>
+COMMAND: UNITY=/home/worlesenric/.cache/gamecore-studio/r2-f2/identity/docker-unity bash /home/worlesenric/wkspace/gc-studio/r2-f2/studio/tools/unity-batch.sh --project /home/worlesenric/.cache/gamecore-studio/r2-f2/identity/project --log-dir /home/worlesenric/.cache/gamecore-studio/r2-f2/identity/logs --label r2-f2-identity --timeout 180 --attempts 1 -- -quit
+WRAPPER_EXIT: 0
+LOG: /home/worlesenric/.cache/gamecore-studio/r2-f2/identity/logs/r2-f2-identity-20261005T181618-1489739-a1.log
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-ubuntu doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 29)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu" at "2026-10-05T10:16:18.67184Z"
+[Licensing::Client] Handshaking with LicensingClient:
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ubuntu" (connect: 0.25s, validation: 0.03s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu-notifications" at "2026-10-05T10:16:18.703337Z"
+[Licensing::Module] Connected to LicensingClient (PId: 29, launch time: 0.00, total connection time: 0.28s)
+[licensing identifier/token line omitted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.31s
+[Licensing::Client] Successfully resolved entitlement details
+Batchmode quit successfully invoked - shutting down!
+[Licensing::IpcConnector] LicenseClient-ubuntu-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ubuntu channel disconnected successfully.
+RESULT r2-f2-identity: PASS (unity exit 0, 2s, attempts 1, log /home/worlesenric/.cache/gamecore-studio/r2-f2/identity/logs/r2-f2-identity-20261005T181618-1489739-a1.log)
+PRIVATE_LICENSE_COPY_DELETED (cleanup recovered Docker-created root-owned nested mount directories)
