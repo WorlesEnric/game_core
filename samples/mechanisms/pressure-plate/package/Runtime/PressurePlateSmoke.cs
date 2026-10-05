@@ -27,6 +27,7 @@ using GameCore.Gameplay.World;
 using GameCore.Unity.App;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
 
 namespace Hollowmere.Mechanism.PressurePlate
