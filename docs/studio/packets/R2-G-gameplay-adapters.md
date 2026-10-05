@@ -313,3 +313,56 @@ it; rebind cannot reset the persisted budget.
   not a killed Editor or live companion. They issue no production signed verdict.
 - No paid ETOS operation, credential-file read, installed companion/etosd restart,
   or sibling-clone mutation is performed. Rust is unchanged and not rebuilt.
+
+### Verification — R2-G2
+
+Implementation checkpoint **`cfc37f9c`** (same source bytes as the final test run),
+pushed after the manifest checkpoint **`982c7cb7`**. All builds/tests ran on myubuntu.
+The shared wrapper held at most one Editor; no Unity timeout/retry occurred in
+these runs. Logs and XML are retained under this clone's `.unity-logs/`.
+
+The final command was:
+
+```bash
+bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir "$PWD/.unity-logs" --label r2-g2-full --results "$PWD/.unity-logs/r2-g2-full.xml" -- -runTests -testPlatform EditMode -testFilter 'Hollowmere\.R2_G.*|Hollowmere\.R2_B.*|Hollowmere\.P1_7b.*|Hollowmere\.P2_4.*|GameCore\.Studio\.Core.*'
+```
+
+`--results` supplies `-testResults`; the wrapper rejects a duplicate explicit
+argument. The seven new adapter scenarios are Editor tests that enter Hollowmere
+Play Mode through `UnitySetUp`/`EnterPlayMode` and leave through `UnityTearDown`.
+Thus the requested broad EditMode selection also exercises their real game frames.
+
+- **Final Unity XML:** `.unity-logs/r2-g2-full.xml`, **192 passed, 0 failed,
+  0 skipped/inconclusive**; R2-G **18** (11 existing + 7 new), R2-B **71**,
+  P1.7b **28**, P2.4 **8**, Studio core **67**. Wrapper 151 seconds, one attempt,
+  Unity exit 0. SHA-256:
+  `90935bf6d61eae2087c3ddb435b3ee3004605529c3929e337901fc1dab9a1089`.
+- **Before proof:** unchanged regression fixture against the original
+  `StudioAdmissionServices.cs`/`WorldLiveOpTranslator.cs` and original P1.7b method;
+  `.unity-logs/r2-g2-before.xml`, **1 passed, 7 failed, 0 skipped/inconclusive**.
+  Six tests detect the missing tri-state binding; the old media catalog test
+  rejects the correct absence of an authored `agent.media` prerequisite. The bool
+  compatibility control passes. Wrapper 84 seconds, one attempt. SHA-256:
+  `e32518b1cd08e00000ee915ca6bc22f7122eccc057e5ae7a282cb4168fdca0b4`.
+- **Fixture development failures retained:** `r2-g2-before-fixture.xml` and
+  `r2-g2-before-fixture2.xml`, each **0 passed / 8 failed**. The first used nested
+  setup that did not enter Play before scene load; the second exposed setup state
+  lost across the EnterPlayMode reload. Moving initialization into UnitySetUp and
+  flattening the frame wait fixed the fixture. These are not acceptance or baseline
+  regression evidence. Their SHA-256 values are
+  `a8cb21aa428400098aa8d576ef762460a3ecb03439a0727afcaf2ce88b8489ff` and
+  `ce7eeaa6b2db16f6d762ba22707f884fde2bb24c0e43c65173816c3fbd012652`.
+- `dotnet test dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj`:
+  TRX **307 passed, 0 failed/skipped**, `/tmp/r2-g2-dotnet/r2-g2-gameplay.trx`,
+  SHA-256 `e7be45b2c0f3712965b86c3934888e78f144242b7ca25a555834fde98a323da7`.
+- `dotnet test dotnet/tests/GameCore.Studio.Model.Tests/GameCore.Studio.Model.Tests.csproj`:
+  TRX **104 passed, 0 failed/skipped**, `/tmp/r2-g2-dotnet/r2-g2-model.trx`,
+  SHA-256 `ccbabc0582fae12f92b8d2a8cad91fb2b43ae2685321103368637a1c698d429e`.
+- `python3 tools/check_game_core_csharp.py`: **pass, 1,133 C# files**.
+- `python3 tools/check_package_metadata.py`: **failed, exactly 2 project lock-map
+  mismatches**, as requested above, **no layering violation**; 41 packages,
+  89 package assemblies. Final output: `.unity-logs/r2-g2-metadata.txt`.
+  Unity's generated Hollowmere lock change was restored; no out-of-scope manifest,
+  checker, game bootstrap, or lockfile is committed.
+- `git diff --check` and staged whitespace check: **pass**. Only the assigned
+  P1.7b method changed outside R2_G. Existing untracked `.codex/` is untouched.
