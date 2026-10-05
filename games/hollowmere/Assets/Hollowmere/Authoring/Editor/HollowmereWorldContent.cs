@@ -521,9 +521,20 @@ namespace Hollowmere.Authoring
             return rule;
         }
 
-        private static JObject RuleRest(string entityId, JObject[] conditions, JObject[] actions, bool once, int priority, int value, bool any) => new JObject
+        private static JObject RuleRest(string entityId, JObject[] conditions, JObject[] actions, bool once, int priority, int value, bool any)
         {
-            ["triggerEntityId"] = entityId,
+            JObject rest = RuleBody(conditions, actions, once, priority, value, any);
+            if (entityId.Length > 0)
+            {
+                // entity.instance ref (P1.7b): an empty filter is omitted, never written as "".
+                rest["triggerEntityId"] = entityId;
+            }
+
+            return rest;
+        }
+
+        private static JObject RuleBody(JObject[] conditions, JObject[] actions, bool once, int priority, int value, bool any) => new JObject
+        {
             ["triggerValue"] = value,
             ["matchAnyValue"] = any,
             ["conditions"] = new JArray(conditions),

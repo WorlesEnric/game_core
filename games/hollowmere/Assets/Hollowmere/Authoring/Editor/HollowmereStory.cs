@@ -40,7 +40,6 @@ namespace Hollowmere.Authoring
             var entry = new JObject { ["kind"] = kind };
             NarrativeSchema.Condition(entry, kind, subject);
             entry["inventory"] = null;
-            entry["entityId"] = string.Empty;
             entry["index"] = 0;
             entry["op"] = op;
             entry["value"] = value;
@@ -52,7 +51,12 @@ namespace Hollowmere.Authoring
             var entry = new JObject { ["kind"] = kind };
             NarrativeSchema.Action(entry, kind, target, vendor);
             entry["inventory"] = null;
-            entry["entityId"] = entityId;
+            if (entityId.Length > 0)
+            {
+                // entity.instance ref (P1.7b): an empty one is omitted, never written as "".
+                entry["entityId"] = entityId;
+            }
+
             entry["value"] = value;
             entry["text"] = text;
             return entry;
@@ -317,7 +321,6 @@ namespace Hollowmere.Authoring
         {
             var entry = new JObject { ["stage"] = stage, ["kind"] = kind };
             NarrativeSchema.Objective(entry, kind, target);
-            entry["targetEntityId"] = string.Empty;
             entry["required"] = required;
             entry["branch"] = branch;
             entry["text"] = text;
