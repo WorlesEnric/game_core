@@ -1,0 +1,165 @@
+{
+  "exchanges": [
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 40.1,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/agents/etos-other-agent/http/v1/hello",
+      "status": 404,
+      "ms": 1.5,
+      "code": "agent_unknown"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/t000000000000000000000000",
+      "status": 403,
+      "ms": 1.0,
+      "code": "forbidden"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 2.4,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 3.7,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 2.7,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/requests",
+      "status": 200,
+      "ms": 15387.8,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 1.0,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 105.9,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/requests/cs_0E9C135BA826E4985BDA08DC20/cancel",
+      "status": 200,
+      "ms": 8895.6,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 0.8,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 2.2,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/requests/cs_0E9C135BA826E4985BDA08DC20",
+      "status": 200,
+      "ms": 2.3,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ops/generate",
+      "status": 200,
+      "ms": 3985.7,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f",
+      "status": 200,
+      "ms": 5.6,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 0.8,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/voice",
+      "status": 101,
+      "ms": 2.4,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ops/generate",
+      "status": 503,
+      "ms": 1.5,
+      "code": "not_configured"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ops/generate",
+      "status": 200,
+      "ms": 1458.8,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f",
+      "status": 200,
+      "ms": 5.4,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f",
+      "status": 200,
+      "ms": 3.2,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f",
+      "status": 200,
+      "ms": 41.9,
+      "code": null
+    }
+  ],
+  "log": [
+    "[etos] GET /api/v1/agents/etos-other-agent/http/v1/hello -> agent_unknown: this node has no agent `etos-other-agent` [HTTP 404]",
+    "[etos] GET /api/v1/tasks/t000000000000000000000000 -> forbidden: this app key may not use the tasks routes (add the route group to the key's `routes` in etos.toml) [HTTP 403]",
+    "[etos] event stream reconnected after 257 ms at cursor 123",
+    "[etos] POST /v1/ops/generate -> not_configured: 3D model generation is not available on this node: no provider is configured (an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README) [HTTP 503]",
+    "[etos] artifact d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f refused: the downloaded bytes hash to e8a961a7d4512e4b2048da654c4ca44918531a12f68eac446e1504c7309d3076"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "requestId": "cs_01M44WX38P3VJ0P6K705X63MX8",
+  "selection": {
+    "id": "sel_01M44WX39RS5J5JW34MAWRS5D0",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Definition",
+        "authoringId": "193f7ebc-6242-4813-b1cc-6afeea0918b9",
+        "global": "GlobalObjectId_V1-3-0bdcbdc77a8fe6e64bb1d135d9b9ff27-11400000-0",
+        "assetGuid": "0bdcbdc77a8fe6e64bb1d135d9b9ff27",
+        "path": "Assets/Hollowmere/World/Definitions/Traveller.asset",
+        "stamp": "sha256:c3af9af2272ac8b71509c1dab7d2e8cc9a32e52ed0e0d4dbd0d1950f32d1eaea"
+      }
+    ],
+    "indexRevision": 1
+  },
+  "sliceBytes": 1796,
+  "catalogRevision": "da53ff35bfddc7c0456d285caadbadade8c6a813cd84816e93a8b8b99c26a3e8",
+  "submitMs": 25924.0,
+  "totalMs": 62337,
+  "timeline": [
+    {
+      "ms": 136,
+      "state": "requested",
+      "taskStatus": null,
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 25917,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 25921,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 62306,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": "done: I need the placed NPC selected before I can propose the move. The current selection is a Traveller definition, which has no position to change."
+    },
+    {
+      "ms": 62336,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": "question: Could you select the placed NPC you want moved? The current selection is the Traveller definition, not an NPC instance with a position."
+    },
+    {
+      "ms": 62336,
+      "state": "needs_clarification",
+      "taskStatus": "done",
+      "local": null,
+      "progress": "question: Could you select the placed NPC you want moved? The current selection is the Traveller definition, not an NPC instance with a position."
+    }
+  ],
+  "recoveredForeignRequests": 15,
+  "stagedForeign": 0,
+  "final": {
+    "state": "needs_clarification",
+    "taskStatus": "done",
+    "tasks": [
+      "t383a276c08bed40bd143e8ff"
+    ],
+    "outcome": {
+      "code": "needs_clarification",
+      "question": "Could you select the placed NPC you want moved? The current selection is the Traveller definition, not an NPC instance with a position."
+    },
+    "local": null
+  }
+}

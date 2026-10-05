@@ -1,0 +1,58 @@
+{
+  "exchanges": [
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 1488.5,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/agents/etos-other-agent/http/v1/hello",
+      "status": 404,
+      "ms": 3.7,
+      "code": "agent_unknown"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/t000000000000000000000000",
+      "status": 403,
+      "ms": 0.9,
+      "code": "forbidden"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 273.9,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 6.9,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 3.6,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/requests",
+      "status": 502,
+      "ms": 8865.1,
+      "code": "bad_gateway"
+    }
+  ],
+  "log": [
+    "[etos] GET /api/v1/agents/etos-other-agent/http/v1/hello -> agent_unknown: this node has no agent `etos-other-agent` [HTTP 404]",
+    "[etos] GET /api/v1/tasks/t000000000000000000000000 -> forbidden: this app key may not use the tasks routes (add the route group to the key's `routes` in etos.toml) [HTTP 403]",
+    "[etos] POST /v1/requests -> bad_gateway: the agent `gamecore-studio` did not answer on its endpoint: connection closed before message completed (`etos agent logs <agent>` on the node shows what it did) [HTTP 502]"
+  ]
+}

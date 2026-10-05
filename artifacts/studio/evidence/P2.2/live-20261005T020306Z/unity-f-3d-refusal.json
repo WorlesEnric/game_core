@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "status": "NotConfigured",
+  "problem": {
+    "code": "not_configured",
+    "message": "3D model generation is not available on this node: no provider is configured",
+    "hint": "an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README",
+    "data": {
+      "status": 503
+    }
+  }
+}

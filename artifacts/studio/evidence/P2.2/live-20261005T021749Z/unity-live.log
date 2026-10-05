@@ -1,0 +1,38 @@
+-- waiting for a Unity slot (3 max host-wide; waited 0s)
+-- Unity slot 2/3 acquired (2 batchmode Editor(s) already running host-wide)
+-- attempt 1/2: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere -logFile /home/worlesenric/wkspace/gc-studio/p2.2/.unity-logs/games_hollowmere-editmode-20261005T101837-a1.log -runTests -testPlatform EditMode -testResults /home/worlesenric/wkspace/gc-studio/p2.2/.unity-logs/games_hollowmere-editmode-20261005T101837-a1.xml -testFilter GameCore\.Studio\.Hollowmere\.P2_2\.Live\..*
+-- tests: result=Failed(Child) total=4 passed=1 failed=3 skipped=0 inconclusive=0
+   FAILED GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging: no candidate reached staging: needs_clarification {"code":"needs_clarification","question":"Could you select the NPC to move and provide its current world position? The selection is Traveller, and its position is not available in the index slice."}
+   FAILED GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps: describe: bad_args
+   FAILED GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone: no final transcript from the microphone (peak level 0)
+RESULT editmode games/hollowmere: FAIL (unity exit 2, 411s, log /home/worlesenric/wkspace/gc-studio/p2.2/.unity-logs/games_hollowmere-editmode-20261005T101837-a1.log)
+   | UnityEngine.Debug:Log (object)
+   | UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+   | UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+   | UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+   | 
+   | (Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+   | 
+   | Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+   | Unloading 0 unused Assets / (0 B). Loaded Objects now: 6406.
+   | Memory consumption went from 292.4 MB to 292.4 MB.
+   | Total: 11.352546 ms (FindLiveObjects: 0.262328 ms CreateObjectMapping: 0.176137 ms MarkObjects: 10.901864 ms  DeleteObjects: 0.011445 ms)
+   | 
+   | [Physics::Module] Cleanup current backned.
+   | [Physics::Module] Id: 0xf2b8ea05
+   | Input System module state changed to: ShutdownInProgress.
+   | Input System polling thread exited.
+   | Input System module state changed to: Shutdown.
+   | [Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+   | [Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+   | AcceleratorClientConnectionCallback - disconnected - :0
+   | [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+   |       Application is shutting down...
+   | [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+   |       ALC ILPP context 1 is unloading
+   | Cleanup mono
+   | debugger-agent: Unable to listen on 46
+   | [Package Manager] Server process was shutdown
+   | Checking for leaked weakptr:
+   |   Found no leaked weakptrs.
+   | ##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1791167174018,"processId":3671199,"allocatedMemory":15890445,"memoryLabels":[{"Default":13965},{"Permanent":16147},{"Thread":1084616},{"Manager":2817945},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":296},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"Font":1782565},{"FreeType":63500},{"FontEngine":320},{"Physics":2081},{"Serialization":376},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"MonoCode":96},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":3757},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":12923},{"DynamicArray":103945},{"HashMap":106391},{"Utility":2665104},{"PoolAlloc":3776},{"AI":72},{"TypeTree":5005},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"WebRequest":5888},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"NativeArray":540},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":256},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":24453},{"VersionControl":4},{"Undo":979},{"AssetDatabase":4712042},{"EditorGi":328},{"UnityConnect":24816},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2389},{"Licensing":688},{"AssetReference":32},{"IPCStream":32}]}

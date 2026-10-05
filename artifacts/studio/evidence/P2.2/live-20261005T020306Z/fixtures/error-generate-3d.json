@@ -1,0 +1,12 @@
+{
+  "kind": "error",
+  "status": 503,
+  "recordedFrom": "live node via P2.2 LiveTests",
+  "recordedAt": "2026-10-05 02:04:21Z",
+  "body": {
+    "status": 503,
+    "code": "not_configured",
+    "message": "3D model generation is not available on this node: no provider is configured",
+    "hint": "an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README"
+  }
+}

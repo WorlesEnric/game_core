@@ -1,0 +1,11 @@
+{
+  "log": [
+    "[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live",
+    "[GameCore.Studio/index] rebuilt 17 source(s) in 21 ms, revision 1",
+    "[GameCore.Studio/engine] applied cs_01M44Y27N6NX83ZZJ82AX44N65 -> Applied (1 op(s), 1622.6 ms)",
+    "[GameCore.Studio/engine] applied cs_01M44Y2NYV3E2809S9N1AMWK53 -> Applied (1 op(s), 3042.8 ms)",
+    "[GameCore.Studio/etos.client] [etos] POST /v1/ops/generate -> bad_args: the arguments of `describe` are invalid: unknown field `max_cost_usd`, expected one of `input`, `prompt`, `language`, `output`, `provider` [HTTP 400]",
+    "[GameCore.Studio/etos.client] [etos] POST /v1/ops/generate -> not_configured: 3D model generation is not available on this node: no provider is configured (an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README) [HTTP 503]",
+    "[GameCore.Studio/etos.client] [etos] artifact e3b9768b5d6137d8bfd2cb9735be5f292c7e9f23655ceed99beab4cd373329a2 refused: the downloaded bytes hash to 44527f83a375a678e54c5a14b4cf7a330533fe3f1a506003d5340cac04aff314"
+  ]
+}

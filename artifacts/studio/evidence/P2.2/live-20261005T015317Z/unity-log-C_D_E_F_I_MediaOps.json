@@ -1,0 +1,9 @@
+{
+  "log": [
+    "[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Live, 3d NotConfigured, describe Live",
+    "[GameCore.Studio/etos.client] [etos] POST /v1/ops/generate -> transport: POST /ops/generate.image timed out after 30000 ms (the etos node is unreachable from the companion; it retries) [HTTP 502]",
+    "[GameCore.Studio/index] rebuilt 17 source(s) in 11 ms, revision 1",
+    "[GameCore.Studio/engine] applied cs_01M44WBWHVVGJXYQY5GDC1AS71 -> Applied (1 op(s), 6577.5 ms)",
+    "[GameCore.Studio/etos.client] [etos] POST /v1/ops/generate -> not_configured: 3D model generation is not available on this node: no provider is configured (an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README) [HTTP 503]"
+  ]
+}

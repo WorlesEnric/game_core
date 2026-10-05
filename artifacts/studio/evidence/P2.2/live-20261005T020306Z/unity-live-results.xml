@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.6371773">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="71" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.637177" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1069" name="GameCore.Studio.Hollowmere.P2_2.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Hollowmere.P2_2.Tests.dll" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.631581" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3604117" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1070" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.631292" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1071" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.631142" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1072" name="Hollowmere" fullname="GameCore.Studio.Hollowmere" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.631002" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1073" name="P2_2" fullname="GameCore.Studio.Hollowmere.P2_2" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.630874" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestSuite" id="1074" name="Live" fullname="GameCore.Studio.Hollowmere.P2_2.Live" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.630529" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-suite type="TestFixture" id="1049" name="EtosLiveTests" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:06:05Z" duration="71.629724" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+                  <properties>
+                    <property name="Category" value="Live" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[One or more child tests had errors]]></message>
+                  </failure>
+                  <test-case id="1050" name="B_NpcRequest_ReachesStaging" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging" methodname="B_NpcRequest_ReachesStaging" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" seed="1105185632" result="Failed" start-time="2026-10-05 02:04:53Z" end-time="2026-10-05 02:05:56Z" duration="62.476261" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="1500000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  no candidate reached staging: needs_clarification {"code":"needs_clarification","question":"Could you select the placed NPC you want moved? The current selection is the Traveller definition, not an NPC instance with a position."}
+  Expected: not null
+  But was:  null
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests+<B_NpcRequest_ReachesStaging>d__9.MoveNext () [0x00664] in /home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere/Assets/Hollowmere/Tests/P2_2/EditMode/EtosLiveTests.cs:133
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case id="1051" name="C_D_E_F_I_MediaOps" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps" methodname="C_D_E_F_I_MediaOps" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" seed="1172955719" result="Failed" start-time="2026-10-05 02:05:56Z" end-time="2026-10-05 02:05:56Z" duration="0.502793" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="900000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  image: Refused The op returned no artifact.
+  Expected: True
+  But was:  False
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests+<C_D_E_F_I_MediaOps>d__10.MoveNext () [0x00a37] in /home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere/Assets/Hollowmere/Tests/P2_2/EditMode/EtosLiveTests.cs:224
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case id="1052" name="J_Voice_FromASpokenWav" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav" methodname="J_Voice_FromASpokenWav" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" seed="2032297957" result="Failed" start-time="2026-10-05 02:05:56Z" end-time="2026-10-05 02:06:01Z" duration="4.478069" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="600000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  no final transcript; bad_response provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required
+  Expected: not null
+  But was:  null
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests+<J_Voice_FromASpokenWav>d__11.MoveNext () [0x0014e] in /home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere/Assets/Hollowmere/Tests/P2_2/EditMode/EtosLiveTests.cs:242
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case id="1053" name="J_Voice_FromTheEditorMicrophone" fullname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone" methodname="J_Voice_FromTheEditorMicrophone" classname="GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests" runstate="Runnable" seed="458442985" result="Failed" start-time="2026-10-05 02:06:01Z" end-time="2026-10-05 02:06:05Z" duration="4.161782" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="300000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[voice did not start: bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests+<J_Voice_FromTheEditorMicrophone>d__12.MoveNext () [0x00233] in /home/worlesenric/wkspace/gc-studio/p2.2/games/hollowmere/Assets/Hollowmere/Tests/P2_2/EditMode/EtosLiveTests.cs:270
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                    </failure>
+                    <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
