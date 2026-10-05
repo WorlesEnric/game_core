@@ -128,7 +128,7 @@ namespace Hollowmere.R2_G.EditMode.Tests
                         JObject args = dialogue ? new JObject { ["node"] = 0 } : id.EndsWith("Sfx", StringComparison.Ordinal)
                             ? new JObject { ["clipId"] = "bell", ["description"] = "A bell" }
                             : new JObject { ["clipId"] = "voice", ["text"] = "Hello" };
-                        var op = new Operation("media", id, tools.Resolver.BuildRef(dialogue ? (Object)graph : bank), args, null, Preconditions.None);
+                        var op = new Operation("media", id, tools.Resolver.BuildRef(dialogue ? (Object)graph : bank, AuthorScope.Definition), args, null, Preconditions.None);
                         ChangeSet change = StudioRuntime.Single("media", IntentOrigin.Manual, op)
                             .WithRequirements(Requirements.FromOperations(new[] { tools.Registry.Find(id)!.Entry.RuntimeApply }));
                         ApplyReport report = tools.Engine.Apply(change);
@@ -226,9 +226,13 @@ namespace Hollowmere.R2_G.EditMode.Tests
         {
             WorldLiveOpTranslator translator = WorldLiveOpTranslator.Register(runtime);
             runtime.Registry.Register(new MechanismTool("plate.press", true));
-            Assert.That(runtime.Engine.Apply(Change("plate.press", 7)).State, Is.EqualTo(ChangeSetState.Failed));
+            ApplyReport unavailable = runtime.Engine.Apply(Change("plate.press", 7));
+            Assert.That(unavailable.State, Is.EqualTo(ChangeSetState.Failed));
+            Assert.That(unavailable.Outcome("a")!.Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
             translator.Bridge = new Bridge();
-            Assert.That(runtime.Engine.Apply(Change("plate.press", 6)).State, Is.EqualTo(ChangeSetState.Failed));
+            ApplyReport stale = runtime.Engine.Apply(Change("plate.press", 6));
+            Assert.That(stale.State, Is.EqualTo(ChangeSetState.Failed));
+            Assert.That(stale.Outcome("a")!.Code, Is.EqualTo(DiagnosticCodes.Conflict));
             Assert.That(live.Submits, Is.Zero);
         }
 
@@ -241,7 +245,7 @@ namespace Hollowmere.R2_G.EditMode.Tests
             runtime.Registry.Register(new MechanismTool("plate.press", true));
             var change = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("mixed", IntentOrigin.Manual),
                 new[] { Op("a", "plate.press", 7), Op("b", "fixture.asset", 7) }, policy: ApplyPolicy.AllOrNothing);
-            Assert.That(runtime.Engine.Apply(change).State, Is.EqualTo(ChangeSetState.Failed));
+            Assert.That(runtime.Engine.Apply(change).State, Is.EqualTo(ChangeSetState.Rejected));
             Assert.That(live.Submits, Is.Zero); Assert.That(authored.Calls, Is.Zero);
         }
 

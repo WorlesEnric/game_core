@@ -44,7 +44,7 @@ namespace Hollowmere.R2_G.EditMode.Tests
                 Assert.That(runtime.Engine.Apply(StudioRuntime.Single("live", IntentOrigin.Manual, op)).State, Is.EqualTo(ChangeSetState.Failed));
                 var mixed = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("mixed", IntentOrigin.Manual),
                     new[] { op, new Operation("b", "fixture.asset", null, new JObject(), null, Preconditions.None) }, policy: ApplyPolicy.AllOrNothing);
-                Assert.That(runtime.Engine.Apply(mixed).State, Is.EqualTo(ChangeSetState.Failed));
+                Assert.That(runtime.Engine.Apply(mixed).State, Is.EqualTo(ChangeSetState.Rejected));
                 Assert.That(action.Calls + asset.Calls, Is.Zero);
                 Assert.That(runtime.Live.CommittedRevision, Is.EqualTo(revision));
             }
