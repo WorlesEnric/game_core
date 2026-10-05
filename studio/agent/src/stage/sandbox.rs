@@ -158,9 +158,13 @@ impl Sandbox {
                 "--env",
                 "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1",
                 "--env",
+                "DOTNET_PROCESSOR_COUNT=4",
+                "--env",
                 &format!("TMPDIR={}", self.slot.join("tmp").display()),
                 "--env",
                 &format!("NUGET_PACKAGES={}/nuget", self.cache.display()),
+                "--env",
+                &format!("UPM_CACHE_ROOT={}/upm", self.cache.display()),
             ]);
             std::fs::create_dir_all(self.slot.join("tmp")).map_err(|e| e.to_string())?;
             for (path, writable) in [
@@ -466,6 +470,11 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
         serde_json::from_slice(&std::fs::read(config).map_err(|e| e.to_string())?)
             .map_err(|e| e.to_string())?;
     let mut cmd = Command::new(sandbox.editor.join("Unity"));
+    if sandbox.mode == Confinement::Docker {
+        // Host core counts otherwise create hundreds of compiler threads and exhaust
+        // the unchanged 512-PID boundary. The outer job deadline remains authoritative.
+        cmd.args(["-job-worker-count", "4", "-diag-debug-shader-compiler"]);
+    }
     let mut log = None;
     let mut it = args.iter();
     while let Some(arg) = it.next() {
@@ -585,6 +594,11 @@ mod tests {
                 format!("{}:{}", metadata.uid(), metadata.gid()),
             ],
             vec!["--env".into(), "HOME=/home/creator".into()],
+            vec!["--env".into(), "DOTNET_PROCESSOR_COUNT=4".into()],
+            vec![
+                "--env".into(),
+                format!("UPM_CACHE_ROOT={}/upm", sandbox.cache.display()),
+            ],
         ] {
             assert!(args.windows(2).any(|v| v == pair));
         }

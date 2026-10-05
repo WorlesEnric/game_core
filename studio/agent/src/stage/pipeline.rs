@@ -1260,6 +1260,7 @@ pub fn cache_version(opts: &StageOptions) -> Result<String, String> {
     inputs.extend_from_slice(include_bytes!(
         "../../../stage/cache/unity-metadata-lock.json"
     ));
+    inputs.extend_from_slice(include_bytes!("../../../stage/cache/upm-lock.json"));
     Ok(sha256_hex(&inputs))
 }
 

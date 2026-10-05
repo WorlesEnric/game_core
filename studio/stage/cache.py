@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 import zipfile
 from urllib.parse import unquote
+import upm_cache
 
 HERE = Path(__file__).resolve().parent
 
@@ -61,6 +62,8 @@ def verify(cache, expected=None):
                 allowed.add((relative / name).as_posix())
     if actual != allowed:
         raise ValueError('cache_invalid: unexpected or missing package files')
+    if (cache / 'upm').exists():
+        upm_cache.verify(cache / 'upm')
 
 
 def provision(cache, offline):
@@ -120,12 +123,15 @@ def main():
     parser.add_argument('--verify', action='store_true')
     parser.add_argument('--offline-from', type=Path, help='copy the pinned closure from an existing host NuGet cache')
     parser.add_argument('--unity-library', type=Path, help='trusted host Unity 6000.0.75f1 Library with offline UPM and pinned analysis metadata')
+    parser.add_argument('--upm-from', type=Path, help='host public Unity UPM cache; only committed public metadata/archive records are copied')
     args = parser.parse_args()
     try:
         if args.verify:
             verify(args.cache)
         else:
             provision(args.cache, args.offline_from)
+            if args.upm_from:
+                upm_cache.provision(args.cache / 'upm', args.upm_from)
             if args.unity_library:
                 seed_unity(args.cache, args.unity_library)
         print('stage cache: verified pinned analyzer/Rules closures and expanded payloads')

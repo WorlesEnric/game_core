@@ -5,9 +5,11 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import sys
 import unittest
 import zipfile
 
+sys.path.insert(0, str(Path(__file__).parents[1]))
 spec = importlib.util.spec_from_file_location('stage_cache', Path(__file__).parents[1] / 'cache.py')
 cache = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cache)
