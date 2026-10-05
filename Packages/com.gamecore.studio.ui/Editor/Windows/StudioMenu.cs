@@ -73,12 +73,12 @@ namespace GameCore.Studio.UI
         {
             Rect area = EnforceMinimum(requested);
             const float gap = 8f;
-            float side = Mathf.Max(420f, area.width * .34f);
+            float side = Mathf.Floor(Mathf.Max(420f, area.width * .34f));
             float left = area.width - side - gap;
-            float tasks = Mathf.Max(160f, area.height * .22f);
+            float tasks = Mathf.Floor(Mathf.Max(160f, area.height * .22f));
             float extra = area.height - 716f;
-            float context = 240f + extra * .34f;
-            float candidates = 260f + extra * .33f;
+            float context = Mathf.Floor(240f + extra * .34f);
+            float candidates = Mathf.Floor(260f + extra * .33f);
             float right = area.x + left + gap;
             return new[]
             {
@@ -86,7 +86,7 @@ namespace GameCore.Studio.UI
                 new Rect(right, area.y, side, context),
                 new Rect(area.x, area.yMax - tasks, left, tasks),
                 new Rect(right, area.y + context + gap, side, candidates),
-                new Rect(right, area.y + context + candidates + 2 * gap, side, 200f + extra * .33f),
+                new Rect(right, area.y + context + candidates + 2 * gap, side, area.height - context - candidates - 2 * gap),
             };
         }
 
@@ -114,9 +114,8 @@ namespace GameCore.Studio.UI
             public double StableSince;
             public int StableUpdates;
             public int Attempts;
-            public Rect LastCommand;
-            public bool CorrectNext;
             public bool StartedUpdating;
+            public double LastWriteAt = double.NegativeInfinity;
         }
 
         public int PendingCount => _pending.Count;
@@ -125,7 +124,7 @@ namespace GameCore.Studio.UI
         {
             double now = EditorApplication.timeSinceStartup;
             window.position = rect;
-            _pending[window] = new Placement { Rect = rect, LastCommand = rect, StableSince = now, Attempts = 1 };
+            _pending[window] = new Placement { Rect = rect, StableSince = now, Attempts = 1 };
             EditorApplication.update -= Apply;
             EditorApplication.update += Apply;
         }
@@ -173,17 +172,11 @@ namespace GameCore.Studio.UI
                 }
                 else if (window.position != placement.Rect)
                 {
+                    // Give ConfigureNotify time to acknowledge the last request before issuing
+                    // a correction. EditorWindow.position initially returns its optimistic cache.
+                    if (now - placement.LastWriteAt < 0.25) continue;
+                    placement.LastWriteAt = now;
                     Rect command = placement.Rect;
-                    if (placement.CorrectNext)
-                    {
-                        // X11 may report the client origin displaced by window decorations. Feed
-                        // that observed translation back into the next request, without a platform
-                        // constant. Alternate with an unadjusted probe to avoid accumulating error
-                        // when the creator/WM moves the window independently or clamps a request.
-                        command.position += placement.LastCommand.position - window.position.position;
-                    }
-                    placement.CorrectNext = !placement.CorrectNext;
-                    placement.LastCommand = command;
                     placement.Attempts++;
                     window.position = command;
                 }

@@ -15,6 +15,23 @@ namespace GameCore.Studio.UI.Tests
 {
     public sealed class R4UiRegressionTests
     {
+        [Test]
+        public void P42_UI_02_LayoutUsesIntegralNativeWindowRects()
+        {
+            Rect area = new Rect(20, 100, 1600, 900);
+            Rect[] rects = StudioMenu.Layout(area);
+            foreach (Rect rect in rects)
+            {
+                Assert.That(rect.x, Is.EqualTo(Mathf.Floor(rect.x)));
+                Assert.That(rect.y, Is.EqualTo(Mathf.Floor(rect.y)));
+                Assert.That(rect.width, Is.EqualTo(Mathf.Floor(rect.width)));
+                Assert.That(rect.height, Is.EqualTo(Mathf.Floor(rect.height)));
+            }
+            Assert.That(rects[0], Is.EqualTo(new Rect(20, 100, 1048, 694)));
+            Assert.That(rects[2].yMax, Is.EqualTo(area.yMax));
+            Assert.That(rects[4].yMax, Is.EqualTo(area.yMax), "pixel rounding must retain the entire tiled area");
+        }
+
         [UnityTest]
         public IEnumerator P42_UI_02_LatePlacementIsRetriedUntilStable()
         {
@@ -44,8 +61,37 @@ namespace GameCore.Studio.UI.Tests
             finally { Object.DestroyImmediate(window); }
         }
 
+        [UnityTest]
+        public IEnumerator P42_UI_02_GraphicalClampedOriginReportsTimeout()
+        {
+            if (!ViewportRenderer.CanRender) Assert.Ignore("P42-UI-02: native clamping requires the graphical :1 lane.");
+            using UiTestBed bed = new UiTestBed();
+            bool wizard = StudioUiSettings.FirstRunDone;
+            StudioUiSettings.FirstRunDone = true;
+            StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
+            System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
+            object owner = scheduler.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
+            PropertyInfo pending = scheduler.GetProperty("PendingCount")!;
+            Rect requested = new Rect(20, 40, 1048, 772);
+            try
+            {
+                window.UseContext(bed.Context); window.Show(); window.EnsureGui();
+                yield return null;
+                LogAssert.Expect(LogType.Warning, new Regex(@"\[layout_timeout\]: StudioViewportWindow requested \(x:20\.00, y:40\.00, width:1048\.00, height:772\.00\), observed"));
+                scheduler.GetMethod("Place")!.Invoke(owner, new object[] { window, requested });
+                double deadline = EditorApplication.timeSinceStartup + 6;
+                while ((int)pending.GetValue(owner)! != 0 && EditorApplication.timeSinceStartup < deadline) yield return null;
+                Assert.That(pending.GetValue(owner), Is.EqualTo(0), "a native clamp must terminate retries");
+                Assert.That(window.position.x, Is.EqualTo(requested.x));
+                Assert.That(window.position.size, Is.EqualTo(requested.size));
+                Assert.That(window.position.y, Is.GreaterThan(requested.y), "retained :1 case is clamped above the desktop panel");
+                Debug.Log("[R4-B clamped origin] requested=" + requested + " observed=" + window.position + " code=layout_timeout");
+            }
+            finally { window.Close(); StudioUiSettings.FirstRunDone = wizard; }
+        }
+
         [Test]
-        public void P42_UI_02_CompensatesWindowManagerTranslationWithoutAccumulatingIt()
+        public void P42_UI_02_ClampedReadbackRetriesTheRequestedRectWithoutDrifting()
         {
             System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
             object owner = scheduler.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
@@ -60,18 +106,18 @@ namespace GameCore.Studio.UI.Tests
                 window.position = displaced;
                 advance.Invoke(owner, new object[] { now }); // unadjusted probe
                 window.position = displaced;
-                advance.Invoke(owner, new object[] { now + 0.1 });
-                Assert.That(window.position, Is.EqualTo(new Rect(20, 11, 1048, 772)), "compensate the observed 29-pixel translation");
-                window.position = displaced; // a rejected correction must not accumulate offset
-                advance.Invoke(owner, new object[] { now + 0.2 });
+                advance.Invoke(owner, new object[] { now + 0.3 });
+                Assert.That(window.position, Is.EqualTo(expected), "a clamped readback must not change the requested origin");
+                window.position = displaced; // repeated clamping must not accumulate offset
+                advance.Invoke(owner, new object[] { now + 0.6 });
                 Assert.That(window.position, Is.EqualTo(expected), "retry with an unadjusted probe");
                 window.position = displaced;
-                advance.Invoke(owner, new object[] { now + 0.3 });
-                Assert.That(window.position, Is.EqualTo(new Rect(20, 11, 1048, 772)));
-                window.position = expected; // the WM acknowledges the corrected request
-                advance.Invoke(owner, new object[] { now + 0.4 });
                 advance.Invoke(owner, new object[] { now + 0.9 });
+                Assert.That(window.position, Is.EqualTo(expected));
+                window.position = expected; // the WM acknowledges the request
                 advance.Invoke(owner, new object[] { now + 1.0 });
+                advance.Invoke(owner, new object[] { now + 1.5 });
+                advance.Invoke(owner, new object[] { now + 1.6 });
                 Assert.That(scheduler.GetProperty("PendingCount")!.GetValue(owner), Is.EqualTo(0));
                 Assert.That(window.position, Is.EqualTo(expected));
             }

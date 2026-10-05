@@ -68,7 +68,10 @@ namespace GameCore.Studio.UI.Tests
             if (!ViewportRenderer.CanRender) Assert.Ignore("D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless.");
             bool wizard = StudioUiSettings.FirstRunDone;
             StudioUiSettings.FirstRunDone = true;
-            Rect area = new Rect(20, 40, 1600, 1000);
+            // :1 has a 32-pixel desktop panel and a native frame minimum y=69. The retained
+            // y=40 request is a clamped-origin/timeout case, not a feasible placement target.
+            // Keep this positive test inside the native work area and assert the exact layout.
+            Rect area = new Rect(20, 100, 1600, 900);
             try
             {
                 StudioMenu.OpenStudio(area, true);
@@ -82,10 +85,12 @@ namespace GameCore.Studio.UI.Tests
                 }
                 yield return WaitForPlacement();
                 Assert.That(viewport.position, Is.EqualTo(StudioMenu.Layout(area)[0]));
-                Rect user = new Rect(60, 60, 900, 700);
+                Rect user = new Rect(60, 140, 900, 700);
                 viewport.position = user;
-                yield return null;
+                double userSettled = EditorApplication.timeSinceStartup + 1;
+                while (EditorApplication.timeSinceStartup < userSettled) yield return null;
                 Assert.That(viewport.position, Is.EqualTo(user), "settled layout must unsubscribe and preserve creator moves");
+                Debug.Log("[R4-B layout settled] requested=" + StudioMenu.Layout(area)[0] + " creator=" + viewport.position);
             }
             finally
             {

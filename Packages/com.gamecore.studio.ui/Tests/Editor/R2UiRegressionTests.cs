@@ -240,7 +240,8 @@ namespace GameCore.Studio.UI.Tests
                     Assert.That(window.Mode, Is.EqualTo(control == image ? ViewportMode.Inspect : ViewportMode.Select),
                         "only viewport focus may invoke viewport shortcuts");
                     Debug.Log("[R4-B key delivery] " + control.name + " down=1 up=1 imageDowns=" + (imageDowns - beforeImageDowns)
-                        + " imageUps=" + (imageUps - beforeImageUps) + " promptBubbleDowns=" + promptBubbleDowns + " mode=" + window.Mode);
+                        + " imageUps=" + (imageUps - beforeImageUps) + " promptBubbleDowns=" + promptBubbleDowns + " mode=" + window.Mode
+                        + " focusAfterTab=" + (root.focusController.focusedElement as VisualElement)?.name);
                 }
                 // Text input itself must still work without entering viewport handlers.
                 prompt.Focus();
