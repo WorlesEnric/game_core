@@ -1,0 +1,37 @@
+{
+  "name": "Hollowmere.P2_4.PlayMode.Tests",
+  "rootNamespace": "Hollowmere.P2_4.PlayMode.Tests",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.World",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.App",
+    "GameCore.Unity.Runtime",
+    "Hollowmere.Mechanism.PressurePlate",
+    "Hollowmere.Mechanism.PressurePlate.Generated",
+    "Hollowmere.Mechanism.PressurePlate.Rules",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS",
+    "HOLLOWMERE_PRESSUREPLATE"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.hollowmere.mechanism.pressureplate",
+      "expression": "0.0.1",
+      "define": "HOLLOWMERE_PRESSUREPLATE"
+    }
+  ],
+  "noEngineReferences": false
+}
