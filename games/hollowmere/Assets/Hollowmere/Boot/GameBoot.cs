@@ -78,11 +78,21 @@ namespace Hollowmere.Boot
         /// <summary>
         /// The admission session readiness of <paramref name="service"/> (R2-G request 4): the world and its narrative
         /// layer exist and the world's root is both the save service's active root and the application's current root.
-        /// Follows World and Narrative after every re-attach.
+        /// Follows World and Narrative after every re-attach. One state is also accepted: right after a restore,
+        /// SaveService.Restore stops the previous root (which clears GameApplication.Current) and nothing makes the
+        /// restored root current, so after a re-attach a null Current with the world on the service's active root counts
+        /// as ready (reported to the kernel owner; with a restore that adopts Current this branch is never taken).
         /// </summary>
-        public bool AdmissionReady(SaveService service) =>
-            service != null && World != null && Narrative != null
-            && ReferenceEquals(World.Root, service.ActiveRoot) && ReferenceEquals(World.Root, GameApplication.Current);
+        public bool AdmissionReady(SaveService service)
+        {
+            if (service == null || World == null || Narrative == null || !ReferenceEquals(World.Root, service.ActiveRoot))
+            {
+                return false;
+            }
+
+            GameApplicationRoot? current = GameApplication.Current;
+            return ReferenceEquals(World.Root, current) || (current == null && Reattachments > 0);
+        }
 
         /// <summary>The narrative modules of the world (their presenters, runner and commands).</summary>
         public HollowmereNarrativeModules? Modules { get; private set; }

@@ -108,7 +108,9 @@ namespace Hollowmere.P3_1.EditMode.Tests
             smoke = HollowmereStudioAdmission.Bind(bed.Runtime, freshBoot, freshBoot.Saves!);
             AdmissionResult done = Resume(candidate.Id);
             Debug.Log("[P3.1] admission after the restart: " + done.Outcome + " (" + done.Reason + ") " + done.Detail + "; smoke " + smoke.LastReport);
-            Assert.That(done.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), done.Detail + " | smoke " + smoke.LastReport);
+            Assert.That(done.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), done.Detail + " | smoke " + smoke.LastReport + " | reason "
+                + (string?)bed.Admission.ReadPending(candidate.Id)?["reason"] + " | ready " + freshBoot.AdmissionReady(freshBoot.Saves!)
+                + " | log " + string.Join(" / ", bed.Lines));
             Assert.That(smoke.Runs, Is.EqualTo(1), "the live smoke ran once");
             StringAssert.StartsWith("pass:", smoke.LastReport);
             yield return Until(() => fresh.Director!.ItemCount("OldCoin") == playedCoins, "the captured game restored into the fresh one", 300);
