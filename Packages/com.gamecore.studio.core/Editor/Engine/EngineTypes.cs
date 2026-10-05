@@ -105,6 +105,9 @@ namespace GameCore.Studio.Edit
         /// <summary>The target does not resolve yet but the op depends on others that may create it; resolved at apply.</summary>
         public bool Deferred { get; internal set; }
 
+        /// <summary>A typed fact argument comes from an earlier candidate producer; bind after it succeeds.</summary>
+        internal bool DeferredFactArgument { get; set; }
+
         /// <summary>The op goes through the live world bridge (Play mode, Live tool, translator registered).</summary>
         public bool Live { get; internal set; }
 

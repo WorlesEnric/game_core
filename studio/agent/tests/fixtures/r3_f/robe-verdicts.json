@@ -1,0 +1,13 @@
+{
+  "catalog": {
+    "objectTypes": [{"typeId":"entity.instance","scopes":["Instance","Prefab"]}],
+    "tools": [{
+      "id":"entity.applyOverride","targetType":"entity.instance","targetRequired":true,
+      "args":[{"name":"field","required":true},{"name":"value","required":false}]
+    }]
+  },
+  "cases": [
+    {"path":"robe-20261005T055032Z/robe/candidate.json","code":"InvalidArgs","contract":"GP-ENT-004"},
+    {"path":"robe2-20261005T070105Z/robe/candidate.json","code":"ScopeNotAllowed"}
+  ]
+}

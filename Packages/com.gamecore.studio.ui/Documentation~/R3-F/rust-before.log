@@ -1,0 +1,59 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r3-f/studio/agent)
+warning: missing documentation for the crate
+  --> tests/r3_f_candidate.rs:1:1
+   |
+ 1 | / use gamecore_studio::candidate::{CatalogContext, Evaluation, Fetched, evaluate};
+ 2 | | use gamecore_studio::schema::ChangeSetSchema;
+ 3 | | use gamecore_studio::util::{catalog_revision, sha256_hex};
+ 4 | | use serde_json::{Value, json};
+...  |
+77 | | }
+   | |_^
+   |
+   = note: requested on the command line with `-W missing-docs`
+
+warning: `gamecore-studio` (test "r3_f_candidate") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.88s
+     Running tests/r3_f_candidate.rs (studio/agent/target/debug/deps/r3_f_candidate-d7e1965be6fb8826)
+
+running 4 tests
+test d4_instance_tint_contract_precheck ... FAILED
+test d5_ambiguous_empty_and_explicit_disallowed_scopes_refuse ... FAILED
+test d5_singleton_intersection_normalizes_raw_and_typed_with_nonblocking_evidence ... FAILED
+test d4_d5_retained_robe_has_same_refusals_as_core ... FAILED
+
+failures:
+
+---- d4_instance_tint_contract_precheck stdout ----
+
+thread 'd4_instance_tint_contract_precheck' (2504982) panicked at tests/r3_f_candidate.rs:57:114:
+invalid tint should refuse
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- d5_ambiguous_empty_and_explicit_disallowed_scopes_refuse stdout ----
+
+thread 'd5_ambiguous_empty_and_explicit_disallowed_scopes_refuse' (2504983) panicked at tests/r3_f_candidate.rs:48:82:
+scope should refuse
+
+---- d5_singleton_intersection_normalizes_raw_and_typed_with_nonblocking_evidence stdout ----
+
+thread 'd5_singleton_intersection_normalizes_raw_and_typed_with_nonblocking_evidence' (2504984) panicked at tests/r3_f_candidate.rs:33:5:
+assertion `left == right` failed
+  left: Null
+ right: "Instance"
+
+---- d4_d5_retained_robe_has_same_refusals_as_core stdout ----
+
+thread 'd4_d5_retained_robe_has_same_refusals_as_core' (2504981) panicked at tests/r3_f_candidate.rs:74:139:
+retained robe must refuse
+
+
+failures:
+    d4_d5_retained_robe_has_same_refusals_as_core
+    d4_instance_tint_contract_precheck
+    d5_ambiguous_empty_and_explicit_disallowed_scopes_refuse
+    d5_singleton_intersection_normalizes_raw_and_typed_with_nonblocking_evidence
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `--test r3_f_candidate`

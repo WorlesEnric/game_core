@@ -71,7 +71,7 @@ pub struct Fetched {
 /// A valid candidate.
 #[derive(Debug, Clone, PartialEq)]
 pub struct ValidCandidate {
-    /// The change set as written.
+    /// The change set with unambiguous missing scopes normalized.
     pub raw: Value,
     /// Its typed reading.
     pub change_set: ChangeSet,
@@ -159,7 +159,7 @@ pub fn evaluate(
             ),
         )]);
     }
-    let (cs_index, raw) = changesets.remove(0);
+    let (cs_index, mut raw) = changesets.remove(0);
     let mut violations = Vec::new();
     if let Some(at) = first_null(&raw) {
         violations.push(
@@ -174,7 +174,7 @@ pub fn evaluate(
     if !violations.is_empty() {
         return Evaluation::Invalid(violations);
     }
-    let change_set: ChangeSet = match serde_json::from_value(raw.clone()) {
+    let mut change_set: ChangeSet = match serde_json::from_value(raw.clone()) {
         Ok(c) => c,
         Err(e) => {
             return Evaluation::Invalid(vec![Diagnostic::candidate(
@@ -184,7 +184,22 @@ pub fn evaluate(
         }
     };
     let mut errors = candidate_mode(&raw);
-    errors.extend(catalog_rules(&change_set.operations, catalog));
+    let mut inferences = Vec::new();
+    errors.extend(catalog_rules(
+        &mut change_set.operations,
+        catalog,
+        &mut inferences,
+    ));
+    // Keep the persisted wire document and typed reading identical without changing unrelated fields.
+    if let Some(operations) = raw["operations"].as_array_mut() {
+        for (operation, normalized) in operations.iter_mut().zip(&change_set.operations) {
+            if let Some(scope) = normalized.target.as_ref().and_then(|target| target.scope) {
+                if let Ok(value) = serde_json::to_value(scope) {
+                    operation["target"]["scope"] = value;
+                }
+            }
+        }
+    }
     if change_set.id != expected_id {
         errors.push(
             Diagnostic::candidate(
@@ -355,7 +370,7 @@ pub fn evaluate(
     if !errors.is_empty() {
         return Evaluation::Invalid(errors);
     }
-    let warnings = files
+    let mut warnings: Vec<Diagnostic> = files
         .iter()
         .enumerate()
         .filter(|(i, f)| *i != cs_index && !listed.contains(&f.sha256))
@@ -369,6 +384,7 @@ pub fn evaluate(
             )
         })
         .collect();
+    warnings.extend(inferences);
     Evaluation::Valid(Box::new(ValidCandidate {
         raw,
         change_set,
@@ -418,7 +434,11 @@ fn str_list<'a>(v: &'a Value, key: &str) -> Option<Vec<&'a str>> {
 }
 
 /// The bounded catalog rules (04 §4) for every operation.
-fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> {
+fn catalog_rules(
+    ops: &mut [Operation],
+    ctx: CatalogContext<'_>,
+    inferences: &mut Vec<Diagnostic>,
+) -> Vec<Diagnostic> {
     let catalog = match ctx.catalog {
         Some(c) => {
             // The catalog's own `revision` (when present) and its content digest must both be
@@ -519,7 +539,29 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
             .get("targetRequired")
             .and_then(Value::as_bool)
             .unwrap_or(false);
-        match &op.target {
+        if op.tool == "entity.applyOverride"
+            && tool.get("targetType").and_then(Value::as_str) == Some("entity.instance")
+            && op
+                .target
+                .as_ref()
+                .is_some_and(|t| t.kind == crate::model::RefKind::Entity)
+            && op.args.get("field").and_then(Value::as_str) == Some("tint")
+        {
+            if let Some(value) = op.args.get("value") {
+                let valid = value.as_str().is_some_and(|text| {
+                    text.is_empty()
+                        || (text.len() == 7
+                            && text.starts_with('#')
+                            && text.as_bytes()[1..].iter().all(u8::is_ascii_hexdigit))
+                });
+                if !valid {
+                    d.push(Diagnostic::new(INVALID_ARGS,
+                        "GP-ENT-004: instance override tint must be #rrggbb (six hex digits), or empty to clear it.")
+                        .at_op(&op.op_id).with_data(serde_json::json!({"contract":"GP-ENT-004","field":"tint","expected":"#rrggbb","actual":value})));
+                }
+            }
+        }
+        match &mut op.target {
             None if target_required => d.push(
                 Diagnostic::new(INVALID_ARGS, format!("tool {:?} needs a target", op.tool))
                     .at_op(&op.op_id),
@@ -545,25 +587,54 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
                         .at_op(&op.op_id),
                     );
                 }
-                if let Some(scope) = t.scope {
-                    let scope = serde_json::to_value(scope)
-                        .ok()
-                        .and_then(|v| v.as_str().map(str::to_string))
-                        .unwrap_or_default();
-                    if let Some(scopes) =
-                        str_list(tool, "scopes").filter(|scopes| !scopes.contains(&scope.as_str()))
+                // Companion has the request catalog, but no complete index. Use the declared
+                // target type; Unity additionally intersects with the actual indexed type.
+                let type_entry = tool
+                    .get("targetType")
+                    .and_then(Value::as_str)
+                    .and_then(|id| {
+                        catalog
+                            .get("objectTypes")
+                            .and_then(Value::as_array)?
+                            .iter()
+                            .find(|entry| entry.get("typeId").and_then(Value::as_str) == Some(id))
+                    });
+                let tool_scopes = str_list(tool, "scopes");
+                let type_scopes = type_entry.and_then(|entry| str_list(entry, "scopes"));
+                let mut allowed: Option<BTreeSet<&str>> = tool_scopes
+                    .as_ref()
+                    .or(type_scopes.as_ref())
+                    .map(|scopes| scopes.iter().copied().collect());
+                if let (Some(allowed), Some(type_scopes)) = (&mut allowed, &type_scopes) {
+                    allowed.retain(|scope| type_scopes.contains(scope));
+                }
+                if t.scope.is_none() {
+                    if let Some(scope) = allowed
+                        .as_ref()
+                        .filter(|choices| choices.len() == 1)
+                        .and_then(|choices| choices.first())
+                        .copied()
                     {
-                        d.push(
-                            Diagnostic::new(
-                                SCOPE_NOT_ALLOWED,
-                                format!(
-                                    "tool {:?} cannot edit at scope {scope} (allowed: {})",
-                                    op.tool,
-                                    scopes.join(", ")
-                                ),
-                            )
-                            .at_op(&op.op_id),
-                        );
+                        t.scope = serde_json::from_value(Value::String(scope.into())).ok();
+                        if t.scope.is_some() {
+                            inferences.push(Diagnostic::new("ScopeInferred",
+                                format!("Target scope inferred as {scope} from the tool/type intersection."))
+                                .at_op(&op.op_id).with_data(serde_json::json!({"inferred":true,"scope":scope})));
+                        }
+                    }
+                }
+                if let Some(allowed) = allowed {
+                    let scope = t
+                        .scope
+                        .and_then(|scope| serde_json::to_value(scope).ok())
+                        .and_then(|value| value.as_str().map(str::to_owned));
+                    if !scope
+                        .as_ref()
+                        .is_some_and(|scope| allowed.contains(scope.as_str()))
+                    {
+                        d.push(Diagnostic::new(SCOPE_NOT_ALLOWED,
+                            format!("tool {:?} requires a target scope in the tool/type intersection (allowed: {})",
+                                op.tool, allowed.into_iter().collect::<Vec<_>>().join(", "))).at_op(&op.op_id));
                     }
                 }
             }

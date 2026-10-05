@@ -153,6 +153,15 @@ namespace GameCore.Studio.UI
             StagedChangeSet? staged = entry.Staged;
             if (staged != null)
             {
+                if (staged.Inferences.Count > 0)
+                {
+                    VisualElement evidence = new VisualElement { name = "candidate-inferences" };
+                    evidence.AddToClassList("gcs-table");
+                    evidence.Add(StudioStyles.Header("Information: inferred scope"));
+                    foreach (Diagnostic inference in staged.Inferences)
+                        evidence.Add(StudioStyles.Text(inference.Code + ": " + inference.Message, "gcs-muted"));
+                    _details.Add(evidence);
+                }
                 foreach (Diagnostic diagnostic in staged.Diagnostics)
                 {
                     _details.Add(StudioStyles.Text(diagnostic.Code + ": " + diagnostic.Message + (diagnostic.Hint != null ? " (" + diagnostic.Hint + ")" : string.Empty), "gcs-diagnostic"));

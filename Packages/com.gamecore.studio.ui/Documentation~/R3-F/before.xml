@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Failed(Child)" total="7" passed="2" failed="5" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="11.2894526">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="446" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="11.289453" total="7" passed="2" failed="5" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1210" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-f/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="52" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.676825" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2607575" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1211" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="52" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.675600" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1212" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="52" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.674654" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1213" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="52" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.673728" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1214" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="52" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.672798" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1189" name="R3FHandoffTests" fullname="GameCore.Studio.UI.Tests.R3FHandoffTests" classname="GameCore.Studio.UI.Tests.R3FHandoffTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:40Z" duration="10.670142" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1191" name="D21_PromptReferencesRespectCapsAndReportTruncation" fullname="GameCore.Studio.UI.Tests.R3FHandoffTests.D21_PromptReferencesRespectCapsAndReportTruncation" methodname="D21_PromptReferencesRespectCapsAndReportTruncation" classname="GameCore.Studio.UI.Tests.R3FHandoffTests" runstate="Runnable" seed="1729916844" result="Failed" start-time="2026-10-05 15:10:29Z" end-time="2026-10-05 15:10:37Z" duration="7.593941" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3FHandoffTests.D21_PromptReferencesRespectCapsAndReportTruncation () [0x00099] in /home/worlesenric/wkspace/gc-studio/r3-f/Packages/com.gamecore.studio.ui/Tests/Editor/R3FHandoffTests.cs:63
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1190" name="D21_RetainedRingPromptIncludesUnselectedWell" fullname="GameCore.Studio.UI.Tests.R3FHandoffTests.D21_RetainedRingPromptIncludesUnselectedWell" methodname="D21_RetainedRingPromptIncludesUnselectedWell" classname="GameCore.Studio.UI.Tests.R3FHandoffTests" runstate="Runnable" seed="1829861339" result="Failed" start-time="2026-10-05 15:10:37Z" end-time="2026-10-05 15:10:40Z" duration="2.785171" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3FHandoffTests.D21_RetainedRingPromptIncludesUnselectedWell () [0x00102] in /home/worlesenric/wkspace/gc-studio/r3-f/Packages/com.gamecore.studio.ui/Tests/Editor/R3FHandoffTests.cs:47
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1192" name="D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply" fullname="GameCore.Studio.UI.Tests.R3FHandoffTests.D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply" methodname="D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply" classname="GameCore.Studio.UI.Tests.R3FHandoffTests" runstate="Runnable" seed="1719708081" result="Failed" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.278566" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3FHandoffTests.D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply () [0x00192] in /home/worlesenric/wkspace/gc-studio/r3-f/Packages/com.gamecore.studio.ui/Tests/Editor/R3FHandoffTests.cs:88
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1640" name="Hollowmere.R3_F.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r3-f/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R3_F.Editor.Tests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.592346" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2607575" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1641" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.588750" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1642" name="R3_F" fullname="Hollowmere.R3_F" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.588313" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1635" name="FactHandoffTests" fullname="Hollowmere.R3_F.FactHandoffTests" classname="Hollowmere.R3_F.FactHandoffTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.588144" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1637" name="D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine" fullname="Hollowmere.R3_F.FactHandoffTests.D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine" methodname="D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine" classname="Hollowmere.R3_F.FactHandoffTests" runstate="Runnable" seed="1903904972" result="Failed" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.167621" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  InvalidArgs: Argument 'fact' of 'dialogue.setFactCondition': the reference {"kind":"Definition","authoringId":"d84abd01-ab6d-4cf1-982f-1773d173acb1"} does not resolve. @ op condition
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_F.FactHandoffTests.D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine () [0x0001c] in /home/worlesenric/wkspace/gc-studio/r3-f/games/hollowmere/Assets/Hollowmere/Tests/R3_F/Editor/FactHandoffTests.cs:86
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op fact)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op condition)
+]]></output>
+            </test-case>
+            <test-case id="1639" name="D10a_FailedFactProducerNeverAppliesDependentCondition" fullname="Hollowmere.R3_F.FactHandoffTests.D10a_FailedFactProducerNeverAppliesDependentCondition" methodname="D10a_FailedFactProducerNeverAppliesDependentCondition" classname="Hollowmere.R3_F.FactHandoffTests" runstate="Runnable" seed="1301000167" result="Passed" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.154894" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op fact)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op condition)
+[GameCore.Studio/engine] applied cs_01M469VWZE30TWMNAV4AT50TP9 -> Rejected (2 op(s), 13.0 ms)
+]]></output>
+            </test-case>
+            <test-case id="1638" name="D10a_ForwardFactReferenceRefusesBeforeWritesWithWitness" fullname="Hollowmere.R3_F.FactHandoffTests.D10a_ForwardFactReferenceRefusesBeforeWritesWithWitness" methodname="D10a_ForwardFactReferenceRefusesBeforeWritesWithWitness" classname="Hollowmere.R3_F.FactHandoffTests" runstate="Runnable" seed="1341779216" result="Failed" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.128683" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  InvalidArgs: Argument 'fact' of 'dialogue.setFactCondition': the reference {"kind":"Definition","authoringId":"37a0c33f-e5b6-4bdd-8d76-718a1cf5abdd"} does not resolve. @ op condition
+  Expected: not null
+  But was:  null
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R3_F.FactHandoffTests.D10a_ForwardFactReferenceRefusesBeforeWritesWithWitness () [0x00044] in /home/worlesenric/wkspace/gc-studio/r3-f/games/hollowmere/Assets/Hollowmere/Tests/R3_F/Editor/FactHandoffTests.cs:102
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op condition)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op fact)
+]]></output>
+            </test-case>
+            <test-case id="1636" name="D4_D5_RetainedRobeSharesCompanionVerdictFixture" fullname="Hollowmere.R3_F.FactHandoffTests.D4_D5_RetainedRobeSharesCompanionVerdictFixture" methodname="D4_D5_RetainedRobeSharesCompanionVerdictFixture" classname="Hollowmere.R3_F.FactHandoffTests" runstate="Runnable" seed="490672974" result="Passed" start-time="2026-10-05 15:10:40Z" end-time="2026-10-05 15:10:40Z" duration="0.135366" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
