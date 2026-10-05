@@ -83,9 +83,9 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             return found!;
         }
 
-        public AuthoringRef Ref(UnityEngine.Object target)
+        public AuthoringRef Ref(UnityEngine.Object target, AuthorScope? scope = null)
         {
-            AuthoringRef? reference = Runtime.Resolver.BuildRef(target);
+            AuthoringRef? reference = Runtime.Resolver.BuildRef(target, scope);
             Assert.That(reference, Is.Not.Null, "no authoring ref for " + target.name);
             return reference!;
         }
@@ -98,7 +98,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
         /// </summary>
         public ApplyReport Apply(string toolId, UnityEngine.Object? target, JObject? args)
         {
-            var operation = new Operation("op1", toolId, target != null ? Ref(target) : null, args ?? new JObject());
+            var operation = new Operation("op1", toolId, target != null ? Ref(target, AuthorScope.Definition) : null, args ?? new JObject());
             ChangeSet changeSet = StudioRuntime.Single("P1.7b " + toolId, IntentOrigin.Manual, operation);
             ApplyReport report = Runtime.Engine.Apply(changeSet);
             Assert.That(report.Ok, Is.True, toolId + ": " + Describe(report));
