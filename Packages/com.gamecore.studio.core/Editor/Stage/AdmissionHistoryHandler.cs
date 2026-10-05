@@ -23,8 +23,10 @@ namespace GameCore.Studio.Edit
         private HistoryResult Convert(AdmissionResult result)
         {
             bool ok = result.Outcome == AdmissionOutcome.Admitted || result.Outcome == AdmissionOutcome.Undone || result.Outcome == AdmissionOutcome.RolledBack;
+            var diagnostics = result.Outcome == AdmissionOutcome.Pending && result.Diagnostics.Count == 0
+                ? new[] { StageAdmission.PendingDiagnostic(result.Detail) } : result.Diagnostics;
             return new HistoryResult(result.ChangeSetId, ok, _admission.Runtime.Journal.Read(result.ChangeSetId)?.EffectiveState,
-                result.Diagnostics, null);
+                diagnostics, null);
         }
     }
 }

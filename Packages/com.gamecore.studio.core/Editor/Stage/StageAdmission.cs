@@ -90,6 +90,15 @@ namespace GameCore.Studio.Edit
         BeforeCompile,
         BeforeChecks,
         BeforeCatalogCheck,
+        SmokePending,
+    }
+
+    /// <summary>The result of one frame of a trusted game's admission smoke test.</summary>
+    public enum AdmissionSmokeStatus
+    {
+        Pending,
+        Passed,
+        Failed,
     }
 
     /// <summary>Admission switches; every member has a Unity default.</summary>
@@ -119,6 +128,12 @@ namespace GameCore.Studio.Edit
         public Action? StartPlayMode { get; set; }
         public Func<bool>? SessionReady { get; set; }
         public Func<StageVerdict, bool>? SmokeTest { get; set; }
+        /// <summary>Optional asynchronous smoke test, polled once per idle Editor update. Rebind after reload.</summary>
+        public Func<StageVerdict, AdmissionSmokeStatus>? PollSmokeTest { get; set; }
+        /// <summary>Maximum smoke polling frames, including waits for service rebinding; persisted at smoke entry.</summary>
+        public int SmokeTestFrameBudget { get; set; } = 120;
+        /// <summary>Wall-clock smoke budget in seconds, including time across reload; persisted at smoke entry.</summary>
+        public double SmokeTestTimeoutSeconds { get; set; } = 60;
         // Trusted game bootstrap re-registers these services after every domain reload.
 
 
@@ -289,6 +304,8 @@ namespace GameCore.Studio.Edit
                 throw new ArgumentNullException(nameof(runtime));
             }
 
+            if (AdmissionSession.instance.Instances.TryGetValue(runtime, out StageAdmission previous))
+                previous.StopSmokePolling();
             AdmissionSession.instance.Instances.Remove(runtime);
             StageAdmission admission = new StageAdmission(runtime, options ?? new AdmissionOptions());
             AdmissionSession.instance.Instances.Add(runtime, admission);
@@ -843,6 +860,7 @@ namespace GameCore.Studio.Edit
 
         private void DeletePending(string changeSetId)
         {
+            StopSmokePolling(changeSetId);
             string path = PendingPath(changeSetId);
             if (File.Exists(path))
             {

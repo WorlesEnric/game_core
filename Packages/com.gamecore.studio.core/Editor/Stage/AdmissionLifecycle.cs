@@ -107,6 +107,7 @@ namespace GameCore.Studio.Edit
 
         private void Checkpoint(string id, JObject pending, string phase, AdmissionFaultPoint point)
         {
+            if (phase != "smoke-pending") StopSmokePolling(id);
             pending["phase"] = phase;
             WritePending(id, pending);
             ChangeSet? entry = _runtime.Journal.Read(id);
@@ -140,7 +141,9 @@ namespace GameCore.Studio.Edit
 
         public AdmissionResult Finalize(string changeSetId) => Resume(changeSetId);
 
-        public AdmissionResult Resume(string id)
+        public AdmissionResult Resume(string id) => Resume(id, false);
+
+        private AdmissionResult Resume(string id, bool smokeFrame)
         {
             JObject? p = ReadPending(id);
             if (p == null) return Refuse(id, "pending_missing", "No pending admission.");
@@ -169,12 +172,21 @@ namespace GameCore.Studio.Edit
                     if (phase == "undo-compile") return CompilePending(id, p, true);
                     if (phase == "undo-reload") { Checkpoint(id, p, "undo-verify", AdmissionFaultPoint.UndoVerify); continue; }
                     if (phase == "undo-verify") return VerifyRemoval(id, p);
+                    if (phase == "smoke-pending")
+                    {
+                        if (SmokeBudgetExhausted(p)) return FailSmoke(id, p, "smoke_budget_exhausted");
+                        ScheduleSmokePolling(id);
+                        if (!smokeFrame) return Waiting(id, "Awaiting the next admission smoke-test frame.");
+                        // Charge the frame before game code, including frames waiting for trusted services.
+                        p["smokeFrames"] = (int)p["smokeFrames"]! + 1;
+                        WritePending(id, p);
+                    }
                     StageVerdict? verdict = VerdictOf(id);
-                    if (verdict == null) return Waiting(id, "Awaiting authenticated companion verdict refresh.");
-                    if ((string?)p["verdict"] != verdict.Digest) return Waiting(id, "The job verdict changed; recovery is held for review.");
+                    if (verdict == null) return SmokeWaiting(id, p, "Awaiting authenticated companion verdict refresh.");
+                    if ((string?)p["verdict"] != verdict.Digest) return SmokeWaiting(id, p, "The job verdict changed; recovery is held for review.");
                     ChangeSet candidate = StudioJson.Deserialize<ChangeSet>(p["candidate"]!.ToString(Formatting.None));
                     PackageArchive? archive = CheckCandidate(candidate, verdict, out string? refusal, out string message, phase == "pending" || phase == "capture" || phase == "stop-play");
-                    if (refusal != null) return Waiting(id, message);
+                    if (refusal != null) return SmokeWaiting(id, p, message);
                     switch (phase)
                     {
                         case "capture":
@@ -248,8 +260,36 @@ namespace GameCore.Studio.Edit
                             Checkpoint(id, p, "smoke", AdmissionFaultPoint.Smoke);
                             continue;
                         case "smoke":
-                            if (Options.SmokeTest == null) return Waiting(id, "Awaiting the game's live proposal smoke-test adapter.");
-                            if (!Options.SmokeTest(verdict)) return BeginRollback(id, p, "smoke_failed");
+                            if (Options.SmokeTest == null && Options.PollSmokeTest == null)
+                                return Waiting(id, "Awaiting the game's live proposal smoke-test adapter.");
+                            if (Options.SmokeTest?.Invoke(verdict) == false) return FailSmoke(id, p, "smoke_failed");
+                            if (Options.PollSmokeTest != null)
+                            {
+                                p["smokeStartedMs"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                                p["smokeFrames"] = 0;
+                                p["smokeFrameBudget"] = Options.SmokeTestFrameBudget;
+                                double milliseconds = Options.SmokeTestTimeoutSeconds * 1000;
+                                if (Options.SmokeTestFrameBudget <= 0 || double.IsNaN(milliseconds)
+                                    || double.IsInfinity(milliseconds) || milliseconds <= 0 || milliseconds >= long.MaxValue)
+                                    return FailSmoke(id, p, "smoke_budget_exhausted");
+                                p["smokeTimeoutMs"] = (long)Math.Ceiling(milliseconds);
+                                p["smokeStatus"] = AdmissionSmokeStatus.Pending.ToString();
+                                Checkpoint(id, p, "smoke-pending", AdmissionFaultPoint.SmokePending);
+                                continue;
+                            }
+                            Checkpoint(id, p, "applied", AdmissionFaultPoint.Applied);
+                            continue;
+                        case "smoke-pending":
+                            if (Options.PollSmokeTest == null)
+                                return SmokeWaiting(id, p, "Awaiting the game's smoke polling adapter after reload.");
+                            AdmissionSmokeStatus status = Options.PollSmokeTest(verdict);
+                            if (status != AdmissionSmokeStatus.Pending && status != AdmissionSmokeStatus.Passed)
+                                return FailSmoke(id, p, "smoke_failed");
+                            // A slow callback cannot pass after its wall-clock deadline.
+                            if (SmokeTimeExhausted(p)) return FailSmoke(id, p, "smoke_budget_exhausted");
+                            if (status == AdmissionSmokeStatus.Pending)
+                                return SmokeWaiting(id, p, "The live proposal smoke test is Pending.");
+                            p["smokeStatus"] = AdmissionSmokeStatus.Passed.ToString();
                             Checkpoint(id, p, "applied", AdmissionFaultPoint.Applied);
                             continue;
                         case "applied": return CompleteAdmission(id, p, verdict);
@@ -262,6 +302,7 @@ namespace GameCore.Studio.Edit
             {
                 // Do not discard recovery information if an inverse or its verification fails.
                 if ((string?)p["action"] != "admit") return Waiting(id, "Package removal or verification failed; recovery remains pending.");
+                if ((string?)p["phase"] == "smoke-pending") return FailSmoke(id, p, "smoke_failed");
                 return BeginRollback(id, p, "fault");
             }
         }
@@ -340,7 +381,12 @@ namespace GameCore.Studio.Edit
 
         public AdmissionResult Undo(string changeSetId)
         {
-            if (ReadPending(changeSetId) != null) return Resume(changeSetId);
+            if (ReadPending(changeSetId) != null)
+                return new AdmissionResult(changeSetId, AdmissionOutcome.Refused, "Undo is unavailable while admission or removal is pending.")
+                {
+                    Reason = "admission_pending",
+                    Diagnostics = new[] { PendingDiagnostic("Wait for admission to finish or request rollback.") },
+                };
             if (HasOtherPending(changeSetId)) return Refuse(changeSetId, "admission_busy", "Another admission or removal is pending.");
             JObject p = ReadState("completed-" + changeSetId + ".json");
             if (_runtime.Journal.Read(changeSetId)?.EffectiveState != ChangeSetState.Applied || !p.HasValues)
