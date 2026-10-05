@@ -300,6 +300,9 @@ namespace GameCore.Studio.Model
         /// <summary>Selection id: <c>sel_</c> plus a 26-character Crockford base32 ULID.</summary>
         public const string SelectionId = "^sel_[0-7][0-9A-HJKMNP-TV-Z]{25}$";
 
+        /// <summary>Authoring id: a lowercase D-format GUID (the all-zero GUID is refused separately).</summary>
+        public const string AuthoringId = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
+
         /// <summary>DefinitionRef text form <c>name@revision</c>.</summary>
         public const string DefinitionRef = "^[a-z0-9][a-z0-9._-]*@[0-9A-Za-z]+$";
     }

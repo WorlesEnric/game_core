@@ -44,7 +44,7 @@ namespace GameCore.Studio.Edit
             {
                 if (member.IsSerializedField || (member.Member is System.Reflection.PropertyInfo property && property.CanWrite))
                 {
-                    values[member.Name] = context.Codec.FromClr(member.GetValue(target));
+                    values[member.Name] = context.Codec.ReadMember(target, member);
                 }
             }
 

@@ -5,6 +5,7 @@
 //   vector2/3/4, quaternion   [x, y(, z(, w))]
 //   color                     [r, g, b, a] (read also as #rrggbb(aa))
 //   ref                       an AuthoringRef object (written without stamp); read also as an authoring id or name@revision
+//   authoringId               a string (lowercase D-format GUID or empty); read and written with string semantics
 //   arrays                    JSON arrays; other serializable structs JSON objects of their visible children
 #nullable enable
 using System;
@@ -54,6 +55,11 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>The JSON value of an authorable member: from its serialized property when it has one, else by reflection.</summary>
+        /// <remarks>
+        /// Serialized fields (including lists of [Serializable] elements and nested object references) are captured
+        /// through <see cref="SerializedProperty"/>, so the value round-trips through <see cref="WriteMember"/>; inverse
+        /// operations, previews and the inspector all read members this way.
+        /// </remarks>
         public JToken ReadMember(UnityEngine.Object target, AuthorMemberInfo member, SerializedObject? serialized = null)
         {
             if (member.IsSerializedField && member.ValueType.IsEnum == false)
@@ -423,6 +429,11 @@ namespace GameCore.Studio.Edit
                     return array;
             }
 
+            if (value.GetType().IsDefined(typeof(SerializableAttribute), false) && !value.GetType().IsPrimitive)
+            {
+                return SerializableFields(value);
+            }
+
             try
             {
                 return JToken.FromObject(value, JsonSerializer.Create(StudioJson.CreateSettings()));
@@ -705,6 +716,29 @@ namespace GameCore.Studio.Edit
             }
 
             return false;
+        }
+
+        /// <summary>A [Serializable] CLR object as a JSON object of the fields Unity serializes (public or [SerializeField]).</summary>
+        private JToken SerializableFields(object value)
+        {
+            JObject result = new JObject();
+            for (Type? type = value.GetType(); type != null && type != typeof(object); type = type.BaseType)
+            {
+                foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
+                {
+                    if (field.IsInitOnly || field.IsNotSerialized || result.ContainsKey(field.Name))
+                    {
+                        continue;
+                    }
+
+                    if (field.IsPublic || field.IsDefined(typeof(SerializeField), true))
+                    {
+                        result[field.Name] = FromClr(field.GetValue(value));
+                    }
+                }
+            }
+
+            return result;
         }
 
         private JToken Children(SerializedProperty property, Type? clrType)

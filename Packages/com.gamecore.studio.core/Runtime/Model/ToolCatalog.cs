@@ -464,12 +464,18 @@ namespace GameCore.Studio.Model
         public const string Artifact = "artifact";
         /// <summary>A free-form JSON object.</summary>
         public const string Object = "object";
+        /// <summary>
+        /// An authoring id held as a string (a placed entity named by id rather than by object reference): a lowercase,
+        /// non-zero D-format GUID matching <see cref="StudioPatterns.AuthoringId"/>; the empty string means "none" and is
+        /// accepted unless the field is required.
+        /// </summary>
+        public const string AuthoringId = "authoringId";
         public const string ArraySuffix = "[]";
 
         /// <summary>Every scalar type name, in documentation order.</summary>
         public static readonly IReadOnlyList<string> All = new[]
         {
-            Bool, Int, Float, String, Enum, Vector2, Vector3, Vector4, Quaternion, Color, Ref, Artifact, Object,
+            Bool, Int, Float, String, Enum, Vector2, Vector3, Vector4, Quaternion, Color, Ref, Artifact, Object, AuthoringId,
         };
 
         /// <summary>True for a known scalar name or a known scalar name followed by <c>[]</c>.</summary>
