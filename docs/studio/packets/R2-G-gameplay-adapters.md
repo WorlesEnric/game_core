@@ -196,3 +196,173 @@ Unity XML counts and retained failures are recorded below. Regression names:
 - Final source policy rerun after the fixture corrections: **pass, 1,102 C# files**,
   `/tmp/r2-g-csharp-final.txt`. No Unity/Rust test or external acceptance failure is
   hidden by the successful focused selection.
+
+## R2-G2 — tri-state gameplay admission (PACKET.md)
+
+Branch `codex/r2-g2`, based on `46357460`, Linux build host `myubuntu`.
+This appendix is the packet report: a root PACKET.md is outside the exclusive paths.
+Earlier R2-G verification and open items above are historical; the dispositions below
+supersede requests #2, #4–#6 only to the extent explicitly stated.
+
+### R2 fixes
+
+- R2-G request #2: world `package.json` declares its asmdef-derived dependencies
+  `com.gamecore.studio.core: 1.0.0` and `com.unity.nuget.newtonsoft-json: 3.2.1`.
+  The checker reports **no layering violation**. Its two remaining errors are
+  stale project lock dependency maps, outside R2-G2's exclusive paths.
+
+### Requests to other packets
+
+- **Metadata/integration owner:** in
+  `games/hollowmere/Packages/packages-lock.json` and
+  `games/cleanproof/Packages/packages-lock.json`, synchronize
+  `dependencies["com.gamecore.gameplay.world"].dependencies` with the package manifest:
+  add `"com.gamecore.studio.core": "1.0.0"` and
+  `"com.unity.nuget.newtonsoft-json": "3.2.1"`, preserving existing pins.
+  Exact checker messages are
+  `games/hollowmere/Packages/packages-lock.json: com.gamecore.gameplay.world dependency map disagrees with its manifest`
+  and the identical message with `games/cleanproof/Packages/packages-lock.json`.
+  The checker compares the local `com.gamecore.*` map; Unity's resolved lock should
+  also include the declared Newtonsoft dependency. No checker exemption is needed.
+
+### Left open
+
+- The repository-wide metadata gate cannot pass on this packet alone: both locking
+  projects are outside the authorized file set. The manifest itself now matches its
+  assembly references; the exact two lock changes are requested above.
+- No APP-1 note or restore-adoption note is present in the local `origin/main`
+  documentation tree at this packet's baseline. No restore-adoption behaviour is
+  inferred, and no game/kernel source is edited by this packet.
+
+### R2-G2 adapter contract and regression mapping
+
+- **R2-14 / R2-G requests #4–#5:** additive
+  `BindAdmission(StudioRuntime, Func<SaveService?>, Func<bool>, Func<StageVerdict, AdmissionSmokeStatus>)`
+  binds `PollSmokeTest` and clears the synchronous assertion. The original bool
+  overload stays synchronous and clears an obsolete poll binding. Replacing a
+  pending poll with a bool binding installs the failed-closed recovery poller;
+  it cannot turn incomplete frame assertions into an immediate success.
+- Readiness is checked before and after the game callback. An unverified verdict
+  object, lost readiness, exception or unknown status returns Failed. The tri-state
+  `RunSmokeTest` overload resolves only the retained digest-bound proposal and
+  preserves Pending through the trusted game dispatcher. It does not reflect
+  candidate method names, boot a root, or drive the world.
+- `RecoverPendingSmoke(runtime)` reads durable `smoke-pending` admissions and
+  re-registers their existing lifecycle through `StageAdmission.Resume`. Calling
+  Bind again uses this same path; the first-party `WorldStudioRegistration` calls
+  it after runtime creation when a poll adapter is absent. Missing registrations
+  return Failed, including when `SmokeTest` is a passing bool. Core still requires
+  fresh authenticated verdict transport after reload before invoking any poll.
+  No second journal or frame counter is introduced; the original persisted
+  frame/time budgets remain authoritative (default 120 polls / 60 seconds).
+- **R2-41 / R2-G request #6:** only the assigned P1.7b test method changes. Its
+  Compose-tier assertions remain, while `agent.media` is asserted absent from
+  authored prerequisites. Existing R2-G actual-tool tests prove registration,
+  replacement and unregister behaviour through the gateway and ChangeSetEngine.
+
+New regression fixture: `Hollowmere.R2_G.EditMode.Tests.AdmissionAdapterTests`.
+Each UnityTest enters **real Hollowmere Play Mode**, loads `Boot.unity`, then exits
+via UnityTearDown. The runtime test fixture advances its smoke assertions only in
+`LateUpdate` against `GameApplication.Current`; repeated polls consume no world
+frames. Installation/compiler/catalog/companion are deterministic doubles and
+package bytes are written only to a temporary directory outside the live project.
+The two reload cases reconstruct StageAdmission against the same durable record.
+
+| Finding | Regression test |
+|---|---|
+| R2-14 | `R2_14_AdapterPendingPassesOnlyAfterNWorldFrames` |
+| R2-14 | `R2_14_AdapterPendingFailureRollsBack` |
+| R2-14 | `R2_14_AdapterSessionStopsBeingReadyFailsClosed` |
+| R2-14 | `R2_14_AdapterReloadDuringPendingFailsClosedDespitePassingBool` |
+| R2-14 | `R2_14_AdapterReloadRebindRetainsBudgetAndRequiresFreshTrust` |
+| R2-14 | `R2_14_AdapterExceptionInvalidStatusAndReadinessLossFailClosed` |
+| R2-14 compatibility | `R2_14_AdapterImmediateBoolRemainsSynchronous` |
+| R2-41 | `Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia` plus existing `R2_41_RegisteredToolIdsReachGatewayThroughChangeSetEngine` |
+
+### Requests to other packets — P3.1 exact binding
+
+In P3.1's `games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereStudioAdmission.cs`,
+after session creation and each restored-root replacement, with `boot` the active
+`GameBoot` and `service` its active `SaveService`, add this line:
+
+```csharp
+StudioAdmissionServices.BindAdmission(StudioServices.Runtime, () => service, () => boot.World != null && boot.Narrative != null && ReferenceEquals(boot.World.Root, service.ActiveRoot) && ReferenceEquals(boot.World.Root, GameApplication.Current), verdict => StudioAdmissionServices.RunSmokeTest(StudioServices.Runtime, verdict, (type, method, steps) => RunAdmittedSmokeEntry(verdict, type, method, steps)));
+```
+
+The game-owned entry must have this signature (superseding request #4's bool):
+`AdmissionSmokeStatus RunAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)`.
+It registers a trusted entry once per verdict digest/active root, returns Pending
+until all `steps` normal game frames and assertions complete, Passed only then,
+and Failed on failure/missing registration/root loss. Advance its Step only from
+P3.1's registered per-frame callback; the poll must never call PumpFrame or run a
+synchronous loop. Rebind and re-register after reload from the verified retained
+proposal; if its progress cannot safely be reconstructed, return Failed. Do not
+call the sandbox Begin harness that owns a separate root. Choose any larger
+trusted poll budget **before** admission begins if game/editor frame pacing requires
+it; rebind cannot reset the persisted budget.
+
+### Left open — game integration and qualification
+
+- The P3.1 Editor admission file and active-world smoke registry are absent from
+  this baseline. They are explicitly outside R2-G2 ownership. The exact line and
+  signature above are the required game side; this packet does not claim that
+  real admitted candidate smoke is integrated in GameBoot.
+- Real process-kill recovery, a domain reload while smoke is Pending, checkpoint
+  adoption/restore continuity and the 90-second admission budget remain integration
+  qualification. Tests exercise actual Play frames and durable service reconstruction,
+  not a killed Editor or live companion. They issue no production signed verdict.
+- No paid ETOS operation, credential-file read, installed companion/etosd restart,
+  or sibling-clone mutation is performed. Rust is unchanged and not rebuilt.
+
+### Verification — R2-G2
+
+Implementation checkpoint **`cfc37f9c`** (same source bytes as the final test run),
+pushed after the manifest checkpoint **`982c7cb7`**. All builds/tests ran on myubuntu.
+The shared wrapper held at most one Editor; no Unity timeout/retry occurred in
+these runs. Logs and XML are retained under this clone's `.unity-logs/`.
+
+The final command was:
+
+```bash
+bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir "$PWD/.unity-logs" --label r2-g2-full --results "$PWD/.unity-logs/r2-g2-full.xml" -- -runTests -testPlatform EditMode -testFilter 'Hollowmere\.R2_G.*|Hollowmere\.R2_B.*|Hollowmere\.P1_7b.*|Hollowmere\.P2_4.*|GameCore\.Studio\.Core.*'
+```
+
+`--results` supplies `-testResults`; the wrapper rejects a duplicate explicit
+argument. The seven new adapter scenarios are Editor tests that enter Hollowmere
+Play Mode through `UnitySetUp`/`EnterPlayMode` and leave through `UnityTearDown`.
+Thus the requested broad EditMode selection also exercises their real game frames.
+
+- **Final Unity XML:** `.unity-logs/r2-g2-full.xml`, **192 passed, 0 failed,
+  0 skipped/inconclusive**; R2-G **18** (11 existing + 7 new), R2-B **71**,
+  P1.7b **28**, P2.4 **8**, Studio core **67**. Wrapper 151 seconds, one attempt,
+  Unity exit 0. SHA-256:
+  `90935bf6d61eae2087c3ddb435b3ee3004605529c3929e337901fc1dab9a1089`.
+- **Before proof:** unchanged regression fixture against the original
+  `StudioAdmissionServices.cs`/`WorldLiveOpTranslator.cs` and original P1.7b method;
+  `.unity-logs/r2-g2-before.xml`, **1 passed, 7 failed, 0 skipped/inconclusive**.
+  Six tests detect the missing tri-state binding; the old media catalog test
+  rejects the correct absence of an authored `agent.media` prerequisite. The bool
+  compatibility control passes. Wrapper 84 seconds, one attempt. SHA-256:
+  `e32518b1cd08e00000ee915ca6bc22f7122eccc057e5ae7a282cb4168fdca0b4`.
+- **Fixture development failures retained:** `r2-g2-before-fixture.xml` and
+  `r2-g2-before-fixture2.xml`, each **0 passed / 8 failed**. The first used nested
+  setup that did not enter Play before scene load; the second exposed setup state
+  lost across the EnterPlayMode reload. Moving initialization into UnitySetUp and
+  flattening the frame wait fixed the fixture. These are not acceptance or baseline
+  regression evidence. Their SHA-256 values are
+  `a8cb21aa428400098aa8d576ef762460a3ecb03439a0727afcaf2ce88b8489ff` and
+  `ce7eeaa6b2db16f6d762ba22707f884fde2bb24c0e43c65173816c3fbd012652`.
+- `dotnet test dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj`:
+  TRX **307 passed, 0 failed/skipped**, `/tmp/r2-g2-dotnet/r2-g2-gameplay.trx`,
+  SHA-256 `e7be45b2c0f3712965b86c3934888e78f144242b7ca25a555834fde98a323da7`.
+- `dotnet test dotnet/tests/GameCore.Studio.Model.Tests/GameCore.Studio.Model.Tests.csproj`:
+  TRX **104 passed, 0 failed/skipped**, `/tmp/r2-g2-dotnet/r2-g2-model.trx`,
+  SHA-256 `ccbabc0582fae12f92b8d2a8cad91fb2b43ae2685321103368637a1c698d429e`.
+- `python3 tools/check_game_core_csharp.py`: **pass, 1,133 C# files**.
+- `python3 tools/check_package_metadata.py`: **failed, exactly 2 project lock-map
+  mismatches**, as requested above, **no layering violation**; 41 packages,
+  89 package assemblies. Final output: `.unity-logs/r2-g2-metadata.txt`.
+  Unity's generated Hollowmere lock change was restored; no out-of-scope manifest,
+  checker, game bootstrap, or lockfile is committed.
+- `git diff --check` and staged whitespace check: **pass**. Only the assigned
+  P1.7b method changed outside R2_G. Existing untracked `.codex/` is untouched.
