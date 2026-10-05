@@ -11,9 +11,10 @@
 #      has the project open, and starts ONE interactive Editor (not batch mode) on DISPLAY=:1:
 #        Unity -projectPath <copy> -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile <out>/editor.log
 #      The evidence entry (games/hollowmere/Assets/Hollowmere/Tests/P2_1/Editor/StudioUiEvidence.cs) walks the steps
-#      (Studio layout, first-run guide, select click, inspect hover, marquee, point-at, candidate preview, apply, undo,
-#      prompt bar, Play mode with the pump indicator, select in Play, pause), grabs the display with ffmpeg after
-#      each step and exits the Editor;
+#      (first-run guide, Studio layout, select the Village Well, inspect hover, marquee, point-at, candidate preview,
+#      apply, undo, prompt bar, Play mode on the player camera with W routed through the Input System and the pump
+#      indicator, Maren and the well selected in Play, pause). After each step it composes the Studio windows' own
+#      pixels into a PNG (never the desktop, so nothing else on the host display can appear) and finally exits;
 #   2. waits for that Editor's PID (EVIDENCE_TIMEOUT seconds, default 1800); on timeout it kills only that PID;
 #   3. shrinks every PNG below 300 KB with PIL (resize to <= 1600 px wide, then palette quantization if needed);
 #   4. copies the PNGs and evidence-log.jsonl to artifacts/studio/evidence/P2.1/ and writes README.md there (index
@@ -21,7 +22,8 @@
 #
 # Environment: GC_STUDIO_HOST (default myubuntu), GC_STUDIO_REMOTE_BASE (default wkspace/gc-studio),
 # GC_STUDIO_UNITY_SLOTS (default 3), UNITY (default ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity on the host),
-# EVIDENCE_DISPLAY (default :1), EVIDENCE_TIMEOUT (default 1800).
+# EVIDENCE_DISPLAY (default :1), EVIDENCE_TIMEOUT (default 1800), GCS_FLIP (1 flips window grabs vertically when a
+# graphics driver returns them bottom-up; default 0).
 #
 # Exit codes: 0 evidence collected and every step succeeded; 1 a step failed, the Editor timed out or fewer than
 # 8 screenshots were produced; 2 bad usage.
@@ -44,7 +46,7 @@ stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 echo "-- evidence for ${packet}/${project} at ${sha} on ${host}"
 set +e
 remote_out="$(ssh "${host}" \
-  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' bash -s" <<'HOST'
+  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' GCS_FLIP='${GCS_FLIP:-0}' bash -s" <<'HOST'
 set -euo pipefail
 unity="${UNITY_BIN:-${HOME}/Unity/Hub/Editor/6000.0.75f1/Editor/Unity}"
 base="${HOME}/${REMOTE_BASE}/${PACKET}"
@@ -104,7 +106,7 @@ if [[ -f "${project_dir}/Temp/UnityLockfile" ]]; then
 fi
 
 screen="$(xdpyinfo -display "${EVIDENCE_DISPLAY}" 2>/dev/null | awk '/dimensions:/{print $2}')"
-DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_SCREEN="${screen}" nohup "${unity}" -projectPath "${project_dir}" \
+DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" nohup "${unity}" -projectPath "${project_dir}" \
   -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile "${out}/editor.log" >/dev/null 2>&1 &
 pid=$!
 echo "-- interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY} (${screen}); output ${out}" >&2
@@ -196,7 +198,7 @@ lines.append(f"Last cumulative report: `{selects[-1]}`" if selects else "No pick
 problems = [entry for entry in entries if entry.get("problem") or entry.get("name") == "error"]
 lines += ["", "## Problems", ""]
 lines += [f"- step {entry['step']}: {entry.get('problem') or entry.get('caption')}" for entry in problems] or ["None."]
-lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB; no secrets are on screen (no gateway key is configured in this run)."]
+lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); no gateway key is configured in this run, so no secret can be on screen."]
 with open(os.path.join(dest, "README.md"), "w", encoding="utf-8") as handle:
     handle.write("\n".join(lines) + "\n")
 print("\n".join(lines))

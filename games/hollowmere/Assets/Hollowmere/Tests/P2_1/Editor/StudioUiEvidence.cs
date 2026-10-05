@@ -5,13 +5,12 @@
 // marker, a canned candidate (a move of the well, built locally as evidence input) previewed with its ghost, applied
 // and undone from History, the prompt bar's disabled reason without a gateway, then Play Mode from Boot.unity with the
 // viewport in Play mode on the player camera, W held through the Input System (the player must move), the pump
-// indicator, Maren (patrolling NPC) and the well selected in Play, and Pause. After each step the display is
-// grabbed with ffmpeg (x11grab) into GCS_EVIDENCE_DIR; evidence-log.jsonl records the step, time, pump readout and
-// B-SELECT timings. The editor exits when done (exit code 0, or 1 when a step failed).
+// indicator, Maren (patrolling NPC) and the well selected in Play, and Pause. After each step the Studio windows' own
+// pixels are composed into a PNG in GCS_EVIDENCE_DIR (UnityWindowCapture; the desktop is never grabbed);
+// evidence-log.jsonl records the step, time, pump readout and B-SELECT timings. The editor exits when done (exit code 0, or 1 when a step failed).
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -114,7 +113,8 @@ namespace Hollowmere.P2_1.Evidence
             {
                 case 0:
                     EditorSceneManager.OpenScene(VillageScene, OpenSceneMode.Single);
-                    StudioMenu.OpenStudio();
+                    // The layout tiles over a 1600x900 area (the host's main editor window may be small).
+                    StudioMenu.OpenStudio(new Rect(40f, 40f, 1600f, 900f));
                     return true;
                 case 1:
                 {
@@ -180,7 +180,9 @@ namespace Hollowmere.P2_1.Evidence
                 {
                     StudioViewportWindow viewport = Viewport();
                     Rect area = viewport.ImageRect;
-                    LocationPick location = viewport.PointAtLocation(new Vector2(area.width * 0.35f, area.height * 0.85f));
+                    GameObject? well = Find(clock.TargetName);
+                    Vector2? ground = well == null ? null : viewport.Project(well.transform.position + new Vector3(2.5f, 0f, -1.5f));
+                    LocationPick location = viewport.PointAtLocation(ground ?? new Vector2(area.width * 0.5f, area.height * 0.8f));
                     Shot(step, "point-at", "Right-click point-at: " + (location.Hit ? location.Source + " location marker" : "no ground hit") + " added to the selection.");
                     return true;
                 }
@@ -306,7 +308,27 @@ namespace Hollowmere.P2_1.Evidence
                         }
 
                         IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(rect.Value.center, op);
-                        picked.Add(target!.name + " (" + candidates.Count + " candidate(s))");
+                        string how = "nearest";
+                        if (candidates.Count > 0 && !IsPartOf(candidates[0], target!))
+                        {
+                            foreach (PickCandidate candidate in candidates)
+                            {
+                                if (IsPartOf(candidate, target!))
+                                {
+                                    // What the user does when the nearest hit is not what they meant: pick it from the overlap list.
+                                    if (op == SelectionOp.Add)
+                                    {
+                                        viewport.Context.Selection.Set(new[] { candidates[0].Ref }, SelectionOp.Toggle);
+                                    }
+
+                                    viewport.Picker.Choose(candidate, false, op == SelectionOp.Add ? SelectionOp.Add : SelectionOp.Replace);
+                                    how = "from the overlap list";
+                                    break;
+                                }
+                            }
+                        }
+
+                        picked.Add(target!.name + " (" + candidates.Count + " candidate(s), " + how + ")");
                     }
 
                     viewport.Overlap?.Hide();
@@ -436,6 +458,12 @@ namespace Hollowmere.P2_1.Evidence
 
         private static GameObject? Find(string name) => string.IsNullOrEmpty(name) ? null : GameObject.Find(name);
 
+        private static bool IsPartOf(PickCandidate candidate, GameObject target)
+        {
+            GameObject? hit = candidate.HitObject;
+            return hit != null && (hit.transform.IsChildOf(target.transform) || target.transform.IsChildOf(hit.transform));
+        }
+
         /// <summary>The first active scene object whose name contains <paramref name="fragment"/> and that has a renderer.</summary>
         private static GameObject? FindByName(string fragment)
         {
@@ -462,23 +490,14 @@ namespace Hollowmere.P2_1.Evidence
         {
             string file = step.ToString("00", CultureInfo.InvariantCulture) + "-" + name + ".png";
             string path = Path.Combine(OutputDir, file);
-            string display = Environment.GetEnvironmentVariable("DISPLAY") ?? ":1";
-            string? size = Environment.GetEnvironmentVariable("GCS_SCREEN");
-            string arguments = "-y -loglevel error -f x11grab" + (string.IsNullOrEmpty(size) ? string.Empty : " -video_size " + size) + " -i " + display + " -frames:v 1 \"" + path + "\"";
-            string? problem = null;
+            string? problem;
             try
             {
-                using Process process = Process.Start(new ProcessStartInfo("ffmpeg", arguments) { UseShellExecute = false, RedirectStandardError = true, CreateNoWindow = true })!;
-                string stderr = process.StandardError.ReadToEnd();
-                process.WaitForExit(15000);
-                if (process.ExitCode != 0)
-                {
-                    problem = "ffmpeg exit " + process.ExitCode + ": " + stderr.Trim();
-                }
+                problem = UnityWindowCapture.CaptureStudio(path, Environment.GetEnvironmentVariable("GCS_FLIP") == "1");
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                problem = "ffmpeg: " + error.Message;
+                problem = "capture: " + error.GetType().Name + ": " + error.Message;
             }
 
             StudioViewportWindow? viewport = EditorWindow.HasOpenInstances<StudioViewportWindow>() ? EditorWindow.GetWindow<StudioViewportWindow>(StudioWindowIds.ViewportTitle, false) : null;
