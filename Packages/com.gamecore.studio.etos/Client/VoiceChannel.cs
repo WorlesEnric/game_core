@@ -73,6 +73,7 @@ namespace GameCore.Studio.Etos.Client
         private Task? _receive;
         private long _seq;
         private EtosError? _firstError;
+        private bool _disposed;
 
         public VoiceChannel(CompanionClient client)
         {
@@ -187,17 +188,20 @@ namespace GameCore.Studio.Etos.Client
 
             Task finished = await Task.WhenAny(_closed.Task, Task.Delay(wait)).ConfigureAwait(false);
             string reason = finished == _closed.Task ? await _closed.Task.ConfigureAwait(false) : "stop timed out";
+            // Preserve the diagnostic cause before cancellation can report a generic client close.
+            Close(reason);
             await AbortAsync().ConfigureAwait(false);
             return reason;
         }
 
         public void Dispose()
         {
+            if (_disposed) return;
+            _disposed = true;
             _life.Cancel();
             _socket?.Abort();
             _socket?.Dispose();
-            _life.Dispose();
-            _send.Dispose();
+            // In-flight send/receive continuations still own these synchronization objects.
         }
 
         private async Task AbortAsync()

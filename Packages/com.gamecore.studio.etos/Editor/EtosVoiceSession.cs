@@ -29,6 +29,11 @@ namespace GameCore.Studio.Etos
         private Task _sending = Task.CompletedTask;
         private bool _ticking;
         private bool _capturing;
+        private bool _disposed;
+        private long _lastFramesSent;
+        private VoiceReady? _lastReady;
+        private readonly SemaphoreSlim _lifecycle = new SemaphoreSlim(1, 1);
+        private readonly CancellationTokenSource _life = new CancellationTokenSource();
 
         public EtosVoiceSession(CompanionClient client, MainThreadQueue queue, IPcmSource source, Func<ProviderStatus> status, IStudioLog log)
         {
@@ -49,7 +54,7 @@ namespace GameCore.Studio.Etos
         public IPcmSource Source => _source;
 
         /// <summary>The companion's ready frame (null before it arrived).</summary>
-        public VoiceReady? Ready => _channel?.ReadyInfo;
+        public VoiceReady? Ready => _channel?.ReadyInfo ?? _lastReady;
 
         public bool IsCapturing => _capturing;
 
@@ -59,7 +64,7 @@ namespace GameCore.Studio.Etos
         /// <summary>The close reason (<c>stopped</c>, <c>refused</c>, <c>provider_closed</c>...), once closed.</summary>
         public string? CloseReason { get; private set; }
 
-        public long FramesSent => _channel?.FramesSent ?? 0;
+        public long FramesSent => _channel?.FramesSent ?? _lastFramesSent;
 
         /// <summary>Final transcripts received (main thread).</summary>
         public IReadOnlyList<TranscriptUpdate> Finals => _finals;
@@ -70,51 +75,73 @@ namespace GameCore.Studio.Etos
         /// <summary>Opens the session and starts capture; a refusal is raised as <see cref="Error"/> and rethrown.</summary>
         public async Task StartAsync()
         {
-            if (_channel != null)
-            {
-                return;
-            }
-
-            ProviderState voice = _status().Voice;
-            if (voice == ProviderState.NotConfigured || voice == ProviderState.Blocked)
-            {
-                Diagnostic refused = new Diagnostic(voice == ProviderState.Blocked ? DiagnosticCodes.Blocked : EtosCodes.NotConfigured, "Voice is " + (voice == ProviderState.Blocked ? "blocked" : "not configured") + " on the node.");
-                Raise(refused);
-                throw new EtosException(new EtosError(0, refused.Code, refused.Message));
-            }
-
-            VoiceChannel channel = new VoiceChannel(_client);
-            channel.Transcript += t => _queue.Post(() => OnTranscript(t));
-            channel.Error += e => _queue.Post(() => Raise(EtosAgentGateway.DiagnosticOf(e)));
-            channel.Closed += reason => _queue.Post(() => OnClosed(reason));
-            _channel = channel;
+            await _lifecycle.WaitAsync().ConfigureAwait(false);
             try
             {
-                await channel.ConnectAsync().ConfigureAwait(false);
-            }
-            catch (EtosException error)
-            {
+                if (_disposed) throw new ObjectDisposedException(nameof(EtosVoiceSession));
+                if (_channel != null && !_channel.Completion.IsCompleted) return;
+                _channel?.Dispose();
                 _channel = null;
-                channel.Dispose();
-                Diagnostic diagnostic = EtosAgentGateway.DiagnosticOf(error.Error);
-                LastError = diagnostic;
-                _queue.Post(() => Raise(diagnostic));
-                throw;
-            }
-
-            await _queue.Run(() =>
-            {
-                _source.Start();
-                _capturing = true;
-                if (!_ticking)
+                ProviderState voice = _status().Voice;
+                if (voice == ProviderState.NotConfigured || voice == ProviderState.Blocked)
                 {
-                    EditorApplication.update += Tick;
-                    _ticking = true;
+                    Diagnostic refused = new Diagnostic(voice == ProviderState.Blocked ? DiagnosticCodes.Blocked : EtosCodes.NotConfigured, "Voice is " + (voice == ProviderState.Blocked ? "blocked" : "not configured") + " on the node.");
+                    _queue.Post(() => Raise(refused));
+                    throw new EtosException(new EtosError(0, refused.Code, refused.Message));
                 }
 
-                _log.Write(StudioLogLevel.Info, "etos", "voice session " + channel.ReadyInfo?.SessionId + " capturing from " + _source.Name);
-                return true;
-            }).ConfigureAwait(false);
+                VoiceChannel channel = new VoiceChannel(_client);
+                channel.Transcript += t => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) OnTranscript(t); });
+                channel.Error += e => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) Raise(EtosAgentGateway.DiagnosticOf(e)); });
+                channel.Closed += reason => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) OnClosed(reason); });
+                _channel = channel;
+                try
+                {
+                    await _queue.Run(() =>
+                    {
+                        _capturing = false;
+                        Unhook();
+                        _source.Stop();
+                        LastError = null;
+                        CloseReason = null;
+                        _lastFramesSent = 0;
+                        _lastReady = null;
+                        _finals.Clear();
+                        _frames.Flush();
+                        _sending = Task.CompletedTask;
+                        return true;
+                    }).ConfigureAwait(false);
+                    _lastReady = await channel.ConnectAsync(_life.Token).ConfigureAwait(false);
+                    await _queue.Run(() =>
+                    {
+                        if (_disposed) throw new ObjectDisposedException(nameof(EtosVoiceSession));
+                        _source.Start();
+                        _capturing = true;
+                        if (!_ticking)
+                        {
+                            EditorApplication.update += Tick;
+                            _ticking = true;
+                        }
+                        _log.Write(StudioLogLevel.Info, "etos", "voice session " + channel.ReadyInfo?.SessionId + " capturing from " + _source.Name);
+                        return true;
+                    }).ConfigureAwait(false);
+                }
+                catch (Exception error)
+                {
+                    await _queue.Run(() =>
+                    {
+                        _capturing = false;
+                        Unhook();
+                        _source.Stop();
+                        _channel = null;
+                        if (error is EtosException etos) Raise(EtosAgentGateway.DiagnosticOf(etos.Error));
+                        return true;
+                    }).ConfigureAwait(false);
+                    channel.Dispose();
+                    throw;
+                }
+            }
+            finally { _lifecycle.Release(); }
         }
 
         /// <summary>Main-thread tick: reads the source, raises the level, streams complete frames.</summary>
@@ -141,52 +168,67 @@ namespace GameCore.Studio.Etos
         /// <summary>Stops capture, sends the remaining audio and stop, and waits for the final transcript and close.</summary>
         public async Task StopAsync()
         {
+            // Serialize release with an outstanding connect and any next take.
+            await _lifecycle.WaitAsync().ConfigureAwait(false);
             VoiceChannel? channel = _channel;
-            if (channel == null)
-            {
-                return;
-            }
-
-            await _queue.Run(() =>
-            {
-                Tick();
-                _capturing = false;
-                _source.Stop();
-                byte[]? rest = _frames.Flush();
-                if (rest != null)
-                {
-                    Send(rest);
-                }
-
-                Unhook();
-                return true;
-            }).ConfigureAwait(false);
             try
             {
+                if (channel == null || _disposed) return;
+                await _queue.Run(() =>
+                {
+                    Tick();
+                    _capturing = false;
+                    _source.Stop();
+                    byte[]? rest = _frames.Flush();
+                    if (rest != null) Send(rest);
+                    Unhook();
+                    return true;
+                }).ConfigureAwait(false);
                 await _sending.ConfigureAwait(false);
+                string reason = await channel.StopAsync(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
+                // This barrier follows all transcript callbacks, so StopAsync means the prompt has received them.
+                await _queue.Run(() =>
+                {
+                    OnClosed(reason);
+                    if (_finals.Count == 0 && LastError == null)
+                        Raise(new Diagnostic("voice_no_transcript", "The voice session closed without a final user transcript (" + reason + ").", "Try another take; no request was sent."));
+                    return true;
+                }).ConfigureAwait(false);
             }
-            catch (EtosException error)
+            finally
             {
-                Diagnostic diagnostic = EtosAgentGateway.DiagnosticOf(error.Error);
-                _queue.Post(() => Raise(diagnostic));
+                if (channel != null)
+                {
+                    _lastFramesSent = channel.FramesSent;
+                    if (ReferenceEquals(_channel, channel)) _channel = null;
+                    channel.Dispose();
+                }
+                _lifecycle.Release();
             }
-
-            string reason = await channel.StopAsync(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
-            _queue.Post(() => OnClosed(reason));
         }
 
         public void Dispose()
         {
+            if (_disposed) return;
+            _disposed = true;
+            _life.Cancel();
             Unhook();
             _capturing = false;
             _source.Dispose();
             _channel?.Dispose();
+            _channel = null;
         }
 
         private void Send(byte[] frame)
         {
             VoiceChannel channel = _channel!;
-            _sending = _sending.ContinueWith(_ => channel.SendPcmAsync(frame), CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default).Unwrap();
+            _sending = SendAfterAsync(_sending, channel, frame);
+        }
+
+        private static async Task SendAfterAsync(Task previous, VoiceChannel channel, byte[] frame)
+        {
+            await previous.ConfigureAwait(false);
+            await channel.SendPcmAsync(frame).ConfigureAwait(false);
         }
 
         private void Unhook()
@@ -218,6 +260,7 @@ namespace GameCore.Studio.Etos
             }
 
             _capturing = false;
+            _source.Stop();
             Unhook();
         }
 
