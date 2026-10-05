@@ -146,6 +146,7 @@ namespace Hollowmere.Authoring
                 HollowmereMedia.AuthorSfx(author);
                 HollowmereWorldContent.Author(author);
                 HollowmereDressing.Author(author);
+                MigrateRefs(author);
                 Closures(author);
                 if (!string.IsNullOrEmpty(media))
                 {
@@ -249,6 +250,18 @@ namespace Hollowmere.Authoring
         // ------------------------------------------------------------------ closures (P1.x left-open items)
 
         public const string RunActionId = "5b0e3f0c-3d2a-4a51-9a5e-7c1f2b8d6e41";
+
+        /// <summary>
+        /// P1.7b: legacy string and pseudo-category references (P1.3/P1.4 content, and the NPC / interactable refs authored
+        /// here before the typed schema landed) become typed references.
+        /// </summary>
+        private static void MigrateRefs(StudioAuthor a)
+        {
+            a.Step("migrate.refs", "Rewrite legacy references as typed references (authoring.migrateRefs, apply)", () => new List<Operation>
+            {
+                StudioAuthor.Call("migrate", "authoring.migrateRefs", null, new JObject { ["folders"] = new JArray("Assets/Hollowmere"), ["apply"] = true }),
+            });
+        }
 
         private static void Closures(StudioAuthor a)
         {
