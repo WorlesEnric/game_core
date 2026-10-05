@@ -1,0 +1,40 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/p2.4/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 58s
+     Running tests/stage_real.rs (target/debug/deps/stage_real-897635e0b0708a97)
+
+running 2 tests
+test stage_real_negative_fixtures ...    scan            Fail       20 ms  2 forbidden hit(s): process-start, static-mutable
+   checkers        Pass      501 ms  15 C# file(s), 6 asmdef(s), slot clean
+   dotnet          Skipped        0 ms  skipped: scan failed (no candidate code runs)
+   unity-editmode  Skipped        0 ms  skipped: scan failed (no candidate code runs)
+   playmode-smoke  Skipped        0 ms  skipped: scan failed (no candidate code runs)
+   determinism     Skipped        0 ms  skipped: scan failed (no candidate code runs)
+   budget          Pass        0 ms  0 s within B-STAGE 900 s
+   scan            Pass       21 ms  52 file(s) clean
+   checkers        Pass      201 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          Pass    22220 ms  15 dotnet test(s) passed
+   unity-editmode  Pass   667092 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  Pass    55315 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     Pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          Pass        0 ms  745 s within B-STAGE 1800 s
+   scan            Pass       10 ms  54 file(s) clean
+   checkers        Pass     6605 ms  15 C# file(s), 6 asmdef(s), slot clean
+   dotnet          Pass    58144 ms  15 dotnet test(s) passed
+   unity-editmode  Fail   235623 ms  1 EditMode test(s) failed: Hollowmere.Mechanism.PressurePlate.Editor.Tests.FailingFixtureTests.DeliberateFailure
+   playmode-smoke  Skipped        0 ms  skipped: unity-editmode failed
+   determinism     Skipped        0 ms  skipped: unity-editmode failed
+   budget          Pass        0 ms  317 s within B-STAGE 360 s
+ok
+test stage_real_pressure_plate ...    scan            Pass       12 ms  52 file(s) clean
+   checkers        Pass      200 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          Pass     4103 ms  15 dotnet test(s) passed
+   unity-editmode  Pass   270706 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  Pass    35142 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     Pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          Pass        0 ms  312 s within B-STAGE 360 s
+STAGE_REAL {"budgetMs":360000,"catalogDelta":{"mechanisms":[{"catalogType":"Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog","fingerprint":"eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21","package":"com.hollowmere.mechanism.pressureplate"}],"predicted":"1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb","world":"425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"},"changeSetId":"cs_01K6RW0MECH00000000000000A","durationMs":312068,"host":"worlesenric","pass":true,"slot":"stage-real-plate","steps":[{"detail":"52 file(s) clean","durationMs":12,"id":"scan","status":"pass"},{"detail":"14 C# file(s), 6 asmdef(s), slot clean","durationMs":200,"id":"checkers","status":"pass"},{"detail":"15 dotnet test(s) passed","durationMs":4103,"id":"dotnet","status":"pass"},{"detail":"compiled; 27 EditMode test(s) passed","durationMs":270706,"id":"unity-editmode","status":"pass"},{"detail":"120 frame(s), 120 sanctioned pump(s), no violation, no exception","durationMs":35142,"id":"playmode-smoke","status":"pass"},{"detail":"both smoke runs end at slot hash 5aa1e545c15d","durationMs":0,"id":"determinism","status":"pass"},{"detail":"312 s within B-STAGE 360 s","durationMs":0,"id":"budget","status":"pass"}],"test":"stage_real_pressure_plate","verdictRef":"22cf147fb3e4e6b0c8384450428d736db3fc345b673f34311c4ea3b0e05548af","warmupMs":null,"withinBStage":true}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1417.68s
+
+EXIT=0

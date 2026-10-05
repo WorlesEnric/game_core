@@ -1,0 +1,35 @@
+
+== build gamecore-studio (2026-10-05T10:31:06+08:00)
+
+== stage cs_01K6RW0MECH00000000000000A (2026-10-05T10:33:40+08:00)
+-- stage w-mech-01 (root /home/worlesenric/.cache/gamecore-studio/stage, source /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere, budget 360 s)
+   scan            pass       95 ms  52 file(s) clean
+   checkers        pass      212 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          pass     3804 ms  15 dotnet test(s) passed
+   unity-editmode  pass    60386 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  pass    70464 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          pass        0 ms  136 s within B-STAGE 360 s
+RESULT stage w-mech-01: PASS (136751 ms of 360000 ms; verdict c06998d0ee06b3be928da7514b5221149efbf075deb06a1eab07c880f51d6bff at /home/worlesenric/.cache/gamecore-studio/stage/w-mech-01/out/verdict.json)
+
+== admit into games/hollowmere (2026-10-05T10:35:57+08:00)
+-- Unity slot 3/3 acquired (2 batchmode Editor(s) already running host-wide)
+-- attempt 1/1: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/admit-20261005T103557-a1.log -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit -gcCandidate /home/worlesenric/wkspace/gc-studio/p2.4/samples/mechanisms/pressure-plate/candidate -gcVerdict /tmp/p24-wmech/verdict.json -gcResult /tmp/p24-wmech/admit.json
+database is locked
+attempt to write a readonly database
+disk I/O error
+RESULT admit: FAIL (unity exit 1, 280s, attempts 1, log /tmp/p24-wmech/logs/admit-20261005T103557-a1.log)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "outcome": "RolledBack",
+  "detail": "The world re-bake failed: the world does not bake: bake of Assets/Hollowmere/World/Hollowmere.asset refused with 3 problem(s)",
+  "milliseconds": 28877133.3,
+  "reason": "rebake_failed",
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "directory": "Packages/com.hollowmere.mechanism.pressureplate",
+  "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "operation": "admit",
+  "ok": false
+}
+W-MECH-01 FAILED: the admission did not succeed
+EXIT=1

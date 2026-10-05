@@ -1,0 +1,51 @@
+{
+  "artifacts": [
+    {
+      "bytes": 33308,
+      "mediaType": "application/gzip",
+      "name": "package.tgz",
+      "role": "package",
+      "sha256": "a3ca37f08a34b7398554ee92fd2f3ace5a4353b2e0b7281b7914ad1829caf125"
+    },
+    {
+      "bytes": 917,
+      "mediaType": "application/json",
+      "name": "proposal.json",
+      "role": "proposal",
+      "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+    }
+  ],
+  "id": "cs_01K6RW0MECH00000000000000B",
+  "intent": {
+    "origin": "agent",
+    "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it."
+  },
+  "operations": [
+    {
+      "applyRequirement": "Compile",
+      "args": {
+        "description": "Pressure plate mechanism: a plate target with plate.pressed / plate.weight slots, pressed while the actors standing on it reach its threshold, refusing to go above its maximum weight or below zero; plate.press{actor} commits PlatePressed / PlateReleased.",
+        "package": {
+          "artifact": "sha256:a3ca37f08a34b7398554ee92fd2f3ace5a4353b2e0b7281b7914ad1829caf125"
+        },
+        "proposal": {
+          "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+        },
+        "stageInputs": [
+          "Assets/Hollowmere/World",
+          "Assets/Hollowmere/Regions"
+        ]
+      },
+      "opId": "op1",
+      "tool": "mechanism.propose"
+    }
+  ],
+  "requirements": {
+    "build": false,
+    "compile": true,
+    "max": "Compile",
+    "worldRebuild": false
+  },
+  "schema": "gamecore.studio.changeset/1",
+  "state": "Candidate"
+}
