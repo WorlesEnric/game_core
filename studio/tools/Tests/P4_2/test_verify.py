@@ -71,6 +71,18 @@ class EvidenceTests(unittest.TestCase):
                 verify.run('ROW', 'low-disk', ['true'])
             spawn.assert_not_called()
 
+    def test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip(self):
+        r = self.invoke('<test-run><test-case result="Passed"/></test-run>')
+        folder = verify.ROOT / r['evidencePath']
+        log = folder / 'player.log.run2'
+        log.write_text('/home/fixture/project ' + 'et' + 'k_sentinel')
+        zipped = folder / 'player.log.gz'
+        zipped.write_bytes(b'\x1f\x8b\x00\xff')
+        verify.finish(folder, r)
+        self.assertNotIn('/home/', log.read_text())
+        self.assertNotIn('sentinel', log.read_text())
+        self.assertEqual(b'\x1f\x8b\x00\xff', zipped.read_bytes())
+
     def test_P42_secret_and_home_redaction(self):
         for prefix in ('et' + 'k_', 'et' + 't_', 'et' + 'p_', 'et' + 'a_', 'sk' + '-', 'Bearer' + ' '):
             self.assertNotIn('sentinel', verify.scrub(prefix + 'sentinel'))

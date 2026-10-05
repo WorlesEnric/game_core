@@ -14,6 +14,28 @@ namespace Hollowmere.P4_2
     public sealed class DirectMediaTests
     {
         [UnityTest]
+        [Explicit("One direct image request against the installed operator pricing policy")]
+        [Timeout(360000)]
+        public IEnumerator R2_38_DirectImagePriceRefusalIsRecorded()
+        {
+            string output = Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE") ?? throw new InvalidOperationException("evidence required");
+            Assert.That(EtosStudioSession.Start(), Is.True, EtosStudioSession.Problem?.ToString());
+            EtosAgentGateway gateway = EtosStudioSession.Gateway!;
+            var media = new EtosMediaGenerator(gateway, gateway.Runtime, gateway.Queue);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var task = media.GenerateImageAsync("A plain green cloth texture for a village healer robe.", "Assets/Hollowmere/Generated/P4_2/robe.png", 256, 0.25);
+            while (!task.IsCompleted && watch.Elapsed.TotalSeconds < 300) yield return null;
+            Assert.That(task.IsCompleted && !task.IsFaulted, Is.True, task.Exception?.GetBaseException().Message);
+            var imported = task.Result;
+            var report = new JObject { ["ms"] = watch.ElapsedMilliseconds, ["ok"] = imported.Ok,
+                ["code"] = imported.Problem?.Code, ["message"] = imported.Problem?.Message,
+                ["artifactSha256"] = imported.Artifact?.Sha256, ["maxCostUsd"] = 0.25 };
+            File.WriteAllText(Path.Combine(output, "image-price-refusal.json"), report.ToString());
+            Assert.That(imported.Ok, Is.False, "no unverifiably priced generation may run");
+            Assert.That(imported.Problem?.Code, Is.EqualTo("budget_unpriced"));
+        }
+
+        [UnityTest]
         [Explicit("Installed companion direct app-owned media; one priced TTS, no ledger request id invented")]
         [Timeout(360000)]
         public IEnumerator R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes()

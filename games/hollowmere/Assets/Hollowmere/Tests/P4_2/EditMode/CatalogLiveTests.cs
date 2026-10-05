@@ -37,7 +37,7 @@ namespace Hollowmere.P4_2
                 runtime.Registry.Register(new CatalogProbe());
                 string after = runtime.Registry.Catalog.Revision ?? runtime.Registry.Catalog.ComputeRevision();
                 Assert.That(after, Is.Not.EqualTo(before), "the actual installed-tool catalog revision changed");
-                var staged = runtime.Engine.Stage(candidate, new StageOptions { ToolCatalogRevision = info.ToolCatalogRevision });
+                var staged = runtime.Engine.Stage(candidate, new StageOptions { Mode = ValidationMode.Candidate, ToolCatalogRevision = info.ToolCatalogRevision });
                 var report = new JObject { ["requestId"] = id, ["taskId"] = info.TaskId, ["candidateCatalog"] = info.ToolCatalogRevision,
                     ["before"] = before, ["after"] = after, ["ok"] = staged.Ok,
                     ["diagnostics"] = new JArray(staged.AllDiagnostics.Select(d => StudioJson.ToToken(d))) };

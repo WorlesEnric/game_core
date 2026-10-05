@@ -69,7 +69,7 @@ def xml_counts(path):
 def finish(folder, record):
     # Unity writes XML/logs itself. Scrub text paths after exit; preserve original XML outcomes.
     for path in folder.rglob('*'):
-        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json', '.jsonl', '.csv', '.md'):
+        if path.is_file() and (path.suffix in ('.xml', '.trx', '.log', '.txt', '.json', '.jsonl', '.csv', '.md') or re.search(r'\.(?:log|json|xml|trx)\.run[0-9]+$', path.name)):
             data = path.read_text(errors='replace')
             path.write_text(('\n'.join(line.rstrip() for line in scrub(data).splitlines()).rstrip() + '\n') if data else '')
     (folder / 'result.json').write_text(scrub(json.dumps(record, indent=2)) + '\n')
@@ -141,6 +141,20 @@ def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, exp
     return record
 
 
+def host_test_python():
+    configured = os.environ.get('P42_TEST_PYTHON')
+    if configured:
+        return configured
+    env = Path.home() / '.cache/gamecore-studio/p42-python'
+    executable = env / 'bin/python'
+    if not executable.exists():
+        run('STATIC', 'python-test-environment', ['python3', '-m', 'venv', str(env)])
+    ready = subprocess.run([str(executable), '-c', 'import pytest, jsonschema'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if ready.returncode:
+        run('STATIC', 'python-test-dependencies', [str(executable), '-m', 'pip', '--disable-pip-version-check', '-q', 'install', 'pytest==9.1.1', 'jsonschema==4.26.0'])
+    return str(executable)
+
+
 def static():
     run('W-TOOL-02', 'metadata', ['python3', 'tools/check_package_metadata.py'])
     run('STATIC', 'csharp', ['python3', 'tools/check_game_core_csharp.py'])
@@ -153,8 +167,9 @@ def static():
                            '--results-directory', '{out}/trx'], results='trx/*.trx')
     for label, path in [('stage-python', 'studio/stage/tests'), ('installer-python', 'studio/etos/tests')]:
         run('STATIC', label, ['python3', '-m', 'unittest', 'discover', '-s', path, '-v'])
-    run('STATIC', 'host-python', [os.environ.get('P42_TEST_PYTHON', 'python3'), '-m', 'pytest', '-q', 'studio/tools/tests/test_r3_host.py', 'studio/etos/workers/tests'])
+    run('STATIC', 'host-python', [host_test_python(), '-m', 'pytest', '-q', 'studio/tools/tests/test_r3_host.py', 'studio/etos/workers/tests'])
     run('STATIC', 'stage-slot', ['python3', 'tools/check_stage_slot.py', '--self-test'])
+    run('STATIC', 'p42-runner-regressions', ['python3', '-m', 'unittest', 'discover', '-s', 'studio/tools/Tests/P4_2', '-v'])
 
 
 def unity_run(game, mode, label=None, test_filter='.*'):
@@ -262,11 +277,15 @@ def graphical_tests(test_filter=None, row='GRAPHICAL', label='graphics-required-
     # Interactive Editor is necessary for the tests skipped by -nographics. Same allocator as unity-batch.
     display = os.environ.get('EVIDENCE_DISPLAY', ':1')
     wrapper = '''set -euo pipefail
+pgrep -af 'Unity|ffmpeg|xvfb' || true
+while pgrep -x Unity >/dev/null || pgrep -x ffmpeg >/dev/null; do
+  echo 'Waiting for other Editors/recorders before graphical qualification'; sleep 5
+done
 unity_tools_dir="$PWD/studio/tools"
 source "$unity_tools_dir/unity-slot.sh"
 unity_slot_acquire
 trap unity_slot_release EXIT
-python3 studio/stage/run-redacted.py --log "$1/editor.log" --timeout 1500 --silence 600 -- \
+python3 studio/stage/run-redacted.py --log "$1/editor.log" --timeout 1500 --silence 600 -- env GAMECORE_ETOS_KEY_FILE=/nonexistent/p42-offline \
   "$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity" -projectPath "$PWD/games/hollowmere" \
   -logFile - -runTests -testPlatform EditMode -testFilter "$2" -testResults "$1/results.xml"
 '''
@@ -374,6 +393,7 @@ def main():
     if args.mode == 'graphical-tests': graphical_tests()
     if args.mode == 'graphical-views': graphical_views()
     if args.mode in ('all', 'perf'): perf()
+    if args.mode == 'all': graphical_tests('R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump', 'W-GAME-08', 'native-memory-and-pumps')
     if args.mode in ('all', 'clean'): clean()
     if args.mode in ('all', 'security'): security()
     summary()

@@ -52,10 +52,11 @@ def ui():
 
 
 def stage():
-    for sample in ('pressure-plate',):
-        candidate=v.ROOT/'samples/mechanisms'/sample/'candidate'
+    subprocess.run([sys.executable, str(v.ROOT/'artifacts/studio/verification/TOOLS/make-negative-candidate.py')], check=True)
+    for sample in ('pressure-plate','negative-semantic'):
+        candidate=(v.ROOT/'samples/mechanisms'/sample/'candidate') if sample=='pressure-plate' else v.OUT/'W-MECH-01/negative-semantic-input'
         graphical('W-MECH-01',sample+'-installed-ui',
-          ['-executeMethod','Hollowmere.P3_2.Workflows.WorkflowRunner.Run'],
+          ['-executeMethod','Hollowmere.P4_2.EvidenceEntry.RunStage'],
           {**live_env(),'GCS_P32_WORKFLOW':'mech-b','GCS_P32_OUT':'{out}/workflow',
            'GCS_P32_MECH_CANDIDATE':str(candidate)})
 
@@ -89,6 +90,14 @@ def build():
 
 
 def v1():
+    # Retain only this clone's disposable release project; do not delete old evidence or repeat probes.
+    with v.editor_lease():
+        old = v.ROOT / 'unity/GameCore.ReleaseCheck'
+        if old.exists():
+            stamp = v.datetime.datetime.now(v.datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+            retained = v.ROOT / '.evidence' / ('ReleaseCheck-retained-' + stamp)
+            retained.parent.mkdir(exist_ok=True)
+            old.rename(retained)
     # Adapter serializes all gate Editors with this packet's other jobs. Probe repetitions remain capped.
     return v.run('W-GAME-06','v1-gate-retry',['bash','tools/run_w7_gate.sh'],env={
       'UNITY':str(v.ROOT/'artifacts/studio/verification/TOOLS/unity-gate-adapter.py'),
