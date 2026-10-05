@@ -364,6 +364,9 @@ namespace GameCore.Studio.Edit
             changeSet = scopeNormalizer.NormalizeScopes(changeSet);
             foreach (Diagnostic inference in scopeNormalizer.Inferences)
                 _runtime.Log.Write(StudioLogLevel.Info, "engine", inference.Message, inference);
+            List<Diagnostic> factDiagnostics = new List<Diagnostic>();
+            HashSet<string> deferredFacts = new HashSet<string>(StringComparer.Ordinal);
+            changeSet = CandidateFactReferences.Normalize(changeSet, factDiagnostics, deferredFacts);
             Dictionary<string, List<Diagnostic>> byOperation = new Dictionary<string, List<Diagnostic>>(StringComparer.Ordinal);
             if (validate)
             {
@@ -374,7 +377,8 @@ namespace GameCore.Studio.Edit
                     RequireTargetsInIndex = false,
                     IndexIsSlice = options.IndexIsSlice,
                 });
-                foreach (Diagnostic diagnostic in validator.Validate(changeSet))
+                factDiagnostics.AddRange(validator.Validate(changeSet));
+                foreach (Diagnostic diagnostic in factDiagnostics)
                 {
                     string? opId = OperationOf(changeSet, diagnostic);
                     if (opId == null)
@@ -405,7 +409,7 @@ namespace GameCore.Studio.Edit
             {
                 foreach (Operation operation in changeSet.Operations)
                 {
-                    StagedOperation staged = new StagedOperation(operation);
+                    StagedOperation staged = new StagedOperation(operation) { DeferredFactArgument = deferredFacts.Contains(operation.OpId) };
                     operations.Add(staged);
                     if (byOperation.TryGetValue(operation.OpId, out List<Diagnostic>? found))
                     {
@@ -437,7 +441,7 @@ namespace GameCore.Studio.Edit
                         && _runtime.Services.FindLiveTranslator(new EditContext(_runtime, changeSet, operation, staged.Target, true, null)) != null;
                     if (tool.Entry.RuntimeOnly && !staged.Live)
                         staged.Add(StudioDiagnostics.Op(DiagnosticCodes.NotConfigured, operation.OpId, "Runtime action translator is not registered."));
-                    if (staged.Blocked || staged.Deferred)
+                    if (staged.Blocked || staged.Deferred || staged.DeferredFactArgument)
                     {
                         continue;
                     }
@@ -726,6 +730,12 @@ namespace GameCore.Studio.Edit
                         if (result.Status == OutcomeStatus.Applied || result.Inverse.Count > 0) applied.Add(result);
                         if (result.Status == OutcomeStatus.Applied)
                         {
+                            // Publish successful fact output identities to the resolver before dependent binding.
+                            if (operation.Operation.Tool == "dialogue.setFact")
+                            {
+                                foreach (UnityEngine.Object touched in result.Touched) _runtime.Index.MarkObjectChanged(touched);
+                                _runtime.Index.Flush();
+                            }
                             appliedOps.Add(new KeyValuePair<Operation, OperationResult>(operation.Operation, result));
                             gameCoreOps.AddRange(result.GameCoreOps);
                         }
@@ -820,6 +830,13 @@ namespace GameCore.Studio.Edit
             EditContext context = new EditContext(_runtime, staged.ChangeSet, operation, target, false, replay);
             try
             {
+                if (staging.DeferredFactArgument)
+                {
+                    ToolStageResult checkedArguments = StageWithoutPreview(tool,
+                        new EditContext(_runtime, staged.ChangeSet, operation, target, true, replay));
+                    if (!checkedArguments.Ok)
+                        return OperationResult.Refused(checkedArguments.Diagnostics[0].Code, checkedArguments.Diagnostics[0].Message);
+                }
                 OperationResult result;
                 ILiveOpTranslator? translator = staging.Live ? _runtime.Services.FindLiveTranslator(context) : null;
                 if (translator != null)
@@ -863,6 +880,25 @@ namespace GameCore.Studio.Edit
                     if (live.OperationId != null)
                     {
                         result.WithGameCoreOp(live.OperationId);
+                    }
+                }
+                else if (operation.Tool == "dialogue.setFact" && !string.IsNullOrEmpty(context.StringArg("authoringId")))
+                {
+                    // Candidate fact identities must be imported before the next typed argument binds.
+                    // Retain a deletion inverse only for a newly created asset, never an updated fact.
+                    HashSet<string> existingAssets = new HashSet<string>(AssetDatabase.GetAllAssetPaths(), StringComparer.Ordinal);
+                    OperationResult? produced = null;
+                    context.OutsideAssetEditing(() => produced = tool.Apply(context));
+                    result = produced!;
+                    if (result.Status == OutcomeStatus.Applied)
+                    {
+                        foreach (UnityEngine.Object touched in result.Touched)
+                        {
+                            string path = AssetDatabase.GetAssetPath(touched);
+                            if (!string.IsNullOrEmpty(path) && !existingAssets.Contains(path))
+                                result.WithAssetLevelInverse(ToolSupport.InverseOp(BuiltInToolIdsExt.DeleteAsset, null,
+                                    new JObject { ["path"] = path }));
+                        }
                     }
                 }
                 else

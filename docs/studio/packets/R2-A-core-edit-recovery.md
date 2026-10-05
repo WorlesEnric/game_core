@@ -334,3 +334,11 @@ metadata, which is outside the brief's `Tests/R3_A/**` path; the test scripts, a
 and all metadata inside that directory are retained. Unity recreates parent-folder
 metadata on import. The unrelated generated `Tests/R2_D.meta` was also removed after
 Editor exit; the pre-existing untracked `.codex/` directory is untouched.
+
+## R3-F — same-change-set fact handoff
+
+### R2 fixes / R3 follow-through
+
+D10a currently binds the consumer's `fact` during Stage, before the producer has executed. R3-F adds the narrow engine seam for `dialogue.setFact(authoringId)` followed by `dialogue.setFactCondition(fact)`: preserve the candidate id, add a producer dependency, defer the typed argument binding until that producer succeeds, and refuse forward/ambiguous references with an operation-local `InvalidArgs` witness. Existing references retain ordinary binding and indexed category checks. No gameplay assembly dependency is added to core.
+
+Tests and final host evidence: [R3-F packet](../../../Packages/com.gamecore.studio.ui/PACKET.md). The same packet completes R3-A's three UI/companion requests above.
