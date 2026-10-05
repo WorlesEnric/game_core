@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using GameCore.Studio.Authoring.Agent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -20,7 +21,10 @@ namespace GameCore.Studio.Edit
             Succeeded = succeeded;
             ReloadPending = reloadPending;
             Detail = new SecretRedactor().Redact(detail);
-            Errors = errors ?? Array.Empty<string>();
+            var redactor = new SecretRedactor();
+            var redactedErrors = new List<string>();
+            foreach (string error in errors ?? Array.Empty<string>()) redactedErrors.Add(redactor.Redact(error));
+            Errors = redactedErrors.AsReadOnly();
         }
 
         public bool Succeeded { get; }
@@ -249,6 +253,12 @@ namespace GameCore.Studio.Edit
         {
             _runtime = runtime;
             Options = options;
+            runtime.History.RegisterHandler(new AdmissionHistoryHandler(this));
+            Finished += result =>
+            {
+                if (result.Outcome == AdmissionOutcome.Admitted || result.Outcome == AdmissionOutcome.Undone)
+                    runtime.History.CompleteHandledEntry(result.ChangeSetId);
+            };
         }
 
         public AdmissionOptions Options { get; }
@@ -527,7 +537,7 @@ namespace GameCore.Studio.Edit
             return verdict;
         }
 
-        public async Task<StageVerdict> FetchVerdict(string jobId, StageRequest expected)
+        public async Task<StageVerdict> FetchVerdict(string jobId, StageCandidateRequest expected)
         {
             _verified.Remove(expected.ChangeSetId);
             IStageService service = Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
@@ -566,14 +576,14 @@ namespace GameCore.Studio.Edit
             foreach (JProperty item in ReadState("verdicts.json").Properties())
             {
                 if (ReadPending(item.Name) == null || item.Value is not JObject record) continue;
-                StageRequest expected = record["expected"]!.ToObject<StageRequest>()!;
+                StageCandidateRequest expected = record["expected"]!.ToObject<StageCandidateRequest>()!;
                 await FetchVerdict((string)record["jobId"]!, expected);
                 count++;
             }
             return count;
         }
 
-        public StageRequest BuildStageRequest(ChangeSet candidate, string sourceProject)
+        public StageCandidateRequest BuildStageRequest(ChangeSet candidate, string sourceProject)
         {
             Operation operation = ProposalOperation(candidate);
             string package = MechanismAdmission.Digest(operation.Args?["package"]) ?? throw new ArgumentException("package_missing");
@@ -587,7 +597,7 @@ namespace GameCore.Studio.Edit
                 StageDataPaths.ContainedFile(_runtime.Paths.ProjectRoot, path);
                 inputs.Add(path);
             }
-            return new StageRequest(candidate.Id, Options.ProjectId ?? "", sourceProject, Options.SourceRevision?.Invoke() ?? "",
+            return new StageCandidateRequest(candidate.Id, Options.ProjectId ?? "", sourceProject, Options.SourceRevision?.Invoke() ?? "",
                 Options.CatalogRevision?.Invoke() ?? "", package, proposal, inputs);
         }
 

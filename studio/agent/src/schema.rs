@@ -132,6 +132,60 @@ mod tests {
     use serde_json::json;
 
     #[test]
+    fn unity_sample_catalog_and_current_metadata_are_accepted() {
+        let schemas = RequestSchemas::builtin().unwrap();
+        let sample: Value = serde_json::from_str(include_str!(
+            "../../../dotnet/tests/GameCore.Studio.Model.Tests/Samples/tool-catalog.json"
+        ))
+        .unwrap();
+        let findings = schemas.catalog.findings(&sample, "InvalidArgs", "catalog");
+        assert!(findings.is_empty(), "{findings:?}");
+        let mirror: crate::model::ToolCatalog = serde_json::from_value(sample.clone()).unwrap();
+        assert!(!mirror.tools[0].read_only && !mirror.tools[0].runtime_only);
+        assert!(!mirror.object_types[0].fields[0].structural);
+        assert_eq!(serde_json::to_value(mirror).unwrap(), sample);
+
+        let mut current = sample;
+        current["tools"][0]["readOnly"] = json!(true);
+        current["tools"][1]["runtimeOnly"] = json!(true);
+        current["objectTypes"][0]["fields"][0]["structural"] = json!(true);
+        let findings = schemas.catalog.findings(&current, "InvalidArgs", "catalog");
+        assert!(findings.is_empty(), "{findings:?}");
+        let mirror: crate::model::ToolCatalog = serde_json::from_value(current.clone()).unwrap();
+        assert!(mirror.tools[0].read_only && mirror.tools[1].runtime_only);
+        assert!(mirror.object_types[0].fields[0].structural);
+        assert_eq!(serde_json::to_value(mirror).unwrap(), current);
+        current["tools"][0]["readOnly"] = json!("true");
+        assert!(
+            !schemas
+                .catalog
+                .findings(&current, "InvalidArgs", "catalog")
+                .is_empty()
+        );
+        assert!(serde_json::from_value::<crate::model::ToolCatalog>(current).is_err());
+    }
+
+    #[test]
+    fn embedded_schemas_match_authoritative_documents_byte_for_byte() {
+        for name in [
+            "change-set",
+            "diagnostic",
+            "semantic-index",
+            "selection-snapshot",
+            "tool-catalog",
+            "authoring-ref",
+        ] {
+            let filename = format!("{name}.schema.json");
+            let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+            assert_eq!(
+                std::fs::read(root.join("schemas").join(&filename)).unwrap(),
+                std::fs::read(root.join("../../docs/studio/schemas").join(&filename)).unwrap(),
+                "schema drift: {filename}"
+            );
+        }
+    }
+
+    #[test]
     fn request_schemas_compile_and_check() {
         let r = RequestSchemas::builtin().unwrap();
         let sel = json!({"id": "sel_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", "mode": "Edit", "indexRevision": 1, "targets": []});

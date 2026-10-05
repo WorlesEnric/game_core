@@ -33,7 +33,7 @@ namespace GameCore.Studio.Edit.Tests
             _bed.Live.CommittedRevision = 7;
             ChangeSet changeSet = StudioTestBed.NewChangeSet(
                 "live",
-                null,
+                ApplyPolicy.BestEffort,
                 StudioTestBed.Set("op1", _bed.Ref(first), "level", 4),
                 StudioTestBed.Set("op2", _bed.Ref(second), "level", 5));
 
@@ -45,8 +45,8 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(report.Outcome("op1")!.GameCoreOps, Has.Count.EqualTo(1));
             StringAssert.StartsWith("w:", report.Outcome("op1")!.GameCoreOps![0]);
             Assert.That(report.Entry.Links?.GameCoreOps, Has.Count.EqualTo(2));
-            Assert.That(first.level, Is.EqualTo(4), "the authored data follows the world edit");
-            Assert.That(second.level, Is.EqualTo(5));
+            Assert.That(first.level, Is.EqualTo(1), "D4: runtime actions leave authored data unchanged");
+            Assert.That(second.level, Is.EqualTo(1));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using GameCore.Studio.Authoring.Agent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,45 +13,9 @@ namespace GameCore.Studio.Edit
     // Implemented by the authenticated companion client, never by a candidate artifact reader.
     public interface IStageService
     {
-        Task<string> RequestStage(StageRequest request);
+        Task<string> RequestStage(StageCandidateRequest request);
         Task<SignedVerdict> GetVerdict(string jobId);
         Task<StageVerification> VerifyVerdict(string jobId, StageVerificationRequest request);
-    }
-
-    [JsonObject(MemberSerialization.OptIn)]
-    public sealed class StageRequest
-    {
-        [JsonProperty("changeSetId")] public string ChangeSetId { get; }
-        [JsonProperty("projectId")] public string ProjectId { get; }
-        [JsonProperty("sourceProject")] public string SourceProject { get; }
-        [JsonProperty("sourceRevision")] public string SourceRevision { get; }
-        [JsonProperty("catalogRevision")] public string CatalogRevision { get; }
-        [JsonProperty("packageDigest")] public string PackageDigest { get; }
-        [JsonProperty("proposalDigest")] public string ProposalDigest { get; }
-        [JsonProperty("stageInputs")] public IReadOnlyList<string> StageInputs { get; }
-
-        public StageRequest(string changeSetId, string projectId, string sourceProject, string sourceRevision,
-            string catalogRevision, string packageDigest, string proposalDigest, IReadOnlyList<string> stageInputs)
-        {
-            if (!IdDerivation.IsChangeSetId(changeSetId) || string.IsNullOrWhiteSpace(projectId)
-                || string.IsNullOrWhiteSpace(sourceProject) || string.IsNullOrWhiteSpace(sourceRevision)
-                || string.IsNullOrWhiteSpace(catalogRevision) || !ContentStamp.IsValidHex(packageDigest)
-                || !ContentStamp.IsValidHex(proposalDigest)) throw new ArgumentException("invalid_stage_request");
-            ChangeSetId = changeSetId;
-            ProjectId = projectId;
-            SourceProject = sourceProject;
-            SourceRevision = sourceRevision;
-            CatalogRevision = catalogRevision;
-            PackageDigest = packageDigest;
-            ProposalDigest = proposalDigest;
-            var copy = new List<string>();
-            foreach (string input in stageInputs)
-            {
-                StageDataPaths.ValidateInput(input);
-                copy.Add(input);
-            }
-            StageInputs = copy.AsReadOnly();
-        }
     }
 
     [JsonObject(MemberSerialization.OptIn)]
@@ -73,8 +38,8 @@ namespace GameCore.Studio.Edit
     public sealed class StageVerificationRequest
     {
         [JsonProperty("signedVerdict")] public SignedVerdict SignedVerdict { get; }
-        [JsonProperty("expected")] public StageRequest Expected { get; }
-        public StageVerificationRequest(SignedVerdict signedVerdict, StageRequest expected)
+        [JsonProperty("expected")] public StageCandidateRequest Expected { get; }
+        public StageVerificationRequest(SignedVerdict signedVerdict, StageCandidateRequest expected)
         {
             SignedVerdict = signedVerdict;
             Expected = expected;
@@ -103,14 +68,7 @@ namespace GameCore.Studio.Edit
 
         public static void ValidateInput(string path)
         {
-            ValidateRelative(path);
-            if (!path.StartsWith("Assets/", StringComparison.Ordinal)) throw new ArgumentException("stage_input_forbidden");
-            switch (Path.GetExtension(path).ToLowerInvariant())
-            {
-                case ".png": case ".jpg": case ".jpeg": case ".webp": case ".wav": case ".ogg": case ".mp3":
-                case ".json": case ".txt": case ".csv": case ".fbx": case ".glb": case ".gltf": return;
-                default: throw new ArgumentException("stage_input_forbidden");
-            }
+            StageCandidateRequest.ValidateStageInput(path);
         }
 
         public static void ValidateProposal(JObject proposal)

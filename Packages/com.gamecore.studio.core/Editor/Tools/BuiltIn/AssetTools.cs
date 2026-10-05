@@ -1,5 +1,5 @@
 // GameCore.Studio.Edit - asset built-ins (docs/studio/03-authoring-contracts.md s5, s6; 02 s5).
-//   asset.import       verified import: the bytes (a retained artifact, or a file checked against an expected sha256)
+//   asset.import       verified import: the bytes (a retained artifact)
 //                      are written under Assets/, imported with importer settings, and re-hashed on disk
 //   asset.generate     opens an etos task through IAgentGateway (P2.2); NotConfigured until a gateway is registered
 //   mechanism.propose  opens a mechanic task through IAgentGateway; never applied directly (staging lane)
@@ -51,9 +51,9 @@ namespace GameCore.Studio.Edit
         {
             outcome = null;
             problem = null;
-            if (!ToolSupport.IsSafeAssetPath(path))
+            if (MediaImportPolicy.Validate(context.Runtime.Paths, path, importer) is string refusal)
             {
-                problem = "'" + path + "' is not a path under Assets/";
+                problem = refusal;
                 return false;
             }
 
@@ -78,7 +78,9 @@ namespace GameCore.Studio.Edit
                 previousSha = fileSha;
             }
 
-            bool changed = !existed || !string.Equals(previousSha, digest, StringComparison.Ordinal);
+            bool changed = !existed || !string.Equals(previousSha, digest, StringComparison.Ordinal) || (importer != null && importer.HasValues);
+            outcome = new ImportOutcome(path, digest, !existed, changed, previousSha, previousMeta);
+            context.PrepareInverse(InverseOf(outcome), true);
             string? importProblem = null;
             context.OutsideAssetEditing(() =>
             {
@@ -91,6 +93,7 @@ namespace GameCore.Studio.Edit
                 if (changed)
                 {
                     File.WriteAllBytes(full, bytes);
+                    context.Runtime.Engine.Options.FaultHook?.Invoke(EngineFaultPoint.AfterFileWrite, context.Operation.OpId);
                 }
 
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
@@ -195,12 +198,10 @@ namespace GameCore.Studio.Edit
                 ToolTier.Compose,
                 RuntimeApply.Live,
                 false,
-                "Verified import: write a retained artifact (or a file whose sha256 is given) to 'path' under Assets/, import it with importer settings and re-check its sha256 on disk. The bytes are retained in Studio/Artifacts.",
+                "Verified import: write a retained media artifact to 'path' under Assets/, import it with importer settings and re-check its sha256 on disk. The bytes are retained in Studio/Artifacts.",
                 null,
                 Arg("path", ValueTypes.String, true, "Destination asset path under Assets/."),
-                Arg("artifact", ValueTypes.Artifact, false, "A retained artifact: { \"artifact\": \"sha256:...\" }."),
-                Arg("source", ValueTypes.String, false, "Absolute path of a file to import (with 'sha256')."),
-                Arg("sha256", ValueTypes.String, false, "Expected sha256 (hex) of 'source'."),
+                Arg("artifact", ValueTypes.Artifact, true, "A retained artifact: { \"artifact\": \"sha256:...\" }."),
                 Arg("importer", ValueTypes.Object, false, "Importer settings (public importer properties by name).")))
         {
         }
@@ -208,41 +209,13 @@ namespace GameCore.Studio.Edit
         public override ToolStageResult Stage(EditContext context)
         {
             ToolStageResult result = new ToolStageResult();
-            if (!ToolSupport.IsSafeAssetPath(context.StringArg("path")))
-            {
-                result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "'path' must be a path under Assets/ without '..'."));
-            }
-
+            string? problem = MediaImportPolicy.Validate(context.Runtime.Paths, context.StringArg("path"), context.Arg("importer") as JObject);
+            if (problem != null) result.Add(context.Problem(MediaImportPolicy.Code(problem), problem));
+            if (context.Arg("source") != null || context.Arg("sha256") != null)
+                result.Add(context.Problem(DiagnosticCodes.ArtifactSourceForbidden, "artifact_source_forbidden: sources must be retained artifact digests."));
             string? digest = ArtifactDigest(context.Arg("artifact"));
-            string? source = context.StringArg("source");
-            if ((digest == null) == (source == null))
-            {
-                result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "Give exactly one of 'artifact' and 'source'."));
-                return result;
-            }
-
-            if (digest != null && !context.Artifacts.Has(digest))
-            {
-                result.Add(context.Problem(DiagnosticCodes.StageFailed, "Artifact sha256:" + digest + " is not retained in Studio/Artifacts."));
-            }
-
-            if (source != null)
-            {
-                string? expected = context.StringArg("sha256");
-                if (!ContentStamp.IsValidHex(expected))
-                {
-                    result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "A verified import of 'source' needs 'sha256' (64 lowercase hex digits)."));
-                }
-                else if (!File.Exists(source))
-                {
-                    result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "Source file " + source + " does not exist."));
-                }
-                else if (!string.Equals(ContentStamp.Sha256Hex(File.ReadAllBytes(source)), expected, StringComparison.Ordinal))
-                {
-                    result.Add(context.Problem(DiagnosticCodes.ValidationFailed, "Source file " + source + " does not match sha256 " + expected + "."));
-                }
-            }
-
+            if (digest == null) result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "A retained artifact digest is required."));
+            else if (!context.Artifacts.Has(digest)) result.Add(context.Problem(DiagnosticCodes.StageFailed, "Artifact is not retained."));
             return result;
         }
 
@@ -250,32 +223,14 @@ namespace GameCore.Studio.Edit
         {
             string? path = context.StringArg("path");
             string? digest = ArtifactDigest(context.Arg("artifact"));
-            string? source = context.StringArg("source");
-            if (path == null)
-            {
-                return OperationResult.Refused(DiagnosticCodes.InvalidArgs, "'path' is required.");
-            }
-
-            if (digest == null && source != null)
-            {
-                byte[] bytes = File.ReadAllBytes(source);
-                string actual = ContentStamp.Sha256Hex(bytes);
-                if (!string.Equals(actual, context.StringArg("sha256"), StringComparison.Ordinal))
-                {
-                    return OperationResult.Refused(DiagnosticCodes.ValidationFailed, "Source file " + source + " hashes to " + actual + ", not the expected sha256.");
-                }
-
-                digest = context.Artifacts.Put(bytes, null);
-            }
-
-            if (digest == null)
-            {
-                return OperationResult.Refused(DiagnosticCodes.InvalidArgs, "Give 'artifact' or 'source'.");
-            }
+            ToolStageResult checks = Stage(context);
+            if (!checks.Ok) return OperationResult.Refused(checks.Diagnostics[0].Code, checks.Diagnostics[0].Message);
+            if (path == null || digest == null) return OperationResult.Refused(DiagnosticCodes.InvalidArgs, "path and artifact are required.");
 
             if (!AssetImporting.Import(context, digest, path, context.Arg("importer") as JObject, out ImportOutcome? outcome, out string? problem))
             {
-                return OperationResult.Failed(DiagnosticCodes.StageFailed, problem ?? "import failed");
+                return OperationResult.Failed(DiagnosticCodes.StageFailed, problem ?? "import failed")
+                    .WithAssetLevelInverse(outcome == null ? Array.Empty<Operation>() : AssetImporting.InverseOf(outcome));
             }
 
             UnityEngine.Object? asset = AssetDatabase.LoadMainAssetAtPath(path);
@@ -448,6 +403,7 @@ namespace GameCore.Studio.Edit
                 replacedSha = fileSha;
             }
 
+            context.PrepareInverse(AssetImporting.InverseOf(new ImportOutcome(path, digest, !existed, true, replacedSha, replacedMeta)), true);
             context.OutsideAssetEditing(() =>
             {
                 string? directory = Path.GetDirectoryName(path)?.Replace('\\', '/');
@@ -513,6 +469,7 @@ namespace GameCore.Studio.Edit
             }
 
             ToolSupport.RetainAssetFiles(context, path, out string fileSha, out string? metaSha);
+            context.PrepareInverse(AssetImporting.InverseOf(new ImportOutcome(path, fileSha, false, true, fileSha, metaSha)), true);
             bool deleted = false;
             context.OutsideAssetEditing(() => deleted = AssetDatabase.DeleteAsset(path));
             if (!deleted)

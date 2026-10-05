@@ -92,6 +92,16 @@ namespace GameCore.Studio.Model
 
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             CheckEnvelope(changeSet, diagnostics);
+            bool runtimeOnly = false;
+            bool authored = false;
+            foreach (Operation operation in changeSet.Operations)
+            {
+                ToolEntry? entry = _catalog.FindTool(operation.Tool);
+                runtimeOnly |= entry?.RuntimeOnly == true;
+                authored |= entry != null && !entry.RuntimeOnly && !entry.ReadOnly;
+            }
+            if (runtimeOnly && authored && changeSet.EffectivePolicy == ApplyPolicy.AllOrNothing)
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.Refused, "runtime_asset_mix: runtime actions cannot share AllOrNothing with authored edits."));
             if (_options.Mode == ValidationMode.Candidate)
             {
                 CheckCandidateMode(changeSet, diagnostics);

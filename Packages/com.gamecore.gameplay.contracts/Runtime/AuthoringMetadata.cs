@@ -157,6 +157,8 @@ namespace GameCore.Gameplay.Contracts
 
         /// <summary>A pure tool (inspection, simulation, explanation): Studio may invoke it directly; it changes nothing.</summary>
         public bool ReadOnly { get; set; }
+
+        public bool RuntimeOnly { get; set; }
     }
 
     /// <summary>A tool argument (method parameter).</summary>
