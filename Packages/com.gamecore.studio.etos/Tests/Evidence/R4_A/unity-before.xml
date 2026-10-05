@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.4221383">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="467" result="Failed" site="Child" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.422138" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1683" name="Hollowmere.R4_A.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/r4-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R4_A.EditMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.412289" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3928717" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1684" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.412013" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1685" name="R4_A" fullname="Hollowmere.R4_A" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.411883" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1679" name="ClientRegressionTests" fullname="Hollowmere.R4_A.ClientRegressionTests" classname="Hollowmere.R4_A.ClientRegressionTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.411098" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1682" name="P42_MEDIA_01_DirectVoiceOmitsUnownedLocalId" fullname="Hollowmere.R4_A.ClientRegressionTests.P42_MEDIA_01_DirectVoiceOmitsUnownedLocalId" methodname="P42_MEDIA_01_DirectVoiceOmitsUnownedLocalId" classname="Hollowmere.R4_A.ClientRegressionTests" runstate="Runnable" seed="829301614" result="Failed" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.203528" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  a local display ID does not establish companion ownership
+  Expected: null
+  But was:  <empty>
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R4_A.ClientRegressionTests+<P42_MEDIA_01_DirectVoiceOmitsUnownedLocalId>d__2.MoveNext () [0x00193] in ~/wkspace/gc-studio/r4-a/games/hollowmere/Assets/Hollowmere/Tests/R4_A/Editor/ClientRegressionTests.cs:70
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1681" name="P42_STARTUP_01_AutomaticPairingIgnoresProjectSettingsAndNamesMissingFile" fullname="Hollowmere.R4_A.ClientRegressionTests.P42_STARTUP_01_AutomaticPairingIgnoresProjectSettingsAndNamesMissingFile" methodname="P42_STARTUP_01_AutomaticPairingIgnoresProjectSettingsAndNamesMissingFile" classname="Hollowmere.R4_A.ClientRegressionTests" runstate="Runnable" seed="1232607037" result="Failed" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.015481" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  automatic startup must resolve the documented pairing path independently
+  Expected: not null
+  But was:  null
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R4_A.ClientRegressionTests.P42_STARTUP_01_AutomaticPairingIgnoresProjectSettingsAndNamesMissingFile () [0x00015] in ~/wkspace/gc-studio/r4-a/games/hollowmere/Assets/Hollowmere/Tests/R4_A/Editor/ClientRegressionTests.cs:45
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1680" name="P42_VOICE_01_WaitsForSourceAndPreservesFirstSamples" fullname="Hollowmere.R4_A.ClientRegressionTests.P42_VOICE_01_WaitsForSourceAndPreservesFirstSamples" methodname="P42_VOICE_01_WaitsForSourceAndPreservesFirstSamples" classname="Hollowmere.R4_A.ClientRegressionTests" runstate="Runnable" seed="54463823" result="Failed" start-time="2026-10-05 21:49:31Z" end-time="2026-10-05 21:49:31Z" duration="0.169241" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Microphone.Start is not sample readiness
+  Expected: False
+  But was:  True
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R4_A.ClientRegressionTests+<P42_VOICE_01_WaitsForSourceAndPreservesFirstSamples>d__0.MoveNext () [0x0011b] in ~/wkspace/gc-studio/r4-a/games/hollowmere/Assets/Hollowmere/Tests/R4_A/Editor/ClientRegressionTests.cs:28
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

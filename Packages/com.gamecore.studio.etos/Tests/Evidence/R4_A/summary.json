@@ -1,0 +1,52 @@
+{
+  "base": "c79a3832",
+  "source": "1dd5b491",
+  "host": "Linux build host",
+  "before": {
+    "dotnet": {
+      "failed": 1,
+      "passed": 0
+    },
+    "unity_initial": {
+      "result": "NotRun",
+      "reason": "1500-second timeout; no XML"
+    },
+    "unity_warm": {
+      "failed": 3,
+      "passed": 0,
+      "skipped": 0
+    }
+  },
+  "after": {
+    "dotnet": {
+      "passed": 69,
+      "failed": 0,
+      "skipped": 6
+    },
+    "unity": {
+      "total": 44,
+      "passed": 39,
+      "failed": 0,
+      "skipped": 5,
+      "inconclusive": 0,
+      "testDurationSeconds": 10.8977103,
+      "editorExit": 0,
+      "wrapperDisposition": "PARTIAL/NotRun for five env-gated skips",
+      "wrapperSeconds": 45
+    }
+  },
+  "sha256": {
+    "unity-final.xml": "9666295f8498355a870c844e861fc406017c38c84839d7ab34d8cae8fb7a0244",
+    "r4-a-before.log.gz": "1623bf290d36277a9797731483712e78ab1a6c30edf2890facb609d694fa044e",
+    "r4-a-before-warm.log.gz": "08553bd0e8201e507ae234fed62d90ae5a6d594fa27610a8f7a5321059d3ea69",
+    "commands.txt": "bb0b99666fb0f5503003c6460655dc74ff4852dcc160e12853b72400ed402818",
+    "client-before.trx": "07e4d2580df3564d948f281f49a67c66976b89355bb66058773c9b24d70add69",
+    "client-final.trx": "a6cb969e5d8309709c486e0889681f8d7346682560174fa78cfed52ef08a03da",
+    "unity-final.log.gz": "3e4d64f29f21c6403234cab2da8ed5d1f968a5337db287734c0b7bf0acb7956e",
+    "unity-before.xml": "dd52fbd704456c5c60b684ca9df0e30a033784109b0b76883c75b9952d9f68c4"
+  },
+  "rawSha256": {
+    "unity-before": "ef0cb9b9e067186cb613466f1cbe7ab801d5ded712d97a4e7e334a3744aa959a",
+    "unity-final": "b5b485595b5d97c0e4773cc9d3bd58f05a7479e103acc466000aa9278b107774"
+  }
+}
