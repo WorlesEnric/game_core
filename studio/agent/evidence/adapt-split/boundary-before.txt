@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_R2_06_ADAPT_SPLIT_world_editor_has_no_studio_reference (__main__.AdapterBoundaryTests.test_R2_06_ADAPT_SPLIT_world_editor_has_no_studio_reference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/adapt-split/Packages/com.gamecore.studio.gameplay/Tests~/test_boundary.py", line 30, in test_R2_06_ADAPT_SPLIT_world_editor_has_no_studio_reference
+    self.assertFalse(any(ref.startswith("GameCore.Studio.")
+AssertionError: True is not false : /home/worlesenric/wkspace/gc-studio/adapt-split/Packages/com.gamecore.gameplay.world/Editor/GameCore.Gameplay.World.Editor.asmdef
+
+======================================================================
+FAIL: test_R2_11_ADAPT_SPLIT_gameplay_closure_excludes_studio (__main__.AdapterBoundaryTests.test_R2_11_ADAPT_SPLIT_gameplay_closure_excludes_studio)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/adapt-split/Packages/com.gamecore.studio.gameplay/Tests~/test_boundary.py", line 20, in test_R2_11_ADAPT_SPLIT_gameplay_closure_excludes_studio
+    self.assertFalse(dependency.startswith("com.gamecore.studio."),
+AssertionError: True is not false : com.gamecore.gameplay.world requires excluded com.gamecore.studio.core
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (failures=2)

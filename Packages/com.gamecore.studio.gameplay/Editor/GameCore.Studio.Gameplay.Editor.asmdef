@@ -1,18 +1,21 @@
 {
-    "name": "GameCore.Gameplay.World.Editor",
+    "name": "GameCore.Studio.Gameplay.Editor",
     "rootNamespace": "GameCore.Gameplay.World.Editor",
     "references": [
-        "GameCore.Gameplay.Contracts",
-        "GameCore.Gameplay.Entities",
-        "GameCore.Gameplay.World"
+        "GameCore.Composition",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.Model",
+        "GameCore.Unity.App"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
