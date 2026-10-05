@@ -1,6 +1,6 @@
 #nullable enable
 // GameCore.Studio.Edit - the Unity implementations of the admission seams (P2.4):
-//   UnityAdmissionCompiler      AssetDatabase refresh + package re-resolve + script compilation; compile errors are
+//   UnityAdmissionCompiler      package re-resolve, then AssetDatabase refresh + script compilation; compile errors are
 //                               reported in this domain, a clean compile ends in a domain reload (AdmissionResumer);
 //   ReflectionAdmissionCatalog  the world's catalog fingerprint through GameCore.Gameplay.Compile.Entry.Verify (the
 //                               in-memory re-bake of the project's WorldDefinition) and a mechanism catalog's
@@ -19,9 +19,16 @@ using UnityEditor.Compilation;
 
 namespace GameCore.Studio.Edit
 {
-    /// <summary>Recompiles the open project.</summary>
+    /// <summary>
+    /// Recompiles the open project after an admission wrote or removed a package: the Package Manager re-resolves first
+    /// (so versionDefines and the assembly set follow the new package list), then the scripts compile. Compile errors are
+    /// reported in this domain; a clean compile ends in a domain reload (AdmissionResumer continues).
+    /// </summary>
     public sealed class UnityAdmissionCompiler : IAdmissionCompiler
     {
+        /// <summary>Seconds to wait for the Package Manager to register the changed package list.</summary>
+        public double ResolveTimeoutSeconds { get; set; } = 60;
+
         /// <summary>Seconds to wait for a compile to start before concluding nothing needed compiling.</summary>
         public double StartTimeoutSeconds { get; set; } = 90;
 
@@ -33,9 +40,13 @@ namespace GameCore.Studio.Edit
             }
 
             List<string> errors = new List<string>();
+            bool registered = false;
+            bool compiling = false;
             bool started = false;
             bool finished = false;
-            double deadline = EditorApplication.timeSinceStartup + StartTimeoutSeconds;
+            double resolveDeadline = EditorApplication.timeSinceStartup + ResolveTimeoutSeconds;
+            double startDeadline = double.MaxValue;
+            Action<UnityEditor.PackageManager.PackageRegistrationEventArgs>? onRegistered = null;
             Action<object>? onStarted = null;
             Action<string, CompilerMessage[]>? onAssembly = null;
             Action<object>? onFinished = null;
@@ -43,12 +54,37 @@ namespace GameCore.Studio.Edit
 
             void Unsubscribe()
             {
+                UnityEditor.PackageManager.Events.registeredPackages -= onRegistered;
                 CompilationPipeline.compilationStarted -= onStarted;
                 CompilationPipeline.assemblyCompilationFinished -= onAssembly;
                 CompilationPipeline.compilationFinished -= onFinished;
                 EditorApplication.update -= tick;
             }
 
+            void BeginCompile(string why)
+            {
+                if (compiling)
+                {
+                    return;
+                }
+
+                // Only compiles from here on count: a compile against the stale package list (before the Package
+                // Manager registered the change) would report errors the real compile does not have.
+                compiling = true;
+                startDeadline = EditorApplication.timeSinceStartup + StartTimeoutSeconds;
+                CompilationPipeline.compilationStarted += onStarted;
+                CompilationPipeline.assemblyCompilationFinished += onAssembly;
+                CompilationPipeline.compilationFinished += onFinished;
+                UnityEngine.Debug.Log("[GameCore Studio] stage: compiling (" + reason + "; " + why + ")");
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+                CompilationPipeline.RequestScriptCompilation();
+            }
+
+            onRegistered = _ =>
+            {
+                registered = true;
+                BeginCompile("package list registered");
+            };
             onStarted = _ => started = true;
             onAssembly = (assembly, messages) =>
             {
@@ -62,7 +98,7 @@ namespace GameCore.Studio.Edit
             };
             onFinished = _ =>
             {
-                if (finished)
+                if (finished || !started)
                 {
                     return;
                 }
@@ -81,21 +117,23 @@ namespace GameCore.Studio.Edit
                     return;
                 }
 
-                if (!started && !EditorApplication.isCompiling && EditorApplication.timeSinceStartup > deadline)
+                if (!compiling && !registered && EditorApplication.timeSinceStartup > resolveDeadline && !EditorApplication.isUpdating)
+                {
+                    BeginCompile("no package change registered in " + ResolveTimeoutSeconds + " s");
+                    return;
+                }
+
+                if (compiling && !started && !EditorApplication.isCompiling && EditorApplication.timeSinceStartup > startDeadline)
                 {
                     finished = true;
                     Unsubscribe();
                     done(new AdmissionCompileResult(true, false, "nothing needed compiling"));
                 }
             };
-            CompilationPipeline.compilationStarted += onStarted;
-            CompilationPipeline.assemblyCompilationFinished += onAssembly;
-            CompilationPipeline.compilationFinished += onFinished;
+            UnityEditor.PackageManager.Events.registeredPackages += onRegistered;
             EditorApplication.update += tick;
-            UnityEngine.Debug.Log("[GameCore Studio] stage: recompiling (" + reason + ")");
-            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            UnityEngine.Debug.Log("[GameCore Studio] stage: resolving packages (" + reason + ")");
             UnityEditor.PackageManager.Client.Resolve();
-            CompilationPipeline.RequestScriptCompilation();
         }
     }
 

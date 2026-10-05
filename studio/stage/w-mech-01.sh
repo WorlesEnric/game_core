@@ -5,7 +5,11 @@
 #   hash returns to its value before the admission.
 #
 # Usage (inside a packet clone on the host, e.g. ~/wkspace/gc-studio/p2.4):
-#   studio/stage/w-mech-01.sh <evidence-dir>
+#   studio/stage/w-mech-01.sh <evidence-dir> [--reset-journal]
+#
+# The sample candidate has a fixed change-set id, and the journal never applies one change set twice (an undone entry
+# stays undone). --reset-journal removes that one id from the project's Studio journal first (journal file, redo stack,
+# stage records) so the walk can be repeated on a scratch clone; never use it on a creator's project.
 #
 # Every Unity Editor runs through studio/tools/unity-batch.sh (host-wide Unity lock, one Editor at a time, 600 s
 # silence watchdog, one retry on the known hang). The staged slot lives under GAMECORE_STAGE_ROOT
@@ -13,10 +17,11 @@
 # playmode.xml, undo.json, the redacted Unity logs, and w-mech-01.json (the summary). Exit 0 when every step passed.
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-  sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//' >&2
+if [[ $# -lt 1 || $# -gt 2 || ( $# -eq 2 && "$2" != "--reset-journal" ) ]]; then
+  sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
+reset_journal="${2:-}"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo="$(cd "${here}/../.." && pwd)"
 evidence="$(mkdir -p "$1" && cd "$1" && pwd)"
@@ -32,6 +37,31 @@ step() { printf '\n== %s (%s)\n' "$1" "$(date -Is)"; }
 fail() { echo "W-MECH-01 FAILED: $*" >&2; exit 1; }
 
 [[ -d "${package_dir}" ]] && fail "${package_dir} exists before the admission; remove it first"
+if [[ -n "${reset_journal}" ]]; then
+  step "reset the journal entry of ${change_set}"
+  python3 - "${project}" "${change_set}" <<'PY'
+import json, sys
+from pathlib import Path
+project, cs = Path(sys.argv[1]), sys.argv[2]
+for entry in (project / "Studio" / "History").glob(f"*/*/{cs}.json"):
+    entry.unlink()
+    print("removed", entry.relative_to(project))
+lib = project / "Library" / "GameCoreStudio"
+redo = lib / "redo.json"
+if redo.exists():
+    doc = json.loads(redo.read_text())
+    doc["stack"] = [x for x in doc.get("stack", []) if x != cs]
+    redo.write_text(json.dumps(doc))
+for name in ("verdicts.json", "admitted.json"):
+    path = lib / "stage" / name
+    if path.exists():
+        doc = json.loads(path.read_text())
+        doc = {k: v for k, v in doc.items() if k != cs and not (isinstance(v, dict) and v.get("changeSetId") == cs)}
+        path.write_text(json.dumps(doc, indent=2) + "\n")
+for path in (lib / "stage").glob(f"pending-{cs}.json"):
+    path.unlink()
+PY
+fi
 
 step "build gamecore-studio"
 (cd "${repo}/studio/agent" && ~/.cargo/bin/cargo build --quiet)
