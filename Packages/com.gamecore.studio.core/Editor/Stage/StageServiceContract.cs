@@ -92,13 +92,13 @@ namespace GameCore.Studio.Edit
 
     public static class StageDataPaths
     {
-        public static void ValidateRelative(string path)
+        public static void ValidateRelative(string path, bool allowEditor = false)
         {
             if (string.IsNullOrWhiteSpace(path) || Path.IsPathRooted(path) || path.Contains("\\") || path.Contains(":"))
                 throw new ArgumentException("stage_input_forbidden");
             foreach (string part in path.Split('/'))
-                if (part.Length == 0 || part == "." || part == ".." || part.Equals("Editor", StringComparison.OrdinalIgnoreCase)
-                    || part.Equals("Plugins", StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("stage_input_forbidden");
+                if (part.Length == 0 || part == "." || part == ".." || (!allowEditor && part.Equals("Editor", StringComparison.OrdinalIgnoreCase))
+                    || (!allowEditor && part.Equals("Plugins", StringComparison.OrdinalIgnoreCase))) throw new ArgumentException("stage_input_forbidden");
         }
 
         public static void ValidateInput(string path)
@@ -115,20 +115,21 @@ namespace GameCore.Studio.Edit
 
         public static void ValidateProposal(JObject proposal)
         {
+            if (proposal["stageInputs"] != null && proposal["stageInputs"] is not JArray) throw new ArgumentException("stage_input_forbidden");
             foreach (JToken input in proposal["stageInputs"] as JArray ?? new JArray()) ValidateInput(input.Value<string>() ?? "");
             foreach (string member in new[] { "directory", "tests" })
             {
                 JToken? path = proposal["rules"]?[member];
                 if (path != null) ValidateRelative(path.Value<string>() ?? "");
             }
-            if (proposal["allowUnsafe"] is JArray unsafeReasons && unsafeReasons.Count != 0)
+            if (proposal["allowUnsafe"] != null && (proposal["allowUnsafe"] is not JArray unsafeReasons || unsafeReasons.Count != 0))
                 throw new ArgumentException("stage_input_forbidden");
         }
 
         // Reject links in every ancestor before opening any candidate-controlled path.
         public static string ContainedFile(string root, string relative)
         {
-            ValidateRelative(relative);
+            ValidateRelative(relative, allowEditor: true);
             string fullRoot = Path.GetFullPath(root);
             string full = Path.GetFullPath(Path.Combine(fullRoot, relative));
             if (!full.StartsWith(fullRoot.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar, StringComparison.Ordinal))
