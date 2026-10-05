@@ -117,8 +117,56 @@ Every runtime re-registers its services on every attach (also after a restore), 
 
 ## Verification
 
-See "Host runs" below. No compile, build or test ran on the Mac. Mac-side checks: `tools/check_package_metadata.py`,
-`tools/check_game_core_csharp.py`, `tools/validate_game_core_docs.py`, `tools/check_contract_surface_parity.py` pass.
+No compile, build or test ran on the Mac. Mac-side checks pass: `tools/check_package_metadata.py`,
+`tools/check_game_core_csharp.py`, `tools/validate_game_core_docs.py` and `tools/check_contract_surface_parity.py`.
+Host runs went through `studio/tools/sync-to-host.sh p1.5`, `unity-compile.sh` and `dotnet-test.sh`, holding one
+Unity instance at a time. Results come from the NUnit XML and TRX files.
+
+| Run (host, commit) | Result |
+|---|---|
+| `dotnet-test.sh p1.5 dotnet/tests/GameCore.Rules.Gameplay.Tests` (c25e032) | PASS: 145/145. P1.5 adds `Ui/ScreenFlowRulesTests` (11 tests, 55 attribute lines including the TestCases) and `Audio/AudioRulesTests` (8 tests, 20 attribute lines). |
+| EditMode run A: P1_1 `AuthoringBakeTests` + P1_5 `UiAudioContentTests` (6295b57) | 10 passed, 1 skipped (the preview). The catalog was re-baked for the ui/audio entries. The content was authored: 11 clips, 10 documents, 92 bindings, 0 diagnostics. The outputs were fetched back and committed in 82c70fe. |
+| EditMode run B: `Hollowmere\.P1_5\.` and `Hollowmere\.P1_1\.` (4602cc0) | 28 passed, 0 failed, 1 skipped. All 16 P1.1 tests pass on the re-baked catalog. The skip is `PreviewScreenCapturesARenderTextureOrSkipsHeadless`, reason "GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor". `unity-compile.sh` labels an Ignored skip as FAIL, but no test failed. Logged lines: `P1.5-FLOW changes=10 accepted=10 refused=2 hostActions=1` and `P1.5-AUDIO accepted=7 refused=4`. After the run the host tree was clean, so re-authoring is byte-identical. |
+| PlayMode: `UiFlowHeadless` + P1.1 `ThreeRegionLoop` (4602cc0) | PASS 2/2 (headless). The `[P1.5-UIFLOW]` lines are in the table below. |
+
+`[P1.5-UIFLOW]` timings:
+
+| Step | Time | Frames |
+|---|---|---|
+| boot to menu | 64 ms | 0 |
+| menu to HUD | 5 ms | 1 |
+| travel to marsh, ambience zone committed | 3 ms | 2 |
+| save slot-1 | 66 ms | 2 |
+| load slot-1 to HUD on the restored root | 56 ms | 2 |
+| total | 205 ms | |
+
+Totals for the run: screenChanges=10, hostActions=2, presents=75, audioPresents=75, zoneRequests=1. The pump count
+was 30 over 30 frames, both before and after the restore, with no violation.
+
+What the tests cover:
+
+* **Binding maps.** Every binding of every one of the 10 documents names exactly one element in its UXML. Every
+  property and source is valid, and every button has a command.
+* **Asset integrity.** Every content asset is bound to its script.
+* **Validator and tools.** They refuse an unknown element (GP-UI-002) and a bad source (GP-UI-003) and leave the asset
+  unchanged.
+* **Procedural audio.** The clips render deterministically and are byte-equal to the committed `.wav` files, with the
+  SHA-256 recorded in the manifest. Loops have no click at the seam, and every clip imports as an AudioClip.
+* **Audio content.** The mixer exposes every parameter. There are three ambiences, three music states, the explore
+  start state and the bell stinger.
+* **Media generation.** The generate tools answer NotConfigured (GP-AUD-020) and write nothing.
+* **Screen flow.** It runs through the committed slots: menu, new game, HUD, pause, settings, pause, HUD, journal,
+  inventory, HUD. The two refusals (NothingToClose, TransitionNotAllowed) are traced.
+* **Saving without a service.** The save screen shows GP-UI-014 and commits it as `ui.message`.
+* **Dialogue.** The dialogue view receives the view model. Navigation skips disabled choices, and Confirm chooses
+  through `IDialogueInput`.
+* **Audio kernel.** It handles music state with a stinger, refusals (unknown state, unchanged, unknown channel, out of
+  range), volume into slot, mixer dB, the PlayerPrefs mirror and the settings model, sfx found and missing, voice
+  play and stop, and feedback ids through the `sfx.` prefix.
+* **Ambience.** It follows RegionEntered (village, marsh, belfry), and the HUD banner names the region.
+* **PlayMode, `UiFlowHeadless`.** It goes menu, new game, HUD; pause and resume; pause, save, slot-1 listed, load,
+  restore, HUD. On the restored root the UI and audio re-attach and the ambience zone is restored. It also covers the
+  dialogue view model, ambience on RegionEntered, and one pump per frame.
 
 ## Files outside my exclusive paths (integrator)
 
@@ -127,7 +175,7 @@ See "Host runs" below. No compile, build or test ran on the Mac. Mac-side checks
   Hollowmere catalog outputs (`World/Generated/HollowmereCatalog.g.cs`, `World/Catalog/*`,
   `World/Hollowmere.manifest.asset`). Other packets that append catalog entries need one re-bake after the merge.
 * `dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj` (two Compile globs).
-* `UiWorldExtension.cs`/`AudioWorldExtension.cs` pass `null` schema defaults (no `GameCore.Composition` reference).
+* `games/hollowmere/Packages/manifest.json` and `packages-lock.json` (three packages added; the host import left the lock unchanged).
 
 ## Open
 
