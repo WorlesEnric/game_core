@@ -1,0 +1,22 @@
+{
+  "policy": "AllOrNothing",
+  "state": "Failed",
+  "ok": false,
+  "rolledBack": true,
+  "milliseconds": 131.9,
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Failed",
+      "code": "Refused",
+      "detail": "entity.applyOverride failed: ArgumentException: GP-ENT-004: tint is #rrggbb"
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "Refused",
+      "message": "entity.applyOverride failed: ArgumentException: GP-ENT-004: tint is #rrggbb",
+      "where": "op1"
+    }
+  ]
+}

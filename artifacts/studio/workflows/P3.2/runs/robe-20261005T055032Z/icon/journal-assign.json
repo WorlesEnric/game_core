@@ -1,0 +1,38 @@
+{
+  "id": "cs_01M45A15448CBY7T2ATT23A4QJ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Assign the generated lantern icon to the Lantern item",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "assign",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "stamp": "sha256:e3206d52eb9cd8ef6cf9ac6c6db2c8e44ccb27ad68bd71ce0615d0427022f411"
+      },
+      "args": {
+        "field": "icon",
+        "value": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png"
+      }
+    }
+  ],
+  "state": "Rejected",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Refused",
+      "code": "InvalidArgs",
+      "detail": "'icon': the reference resolves to a Texture2D, expected Sprite."
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:54:18.374Z"
+  }
+}
