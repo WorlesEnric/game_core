@@ -1,0 +1,233 @@
+{
+  "result": "refused",
+  "changeSetId": "cs_01M45D97CCSK3H6G1HKN50Z30A",
+  "requests": [
+    "cs_01M45D97CCSK3H6G1HKN50Z30A"
+  ],
+  "tasks": [],
+  "row": {
+    "state": "refused",
+    "label": "refused",
+    "worker": "",
+    "etosStatus": "",
+    "localState": "submit_failed",
+    "progress": "",
+    "waitingReason": "",
+    "question": "",
+    "parent": "",
+    "diagnostics": [
+      {
+        "code": "bad_request",
+        "message": "toolCatalog does not fit tool-catalog.schema.json",
+        "data": {
+          "status": 400,
+          "diagnostics": [
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/0/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/4)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/5)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/7)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/6/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/7/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/14/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/14/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/16/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/17/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/20/fields/3)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/27/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/28/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/31/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/31/fields/2)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/34/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/35/fields/2)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/38/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/38/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/39/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/39/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/40/fields/1)"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "view": {
+    "state": "requested",
+    "taskStatus": null,
+    "attempt": 0,
+    "local": "submit_failed",
+    "outcome": null,
+    "outcomeLabel": "requested",
+    "diagnostics": [
+      {
+        "code": "bad_request",
+        "message": "toolCatalog does not fit tool-catalog.schema.json",
+        "data": {
+          "status": 400,
+          "diagnostics": [
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/0/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/4)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/5)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/5/fields/7)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/6/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/7/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/14/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/14/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/16/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/17/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/20/fields/3)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/27/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/28/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/31/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/31/fields/2)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/34/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/35/fields/2)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/38/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/38/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/39/fields/0)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/39/fields/1)"
+            },
+            {
+              "code": "InvalidArgs",
+              "message": "toolCatalog: Additional properties are not allowed ('structural' was unexpected) (at /objectTypes/40/fields/1)"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

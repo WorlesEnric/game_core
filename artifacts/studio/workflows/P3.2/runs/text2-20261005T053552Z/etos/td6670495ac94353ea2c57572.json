@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "td6670495ac94353ea2c57572",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45910cz9asxaptxtdt374g0",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45910CZ9ASXAPTXTDT374G0 (attempt 0): Make one of them patrol around the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need the well’s location to lay out a patrol route around it. Please select the well along with the NPCs, or provide its world coordinates.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791178605026,
+    "started_at": 1791178605028,
+    "ended_at": 1791178660180
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:td6670495ac94353ea2c57572",
+    "limits": {},
+    "used": {
+      "input_tokens": 149428,
+      "micro_usd": 0,
+      "output_tokens": 942,
+      "tokens": 150370
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 1875876,
+      "micro_usd": 0,
+      "output_tokens": 22905,
+      "tokens": 1898781
+    }
+  }
+}
+}

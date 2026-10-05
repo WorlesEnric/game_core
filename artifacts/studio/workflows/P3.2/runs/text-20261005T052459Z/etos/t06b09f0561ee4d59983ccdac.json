@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t06b09f0561ee4d59983ccdac",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m458d5jzjfa2xw49abwhdzaj",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M458D5JZJFA2XW49ABWHDZAJ (attempt 0): Make one of them patrol around the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need the well’s world-space position and an NPC definition selected for Maren, Pip, or Odd. The provided context contains neither the well’s location nor a target the patrol tool can use, so I wrote a clarification request instead of guessing.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791177955227,
+    "started_at": 1791177955247,
+    "ended_at": 1791178018935
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t06b09f0561ee4d59983ccdac",
+    "limits": {},
+    "used": {
+      "input_tokens": 121750,
+      "micro_usd": 0,
+      "output_tokens": 853,
+      "tokens": 122603
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 1248808,
+      "micro_usd": 0,
+      "output_tokens": 17263,
+      "tokens": 1266071
+    }
+  }
+}
+}

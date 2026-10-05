@@ -1,0 +1,27 @@
+{
+  "stage": "Invalid",
+  "ok": false,
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "entity.applyOverride",
+      "diagnostics": [
+        {
+          "code": "ScopeNotAllowed",
+          "message": "Target of 'op1' has no 'scope', but 'entity.applyOverride' only edits at Instance, Prefab.",
+          "hint": "Set the target ref's scope to one of the allowed scopes.",
+          "where": "op1"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op1' has no 'scope', but 'entity.applyOverride' only edits at Instance, Prefab.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op1"
+    }
+  ],
+  "previewMs": 112.5
+}

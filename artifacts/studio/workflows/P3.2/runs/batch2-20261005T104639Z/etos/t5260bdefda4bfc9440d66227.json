@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t5260bdefda4bfc9440d66227",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45tym7hxpkd761tt72bnwj8",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45TYM7HXPKD761TT72BNWJ8 (attempt 0): Arrange the selected crates evenly in a ring of radius 3 metres around the selected Village Well. Do not move the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "Wrote `/outputs/changeset.json` proposing three moves that place the selected crates evenly on a 3-metre ring around the Village Well. The well is not moved. Verified the proposed positions and output JSON.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791197401875,
+    "started_at": 1791197401883,
+    "ended_at": 1791197492754
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t5260bdefda4bfc9440d66227",
+    "limits": {},
+    "used": {
+      "input_tokens": 135855,
+      "micro_usd": 0,
+      "output_tokens": 2108,
+      "tokens": 137963
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 4692201,
+      "micro_usd": 0,
+      "output_tokens": 49831,
+      "tokens": 4742032
+    }
+  }
+}
+}

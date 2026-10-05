@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45DBSRM0KEXD0DQNMG2Z8CS",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: A small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png",
+        "artifact": {
+          "artifact": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08",
+      "name": "lantern_icon.png",
+      "mediaType": "image/png",
+      "bytes": 99265,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-eebe37eaa9b5a6f7f89f89c10ce8155c-2800000-0",
+                "assetGuid": "eebe37eaa9b5a6f7f89f89c10ce8155c",
+                "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png"
+              },
+              "stamp": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:52:32.917Z",
+    "applied": "2026-10-05T06:52:33.160Z"
+  }
+}

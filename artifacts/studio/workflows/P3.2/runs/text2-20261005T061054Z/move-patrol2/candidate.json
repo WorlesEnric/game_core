@@ -1,0 +1,165 @@
+{
+  "id": "cs_01M45B93ZY07E94WSV7YZGHJPD",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Move Maren two metres north and make her patrol around the well.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M45B93ZY96MJRQXGH2QN120V",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      }
+    ],
+    "frame": {
+      "camera": {
+        "position": [
+          -4.375,
+          0.75724995136261,
+          -49.157855987548835
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fov": 60.0,
+        "aspect": 2.3308270676691731
+      },
+      "viewport": [
+        1240,
+        532
+      ],
+      "image": "sha256:75dedd0031e66a90a0aeac430e677f438d3978276b3695f413fb8040a7134135"
+    },
+    "indexRevision": 1
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+        "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+        "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:57b73260aaaa85f5617bd4d6d267cf4ac9da2309f7cd84852d84df3a4580acb0"
+      },
+      "stamp": "sha256:57b73260aaaa85f5617bd4d6d267cf4ac9da2309f7cd84852d84df3a4580acb0"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "args": {
+        "position": [
+          -8.0,
+          0.0,
+          -6.0
+        ]
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op2",
+      "tool": "npc.setPatrol",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+        "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+        "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:57b73260aaaa85f5617bd4d6d267cf4ac9da2309f7cd84852d84df3a4580acb0"
+      },
+      "args": {
+        "points": [
+          [
+            -3.0,
+            0.0,
+            -4.9
+          ],
+          [
+            -3.0,
+            0.0,
+            1.1
+          ],
+          [
+            3.0,
+            0.0,
+            1.1
+          ],
+          [
+            3.0,
+            0.0,
+            -4.9
+          ]
+        ],
+        "waitSeconds": 1.5
+      },
+      "dependsOn": [
+        "op1"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "tb1fea55ca92175c876b9a7d3"
+    ]
+  }
+}

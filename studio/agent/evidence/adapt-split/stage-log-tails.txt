@@ -1,0 +1,60 @@
+out/logs/sandbox-probe-20261005T205520-2035944-a1.log
+			InitializePlatformSupportModulesInManaged (712ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (43ms)
+			ProcessInitializeOnLoadAttributes (112ms)
+			ProcessInitializeOnLoadMethodAttributes (45ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Done resolving packages in 0.09 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 3 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/probe-project/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/probe-project/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/probe-project/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+[ScriptCompilation] Requested script compilation because: Assembly Definition File(s) changed
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-d0b619ecfa34abe59a15995cc329d1f3
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/probe-project/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 33.5362ms
+Total cache size 0
+Unhandled exception during build: System.ArgumentOutOfRangeException: The path '/home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/tmp//nj930wb2.ba8/ipc_1_htc_0' is of an invalid length for use with domain sockets on this platform.  The length must be between 1 and 108 characters, inclusive.
+Parameter name: path
+Actual value was /home/worlesenric/.cache/gamecore-studio/adapt-split/service/node-HHFRTN/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/tmp//nj930wb2.ba8/ipc_1_htc_0.
+  at System.Net.Sockets.UnixDomainSocketEndPoint..ctor (System.String path) [0x0005c] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at System.IO.Pipes.NamedPipeServerStream+SharedServer..ctor (System.String path, System.Int32 maxCount) [0x00036] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at System.IO.Pipes.NamedPipeServerStream+SharedServer.Get (System.String path, System.Int32 maxCount) [0x00052] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at System.IO.Pipes.NamedPipeServerStream.Create (System.String pipeName, System.IO.Pipes.PipeDirection direction, System.Int32 maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, System.Int32 inBufferSize, System.Int32 outBufferSize, System.IO.HandleInheritability inheritability) [0x0001c] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at System.IO.Pipes.NamedPipeServerStream..ctor (System.String pipeName, System.IO.Pipes.PipeDirection direction, System.Int32 maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, System.Int32 inBufferSize, System.Int32 outBufferSize, System.IO.HandleInheritability inheritability) [0x000a6] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at System.IO.Pipes.NamedPipeServerStream..ctor (System.String pipeName, System.IO.Pipes.PipeDirection direction, System.Int32 maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, System.Int32 inBufferSize, System.Int32 outBufferSize) [0x00000] in <8fa1db1727534b569829586e7972b1e6>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.Pipes.NamedPipeServerStream..ctor(string,System.IO.Pipes.PipeDirection,int,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,int,int)
+  at IPCConnection.Create () [0x00060] in /home/bokken/build/output/unity/unity/Tools/Bee/ipc/csharp_lib.cs:46 
+  at Bee.BeeDriver.BeeDriver_RunBackend.RunBackend (Bee.BeeDriver.InternalState state, NiceIO.NPath newDagJsonFile, System.Action`1[T] nodeFinishedCallback, Bee.Core.Track mainAsyncTrack) [0x000d2] in /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver_RunBackend.cs:29 
+  at Bee.BeeDriver.BeeDriver.EntryPoint (Bee.BeeDriver.InternalState state) [0x0011b] in /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:138 
+  at Bee.BeeDriver.BeeDriver+<>c__DisplayClass0_0.<BuildAsync>b__1 () [0x0002d] in /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:82 
+  at Bee.BeeDriver.BeeDriver.AwaitAndCatchExceptions (System.Func`1[TResult] action) [0x00028] in /home/bokken/build/output/unity/unity/Tools/Bee/Bee.BeeDriver2/BeeDriver.cs:311 
+AssetDatabase: script compilation time: 0.303123s
+Scripts have compiler errors.
+
+Aborting batchmode due to failure:
+Scripts have compiler errors.

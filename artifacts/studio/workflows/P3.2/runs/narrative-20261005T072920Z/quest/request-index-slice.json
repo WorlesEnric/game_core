@@ -1,0 +1,3127 @@
+{
+  "revision": 1,
+  "project": "hollowmere",
+  "nodes": [
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+        "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+        "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+        "path": "Assets/Hollowmere/Quests/DrownedBell.asset",
+        "scope": "Definition",
+        "stamp": "sha256:7647494ba5af2faade84e69b3bdb956de1c6bf1821fe55daa6241f3dccc2df6d"
+      },
+      "type": "quest.quest",
+      "name": "DrownedBell",
+      "fields": {
+        "branchNames": {
+          "value": [
+            "pay Odd",
+            "persuade Odd"
+          ],
+          "type": "string[]"
+        },
+        "objectives": {
+          "value": [
+            {
+              "stage": 0,
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "8508a66a-cbc1-4729-9be5-fb7befe04391",
+                "global": "GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0",
+                "assetGuid": "c0058a7ebedf01ab3996bdb19fb6b8a5",
+                "path": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Hear Maren out"
+            },
+            {
+              "stage": 1,
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+                "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+                "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+                "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Open the marsh gate"
+            },
+            {
+              "stage": 1,
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "0f06b03c-98f7-4b7a-b4c7-70950667b31a",
+                "global": "GlobalObjectId_V1-3-d3b7d356633b6b09d852e26f0996d15f-11400000-0",
+                "assetGuid": "d3b7d356633b6b09d852e26f0996d15f",
+                "path": "Assets/Hollowmere/Dialogue/Facts/odd_paid.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 1,
+              "text": "Pay Odd three old coins"
+            },
+            {
+              "stage": 1,
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "bd21363a-d9b9-479c-ba80-dde87c541ae8",
+                "global": "GlobalObjectId_V1-3-5e6a96fd4444b092d8de598f9ccd195e-11400000-0",
+                "assetGuid": "5e6a96fd4444b092d8de598f9ccd195e",
+                "path": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 2,
+              "text": "Persuade Odd"
+            },
+            {
+              "stage": 2,
+              "kind": "Collect",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "e51c9d68-54de-4f7d-96e4-23b8807194ee",
+                "global": "GlobalObjectId_V1-3-8c9c7994823468958836995b0fb06237-11400000-0",
+                "assetGuid": "8c9c7994823468958836995b0fb06237",
+                "path": "Assets/Hollowmere/Items/BellClapper.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Find the bell clapper"
+            },
+            {
+              "stage": 2,
+              "kind": "Reach",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Reach the Drowned Belfry"
+            },
+            {
+              "stage": 2,
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+                "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+                "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+                "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Ring the bell"
+            },
+            {
+              "stage": 3,
+              "kind": "Talk",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+                "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+                "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+              },
+              "targetEntityId": "",
+              "required": 1,
+              "branch": 0,
+              "text": "Talk to Maren"
+            }
+          ],
+          "type": "object[]"
+        },
+        "rewards": {
+          "value": [
+            {
+              "kind": "Item",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              },
+              "value": 1,
+              "branch": 0
+            },
+            {
+              "kind": "Fact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "9ad3fb8b-f42d-45fa-9fef-5d5ffb061752",
+                "global": "GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0",
+                "assetGuid": "d1df5cf368cc4f5198b9f871e51a4f47",
+                "path": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset"
+              },
+              "value": 1,
+              "branch": 0
+            },
+            {
+              "kind": "Item",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              },
+              "value": 3,
+              "branch": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "stages": {
+          "value": [
+            {
+              "title": "A silent bell",
+              "description": "Maren asked you to find the bell's clapper.",
+              "next": -1
+            },
+            {
+              "title": "The marsh gate",
+              "description": "Get past the marsh gate: pay Odd for the key, or persuade him.",
+              "next": -1
+            },
+            {
+              "title": "Ring the bell",
+              "description": "Find the clapper in Blackmere Marsh and ring the Drowned Bell.",
+              "next": -1
+            },
+            {
+              "title": "Return to Maren",
+              "description": "Tell Maren the bell has rung.",
+              "next": -1
+            }
+          ],
+          "type": "object[]"
+        },
+        "title": {
+          "value": "The Drowned Bell",
+          "type": "string"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Quests/DrownedBell.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e3206d52eb9cd8ef6cf9ac6c6db2c8e44ccb27ad68bd71ce0615d0427022f411"
+      },
+      "type": "inventory.item",
+      "name": "Lantern",
+      "fields": {
+        "displayName": {
+          "value": "Lantern",
+          "type": "string"
+        },
+        "maxStack": {
+          "value": 1,
+          "type": "int"
+        },
+        "price": {
+          "value": 12,
+          "type": "int"
+        },
+        "tags": {
+          "value": [
+            "tool"
+          ],
+          "type": "string[]"
+        },
+        "weight": {
+          "value": 900,
+          "unit": "g",
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/Lantern.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "78bdc449-3fc2-4935-8847-8c732163dd22",
+        "global": "GlobalObjectId_V1-3-e828e769813cc299199b3923378a957a-11400000-0",
+        "assetGuid": "e828e769813cc299199b3923378a957a",
+        "path": "Assets/Hollowmere/Rules/ReturnToMaren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:0fec0b17adfd295a17e01ac4df4756fdff185b8f4aa21a09bf7911d9c3ede9d8"
+      },
+      "type": "logic.rule",
+      "name": "ReturnToMaren",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "ShowMessage",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "Maren presses her old lantern into your hands."
+            },
+            {
+              "kind": "PlayAudio",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "sting.quest.complete"
+            }
+          ],
+          "type": "object[]"
+        },
+        "conditions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "cooldownMs": {
+          "value": 0,
+          "unit": "ms",
+          "type": "int"
+        },
+        "matchAnyValue": {
+          "value": true,
+          "type": "bool"
+        },
+        "maxFires": {
+          "value": 0,
+          "type": "int"
+        },
+        "once": {
+          "value": true,
+          "type": "bool"
+        },
+        "priority": {
+          "value": 0,
+          "type": "int"
+        },
+        "trigger": {
+          "value": "QuestCompleted",
+          "type": "enum"
+        },
+        "triggerEntityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "triggerValue": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "triggerSubject",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+            "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+            "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+            "path": "Assets/Hollowmere/Quests/DrownedBell.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/ReturnToMaren.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "global": "GlobalObjectId_V1-3-aa34df41224c5a86e88cda4d04edcb93-11400000-0",
+        "assetGuid": "aa34df41224c5a86e88cda4d04edcb93",
+        "path": "Assets/Hollowmere/Rules/HollowmereContent.asset",
+        "scope": "Definition",
+        "stamp": "sha256:bcc55b2da576614707329892158cf6668e9f4385610e3426de00044ce49f3374"
+      },
+      "type": "logic.contentSet",
+      "name": "HollowmereContent",
+      "refs": [
+        {
+          "field": "world",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "a2e71200-b7bb-4d4a-8aec-26370b7da0f3",
+            "global": "GlobalObjectId_V1-3-49606c49a08aa41318aaff0b48ed4be1-11400000-0",
+            "assetGuid": "49606c49a08aa41318aaff0b48ed4be1",
+            "path": "Assets/Hollowmere/World/Hollowmere.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "8508a66a-cbc1-4729-9be5-fb7befe04391",
+            "global": "GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0",
+            "assetGuid": "c0058a7ebedf01ab3996bdb19fb6b8a5",
+            "path": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "deae77f6-2b47-4c20-a4ab-11e1b8496514",
+            "global": "GlobalObjectId_V1-3-2531550305f486ff8b628d15490cbfc8-11400000-0",
+            "assetGuid": "2531550305f486ff8b628d15490cbfc8",
+            "path": "Assets/Hollowmere/Dialogue/Facts/maren_trusts_player.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "0f06b03c-98f7-4b7a-b4c7-70950667b31a",
+            "global": "GlobalObjectId_V1-3-d3b7d356633b6b09d852e26f0996d15f-11400000-0",
+            "assetGuid": "d3b7d356633b6b09d852e26f0996d15f",
+            "path": "Assets/Hollowmere/Dialogue/Facts/odd_paid.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "bd21363a-d9b9-479c-ba80-dde87c541ae8",
+            "global": "GlobalObjectId_V1-3-5e6a96fd4444b092d8de598f9ccd195e-11400000-0",
+            "assetGuid": "5e6a96fd4444b092d8de598f9ccd195e",
+            "path": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+            "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+            "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+            "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+            "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+            "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+            "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "a1381dc8-8045-4ba2-a1dc-8a2f5f5d8509",
+            "global": "GlobalObjectId_V1-3-9ee505637a2c9c8caac4a8cf29c6f3c6-11400000-0",
+            "assetGuid": "9ee505637a2c9c8caac4a8cf29c6f3c6",
+            "path": "Assets/Hollowmere/Dialogue/Facts/belfry_echo_freed.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "9ad3fb8b-f42d-45fa-9fef-5d5ffb061752",
+            "global": "GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0",
+            "assetGuid": "d1df5cf368cc4f5198b9f871e51a4f47",
+            "path": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "09ad393c-e99a-4165-8745-aab9f23ac790",
+            "global": "GlobalObjectId_V1-3-d0103ce49e12d99dd9038a920fd63554-11400000-0",
+            "assetGuid": "d0103ce49e12d99dd9038a920fd63554",
+            "path": "Assets/Hollowmere/Dialogue/Facts/pip_asked.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+            "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+            "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+            "path": "Assets/Hollowmere/Items/Lantern.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+            "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+            "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+            "path": "Assets/Hollowmere/Items/OldCoin.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e51c9d68-54de-4f7d-96e4-23b8807194ee",
+            "global": "GlobalObjectId_V1-3-8c9c7994823468958836995b0fb06237-11400000-0",
+            "assetGuid": "8c9c7994823468958836995b0fb06237",
+            "path": "Assets/Hollowmere/Items/BellClapper.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+            "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+            "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+            "path": "Assets/Hollowmere/Items/GateKey.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "392e67f7-738f-403d-81f1-52fb78205528",
+            "global": "GlobalObjectId_V1-3-3c69301ce51fa2d0fa432a6e78884f19-11400000-0",
+            "assetGuid": "3c69301ce51fa2d0fa432a6e78884f19",
+            "path": "Assets/Hollowmere/Items/PlayerInventory.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "15ce0205-6068-4b27-9c55-3b2084b0ec81",
+            "global": "GlobalObjectId_V1-3-614b0b4c9d2b1381bb23d90334fca2c9-11400000-0",
+            "assetGuid": "614b0b4c9d2b1381bb23d90334fca2c9",
+            "path": "Assets/Hollowmere/Items/OddsStall.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "16b73b9b-6003-42ad-982c-d85426d1dc64",
+            "global": "GlobalObjectId_V1-3-252b835b5a28412e9b34c2e136517819-11400000-0",
+            "assetGuid": "252b835b5a28412e9b34c2e136517819",
+            "path": "Assets/Hollowmere/Items/OldCoins_Village.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "43793255-287c-42c9-998b-fd8c45b448a2",
+            "global": "GlobalObjectId_V1-3-cf357e406505d1167a6d4209b9853177-11400000-0",
+            "assetGuid": "cf357e406505d1167a6d4209b9853177",
+            "path": "Assets/Hollowmere/Items/BellClapper_Marsh.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+            "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+            "assetGuid": "445637ba7c003e982be814e23a7fe908",
+            "path": "Assets/Hollowmere/Items/MarshLoot.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "3335bea3-1074-4a9e-bb5e-fbd62deea390",
+            "global": "GlobalObjectId_V1-3-11162b2cb02df3d3fa94070fbd2bb999-11400000-0",
+            "assetGuid": "11162b2cb02df3d3fa94070fbd2bb999",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasGateKey.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ee1253a8-ef88-4fb0-a173-6af02114b21c",
+            "global": "GlobalObjectId_V1-3-9a43e9b6f0756307db52fa33add92be2-11400000-0",
+            "assetGuid": "9a43e9b6f0756307db52fa33add92be2",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasBellClapper.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "1c70446b-7b7c-4fc7-8b5d-6dafb0de98c2",
+            "global": "GlobalObjectId_V1-3-20525d4762e7ea943baf62305ce6e41c-11400000-0",
+            "assetGuid": "20525d4762e7ea943baf62305ce6e41c",
+            "path": "Assets/Hollowmere/Rules/Conditions/MarenTrustsPlayer.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+            "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+            "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+            "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "39b2f636-d880-4a2f-bda0-2a6af23ec1ef",
+            "global": "GlobalObjectId_V1-3-c1de2c141423889659daf3556d78f3a3-11400000-0",
+            "assetGuid": "c1de2c141423889659daf3556d78f3a3",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasThreeOldCoins.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "45e8c82c-389b-49fb-aa35-e526fffc6c4a",
+            "global": "GlobalObjectId_V1-3-469b59b723897eb2494ae3706f6c9802-11400000-0",
+            "assetGuid": "469b59b723897eb2494ae3706f6c9802",
+            "path": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+            "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+            "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+            "path": "Assets/Hollowmere/Quests/DrownedBell.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "42f181e3-ef95-4ce3-82e7-2c2d0b79d494",
+            "global": "GlobalObjectId_V1-3-de277e8d1a615d2ff8aa2c0da24b5907-11400000-0",
+            "assetGuid": "de277e8d1a615d2ff8aa2c0da24b5907",
+            "path": "Assets/Hollowmere/Rules/Actions/OpenGate.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "0207a68e-bc01-457e-a2d4-69736a0658f0",
+            "global": "GlobalObjectId_V1-3-afdc14ab7f76fc461af6c6ebd2c0c6c0-11400000-0",
+            "assetGuid": "afdc14ab7f76fc461af6c6ebd2c0c6c0",
+            "path": "Assets/Hollowmere/Rules/Actions/RingBell.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "266d333d-2e6d-47e6-8e71-8004cf7f4aca",
+            "global": "GlobalObjectId_V1-3-88ad7492e109d8e92b568b9d4ce3a92d-11400000-0",
+            "assetGuid": "88ad7492e109d8e92b568b9d4ce3a92d",
+            "path": "Assets/Hollowmere/Rules/Actions/MarenIntro.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "c0b46d92-87ea-4b10-b523-3e28d5b338f2",
+            "global": "GlobalObjectId_V1-3-0dec731b43bfcc1148ebf294dc77ff1c-11400000-0",
+            "assetGuid": "0dec731b43bfcc1148ebf294dc77ff1c",
+            "path": "Assets/Hollowmere/Rules/Actions/MarenTrust.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "2beb7fe9-752d-4e57-a701-e3bf4a64de70",
+            "global": "GlobalObjectId_V1-3-1b459c779c5c6191b9a13e56b29434c6-11400000-0",
+            "assetGuid": "1b459c779c5c6191b9a13e56b29434c6",
+            "path": "Assets/Hollowmere/Rules/Actions/OddPersuaded.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "f8f82ca0-fc26-440b-87a3-75b5f13b721d",
+            "global": "GlobalObjectId_V1-3-9ff24c44b07c174059bcd8a609b1f7ff-11400000-0",
+            "assetGuid": "9ff24c44b07c174059bcd8a609b1f7ff",
+            "path": "Assets/Hollowmere/Rules/Actions/EchoFreed.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ca415c6a-b951-4501-b70f-594d657bb5a9",
+            "global": "GlobalObjectId_V1-3-608b1d37ab13b50eabfc835f39a42195-11400000-0",
+            "assetGuid": "608b1d37ab13b50eabfc835f39a42195",
+            "path": "Assets/Hollowmere/Rules/Actions/PipAsked.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+            "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+            "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+            "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+            "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+            "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+            "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+            "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+            "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+            "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+            "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318",
+            "global": "GlobalObjectId_V1-3-10d8def972356d3b0a656061428014c7-11400000-0",
+            "assetGuid": "10d8def972356d3b0a656061428014c7",
+            "path": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "6c1d9e42-8b7a-4f35-a0d3-e2f914b67c50",
+            "global": "GlobalObjectId_V1-3-b2805c306a69431eb950b9850ca57c3e-11400000-0",
+            "assetGuid": "b2805c306a69431eb950b9850ca57c3e",
+            "path": "Assets/Hollowmere/Rules/RingBellOnUse.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "12fd6b07-8dab-4d77-a1dc-ce30262983a5",
+            "global": "GlobalObjectId_V1-3-cc460c2442a1e8f209fda4ae7889d626-11400000-0",
+            "assetGuid": "cc460c2442a1e8f209fda4ae7889d626",
+            "path": "Assets/Hollowmere/Rules/BellKeepsGateOpen.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "de03f0af-388d-4797-9d6e-3af2faa2a466",
+            "global": "GlobalObjectId_V1-3-1ef9176dd9c40b581baca271b3771b6c-11400000-0",
+            "assetGuid": "1ef9176dd9c40b581baca271b3771b6c",
+            "path": "Assets/Hollowmere/Rules/EchoFreedAmbience.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ebee54ff-745b-4c42-8f41-bb5bd5efadee",
+            "global": "GlobalObjectId_V1-3-21b1e35853c0ba9ad9a6c36eb8bf7dad-11400000-0",
+            "assetGuid": "21b1e35853c0ba9ad9a6c36eb8bf7dad",
+            "path": "Assets/Hollowmere/Rules/OddPaidOnTrade.asset"
+          }
+        },
+        {
+          "field": "definitions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "78bdc449-3fc2-4935-8847-8c732163dd22",
+            "global": "GlobalObjectId_V1-3-e828e769813cc299199b3923378a957a-11400000-0",
+            "assetGuid": "e828e769813cc299199b3923378a957a",
+            "path": "Assets/Hollowmere/Rules/ReturnToMaren.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/HollowmereContent.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "0207a68e-bc01-457e-a2d4-69736a0658f0",
+        "global": "GlobalObjectId_V1-3-afdc14ab7f76fc461af6c6ebd2c0c6c0-11400000-0",
+        "assetGuid": "afdc14ab7f76fc461af6c6ebd2c0c6c0",
+        "path": "Assets/Hollowmere/Rules/Actions/RingBell.asset",
+        "scope": "Definition",
+        "stamp": "sha256:3a8b137cbb01ee87fa0811bb75c21cd79b8e840834f0250bf3977fb688a26b4d"
+      },
+      "type": "logic.actionSet",
+      "name": "RingBell",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+                "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+                "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+                "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "sfx.bell.toll"
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/RingBell.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "09ad393c-e99a-4165-8745-aab9f23ac790",
+        "global": "GlobalObjectId_V1-3-d0103ce49e12d99dd9038a920fd63554-11400000-0",
+        "assetGuid": "d0103ce49e12d99dd9038a920fd63554",
+        "path": "Assets/Hollowmere/Dialogue/Facts/pip_asked.asset",
+        "scope": "Definition",
+        "stamp": "sha256:7ca4eda943d75774c4d74a4dc745302641642943720065e69a2d8f189125737f"
+      },
+      "type": "narrative.fact",
+      "name": "pip_asked",
+      "fields": {
+        "factName": {
+          "value": "pip_asked",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": false,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/pip_asked.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "0f06b03c-98f7-4b7a-b4c7-70950667b31a",
+        "global": "GlobalObjectId_V1-3-d3b7d356633b6b09d852e26f0996d15f-11400000-0",
+        "assetGuid": "d3b7d356633b6b09d852e26f0996d15f",
+        "path": "Assets/Hollowmere/Dialogue/Facts/odd_paid.asset",
+        "scope": "Definition",
+        "stamp": "sha256:855b945ce7ff56ba16ff04ba8a1da5ba56fae3a7797b0d5ad82913861a0daf87"
+      },
+      "type": "narrative.fact",
+      "name": "odd_paid",
+      "fields": {
+        "factName": {
+          "value": "odd_paid",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/odd_paid.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "12fd6b07-8dab-4d77-a1dc-ce30262983a5",
+        "global": "GlobalObjectId_V1-3-cc460c2442a1e8f209fda4ae7889d626-11400000-0",
+        "assetGuid": "cc460c2442a1e8f209fda4ae7889d626",
+        "path": "Assets/Hollowmere/Rules/BellKeepsGateOpen.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e357311384a038bfaec5710bf9c38003cf967c8256ced3bcbd7e7c268fada665"
+      },
+      "type": "logic.rule",
+      "name": "BellKeepsGateOpen",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+                "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+                "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+                "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "type": "object[]"
+        },
+        "conditions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "cooldownMs": {
+          "value": 0,
+          "unit": "ms",
+          "type": "int"
+        },
+        "matchAnyValue": {
+          "value": false,
+          "type": "bool"
+        },
+        "maxFires": {
+          "value": 0,
+          "type": "int"
+        },
+        "once": {
+          "value": true,
+          "type": "bool"
+        },
+        "priority": {
+          "value": 0,
+          "type": "int"
+        },
+        "trigger": {
+          "value": "FactSet",
+          "type": "enum"
+        },
+        "triggerEntityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "triggerValue": {
+          "value": 1,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "triggerSubject",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+            "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+            "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+            "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/BellKeepsGateOpen.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+        "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+        "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+        "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset",
+        "scope": "Definition",
+        "stamp": "sha256:87eebc30c0ea039281ef167700cc1f83b613927a2aea89b400521b6c89667534"
+      },
+      "type": "logic.conditionSet",
+      "name": "BellRung",
+      "fields": {
+        "conditions": {
+          "value": [
+            {
+              "kind": "Fact",
+              "subject": {
+                "kind": "Definition",
+                "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+                "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+                "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+                "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "mode": {
+          "value": "All",
+          "type": "enum"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "15ce0205-6068-4b27-9c55-3b2084b0ec81",
+        "global": "GlobalObjectId_V1-3-614b0b4c9d2b1381bb23d90334fca2c9-11400000-0",
+        "assetGuid": "614b0b4c9d2b1381bb23d90334fca2c9",
+        "path": "Assets/Hollowmere/Items/OddsStall.asset",
+        "scope": "Definition",
+        "stamp": "sha256:12b7c03ff5f4cb396215bb9a56eedd7ddfcf58d09e6307a00ee63f1003c2b8d1"
+      },
+      "type": "inventory.vendor",
+      "name": "OddsStall",
+      "fields": {
+        "displayName": {
+          "value": "Odd's Stall",
+          "type": "string"
+        },
+        "stock": {
+          "value": [
+            {
+              "item": {
+                "kind": "Definition",
+                "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+                "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+                "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+                "path": "Assets/Hollowmere/Items/GateKey.asset"
+              },
+              "stock": 1,
+              "buyPrice": 3,
+              "sellPrice": 0,
+              "unlimited": false
+            }
+          ],
+          "type": "object[]"
+        },
+        "stockSlots": {
+          "value": 4,
+          "range": [
+            1.0,
+            64.0
+          ],
+          "type": "int"
+        },
+        "vendorEntityId": {
+          "value": "",
+          "type": "authoringId"
+        }
+      },
+      "refs": [
+        {
+          "field": "paymentItem",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+            "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+            "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+            "path": "Assets/Hollowmere/Items/OldCoin.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/OddsStall.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "16b73b9b-6003-42ad-982c-d85426d1dc64",
+        "global": "GlobalObjectId_V1-3-252b835b5a28412e9b34c2e136517819-11400000-0",
+        "assetGuid": "252b835b5a28412e9b34c2e136517819",
+        "path": "Assets/Hollowmere/Items/OldCoins_Village.asset",
+        "scope": "Definition",
+        "stamp": "sha256:8dd5b600fc3a2360da62a64fd206ec79f291fdf49141d411ca37e2ebbb84752e"
+      },
+      "type": "inventory.worldItem",
+      "name": "OldCoins_Village",
+      "fields": {
+        "count": {
+          "value": 3,
+          "type": "int"
+        },
+        "entityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "position": {
+          "value": [
+            4.0,
+            0.0,
+            -3.0
+          ],
+          "unit": "m",
+          "type": "vector3"
+        }
+      },
+      "refs": [
+        {
+          "field": "item",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+            "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+            "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+            "path": "Assets/Hollowmere/Items/OldCoin.asset"
+          }
+        },
+        {
+          "field": "region",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+            "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+            "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+            "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/OldCoins_Village.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+        "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+        "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+        "path": "Assets/Hollowmere/Items/OldCoin.asset",
+        "scope": "Definition",
+        "stamp": "sha256:05b791a17eb3efa70404a6a4630ba11ef29e08f1921d1fd7de8bb2ea24fa1d22"
+      },
+      "type": "inventory.item",
+      "name": "OldCoin",
+      "fields": {
+        "displayName": {
+          "value": "Old Coin",
+          "type": "string"
+        },
+        "maxStack": {
+          "value": 20,
+          "type": "int"
+        },
+        "price": {
+          "value": 1,
+          "type": "int"
+        },
+        "tags": {
+          "value": [
+            "currency"
+          ],
+          "type": "string[]"
+        },
+        "weight": {
+          "value": 10,
+          "unit": "g",
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/OldCoin.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "1c70446b-7b7c-4fc7-8b5d-6dafb0de98c2",
+        "global": "GlobalObjectId_V1-3-20525d4762e7ea943baf62305ce6e41c-11400000-0",
+        "assetGuid": "20525d4762e7ea943baf62305ce6e41c",
+        "path": "Assets/Hollowmere/Rules/Conditions/MarenTrustsPlayer.asset",
+        "scope": "Definition",
+        "stamp": "sha256:45cbbf92704996f1066193523081edc90c0f13ad9490d29b18bc18ef2e3ed581"
+      },
+      "type": "logic.conditionSet",
+      "name": "MarenTrustsPlayer",
+      "fields": {
+        "conditions": {
+          "value": [
+            {
+              "kind": "Fact",
+              "subject": {
+                "kind": "Definition",
+                "authoringId": "deae77f6-2b47-4c20-a4ab-11e1b8496514",
+                "global": "GlobalObjectId_V1-3-2531550305f486ff8b628d15490cbfc8-11400000-0",
+                "assetGuid": "2531550305f486ff8b628d15490cbfc8",
+                "path": "Assets/Hollowmere/Dialogue/Facts/maren_trusts_player.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "mode": {
+          "value": "All",
+          "type": "enum"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Conditions/MarenTrustsPlayer.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "266d333d-2e6d-47e6-8e71-8004cf7f4aca",
+        "global": "GlobalObjectId_V1-3-88ad7492e109d8e92b568b9d4ce3a92d-11400000-0",
+        "assetGuid": "88ad7492e109d8e92b568b9d4ce3a92d",
+        "path": "Assets/Hollowmere/Rules/Actions/MarenIntro.asset",
+        "scope": "Definition",
+        "stamp": "sha256:4d2b1099b776bcac705320c55d9b9f52d6038609eb696118ddeda175444eb04f"
+      },
+      "type": "logic.actionSet",
+      "name": "MarenIntro",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "8508a66a-cbc1-4729-9be5-fb7befe04391",
+                "global": "GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0",
+                "assetGuid": "c0058a7ebedf01ab3996bdb19fb6b8a5",
+                "path": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "StartQuest",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "0db698bb-d2d3-45b7-94cb-1bd81e90e6c2",
+                "global": "GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0",
+                "assetGuid": "c0b53079e6e09fd8e94d904622330c55",
+                "path": "Assets/Hollowmere/Quests/DrownedBell.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 0,
+              "text": ""
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/MarenIntro.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "2beb7fe9-752d-4e57-a701-e3bf4a64de70",
+        "global": "GlobalObjectId_V1-3-1b459c779c5c6191b9a13e56b29434c6-11400000-0",
+        "assetGuid": "1b459c779c5c6191b9a13e56b29434c6",
+        "path": "Assets/Hollowmere/Rules/Actions/OddPersuaded.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e8a3b009bb980ee35f422c2c568e0a12c834819a3da0711829ec0ddc3bfe5238"
+      },
+      "type": "logic.actionSet",
+      "name": "OddPersuaded",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "bd21363a-d9b9-479c-ba80-dde87c541ae8",
+                "global": "GlobalObjectId_V1-3-5e6a96fd4444b092d8de598f9ccd195e-11400000-0",
+                "assetGuid": "5e6a96fd4444b092d8de598f9ccd195e",
+                "path": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "Grant",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+                "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+                "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+                "path": "Assets/Hollowmere/Items/GateKey.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/OddPersuaded.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "3335bea3-1074-4a9e-bb5e-fbd62deea390",
+        "global": "GlobalObjectId_V1-3-11162b2cb02df3d3fa94070fbd2bb999-11400000-0",
+        "assetGuid": "11162b2cb02df3d3fa94070fbd2bb999",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasGateKey.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e25beef041da988d6571a2cd8984f38fc4079bfb7093ee9fe85a304c514dab04"
+      },
+      "type": "logic.conditionSet",
+      "name": "HasGateKey",
+      "fields": {
+        "conditions": {
+          "value": [
+            {
+              "kind": "ItemCount",
+              "subject": {
+                "kind": "Definition",
+                "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+                "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+                "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+                "path": "Assets/Hollowmere/Items/GateKey.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "mode": {
+          "value": "All",
+          "type": "enum"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Conditions/HasGateKey.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "392e67f7-738f-403d-81f1-52fb78205528",
+        "global": "GlobalObjectId_V1-3-3c69301ce51fa2d0fa432a6e78884f19-11400000-0",
+        "assetGuid": "3c69301ce51fa2d0fa432a6e78884f19",
+        "path": "Assets/Hollowmere/Items/PlayerInventory.asset",
+        "scope": "Definition",
+        "stamp": "sha256:343f6c67f8fc4db4d2a66071ce9d44fe1a1697c2af89d5ee530b4d6dffd7513a"
+      },
+      "type": "inventory.inventory",
+      "name": "PlayerInventory",
+      "fields": {
+        "isPlayer": {
+          "value": true,
+          "type": "bool"
+        },
+        "maxWeight": {
+          "value": 20000,
+          "unit": "g",
+          "type": "int"
+        },
+        "ownerEntityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "slotCount": {
+          "value": 12,
+          "range": [
+            1.0,
+            64.0
+          ],
+          "type": "int"
+        },
+        "starting": {
+          "value": [],
+          "type": "object[]"
+        },
+        "startingCurrency": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/PlayerInventory.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "39b2f636-d880-4a2f-bda0-2a6af23ec1ef",
+        "global": "GlobalObjectId_V1-3-c1de2c141423889659daf3556d78f3a3-11400000-0",
+        "assetGuid": "c1de2c141423889659daf3556d78f3a3",
+        "path": "Assets/Hollowmere/Rules/Conditions/HasThreeOldCoins.asset",
+        "scope": "Definition",
+        "stamp": "sha256:0a6e5d763b812abfefd1e06b2c0e34c3ff052192029b01b756387fbe2aeb8593"
+      },
+      "type": "logic.conditionSet",
+      "name": "HasThreeOldCoins",
+      "fields": {
+        "conditions": {
+          "value": [
+            {
+              "kind": "ItemCount",
+              "subject": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 3
+            }
+          ],
+          "type": "object[]"
+        },
+        "mode": {
+          "value": "All",
+          "type": "enum"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Conditions/HasThreeOldCoins.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "42f181e3-ef95-4ce3-82e7-2c2d0b79d494",
+        "global": "GlobalObjectId_V1-3-de277e8d1a615d2ff8aa2c0da24b5907-11400000-0",
+        "assetGuid": "de277e8d1a615d2ff8aa2c0da24b5907",
+        "path": "Assets/Hollowmere/Rules/Actions/OpenGate.asset",
+        "scope": "Definition",
+        "stamp": "sha256:1a1f1583432bd2b9be18113c558855e0f171bc4a6a405a1dfe55c5eab57494d2"
+      },
+      "type": "logic.actionSet",
+      "name": "OpenGate",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+                "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+                "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+                "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            },
+            {
+              "kind": "PlayAudio",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "sfx.gate.creak"
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/OpenGate.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "43793255-287c-42c9-998b-fd8c45b448a2",
+        "global": "GlobalObjectId_V1-3-cf357e406505d1167a6d4209b9853177-11400000-0",
+        "assetGuid": "cf357e406505d1167a6d4209b9853177",
+        "path": "Assets/Hollowmere/Items/BellClapper_Marsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:cd8439755424a94c36f1f6168da0a0c3d4c514f8e57b297699e9b39a86e87e27"
+      },
+      "type": "inventory.worldItem",
+      "name": "BellClapper_Marsh",
+      "fields": {
+        "count": {
+          "value": 1,
+          "type": "int"
+        },
+        "entityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "position": {
+          "value": [
+            -6.0,
+            0.0,
+            9.0
+          ],
+          "unit": "m",
+          "type": "vector3"
+        }
+      },
+      "refs": [
+        {
+          "field": "item",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e51c9d68-54de-4f7d-96e4-23b8807194ee",
+            "global": "GlobalObjectId_V1-3-8c9c7994823468958836995b0fb06237-11400000-0",
+            "assetGuid": "8c9c7994823468958836995b0fb06237",
+            "path": "Assets/Hollowmere/Items/BellClapper.asset"
+          }
+        },
+        {
+          "field": "region",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+            "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+            "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+            "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/BellClapper_Marsh.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "45e8c82c-389b-49fb-aa35-e526fffc6c4a",
+        "global": "GlobalObjectId_V1-3-469b59b723897eb2494ae3706f6c9802-11400000-0",
+        "assetGuid": "469b59b723897eb2494ae3706f6c9802",
+        "path": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ed0767206faa0d07b6053263b6a087beebc0229c6ec48cf9fd66ce9aa45bf390"
+      },
+      "type": "logic.conditionSet",
+      "name": "GateOpen",
+      "fields": {
+        "conditions": {
+          "value": [
+            {
+              "kind": "Fact",
+              "subject": {
+                "kind": "Definition",
+                "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+                "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+                "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+                "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "index": 0,
+              "op": "GreaterOrEqual",
+              "value": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "mode": {
+          "value": "All",
+          "type": "enum"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+        "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+        "assetGuid": "445637ba7c003e982be814e23a7fe908",
+        "path": "Assets/Hollowmere/Items/MarshLoot.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e35987919e4aca566e9c3a5e0368974ee18c4dec90d7e56e064ecb55785839b5"
+      },
+      "type": "inventory.lootTable",
+      "name": "MarshLoot",
+      "fields": {
+        "entries": {
+          "value": [
+            {
+              "item": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              },
+              "weight": 3,
+              "min": 1,
+              "max": 2
+            },
+            {
+              "item": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              },
+              "weight": 1,
+              "min": 1,
+              "max": 1
+            }
+          ],
+          "type": "object[]"
+        },
+        "rolls": {
+          "value": 1,
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/MarshLoot.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "6c1d9e42-8b7a-4f35-a0d3-e2f914b67c50",
+        "global": "GlobalObjectId_V1-3-b2805c306a69431eb950b9850ca57c3e-11400000-0",
+        "assetGuid": "b2805c306a69431eb950b9850ca57c3e",
+        "path": "Assets/Hollowmere/Rules/RingBellOnUse.asset",
+        "scope": "Definition",
+        "stamp": "sha256:f87ac5455a81457b9aeba19c3aae4a7a9c013081b566a24ef30538026c64ebe4"
+      },
+      "type": "logic.rule",
+      "name": "RingBellOnUse",
+      "fields": {
+        "actions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "conditions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "cooldownMs": {
+          "value": 0,
+          "unit": "ms",
+          "type": "int"
+        },
+        "matchAnyValue": {
+          "value": true,
+          "type": "bool"
+        },
+        "maxFires": {
+          "value": 0,
+          "type": "int"
+        },
+        "once": {
+          "value": true,
+          "type": "bool"
+        },
+        "priority": {
+          "value": 0,
+          "type": "int"
+        },
+        "trigger": {
+          "value": "Interacted",
+          "type": "enum"
+        },
+        "triggerEntityId": {
+          "value": "e45e9ce2-198c-48ee-8a4e-b01bc4bf0bbf",
+          "type": "authoringId"
+        },
+        "triggerValue": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "conditionSet",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ee1253a8-ef88-4fb0-a173-6af02114b21c",
+            "global": "GlobalObjectId_V1-3-9a43e9b6f0756307db52fa33add92be2-11400000-0",
+            "assetGuid": "9a43e9b6f0756307db52fa33add92be2",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasBellClapper.asset"
+          }
+        },
+        {
+          "field": "actionSet",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "0207a68e-bc01-457e-a2d4-69736a0658f0",
+            "global": "GlobalObjectId_V1-3-afdc14ab7f76fc461af6c6ebd2c0c6c0-11400000-0",
+            "assetGuid": "afdc14ab7f76fc461af6c6ebd2c0c6c0",
+            "path": "Assets/Hollowmere/Rules/Actions/RingBell.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/RingBellOnUse.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "8508a66a-cbc1-4729-9be5-fb7befe04391",
+        "global": "GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0",
+        "assetGuid": "c0058a7ebedf01ab3996bdb19fb6b8a5",
+        "path": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:311eb7ec399242d584073174a3dac3c272bf9934c4b05715bd728838a18af7c3"
+      },
+      "type": "narrative.fact",
+      "name": "heard_rumour",
+      "fields": {
+        "factName": {
+          "value": "heard_rumour",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+        "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+        "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:fdac7eeda418a79236df8380e4b04e901b1aa01dffd4f244b6d3346661362078"
+      },
+      "type": "dialogue.graph",
+      "name": "Maren",
+      "fields": {
+        "edges": {
+          "value": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Next",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 3,
+              "port": "Option",
+              "option": 0,
+              "to": 4
+            },
+            {
+              "from": 3,
+              "port": "Option",
+              "option": 1,
+              "to": 6
+            },
+            {
+              "from": 2,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 4,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 7
+            }
+          ],
+          "type": "object[]"
+        },
+        "entry": {
+          "value": 0,
+          "type": "int"
+        },
+        "nodes": {
+          "value": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": {
+                "kind": "Definition",
+                "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+                "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+                "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+                "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+              },
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Traveller! The Drowned Bell has been silent since the flood took the old belfry.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": {
+                "kind": "Definition",
+                "authoringId": "266d333d-2e6d-47e6-8e71-8004cf7f4aca",
+                "global": "GlobalObjectId_V1-3-88ad7492e109d8e92b568b9d4ce3a92d-11400000-0",
+                "assetGuid": "88ad7492e109d8e92b568b9d4ce3a92d",
+                "path": "Assets/Hollowmere/Rules/Actions/MarenIntro.asset"
+              },
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Will you help us?",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "I'll find the clapper and ring it.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Why should I help?",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": {
+                "kind": "Definition",
+                "authoringId": "c0b46d92-87ea-4b10-b523-3e28d5b338f2",
+                "global": "GlobalObjectId_V1-3-0dec731b43bfcc1148ebf294dc77ff1c-11400000-0",
+                "assetGuid": "0dec731b43bfcc1148ebf294dc77ff1c",
+                "path": "Assets/Hollowmere/Rules/Actions/MarenTrust.asset"
+              },
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Bless you. Odd keeps the marsh gate key, and he will want coin for it.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Because the marsh will not let anyone rest until that bell rings again.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "You rang it! Hollowmere can sleep again. Take my lantern, you have earned it.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "type": "object[]"
+        },
+        "npcGraphRef": {
+          "value": "dialogue.maren",
+          "type": "string"
+        },
+        "speaker": {
+          "value": "Maren",
+          "type": "string"
+        },
+        "speakerEntityId": {
+          "value": "da525107-c2c1-4626-ac08-5058a1e01c06",
+          "type": "authoringId"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "9ad3fb8b-f42d-45fa-9fef-5d5ffb061752",
+        "global": "GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0",
+        "assetGuid": "d1df5cf368cc4f5198b9f871e51a4f47",
+        "path": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset",
+        "scope": "Definition",
+        "stamp": "sha256:f2e0267e24fe38eac0872b7e9905a18d4bfc4443a932d91df00759a51a37b081"
+      },
+      "type": "narrative.fact",
+      "name": "maren_grateful",
+      "fields": {
+        "factName": {
+          "value": "maren_grateful",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "a1381dc8-8045-4ba2-a1dc-8a2f5f5d8509",
+        "global": "GlobalObjectId_V1-3-9ee505637a2c9c8caac4a8cf29c6f3c6-11400000-0",
+        "assetGuid": "9ee505637a2c9c8caac4a8cf29c6f3c6",
+        "path": "Assets/Hollowmere/Dialogue/Facts/belfry_echo_freed.asset",
+        "scope": "Definition",
+        "stamp": "sha256:fdc0b602fe01a1a1732c00894f79f8f6917d447d59dae270110c12d8804c278b"
+      },
+      "type": "narrative.fact",
+      "name": "belfry_echo_freed",
+      "fields": {
+        "factName": {
+          "value": "belfry_echo_freed",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/belfry_echo_freed.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "a2e71200-b7bb-4d4a-8aec-26370b7da0f3",
+        "global": "GlobalObjectId_V1-3-49606c49a08aa41318aaff0b48ed4be1-11400000-0",
+        "assetGuid": "49606c49a08aa41318aaff0b48ed4be1",
+        "path": "Assets/Hollowmere/World/Hollowmere.asset",
+        "scope": "Definition",
+        "stamp": "sha256:3e74912d7e6e24a3a1c10024b8c29dff340edae01e37a00058ade82f3ab85a7e"
+      },
+      "type": "world.definition",
+      "name": "Hollowmere",
+      "fields": {
+        "focusEntityId": {
+          "value": "90f935f8-12d5-4278-b336-107b081e1dfd",
+          "type": "string"
+        },
+        "preloadNeighbours": {
+          "value": false,
+          "type": "bool"
+        }
+      },
+      "refs": [
+        {
+          "field": "regions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+            "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+            "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+            "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+          }
+        },
+        {
+          "field": "regions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+            "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+            "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+            "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+          }
+        },
+        {
+          "field": "regions",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+            "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+            "assetGuid": "832904035182b2712b3f6c244c515dea",
+            "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+          }
+        },
+        {
+          "field": "portals",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "68bf5935-dbc0-4c24-b344-35782ef929bf",
+            "global": "GlobalObjectId_V1-3-97728b989d29a3c7a8248ccbff667004-11400000-0",
+            "assetGuid": "97728b989d29a3c7a8248ccbff667004",
+            "path": "Assets/Hollowmere/World/Portals/ThornwickVillage_BlackmereMarsh.asset"
+          }
+        },
+        {
+          "field": "portals",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "75251765-e092-4fa4-981d-b2258693ec31",
+            "global": "GlobalObjectId_V1-3-9cf4b8d1ee0537f1abb5df0216023d2c-11400000-0",
+            "assetGuid": "9cf4b8d1ee0537f1abb5df0216023d2c",
+            "path": "Assets/Hollowmere/World/Portals/BlackmereMarsh_DrownedBelfry.asset"
+          }
+        },
+        {
+          "field": "portals",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "89836cc9-4d04-4634-90ad-1f52cd0698df",
+            "global": "GlobalObjectId_V1-3-bb335f53ecf248a10bae1965fd4424fa-11400000-0",
+            "assetGuid": "bb335f53ecf248a10bae1965fd4424fa",
+            "path": "Assets/Hollowmere/World/Portals/DrownedBelfry_ThornwickVillage.asset"
+          }
+        },
+        {
+          "field": "startRegion",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+            "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+            "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+            "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/World/Hollowmere.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+        "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+        "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset",
+        "scope": "Definition",
+        "stamp": "sha256:70966454023f0f982da262f975671ea9eb8e21a0c6b9764f68877ba173cec121"
+      },
+      "type": "dialogue.graph",
+      "name": "Hale",
+      "fields": {
+        "edges": {
+          "value": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 2
+            }
+          ],
+          "type": "object[]"
+        },
+        "entry": {
+          "value": 0,
+          "type": "int"
+        },
+        "nodes": {
+          "value": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": {
+                "kind": "Definition",
+                "authoringId": "45e8c82c-389b-49fb-aa35-e526fffc6c4a",
+                "global": "GlobalObjectId_V1-3-469b59b723897eb2494ae3706f6c9802-11400000-0",
+                "assetGuid": "469b59b723897eb2494ae3706f6c9802",
+                "path": "Assets/Hollowmere/Rules/Conditions/GateOpen.asset"
+              },
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The marsh gate stays shut. Odd has the key.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The gate's open. Watch your step out there.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "type": "object[]"
+        },
+        "npcGraphRef": {
+          "value": "dialogue.hale",
+          "type": "string"
+        },
+        "speaker": {
+          "value": "Hale",
+          "type": "string"
+        },
+        "speakerEntityId": {
+          "value": "3f2e423d-ec9f-4051-8713-662180be4db9",
+          "type": "authoringId"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+        "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+        "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e858d7e50837b38f19d3ad7f61625cc7b962d292bea0ee4186f285ff732036b8"
+      },
+      "type": "dialogue.graph",
+      "name": "Odd",
+      "fields": {
+        "edges": {
+          "value": [
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 1,
+              "to": 3
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 2,
+              "to": -1
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 3,
+              "port": "Next",
+              "option": 0,
+              "to": 4
+            }
+          ],
+          "type": "object[]"
+        },
+        "entry": {
+          "value": 0,
+          "type": "int"
+        },
+        "nodes": {
+          "value": [
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The gate key? Three old coins, and no haggling.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "Here are three coins.",
+                  "condition": {
+                    "kind": "Definition",
+                    "authoringId": "39b2f636-d880-4a2f-bda0-2a6af23ec1ef",
+                    "global": "GlobalObjectId_V1-3-c1de2c141423889659daf3556d78f3a3-11400000-0",
+                    "assetGuid": "c1de2c141423889659daf3556d78f3a3",
+                    "path": "Assets/Hollowmere/Rules/Conditions/HasThreeOldCoins.asset"
+                  },
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Maren sent me. She trusts me.",
+                  "condition": {
+                    "kind": "Definition",
+                    "authoringId": "1c70446b-7b7c-4fc7-8b5d-6dafb0de98c2",
+                    "global": "GlobalObjectId_V1-3-20525d4762e7ea943baf62305ce6e41c-11400000-0",
+                    "assetGuid": "20525d4762e7ea943baf62305ce6e41c",
+                    "path": "Assets/Hollowmere/Rules/Conditions/MarenTrustsPlayer.asset"
+                  },
+                  "hideWhenUnavailable": true
+                },
+                {
+                  "text": "Not now.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Pleasure doing business. Mind the reeds.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": {
+                "kind": "Definition",
+                "authoringId": "2beb7fe9-752d-4e57-a701-e3bf4a64de70",
+                "global": "GlobalObjectId_V1-3-1b459c779c5c6191b9a13e56b29434c6-11400000-0",
+                "assetGuid": "1b459c779c5c6191b9a13e56b29434c6",
+                "path": "Assets/Hollowmere/Rules/Actions/OddPersuaded.asset"
+              },
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "For Maren, then. Take it, and do not drown.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "type": "object[]"
+        },
+        "npcGraphRef": {
+          "value": "dialogue.odd",
+          "type": "string"
+        },
+        "speaker": {
+          "value": "Odd",
+          "type": "string"
+        },
+        "speakerEntityId": {
+          "value": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+          "type": "authoringId"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "b5f0e7a1-3c2d-4e8f-9a61-7d24c0e5b318",
+        "global": "GlobalObjectId_V1-3-10d8def972356d3b0a656061428014c7-11400000-0",
+        "assetGuid": "10d8def972356d3b0a656061428014c7",
+        "path": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset",
+        "scope": "Definition",
+        "stamp": "sha256:097a8c10eedaef9949b95482aa48a72d611f5a207a60ba285e634ee682dd7c2b"
+      },
+      "type": "logic.rule",
+      "name": "GateKeyOpensGate",
+      "fields": {
+        "actions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "conditions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "cooldownMs": {
+          "value": 0,
+          "unit": "ms",
+          "type": "int"
+        },
+        "matchAnyValue": {
+          "value": true,
+          "type": "bool"
+        },
+        "maxFires": {
+          "value": 0,
+          "type": "int"
+        },
+        "once": {
+          "value": true,
+          "type": "bool"
+        },
+        "priority": {
+          "value": 0,
+          "type": "int"
+        },
+        "trigger": {
+          "value": "ItemGranted",
+          "type": "enum"
+        },
+        "triggerEntityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "triggerValue": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "triggerSubject",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+            "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+            "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+            "path": "Assets/Hollowmere/Items/GateKey.asset"
+          }
+        },
+        {
+          "field": "conditionSet",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "3335bea3-1074-4a9e-bb5e-fbd62deea390",
+            "global": "GlobalObjectId_V1-3-11162b2cb02df3d3fa94070fbd2bb999-11400000-0",
+            "assetGuid": "11162b2cb02df3d3fa94070fbd2bb999",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasGateKey.asset"
+          }
+        },
+        {
+          "field": "actionSet",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "42f181e3-ef95-4ce3-82e7-2c2d0b79d494",
+            "global": "GlobalObjectId_V1-3-de277e8d1a615d2ff8aa2c0da24b5907-11400000-0",
+            "assetGuid": "de277e8d1a615d2ff8aa2c0da24b5907",
+            "path": "Assets/Hollowmere/Rules/Actions/OpenGate.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/GateKeyOpensGate.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+        "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+        "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset",
+        "scope": "Definition",
+        "stamp": "sha256:39b70d5bf806ad618a52c1b70fcb700e4c88254f97af6c352158cb965e6921c3"
+      },
+      "type": "dialogue.graph",
+      "name": "BelfryEcho",
+      "fields": {
+        "edges": {
+          "value": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 2,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            }
+          ],
+          "type": "object[]"
+        },
+        "entry": {
+          "value": 0,
+          "type": "int"
+        },
+        "nodes": {
+          "value": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": {
+                "kind": "Definition",
+                "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+                "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+                "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+                "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+              },
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "...silent... the bell is silent...",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": {
+                "kind": "Definition",
+                "authoringId": "f8f82ca0-fc26-440b-87a3-75b5f13b721d",
+                "global": "GlobalObjectId_V1-3-9ff24c44b07c174059bcd8a609b1f7ff-11400000-0",
+                "assetGuid": "9ff24c44b07c174059bcd8a609b1f7ff",
+                "path": "Assets/Hollowmere/Rules/Actions/EchoFreed.asset"
+              },
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The toll... I hear it... I am free.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "type": "object[]"
+        },
+        "npcGraphRef": {
+          "value": "dialogue.belfry_echo",
+          "type": "string"
+        },
+        "speaker": {
+          "value": "Belfry Echo",
+          "type": "string"
+        },
+        "speakerEntityId": {
+          "value": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+          "type": "authoringId"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "bd21363a-d9b9-479c-ba80-dde87c541ae8",
+        "global": "GlobalObjectId_V1-3-5e6a96fd4444b092d8de598f9ccd195e-11400000-0",
+        "assetGuid": "5e6a96fd4444b092d8de598f9ccd195e",
+        "path": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset",
+        "scope": "Definition",
+        "stamp": "sha256:57f8215a1fa0e15526265da741bc15ef4d66be8b6f67d7e751c6b879e6356303"
+      },
+      "type": "narrative.fact",
+      "name": "odd_persuaded",
+      "fields": {
+        "factName": {
+          "value": "odd_persuaded",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/odd_persuaded.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "c0b46d92-87ea-4b10-b523-3e28d5b338f2",
+        "global": "GlobalObjectId_V1-3-0dec731b43bfcc1148ebf294dc77ff1c-11400000-0",
+        "assetGuid": "0dec731b43bfcc1148ebf294dc77ff1c",
+        "path": "Assets/Hollowmere/Rules/Actions/MarenTrust.asset",
+        "scope": "Definition",
+        "stamp": "sha256:75eb558dc365bb91c39b7e9c5fb36fe0774558907d3d630468e873a20fcdaefc"
+      },
+      "type": "logic.actionSet",
+      "name": "MarenTrust",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "deae77f6-2b47-4c20-a4ab-11e1b8496514",
+                "global": "GlobalObjectId_V1-3-2531550305f486ff8b628d15490cbfc8-11400000-0",
+                "assetGuid": "2531550305f486ff8b628d15490cbfc8",
+                "path": "Assets/Hollowmere/Dialogue/Facts/maren_trusts_player.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/MarenTrust.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "ca415c6a-b951-4501-b70f-594d657bb5a9",
+        "global": "GlobalObjectId_V1-3-608b1d37ab13b50eabfc835f39a42195-11400000-0",
+        "assetGuid": "608b1d37ab13b50eabfc835f39a42195",
+        "path": "Assets/Hollowmere/Rules/Actions/PipAsked.asset",
+        "scope": "Definition",
+        "stamp": "sha256:adf17002383aac28d61bff9344baedec9de280e3b01de13e01d0ca8ae87c598a"
+      },
+      "type": "logic.actionSet",
+      "name": "PipAsked",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "SetFact",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "09ad393c-e99a-4165-8745-aab9f23ac790",
+                "global": "GlobalObjectId_V1-3-d0103ce49e12d99dd9038a920fd63554-11400000-0",
+                "assetGuid": "d0103ce49e12d99dd9038a920fd63554",
+                "path": "Assets/Hollowmere/Dialogue/Facts/pip_asked.asset"
+              },
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": ""
+            }
+          ],
+          "type": "object[]"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/Actions/PipAsked.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "d92de012-492f-42b1-8527-302c94471b73",
+        "global": "GlobalObjectId_V1-3-1af0f99dbdb793a73928cf5583252642-11400000-0",
+        "assetGuid": "1af0f99dbdb793a73928cf5583252642",
+        "path": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset",
+        "scope": "Definition",
+        "stamp": "sha256:2b7c7d9efa7c1ad1de0d2801ba5291233bc3bb9b039ebe74eb2bd0816c12991c"
+      },
+      "type": "narrative.fact",
+      "name": "gate_open",
+      "fields": {
+        "factName": {
+          "value": "gate_open",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/gate_open.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+        "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+        "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset",
+        "scope": "Definition",
+        "stamp": "sha256:b2abdf30610751d3cd0cee45b7a9f34d6cdc0d4ecb3ffe1156f7a321ee18b0d3"
+      },
+      "type": "dialogue.graph",
+      "name": "Pip",
+      "fields": {
+        "edges": {
+          "value": [
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 1,
+              "to": -1
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 2,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            }
+          ],
+          "type": "object[]"
+        },
+        "entry": {
+          "value": 0,
+          "type": "int"
+        },
+        "nodes": {
+          "value": [
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Did you ever hear the bell? I never have.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "Where is the clapper?",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Bye, Pip.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": {
+                "kind": "Definition",
+                "authoringId": "ca415c6a-b951-4501-b70f-594d657bb5a9",
+                "global": "GlobalObjectId_V1-3-608b1d37ab13b50eabfc835f39a42195-11400000-0",
+                "assetGuid": "608b1d37ab13b50eabfc835f39a42195",
+                "path": "Assets/Hollowmere/Rules/Actions/PipAsked.asset"
+              },
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Gran says it fell in the marsh, by the dead willow.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "type": "object[]"
+        },
+        "npcGraphRef": {
+          "value": "dialogue.pip",
+          "type": "string"
+        },
+        "speaker": {
+          "value": "Pip",
+          "type": "string"
+        },
+        "speakerEntityId": {
+          "value": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+          "type": "authoringId"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "de03f0af-388d-4797-9d6e-3af2faa2a466",
+        "global": "GlobalObjectId_V1-3-1ef9176dd9c40b581baca271b3771b6c-11400000-0",
+        "assetGuid": "1ef9176dd9c40b581baca271b3771b6c",
+        "path": "Assets/Hollowmere/Rules/EchoFreedAmbience.asset",
+        "scope": "Definition",
+        "stamp": "sha256:9a1be46e4adfe50b8292360558256629afb83d9b422e57547c9717282487b339"
+      },
+      "type": "logic.rule",
+      "name": "EchoFreedAmbience",
+      "fields": {
+        "actions": {
+          "value": [
+            {
+              "kind": "PlayAudio",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "ambience.belfry.freed"
+            },
+            {
+              "kind": "ShowMessage",
+              "target": null,
+              "inventory": null,
+              "entityId": "",
+              "value": 1,
+              "text": "The belfry falls quiet. Something has left it."
+            }
+          ],
+          "type": "object[]"
+        },
+        "conditions": {
+          "value": [],
+          "type": "object[]"
+        },
+        "cooldownMs": {
+          "value": 0,
+          "unit": "ms",
+          "type": "int"
+        },
+        "matchAnyValue": {
+          "value": false,
+          "type": "bool"
+        },
+        "maxFires": {
+          "value": 0,
+          "type": "int"
+        },
+        "once": {
+          "value": true,
+          "type": "bool"
+        },
+        "priority": {
+          "value": 0,
+          "type": "int"
+        },
+        "trigger": {
+          "value": "FactSet",
+          "type": "enum"
+        },
+        "triggerEntityId": {
+          "value": "",
+          "type": "authoringId"
+        },
+        "triggerValue": {
+          "value": 1,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "triggerSubject",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "a1381dc8-8045-4ba2-a1dc-8a2f5f5d8509",
+            "global": "GlobalObjectId_V1-3-9ee505637a2c9c8caac4a8cf29c6f3c6-11400000-0",
+            "assetGuid": "9ee505637a2c9c8caac4a8cf29c6f3c6",
+            "path": "Assets/Hollowmere/Dialogue/Facts/belfry_echo_freed.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Rules/EchoFreedAmbience.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "deae77f6-2b47-4c20-a4ab-11e1b8496514",
+        "global": "GlobalObjectId_V1-3-2531550305f486ff8b628d15490cbfc8-11400000-0",
+        "assetGuid": "2531550305f486ff8b628d15490cbfc8",
+        "path": "Assets/Hollowmere/Dialogue/Facts/maren_trusts_player.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5fc1dec337fa64eb51e93a4f107d598d75f2a5e0e997485ba49cf0347efc44f"
+      },
+      "type": "narrative.fact",
+      "name": "maren_trusts_player",
+      "fields": {
+        "factName": {
+          "value": "maren_trusts_player",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/maren_trusts_player.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "e1d08e53-755f-4d05-a23d-c84d98a29897",
+        "global": "GlobalObjectId_V1-3-1127b8f04794de754b8b85d1e271edf0-11400000-0",
+        "assetGuid": "1127b8f04794de754b8b85d1e271edf0",
+        "path": "Assets/Hollowmere/Items/GateKey.asset",
+        "scope": "Definition",
+        "stamp": "sha256:316b21b488b99f32f3bcab6f5919707612e80ffc2a99656c98ae9db8659500c0"
+      },
+      "type": "inventory.item",
+      "name": "GateKey",
+      "fields": {
+        "displayName": {
+          "value": "Gate Key",
+          "type": "string"
+        },
+        "maxStack": {
+          "value": 1,
+          "type": "int"
+        },
+        "price": {
+          "value": 3,
+          "type": "int"
+        },
+        "tags": {
+          "value": [
+            "key"
+          ],
+          "type": "string[]"
+        },
+        "weight": {
+          "value": 50,
+          "unit": "g",
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/GateKey.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "e51c9d68-54de-4f7d-96e4-23b8807194ee",
+        "global": "GlobalObjectId_V1-3-8c9c7994823468958836995b0fb06237-11400000-0",
+        "assetGuid": "8c9c7994823468958836995b0fb06237",
+        "path": "Assets/Hollowmere/Items/BellClapper.asset",
+        "scope": "Definition",
+        "stamp": "sha256:01f870969bca97cee3a1bad83938c11fa1a1ed893b3f206141f548fe51ac2eb8"
+      },
+      "type": "inventory.item",
+      "name": "BellClapper",
+      "fields": {
+        "displayName": {
+          "value": "Bell Clapper",
+          "type": "string"
+        },
+        "maxStack": {
+          "value": 1,
+          "type": "int"
+        },
+        "price": {
+          "value": 0,
+          "type": "int"
+        },
+        "tags": {
+          "value": [
+            "quest"
+          ],
+          "type": "string[]"
+        },
+        "weight": {
+          "value": 2500,
+          "unit": "g",
+          "type": "int"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Items/BellClapper.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "e7b37913-f43a-4a88-ba31-59e248433998",
+        "global": "GlobalObjectId_V1-3-3287a51c5f37f1571b80dc4970cf6f31-11400000-0",
+        "assetGuid": "3287a51c5f37f1571b80dc4970cf6f31",
+        "path": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset",
+        "scope": "Definition",
+        "stamp": "sha256:2b47cd5dadbaf425311b0dfda8bb24c01b743751171f2c6e0da9db3a651b69f7"
+      },
+      "type": "narrative.fact",
+      "name": "bell_rung",
+      "fields": {
+        "factName": {
+          "value": "bell_rung",
+          "type": "string"
+        },
+        "initialValue": {
+          "value": 0,
+          "type": "int"
+        },
+        "persistent": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/Facts/bell_rung.asset"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": {
+        "kind": "Definition",
+        "global": "GlobalObjectId_V1-3-aa34df41224c5a86e88cda4d04edcb93-11400000-0",
+        "assetGuid": "aa34df41224c5a86e88cda4d04edcb93",
+        "path": "Assets/Hollowmere/Rules/HollowmereContent.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "0207a68e-bc01-457e-a2d4-69736a0658f0",
+        "global": "GlobalObjectId_V1-3-afdc14ab7f76fc461af6c6ebd2c0c6c0-11400000-0",
+        "assetGuid": "afdc14ab7f76fc461af6c6ebd2c0c6c0",
+        "path": "Assets/Hollowmere/Rules/Actions/RingBell.asset"
+      },
+      "kind": "references"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "tbe66ce5f3dc2411e206120c7",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m458jr5f81s8jrdmyyb0y3qr",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M458JR5F81S8JRDMYYB0Y3QR (attempt 0): Move Maren two metres north and make her patrol around the well.\nAnswer to \"Could you include Maren’s NPC definition in the selection? The available selection identifies her placed entity and the well, but the patrol operation requires an NPC definition target.\": Use the world positions in scene-con\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need Maren’s stamped NPC definition in the selection to propose her patrol. The scene-context positions are enough to move her two metres north, but they do not provide a valid target for the patrol operation. I wrote the clarification request.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791178137888,
+    "started_at": 1791178137896,
+    "ended_at": 1791178200347
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:tbe66ce5f3dc2411e206120c7",
+    "limits": {},
+    "used": {
+      "input_tokens": 125793,
+      "micro_usd": 0,
+      "output_tokens": 1004,
+      "tokens": 126797
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 1248808,
+      "micro_usd": 0,
+      "output_tokens": 17263,
+      "tokens": 1266071
+    }
+  }
+}
+}

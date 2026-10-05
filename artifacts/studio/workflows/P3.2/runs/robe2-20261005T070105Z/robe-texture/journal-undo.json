@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45E79AMAR9GGKBD6SAJ83QE",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: A seamless tileable texture of soft green woven wool cloth for a village healer's robe, flat even lighting, no seams, no text.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P3_2/maren_robe_green.png",
+        "artifact": {
+          "artifact": "sha256:861dcadac9af5d1207079b0c40e05c2b34810189e7d2bd02cf2afbc8999ae461"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "861dcadac9af5d1207079b0c40e05c2b34810189e7d2bd02cf2afbc8999ae461",
+      "name": "maren_robe_green.png",
+      "mediaType": "image/png",
+      "bytes": 158311,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P3_2/maren_robe_green.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-e2b0701904fcb40b99178b8defa8badf-2800000-0",
+                "assetGuid": "e2b0701904fcb40b99178b8defa8badf",
+                "path": "Assets/Hollowmere/Generated/P3_2/maren_robe_green.png"
+              },
+              "stamp": "sha256:861dcadac9af5d1207079b0c40e05c2b34810189e7d2bd02cf2afbc8999ae461"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T07:07:33.592Z",
+    "applied": "2026-10-05T07:07:34.553Z"
+  }
+}
