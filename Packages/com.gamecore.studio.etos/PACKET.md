@@ -208,6 +208,8 @@ Final Linux host results, implementation `1dd5b491`:
 Receipts and hashes: [Tests/Evidence/R4_A/summary.json](Tests/Evidence/R4_A/summary.json).
 Exact final commands: [Tests/Evidence/R4_A/commands.txt](Tests/Evidence/R4_A/commands.txt).
 Before/after XML/TRX and compressed startup/final logs are retained beside them.
-Text receipts replace the home directory with `~`; raw XML hashes are also recorded.
+Text receipts replace the home directory with `~`; synthetic credential vectors in
+TRX test labels are masked without changing result IDs or outcomes. Raw result hashes
+are also recorded.
 The requested EditMode regex was used verbatim. No package dependency, validator,
 confinement mode, budget, or existing test assertion was weakened.
