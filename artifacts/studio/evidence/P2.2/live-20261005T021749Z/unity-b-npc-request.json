@@ -1,0 +1,94 @@
+{
+  "requestId": "cs_01M44XV058R5DQPY38WJ9MF70W",
+  "selection": {
+    "id": "sel_01M44XV06JRVV6SJV6ABQXNEDF",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+        "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+      }
+    ],
+    "indexRevision": 1
+  },
+  "sliceBytes": 3826,
+  "catalogRevision": "da53ff35bfddc7c0456d285caadbadade8c6a813cd84816e93a8b8b99c26a3e8",
+  "submitMs": 25898.5,
+  "totalMs": 188706,
+  "timeline": [
+    {
+      "ms": 2432,
+      "state": "requested",
+      "taskStatus": null,
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 25895,
+      "state": "running",
+      "taskStatus": "queued",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 25896,
+      "state": "running",
+      "taskStatus": "queued",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 108346,
+      "state": "running",
+      "taskStatus": "starting",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 128987,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 188649,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": "done: I couldn’t safely propose the move: the selected object is Traveller, not an identified NPC, and its current position isn’t in the provided index. I wrote a clarification request asking for the NPC selection and position."
+    },
+    {
+      "ms": 188705,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": "question: Could you select the NPC to move and provide its current world position? The selection is Traveller, and its position is not available in the index slice."
+    },
+    {
+      "ms": 188705,
+      "state": "needs_clarification",
+      "taskStatus": "done",
+      "local": null,
+      "progress": "question: Could you select the NPC to move and provide its current world position? The selection is Traveller, and its position is not available in the index slice."
+    }
+  ],
+  "recoveredForeignRequests": 17,
+  "stagedForeign": 0,
+  "final": {
+    "state": "needs_clarification",
+    "taskStatus": "done",
+    "tasks": [
+      "t0d99768faa8e8f890d34758c"
+    ],
+    "outcome": {
+      "code": "needs_clarification",
+      "question": "Could you select the NPC to move and provide its current world position? The selection is Traveller, and its position is not available in the index slice."
+    },
+    "local": null
+  }
+}

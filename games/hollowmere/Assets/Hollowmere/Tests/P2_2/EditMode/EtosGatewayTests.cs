@@ -334,6 +334,30 @@ namespace GameCore.Studio.Hollowmere.P2_2.Tests
         }
 
         [Test]
+        public void SceneContext_CarriesTheWorldTransformOfSelectedSceneObjects()
+        {
+            _harness = GatewayHarness.WithFake();
+            GameObject npc = new GameObject("P22 NPC");
+            try
+            {
+                npc.transform.position = new Vector3(3f, 0.5f, -7.25f);
+                Attachment? scene = AgentRequestBuilder.SceneContext(H.Runtime, new UnityEngine.Object[] { npc });
+                Assert.That(scene, Is.Not.Null);
+                Assert.That(scene!.Name, Is.EqualTo(AgentRequestBuilder.SceneContextName));
+                JObject document = JObject.Parse(System.Text.Encoding.UTF8.GetString(scene.Data));
+                JObject entry = (JObject)document["objects"]![0]!;
+                Assert.That((string?)entry["name"], Is.EqualTo("P22 NPC"));
+                Assert.That(entry["position"]!.Select(v => (double)v), Is.EqualTo(new[] { 3.0, 0.5, -7.25 }));
+                Assert.That((string?)document["axes"]!["north"], Is.EqualTo("+z"));
+                Assert.That(AgentRequestBuilder.SceneContext(H.Runtime, new UnityEngine.Object[] { ScriptableObject.CreateInstance<ScriptableObject>() }), Is.Null, "assets carry no scene context");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(npc);
+            }
+        }
+
+        [Test]
         public void MainThreadQueue_RunsWorkOnlyWhenPumpedOnTheMainThread()
         {
             MainThreadQueue queue = new MainThreadQueue();

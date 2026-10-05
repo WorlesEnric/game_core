@@ -96,8 +96,8 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             H.Gateway.Start();
             yield return H.Await(H.Gateway.RefreshStatusAsync(), 60, "hello");
 
-            SelectionSnapshot selection = AgentRequestBuilder.SnapshotOf(H.Runtime, new[] { traveller! });
-            AgentRequest request = AgentRequestBuilder.Build(H.Runtime, selection, "Move this NPC two metres north.");
+            AgentRequest request = AgentRequestBuilder.ForObjects(H.Runtime, new[] { traveller! }, "Move this NPC two metres north.");
+            SelectionSnapshot selection = request.Selection;
             request.ChangeSetId = id;
             Task<string> submit = H.Gateway.SubmitAsync(request, CancellationToken.None);
             yield return H.Await(submit, 120, "the submit");
@@ -110,6 +110,7 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
                 ["requestId"] = id,
                 ["selection"] = StudioJson.ToToken(selection),
                 ["sliceBytes"] = StudioJson.Serialize(request.ContextSlice).Length,
+                ["attachments"] = new JArray(request.Attachments.Select(x => new JObject { ["name"] = x.Name, ["bytes"] = x.Data.Length, ["content"] = x.MediaType == "application/json" ? JToken.Parse(System.Text.Encoding.UTF8.GetString(x.Data)) : null }).ToArray()),
                 ["catalogRevision"] = request.ToolCatalogRevision,
                 ["submitMs"] = Math.Round(submitMs, 1),
                 ["totalMs"] = watch.ElapsedMilliseconds,

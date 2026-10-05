@@ -64,6 +64,91 @@ namespace GameCore.Studio.Etos
             return request;
         }
 
+        /// <summary>The attachment name of <see cref="SceneContext"/>.</summary>
+        public const string SceneContextName = "scene-context.json";
+
+        /// <summary>
+        /// A request for <paramref name="targets"/>: the selection snapshot, the slice, the catalog revision and, when
+        /// any target lives in a scene, the <see cref="SceneContext"/> attachment (the semantic index carries authored
+        /// fields, not transforms, and a worker cannot move an object it cannot locate).
+        /// </summary>
+        public static AgentRequest ForObjects(StudioRuntime runtime, IReadOnlyList<UnityEngine.Object> targets, string intent, string mode = "design")
+        {
+            SelectionSnapshot selection = SnapshotOf(runtime, targets);
+            List<Attachment> attachments = new List<Attachment>();
+            Attachment? scene = SceneContext(runtime, targets);
+            if (scene != null)
+            {
+                attachments.Add(scene);
+            }
+
+            return Build(runtime, selection, intent, attachments, mode);
+        }
+
+        /// <summary>
+        /// <c>scene-context.json</c> (<c>gamecore.studio.scenecontext/1</c>): for each selected scene object its
+        /// AuthoringRef, GameObject name and hierarchy path, scene, world position (metres), world rotation
+        /// (quaternion), local scale and the world axes (+Z is north, +X east, +Y up). Null when no target is in a scene.
+        /// </summary>
+        public static Attachment? SceneContext(StudioRuntime runtime, IReadOnlyList<UnityEngine.Object> targets)
+        {
+            JArray objects = new JArray();
+            foreach (UnityEngine.Object target in targets)
+            {
+                UnityEngine.GameObject? gameObject = target as UnityEngine.GameObject ?? (target as UnityEngine.Component)?.gameObject;
+                if (gameObject == null || !gameObject.scene.IsValid())
+                {
+                    continue;
+                }
+
+                UnityEngine.Transform transform = gameObject.transform;
+                AuthoringRef? reference = runtime.Resolver.BuildRef(target, null, true);
+                JObject entry = new JObject
+                {
+                    ["name"] = gameObject.name,
+                    ["path"] = HierarchyPath(transform),
+                    ["scene"] = gameObject.scene.path,
+                    ["position"] = new JArray(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z)),
+                    ["rotation"] = new JArray(Round(transform.rotation.x), Round(transform.rotation.y), Round(transform.rotation.z), Round(transform.rotation.w)),
+                    ["scale"] = new JArray(Round(transform.localScale.x), Round(transform.localScale.y), Round(transform.localScale.z)),
+                };
+                if (reference != null)
+                {
+                    entry["ref"] = StudioJson.ToToken(reference);
+                }
+
+                objects.Add(entry);
+            }
+
+            if (objects.Count == 0)
+            {
+                return null;
+            }
+
+            JObject document = new JObject
+            {
+                ["schema"] = "gamecore.studio.scenecontext/1",
+                ["units"] = "metres",
+                ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
+                ["objects"] = objects,
+            };
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(document.ToString(Newtonsoft.Json.Formatting.Indented));
+            return new Attachment(SceneContextName, "application/json", bytes, "context");
+        }
+
+        private static double Round(float value) => Math.Round(value, 4);
+
+        private static string HierarchyPath(UnityEngine.Transform transform)
+        {
+            string path = transform.name;
+            for (UnityEngine.Transform? parent = transform.parent; parent != null; parent = parent.parent)
+            {
+                path = parent.name + "/" + path;
+            }
+
+            return path;
+        }
+
         /// <summary>The companion body of <paramref name="request"/>; the catalog is attached only when given.</summary>
         public static EditRequestBody ToBody(AgentRequest request, string changeSetId, string designWorker, string mechanismWorker, ToolCatalog? catalog)
         {
