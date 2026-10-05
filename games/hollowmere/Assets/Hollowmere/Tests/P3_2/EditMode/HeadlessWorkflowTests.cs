@@ -46,7 +46,7 @@ namespace Hollowmere.P3_2.Headless
         [SetUp]
         public void SetUp()
         {
-            if (Environment.GetEnvironmentVariable("GAMECORE_ETOS_LIVE") != "1")
+            if (Setting("GAMECORE_ETOS_LIVE") != "1")
             {
                 Assert.Ignore("P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)");
             }
@@ -280,9 +280,31 @@ namespace Hollowmere.P3_2.Headless
             };
         }
 
+        /// <summary>
+        /// An environment variable, else the value from Library/P3_2/headless-env.json. The shared Unity runner
+        /// (studio/stage/run-redacted.py) clears the child environment to an allowlist, so the harness driver passes the
+        /// gate, the key file PATH (never the key) and the output folder through that file and deletes it afterwards.
+        /// </summary>
+        private static string? Setting(string name)
+        {
+            string? value = Environment.GetEnvironmentVariable(name);
+            if (!string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            string file = Path.Combine(Harness.ProjectRoot, "Library", "P3_2", "headless-env.json");
+            if (!File.Exists(file))
+            {
+                return null;
+            }
+
+            return (string?)JObject.Parse(File.ReadAllText(file))[name];
+        }
+
         private void Evidence(string name, JObject content)
         {
-            string? dir = Environment.GetEnvironmentVariable("GCS_P32_OUT");
+            string? dir = Setting("GCS_P32_OUT");
             if (string.IsNullOrEmpty(dir) || _h == null)
             {
                 return;
@@ -310,7 +332,7 @@ namespace Hollowmere.P3_2.Headless
                     IndexScope = AuthoringSourceScope.All,
                     LoadIndexCache = false,
                 });
-                string keyFile = Environment.GetEnvironmentVariable(EtosCredentials.KeyFileVariable) ?? EtosCredentials.DefaultKeyFile() ?? string.Empty;
+                string keyFile = Setting(EtosCredentials.KeyFileVariable) ?? EtosCredentials.DefaultKeyFile() ?? string.Empty;
                 Credentials = EtosCredentials.FromKeyFile(keyFile);
                 Client = new CompanionClient(new EtosClientOptions
                 {

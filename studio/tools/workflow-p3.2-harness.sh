@@ -56,6 +56,12 @@ systemctl --user is-active --quiet etosd || { echo "etosd is not active" >&2; ex
 sha="$(git -C "${base}" rev-parse HEAD </dev/null)"
 
 rc=0
+# The shared runner clears Unity's environment to an allowlist (studio/stage/run-redacted.py), so the live gate, the key
+# file path (not the key) and the output folder also go through a settings file the tests read; removed afterwards.
+settings="${base}/games/hollowmere/Library/P3_2/headless-env.json"
+mkdir -p "$(dirname "${settings}")"
+python3 -c 'import json,sys; print(json.dumps({"GAMECORE_ETOS_LIVE": "1", "GAMECORE_ETOS_KEY_FILE": sys.argv[1], "GCS_P32_OUT": sys.argv[2]}))' "${key_file}" "${out}" > "${settings}"
+trap 'rm -f "${settings}"' EXIT
 GAMECORE_ETOS_LIVE=1 GAMECORE_ETOS_KEY_FILE="${key_file}" GCS_P32_OUT="${out}" GC_STUDIO_ON_HOST=1 \
   UNITY_TIMEOUT="${UNITY_TIMEOUT:-3600}" UNITY_SILENCE_TIMEOUT="${UNITY_SILENCE_TIMEOUT:-1500}" \
   "${base}/studio/tools/unity-compile.sh" "${packet}" games/hollowmere --tests EditMode --filter "${filter}" </dev/null 2>&1 | tee "${out}/unity.log" || rc=$?
