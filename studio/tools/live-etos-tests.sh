@@ -31,6 +31,9 @@
 # Environment:
 #   GC_STUDIO_HOST, GC_STUDIO_REMOTE_BASE   as for the other studio tools
 #   GAMECORE_ETOS_KEY_FILE                  app key file on the host (default ~/.config/gamecore-studio/app-key.json)
+#   GAMECORE_ETOS_STAGE_CHANGESET           optional owned mechanism candidate id for R2-H stage qualification
+#   GAMECORE_ETOS_STAGE_CATALOG             candidate catalog SHA-256 (required with STAGE_CHANGESET)
+#   GAMECORE_ETOS_PROJECT_ID                derived below from productGUID + absolute project path
 #   GC_ETOS_MIC_SECONDS                     microphone capture length in the Unity test (default 14)
 #
 # Exit codes: 0 every selected live test passed (an Inconclusive microphone row is reported, not a pass of that
@@ -102,6 +105,36 @@ mkdir -p "${evidence}" "${fixtures}"
 echo "-- node: etosd active; app key file: ${key_file} (contents not shown)"
 echo "-- evidence: ${evidence}"
 
+# D5: same persisted identity as EtosProjectContext; never inspect the credential settings file.
+export GAMECORE_ETOS_PROJECT_ID="$(python3 - "${base}/games/hollowmere" <<'PYPROJECT'
+import hashlib, json, pathlib, re, sys
+root = pathlib.Path(sys.argv[1]).resolve()
+identity = root / 'UserSettings/GameCoreStudio.Project.json'
+stored = json.loads(identity.read_text()) if identity.exists() else {}
+if stored.get('path') == str(root) and re.fullmatch('[0-9a-f]{64}', stored.get('projectId', '')):
+    project_id = stored['projectId']
+else:
+    text = (root / 'ProjectSettings/ProjectSettings.asset').read_text()
+    guid = re.search(r'(?m)^\s*productGUID:\s*([a-fA-F0-9]{32})\s*$', text)
+    if not guid: raise SystemExit('project_guid_missing')
+    project_id = hashlib.sha256((guid[1].lower() + '\n' + str(root)).encode()).hexdigest()
+    identity.parent.mkdir(parents=True, exist_ok=True)
+    identity.write_text(json.dumps({'path': str(root), 'projectId': project_id}))
+print(project_id)
+PYPROJECT
+)"
+export GAMECORE_ETOS_STAGE_SOURCE="$(git -C "${base}" rev-parse HEAD)"
+if [[ -n "${GAMECORE_ETOS_STAGE_CHANGESET:-}" ]]; then
+  [[ "${GAMECORE_ETOS_STAGE_CATALOG:-}" =~ ^[0-9a-f]{64}$ ]] || { echo 'stage catalog SHA-256 required' >&2; exit 2; }
+  export GAMECORE_ETOS_STAGE_CHANGESET GAMECORE_ETOS_STAGE_CATALOG
+fi
+
+# Redact before tee can persist child output, using the shared host policy.
+redact_output() {
+  python3 -u -c 'import sys; sys.path.insert(0, sys.argv[1]); from redact import redact
+for line in sys.stdin: sys.stdout.write(redact(line)); sys.stdout.flush()' "${base}/studio/stage"
+}
+
 export GAMECORE_ETOS_LIVE=1
 export GAMECORE_ETOS_KEY_FILE="${key_file}"
 export GC_ETOS_EVIDENCE_DIR="${evidence}"
@@ -123,7 +156,7 @@ if (( ! skip_dotnet )); then
   rc=0
   "${tools}/dotnet-test.sh" "${packet}" dotnet/tests/GameCore.Studio.Etos.Client.Tests -- \
     --filter "${dotnet_filter}" --logger "trx;LogFileName=${evidence}/dotnet-live.trx" \
-    --logger "console;verbosity=normal" 2>&1 | tee "${evidence}/dotnet-live.log" || rc=$?
+    --logger "console;verbosity=normal" 2>&1 | redact_output | tee "${evidence}/dotnet-live.log" || rc=$?
   (( rc == 0 )) || { echo "-- dotnet live tests failed (exit ${rc})" >&2; failures=$((failures + 1)); }
 fi
 
@@ -163,7 +196,7 @@ if (( ! skip_unity )); then
   rc=0
   UNITY_TIMEOUT="${UNITY_TIMEOUT:-3600}" UNITY_SILENCE_TIMEOUT="${UNITY_SILENCE_TIMEOUT:-1500}" \
     "${tools}/unity-compile.sh" "${packet}" games/hollowmere --tests EditMode --filter "${unity_filter}" 2>&1 \
-    | tee "${evidence}/unity-live.log" || rc=$?
+    | redact_output | tee "${evidence}/unity-live.log" || rc=$?
   (( rc == 0 )) || { echo "-- Unity live tests failed (exit ${rc})" >&2; failures=$((failures + 1)); }
   latest_xml="$(ls -t "${base}/.unity-logs/"*editmode*.xml 2>/dev/null | head -n 1 || true)"
   [[ -n "${latest_xml}" ]] && cp "${latest_xml}" "${evidence}/unity-live-results.xml"

@@ -2,7 +2,7 @@
 // durable event ledger after ?after=<cursor> and then streams live events, ordered by cursor. This stream keeps the
 // last HANDLED cursor in an ICursorStore (saved after the handler returns), reconnects with exponential backoff and
 // jitter after any break (node restart, companion restart, network), and drops frames at or below the cursor, so a
-// reconnect neither loses nor repeats an event. A ticket is obtained for every connect (tickets are single use).
+// reconnect replays any unacknowledged event (handlers must be idempotent). A ticket is obtained for every connect (tickets are single use).
 #nullable enable
 using System;
 using System.Diagnostics;

@@ -109,6 +109,10 @@ namespace GameCore.Studio.Etos.Client.Tests
                 await stream.StopAsync();
                 await Wait.Until(() => setup.Fake.EventConnections == 0, TimeSpan.FromSeconds(5), "reload closed connection");
             }
+            // A failed ownership transfer after a successful upgrade must also release the actual socket.
+            setup.Client.Exchanged += exchange => { if (exchange.Method == "WS") throw new InvalidOperationException("observer failed"); };
+            Assert.ThrowsAsync<InvalidOperationException>(() => setup.Client.ConnectWebSocketAsync("/v1/events", "after=0"));
+            await Wait.Until(() => setup.Fake.EventConnections == 0, TimeSpan.FromSeconds(5), "unsuccessful ownership transfer disposed");
             Assert.That(setup.Fake.Calls.Where(c => c.Path.EndsWith("/v1/events")).All(c => c.ProjectId == setup.Options.ProjectId), Is.True);
         }
 
@@ -120,7 +124,7 @@ namespace GameCore.Studio.Etos.Client.Tests
             {
                 ["code"] = "transport", ["message"] = "ett_hidden-ticket", ["hint"] = "retry same request",
                 ["data"] = new JObject { ["key"] = "effect-private", ["op"] = "tts", ["nested"] = new JObject { ["apiToken"] = "private-value" } },
-                ["diagnostics"] = new JArray(new JObject { ["detail"] = "sk-private", ["secret"] = new JObject { ["value"] = "private-object" } }),
+                ["diagnostics"] = new JArray(new JObject { ["detail"] = "etp_private.suffix+tail=", ["secret"] = new JObject { ["value"] = "private-object" } }),
             });
             var error = Assert.ThrowsAsync<EtosException>(() => setup.Client.GenerateAsync(new GenerateBody("tts", new JObject { ["text"] = "hello" })))!;
             Assert.That(error.Error.Status, Is.EqualTo(504));

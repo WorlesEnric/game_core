@@ -40,7 +40,7 @@ namespace GameCore.Studio.Etos.Client
         {
             ItemId = itemId;
             Revision = revision;
-            Text = text;
+            Text = EtosRedaction.Redact(text);
             Final = final;
             Role = role;
             ReceivedAt = receivedAt;
@@ -304,6 +304,7 @@ namespace GameCore.Studio.Etos.Client
 
         private void Close(string reason)
         {
+            reason = EtosRedaction.Redact(reason);
             if (_closed.TrySetResult(reason))
             {
                 Closed?.Invoke(reason);

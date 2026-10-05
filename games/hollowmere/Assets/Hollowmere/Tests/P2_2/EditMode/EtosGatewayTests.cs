@@ -383,6 +383,8 @@ namespace GameCore.Studio.Hollowmere.P2_2.Tests
                 string stored = File.ReadAllText(EtosSettings.PathFor(root));
                 Assert.That(stored, Does.Contain("app-key.json"));
                 Assert.That(stored, Does.Not.Contain(FakeCompanion.AppKey));
+                Directory.CreateDirectory(Path.Combine(root, "ProjectSettings"));
+                File.WriteAllText(Path.Combine(root, "ProjectSettings", "ProjectSettings.asset"), "productGUID: " + new string('a', 32));
                 EtosSettings loaded = EtosSettings.Load(root);
                 string? environment = Environment.GetEnvironmentVariable(EtosCredentials.KeyFileVariable);
                 if (string.IsNullOrEmpty(environment))

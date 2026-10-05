@@ -65,8 +65,8 @@ namespace GameCore.Studio.Etos.Client
             Code = string.IsNullOrEmpty(code) ? EtosCodes.Protocol : EtosRedaction.Redact(code);
             Message = EtosRedaction.Redact(message ?? string.Empty);
             Hint = hint == null ? null : EtosRedaction.Redact(hint);
-            Diagnostics = diagnostics == null ? null : (JArray)new GameCore.Studio.Authoring.SecretRedactor().RedactJson(diagnostics);
-            Data = data == null ? null : (JObject)new GameCore.Studio.Authoring.SecretRedactor().RedactJson(data);
+            Diagnostics = diagnostics == null ? null : (JArray)EtosRedaction.RedactJson(diagnostics);
+            Data = data == null ? null : (JObject)EtosRedaction.RedactJson(data);
         }
 
         /// <summary>HTTP status (0 when no HTTP answer was received).</summary>
@@ -80,7 +80,7 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Redacted hint.</summary>
         public string? Hint { get; }
 
-        /// <summary>03 s9 diagnostics the companion itemised (contract-check findings), verbatim.</summary>
+        /// <summary>03 s9 diagnostics the companion itemised, recursively sanitized before retention.</summary>
         public JArray? Diagnostics { get; }
 
         public JObject? Data { get; }
