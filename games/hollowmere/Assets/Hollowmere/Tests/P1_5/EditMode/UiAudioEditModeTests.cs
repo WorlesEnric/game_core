@@ -31,8 +31,16 @@ namespace Hollowmere.P1_5.EditMode.Tests
         {
             UiAudioAuthoringReport first = HollowmereUiAudioAuthoring.Author();
             Assert.That(first.Ok, Is.True, first.ToString());
-            Assert.That(first.Clips, Is.EqualTo(HollowmereUiAudioAuthoring.AudioSpecs().Count));
-            Assert.That(first.Documents, Is.EqualTo(10));
+            if (AssetDatabase.LoadMainAssetAtPath(HollowmereUiAudioAuthoring.P31SupersededMarker) == null)
+            {
+                Assert.That(first.Clips, Is.EqualTo(HollowmereUiAudioAuthoring.AudioSpecs().Count));
+                Assert.That(first.Documents, Is.EqualTo(10));
+            }
+            else
+            {
+                // P3.1 owns the UI and audio content (journaled change sets); P1.5's authoring only validates it.
+                Assert.That(first.Clips, Is.EqualTo(0), "P1.5's authoring writes nothing once P3.1 owns the content");
+            }
             string flowGuid = AssetDatabase.AssetPathToGUID(HollowmereUiAudioAuthoring.FlowPath);
             string bankGuid = AssetDatabase.AssetPathToGUID(HollowmereUiAudioAuthoring.BankPath);
             UiAudioAuthoringReport second = HollowmereUiAudioAuthoring.Author();

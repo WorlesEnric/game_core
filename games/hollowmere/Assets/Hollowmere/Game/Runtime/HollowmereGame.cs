@@ -54,6 +54,7 @@ namespace Hollowmere.Game
         private GameBoot? boot;
         private HollowmereUiAudio? rig;
         private AutoplayIntentSource? autoplayIntents;
+        private bool scriptedIntents;
 
         public string AuthoringId => authoringId;
 
@@ -147,6 +148,11 @@ namespace Hollowmere.Game
             Player = boot.Player;
             Npcs = boot.Npcs;
             Interactions = boot.Interactions;
+            if (CommandLine.AutoplayPath != null)
+            {
+                scriptedIntents = true;
+            }
+
             InstallAutoplayIntents();
             Director = new HollowmereDirector(this, director);
             Director.Attach(boot.Narrative, boot.Modules);
@@ -238,10 +244,10 @@ namespace Hollowmere.Game
                 return null;
             }
 
-            int key = world.Slots.ReadOrDefault(player.Extension.Player, PlayerSlots.Owner, PlayerSlots.RegionKey, 0);
+            int key = world.Slots.ReadOrDefault(player.Extension.Player, GameplaySlots.WorldOwner, GameplaySlots.Region, 0);
             for (int i = 0; i < world.Manifest.Regions.Count; i++)
             {
-                if (world.Manifest.Regions[i].key == key)
+                if (world.Manifest.Regions[i].key == key || AuthoringIds.StableKey(world.Manifest.Regions[i].authoringId) == key)
                 {
                     return world.Manifest.Regions[i];
                 }
@@ -262,18 +268,29 @@ namespace Hollowmere.Game
 
             TargetId target = player.Extension.Player;
             return new Vector3(
-                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, PlayerSlots.Owner, PlayerSlots.PosX, 0)),
-                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, PlayerSlots.Owner, PlayerSlots.PosY, 0)),
-                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, PlayerSlots.Owner, PlayerSlots.PosZ, 0)));
+                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosX, 0)),
+                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosY, 0)),
+                (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, 0)));
         }
 
-        /// <summary>The scripted intents (autoplay and tests): an override of the player's input source.</summary>
+        /// <summary>
+        /// The scripted intents (autoplay and tests): an override of the player's input source, wrapping it (P1.5's pause
+        /// gate stays inside). Null unless -autoplay was given or <see cref="UseScriptedIntents"/> was called.
+        /// </summary>
         public AutoplayIntentSource? Intents => autoplayIntents;
+
+        /// <summary>Installs the scripted intents (kept across restores); returns them, or null before the boot.</summary>
+        public AutoplayIntentSource? UseScriptedIntents()
+        {
+            scriptedIntents = true;
+            InstallAutoplayIntents();
+            return autoplayIntents;
+        }
 
         private void InstallAutoplayIntents()
         {
             PlayerSession? player = Player;
-            if (player == null)
+            if (player == null || !scriptedIntents)
             {
                 return;
             }
@@ -297,7 +314,7 @@ namespace Hollowmere.Game
                     return camera.Value;
                 }
 
-                return world == null ? 0f : (float)GameplayUnits.MilliradiansToDegrees(world.Slots.ReadOrDefault(target, PlayerSlots.Owner, PlayerSlots.Yaw, 0));
+                return world == null ? 0f : (float)GameplayUnits.MilliradiansToDegrees(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.Yaw, 0));
             };
             autoplayIntents.Paused = () => world != null && world.Presentation.Get<IGameplayPauseQuery>() is IGameplayPauseQuery pause && pause.GameplayPaused;
         }

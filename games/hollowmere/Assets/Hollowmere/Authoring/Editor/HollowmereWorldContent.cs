@@ -23,7 +23,7 @@ namespace Hollowmere.Authoring
     /// <summary>The scene-dependent half of AuthorAll.</summary>
     public static class HollowmereWorldContent
     {
-        public const string OddId = "feae7fb3-57f9-4711-8549-04fa8f161ac2";
+        public const string VillageOddId = "feae7fb3-57f9-4711-8549-04fa8f161ac2";
         public const string HaleId = "3f2e423d-ec9f-4051-8713-662180be4db9";
         public const string BellId = "e45e9ce2-198c-48ee-8a4e-b01bc4bf0bbf";
 
@@ -289,7 +289,7 @@ namespace Hollowmere.Authoring
 
             a.Step("world.odd-leaves-village", "Odd the ferryman leaves the village square", () =>
             {
-                AuthoredEntity? odd = FindById(VillageScene, OddId);
+                AuthoredEntity? odd = FindById(VillageScene, VillageOddId);
                 return odd == null ? new List<Operation>() : new List<Operation> { new Operation("delete", "delete", a.Ref(odd.gameObject), new JObject()) };
             });
 
