@@ -448,7 +448,7 @@ namespace GameCore.Studio.Views
                 _rules.Add(Text("Last decisions (running world)", 11f, FontStyle.Bold));
                 int shown = 0;
                 IReadOnlyList<ExplainEntry> recent = Context.Gameplay.RecentExplain(64);
-                for (int i = recent.Count - 1; i >= 0 && shown < 12; i--)
+                for (int i = 0; i < recent.Count && shown < 12; i++)
                 {
                     ExplainEntry entry = recent[i];
                     if (ruleRefs.Contains(entry.RuleRef) || ruleRefs.Contains(entry.RuleName))

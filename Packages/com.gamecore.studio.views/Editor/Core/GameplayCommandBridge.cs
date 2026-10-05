@@ -135,7 +135,7 @@ namespace GameCore.Studio.Views
 
         bool TryReadVisited(string graphRef, int node, out bool visited);
 
-        /// <summary>The most recent rule decisions, newest last.</summary>
+        /// <summary>The most recent rule decisions, newest first (IExplainSource.Recent order).</summary>
         IReadOnlyList<ExplainEntry> RecentExplain(int max);
 
         /// <summary>The committed residency of a region by authoring id, as the gameplay enum's member name.</summary>

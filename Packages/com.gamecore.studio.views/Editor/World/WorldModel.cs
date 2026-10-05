@@ -221,7 +221,7 @@ namespace GameCore.Studio.Views
                 portals.Add(new WorldPortal(key, node?.Ref ?? reference, graph.NameOf(key), a == null ? null : Canonical(graph, a), b == null ? null : Canonical(graph, b)));
             }
 
-            return new WorldDocument(world.Ref.IdentityKey, world.Ref, graph.NameOf(world.Ref.IdentityKey), regions, portals, Schedules(context.Runtime, graph));
+            return new WorldDocument(world.Ref.IdentityKey, world.Ref, graph.NameOf(world.Ref.IdentityKey), regions, portals, LoadSchedules(context.Runtime, graph));
         }
 
         private static int CountContained(IndexGraph graph, string regionKey)
@@ -284,7 +284,7 @@ namespace GameCore.Studio.Views
             return spawn != null && spawn.GetValue(marker) is Transform transform && transform != null ? transform.position : (Vector3?)null;
         }
 
-        private static IReadOnlyList<NpcSchedule> Schedules(StudioRuntime runtime, IndexGraph graph)
+        private static IReadOnlyList<NpcSchedule> LoadSchedules(StudioRuntime runtime, IndexGraph graph)
         {
             List<NpcSchedule> schedules = new List<NpcSchedule>();
             foreach (IndexNode npc in graph.OfType("npc.definition"))
