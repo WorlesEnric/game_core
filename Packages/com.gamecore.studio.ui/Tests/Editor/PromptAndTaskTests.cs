@@ -269,10 +269,13 @@ namespace GameCore.Studio.UI.Tests
 
             StagedChangeSet imported = _bed.Gateway.Import(_bed.Runtime, id);
             Assert.That(imported.Ok, Is.True, string.Join("; ", imported.Diagnostics));
+            Assert.That(GatewayExtras.ImportsItself(_bed.Gateway, id), Is.True);
+            Assert.That(GatewayExtras.StagedBy(_bed.Gateway, id), Is.SameAs(imported), "the gateway's staged change set is visible to the UI");
             _bed.Gateway.Emit(TestAgentGateway.View(id, "candidate", request.Intent.Text, localState: "staged", hasCandidate: true, seq: 5));
             _bed.Context.Tick();
-            CandidateEntry entry = _bed.Context.Candidates.Find(id)!;
-            Assert.That(entry.GatewayStaged, Is.True);
+            CandidateEntry? entry = _bed.Context.Candidates.Find(id);
+            Assert.That(entry, Is.Not.Null, "adopted on the staged report (" + _bed.Context.Candidates.Entries.Count + " entries, " + _bed.Context.EventsSeen + " events)");
+            Assert.That(entry!.GatewayStaged, Is.True);
             Assert.That(entry.Staged, Is.SameAs(imported), "the gateway's staged change set is adopted, not staged again");
             Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Previewing));
             Assert.That(_bed.Context.Candidates.Preview(entry), Is.SameAs(imported));

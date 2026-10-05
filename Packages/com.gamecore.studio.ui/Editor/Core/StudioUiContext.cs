@@ -142,7 +142,7 @@ namespace GameCore.Studio.UI
                     }
                     else if (Candidates.Find(view.ChangeSetId) == null)
                     {
-                        _ = ReceiveCandidate(view.RequestId, view.ChangeSetId);
+                        Observe(ReceiveCandidate(view.RequestId, view.ChangeSetId));
                     }
 
                     return;
@@ -155,7 +155,7 @@ namespace GameCore.Studio.UI
 
             if (info.State == AgentRequestState.Candidate && view.HasCandidate && !GatewayExtras.ImportsItself(gateway, view.RequestId) && Candidates.Find(view.ChangeSetId) == null)
             {
-                _ = ReceiveCandidate(view.RequestId, view.ChangeSetId);
+                Observe(ReceiveCandidate(view.RequestId, view.ChangeSetId));
             }
         }
 
@@ -165,7 +165,7 @@ namespace GameCore.Studio.UI
             EventsSeen++;
             if (!GatewayExtras.ImportsItself(Gateway, notice.RequestId))
             {
-                _ = ReceiveCandidate(notice.RequestId, notice.ChangeSetId);
+                Observe(ReceiveCandidate(notice.RequestId, notice.ChangeSetId));
             }
         }
 
@@ -249,6 +249,12 @@ namespace GameCore.Studio.UI
                 _subscribedGateway.StatusChanged -= OnStatusChanged;
                 _subscribedGateway = null;
             }
+        }
+
+        /// <summary>A fire-and-forget receive never fails silently: a fault is logged.</summary>
+        private static void Observe(Task task)
+        {
+            task.ContinueWith(done => Debug.LogException(done.Exception!.GetBaseException()), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
         }
 
         private void OnRequestChanged(RequestView view) => Dispatcher.Post(() => HandleRequest(view));
