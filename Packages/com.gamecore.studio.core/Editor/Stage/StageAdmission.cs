@@ -663,7 +663,7 @@ namespace GameCore.Studio.Edit
                 ["catalogType"] = catalogType,
                 ["verdict"] = verdict?.Digest,
                 ["slot"] = verdict?.Slot,
-                ["started"] = started.ToString("o", System.Globalization.CultureInfo.InvariantCulture),
+                ["startedMs"] = new DateTimeOffset(started).ToUnixTimeMilliseconds(),
             };
             if (before != null)
             {
@@ -933,7 +933,7 @@ namespace GameCore.Studio.Edit
                 ["package"] = package,
                 ["catalogType"] = (string?)record?["catalogType"],
                 ["directory"] = (string?)record?["directory"],
-                ["started"] = DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture),
+                ["startedMs"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
             };
             if (expected != null)
             {
@@ -1038,18 +1038,15 @@ namespace GameCore.Studio.Edit
 
         private double Elapsed(string changeSetId, JObject? pending)
         {
-            DateTime started;
-            if (!_started.TryGetValue(changeSetId, out started))
+            // Unix milliseconds, not an ISO string: Newtonsoft re-reads ISO strings as local DateTime values.
+            if (_started.TryGetValue(changeSetId, out DateTime started))
             {
-                string? text = (string?)pending?["started"];
-                if (text == null || !DateTime.TryParse(text, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind, out started))
-                {
-                    return 0;
-                }
+                _started.Remove(changeSetId);
+                return (DateTime.UtcNow - started).TotalMilliseconds;
             }
 
-            _started.Remove(changeSetId);
-            return (DateTime.UtcNow - started.ToUniversalTime()).TotalMilliseconds;
+            long? startedMs = (long?)pending?["startedMs"];
+            return startedMs == null ? 0 : DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startedMs.Value;
         }
 
         private void SetScenario(string changeSetId, string scenario, ScenarioStatus status, string detail)

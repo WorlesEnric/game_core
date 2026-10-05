@@ -131,7 +131,7 @@ namespace GameCore.Studio.Edit
             string summary = Read<string>(result, "Summary") ?? string.Empty;
             if (fingerprint.Length != 64)
             {
-                problem = "the world does not bake: " + summary;
+                problem = "the world does not bake: " + summary + Problems(result);
                 return null;
             }
 
@@ -188,6 +188,29 @@ namespace GameCore.Studio.Edit
             }
 
             return actual;
+        }
+
+        /// <summary>The first problems of a BakeResult ("; " separated), read through its Diagnostics list.</summary>
+        private static string Problems(object? result)
+        {
+            if (!(Read<System.Collections.IEnumerable>(result, "Diagnostics") is System.Collections.IEnumerable diagnostics))
+            {
+                return string.Empty;
+            }
+
+            List<string> lines = new List<string>();
+            foreach (object? diagnostic in diagnostics)
+            {
+                if (lines.Count == 5)
+                {
+                    lines.Add("...");
+                    break;
+                }
+
+                lines.Add(diagnostic?.ToString() ?? "(null)");
+            }
+
+            return lines.Count == 0 ? string.Empty : ": " + string.Join("; ", lines);
         }
 
         internal static Type? FindType(string fullName)
