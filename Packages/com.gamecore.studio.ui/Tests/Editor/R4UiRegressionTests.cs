@@ -45,6 +45,59 @@ namespace GameCore.Studio.UI.Tests
         }
 
         [Test]
+        public void P42_UI_02_CompensatesWindowManagerTranslationWithoutAccumulatingIt()
+        {
+            System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
+            object owner = scheduler.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
+            MethodInfo advance = scheduler.GetMethod("Advance")!;
+            StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
+            Rect expected = new Rect(20, 40, 1048, 772);
+            Rect displaced = new Rect(20, 69, 1048, 772);
+            double now = EditorApplication.timeSinceStartup;
+            try
+            {
+                scheduler.GetMethod("Place")!.Invoke(owner, new object[] { window, expected });
+                window.position = displaced;
+                advance.Invoke(owner, new object[] { now }); // unadjusted probe
+                window.position = displaced;
+                advance.Invoke(owner, new object[] { now + 0.1 });
+                Assert.That(window.position, Is.EqualTo(new Rect(20, 11, 1048, 772)), "compensate the observed 29-pixel translation");
+                window.position = displaced; // a rejected correction must not accumulate offset
+                advance.Invoke(owner, new object[] { now + 0.2 });
+                Assert.That(window.position, Is.EqualTo(expected), "retry with an unadjusted probe");
+                window.position = displaced;
+                advance.Invoke(owner, new object[] { now + 0.3 });
+                Assert.That(window.position, Is.EqualTo(new Rect(20, 11, 1048, 772)));
+                window.position = expected; // the WM acknowledges the corrected request
+                advance.Invoke(owner, new object[] { now + 0.4 });
+                advance.Invoke(owner, new object[] { now + 0.9 });
+                advance.Invoke(owner, new object[] { now + 1.0 });
+                Assert.That(scheduler.GetProperty("PendingCount")!.GetValue(owner), Is.EqualTo(0));
+                Assert.That(window.position, Is.EqualTo(expected));
+            }
+            finally { Object.DestroyImmediate(window); }
+        }
+
+        [Test]
+        public void P42_UI_02_StableObservationsDoNotSpendRetryBudget()
+        {
+            System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
+            object owner = scheduler.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
+            MethodInfo advance = scheduler.GetMethod("Advance")!;
+            StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
+            double now = EditorApplication.timeSinceStartup;
+            try
+            {
+                scheduler.GetMethod("Place")!.Invoke(owner, new object[] { window, new Rect(20, 40, 1048, 772) });
+                for (int i = 0; i < 130; i++) advance.Invoke(owner, new object[] { now });
+                Assert.That(scheduler.GetProperty("PendingCount")!.GetValue(owner), Is.EqualTo(1), "wait for stability time without exhausting placement attempts");
+                advance.Invoke(owner, new object[] { now + 0.6 });
+                Assert.That(scheduler.GetProperty("PendingCount")!.GetValue(owner), Is.EqualTo(0));
+            }
+            finally { Object.DestroyImmediate(window); }
+        }
+
+        [Test]
         public void P42_UI_02_TimeoutDiagnosesAndUnsubscribes()
         {
             System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
@@ -55,6 +108,7 @@ namespace GameCore.Studio.UI.Tests
             try
             {
                 scheduler.GetMethod("Place")!.Invoke(owner, new object[] { window, new Rect(20, 40, 1048, 772) });
+                advance!.Invoke(owner, new object[] { EditorApplication.timeSinceStartup });
                 window.position = new Rect(100, 100, 800, 700);
                 LogAssert.Expect(LogType.Warning, new Regex(@"\[layout_timeout\].*requested.*observed"));
                 advance!.Invoke(owner, new object[] { EditorApplication.timeSinceStartup + 6 });

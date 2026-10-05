@@ -100,7 +100,7 @@ namespace GameCore.Studio.UI
     }
 
     // Show and X11 ConfigureNotify can race across several updates. Stop once placement is stable,
-    // or after five seconds / 120 updates, so a constrained WM cannot keep fighting the creator.
+    // or after five seconds / 120 placement attempts, so a constrained WM cannot keep fighting the creator.
     internal sealed class StudioDeferredLayout : ScriptableSingleton<StudioDeferredLayout>
     {
         public const double TimeoutSeconds = 5;
@@ -113,7 +113,10 @@ namespace GameCore.Studio.UI
             public double Started;
             public double StableSince;
             public int StableUpdates;
-            public int Updates;
+            public int Attempts;
+            public Rect LastCommand;
+            public bool CorrectNext;
+            public bool StartedUpdating;
         }
 
         public int PendingCount => _pending.Count;
@@ -122,7 +125,7 @@ namespace GameCore.Studio.UI
         {
             double now = EditorApplication.timeSinceStartup;
             window.position = rect;
-            _pending[window] = new Placement { Rect = rect, Started = now, StableSince = now };
+            _pending[window] = new Placement { Rect = rect, LastCommand = rect, StableSince = now, Attempts = 1 };
             EditorApplication.update -= Apply;
             EditorApplication.update += Apply;
         }
@@ -138,7 +141,14 @@ namespace GameCore.Studio.UI
                 EditorWindow window = item.Key;
                 Placement placement = item.Value;
                 if (window == null) { completed.Add(window); continue; }
-                placement.Updates++;
+                if (!placement.StartedUpdating)
+                {
+                    // Opening the other Studio windows can block in GTK. The retry deadline starts
+                    // when the first scheduled update can actually work, not while Show is blocking.
+                    placement.StartedUpdating = true;
+                    placement.Started = now;
+                    placement.StableSince = now;
+                }
                 if (window.position == placement.Rect)
                 {
                     placement.StableUpdates++;
@@ -154,14 +164,29 @@ namespace GameCore.Studio.UI
                     placement.StableSince = now;
                 }
 
-                if (now - placement.Started >= TimeoutSeconds || placement.Updates >= 120)
+                if (now - placement.Started >= TimeoutSeconds || placement.Attempts >= 120)
                 {
                     Debug.LogWarning("GameCore Studio [layout_timeout]: " + window.GetType().Name
                         + " requested " + placement.Rect + ", observed " + window.position
-                        + "; placement did not settle within 5 seconds / 120 updates. Move the window manually or reopen Studio.");
+                        + "; placement did not settle within 5 seconds / 120 placement attempts. Move the window manually or reopen Studio.");
                     completed.Add(window);
                 }
-                else if (window.position != placement.Rect) window.position = placement.Rect;
+                else if (window.position != placement.Rect)
+                {
+                    Rect command = placement.Rect;
+                    if (placement.CorrectNext)
+                    {
+                        // X11 may report the client origin displaced by window decorations. Feed
+                        // that observed translation back into the next request, without a platform
+                        // constant. Alternate with an unadjusted probe to avoid accumulating error
+                        // when the creator/WM moves the window independently or clamps a request.
+                        command.position += placement.LastCommand.position - window.position.position;
+                    }
+                    placement.CorrectNext = !placement.CorrectNext;
+                    placement.LastCommand = command;
+                    placement.Attempts++;
+                    window.position = command;
+                }
             }
             foreach (EditorWindow window in completed) _pending.Remove(window);
             if (_pending.Count == 0) EditorApplication.update -= Apply;

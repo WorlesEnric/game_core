@@ -228,12 +228,15 @@ namespace GameCore.Studio.UI.Tests
                     Assert.That(focused != null && (focused == control || control.Contains(focused)), Is.True,
                         "focus must settle on " + control.name + " before dispatch");
                     int beforeDowns = downs, beforeUps = ups, beforeImageDowns = imageDowns, beforeImageUps = imageUps;
-                    using (KeyDownEvent down = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.Tab })) focused!.SendEvent(down);
-                    using (KeyUpEvent up = KeyUpEvent.GetPooled(new Event { type = EventType.KeyUp, keyCode = KeyCode.Tab })) focused!.SendEvent(up);
+                    using (KeyDownEvent down = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.W })) focused!.SendEvent(down);
+                    using (KeyUpEvent up = KeyUpEvent.GetPooled(new Event { type = EventType.KeyUp, keyCode = KeyCode.W })) focused!.SendEvent(up);
                     Assert.That(downs - beforeDowns, Is.EqualTo(1), "P42-UI-01: trickle-down delivery to " + control.name);
                     Assert.That(ups - beforeUps, Is.EqualTo(1), "key-up delivery to " + control.name);
                     Assert.That(imageDowns - beforeImageDowns, Is.EqualTo(control == image ? 1 : 0), "control keys must never enter the image event path");
                     Assert.That(imageUps - beforeImageUps, Is.EqualTo(control == image ? 1 : 0), "control key-ups must never enter the image event path");
+                    // Tab can move Toolkit focus. Test its viewport shortcut separately from the
+                    // non-navigation down/up pair, whose focus must stay on the same control.
+                    using (KeyDownEvent tab = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.Tab })) focused!.SendEvent(tab);
                     Assert.That(window.Mode, Is.EqualTo(control == image ? ViewportMode.Inspect : ViewportMode.Select),
                         "only viewport focus may invoke viewport shortcuts");
                     Debug.Log("[R4-B key delivery] " + control.name + " down=1 up=1 imageDowns=" + (imageDowns - beforeImageDowns)
