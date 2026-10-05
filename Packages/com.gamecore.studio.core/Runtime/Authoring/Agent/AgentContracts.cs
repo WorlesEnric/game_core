@@ -355,7 +355,7 @@ namespace GameCore.Studio.Authoring.Agent
         ProviderStatus Status { get; }
 
         /// <summary>Raised on the main thread.</summary>
-        event Action<ProviderStatus> StatusChanged;
+        event Action<ProviderStatus>? StatusChanged;
 
         /// <summary>Submits a request; returns the request id (= change-set id).</summary>
         Task<string> SubmitAsync(AgentRequest req, CancellationToken ct);
@@ -364,10 +364,10 @@ namespace GameCore.Studio.Authoring.Agent
         IReadOnlyList<RequestView> Requests { get; }
 
         /// <summary>Raised on the main thread for every state or progress change.</summary>
-        event Action<RequestView> RequestChanged;
+        event Action<RequestView>? RequestChanged;
 
         /// <summary>Raised on the main thread when a validated candidate is available.</summary>
-        event Action<CandidateNotice> CandidateReady;
+        event Action<CandidateNotice>? CandidateReady;
 
         Task CancelAsync(string requestId, CancellationToken ct);
 
@@ -390,13 +390,13 @@ namespace GameCore.Studio.Authoring.Agent
         Task StopAsync();
 
         /// <summary>Raised on the main thread for every revision.</summary>
-        event Action<TranscriptUpdate> Transcript;
+        event Action<TranscriptUpdate>? Transcript;
 
         /// <summary>Input level in [0, 1], on the main thread.</summary>
-        event Action<float> Level;
+        event Action<float>? Level;
 
         /// <summary>Refusals and failures (codes preserved), on the main thread.</summary>
-        event Action<Diagnostic> Error;
+        event Action<Diagnostic>? Error;
     }
 
     /// <summary>Finds the Studio agent gateway behind the tool-facing registration.</summary>
