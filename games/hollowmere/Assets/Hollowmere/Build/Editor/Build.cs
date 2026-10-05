@@ -25,6 +25,8 @@ namespace Hollowmere
     /// <summary>Builds the Hollowmere Linux player.</summary>
     public static class Build
     {
+        public const string RevisionName = "revision.txt";
+
         public const string BootScene = "Assets/Hollowmere/Boot/Boot.unity";
         public const string ExecutableName = "Hollowmere.x86_64";
         public const string ReportName = "build-report.json";
@@ -128,6 +130,12 @@ namespace Hollowmere
             bool ok = summary.result == BuildResult.Succeeded;
             string json = ReportJson(report, revision, development, scenes, changedBackend, changedStripping);
             File.WriteAllText(Path.Combine(outputDir, ReportName), json, new UTF8Encoding(false));
+            if (ok)
+            {
+                // The player reads it next to its data folder (HollowmereGame.Revision) for the frame log header.
+                File.WriteAllText(Path.Combine(outputDir, RevisionName), revision + "\n", new UTF8Encoding(false));
+            }
+
             Console.WriteLine("HOLLOWMERE-BUILD result=" + summary.result + " size=" + summary.totalSize.ToString(CultureInfo.InvariantCulture)
                 + " seconds=" + summary.totalTime.TotalSeconds.ToString("F1", CultureInfo.InvariantCulture)
                 + " errors=" + summary.totalErrors.ToString(CultureInfo.InvariantCulture)

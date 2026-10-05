@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Entities;
 using GameCore.Gameplay.Inventory;
 using UnityEngine;
 
