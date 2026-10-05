@@ -75,6 +75,27 @@ impl Sandbox {
         }
     }
 
+    fn runtime_dir(&self) -> String {
+        format!(
+            "/tmp/gcs/{}",
+            &crate::util::sha256_hex(self.slot.as_os_str().as_encoded_bytes())[..8]
+        )
+    }
+
+    fn unity_arg(&self, path: &Path, project: Option<&Path>) -> Result<PathBuf, String> {
+        let mapped = if Some(path) == project {
+            PathBuf::from("/w/p")
+        } else if let Ok(relative) = path.strip_prefix(&self.slot) {
+            Path::new("/w/s").join(relative)
+        } else {
+            path.to_path_buf()
+        };
+        if mapped.is_absolute() && mapped.as_os_str().as_encoded_bytes().len() > 90 {
+            return Err("sandbox_unavailable: Unity argument path exceeds 90 bytes".into());
+        }
+        Ok(mapped)
+    }
+
     fn docker_config(&self) -> PathBuf {
         self.slot
             .parent()
@@ -106,6 +127,15 @@ impl Sandbox {
 
     /// Build a command with no inherited environment, network, host HOME or live project.
     fn command(&self, executable: &Path, private_home: &Path) -> Result<Command, String> {
+        self.command_for_project(executable, private_home, None)
+    }
+
+    fn command_for_project(
+        &self,
+        executable: &Path,
+        private_home: &Path,
+        project: Option<&Path>,
+    ) -> Result<Command, String> {
         for directory in [
             "home/.local/share/unity3d",
             "home/.cache/unity3d",
@@ -147,6 +177,20 @@ impl Sandbox {
             let metadata = std::fs::metadata(&self.slot).map_err(|e| e.to_string())?;
             cmd.arg("--user")
                 .arg(format!("{}:{}", metadata.uid(), metadata.gid()));
+            if self.home.as_os_str().as_encoded_bytes().len() + "/.config/unity3d/Unity".len() > 90
+            {
+                return Err("Unity HOME-derived paths exceed 90 bytes".into());
+            }
+            let runtime = self.runtime_dir();
+            // Every writable runtime/cache path is backed by this job or its disposable
+            // licensing copy, never host /tmp or another job's Unity cache.
+            use std::os::unix::fs::PermissionsExt;
+            let runtime_host = self.slot.join(runtime.trim_start_matches('/'));
+            licensing::no_links(&runtime_host)?;
+            std::fs::create_dir_all(&runtime_host).map_err(|e| e.to_string())?;
+            std::fs::set_permissions(&runtime_host, std::fs::Permissions::from_mode(0o700))
+                .map_err(|e| e.to_string())?;
+            std::fs::create_dir_all(private_home.join(".cache")).map_err(|e| e.to_string())?;
             // No daemon socket, host /tmp, HOME, live project, or provider environment.
             cmd.args([
                 "--env",
@@ -160,11 +204,15 @@ impl Sandbox {
                 "--env",
                 "DOTNET_PROCESSOR_COUNT=4",
                 "--env",
-                &format!("TMPDIR={}", self.slot.join("tmp").display()),
+                &format!("TMPDIR={runtime}"),
                 "--env",
-                &format!("NUGET_PACKAGES={}/nuget", self.cache.display()),
+                &format!("XDG_RUNTIME_DIR={runtime}"),
                 "--env",
-                &format!("UPM_CACHE_ROOT={}/upm", self.cache.display()),
+                &format!("XDG_CACHE_HOME={runtime}/cache"),
+                "--env",
+                "NUGET_PACKAGES=/c/nuget",
+                "--env",
+                &format!("UPM_CACHE_ROOT={runtime}/cache/upm"),
             ]);
             std::fs::create_dir_all(self.slot.join("tmp")).map_err(|e| e.to_string())?;
             for (path, writable) in [
@@ -187,6 +235,33 @@ impl Sandbox {
                 "type=bind,src={},dst=/tmp",
                 self.slot.join("tmp").display()
             ));
+            for (source, target, readonly) in [
+                (self.slot.as_path(), "/w/s", false),
+                (self.cache.as_path(), "/c", false),
+                (self.editor.as_path(), "/u", true),
+                (
+                    private_home.join(".cache").as_path(),
+                    &format!("{runtime}/cache"),
+                    false,
+                ),
+            ] {
+                licensing::mount_path(source)?;
+                cmd.arg("--mount").arg(format!(
+                    "type=bind,src={},dst={}{}",
+                    source.display(),
+                    target,
+                    if readonly { ",readonly" } else { "" }
+                ));
+            }
+            if let Some(project) = project {
+                licensing::mount_path(project)?;
+                licensing::no_links(project)?;
+                if !project.starts_with(&self.slot) {
+                    return Err("Unity project must belong to this job".into());
+                }
+                cmd.arg("--mount")
+                    .arg(format!("type=bind,src={},dst=/w/p", project.display()));
+            }
             licensing::mount_path(private_home)?;
             licensing::mount_path(&self.home)?;
             cmd.arg("--mount").arg(format!(
@@ -211,7 +286,7 @@ impl Sandbox {
                 ));
             }
             cmd.arg("--workdir")
-                .arg(&self.slot)
+                .arg("/w/s")
                 .arg(&self.image)
                 .arg(executable);
         } else {
@@ -284,7 +359,29 @@ impl Sandbox {
             .as_ref()
             .map(|h| h.0.as_path())
             .unwrap_or(&self.slot);
-        let mut cmd = match self.command(executable, home_path) {
+        let unity = self.mode == Confinement::Docker && requested == self.editor.join("Unity");
+        let original_args: Vec<_> = original.get_args().collect();
+        let project = if unity {
+            original_args
+                .windows(2)
+                .find(|p| p[0] == "-projectPath")
+                .map(|p| Path::new(p[1]))
+        } else {
+            None
+        };
+        if unity && let Err(error) = licensing::copy_unity_cache(self, home_path) {
+            return ChildOutcome {
+                code: None,
+                timed_out: false,
+                output: error,
+                elapsed: Duration::ZERO,
+            };
+        }
+        let mut cmd = match if unity {
+            self.command_for_project(Path::new("/u/Unity"), home_path, project)
+        } else {
+            self.command(executable, home_path)
+        } {
             Ok(cmd) => cmd,
             Err(e) => {
                 return ChildOutcome {
@@ -295,7 +392,24 @@ impl Sandbox {
                 };
             }
         };
-        cmd.args(original.get_args());
+        for arg in original.get_args() {
+            if unity {
+                let mapped = match self.unity_arg(Path::new(arg), project) {
+                    Ok(path) => path,
+                    Err(error) => {
+                        return ChildOutcome {
+                            code: None,
+                            timed_out: false,
+                            output: error,
+                            elapsed: Duration::ZERO,
+                        };
+                    }
+                };
+                cmd.arg(mapped);
+            } else {
+                cmd.arg(arg);
+            }
+        }
         let home = self.slot.join("home").display().to_string();
         let out = run_child(&mut cmd, &[("HOME", &home)], log, timeout);
         self.stop_container();
@@ -503,6 +617,116 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 mod tests {
     use super::*;
     #[test]
+    fn stage_tmp_unity_paths_are_short_and_job_private() {
+        use std::os::unix::fs::{MetadataExt, PermissionsExt};
+        let temp = tempfile::tempdir().unwrap();
+        let owner = temp.path().join("a".repeat(64)).join("b".repeat(64));
+        let sandbox = Sandbox::defaults(
+            &owner.join("job-12345678"),
+            &owner.join("_warm/cache"),
+            Path::new("/trusted"),
+        );
+        assert!(sandbox.slot.as_os_str().as_encoded_bytes().len() > 108);
+        let project = sandbox.slot.join("project");
+        std::fs::create_dir_all(&project).unwrap();
+        let private = sandbox.slot.join(".licensing-test");
+        let mut command = sandbox
+            .command_for_project(Path::new("/u/Unity"), &private, Some(&project))
+            .unwrap();
+        for arg in [
+            Path::new("-projectPath"),
+            &project,
+            Path::new("-testResults"),
+            &sandbox.slot.join("out/editmode.xml"),
+            Path::new("-logFile"),
+            Path::new("-"),
+        ] {
+            command.arg(sandbox.unity_arg(arg, Some(&project)).unwrap());
+        }
+        let args: Vec<_> = command
+            .get_args()
+            .map(|s| s.to_string_lossy().into_owned())
+            .collect();
+        let engine = args.iter().position(|a| a == "/u/Unity").unwrap();
+        for path in &args[engine..] {
+            if path.starts_with('/') {
+                assert!(path.len() <= 90, "{path}");
+            }
+        }
+        for pair in args.windows(2).filter(|p| p[0] == "--env") {
+            let (_, value) = pair[1].split_once('=').unwrap();
+            if value.starts_with('/') && !pair[1].starts_with("PATH=") {
+                assert!(value.len() <= 90, "{}", pair[1]);
+            }
+        }
+        assert!(args.iter().any(|a| a == "/w/p"));
+        assert!(args.iter().any(|a| a == "/w/s/out/editmode.xml"));
+        let runtime_host = sandbox
+            .slot
+            .join(sandbox.runtime_dir().trim_start_matches('/'));
+        assert_eq!(
+            std::fs::metadata(&runtime_host)
+                .unwrap()
+                .permissions()
+                .mode()
+                & 0o777,
+            0o700
+        );
+        assert_eq!(
+            std::fs::metadata(&runtime_host).unwrap().uid(),
+            std::fs::metadata(&sandbox.slot).unwrap().uid()
+        );
+        let other = Sandbox::defaults(
+            &owner.join("job-other"),
+            &sandbox.cache,
+            Path::new("/trusted"),
+        );
+        assert_ne!(sandbox.runtime_dir(), other.runtime_dir());
+        assert!(
+            sandbox
+                .unity_arg(&sandbox.slot.join("x".repeat(91)), Some(&project))
+                .is_err()
+        );
+        assert!(
+            sandbox
+                .command_for_project(Path::new("/u/Unity"), &private, Some(Path::new("/outside")))
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn stage_tmp_short_mounts_refuse_symlink_escapes() {
+        use std::os::unix::fs::symlink;
+        let temp = tempfile::tempdir().unwrap();
+        let sandbox = Sandbox::defaults(
+            &temp.path().join("slot"),
+            &temp.path().join("cache"),
+            Path::new("/trusted"),
+        );
+        std::fs::create_dir_all(&sandbox.slot).unwrap();
+        let outside = temp.path().join("outside");
+        std::fs::create_dir(&outside).unwrap();
+        symlink(&outside, sandbox.slot.join("tmp")).unwrap();
+        assert!(
+            sandbox
+                .command(Path::new("dotnet"), &temp.path().join("private"))
+                .is_err()
+        );
+        std::fs::remove_file(sandbox.slot.join("tmp")).unwrap();
+        symlink(&outside, sandbox.slot.join("project")).unwrap();
+        assert!(
+            sandbox
+                .command_for_project(
+                    Path::new("/u/Unity"),
+                    &temp.path().join("private"),
+                    Some(&sandbox.slot.join("project"))
+                )
+                .is_err()
+        );
+        assert!(std::fs::read_dir(outside).unwrap().next().is_none());
+    }
+
+    #[test]
     fn r2_11_stage_int_results_are_owned_by_host_allocator() {
         let args = [
             "-runTests",
@@ -581,6 +805,14 @@ mod tests {
                     "type=bind,src={},dst=/tmp",
                     sandbox.slot.join("tmp").display()
                 ),
+                format!("type=bind,src={},dst=/w/s", sandbox.slot.display()),
+                format!("type=bind,src={},dst=/c", sandbox.cache.display()),
+                format!("type=bind,src={},dst=/u,readonly", sandbox.editor.display()),
+                format!(
+                    "type=bind,src={},dst={}/cache",
+                    private.join(".cache").display(),
+                    sandbox.runtime_dir()
+                ),
                 format!("type=bind,src={},dst=/home/creator", private.display()),
                 "type=bind,src=/etc/machine-id,dst=/etc/machine-id,readonly".into(),
             ]
@@ -597,7 +829,7 @@ mod tests {
             vec!["--env".into(), "DOTNET_PROCESSOR_COUNT=4".into()],
             vec![
                 "--env".into(),
-                format!("UPM_CACHE_ROOT={}/upm", sandbox.cache.display()),
+                format!("UPM_CACHE_ROOT={}/cache/upm", sandbox.runtime_dir()),
             ],
         ] {
             assert!(args.windows(2).any(|v| v == pair));
@@ -676,6 +908,25 @@ mod tests {
         assert!(out.output.contains("sandbox-isolation-passed"));
         assert!(sandbox.slot.join("allowed").is_file());
         assert_eq!(std::fs::read_to_string(outside).unwrap(), "host-only");
+        let socket = sandbox.run(
+            Command::new("/usr/bin/python3").args(["-c", r#"
+import os, socket, stat
+runtime = os.environ['TMPDIR']
+assert runtime == os.environ['XDG_RUNTIME_DIR']
+assert stat.S_IMODE(os.stat(runtime).st_mode) == 0o700
+for name in ('TMPDIR', 'XDG_RUNTIME_DIR', 'XDG_CACHE_HOME', 'UPM_CACHE_ROOT', 'NUGET_PACKAGES', 'HOME'):
+    assert len(os.environ[name].encode()) <= 90, name
+assert os.getcwd() == '/w/s'
+path = runtime + '/' + 'bee-' + 'x' * 64
+with socket.socket(socket.AF_UNIX) as sock:
+    sock.bind(path)
+os.unlink(path)
+print('short private runtime socket passed')
+"#]),
+            &sandbox.slot.join("socket.log"),
+            Duration::from_secs(30),
+        );
+        assert!(socket.ok(), "{}", socket.output);
     }
 
     #[test]
