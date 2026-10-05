@@ -175,6 +175,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
             string output = Path.Combine(repo, "artifacts", "studio", "evidence", "P3.1", "memory-cycles.json");
             Directory.CreateDirectory(Path.GetDirectoryName(output)!);
             File.WriteAllText(output, report.ToString(Formatting.Indented) + "\n");
+            Debug.Log("[P3.1] memory-cycles.json " + report.ToString(Formatting.None));
             Debug.Log("[P3.1] memory cycles: allocated +" + lastAllocated.ToString(CultureInfo.InvariantCulture) + "%, reserved +"
                 + lastReserved.ToString(CultureInfo.InvariantCulture) + "% at cycle 10 (" + output + ")");
             SessionState.EraseString(MemoryKey);
