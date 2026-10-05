@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0777d9c87449d79026fe3345e29259, type: 3}
+  m_Name: DrownedBell
+  m_EditorClassIdentifier: 
+  authoringId: 0db698bb-d2d3-45b7-94cb-1bd81e90e6c2
+  contentStamp: 0e5818de95e46a9c63cc2cc5b3678660c267893a3db0fbf88260137f040cef37
+  title: The Drowned Bell
+  stages:
+  - title: A silent bell
+    description: Maren asked you to find the bell's clapper.
+    next: -1
+  - title: The marsh gate
+    description: 'Get past the marsh gate: pay Odd for the key, or persuade him.'
+    next: -1
+  - title: Ring the bell
+    description: Find the clapper in Blackmere Marsh and ring the Drowned Bell.
+    next: -1
+  - title: Return to Maren
+    description: Tell Maren the bell has rung.
+    next: -1
+  objectives:
+  - stage: 0
+    kind: 4
+    target: {fileID: 11400000, guid: c0058a7ebedf01ab3996bdb19fb6b8a5, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Hear Maren out
+  - stage: 1
+    kind: 4
+    target: {fileID: 11400000, guid: 1af0f99dbdb793a73928cf5583252642, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Open the marsh gate
+  - stage: 1
+    kind: 4
+    target: {fileID: 11400000, guid: d3b7d356633b6b09d852e26f0996d15f, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 1
+    text: Pay Odd three old coins
+  - stage: 1
+    kind: 4
+    target: {fileID: 11400000, guid: 5e6a96fd4444b092d8de598f9ccd195e, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 2
+    text: Persuade Odd
+  - stage: 2
+    kind: 1
+    target: {fileID: 11400000, guid: 8c9c7994823468958836995b0fb06237, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Find the bell clapper
+  - stage: 2
+    kind: 2
+    target: {fileID: 11400000, guid: 832904035182b2712b3f6c244c515dea, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Reach the Drowned Belfry
+  - stage: 2
+    kind: 4
+    target: {fileID: 11400000, guid: 3287a51c5f37f1571b80dc4970cf6f31, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Ring the bell
+  - stage: 3
+    kind: 0
+    target: {fileID: 11400000, guid: b12e0fe862718ab97bdba909d90007c1, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Talk to Maren
+  rewards:
+  - kind: 1
+    target: {fileID: 11400000, guid: fffb111048bcd5d6ea31bc57defa7c6d, type: 2}
+    value: 1
+    branch: 0
+  - kind: 2
+    target: {fileID: 11400000, guid: d1df5cf368cc4f5198b9f871e51a4f47, type: 2}
+    value: 1
+    branch: 0
+  - kind: 1
+    target: {fileID: 11400000, guid: 05dd05be1474ee7c6bcfc41eeee1b1fc, type: 2}
+    value: 3
+    branch: 1
+  failConditions: {fileID: 0}
+  branchNames:
+  - pay Odd
+  - persuade Odd

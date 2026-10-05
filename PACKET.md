@@ -1,0 +1,221 @@
+# P1.4 dialogue-quest-logic-inventory
+
+Catalog rows 6 (dialogue & narrative), 7 (quests), 8 (items & economy) and 9 (reusable rules/logic) of the gameplay
+plugin library, their pure rules halves, a bake extension point for package outputs in the gameplay compile pipeline,
+and the Hollowmere quest "The Drowned Bell", played through P1.3's NPCs and interactables (main ad28bb3 merged).
+
+Branch: `worktree-agent-a833890c84121beac`. Host clone: `~/wkspace/gc-studio/p1.4`.
+
+## What was built
+
+| Package / path | Content |
+|---|---|
+| `Packages/com.gamecore.gameplay.contracts/Runtime/Narrative/` (additive, engine-free) | `NarrativeIds` (route/command/event/slot/owner ids of the four plugins, `narrative.fact.<name>` slots, request-id derivation `NarrativeKeys.RequestIdOf(outboxId)`), `NarrativeCatalogNames`, `NarrativeDefinitions` (`INarrativeDefinition`, `IFactDefinition`, `NarrativeKinds`), `NarrativeSeams` (`EvaluationContext` with `FromInteraction(InteractionContext)`, `INarrativeMessageSink`, `IVoiceLinePlayer`, `IExplainSource`+`ExplainRecord`, `IMediaGenerationGateway`+`NotConfiguredMediaGateway`, a null object for each; the interaction seams are P1.3's), `NarrativeViewModels` (`DialogueViewModel`, `JournalViewModel`, `InventoryViewModel` and `IDialogueView`/`IJournalView`/`IInventoryView` with null views). |
+| `Packages/com.gamecore.rules.gameplay/Runtime/{Dialogue,Quest,Inventory,Logic}` (pure, noEngineReferences) | `DialogueRules` (graph validation, node stepping, option availability, visited bits), `QuestRules` (stage/objective/branch progression, fail conditions, reward selection per branch), `InventoryRules` (stacking, weight, slots, grant/consume/drop/transfer/trade with typed refusals, request-id ring of 8), `ConditionRules`/`ActionRules`/`RuleRules` (condition sets over facts/items/currency/quests/visited/time, the action kinds, trigger matching, once/cooldown/counter, `BoundedRing<T>`). |
+| `dotnet/tests/GameCore.Rules.Gameplay.Tests/{Dialogue,Quest,Inventory,Logic}` | 61 NUnit test methods (Dialogue 14, Quest 14, Inventory 14, Logic 19); the whole project runs 184 cases with P1.1's and P1.3's. |
+| `Packages/com.gamecore.gameplay.logic` | Authoring: `NarrativeDefinitionAsset` base, `GameplayContentSet` (the authored list), `GameplayContentManifest` (baked), `ConditionSetDefinition`, `ActionSetDefinition`, `RuleDefinition`. Runtime: `NarrativeComposer`/`NarrativeComposition`/`NarrativeRuntime`/`NarrativeWorld` (composition onto the P1.1 world plan), `NarrativeContent` (models + index), `NarrativeHost` (event routing, one delivery pump per frame), `NarrativeDelivery` (outbox ports), `NarrativeConditionEvaluator` (P1.3's `IConditionEvaluator`), `NarrativeActionRunner` (P1.3's `IActionRunner`), `ExplainTrace` (ring of 256), `LogicModule` + `[DisableAutoCreation] LogicCommandSystem` (stage `logic`, after world/inventory/quest/dialogue). Editor: `NarrativeBake` + `LogicBakeExtension` (content manifest) + `LogicCatalogContributor`, `NarrativeAuthoring` helpers, `logic.addRule/explain/test`, `LogicValidator`. |
+| `Packages/com.gamecore.gameplay.dialogue` | `FactDefinition`, `DialogueGraphDefinition` (line/choice/branch/action/end nodes, edges by port), `DialogueContentConverter`, `DialogueModule` + `DialogueCommandSystem`, `DialogueRunner` (P1.3's `IConversationStarter`), `DialoguePresenter`, `VoiceLinePlayer`. Editor: `dialogue.addLine/addChoice/linkCondition/setFact/preview/generateVoice`, `DialogueValidator`, `DialogueCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.quest` | `QuestDefinition`, `ObjectiveDefinition`, `QuestContentConverter`, `QuestModule` + `QuestTracker` + `QuestCommandSystem`, `JournalPresenter`, `ObjectiveMarker`. Editor: `quest.addStage/addObjective/linkReward/simulate`, `QuestValidator`, `QuestCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.inventory` | `ItemDefinition`, `InventoryDefinition`, `VendorDefinition`, `LootTableDefinition`, `WorldItemDefinition`, `InventoryContentConverter`, `InventoryModule` + `InventoryCommandSystem`, `InventoryCommands`, `InventoryPresenter`, `WorldItemBinder`, `VendorBinder`. Editor: `inventory.grantStarting/placeItem/setStock`, `InventoryValidator`, `InventoryCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.compile/Editor/Extensions/GameplayBakeExtensions.cs` (new) | `IGameplayBakeExtension` (Plan/Write/Verify) for a package's own bake outputs, `GameplayBakeContext`, discovery through `TypeCache` ordered by `ExtensionId`. Catalog registrations use P1.3's `IGameplayCatalogContributor`. |
+| `games/hollowmere` | Manifest adds the four packages (lock re-resolved on the host). `Assets/Hollowmere/Rules/Runtime` (`Hollowmere.Narrative`: module list, `Boot` with P1.3's extensions, `Wire` for P1.3's seams), `Rules/Editor/HollowmereNarrativeAuthoring` (authors the content through the tools and bakes), the authored content under `Dialogue/`, `Quests/`, `Items/`, `Rules/`, tests under `Tests/P1_4`. |
+
+### Out-of-path edits (allowed minimal call sites)
+
+* `Packages/com.gamecore.gameplay.compile/Editor/Entry.cs` (on top of P1.3's contribution call): `Compute` calls
+  `GameplayBakeExtensions.Plan` and adds its diagnostics; `BakeCore` calls `GameplayBakeExtensions.Write` after the
+  manifest; `Verify` calls `GameplayBakeExtensions.Verify`; `Outputs` carries the context; header comment step 6.
+  17 changed lines against main.
+* `CatalogDescriptionWriter.cs` is main's (P1.3) unchanged: the earlier P1.4 overload was dropped in favour of P1.3's
+  `GameplayCatalogContribution`.
+* `dotnet/src/GameCore.Rules.Gameplay` csproj Compile line (done before this packet started).
+
+## API (for P1.5, P3.1, P3.2)
+
+### Booting a world with narrative
+
+```csharp
+var modules = new HollowmereNarrativeModules();          // Logic, Inventory, Quest, Dialogue (game-owned list)
+var build = new WorldBuildOptions { Name = "Hollowmere", MaxEventsPerStep = 64, MaxRetainedEvents = 1024 };
+build.Extensions.Add(new NpcWorldExtension(npcRoster));                 // P1.3's extensions, composed by WorldBuilder
+build.Extensions.Add(interactions = new InteractionWorldExtension(interactionRoster));
+NarrativeWorld game = HollowmereNarrative.Boot(regionManifest, contentManifest, modules, options, build, start: true);
+HollowmereNarrative.Wire(game, interactions, interactionSession, npcSession);   // P1.3 seams -> P1.4 (nulls allowed)
+// generic form: NarrativeComposer.Boot(RegionManifest, GameplayContentManifest, IReadOnlyList<INarrativeModule>,
+//                                      GameApplicationBootOptions?, WorldBuildOptions?, bool start)
+game.Shutdown();                                          // disposes delivery, detaches the world, stops the root
+```
+
+`NarrativeWorld` exposes `World` (the P1.1 `GameplayWorld`), `Runtime`, `Root`, `Host`, `Conditions`, `Actions`,
+`Conversations`, `Explain`, `Delivery`. The content manifest must match the world (`FormatId`, `WorldId`), otherwise
+boot fails with ContentStale. P1.3's `GameBoot` still boots without narrative; switching it to `HollowmereNarrative.Boot`
++ `Wire` is left to the owner of the boot scene (P1.5/P3.1). `NarrativeComposition.Extend` copies the whole plan
+definition, so P1.3's extension plugins, systems, routes, lanes, readers and dispatch kinds come along unchanged.
+
+### Seams
+
+P1.3's (`GameCore.Gameplay.Contracts`), implemented here:
+
+```csharp
+ConversationStart IConversationStarter.TryStart(string npcAuthoringId, string graphRef);   // DialogueRunner (game.Conversations)
+ConditionVerdict IConditionEvaluator.Evaluate(string conditionRef, InteractionContext context); // game.Conditions: True/False, Unknown for an undeclared ref
+void IActionRunner.Run(string actionRef, InteractionContext context);                    // game.Actions; "inventory.pickup" picks up the subject world item
+void IFeedbackSink.OnFeedback(FeedbackCue cue);      // playAudio actions -> runtime.UseFeedback(sink) (target = subject entity, cue = audio id)
+```
+
+Richer forms on the same classes: `bool NarrativeConditionEvaluator.Evaluate(string ref, in EvaluationContext ctx, out
+string failedCondition)`, `bool NarrativeActionRunner.TryRun(string ref, in EvaluationContext ctx)`, `bool
+DialogueRunner.Start(string npcAuthoringId, string graphRef)`.
+
+P1.4's own (`GameCore.Gameplay.Contracts.Narrative`):
+
+```csharp
+void IVoiceLinePlayer.Play(VoiceLineRequest request);
+void INarrativeMessageSink.Show(NarrativeMessage message);          // showMessage actions -> runtime.UseMessages(sink)
+void IDialogueView.Show(DialogueViewModel m); void IJournalView.Show(JournalViewModel m); void IInventoryView.Show(InventoryViewModel m);
+IExplainSource: Count, Recent(max), TryExplain(ruleRef, out ExplainRecord?)                // game.Explain
+```
+
+Refs are authoring ids or definition names; a dialogue graph also answers to its `npcGraphRef` (P1.3's
+`NpcDefinition.dialogueGraph`, e.g. `dialogue.maren`). `EvaluationContext.ForSubject(authoringId)` builds a context
+about a subject with the player as actor; condition refs also accept the shorthand `narrative.fact.<name>[op N]`
+(the Causeway Gate's lock condition).
+Views are assigned on the modules before boot (`modules.Dialogue.View`, `modules.Quest.View`,
+`modules.Inventory.View`, `modules.Dialogue.VoicePlayer`); presenters push only when the committed state changed.
+
+### Commands and slots
+
+* Dialogue: `dialogue.start{graph, speaker, listener}`, `choose{index}`, `advance`, `interrupt`, `narrative.setFact{fact, value, request}`
+  via `DialogueRunner` (`TryStart`/`Start`, `Advance`, `Choose`, `Interrupt`, `SetFact`). Slots `dialogue.active/node/speaker/choiceCount/serial`,
+  visited bit words per graph, facts `narrative.fact.<name>`. Events LineShown, ChoiceOffered, ChoiceMade, DialogueEnded, FactSet.
+* Quest: `quest.start`, `advance{stage, branch}`, `setObjective{n, count}`, `fail`, `complete`; slots `quest.status/stage/branch`,
+  `quest.obj.<n>.count/done`; events QuestStarted, StageEntered, ObjectiveUpdated, QuestCompleted, QuestFailed, RewardGranted.
+  Objectives advance automatically from committed events (`QuestTracker`): Fact, Collect, Reach, Talk, Interact.
+* Inventory: `inv.grant{item, count, requestId}` (idempotent), `consume`, `drop`, `transfer`, `buy/sell{vendor}`,
+  `inventory.pickup{worldItem}` via `InventoryCommands`; slots `inv.item.<k>/inv.count.<k>/inv.currency`, `item.taken`,
+  vendor stock; events ItemGranted, ItemConsumed, ItemDropped, TradeDone, InventoryFull, ItemPickedUp.
+* Logic: `logic.evaluate` and `logic.runActions` (host-submitted); slots `logic.fired/cooldownMs/counter/invocations`;
+  events RuleFired, RuleSkipped, ActionsRun, ActionDue.
+
+Every cross-plugin effect (rewards, rule actions, dialogue actions, use effects) is an outbox obligation delivered by
+`NarrativeDelivery` with `requestId = RequestIdOf(outboxId)`; a replayed obligation answers AlreadyApplied.
+
+## Decisions (where 05 was silent)
+
+* **Content is a list, not a scene.** Narrative definitions are ScriptableObjects listed on one `GameplayContentSet`
+  per world (`world` ref). The bake (logic's `IGameplayBakeExtension`) writes `<set>.content.asset`
+  (`GameplayContentManifest`, format `gamecore.gameplay-content/1`: entries sorted by authoring id with kind, key,
+  name and content stamp; facts sorted by name; SHA-256 content hash) and stamps every definition. The four plugins'
+  catalog registrations come from one `IGameplayCatalogContributor` per package (P1.3's seam), like P1.3's plugins:
+  a project with the packages installed always registers them.
+* **One file per ScriptableObject class.** Unity resolves an asset's script by file name; the definition classes each
+  live in `<Class>.cs` (supporting entry types stay in `*Definitions.cs`).
+* **Keys.** Every definition key is `AuthoringIds.StableKey(authoringId)`; refs in tools and seams accept the
+  authoring id or the definition name. Ids use the package stems (`inventory.command.grant`, `quest.event.completed`,
+  ...) as P1.1 does; 05's short names (`inv.grant`) appear as route names in the catalog.
+* **Facts** are int32 slots `narrative.fact.<name>` on one narrative hub target; flags are 0/1. A fact is persistent
+  by default; a non-persistent fact (Hollowmere's `pip_asked`) is reset when the conversation that set it ends.
+  Facts are written by `narrative.setFact` (dialogue plugin) only, with a request ring so a replay changes nothing.
+* **Stage order** world -> inventory -> quest -> dialogue -> logic (`optionalAfter`), so a rule sees the step's
+  committed gameplay effects.
+* **Every cross-plugin effect is an outbox obligation.** Dialogue action nodes, rule actions, item use effects and
+  quest rewards commit an `ActionDue`/`RewardGranted` event; `NarrativeDelivery` (a `WorldDeliveryOwner`, capacity
+  256, 64 per pass, one pump per frame from the narrative host) delivers it through one port per target command with
+  `requestId = RequestIdOf(outboxId)`. Targets keep a ring of the last 8 request ids: a duplicate is
+  `IdempotencyConflict` -> the port answers AlreadyApplied. `InventoryFull` commits without consuming the id, so a
+  later retry can still apply. playAudio/showMessage go to presentation sinks once per outbox id.
+* **Quest branches.** Objectives carry a branch (0 = every branch). A stage passes when all its branch-0 objectives
+  and all objectives of one branch are done; the first branch completed is recorded in `quest.branch` and selects the
+  branch rewards. Objectives advance from committed events and committed levels (`QuestTracker`): Fact, Collect
+  (item count), Reach (RegionEntered), Talk (conversation with the graph), Interact (interaction succeeded).
+* **setInteractableState** sets the target entity's variant (`entity.setVariant`); spawn/despawn/travel use the P1.1
+  entity and world commands.
+* **Rules** trigger on committed events (RegionEntered, interaction succeeded, FactSet, item and trade events, quest
+  events, dialogue ended / choice made, rule fired, actions run) with an optional subject and value filter, then
+  conditions, once/cooldown/max-fires limits; the decision and every condition read go to the 256-entry explain ring.
+* **`dialogue.generateVoice`** is declared `ToolTier.Mechanism` (the mirror enum has no Agent tier) and calls
+  `IMediaGenerationGateway`, which is `NotConfiguredMediaGateway` until P3.x wires etos TTS; it returns
+  `NotConfigured` and changes nothing.
+* **Interaction seams are P1.3's.** The brief sketched `bool TryStart`, `bool Evaluate(ref, in ctx, out failed)` and
+  `bool TryRun(ref, in ctx)`; after merging main the P1.3 interfaces are authoritative and implemented as they are
+  (`ConversationStart`, `ConditionVerdict`, `void Run`). The brief's forms survive as extra methods on the same classes
+  (they report the failed condition / admission, which tools and tests use). An undeclared condition ref answers
+  `Unknown`, an empty ref `True`. `DialogueRunner.TryStart` returns hold 0 (the NPC's default converse hold); the
+  conversation itself lasts until it ends.
+* **Composition stays NarrativeComposer.** P1.3's `IGameplayWorldExtension` has no spawn recipes, seeded targets or
+  input sources, which the narrative plugins need (hub, quest, graph, inventory, rule targets; the narrative host).
+  The composer builds on the plan WorldBuilder makes with P1.3's extensions in `WorldBuildOptions` and copies it whole,
+  so both compose into one world (the PlayMode test boots NPC + interaction + the four narrative plugins).
+* **Hollowmere uses P1.3's NPCs and interactables.** Each graph names its placed NPC entity (`speakerEntityId`) and
+  answers to the NPC definition's `dialogueGraph` ref (`npcGraphRef`, e.g. `dialogue.maren`). The Causeway Gate is
+  locked by `narrative.fact.gate_open`: the `GateKeyOpensGate` rule (ItemGranted of the gate key, condition
+  `HasGateKey`, actions `OpenGate`) sets it, then P1.3's interaction unlocks the gate. The bell rings through P1.3's
+  `InteractionSucceeded` on the Drowned Bell: rule `RingBellOnUse` (condition `HasBellClapper`, actions `RingBell`).
+  No P1.3 asset is edited (the interactables' action refs stay empty; the rules listen to committed events).
+  Rewards: the lantern and `maren_grateful` on both branches, the three coins back on the pay branch. Odd's stall sells the gate key for three old coins; `odd_paid` is set by the `OddPaidOnTrade` rule
+  on TradeDone (subject the stall, value the gate key); persuading Odd (needs `maren_trusts_player`, hidden otherwise)
+  grants the key through the outbox.
+* **No save format change.** Narrative state is ordinary slots of ordinary targets (facts, quest, inventory, rule
+  slots), which P1.2's save already covers. The narrative outbox is its own `WorldDeliveryOwner`
+  (`game.Delivery.Owner.ToRecords()` / `game.Delivery.Reinstate(rows)`); the PlayMode test replays it, but adding it
+  to P1.2's checkpoint sections is listed under Open.
+
+## Verification
+
+Nothing was compiled, built or tested on the Mac. Every run went through `studio/tools/sync-to-host.sh p1.4`
+(host clone `~/wkspace/gc-studio/p1.4`, logs and NUnit XML under its `.unity-logs/`), one Unity instance at a time.
+
+| What | Command | Result |
+|---|---|---|
+| Rules halves + P1.1/P1.3 rules (dotnet, net8.0, TreatWarningsAsErrors, LangVersion 9) | `GAMECORE_OFFLINE=1 studio/tools/dotnet-test.sh p1.4 dotnet/tests/GameCore.Rules.Gameplay.Tests` | PASS 184/184 after the merge (131/131 before it), 22 s |
+| P1.4 EditMode (author, bake, verify, preview, simulate, tool round trips) | `studio/tools/unity-compile.sh p1.4 games/hollowmere --tests EditMode --filter 'Hollowmere\.P1_4\..*'` | PASS 7/7, 175 s run, 10.3 s of tests (`games_hollowmere-editmode-20261005T101210-a1.xml`) |
+| P1.4 PlayMode `DrownedBellHeadless` (with P1.3's NPC + interaction extensions) | `studio/tools/unity-compile.sh p1.4 games/hollowmere --tests PlayMode --filter 'Hollowmere\.P1_4\..*'` | PASS 1/1, 125 s run, 0.51 s of test (`games_hollowmere-playmode-20261005T102431-a1.xml`) |
+| Hollowmere EditMode, all packets | `... --tests EditMode --filter 'Hollowmere\..*'` | PASS 42/42 (P1.1, P1.3, P1.4 and the rest; `games_hollowmere-editmode-20261005T102920-a1.xml`); the host tree stayed clean, so P1.1's and P1.3's re-bakes reproduce the committed outputs byte for byte |
+| Hollowmere PlayMode, all packets | `... --tests PlayMode --filter 'Hollowmere\..*'` | PASS 3/3 (P1.1 TravelsVillageMarshBelfryVillage, P1.3 WalksInteractsTalksPastNpcsAndTravels, P1.4 PlaysTheDrownedBell; `games_hollowmere-playmode-20261005T103008-a1.xml`) |
+| Package metadata, C# rules | `python3 tools/check_package_metadata.py`, `python3 tools/check_game_core_csharp.py` | both pass (lock entries resolved on the host) |
+
+EditMode test durations: AuthorsAndBakes 6.69 s (author + first bake 6198 ms; the second bake changed nothing, 390 ms;
+`Entry.Verify` 50 ms; 43 content entries, 9 facts, content hash `3e01b898...7d30cd`), DialogueTools_RoundTrip 1.45 s,
+InventoryAndLogicTools_RoundTrip 1.14 s, QuestTools_RoundTrip 0.75 s, MarenPreview 0.015 s, DrownedBell both branches
+0.013 s, RuntimeModels 0.003 s. The Maren preview differs between `bell_rung=0` (rumour, choice) and `bell_rung=1`
+("You rang it!"); `quest.simulate` completes on the pay branch (3 rewards) and on the persuade branch (2 rewards) and
+stays in stage 1 with the gate alone.
+
+`DrownedBellHeadless` (after the merge), one line of its log:
+
+```
+[P1.4] locked gate: fact gate_open != 0 (read 0)
+[P1.4] frames=38 sanctionedPumps=38 events=84 submitted=29 refusedSubmits=0 obligations=12 acknowledged=13
+  alreadyApplied=13 rulesFired=5 rulesSkipped=0 questCommands=8 grants=3 explain=8 interactions=2/1 evaluations=3
+  | boot 338ms/0f | maren intro 56ms/4f | locked gate 11ms/3f | key and gate 14ms/6f | clapper and belfry 3ms/2f
+  | bell 3ms/5f | return to maren 7ms/6f | outbox replay 10ms/11f
+```
+
+It asserts: Maren's conversation starts through `IConversationStarter.TryStart(Maren's entity, "dialogue.maren")`;
+facts `heard_rumour`, `maren_trusts_player`, `odd_paid`, `gate_open`, `bell_rung`, `maren_grateful`; the Causeway Gate
+refuses while locked (P1.3's interaction asked `narrative.fact.gate_open`, answer False) and unlocks once the key is
+held; the bell rings through P1.3's `InteractionSucceeded` and the `RingBellOnUse` rule; quest status/stage/branch
+(stage 1, 2 on branch 1 = pay, 3, Completed); inventory counts (coins 3 -> 0 -> 3, key 1, clapper 1, lantern 1); three
+`RewardGranted` and the rewards granted exactly once even after the in-flight outbox records are reinstated (the replay
+answers AlreadyApplied, `InventoryModule.Granted` unchanged); one sanctioned pump per frame (38/38) and no pump
+violation; no refused obligation. Before the merge the same story (with the scripted gate/bell) passed in 35 frames.
+
+Bake outputs regenerated on the host and committed: `World/Catalog/HollowmereCatalog.catalog.json` and
+`Hollowmere.bake.json`, `World/Generated/HollowmereCatalog.g.cs` and `HollowmereCatalogCoverage.g.cs`,
+`World/Hollowmere.manifest.asset`, and the content under `Dialogue/`, `Items/`, `Quests/`, `Rules/` including
+`Rules/HollowmereContent.content.asset`. `games/hollowmere/Packages/packages-lock.json` carries the four packages
+(resolved on the host; the merged lock was accepted unchanged).
+
+## Open
+
+* **Boot scene.** P1.3's `GameBoot` still boots without narrative; switching it to `HollowmereNarrative.Boot` + `Wire`
+  (after `InteractionSession.Install` / `NpcSession.Install`) and assigning the UI views and sinks belongs to the
+  boot-scene owner (P1.5/P3.1).
+* **NPC converse hold.** `TryStart` answers hold 0 (definition default). Holding converse until the conversation ends
+  (`NpcSlots.HoldUntilEnded` + `npc.converse 0` on DialogueEnded) needs a dialogue -> npc command; left for P3.x.
+* **ToolTier Agent.** If Studio adds an Agent tier to the mirror enums, move `dialogue.generateVoice` to it.
+* **ToolCatalogBuilder** (P1.6) must match the mirror attributes by name to list the 16 narrative tools (same
+  question as P1.1).
+* **Narrative outbox in the checkpoint.** Register `NarrativeDelivery.Owner` with P1.2's save composer so pending
+  rewards survive a save/load (records and reinstate exist and are tested; the registration is P1.2's call site).
+* **Loot tables** are authored and converted but no runtime command rolls them yet (no catalog row needs it in P1).
