@@ -24,3 +24,10 @@ None currently. The shared gameplay UI runtime remains synchronous for its gener
 
 - The P3.1 note names an xvfb headless rehearsal but commits no distinct frame-time probe executable or command transcript for it. This packet will retain its player, autoplay script, FrameLogRecorder and exact statistics calculation; command/environment differences will be recorded with the new evidence.
 - Budget outcomes are pending measurement. The first ready frame still includes boot; it is not suppressed or relabelled.
+
+### Host qualification checkpoint
+
+- Full Hollowmere EditMode XML: **446 passed, 0 failed, 12 skipped** (458). The baseline 392 passes is exceeded on merged main. Skips: seven live ETOS/workflow tests, four graphics-only tests, one explicit memory-cycle test. No paid/live tests enabled.
+- Full Hollowmere PlayMode XML: **22/22 passed** (P3.1's 19 plus three regressions). New manual-save capture measured 47.159 ms in this run. Both new save tests and real belfry unload/reload pass.
+- dotnet Execution: **178/178 passed**. Required metadata and C# checks pass.
+- The suite's rebake exposed merged main's new cosmetic `EntityDefinition.materialTextures` field. Keep the 28 refreshed definition stamps and two bake outputs: their only definition changes are empty `materialTextures` plus content stamps; structural stamps, catalog fingerprint and recipe revisions remain unchanged. These are needed for Verify on the delivered checkout, rather than discarding them as transient test edits.
