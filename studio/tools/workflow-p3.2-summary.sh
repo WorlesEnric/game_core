@@ -32,6 +32,7 @@ for run in sorted(glob.glob(os.path.join(runs, "*"))):
     if not os.path.isdir(run):
         continue
     info = load(os.path.join(run, "run.json")) or {}
+    before = dict(tot)
     usage = load(os.path.join(run, "usage.json")) or {"tasks": []}
     tasks = {}
     for t in usage.get("tasks", []):
@@ -111,6 +112,9 @@ for run in sorted(glob.glob(os.path.join(runs, "*"))):
         m = load(h) or {}
         tot["images"] += sum(1 for k in ("image", "budget") if (m.get(k) or {}).get("providerSha256") or (m.get(k) or {}).get("sha256"))
         tot["tts"] += 1 if (m.get("tts") or {}).get("providerSha256") else 0
+    delta = {k: tot[k] - before[k] for k in tot}
+    delta["estimatedUsd"] = round(delta["input_tokens"] / 1e6 * rate_in + delta["output_tokens"] / 1e6 * rate_out + sum(delta[{"image": "images"}.get(k, k)] * rate[k] for k in rate), 2)
+    entry["usage"] = delta
     summary["runs"].append(entry)
 usd = tot["input_tokens"] / 1e6 * rate_in + tot["output_tokens"] / 1e6 * rate_out + sum(tot[{"image": "images"}.get(k, k)] * rate[k] for k in rate)
 all_lags = sorted(summary.pop("allLags", []))
