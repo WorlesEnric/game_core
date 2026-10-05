@@ -145,7 +145,11 @@ namespace GameCore.Studio.UI
         public string Filter
         {
             get => _filter.value ?? string.Empty;
-            set => _filter.value = value ?? string.Empty;
+            set
+            {
+                _filter.SetValueWithoutNotify(value ?? string.Empty);
+                Rebuild();
+            }
         }
 
         public string StatusText => _status.text ?? string.Empty;

@@ -6,17 +6,30 @@
   "changeSet": {
     "id": "$csid",
     "schema": "gamecore.studio.changeset/1",
-    "intent": { "text": "Make the blacksmith greet travellers warmly and raise the guard's level", "origin": "agent" },
+    "intent": {
+      "text": "Make the blacksmith greet travellers warmly and raise the guard's level",
+      "origin": "agent"
+    },
     "policy": "AllOrNothing",
     "operations": [
-      { "opId": "op1", "tool": "set", "target": "$ref:npc", "args": { "field": "greeting", "value": "Welcome, traveller!" } },
-      { "opId": "op2", "tool": "set", "target": "$ref:entity", "args": { "field": "level", "value": 4 } }
-    ],
-    "artifacts": [
-      { "sha256": "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb", "mediaType": "text/plain", "bytes": 41, "name": "notes.txt", "role": "notes" }
+      {
+        "opId": "op1",
+        "tool": "set",
+        "target": "$ref:npc",
+        "args": {
+          "field": "greeting",
+          "value": "Welcome, traveller!"
+        }
+      },
+      {
+        "opId": "op2",
+        "tool": "set",
+        "target": "$ref:entity",
+        "args": {
+          "field": "level",
+          "value": 4
+        }
+      }
     ]
-  },
-  "artifactBodies": {
-    "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb": "R3JlZXRpbmcgY29weSBub3RlcyBmb3IgdGhlIGZpeHR1cmUgTlBDLgo="
   }
 }

@@ -812,14 +812,26 @@ namespace GameCore.Studio.UI
 
         private void OnKeyDown(KeyDownEvent evt)
         {
-            if (evt.keyCode == KeyCode.Tab)
+            if (HandleKey(evt.keyCode))
+            {
+                evt.StopPropagation();
+            }
+        }
+
+        /// <summary>
+        /// The viewport's keyboard commands (also driven directly by tests): Tab cycles the mode; Esc cancels a drag,
+        /// closes the overlap list, leaves Play mode or clears the selection; 1/2/3 pick a mode; F frames the
+        /// selection; WASD/QE fly the free camera while the right button is held. True when the key was consumed.
+        /// </summary>
+        public bool HandleKey(KeyCode key)
+        {
+            if (key == KeyCode.Tab)
             {
                 CycleMode();
-                evt.StopPropagation();
-                return;
+                return true;
             }
 
-            if (evt.keyCode == KeyCode.Escape)
+            if (key == KeyCode.Escape)
             {
                 if (_gizmo != null && _gizmo.Dragging)
                 {
@@ -839,45 +851,41 @@ namespace GameCore.Studio.UI
                     _markerWorld = null;
                 }
 
-                evt.StopPropagation();
-                return;
+                return true;
             }
 
             if (mode == ViewportMode.Play)
             {
-                return;
+                return false;
             }
 
-            if (evt.keyCode != KeyCode.None)
+            if (key != KeyCode.None)
             {
-                _keys.Add(evt.keyCode);
+                _keys.Add(key);
             }
 
             if (_looking)
             {
-                evt.StopPropagation();
-                return;
+                return true;
             }
 
-            switch (evt.keyCode)
+            switch (key)
             {
                 case KeyCode.Alpha1:
                     SetMode(ViewportMode.Play);
-                    break;
+                    return true;
                 case KeyCode.Alpha2:
                     SetMode(ViewportMode.Select);
-                    break;
+                    return true;
                 case KeyCode.Alpha3:
                     SetMode(ViewportMode.Inspect);
-                    break;
+                    return true;
                 case KeyCode.F:
                     FrameSelection();
-                    break;
+                    return true;
                 default:
-                    return;
+                    return false;
             }
-
-            evt.StopPropagation();
         }
 
         private void FlyFreeCamera(float delta)

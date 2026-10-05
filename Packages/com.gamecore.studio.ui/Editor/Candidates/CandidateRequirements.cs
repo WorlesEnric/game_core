@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 
 namespace GameCore.Studio.UI
@@ -31,6 +32,22 @@ namespace GameCore.Studio.UI
             foreach (Operation operation in changeSet.Operations)
             {
                 perOperation.Add(operation.ApplyRequirement ?? RuntimeApply.Live);
+            }
+
+            return Requirements.FromOperations(perOperation);
+        }
+
+        /// <summary>
+        /// The requirements the project's tool catalog implies for <paramref name="changeSet"/> (each operation's declared
+        /// applyRequirement, else its tool's RuntimeApply, else Live). Used to state requirements on change sets the Studio
+        /// builds itself; a candidate's own declaration is never replaced.
+        /// </summary>
+        public static Requirements Implied(StudioRuntime runtime, ChangeSet changeSet)
+        {
+            List<RuntimeApply> perOperation = new List<RuntimeApply>();
+            foreach (Operation operation in changeSet.Operations)
+            {
+                perOperation.Add(operation.ApplyRequirement ?? runtime.Registry.Find(operation.Tool)?.Entry.RuntimeApply ?? RuntimeApply.Live);
             }
 
             return Requirements.FromOperations(perOperation);

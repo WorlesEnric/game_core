@@ -16,6 +16,7 @@ namespace GameCore.Studio.UI.Tests
     {
         private UiTestBed _bed = null!;
         private StudioViewportWindow? _window;
+        private bool _shown;
 
         [SetUp]
         public void SetUp() => _bed = new UiTestBed();
@@ -25,7 +26,14 @@ namespace GameCore.Studio.UI.Tests
         {
             if (_window != null)
             {
-                _window.Close();
+                if (_shown)
+                {
+                    _window.Close();
+                }
+                else
+                {
+                    Object.DestroyImmediate(_window);
+                }
             }
 
             _bed.Dispose();
@@ -36,7 +44,12 @@ namespace GameCore.Studio.UI.Tests
             StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
             window.UseContext(_bed.Context);
             window.position = new Rect(80f, 80f, 960f, 600f);
-            window.Show();
+            if (ViewportRenderer.CanRender)
+            {
+                window.Show();
+                _shown = true;
+            }
+
             window.EnsureGui();
             _window = window;
             return window;
@@ -74,21 +87,12 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(window.Mode, Is.EqualTo(ViewportMode.Select), "Play mode needs a running world");
 
             _bed.Context.Selection.Set(new[] { _bed.Ref(entity) });
-            VisualElement area = window.Area!;
-            using (KeyDownEvent escape = KeyDownEvent.GetPooled('\0', KeyCode.Escape, EventModifiers.None))
-            {
-                escape.target = area;
-                area.SendEvent(escape);
-            }
-
+            Assert.That(window.HandleKey(KeyCode.Escape), Is.True);
             Assert.That(_bed.Context.Selection.IsEmpty, Is.True, "Esc clears the selection");
-            using (KeyDownEvent tab = KeyDownEvent.GetPooled('\t', KeyCode.Tab, EventModifiers.None))
-            {
-                tab.target = area;
-                area.SendEvent(tab);
-            }
-
+            Assert.That(window.HandleKey(KeyCode.Tab), Is.True);
             Assert.That(window.Mode, Is.EqualTo(ViewportMode.Inspect), "Tab cycles the mode");
+            Assert.That(window.HandleKey(KeyCode.Alpha2), Is.True);
+            Assert.That(window.Mode, Is.EqualTo(ViewportMode.Select), "2 selects Select mode");
         }
 
         [UnityTest]

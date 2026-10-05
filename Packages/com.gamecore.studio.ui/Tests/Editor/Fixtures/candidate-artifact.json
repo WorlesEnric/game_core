@@ -1,0 +1,36 @@
+{
+  "comment": "A candidate carrying a verified artifact that no operation uses: the UI retains the artifact on receipt and staging reports CandidateInvalid for it.",
+  "requestId": "req_fixture_artifact",
+  "toolCatalogRevision": "$catalog",
+  "changeSet": {
+    "id": "$csid",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Attach the greeting notes",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "set",
+        "target": "$ref:npc",
+        "args": {
+          "field": "greeting",
+          "value": "Hello again"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb",
+        "mediaType": "text/plain",
+        "bytes": 41,
+        "name": "notes.txt",
+        "role": "notes"
+      }
+    ]
+  },
+  "artifactBodies": {
+    "a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb": "R3JlZXRpbmcgY29weSBub3RlcyBmb3IgdGhlIGZpeHR1cmUgTlBDLgo="
+  }
+}

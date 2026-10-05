@@ -189,7 +189,8 @@ namespace Hollowmere.P2_1.Evidence
                     context.Selection.Set(new[] { context.Selection.RefOf(target)! });
                     ChangeSet typed = MoveChangeSets.Build(context.Runtime, target, target.transform.position + new Vector3(2.5f, 0f, 0f))
                         ?? throw new InvalidOperationException("No move change set for " + target.name);
-                    ChangeSet candidate = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move " + target.name + " closer to the well (P2.1 evidence candidate)", IntentOrigin.Agent), typed.Operations);
+                    ChangeSet candidate = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move " + target.name + " closer to the well (P2.1 evidence candidate)", IntentOrigin.Agent), typed.Operations,
+                        requirements: CandidateRequirements.Implied(context.Runtime, typed));
                     ToolCatalog catalog = context.Runtime.Registry.Catalog;
                     CandidateEntry entry = context.Candidates.Add(new AgentCandidate("req_p21_evidence", candidate, catalog.Revision ?? catalog.ComputeRevision()));
                     clock.CandidateId = entry.Id;

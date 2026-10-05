@@ -60,7 +60,6 @@ namespace GameCore.Studio.UI.Tests
         {
             CandidateEntry entry = Receive("candidate-greeting.json");
             Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Received), string.Join("; ", entry.Problems));
-            Assert.That(_bed.Runtime.Artifacts.Has("a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb"), Is.True, "artifacts are retained before review");
             Assert.That(entry.Badges, Does.Contain(CandidateRequirements.EditTime));
 
             IReadOnlyList<PropertyDiffRow> diff = CandidateCompare.PropertyDiff(_bed.Runtime, entry.ChangeSet);
@@ -117,6 +116,20 @@ namespace GameCore.Studio.UI.Tests
         }
 
         [Test]
+        public void Candidate_ArtifactsAreRetainedOnReceiptAndUnusedOnesAreReported()
+        {
+            CandidateEntry entry = Receive("candidate-artifact.json");
+            Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Received), string.Join("; ", entry.Problems));
+            Assert.That(_bed.Runtime.Artifacts.Has("a3f445e41d80ac97e6094f18a53e3e401aa6b0cad99b7eeade490aed66620eeb"), Is.True, "artifacts are fetched, verified and retained before review");
+            Assert.That(_bed.Gateway.ArtifactFetches, Is.EqualTo(1));
+            StagedChangeSet staged = _bed.Context.Candidates.Preview(entry);
+            Assert.That(staged.Ok, Is.False);
+            Assert.That(staged.Diagnostics, Has.Some.Matches<Diagnostic>(d => d.Code == DiagnosticCodes.CandidateInvalid && d.Message.Contains("no operation uses it")));
+            Assert.That(_bed.Context.Candidates.Apply(entry).Ok, Is.False, "an invalid candidate is never applied");
+            Assert.That(_smith.greeting, Is.EqualTo("Hello"));
+        }
+
+        [Test]
         public void Candidate_TamperedArtifactIsInvalidAndNotImported()
         {
             CandidateEntry entry = Receive("candidate-tampered.json");
@@ -139,7 +152,9 @@ namespace GameCore.Studio.UI.Tests
         public void Candidate_MovePreviewShowsAGhostAndToggleKeepsTheSceneUntouched()
         {
             ChangeSet typed = MoveChangeSets.Build(_bed.Runtime, _guard.gameObject, new Vector3(5f, 0f, 2f))!;
-            ChangeSet agent = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move the guard to the gate", IntentOrigin.Agent), typed.Operations);
+            ChangeSet agent = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move the guard to the gate", IntentOrigin.Agent), typed.Operations,
+                requirements: CandidateRequirements.Implied(_bed.Runtime, typed));
+            Assert.That(CandidateRequirements.Badges(agent), Does.Contain(CandidateRequirements.RequiresPlayStop), "a move needs a world rebuild");
             CandidateEntry entry = _bed.Context.Candidates.Add(new AgentCandidate("req_move", agent, _bed.CatalogRevision()));
             StagedChangeSet staged = _bed.Context.Candidates.Preview(entry);
             Assert.That(staged.Ok, Is.True, string.Join("; ", staged.Diagnostics));
