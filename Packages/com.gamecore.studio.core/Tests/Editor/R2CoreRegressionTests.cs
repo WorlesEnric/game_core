@@ -22,8 +22,11 @@ namespace GameCore.Studio.Edit.Tests
         private ChangeSet Import(string path, JObject? settings = null)
         {
             string digest = _bed.Runtime.Artifacts.Put(Encoding.UTF8.GetBytes("replacement"), null);
-            return StudioRuntime.Single("import", IntentOrigin.Manual, new Operation("op1", BuiltInToolIds.AssetImport, null,
-                new JObject { ["path"] = path, ["artifact"] = new JObject { ["artifact"] = "sha256:" + digest }, ["importer"] = settings }));
+            JObject args = new JObject { ["path"] = path, ["artifact"] = new JObject { ["artifact"] = "sha256:" + digest } };
+            if (settings != null) args["importer"] = settings;
+            return new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("import", IntentOrigin.Manual),
+                new[] { new Operation("op1", BuiltInToolIds.AssetImport, null, args) },
+                artifacts: new[] { new ArtifactRef(digest, "text/plain", 11, Path.GetFileName(path)) });
         }
 
         [TestCase("Editor/Evil.cs")]
@@ -42,7 +45,7 @@ namespace GameCore.Studio.Edit.Tests
             ApplyReport report = _bed.Runtime.Engine.Apply(Import(path));
             Assert.That(report.Ok, Is.False);
             Assert.That(File.Exists(_bed.Runtime.Paths.Absolute(path)), Is.False);
-            Assert.That(report.Outcomes[0].Detail, Does.Contain("media_"));
+            Assert.That(report.Outcomes[0].Code, Is.EqualTo(DiagnosticCodes.MediaTypeForbidden).Or.EqualTo(DiagnosticCodes.MediaPathForbidden));
         }
 
         [Test]
@@ -149,6 +152,7 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(redactor.Redact(raw), Does.Not.Contain("abc"));
             JObject json = new JObject { ["nested"] = new JObject { ["apiKey"] = "plain-value", ["message"] = raw } };
             Assert.That(redactor.Redact(json.ToString()), Does.Not.Contain("plain-value").And.Not.Contain("abc"));
+            Assert.That(redactor.Redact("child log: " + json.ToString()), Does.Not.Contain("plain-value").And.Not.Contain("abc"));
             StringWriter sink = new StringWriter();
             using (RedactingTextWriter writer = new RedactingTextWriter(sink)) { writer.Write("ett_"); writer.Write("abc\n"); }
             Assert.That(sink.ToString(), Does.Not.Contain("abc"));
@@ -168,6 +172,7 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(_bed.Runtime.Registry.Catalog.FindTool("r2.pure")!.ReadOnly, Is.True);
             Assert.That(_bed.Runtime.Registry.Invoke("r2.pure", null, new JObject { ["value"] = 3 }).Status, Is.EqualTo(OutcomeStatus.Applied));
             Assert.That(_bed.Runtime.Registry.Invoke("r2.pure", null, new JObject()).Status, Is.EqualTo(OutcomeStatus.Refused));
+            Assert.That(_bed.Runtime.Registry.Invoke("r2.pure", null, new JObject { ["value"] = 100 }).Status, Is.EqualTo(OutcomeStatus.Refused));
         }
 
         [Test]
@@ -209,6 +214,50 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(reloaded.History.ResumeInterrupted(change.Id).Ok, Is.True);
             Assert.That(item.weight, Is.EqualTo(1));
             Assert.That(reloaded.Journal.Read(change.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Undone));
+        }
+
+        [Test]
+        public void R2_04_ResumeFailureRollsBackEarlierAtomicSuccess()
+        {
+            FixtureItemDefinition item = _bed.CreateItem("AtomicResume");
+            FixtureNpcDefinition npc = _bed.CreateNpc("Refuse");
+            ChangeSet change = StudioTestBed.NewChangeSet("atomic resume", null,
+                StudioTestBed.Set("op1", _bed.Ref(item), "weight", 6),
+                StudioTestBed.Op("op2", "fixture.fail", _bed.Ref(npc)));
+            _bed.Runtime.Engine.Options.FaultHook = (point, opId) => { if (point == EngineFaultPoint.AfterOperation && opId == "op1") throw new SimulatedCrashException("crash"); };
+            Assert.Throws<SimulatedCrashException>(() => _bed.Runtime.Engine.Apply(change));
+            Assert.That(item.weight, Is.EqualTo(6));
+            StudioRuntime reloaded = _bed.Reload();
+            reloaded.History.ResumeInterrupted(change.Id);
+            Assert.That(item.weight, Is.EqualTo(1));
+            Assert.That(reloaded.Journal.Read(change.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Failed));
+        }
+
+        [Test]
+        public void R2_06_AtomicRuntimeMixIsRefusedBeforeWorldSubmit()
+        {
+            _bed.Runtime.Engine.Options.PlayModeProbe = () => true;
+            _bed.Runtime.Services.RegisterLiveTranslator(new FixtureLiveTranslator());
+            FixtureAuthoredEntity entity = _bed.SpawnEntity("Runtime", Vector3.zero);
+            FixtureItemDefinition asset = _bed.CreateItem("Asset");
+            ChangeSet change = StudioTestBed.NewChangeSet("mixed", null,
+                StudioTestBed.Set("op1", _bed.Ref(entity), "level", 8), StudioTestBed.Set("op2", _bed.Ref(asset), "weight", 9));
+            Assert.That(_bed.Runtime.Engine.Apply(change).Ok, Is.False);
+            Assert.That(_bed.Live.ExpectedRevisions, Is.Empty);
+            Assert.That(asset.weight, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void R2_13_TypedStageRequestRetainsCandidateAndProjectContext()
+        {
+            string id = IdDerivation.NewChangeSetId();
+            var request = new GameCore.Studio.Authoring.Agent.StageCandidateRequest(id, "project", "/project", "/repo", "source", "catalog");
+            JObject json = JObject.FromObject(request);
+            Assert.That((string?)json["changeSetId"], Is.EqualTo(id));
+            Assert.That((string?)json["projectId"], Is.EqualTo("project"));
+            Assert.That((string?)json["sourceRevision"], Is.EqualTo("source"));
+            Assert.That((string?)json["catalogRevision"], Is.EqualTo("catalog"));
+            Assert.That(json["packageRef"], Is.Null);
         }
 
         private sealed class AdmissionHandler : IHistoryEntryHandler

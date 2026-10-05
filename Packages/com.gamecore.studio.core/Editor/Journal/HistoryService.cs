@@ -87,7 +87,7 @@ namespace GameCore.Studio.Edit
                 : HistoryResult.Refused(entry.Id, DiagnosticCodes.NotConfigured, "No history handler is registered for " + kind + ".");
         }
 
-        private string TransitionPath(string id) => Path.Combine(_runtime.Paths.LibraryRoot, "history-" + id + ".json");
+        private string TransitionPath(string id) => Path.Combine(_runtime.Paths.HistoryRoot, "transitions", id + ".pending");
 
         private ApplyReport Transition(ChangeSet entry, ChangeSet work, string action, IReadOnlyDictionary<string, JObject>? replay, bool skip)
         {
@@ -322,13 +322,15 @@ namespace GameCore.Studio.Edit
                 while (remaining.Count > 0)
                 {
                     ChangeSet rollback = InternalChangeSet(entry, "Recover rollback", Renumber(new List<Operation> { remaining[0] }, "r"));
-                    report = _runtime.Engine.ApplyForHistory(rollback, null, true);
+                    entry = entry.WithOutcomes(outcomes);
+                    report = Transition(entry, rollback, "rollback:" + outcome.OpId, null, true);
                     diagnostics.AddRange(report.Diagnostics);
                     if (!report.Ok)
                     {
                         _runtime.Journal.Write(entry.WithOutcomes(outcomes));
                         return new HistoryResult(changeSetId, false, ChangeSetState.Interrupted, diagnostics, report);
                     }
+                    ClearTransition(entry.Id);
                     remaining.RemoveAt(0);
                     outcomes[i] = new OperationOutcome(outcome.OpId, remaining.Count == 0 ? OutcomeStatus.Skipped : outcome.Status,
                         null, remaining.Count == 0 ? "Rolled back after interruption." : "Rollback in progress.", null,
@@ -437,13 +439,38 @@ namespace GameCore.Studio.Edit
             JObject record = JObject.Parse(File.ReadAllText(TransitionPath(interrupted.Id)));
             ChangeSet original = StudioJson.Deserialize<ChangeSet>(record["original"]!.ToString());
             ChangeSet work = StudioJson.Deserialize<ChangeSet>(record["work"]!.ToString());
+            if (work.EffectiveState == ChangeSetState.Failed || work.EffectiveState == ChangeSetState.Rejected)
+                work = work.WithOutcomes(null);
             _runtime.Journal.Write(work.WithState(ChangeSetState.Interrupted));
             HistoryResult recovered = resume ? ResumeInterrupted(work.Id) : RollbackInterrupted(work.Id);
             ChangeSet progress = _runtime.Journal.Read(work.Id)!;
             record["work"] = StudioJson.ToToken(progress);
             StudioPaths.WriteAllTextAtomic(TransitionPath(original.Id), record.ToString(Formatting.None));
             if (!recovered.Ok) return new HistoryResult(original.Id, false, ChangeSetState.Interrupted, recovered.Diagnostics, recovered.Report);
-            bool undo = (string?)record["action"] == "undo";
+            _runtime.Journal.Write(progress.WithState(ChangeSetState.Rejected));
+            if (resume && recovered.State != ChangeSetState.Applied)
+                return new HistoryResult(original.Id, false, ChangeSetState.Interrupted, recovered.Diagnostics, recovered.Report);
+            string action = (string?)record["action"] ?? string.Empty;
+            if (resume && action.StartsWith("rollback:", StringComparison.Ordinal))
+            {
+                string opId = action.Substring(9);
+                List<OperationOutcome> saved = new List<OperationOutcome>(original.Outcomes ?? Array.Empty<OperationOutcome>());
+                for (int i = 0; i < saved.Count; i++)
+                {
+                    OperationOutcome outcome = saved[i];
+                    if (outcome.OpId != opId || outcome.Undo == null) continue;
+                    UndoPayload? payload = UndoPayload.Parse(outcome.Undo.Inverse, out _);
+                    if (payload == null) return HistoryResult.Refused(original.Id, DiagnosticCodes.CandidateInvalid, "Malformed recovery inverse.");
+                    List<Operation> remaining = new List<Operation>(payload.Operations);
+                    if (remaining.Count > 0) remaining.RemoveAt(0);
+                    saved[i] = new OperationOutcome(opId, remaining.Count == 0 ? OutcomeStatus.Skipped : outcome.Status, null, "Recovery checkpoint", null,
+                        remaining.Count == 0 ? null : new OperationUndo(new UndoPayload(remaining, payload.AssetLevel, payload.After, payload.Replay).ToJson()));
+                }
+                _runtime.Journal.Write(original.WithOutcomes(saved));
+                ClearTransition(original.Id);
+                return RollbackInterrupted(original.Id);
+            }
+            bool undo = action == "undo";
             ChangeSet final = !resume ? original : undo ? original.WithState(ChangeSetState.Undone) : original.WithState(ChangeSetState.Applied).WithOutcomes(progress.Outcomes);
             _runtime.Journal.Write(final);
             ClearTransition(original.Id);

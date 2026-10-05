@@ -208,6 +208,9 @@ namespace GameCore.Studio.Edit
                     continue;
                 }
 
+                ArgSpec? declared = Entry.FindArg(name);
+                if (declared != null)
+                    foreach (string issue in FieldValueChecker.Check(declared, raw)) problems.Add(context.Problem(DiagnosticCodes.InvalidArgs, issue));
                 if (context.Codec.TryToClr(raw, parameter.ParameterType, out object? converted, out string? problem))
                 {
                     arguments[i] = converted;

@@ -894,8 +894,7 @@ namespace GameCore.Studio.Edit
                         if (reverted.Status != OutcomeStatus.Applied)
                         {
                             ok = false;
-                            ok = false;
-                        diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "Rollback step " + inverse.Tool + " did not apply: " + reverted.Detail));
+                            diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "Rollback step " + inverse.Tool + " did not apply: " + reverted.Detail));
                         }
                     }
                     catch (Exception error) when (!(error is ExitGUIException))

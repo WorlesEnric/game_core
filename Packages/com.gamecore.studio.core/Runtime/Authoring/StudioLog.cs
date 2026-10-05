@@ -68,6 +68,8 @@ namespace GameCore.Studio.Authoring
 
         private static readonly Regex Bearer = new Regex(@"(?i)(bearer\s+)[A-Za-z0-9._\-~+/=]+", RegexOptions.CultureInvariant);
 
+        private static readonly Regex JsonSecret = new Regex(@"(?i)(""[^""\r\n]*(?:key|token|secret|password)[^""\r\n]*""\s*:\s*)(""(?:\\.|[^""\\])*""|true|false|null|-?\d+(?:\.\d+)?)", RegexOptions.CultureInvariant);
+
         private static readonly Regex QueryValue = new Regex(@"(?i)\b(key|token|secret|password)=([^&\s""']+)", RegexOptions.CultureInvariant);
 
         public string Redact(string text)
@@ -91,6 +93,7 @@ namespace GameCore.Studio.Authoring
             string result = EtosKey.Replace(text, Mask);
             result = Bearer.Replace(result, "$1" + Mask);
             result = QueryValue.Replace(result, "$1=" + Mask);
+            result = JsonSecret.Replace(result, "$1\"" + Mask + "\"");
             return result;
         }
         /// <summary>Returns a sanitized deep copy, including nested JSON secret-key values.</summary>

@@ -142,6 +142,7 @@ namespace GameCore.Studio.Edit
         private Vector3 _startPosition;
         private Vector3 _current;
         private GameObject? _ghost;
+        private readonly string _previewOwner = "gizmo-" + Guid.NewGuid().ToString("N");
         private AuthoringRef? _startRef;
 
         public Transform? PreviewTransform => _ghost == null ? null : _ghost.transform;
@@ -168,8 +169,14 @@ namespace GameCore.Studio.Edit
             _startPosition = target.transform.position;
             _current = _startPosition;
             _startRef = MoveChangeSets.Build(_runtime, target, _startPosition)?.Operations[0].Target;
-            _ghost = new GameObject("Studio move preview") { hideFlags = HideFlags.HideAndDontSave };
-            _ghost.transform.position = _startPosition;
+            _runtime.Staging.BeginOwner(_previewOwner);
+            try
+            {
+                _ghost = _runtime.Staging.Ghost(target, _startPosition, target.transform.rotation)
+                    ?? _runtime.Staging.Adopt(new GameObject("Studio move preview") { hideFlags = HideFlags.HideAndDontSave });
+                _ghost.transform.position = _startPosition;
+            }
+            finally { _runtime.Staging.EndOwner(); }
         }
 
         /// <summary>Moves only the hidden, unsaved preview transform.</summary>
@@ -205,18 +212,15 @@ namespace GameCore.Studio.Edit
             return changeSet == null ? null : _runtime.Engine.Apply(changeSet);
         }
 
-        /// <summary>Abandons the drag (Escape, selection change): the start pose comes back, nothing is applied.</summary>
+        /// <summary>Abandons the drag (Escape, selection change): discard the preview, nothing is applied.</summary>
         public void Cancel()
         {
-            if (_target != null)
-            {
-                Restore();
-            }
+            Restore();
         }
 
         private void Restore()
         {
-            if (_ghost != null) UnityEngine.Object.DestroyImmediate(_ghost);
+            _runtime.Staging.Clear(_previewOwner);
             _ghost = null;
             _target = null;
         }

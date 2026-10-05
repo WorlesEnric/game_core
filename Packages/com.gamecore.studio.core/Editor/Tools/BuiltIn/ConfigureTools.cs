@@ -461,7 +461,7 @@ namespace GameCore.Studio.Edit
             }
 
             string? importProblem = MediaImportPolicy.Validate(context.Runtime.Paths, context.StringArg("path"), context.Arg("importer") as JObject);
-            if (importProblem != null) result.Add(context.Problem(DiagnosticCodes.InvalidArgs, importProblem));
+            if (importProblem != null) result.Add(context.Problem(MediaImportPolicy.Code(importProblem), importProblem));
 
             return result;
         }

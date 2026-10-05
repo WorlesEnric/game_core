@@ -210,9 +210,9 @@ namespace GameCore.Studio.Edit
         {
             ToolStageResult result = new ToolStageResult();
             string? problem = MediaImportPolicy.Validate(context.Runtime.Paths, context.StringArg("path"), context.Arg("importer") as JObject);
-            if (problem != null) result.Add(context.Problem(DiagnosticCodes.InvalidArgs, problem));
+            if (problem != null) result.Add(context.Problem(MediaImportPolicy.Code(problem), problem));
             if (context.Arg("source") != null || context.Arg("sha256") != null)
-                result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "artifact_source_forbidden: sources must be retained artifact digests."));
+                result.Add(context.Problem(DiagnosticCodes.ArtifactSourceForbidden, "artifact_source_forbidden: sources must be retained artifact digests."));
             string? digest = ArtifactDigest(context.Arg("artifact"));
             if (digest == null) result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "A retained artifact digest is required."));
             else if (!context.Artifacts.Has(digest)) result.Add(context.Problem(DiagnosticCodes.StageFailed, "Artifact is not retained."));

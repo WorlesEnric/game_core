@@ -693,7 +693,7 @@ namespace GameCore.Studio.Edit
                 return false;
             }
 
-            if (cache == null || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
+            if (cache == null || cache.Schema != "gamecore.studio.indexsources/2" || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
             {
                 return false;
             }
@@ -1060,7 +1060,7 @@ namespace GameCore.Studio.Edit
         internal sealed class SourceCache
         {
             [JsonProperty("schema")]
-            public string Schema = "gamecore.studio.indexsources/1";
+            public string Schema = "gamecore.studio.indexsources/2";
 
             [JsonProperty("project")]
             public string Project = string.Empty;

@@ -4,12 +4,20 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
+using GameCore.Studio.Model;
 
 namespace GameCore.Studio.Edit
 {
     /// <summary>Candidate byte authority. Checked at stage and immediately before retaining/writing destination bytes.</summary>
     public static class MediaImportPolicy
     {
+        public static string Code(string problem)
+        {
+            if (problem.StartsWith("media_type_", StringComparison.Ordinal)) return DiagnosticCodes.MediaTypeForbidden;
+            if (problem.StartsWith("media_path_", StringComparison.Ordinal)) return DiagnosticCodes.MediaPathForbidden;
+            return DiagnosticCodes.MediaImporterInvalid;
+        }
+
         public static string? Validate(StudioPaths paths, string? path, JObject? settings)
         {
             if (!ToolSupport.IsSafeAssetPath(path) || path == null || path.Contains("\\"))
@@ -30,6 +38,9 @@ namespace GameCore.Studio.Edit
             for (string? full = paths.Absolute(path); full != null && full.Length >= paths.Absolute("Assets").Length; full = Path.GetDirectoryName(full))
                 if ((File.Exists(full) || Directory.Exists(full)) && (File.GetAttributes(full) & FileAttributes.ReparsePoint) != 0)
                     return "media_path_forbidden: linked destinations are forbidden.";
+            string meta = paths.Absolute(path) + ".meta";
+            if (File.Exists(meta) && (File.GetAttributes(meta) & FileAttributes.ReparsePoint) != 0)
+                return "media_path_forbidden: linked metadata is forbidden.";
             AssetImporter? existing = AssetImporter.GetAtPath(path);
             if (existing != null && type != null && existing.GetType() != type)
                 return "media_importer_forbidden: custom importer is not allowed.";
