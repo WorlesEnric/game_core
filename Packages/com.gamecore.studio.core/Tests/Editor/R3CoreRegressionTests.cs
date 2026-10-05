@@ -22,10 +22,13 @@ namespace GameCore.Studio.Edit.Tests
         [Test]
         public void D1_DefinitionAddedAfterCacheAppearsWithoutManualRebuild()
         {
+            Assert.That(Retained("text2-20261005T053552Z/ferryman2/request-index-slice.json")["nodes"]!
+                .Any(n => (string?)n["type"] == "npc.definition"), Is.False, "retained stale slice omitted NPC definitions");
             _bed.CreateNpc("Before");
             _bed.Runtime.Index.SaveCache();
             _bed.CreateNpc("After");
             AssetDatabase.SaveAssets();
+            _bed.Runtime.Index.SaveCache(); // no trigger reached this runtime: saving must not bless stale nodes
             StudioRuntime restarted = _bed.CreateRuntime(loadIndexCache: true);
             Assert.That(restarted.Index.Snapshot().Nodes.Select(n => n.Name), Does.Contain("After"));
             Assert.That(restarted.Index.Slice(Array.Empty<AuthoringRef>(), includeTypes: new[] { "fixture.npc" }).Index.Nodes.Select(n => n.Name), Does.Contain("After"));
@@ -91,10 +94,76 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(report.Outcomes.Select(o => o.Status), Is.EqualTo(new[] { OutcomeStatus.Refused, OutcomeStatus.Applied, OutcomeStatus.Applied }));
         }
 
+
+        [Test]
+        public void D1_ChangedDeletedAndMovedAssetsInvalidateOnlyTheirCachedSources()
+        {
+            var changed = _bed.CreateItem("Changed", 1);
+            var deleted = _bed.CreateItem("Deleted", 1);
+            var moved = _bed.CreateItem("Moved", 1);
+            _bed.Runtime.Index.SaveCache();
+            changed.weight = 7;
+            EditorUtility.SetDirty(changed);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(deleted));
+            Assert.That(AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(moved), _bed.Folder + "/Renamed.asset"), Is.Empty);
+            StudioRuntime restarted = _bed.CreateRuntime(loadIndexCache: true);
+            SemanticIndex index = restarted.Index.Snapshot();
+            Assert.That((float)index.FindNode(_bed.Ref(changed))!.Fields!["weight"].Value!, Is.EqualTo(7));
+            Assert.That(index.Nodes.Any(n => n.Name == "Deleted"), Is.False);
+            Assert.That(index.FindNode(_bed.Ref(moved))!.Ref.Path, Does.Contain("Renamed.asset"));
+        }
+
+        [Test]
+        public void D20_UnselectedSharedReadStillRefusesBestEffort()
+        {
+            ChangeSet candidate = Ring(ApplyPolicy.BestEffort, out var first);
+            var center = _bed.Runtime.Resolver.Find(candidate.BaseVersions![3].Ref) as Component;
+            Assert.That(center, Is.Not.Null);
+            center!.transform.position += Vector3.right;
+            Assert.That(_bed.Runtime.Engine.Apply(candidate).Outcomes.All(o => o.Status == OutcomeStatus.Refused), Is.True);
+        }
+
+        [Test]
+        public void D20_SelectiveRebaseLeavesOtherStaleTargetsRefused()
+        {
+            ChangeSet candidate = Ring(ApplyPolicy.BestEffort, out var first);
+            first.transform.position += Vector3.right;
+            var second = (Component)_bed.Runtime.Resolver.Find(candidate.BaseVersions![1].Ref)!;
+            second.transform.position += Vector3.up;
+            StagedChangeSet rebased = _bed.Runtime.Engine.Rebase(_bed.Runtime.Engine.Stage(candidate), new[] { "op1" });
+            Assert.That(rebased.ChangeSet.BaseVersions![1].Stamp, Is.EqualTo(candidate.BaseVersions![1].Stamp));
+            Assert.That(_bed.Runtime.Engine.Apply(rebased).Outcomes.Select(o => o.Status),
+                Is.EqualTo(new[] { OutcomeStatus.Applied, OutcomeStatus.Refused, OutcomeStatus.Applied }));
+        }
+
+        private IndexSlice PromptReferences(string prompt, AuthoringRef[] selection, int byteCap = SemanticIndexService.DefaultByteCap)
+        {
+            var method = typeof(SemanticIndexService).GetMethod("ResolvePromptReferences");
+            Assert.That(method, Is.Not.Null, "D21: core must provide the request-builder seam");
+            return (IndexSlice)method!.Invoke(_bed.Runtime.Index, new object[] { prompt, selection, byteCap, 128 })!;
+        }
+
         [Test]
         public void D21_CoreProvidesBoundedPromptReferenceResolver()
         {
-            Assert.That(typeof(SemanticIndexService).GetMethod("ResolvePromptReferences"), Is.Not.Null);
+            var selected = _bed.SpawnEntity("Market Crate", Vector3.zero);
+            var well = _bed.SpawnEntity("Village Well", new Vector3(2, 3, 4));
+            _bed.SpawnEntity("Village Wellness", Vector3.zero);
+            _bed.SaveScene();
+            string prompt = (string)Retained("batch-20261005T100136Z/ring/request.json")["intent"]!["text"]!;
+            IndexSlice slice = PromptReferences(prompt, new[] { _bed.Ref(selected) });
+            Assert.That(slice.Index.Nodes.Select(n => n.Name), Is.EqualTo(new[] { "Village Well" }));
+            IndexNode node = slice.Index.Nodes[0];
+            Assert.That(node.Ref.SameTarget(_bed.Ref(well)), Is.True);
+            Assert.That(node.Fields!.Keys, Is.EquivalentTo(new[] { "world.posX", "world.posY", "world.posZ" }));
+            Assert.That((float)node.Fields["world.posY"].Value!, Is.EqualTo(3));
+            Assert.That(node.Fields["world.posY"].Unit, Is.EqualTo("m"));
+            Assert.That(PromptReferences(well.AuthoringId, Array.Empty<AuthoringRef>()).Index.Nodes.Count, Is.EqualTo(1));
+            IndexSlice cut = PromptReferences(prompt, Array.Empty<AuthoringRef>(), 256);
+            Assert.That(cut.Bytes, Is.LessThanOrEqualTo(256));
+            Assert.That(cut.Truncated, Is.True);
+            Assert.That(cut.OmittedNodes, Is.EqualTo(1));
         }
     }
 }
