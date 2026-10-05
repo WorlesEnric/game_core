@@ -19,6 +19,9 @@
 //! steps that depend on it. Children run with `env_clear()` plus [`super::env::stage_env`]; every
 //! log is redacted before it is written and hashed (`logRef`).
 
+#[path = "semantic.rs"]
+mod semantic;
+
 use std::collections::BTreeSet;
 use std::fs::File;
 use std::path::{Path, PathBuf};
@@ -723,7 +726,7 @@ impl Run<'_> {
             });
             return;
         }
-        let mut log = StepLog::new();
+        let mut log = semantic_log;
         let dir = self.slot_dir.join("dotnet");
         let build = self.opts.sandbox.run(
             Command::new(&self.opts.tools.dotnet)
@@ -822,9 +825,24 @@ impl Run<'_> {
                 elapsed: Duration::ZERO,
             };
         }
+        for generated in ["bin", "obj", "Tests/bin", "Tests/obj"] {
+            let _ = std::fs::remove_dir_all(target.join(generated));
+        }
         let rules = self.slot_dir.join("semantic-rules.json");
-        let policy = json!({"schema":"gamecore.stage.semantic-rules/1", "package":self.package(), "forbidEditorHooks":true,"forbidUnsafe":true,"forbidProcess":true,"forbidNetwork":true,"fileRoots":[format!("Assets/{}",self.package()),"persistentDataPath"]});
-        if std::fs::write(&rules, policy.to_string()).is_err() {
+        let context = semantic::request(self.opts)
+            .and_then(|request| serde_json::to_vec(&request).map_err(|e| e.to_string()));
+        let context = match context {
+            Ok(context) => context,
+            Err(error) => {
+                return ChildOutcome {
+                    code: Some(1),
+                    timed_out: false,
+                    output: format!("trusted semantic context unavailable: {error}"),
+                    elapsed: Duration::ZERO,
+                };
+            }
+        };
+        if std::fs::write(&rules, context).is_err() {
             return ChildOutcome {
                 code: Some(1),
                 timed_out: false,
@@ -846,12 +864,7 @@ impl Run<'_> {
             .opts
             .sandbox
             .run(&cmd, &self.scratch("semantic"), self.remaining());
-        let findings = std::fs::read(&output)
-            .ok()
-            .and_then(|b| serde_json::from_slice::<Value>(&b).ok());
-        if !findings.is_some_and(|v| {
-            v["pass"] == true && v["findings"].as_array().is_some_and(Vec::is_empty)
-        }) {
+        if !std::fs::read(&output).is_ok_and(|bytes| semantic::passing(&bytes)) {
             result.code = Some(1);
         }
         result
@@ -1235,6 +1248,10 @@ pub fn cache_version(opts: &StageOptions) -> Result<String, String> {
             inputs.extend(bytes);
         }
     }
+    inputs.extend_from_slice(include_bytes!("../../../stage/cache/cache-lock.json"));
+    inputs.extend_from_slice(include_bytes!(
+        "../../../stage/cache/unity-metadata-lock.json"
+    ));
     Ok(sha256_hex(&inputs))
 }
 
@@ -1246,7 +1263,10 @@ fn seed_warm_library(root: &Path, project: &Path) {
     let warm = root.to_path_buf();
     let target = warm.join("Library");
     let library = project.join("Library");
-    if target.exists() || !library.is_dir() || std::fs::create_dir_all(&warm).is_err() {
+    if target.join("ArtifactDB").is_file()
+        || !library.is_dir()
+        || std::fs::create_dir_all(&warm).is_err()
+    {
         return;
     }
     let tmp = warm.join(format!("Library.{}.tmp", std::process::id()));
@@ -1261,6 +1281,9 @@ fn seed_warm_library(root: &Path, project: &Path) {
         .status()
         .is_ok_and(|s| s.success());
     if ok {
+        if target.exists() {
+            let _ = std::fs::remove_dir_all(&target);
+        }
         let _ = std::fs::rename(&tmp, &target);
     } else {
         let _ = std::fs::remove_dir_all(&tmp);
@@ -1270,7 +1293,7 @@ fn seed_warm_library(root: &Path, project: &Path) {
 /// Cold-cache grace can be consumed once per cache version, even if that attempt fails.
 fn cold_budget(cache: &Path, warm: Duration) -> Result<(bool, Duration), String> {
     std::fs::create_dir_all(cache).map_err(|e| e.to_string())?;
-    let cold = !cache.join("Library").is_dir();
+    let cold = !cache.join("Library/ArtifactDB").is_file();
     let first = cold
         && std::fs::OpenOptions::new()
             .write(true)
@@ -1484,7 +1507,7 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
             template: run.record["template"].as_str().map(str::to_string),
         },
         duration_ms: ms(elapsed),
-        budget_ms: ms(opts.budget),
+        budget_ms: B_STAGE_MS,
         created_at: now_ms(),
     };
     verdict.settle();
@@ -1526,6 +1549,7 @@ mod tests {
         );
         assert_eq!(cold_budget(&cache, warm).unwrap(), (true, warm));
         std::fs::create_dir(cache.join("Library")).unwrap();
+        std::fs::write(cache.join("Library/ArtifactDB"), b"warm").unwrap();
         assert_eq!(cold_budget(&cache, warm).unwrap(), (false, warm));
     }
 

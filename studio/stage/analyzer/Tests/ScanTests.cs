@@ -74,7 +74,7 @@ namespace GameCore.Gameplay.Contracts {
             try
             {
                 File.WriteAllText(Path.Combine(root, "package.json"), "{\"name\":\"com.example.plate\"}");
-                File.WriteAllText(Path.Combine(root, "rules.json"), "{\"Schema\":1}");
+                File.WriteAllText(Path.Combine(root, "rules.json"), "{\"schema\":\"gamecore.stage.analyze/1\",\"references\":[],\"supportSources\":[],\"policy\":{\"mode\":\"D1\"}}");
                 File.WriteAllText(Path.Combine(root, name, "Bad.CS"), "class C{void M(){System.Diagnostics.Process.Start(\"blocked\");}}");
                 var output = Path.Combine(root, "findings.json");
                 Assert.That(Program.Main(new[] { "--root", root, "--rules", Path.Combine(root, "rules.json"), "--out", output }), Is.EqualTo(3));

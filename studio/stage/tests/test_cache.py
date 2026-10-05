@@ -55,3 +55,15 @@ class CacheTests(unittest.TestCase):
         self.dll.unlink()
         self.dll.symlink_to(self.archive)
         with self.assertRaises(ValueError): cache.verify(self.root, self.expected)
+
+    def test_R2_11_StageIntNuGetEscapedPayloadNames(self):
+        with zipfile.ZipFile(self.archive, 'a') as z:
+            z.writestr('lib/portable%2Btest/compiler.xml', b'documentation')
+        target = self.folder / 'lib/portable+test/compiler.xml'
+        target.parent.mkdir()
+        target.write_bytes(b'documentation')
+        self.expected['packages'][0]['sha512'] = base64.b64encode(hashlib.sha512(self.archive.read_bytes()).digest()).decode()
+        (self.root / 'cache-manifest.json').write_text(json.dumps(self.expected))
+        cache.verify(self.root, self.expected)
+        target.write_bytes(b'tampered')
+        with self.assertRaises(ValueError): cache.verify(self.root, self.expected)

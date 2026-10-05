@@ -366,8 +366,8 @@ impl Sandbox {
             .arg(label)
             .arg("--timeout")
             .arg(timeout.as_secs().to_string())
-            .args(["--attempts", "2", "--"])
-            .args(args);
+            .args(["--attempts", "2"])
+            .args(batch_test_args(args));
         let out = run_child(
             &mut cmd,
             &[("UNITY", &wrapper.display().to_string()), ("HOME", &home)],
@@ -430,6 +430,26 @@ impl Sandbox {
     }
 }
 
+// The host allocator owns the results path; it rejects raw -testResults after --.
+fn batch_test_args(args: &[String]) -> Vec<String> {
+    let mut wrapper = Vec::new();
+    let mut engine = Vec::new();
+    let mut args = args.iter();
+    while let Some(arg) = args.next() {
+        if arg.eq_ignore_ascii_case("-testResults") {
+            wrapper.push("--results".into());
+            if let Some(path) = args.next() {
+                wrapper.push(path.clone());
+            }
+        } else {
+            engine.push(arg.clone());
+        }
+    }
+    wrapper.push("--".into());
+    wrapper.extend(engine);
+    wrapper
+}
+
 fn probe_passed(out: &ChildOutcome, engine_output: &str) -> bool {
     out.ok()
         && engine_output.contains("Batchmode quit successfully invoked")
@@ -471,6 +491,28 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn r2_11_stage_int_results_are_owned_by_host_allocator() {
+        let args = [
+            "-runTests",
+            "-testPlatform",
+            "EditMode",
+            "-testResults",
+            "/slot/out/editmode.xml",
+        ];
+        assert_eq!(
+            batch_test_args(&args.map(str::to_string)),
+            [
+                "--results",
+                "/slot/out/editmode.xml",
+                "--",
+                "-runTests",
+                "-testPlatform",
+                "EditMode"
+            ]
+        );
+    }
+
     #[test]
     fn r2_11_stage_int_launcher_refuses_missing_cache_before_execution() {
         let dir = tempfile::tempdir().unwrap();

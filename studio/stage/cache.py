@@ -68,7 +68,7 @@ def provision(cache, offline):
     if cache.is_symlink() or (cache / 'nuget').exists():
         verify(cache)
         return
-    with tempfile.TemporaryDirectory(prefix='.provision-', dir=cache) as temp:
+    with tempfile.TemporaryDirectory(prefix='gamecore-stage-provision-') as temp:
         work = Path(temp)
         for name in ('Dependencies.csproj', 'RulesDependencies.csproj', 'NuGet.Config', 'packages.lock.json', 'Rules.packages.lock.json'):
             shutil.copyfile(HERE / 'cache' / name, work / name)
@@ -82,11 +82,13 @@ def provision(cache, offline):
             for project in ('Dependencies.csproj', 'RulesDependencies.csproj'):
                 subprocess.run([str(Path.home() / '.dotnet/dotnet'), 'restore', str(work / project),
                                 '--locked-mode', '--packages', str(work / 'nuget'), '--configfile', str(work / 'NuGet.Config'),
-                                '-p:NuGetAudit=false', '--nologo'], check=True)
+                                '-p:NuGetAudit=false', '-p:ImportDirectoryBuildProps=false',
+                                '-p:ImportDirectoryBuildTargets=false', '-p:ImportDirectoryPackagesProps=false',
+                                '--nologo'], check=True)
         shutil.copyfile(HERE / 'cache/cache-lock.json', work / 'cache-manifest.json')
         verify(work)
-        (work / 'nuget').rename(cache / 'nuget')
-        (work / 'cache-manifest.json').replace(cache / 'cache-manifest.json')
+        shutil.move(str(work / 'nuget'), str(cache / 'nuget'))
+        shutil.copyfile(work / 'cache-manifest.json', cache / 'cache-manifest.json')
     verify(cache)
 
 
