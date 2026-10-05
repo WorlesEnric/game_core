@@ -71,7 +71,7 @@ namespace GameCore.Studio.Views
 
         /// <summary>
         /// Applies manual change sets in order (one per op list, each all-or-nothing) and stops at the first that is
-        /// not Ok. Every report is returned, newest last; undo them newest first.
+        /// not Ok, flushing the semantic index between steps. Every report is returned, newest last; undo them newest first.
         /// </summary>
         public IReadOnlyList<ApplyReport> ApplySequence(string intent, IReadOnlyList<IReadOnlyList<Operation>> steps)
         {
@@ -85,6 +85,9 @@ namespace GameCore.Studio.Views
                 {
                     break;
                 }
+
+                // Later steps name what earlier ones created (by authoring id); the index resolves them once flushed.
+                _runtime.Index.Flush();
             }
 
             return reports;
