@@ -426,8 +426,14 @@ namespace GameCore.Rules.Gameplay.Ui
                 }
             }
 
-            slot = int.Parse(digits, System.Globalization.CultureInfo.InvariantCulture);
-            return slot >= 1 && slot <= MaxManualSlots;
+            int value = int.Parse(digits, System.Globalization.CultureInfo.InvariantCulture);
+            if (value < 1 || value > MaxManualSlots)
+            {
+                return false;
+            }
+
+            slot = value;
+            return true;
         }
     }
 }
