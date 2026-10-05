@@ -404,7 +404,8 @@ namespace Hollowmere.P1_3.EditMode.Tests
 
             Assert.That(succeeded, Is.True, "player.interact on the focused well commits InteractionSucceeded");
             Assert.That(w.Slot(well.Target, InteractionSlots.Owner, InteractionSlots.Uses), Is.EqualTo(1));
-            Assert.That(w.InteractionSession.Dispatcher.Succeeded, Is.EqualTo(1));
+            w.Pump(1);
+            Assert.That(w.InteractionSession.Dispatcher.Succeeded, Is.EqualTo(1), "the dispatcher reads the committed success on the next frame");
 
             // Travel to the marsh (arrival 2.5 m from the gate's portal), then the gate refuses: locked.
             RegionRecord? marsh = null;

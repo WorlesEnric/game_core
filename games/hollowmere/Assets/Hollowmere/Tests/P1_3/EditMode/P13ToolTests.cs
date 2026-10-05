@@ -96,7 +96,7 @@ namespace Hollowmere.P1_3.EditMode.Tests
             Assert.That(npc.Schedule, Is.Null, "undo removes the schedule again");
 
             ScheduleDefinition broken = Make<ScheduleDefinition>();
-            broken.Configure(100f, 0f, new[] { new SchedulePhaseEntry { startSeconds = 30f } });
+            broken.Configure(100f, 0f, new[] { new SchedulePhaseEntry { startSeconds = 50f }, new SchedulePhaseEntry { startSeconds = 30f } });
             Refuses(PlayerNpcInteractionCodes.NpcScheduleMalformed, () => NpcTools.SetSchedule(npc, broken));
             Refuses(PlayerNpcInteractionCodes.NpcPatrolEmpty, () => NpcTools.SetPatrol(npc, Array.Empty<Vector3>()));
             BehaviourDefinition empty = Make<BehaviourDefinition>();
@@ -132,6 +132,9 @@ namespace Hollowmere.P1_3.EditMode.Tests
         [Test]
         public void PlacementTools_AddAnNpcADoorAnExaminable_AndSetTheSpawn_InsideTheRegionOnly()
         {
+            // The Single-mode scene change unloads unused assets (ignoring script references), so the definitions are
+            // loaded after it.
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             NpcDefinition maren = AssetDatabase.LoadAssetAtPath<NpcDefinition>(HollowmereGameplayAuthoring.NpcRoot + "/Definitions/Maren.asset");
             InteractableDefinition gate = AssetDatabase.LoadAssetAtPath<InteractableDefinition>(HollowmereGameplayAuthoring.InteractableRoot + "/Definitions/CausewayGate.asset");
             InteractableDefinition well = AssetDatabase.LoadAssetAtPath<InteractableDefinition>(HollowmereGameplayAuthoring.InteractableRoot + "/Definitions/VillageWell.asset");
@@ -140,7 +143,6 @@ namespace Hollowmere.P1_3.EditMode.Tests
                 Assert.Ignore("the P1.3 content is not authored yet (run P13ContentTests first)");
             }
 
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             RegionDefinition regionDefinition = Make<RegionDefinition>();
             regionDefinition.EnsureAuthoringId();
             var regionObject = new GameObject("Region Test");

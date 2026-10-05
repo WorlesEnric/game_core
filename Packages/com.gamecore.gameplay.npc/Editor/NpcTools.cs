@@ -105,7 +105,7 @@ namespace GameCore.Gameplay.Npc.Editor
             if (schedule != null && !schedule.IsWellFormed)
             {
                 throw new ArgumentException(PlayerNpcInteractionCodes.NpcScheduleMalformed
-                    + ": phases must start at 0, ascend strictly and lie inside the day");
+                    + ": phase starts must ascend strictly and lie inside the day (the last phase wraps past midnight)");
             }
 
             Undo.RecordObject(npc, "npc.setSchedule");
