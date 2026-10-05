@@ -219,7 +219,7 @@ lines.append(f"Last cumulative report: `{selects[-1]}`" if selects else "No pick
 problems = [entry for entry in entries if entry.get("problem") or entry.get("name") == "error"]
 lines += ["", "## Problems", ""]
 lines += [f"- step {entry['step']}: {entry.get('problem') or entry.get('caption')}" for entry in problems] or (["None."] if int(rc) == 0 else [f"The Editor run ended with exit code {rc} (124 = killed by the watchdog)."])
-lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); no gateway key is configured in this run, so no secret can be on screen."]
+lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); the live prompt used P2.2's gateway with the app key read from its key file, which no Studio window displays (the ETOS settings page is never opened), so no secret can be on screen."]
 with open(os.path.join(dest, "README.md"), "w", encoding="utf-8") as handle:
     handle.write("\n".join(lines) + "\n")
 print("\n".join(lines))
