@@ -24,7 +24,7 @@ namespace GameCore.Studio.Edit.Tests
 
         public static readonly Type[] FixtureTypes =
         {
-            typeof(FixtureItemDefinition), typeof(FixtureNpcDefinition), typeof(FixtureAuthoredEntity), typeof(FixtureDuckEntity), typeof(FixtureRegion),
+            typeof(FixtureItemDefinition), typeof(FixtureNpcDefinition), typeof(FixtureAuthoredEntity), typeof(FixtureDuckEntity), typeof(FixtureRegion), typeof(FixtureDialogueDefinition),
         };
 
         private readonly List<StudioRuntime> _runtimes = new List<StudioRuntime>();
