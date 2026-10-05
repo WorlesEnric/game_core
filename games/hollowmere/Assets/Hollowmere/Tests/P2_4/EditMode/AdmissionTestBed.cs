@@ -3,6 +3,7 @@
 // temporary packages root outside the project (Unity never imports what an admission writes there) and fakes for the
 // compiler, the catalog and the checkers, so every admission branch runs without a domain reload.
 using System;
+using GameCore.Studio.Authoring.Agent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -323,12 +324,12 @@ namespace Hollowmere.P2_4.EditMode.Tests
 
         public SignedVerdict? Issued { get; set; }
         public bool Verify { get; set; } = true;
-        public Task<string> RequestStage(StageRequest request) => Task.FromResult("test-job");
+        public Task<string> RequestStage(StageCandidateRequest request) => Task.FromResult("test-job");
         public Task<SignedVerdict> GetVerdict(string jobId) => Task.FromResult(Issued!);
         public Task<StageVerification> VerifyVerdict(string jobId, StageVerificationRequest request)
             => Task.FromResult(new StageVerification(Verify, jobId));
 
-        public StageRequest Request(ChangeSet candidate) => Admission.BuildStageRequest(candidate, "games/hollowmere");
+        public StageCandidateRequest Request(ChangeSet candidate) => Admission.BuildStageRequest(candidate, "games/hollowmere");
         public void Trust(ChangeSet candidate, byte[] verdict)
         {
             Issued = new SignedVerdict("test-job", "companion-test-signature", JObject.Parse(Encoding.UTF8.GetString(verdict)));

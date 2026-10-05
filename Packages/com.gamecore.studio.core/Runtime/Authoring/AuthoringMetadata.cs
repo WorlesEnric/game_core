@@ -147,6 +147,7 @@ namespace GameCore.Studio.Authoring
                 RequiresOnTarget = Get<string>(mirror, "RequiresOnTarget"),
                 TargetKinds = kinds,
                 ReadOnly = Flag(mirror, "ReadOnly", false),
+                RuntimeOnly = Flag(mirror, "RuntimeOnly", false),
             };
         }
 
@@ -277,7 +278,7 @@ namespace GameCore.Studio.Authoring
                 operation.TargetKinds == null ? null : new List<AuthoringKind>(operation.TargetKinds),
                 ToolCatalogBuilder.ExpandScopes(scope),
                 prerequisites.Count == 0 ? null : prerequisites,
-                validators);
+                validators, operation.ReadOnly, operation.RuntimeOnly);
         }
 
         private static ValidatorRef Validator(Type validator)

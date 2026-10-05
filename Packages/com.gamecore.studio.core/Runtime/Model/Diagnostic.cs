@@ -170,12 +170,16 @@ namespace GameCore.Studio.Model
         public const string OutcomeUnknown = "OutcomeUnknown";
         /// <summary>The capability is blocked on an external prerequisite (e.g. a missing provider credential).</summary>
         public const string Blocked = "Blocked";
+        public const string MediaTypeForbidden = "MediaTypeForbidden";
+        public const string MediaPathForbidden = "MediaPathForbidden";
+        public const string MediaImporterInvalid = "MediaImporterInvalid";
+        public const string ArtifactSourceForbidden = "ArtifactSourceForbidden";
 
         /// <summary>Every registered code, in registry order.</summary>
         public static readonly IReadOnlyList<string> All = new[]
         {
             StaleTarget, Conflict, UnknownTool, InvalidArgs, MissingPrerequisite, ScopeNotAllowed, ValidationFailed,
-            Refused, CandidateInvalid, StaleContext, StageFailed, LedgerConflict, NotConfigured, OutcomeUnknown, Blocked,
+            Refused, CandidateInvalid, StaleContext, StageFailed, LedgerConflict, NotConfigured, OutcomeUnknown, Blocked, MediaTypeForbidden, MediaPathForbidden, MediaImporterInvalid, ArtifactSourceForbidden,
         };
 
         /// <summary>True when <paramref name="code"/> is a registered code.</summary>

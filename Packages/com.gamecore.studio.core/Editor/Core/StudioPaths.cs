@@ -94,7 +94,12 @@ namespace GameCore.Studio.Edit
             }
 
             string temp = path + ".tmp";
-            File.WriteAllText(temp, text, new UTF8Encoding(false));
+            using (FileStream stream = new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                byte[] bytes = new UTF8Encoding(false).GetBytes(text);
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush(true);
+            }
             if (File.Exists(path))
             {
                 File.Replace(temp, path, null);

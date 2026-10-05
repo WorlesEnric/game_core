@@ -29,6 +29,9 @@ namespace GameCore.Studio.Edit
         private readonly StudioRuntime _runtime;
         private int _assetEditingDepth;
         private bool _applying;
+        private Action<Operation[], bool>? _prepare;
+
+        internal void PrepareInverse(Operation[] inverse, bool assetLevel) => _prepare?.Invoke(inverse, assetLevel);
 
         internal ChangeSetEngine(StudioRuntime runtime, EngineOptions? options)
         {
@@ -287,7 +290,7 @@ namespace GameCore.Studio.Edit
         /// Applies operations for the journal (undo, redo, recovery): internal tools allowed, no catalog validation, no
         /// journal entry of its own. <paramref name="replay"/> maps op ids to redo hints.
         /// </summary>
-        internal ApplyReport ApplyForHistory(ChangeSet changeSet, IReadOnlyDictionary<string, JObject>? replay, bool skipStageChecks = false)
+        internal ApplyReport ApplyForHistory(ChangeSet changeSet, IReadOnlyDictionary<string, JObject>? replay, bool skipStageChecks = false, Action<ChangeSet>? checkpoint = null)
         {
             if (_applying)
             {
@@ -306,7 +309,7 @@ namespace GameCore.Studio.Edit
                     }
                 }
 
-                return ApplyCore(staged, replay, false);
+                return ApplyCore(staged, replay, false, checkpoint);
             }
             finally
             {
@@ -419,7 +422,12 @@ namespace GameCore.Studio.Edit
                     }
 
                     Precheck(staged);
-                    staged.Live = liveRevision.HasValue && tool.Entry.RuntimeApply == RuntimeApply.Live;
+                    if (tool.Entry.RuntimeOnly && (!IsPlayMode || !liveRevision.HasValue))
+                        staged.Add(StudioDiagnostics.Op(DiagnosticCodes.Refused, operation.OpId, "Runtime actions require an available Play world."));
+                    staged.Live = liveRevision.HasValue && tool.Entry.RuntimeApply == RuntimeApply.Live
+                        && _runtime.Services.FindLiveTranslator(new EditContext(_runtime, changeSet, operation, staged.Target, true, null)) != null;
+                    if (tool.Entry.RuntimeOnly && !staged.Live)
+                        staged.Add(StudioDiagnostics.Op(DiagnosticCodes.NotConfigured, operation.OpId, "Runtime action translator is not registered."));
                     if (staged.Blocked || staged.Deferred)
                     {
                         continue;
@@ -443,6 +451,10 @@ namespace GameCore.Studio.Edit
             {
                 _runtime.Staging.EndOwner();
             }
+
+            bool hasRuntime = operations.Exists(op => op.Live);
+            if (hasRuntime && changeSet.EffectivePolicy == ApplyPolicy.AllOrNothing && operations.Count > 1)
+                envelope.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "runtime_atomicity_unsupported: runtime actions cannot share an AllOrNothing batch; use separate actions or BestEffort."));
 
             return new StagedChangeSet(changeSet, options, operations, envelope, _runtime.Index.Revision, catalogRevision, liveRevision, allowInternal);
         }
@@ -520,7 +532,7 @@ namespace GameCore.Studio.Edit
             }
         }
 
-        private ApplyReport ApplyCore(StagedChangeSet staged, IReadOnlyDictionary<string, JObject>? replay, bool journal)
+        private ApplyReport ApplyCore(StagedChangeSet staged, IReadOnlyDictionary<string, JObject>? replay, bool journal, Action<ChangeSet>? checkpoint = null)
         {
             Stopwatch watch = Stopwatch.StartNew();
             ChangeSet changeSet = staged.ChangeSet;
@@ -529,10 +541,18 @@ namespace GameCore.Studio.Edit
             string requested = changeSet.Timestamps?.Requested ?? Journal.Now();
             Timestamps baseStamps = new Timestamps(requested, changeSet.Timestamps?.Candidate, null);
 
-            if (staged.Diagnostics.Count > 0)
+            string actualCatalog = _runtime.Registry.Catalog.Revision ?? _runtime.Registry.Catalog.ComputeRevision();
+            if (actualCatalog != staged.CatalogRevision)
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.StaleContext, "The tool catalog changed after staging.", null, null,
+                    new JObject { ["expected"] = staged.CatalogRevision, ["actual"] = actualCatalog }));
+            foreach (BaseVersion version in changeSet.BaseVersions ?? Array.Empty<BaseVersion>())
+                foreach (StaleEntry stale in _runtime.Resolver.Resolve(version.Ref.WithStamp(version.Stamp)).Stale)
+                    if (stale.Blocking) diagnostics.Add(stale.Diagnostic);
+
+            if (diagnostics.Count > 0)
             {
                 List<OperationOutcome> refused = new List<OperationOutcome>();
-                Diagnostic first = staged.Diagnostics[0];
+                Diagnostic first = diagnostics[0];
                 foreach (Operation operation in changeSet.Operations)
                 {
                     refused.Add(new OperationOutcome(operation.OpId, OutcomeStatus.Refused, first.Code, "Not applied: " + first.Message));
@@ -581,6 +601,7 @@ namespace GameCore.Studio.Edit
                 _runtime.Journal.Write(entry);
             }
 
+            checkpoint?.Invoke(entry);
             Fault(EngineFaultPoint.AfterInterruptedWritten, null);
             Undo.IncrementCurrentGroup();
             Undo.SetCurrentGroupName("GameCore Studio: " + Shorten(changeSet.Intent.Text));
@@ -620,11 +641,40 @@ namespace GameCore.Studio.Edit
                     {
                         Fault(EngineFaultPoint.BeforeOperation, operation.OpId);
                         JObject? hints = replay != null && replay.TryGetValue(operation.OpId, out JObject? found) ? found : null;
-                        OperationResult result = ApplyOne(staged, operation, hints, ref expectedRevision, diagnostics);
+                        List<Operation> prepared = new List<Operation>();
+                        bool preparedAssets = false;
+                        _prepare = (inverse, assetLevel) =>
+                        {
+                            prepared.AddRange(inverse);
+                            preparedAssets |= assetLevel;
+                            UndoPayload payload = new UndoPayload(prepared, preparedAssets, Array.Empty<StampWitness>(), hints);
+                            outcomeById[operation.OpId] = new OperationOutcome(operation.OpId, OutcomeStatus.Applied, null, "Prepared; completion unknown.", null, new OperationUndo(payload.ToJson()));
+                            if (journal) _runtime.Journal.Write(entry.WithOutcomes(InChangeSetOrder(changeSet, outcomeById)));
+                            checkpoint?.Invoke(entry.WithOutcomes(InChangeSetOrder(changeSet, outcomeById)));
+                            Fault(EngineFaultPoint.AfterPrepared, operation.OpId);
+                        };
+                        OperationResult result;
+                        try
+                        {
+                            if (!operation.Live && !operation.Tool!.ReadOnly && operation.Target != null && (operation.Tool is ReflectedTool || operation.Operation.Tool == "set" || operation.Operation.Tool == "assign" || operation.Operation.Tool == "bind"))
+                            {
+                                EditContext preparation = new EditContext(_runtime, changeSet, operation.Operation, operation.Target, true, hints);
+                                AuthoringTypeInfo? info = _runtime.Identity.Describe(operation.Target);
+                                if (info != null && operation.Operation.Target != null)
+                                    PrepareInverse(new[] { ToolSupport.SetFieldsInverse(operation.Operation.Target, ToolSupport.CaptureMembers(preparation, operation.Target, info)) }, false);
+                            }
+                            result = ApplyOne(staged, operation, hints, ref expectedRevision, diagnostics);
+                            if (result.Status != OutcomeStatus.Applied && prepared.Count > 0 && result.Inverse.Count == 0)
+                            {
+                                if (preparedAssets) result.WithAssetLevelInverse(prepared.ToArray());
+                                else result.WithInverse(prepared.ToArray());
+                            }
+                        }
+                        finally { _prepare = null; }
                         outcome = ToOutcome(operation.Operation, result);
+                        if (result.Status == OutcomeStatus.Applied || result.Inverse.Count > 0) applied.Add(result);
                         if (result.Status == OutcomeStatus.Applied)
                         {
-                            applied.Add(result);
                             appliedOps.Add(new KeyValuePair<Operation, OperationResult>(operation.Operation, result));
                             gameCoreOps.AddRange(result.GameCoreOps);
                         }
@@ -647,6 +697,7 @@ namespace GameCore.Studio.Edit
                         _runtime.Journal.Write(entry.WithOutcomes(InChangeSetOrder(changeSet, outcomeById)));
                     }
 
+                    checkpoint?.Invoke(entry.WithOutcomes(InChangeSetOrder(changeSet, outcomeById)));
                     Fault(EngineFaultPoint.AfterOperation, operation.OpId);
                 }
             }
@@ -669,17 +720,16 @@ namespace GameCore.Studio.Edit
             ChangeSetState state;
             if (failed && policy == ApplyPolicy.AllOrNothing)
             {
-                Rollback(staged.ChangeSet, group, applied, diagnostics);
-                rolledBack = true;
+                rolledBack = Rollback(staged.ChangeSet, group, applied, diagnostics);
                 foreach (KeyValuePair<string, OperationOutcome> pair in new List<KeyValuePair<string, OperationOutcome>>(outcomeById))
                 {
-                    if (pair.Value.Status == OutcomeStatus.Applied)
+                    if (rolledBack && pair.Value.Status == OutcomeStatus.Applied)
                     {
                         outcomeById[pair.Key] = new OperationOutcome(pair.Key, OutcomeStatus.Skipped, null, "Rolled back: another operation failed (AllOrNothing).");
                     }
                 }
 
-                state = ChangeSetState.Failed;
+                state = rolledBack ? ChangeSetState.Failed : ChangeSetState.Interrupted;
                 gameCoreOps.Clear();
             }
             else
@@ -698,6 +748,7 @@ namespace GameCore.Studio.Edit
 
             Timestamps finalStamps = new Timestamps(requested, changeSet.Timestamps?.Candidate, state == ChangeSetState.Applied ? Journal.Now() : null);
             ChangeSet final = changeSet.WithState(state).WithOutcomes(InChangeSetOrder(changeSet, outcomeById)).WithLinks(links).WithTimestamps(finalStamps);
+            checkpoint?.Invoke(final);
             return Finish(staged, final, diagnostics, rolledBack, journal, watch, applied);
         }
 
@@ -757,7 +808,7 @@ namespace GameCore.Studio.Edit
                     }
 
                     expectedRevision = live.ActualRevision;
-                    result = tool.Apply(context);
+                    result = OperationResult.Applied().WithDetail("Runtime action; non-undoable; lost on exit Play.");
                     if (live.OperationId != null)
                     {
                         result.WithGameCoreOp(live.OperationId);
@@ -781,7 +832,7 @@ namespace GameCore.Studio.Edit
             catch (Exception error)
             {
                 _runtime.Log.Write(StudioLogLevel.Error, "engine", "apply of " + operation.OpId + " (" + operation.Tool + ") threw: " + error);
-                return OperationResult.Failed(DiagnosticCodes.Refused, operation.Tool + " threw " + error.GetType().Name + ": " + error.Message);
+                return OperationResult.Failed(DiagnosticCodes.Refused, new SecretRedactor().Redact(operation.Tool + " threw " + error.GetType().Name + ": " + error.Message));
             }
         }
 
@@ -825,7 +876,9 @@ namespace GameCore.Studio.Edit
             IReadOnlyList<string>? gameCoreOps = result.GameCoreOps.Count > 0 ? result.GameCoreOps : null;
             if (result.Status != OutcomeStatus.Applied)
             {
-                return new OperationOutcome(operation.OpId, result.Status, result.Code, result.Detail, gameCoreOps);
+                UndoPayload failedUndo = new UndoPayload(result.Inverse, result.AssetLevel, Array.Empty<StampWitness>(), result.Replay);
+                return new OperationOutcome(operation.OpId, result.Status, result.Code, result.Detail, gameCoreOps,
+                    failedUndo.IsEmpty ? null : new OperationUndo(failedUndo.ToJson()));
             }
 
             List<StampWitness> after = new List<StampWitness>();
@@ -848,8 +901,9 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>AllOrNothing rollback: Unity Undo first, then the asset-level inverses in reverse order.</summary>
-        private void Rollback(ChangeSet changeSet, int group, List<OperationResult> applied, List<Diagnostic> diagnostics)
+        private bool Rollback(ChangeSet changeSet, int group, List<OperationResult> applied, List<Diagnostic> diagnostics)
         {
+            bool ok = true;
             Undo.RevertAllDownToGroup(group);
             for (int i = applied.Count - 1; i >= 0; i--)
             {
@@ -864,6 +918,8 @@ namespace GameCore.Studio.Edit
                     IStudioTool? tool = _runtime.Registry.Find(inverse.Tool);
                     if (tool == null)
                     {
+                        ok = false;
+                        diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.UnknownTool, "Rollback tool missing: " + inverse.Tool));
                         continue;
                     }
 
@@ -879,17 +935,20 @@ namespace GameCore.Studio.Edit
                         OperationResult reverted = tool.Apply(new EditContext(_runtime, changeSet, inverse, target, false, null));
                         if (reverted.Status != OutcomeStatus.Applied)
                         {
+                            ok = false;
                             diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "Rollback step " + inverse.Tool + " did not apply: " + reverted.Detail));
                         }
                     }
                     catch (Exception error) when (!(error is ExitGUIException))
                     {
+                        ok = false;
                         diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "Rollback step " + inverse.Tool + " threw: " + error.Message));
                     }
                 }
             }
 
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            return ok;
         }
 
         private ApplyReport Finish(StagedChangeSet staged, ChangeSet final, List<Diagnostic> diagnostics, bool rolledBack, bool journal, Stopwatch watch, IReadOnlyList<OperationResult> applied)

@@ -18,7 +18,7 @@ namespace GameCore.Studio.Edit
             HashSet<Type> seen = new HashSet<Type>();
             foreach (Type type in TypeCache.GetTypesWithAttribute<AuthorableAttribute>())
             {
-                if (seen.Add(type))
+                if (IsProductionAssembly(type.Assembly) && seen.Add(type))
                 {
                     yield return type;
                 }
@@ -28,7 +28,7 @@ namespace GameCore.Studio.Edit
             {
                 foreach (Type type in TypeCache.GetTypesWithAttribute(attribute))
                 {
-                    if (seen.Add(type))
+                    if (IsProductionAssembly(type.Assembly) && seen.Add(type))
                     {
                         yield return type;
                     }
@@ -42,7 +42,7 @@ namespace GameCore.Studio.Edit
             HashSet<MethodInfo> seen = new HashSet<MethodInfo>();
             foreach (MethodInfo method in TypeCache.GetMethodsWithAttribute<AuthorOperationAttribute>())
             {
-                if (seen.Add(method))
+                if (IsProductionAssembly(method.Module.Assembly) && seen.Add(method))
                 {
                     yield return method;
                 }
@@ -52,12 +52,22 @@ namespace GameCore.Studio.Edit
             {
                 foreach (MethodInfo method in TypeCache.GetMethodsWithAttribute(attribute))
                 {
-                    if (seen.Add(method))
+                    if (IsProductionAssembly(method.Module.Assembly) && seen.Add(method))
                     {
                         yield return method;
                     }
                 }
             }
+        }
+
+        public static bool IsProductionAssembly(Assembly assembly)
+        {
+            string name = assembly.GetName().Name ?? string.Empty;
+            foreach (string part in name.Split('.'))
+                if (part.Equals("Tests", StringComparison.OrdinalIgnoreCase) || part.Equals("Fixtures", StringComparison.OrdinalIgnoreCase)) return false;
+            foreach (AssemblyName reference in assembly.GetReferencedAssemblies())
+                if (reference.Name == "nunit.framework") return false;
+            return true;
         }
 
         private static IEnumerable<Type> MirrorAttributes(string name)

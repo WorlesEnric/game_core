@@ -179,7 +179,7 @@ namespace GameCore.Studio.Edit
             Operation operation = new Operation("op1", toolId, target, args, null, Preconditions.None);
             ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent(toolId, IntentOrigin.Manual), new[] { operation });
             UnityEngine.Object? resolved = target == null || target.Kind == AuthoringKind.Location ? null : _runtime.Resolver.Find(target);
-            if (tool.Entry.TargetRequired && target != null && target.Kind != AuthoringKind.Location && resolved == null)
+            if (tool.Entry.TargetRequired && (target == null || (target.Kind != AuthoringKind.Location && resolved == null)))
             {
                 return OperationResult.Refused(DiagnosticCodes.StaleTarget, "The target does not resolve.");
             }

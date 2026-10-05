@@ -460,10 +460,8 @@ namespace GameCore.Studio.Edit
                 result.Add(context.Problem(DiagnosticCodes.StageFailed, "Artifact sha256:" + digest + " is not retained in Studio/Artifacts.", "Fetch the artifact through the companion first."));
             }
 
-            if (!ToolSupport.IsSafeAssetPath(context.StringArg("path")))
-            {
-                result.Add(context.Problem(DiagnosticCodes.InvalidArgs, "'path' must be a path under Assets/ without '..'."));
-            }
+            string? importProblem = MediaImportPolicy.Validate(context.Runtime.Paths, context.StringArg("path"), context.Arg("importer") as JObject);
+            if (importProblem != null) result.Add(context.Problem(MediaImportPolicy.Code(importProblem), importProblem));
 
             return result;
         }
@@ -481,7 +479,8 @@ namespace GameCore.Studio.Edit
 
             if (!AssetImporting.Import(context, digest, path, context.Arg("importer") as JObject, out ImportOutcome? outcome, out string? problem))
             {
-                return OperationResult.Failed(DiagnosticCodes.StageFailed, problem ?? "import failed");
+                return OperationResult.Failed(DiagnosticCodes.StageFailed, problem ?? "import failed")
+                    .WithAssetLevelInverse(outcome == null ? Array.Empty<Operation>() : AssetImporting.InverseOf(outcome));
             }
 
             UnityEngine.Object? asset = AssetDatabase.LoadAssetAtPath(path, member.ElementType) ?? AssetDatabase.LoadMainAssetAtPath(path);

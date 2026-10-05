@@ -5,6 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using GameCore.Studio.Model;
 using UnityEngine;
 
@@ -60,9 +64,11 @@ namespace GameCore.Studio.Authoring
     {
         public const string Mask = "[redacted]";
 
-        private static readonly Regex EtosKey = new Regex(@"etk_[A-Za-z0-9_\-]+", RegexOptions.CultureInvariant);
+        private static readonly Regex EtosKey = new Regex(@"(?:et[kpta]_|sk-)[A-Za-z0-9_\-]+", RegexOptions.CultureInvariant);
 
         private static readonly Regex Bearer = new Regex(@"(?i)(bearer\s+)[A-Za-z0-9._\-~+/=]+", RegexOptions.CultureInvariant);
+
+        private static readonly Regex JsonSecret = new Regex(@"(?i)(""[^""\r\n]*(?:key|token|secret|password)[^""\r\n]*""\s*:\s*)(""(?:\\.|[^""\\])*""|true|false|null|-?\d+(?:\.\d+)?)", RegexOptions.CultureInvariant);
 
         private static readonly Regex QueryValue = new Regex(@"(?i)\b(key|token|secret|password)=([^&\s""']+)", RegexOptions.CultureInvariant);
 
@@ -73,10 +79,63 @@ namespace GameCore.Studio.Authoring
                 return text ?? string.Empty;
             }
 
-            string result = EtosKey.Replace(text, "etk_" + Mask);
+            string trimmed = text.TrimStart();
+            if (trimmed.StartsWith("{", StringComparison.Ordinal) || trimmed.StartsWith("[", StringComparison.Ordinal))
+            {
+                try { return RedactJson(JToken.Parse(text)).ToString(Formatting.None); }
+                catch (JsonException) { }
+            }
+            return RedactText(text);
+        }
+
+        private string RedactText(string text)
+        {
+            string result = EtosKey.Replace(text, Mask);
             result = Bearer.Replace(result, "$1" + Mask);
             result = QueryValue.Replace(result, "$1=" + Mask);
+            result = JsonSecret.Replace(result, "$1\"" + Mask + "\"");
             return result;
+        }
+        /// <summary>Returns a sanitized deep copy, including nested JSON secret-key values.</summary>
+        public JToken RedactJson(JToken value)
+        {
+            if (value is JObject obj)
+            {
+                JObject copy = new JObject();
+                foreach (JProperty property in obj.Properties())
+                    copy[RedactText(property.Name)] = Regex.IsMatch(property.Name, "key|token|secret|password", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+                        ? new JValue(Mask) : RedactJson(property.Value);
+                return copy;
+            }
+            if (value is JArray array)
+            {
+                JArray copy = new JArray();
+                foreach (JToken item in array) copy.Add(RedactJson(item));
+                return copy;
+            }
+            return value.Type == JTokenType.String ? new JValue(RedactText(value.Value<string>() ?? string.Empty)) : value.DeepClone();
+        }
+    }
+
+    /// <summary>Line-buffered redaction before bytes reach a child-log or evidence sink, including split tokens.</summary>
+    public sealed class RedactingTextWriter : TextWriter
+    {
+        private readonly TextWriter _sink;
+        private readonly SecretRedactor _redactor = new SecretRedactor();
+        private readonly StringBuilder _line = new StringBuilder();
+        public RedactingTextWriter(TextWriter sink) { _sink = sink ?? throw new ArgumentNullException(nameof(sink)); }
+        public override Encoding Encoding => _sink.Encoding;
+        public override void Write(char value)
+        {
+            if (value == '\n') { _sink.WriteLine(_redactor.Redact(_line.ToString())); _line.Clear(); }
+            else _line.Append(value);
+        }
+        public override void Write(string? value) { if (value != null) foreach (char character in value) Write(character); }
+        public override void Flush() => _sink.Flush();
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) { if (_line.Length > 0) _sink.Write(_redactor.Redact(_line.ToString())); _line.Clear(); _sink.Flush(); }
+            base.Dispose(disposing);
         }
     }
 
@@ -110,8 +169,8 @@ namespace GameCore.Studio.Authoring
 
             Diagnostic? redactedDiagnostic = diagnostic == null
                 ? null
-                : new Diagnostic(diagnostic.Code, Redactor.Redact(diagnostic.Message), diagnostic.Hint == null ? null : Redactor.Redact(diagnostic.Hint), diagnostic.Where);
-            StudioLogEntry entry = new StudioLogEntry(level, category ?? "studio", Redactor.Redact(message ?? string.Empty), redactedDiagnostic);
+                : new Diagnostic(diagnostic.Code, Redactor.Redact(diagnostic.Message), diagnostic.Hint == null ? null : Redactor.Redact(diagnostic.Hint), diagnostic.Where, diagnostic.Data == null ? null : (JObject)new SecretRedactor().RedactJson(diagnostic.Data));
+            StudioLogEntry entry = new StudioLogEntry(level, Redactor.Redact(category ?? "studio"), Redactor.Redact(message ?? string.Empty), redactedDiagnostic);
             _recent.Add(entry);
             if (_recent.Count > Capacity)
             {

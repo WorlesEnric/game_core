@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using GameCore.Studio.Authoring.Agent;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,10 @@ namespace Hollowmere.R2_B.Tests
             string sensitive = "etk_fixturecredential";
             var result = new AdmissionResult(_candidate.Id, AdmissionOutcome.Refused, sensitive);
             Assert.That(result.Detail, Does.Not.Contain(sensitive));
+            var compile = new AdmissionCompileResult(false, false, sensitive, new[] { sensitive, "{\"password\":\"private\"}" });
+            Assert.That(compile.Detail, Does.Not.Contain(sensitive));
+            Assert.That(compile.Errors[0], Does.Not.Contain(sensitive));
+            Assert.That(compile.Errors[1], Does.Not.Contain("private"));
             byte[] bytes = Mutate(json => { json["steps"]![0]!["status"] = "fail"; json["steps"]![0]!["detail"] = sensitive; });
             Assert.That(StageVerdict.Parse(bytes, out _)!.Summary, Does.Not.Contain(sensitive));
             var entry = StageAdmission.WithScenario(_candidate, "stage", ScenarioStatus.Fail, sensitive);
@@ -151,7 +156,7 @@ namespace Hollowmere.R2_B.Tests
         [TestCase("/tmp/outside.json")]
         public void R2_12_StageInputDataOnly(string path)
         {
-            Assert.Throws<ArgumentException>(() => new StageRequest(_candidate.Id, "p", "games/hollowmere", "s", "c", new string('a', 64), new string('b', 64), new[] { path }));
+            Assert.Throws<ArgumentException>(() => new StageCandidateRequest(_candidate.Id, "p", "games/hollowmere", "s", "c", new string('a', 64), new string('b', 64), new[] { path }));
         }
 
         [TestCase("../Rules")]
@@ -236,7 +241,8 @@ namespace Hollowmere.R2_B.Tests
             _bed.Admission.Options.FaultHook = null;
             StageAdmission resumed = StageAdmission.Configure(_bed.Runtime, _bed.Admission.Options);
             resumed.RefreshPendingVerdicts().GetAwaiter().GetResult();
-            Assert.That(resumed.Resume(_candidate.Id).Outcome, Is.EqualTo(AdmissionOutcome.Undone));
+            Assert.That(_bed.Runtime.History.ResumeInterrupted(_candidate.Id).Ok, Is.True);
+            Assert.That(_bed.Runtime.History.NextRedo, Is.EqualTo(_candidate.Id));
         }
 
         [TestCase(AdmissionFaultPoint.Capture)]
@@ -322,6 +328,37 @@ namespace Hollowmere.R2_B.Tests
             Assert.That(Directory.Exists(_bed.PackageDirectory), Is.False);
         }
 
+        private sealed class DeferredCompiler : IAdmissionCompiler
+        {
+            public Action<AdmissionCompileResult>? Done { get; private set; }
+            public void Compile(string reason, Action<AdmissionCompileResult> done) => Done = done;
+            public void Complete()
+            {
+                Action<AdmissionCompileResult> done = Done!;
+                Done = null;
+                done(new AdmissionCompileResult(true, false, "compiled (deferred)"));
+            }
+        }
+
+        [Test]
+        public void R2_15_HistoryRetainsRedoUntilDeferredCompileCompletes()
+        {
+            _bed.Trust(_candidate, _bytes);
+            Assert.That(_bed.Admission.Admit(_candidate).Outcome, Is.EqualTo(AdmissionOutcome.Admitted));
+            var compiler = new DeferredCompiler();
+            _bed.Admission.Options.Compiler = compiler;
+            Assert.That(_bed.Runtime.History.Undo(_candidate.Id).Ok, Is.False);
+            Assert.That(_bed.Runtime.Journal.Read(_candidate.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Interrupted));
+            Assert.That(_bed.Runtime.History.NextRedo, Is.Null);
+            compiler.Complete();
+            Assert.That(_bed.Runtime.History.NextRedo, Is.EqualTo(_candidate.Id));
+            Assert.That(_bed.Runtime.History.Redo().Ok, Is.False);
+            Assert.That(_bed.Runtime.History.NextRedo, Is.EqualTo(_candidate.Id));
+            compiler.Complete();
+            Assert.That(_bed.Runtime.Journal.Read(_candidate.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Applied));
+            Assert.That(_bed.Runtime.History.NextRedo, Is.Null);
+        }
+
         [Test]
         public void R2_15_HistoryHandlerDispatchesUndoAndRedoWithExactPreimages()
         {
@@ -329,11 +366,10 @@ namespace Hollowmere.R2_B.Tests
             Assert.That(_bed.Admission.Admit(_candidate).Outcome, Is.EqualTo(AdmissionOutcome.Admitted));
             string meta = Path.Combine(_bed.PackageDirectory, "Runtime/Plate.cs.meta");
             File.WriteAllText(meta, "retained importer guid");
-            IHistoryEntryHandler handler = new AdmissionHistoryHandler(_bed.Admission);
-            ChangeSet entry = _bed.Runtime.Journal.Read(_candidate.Id)!;
-            Assert.That(handler.CanHandle(entry), Is.True);
-            Assert.That(handler.Undo(entry, false).Ok, Is.True);
-            Assert.That(handler.Redo(_bed.Runtime.Journal.Read(_candidate.Id)!).Ok, Is.True);
+            Assert.That(_bed.Runtime.History.Undo(_candidate.Id).Ok, Is.True);
+            Assert.That(_bed.Runtime.History.NextRedo, Is.EqualTo(_candidate.Id));
+            Assert.That(_bed.Runtime.History.Redo().Ok, Is.True);
+            Assert.That(_bed.Runtime.History.NextRedo, Is.Null);
             Assert.That(File.ReadAllText(meta), Is.EqualTo("retained importer guid"));
             Assert.That(_bed.Compiler.Requests.Count, Is.EqualTo(3));
         }

@@ -94,7 +94,7 @@ namespace GameCore.Studio.Edit
 
             Transform transform = selected.transform;
             EditorGUI.BeginChangeCheck();
-            Vector3 position = Handles.PositionHandle(transform.position, Tools.pivotRotation == PivotRotation.Local ? transform.rotation : Quaternion.identity);
+            Vector3 position = Handles.PositionHandle(_controller.PreviewTransform != null ? _controller.PreviewTransform.position : transform.position, Tools.pivotRotation == PivotRotation.Local ? transform.rotation : Quaternion.identity);
             if (EditorGUI.EndChangeCheck())
             {
                 if (!_controller.Dragging)

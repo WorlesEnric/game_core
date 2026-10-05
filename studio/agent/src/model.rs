@@ -13,6 +13,64 @@ use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
+// Catalogs are retained as raw JSON for revision hashing. These projections expose the shared
+// metadata without losing the remaining schema-validated fields on a round trip.
+
+/// A schema-validated Unity tool catalog.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ToolCatalog {
+    /// Authorable object definitions.
+    pub object_types: Vec<CatalogObjectType>,
+    /// Registered tools.
+    pub tools: Vec<ToolEntry>,
+    /// Schema, revision and optional plugin metadata, retained verbatim.
+    #[serde(flatten)]
+    pub metadata: Map<String, Value>,
+}
+
+/// One authorable object definition in a catalog.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CatalogObjectType {
+    /// Declared fields.
+    pub fields: Vec<FieldSpec>,
+    /// Remaining schema-validated object metadata.
+    #[serde(flatten)]
+    pub metadata: Map<String, Value>,
+}
+
+/// A catalog field, including its rebuild marker.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FieldSpec {
+    /// Whether a change affects runtime structure; absent means false.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub structural: bool,
+    /// Remaining schema-validated field constraints.
+    #[serde(flatten)]
+    pub metadata: Map<String, Value>,
+}
+
+/// A catalog tool, including pure and runtime-only operation flags.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ToolEntry {
+    /// A pure operation that does not mutate authored data; absent means false.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub read_only: bool,
+    /// A live operation that cannot be applied to authored data; absent means false.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub runtime_only: bool,
+    /// Remaining schema-validated tool contract.
+    #[serde(flatten)]
+    pub metadata: Map<String, Value>,
+}
+
+fn is_false(value: &bool) -> bool {
+    !value
+}
+
 // ---------------------------------------------------------------------------------------------
 // §1 Authoring identity.
 
