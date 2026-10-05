@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.8365925">
+  <test-suite type="TestSuite" id="1056" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.836593" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1003" name="Hollowmere.P1_1.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/adapt-split/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_1.PlayMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.829655" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2026323" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1004" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.829320" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1005" name="P1_1" fullname="Hollowmere.P1_1" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.829171" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1006" name="PlayMode" fullname="Hollowmere.P1_1.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.829046" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1007" name="Tests" fullname="Hollowmere.P1_1.PlayMode.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.828903" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="ThreeRegionLoop" fullname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" classname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.828104" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1002" name="TravelsVillageMarshBelfryVillage" fullname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop.TravelsVillageMarshBelfryVillage" methodname="TravelsVillageMarshBelfryVillage" classname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" runstate="Runnable" seed="417510872" result="Passed" start-time="2026-10-05 12:52:18Z" end-time="2026-10-05 12:52:18Z" duration="0.819469" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[B-REGION] boot: 748 ms, 6 frames
+[B-REGION] Thornwick Village -> Blackmere Marsh: 16 ms, 6 frames
+[B-REGION] Blackmere Marsh -> Drowned Belfry: 6 ms, 7 frames
+[B-REGION] Drowned Belfry -> Thornwick Village: 6 ms, 7 frames
+[B-REGION] loop frames=20 sanctionedPumps=20 pumpCounter{sanctioned=28;duplicate=0;bypass=0}
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

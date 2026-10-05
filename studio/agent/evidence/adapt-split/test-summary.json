@@ -1,0 +1,207 @@
+{
+  "hollowmere-edit-initial.xml": {
+    "total": 323,
+    "counts": {
+      "Passed": 316,
+      "Skipped": 6,
+      "Failed": 1
+    },
+    "groups": {
+      "Hollowmere.R2_G.": {
+        "Passed": 18
+      },
+      "Hollowmere.R2_B.": {
+        "Passed": 71
+      },
+      "Hollowmere.P1_7b.": {
+        "Passed": 28
+      },
+      "Hollowmere.P2_4.": {
+        "Passed": 8
+      },
+      "Hollowmere.P1_1.": {
+        "Passed": 16
+      },
+      "GameCore.Studio.": {
+        "Passed": 175,
+        "Skipped": 6,
+        "Failed": 1
+      }
+    },
+    "notPassed": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "reason": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "reason": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      },
+      {
+        "name": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict",
+        "result": "Failed",
+        "reason": "  games/cleanproof/Packages/packages-lock.json: com.gamecore.gameplay.world dependency map disagrees with its manifest (locked {'com.gamecore.composition': '1.0.0', 'com.gamecore.contracts': '1.0.0', 'com.gamecore.derivation': '1.0.0', 'com.gamecore.gameplay.contracts': '1.0.0', 'com.gamecore.gameplay.entities': '1.0.0', 'com.gamecore.planning': '1.0.0', 'com.gamecore.rules.gameplay': '1.0.0', 'com.gamecore.studio.core': '1.0.0', 'com.gamecore.unity.adapters': '1.0.0', 'com.gamecore.unity.app': '1.0.0', 'com.gamecore.unity.runtime': '1.0.0'}, manifest {'com.gamecore.composition': '1.0.0', 'com.gamecore.contracts': '1.0.0', 'com.gamecore.derivation': '1.0.0', 'com.gamecore.gameplay.contracts': '1.0.0', 'com.gamecore.gameplay.entities': '1.0.0', 'com.gamecore.planning': '1.0.0', 'com.gamecore.rules.gameplay': '1.0.0', 'com.gamecore.unity.adapters': '1.0.0', 'com.gamecore.unity.app': '1.0.0', 'com.gamecore.unity.runtime': '1.0.0'})\n  Expected: True\n  But was:  False\n"
+      }
+    ]
+  },
+  "hollowmere-edit.xml": {
+    "total": 323,
+    "counts": {
+      "Passed": 317,
+      "Skipped": 6
+    },
+    "groups": {
+      "Hollowmere.R2_G.": {
+        "Passed": 18
+      },
+      "Hollowmere.R2_B.": {
+        "Passed": 71
+      },
+      "Hollowmere.P1_7b.": {
+        "Passed": 28
+      },
+      "Hollowmere.P2_4.": {
+        "Passed": 8
+      },
+      "Hollowmere.P1_1.": {
+        "Passed": 16
+      },
+      "GameCore.Studio.": {
+        "Passed": 176,
+        "Skipped": 6
+      }
+    },
+    "notPassed": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "reason": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "reason": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      }
+    ]
+  },
+  "hollowmere-play.xml": {
+    "total": 0,
+    "counts": {},
+    "groups": {},
+    "notPassed": []
+  },
+  "hollowmere-world-play.xml": {
+    "total": 1,
+    "counts": {
+      "Passed": 1
+    },
+    "groups": {
+      "Hollowmere.P1_1.": {
+        "Passed": 1
+      }
+    },
+    "notPassed": []
+  },
+  "saltmarsh-edit.xml": {
+    "total": 3,
+    "counts": {
+      "Passed": 3
+    },
+    "groups": {
+      "Saltmarsh.": {
+        "Passed": 3
+      }
+    },
+    "notPassed": []
+  },
+  "saltmarsh-play.xml": {
+    "total": 3,
+    "counts": {
+      "Passed": 3
+    },
+    "groups": {
+      "Saltmarsh.": {
+        "Passed": 3
+      }
+    },
+    "notPassed": []
+  },
+  "gameplay.trx": {
+    "total": "307",
+    "executed": "307",
+    "passed": "307",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "model.trx": {
+    "total": "104",
+    "executed": "104",
+    "passed": "104",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  }
+}
