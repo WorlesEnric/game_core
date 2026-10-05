@@ -27,7 +27,7 @@ namespace Hollowmere.Authoring
         public const string Conditions = "Assets/Hollowmere/Rules/Conditions";
         public const string Actions = "Assets/Hollowmere/Rules/Actions";
         public const string Rules = "Assets/Hollowmere/Rules";
-        public const string P31Rules = "Assets/Hollowmere/Rules/Story";
+        public const string P31Rules = "Assets/Hollowmere/Rules";
         public const string Quest = "Assets/Hollowmere/Quests/DrownedBell.asset";
 
         public const string NpcDefinitions = "Assets/Hollowmere/Npcs/Definitions";
