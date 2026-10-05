@@ -47,10 +47,16 @@ namespace GameCore.Studio.Edit
             if (settings == null) return null;
             foreach (JProperty setting in settings.Properties())
             {
-                bool allowed = type == typeof(TextureImporter) && (setting.Name == "textureType" || setting.Name == "sRGBTexture" || setting.Name == "alphaIsTransparency" || setting.Name == "mipmapEnabled" || setting.Name == "isReadable" || setting.Name == "maxTextureSize" || setting.Name == "filterMode" || setting.Name == "wrapMode")
+                bool allowed = type == typeof(TextureImporter) && (setting.Name == "spriteImportMode" || setting.Name == "spritePixelsPerUnit" || setting.Name == "textureType" || setting.Name == "sRGBTexture" || setting.Name == "alphaIsTransparency" || setting.Name == "mipmapEnabled" || setting.Name == "isReadable" || setting.Name == "maxTextureSize" || setting.Name == "filterMode" || setting.Name == "wrapMode")
                     || type == typeof(AudioImporter) && (setting.Name == "forceToMono" || setting.Name == "loadInBackground" || setting.Name == "preloadAudioData")
                     || type == typeof(ModelImporter) && (setting.Name == "globalScale" || setting.Name == "isReadable");
                 if (!allowed) return "media_importer_invalid: unsupported setting " + setting.Name;
+                if (setting.Name == "spriteImportMode" && (setting.Value.Type != JTokenType.String || (string?)setting.Value != "Single"))
+                    return "media_importer_invalid: spriteImportMode must be Single.";
+                if ((setting.Name == "spriteImportMode" || setting.Name == "spritePixelsPerUnit")
+                    && (settings["textureType"]?.Type != JTokenType.String || (string?)settings["textureType"] != "Sprite"))
+                    return "media_importer_invalid: sprite settings require textureType Sprite.";
+                if (setting.Name == "spriteImportMode") continue; // Unity exposes this enum as an int property.
                 PropertyInfo? property = type!.GetProperty(setting.Name);
                 if (property == null || !property.CanWrite) return "media_importer_invalid: unavailable setting " + setting.Name;
                 try

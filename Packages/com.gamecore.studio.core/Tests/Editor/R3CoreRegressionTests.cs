@@ -53,6 +53,19 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(MediaImportPolicy.Validate(_bed.Runtime.Paths, path, settings), Is.Not.Null);
         }
 
+        [TestCase("spritePixelsPerUnit", "0")]
+        [TestCase("spritePixelsPerUnit", "16385")]
+        [TestCase("maxTextureSize", "33")]
+        [TestCase("maxTextureSize", "32768")]
+        [TestCase("spriteImportMode", "1")]
+        [TestCase("filterMode", "\"Execute\"")]
+        public void D8_InvalidSpriteSettingsRemainRefused(string setting, string json)
+        {
+            JObject settings = new JObject { ["textureType"] = "Sprite", ["spriteImportMode"] = "Single" };
+            settings[setting] = JToken.Parse(json);
+            Assert.That(MediaImportPolicy.Validate(_bed.Runtime.Paths, _bed.Folder + "/image.png", settings), Is.Not.Null);
+        }
+
         private ChangeSet Ring(ApplyPolicy policy, out GameCore.Studio.Fixtures.FixtureAuthoredEntity first)
         {
             JObject json = Retained("batch2-20261005T104639Z/ring/candidate.json");
@@ -135,6 +148,42 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(rebased.ChangeSet.BaseVersions![1].Stamp, Is.EqualTo(candidate.BaseVersions![1].Stamp));
             Assert.That(_bed.Runtime.Engine.Apply(rebased).Outcomes.Select(o => o.Status),
                 Is.EqualTo(new[] { OutcomeStatus.Applied, OutcomeStatus.Refused, OutcomeStatus.Applied }));
+        }
+
+        [Test]
+        public void D21_DisplayNamesAndDuplicateNamesRemainExplicit()
+        {
+            var item = _bed.CreateItem("InternalAssetName");
+            item.displayName = "Moon Flask";
+            _bed.SpawnEntity("Village Well", Vector3.left);
+            _bed.SpawnEntity("Village Well", Vector3.right);
+            _bed.SaveScene();
+            IndexSlice slice = PromptReferences("Put Moon Flask beside Village Well", Array.Empty<AuthoringRef>());
+            Assert.That(slice.Index.Nodes.Count(n => n.Name == "Village Well"), Is.EqualTo(2), "do not choose between duplicate names");
+            Assert.That(slice.Index.Nodes.Single(n => n.Name == "Moon Flask").Ref.SameTarget(_bed.Ref(item)), Is.True);
+        }
+
+        [Test]
+        public void D20_StaleArgumentReadRefusesItsReaderButKeepsIndependentWork()
+        {
+            var item = _bed.CreateItem("ReadItem");
+            var npc = _bed.CreateNpc("Reader");
+            var independent = _bed.CreateItem("Independent");
+            _bed.SaveScene();
+            AuthoringRef itemRef = _bed.Ref(item);
+            var candidate = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("read dependency", IntentOrigin.Manual),
+                new[] { StudioTestBed.Set("op1", itemRef, "weight", new JValue(2)),
+                    new Operation("op2", "assign", _bed.Ref(npc), new JObject { ["field"] = "startingItem", ["value"] = StudioJson.ToToken(itemRef) }),
+                    StudioTestBed.Set("op3", _bed.Ref(independent), "weight", new JValue(4)) },
+                baseVersions: new[] { new BaseVersion(itemRef, itemRef.Stamp!) }, policy: ApplyPolicy.BestEffort);
+            StagedChangeSet staged = _bed.Runtime.Engine.Stage(candidate);
+            item.weight = 3;
+            EditorUtility.SetDirty(item);
+            AssetDatabase.SaveAssets();
+            ApplyReport report = _bed.Runtime.Engine.Apply(staged);
+            Assert.That(report.Outcomes.Select(o => o.Status), Is.EqualTo(new[] { OutcomeStatus.Refused, OutcomeStatus.Refused, OutcomeStatus.Applied }));
+            Assert.That(npc.startingItem, Is.Null);
+            Assert.That(independent.weight, Is.EqualTo(4));
         }
 
         private IndexSlice PromptReferences(string prompt, AuthoringRef[] selection, int byteCap = SemanticIndexService.DefaultByteCap)

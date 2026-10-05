@@ -156,7 +156,10 @@ namespace GameCore.Studio.Edit
                 return "no importer for " + path;
             }
 
-            foreach (JProperty setting in settings.Properties())
+            List<JProperty> ordered = new List<JProperty>(settings.Properties());
+            ordered.Sort((left, right) => left.Name == right.Name ? 0 : left.Name == "textureType" ? -1
+                : right.Name == "textureType" ? 1 : string.CompareOrdinal(left.Name, right.Name));
+            foreach (JProperty setting in ordered)
             {
                 PropertyInfo? property = importer.GetType().GetProperty(setting.Name, BindingFlags.Public | BindingFlags.Instance);
                 if (property == null || !property.CanWrite)
@@ -167,7 +170,12 @@ namespace GameCore.Studio.Edit
                 object? value;
                 try
                 {
-                    if (property.PropertyType.IsEnum)
+                    if (importer is TextureImporter && setting.Name == "spriteImportMode")
+                    {
+                        if ((string?)setting.Value != "Single") return "spriteImportMode must be Single";
+                        value = (int)SpriteImportMode.Single;
+                    }
+                    else if (property.PropertyType.IsEnum)
                     {
                         value = Enum.Parse(property.PropertyType, setting.Value.Value<string>() ?? string.Empty);
                     }

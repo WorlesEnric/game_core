@@ -112,7 +112,7 @@ namespace GameCore.Studio.Edit
             if (options.Mode == ValidationMode.Candidate && options.JournalCandidate && staged.Ok && !_runtime.Journal.Exists(changeSet.Id))
             {
                 Timestamps stamps = new Timestamps(changeSet.Timestamps?.Requested, changeSet.Timestamps?.Candidate ?? Journal.Now(), null);
-                _runtime.Journal.Write(changeSet.WithState(ChangeSetState.Candidate).WithTimestamps(stamps));
+                _runtime.Journal.Write(staged.ChangeSet.WithState(ChangeSetState.Candidate).WithTimestamps(stamps));
             }
 
             return staged;
@@ -153,6 +153,7 @@ namespace GameCore.Studio.Edit
 
             HashSet<string>? only = opIds == null ? null : new HashSet<string>(opIds, StringComparer.Ordinal);
             List<Operation> operations = new List<Operation>();
+            HashSet<string> replannedIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (StagedOperation operation in staged.Operations)
             {
                 Operation replanned = operation.Operation;
@@ -163,6 +164,7 @@ namespace GameCore.Studio.Edit
                     if (hooked != null)
                     {
                         replanned = hooked;
+                        replannedIds.Add(operation.OpId);
                     }
                     else if (operation.Tool is IReplannableTool replannable)
                     {
@@ -171,6 +173,7 @@ namespace GameCore.Studio.Edit
                         if (planned != null)
                         {
                             replanned = planned;
+                            replannedIds.Add(operation.OpId);
                         }
                         else if (problem != null)
                         {
@@ -183,7 +186,24 @@ namespace GameCore.Studio.Edit
             }
 
             Discard(staged);
-            ChangeSet rebased = With(staged.ChangeSet, operations);
+            List<BaseVersion>? versions = staged.ChangeSet.BaseVersions == null ? null : new List<BaseVersion>();
+            foreach (BaseVersion version in staged.ChangeSet.BaseVersions ?? Array.Empty<BaseVersion>())
+            {
+                BaseVersion refreshed = version;
+                bool sharedUnrebased = operations.Exists(other => !replannedIds.Contains(other.OpId)
+                    && other.Target?.SameTarget(version.Ref) != true && ReadsReference(other, version.Ref));
+                foreach (Operation operation in operations)
+                {
+                    Operation? original = staged.ChangeSet.FindOperation(operation.OpId);
+                    if (sharedUnrebased || !replannedIds.Contains(operation.OpId) || original?.Target == null || operation.Target?.Stamp == null
+                        || !original.Target.SameTarget(version.Ref) || !operation.Target.SameTarget(version.Ref)) continue;
+                    // Only a successful replan may advance its own read witness. Shared reads stay stale.
+                    refreshed = new BaseVersion(version.Ref.WithStamp(operation.Target.Stamp), operation.Target.Stamp);
+                    break;
+                }
+                versions!.Add(refreshed);
+            }
+            ChangeSet rebased = With(staged.ChangeSet, operations).WithBaseVersions(versions);
             return StageCore(rebased, staged.Options, staged.AllowInternal, !staged.AllowInternal);
         }
 
@@ -340,6 +360,10 @@ namespace GameCore.Studio.Edit
             }
 
             _runtime.Index.Flush();
+            ChangeSetValidator scopeNormalizer = new ChangeSetValidator(catalog, _runtime.Index.Snapshot());
+            changeSet = scopeNormalizer.NormalizeScopes(changeSet);
+            foreach (Diagnostic inference in scopeNormalizer.Inferences)
+                _runtime.Log.Write(StudioLogLevel.Info, "engine", inference.Message, inference);
             Dictionary<string, List<Diagnostic>> byOperation = new Dictionary<string, List<Diagnostic>>(StringComparer.Ordinal);
             if (validate)
             {
@@ -372,21 +396,6 @@ namespace GameCore.Studio.Edit
             foreach (string missing in _runtime.Artifacts.Missing(changeSet))
             {
                 envelope.Add(StudioDiagnostics.General(DiagnosticCodes.StageFailed, "Artifact sha256:" + missing + " is not retained in Studio/Artifacts.", "The companion must deliver the artifact before the candidate is staged."));
-            }
-
-            if (changeSet.BaseVersions != null)
-            {
-                foreach (BaseVersion version in changeSet.BaseVersions)
-                {
-                    ResolveResult resolved = _runtime.Resolver.Resolve(version.Ref.WithStamp(version.Stamp));
-                    foreach (StaleEntry entry in resolved.Stale)
-                    {
-                        if (entry.Blocking)
-                        {
-                            envelope.Add(entry.Diagnostic);
-                        }
-                    }
-                }
             }
 
             ulong? liveRevision = IsPlayMode && _runtime.Live.IsAvailable ? _runtime.Live.CommittedRevision : (ulong?)null;
@@ -452,11 +461,13 @@ namespace GameCore.Studio.Edit
                 _runtime.Staging.EndOwner();
             }
 
+            CheckBaseVersions(changeSet, operations, envelope);
             bool hasRuntime = operations.Exists(op => op.Live);
             if (hasRuntime && changeSet.EffectivePolicy == ApplyPolicy.AllOrNothing && operations.Count > 1)
                 envelope.Add(StudioDiagnostics.General(DiagnosticCodes.Refused, "runtime_atomicity_unsupported: runtime actions cannot share an AllOrNothing batch; use separate actions or BestEffort."));
 
-            return new StagedChangeSet(changeSet, options, operations, envelope, _runtime.Index.Revision, catalogRevision, liveRevision, allowInternal);
+            return new StagedChangeSet(changeSet, options, operations, envelope, _runtime.Index.Revision, catalogRevision, liveRevision, allowInternal)
+                { Inferences = scopeNormalizer.Inferences };
         }
 
         private ToolStageResult StageWithoutPreview(IStudioTool tool, EditContext context)
@@ -532,6 +543,48 @@ namespace GameCore.Studio.Edit
             }
         }
 
+        private static bool ReadsReference(Operation operation, AuthoringRef reference)
+        {
+            if (operation.Target?.SameTarget(reference) == true) return true;
+            if (operation.Args == null) return false;
+            Stack<JToken> pending = new Stack<JToken>();
+            pending.Push(operation.Args);
+            while (pending.Count > 0)
+            {
+                JToken token = pending.Pop();
+                if (token.Type == JTokenType.String)
+                {
+                    string? value = token.Value<string>();
+                    if (value != null && (value == reference.AuthoringId || value == reference.Global
+                        || value == reference.Definition || value == reference.Path)) return true;
+                }
+                else if (token is JContainer container)
+                    foreach (JToken child in container.Children()) pending.Push(child);
+            }
+            return false;
+        }
+
+        private void CheckBaseVersions(ChangeSet changeSet, IReadOnlyList<StagedOperation> operations, List<Diagnostic> envelope)
+        {
+            foreach (BaseVersion version in changeSet.BaseVersions ?? Array.Empty<BaseVersion>())
+            {
+                foreach (StaleEntry stale in _runtime.Resolver.Resolve(version.Ref.WithStamp(version.Stamp)).Stale)
+                {
+                    if (!stale.Blocking) continue;
+                    bool assigned = false;
+                    foreach (StagedOperation operation in operations)
+                    {
+                        if (!ReadsReference(operation.Operation, version.Ref)) continue;
+                        operation.Add(stale.Diagnostic);
+                        assigned = true;
+                    }
+                    // baseVersions has no per-op dependency map. Reads which are not operation targets
+                    // (such as the ring's centre) conservatively invalidate the entire plan.
+                    if (!assigned) envelope.Add(stale.Diagnostic);
+                }
+            }
+        }
+
         private ApplyReport ApplyCore(StagedChangeSet staged, IReadOnlyDictionary<string, JObject>? replay, bool journal, Action<ChangeSet>? checkpoint = null)
         {
             Stopwatch watch = Stopwatch.StartNew();
@@ -545,9 +598,17 @@ namespace GameCore.Studio.Edit
             if (actualCatalog != staged.CatalogRevision)
                 diagnostics.Add(new Diagnostic(DiagnosticCodes.StaleContext, "The tool catalog changed after staging.", null, null,
                     new JObject { ["expected"] = staged.CatalogRevision, ["actual"] = actualCatalog }));
-            foreach (BaseVersion version in changeSet.BaseVersions ?? Array.Empty<BaseVersion>())
-                foreach (StaleEntry stale in _runtime.Resolver.Resolve(version.Ref.WithStamp(version.Stamp)).Stale)
-                    if (stale.Blocking) diagnostics.Add(stale.Diagnostic);
+            // Refresh every target and base witness before deciding policy. Target-local stale reads
+            // belong to their operations; unassigned/shared reads remain a whole-plan refusal.
+            foreach (StagedOperation operation in staged.Operations)
+            {
+                if (operation.Tool != null && !operation.Deferred)
+                {
+                    operation.ClearStaleChecks();
+                    Precheck(operation);
+                }
+            }
+            CheckBaseVersions(changeSet, staged.Operations, diagnostics);
 
             if (diagnostics.Count > 0)
             {
@@ -559,16 +620,6 @@ namespace GameCore.Studio.Edit
                 }
 
                 return Finish(staged, changeSet.WithState(ChangeSetState.Rejected).WithOutcomes(refused).WithTimestamps(baseStamps), diagnostics, false, journal, watch, Array.Empty<OperationResult>());
-            }
-
-            // Re-check targets right before writing: the project may have changed since staging.
-            foreach (StagedOperation operation in staged.Operations)
-            {
-                if (operation.Tool != null && !operation.Deferred)
-                {
-                    operation.ClearStaleChecks();
-                    Precheck(operation);
-                }
             }
 
             List<StagedOperation> order = Order(staged.Operations);
