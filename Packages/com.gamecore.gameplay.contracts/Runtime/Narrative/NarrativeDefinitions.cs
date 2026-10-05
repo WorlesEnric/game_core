@@ -24,6 +24,12 @@ namespace GameCore.Gameplay.Contracts.Narrative
         public const string WorldItem = "inventory.worldItem";
         public const string ContentSet = "logic.contentSet";
 
+        /// <summary>
+        /// The capability every narrative definition provides (NarrativeDefinitionAsset.Capabilities): the [AuthorRef]
+        /// category of a reference that accepts any narrative definition (GameplayContentSet.definitions). Not a type id.
+        /// </summary>
+        public const string Definition = "narrative.definition";
+
         /// <summary>Every definition kind, in bake order (facts first: other definitions key their conditions by them).</summary>
         public static System.Collections.Generic.IReadOnlyList<string> All { get; } = System.Array.AsReadOnly(new[]
         {

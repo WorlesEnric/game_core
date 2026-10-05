@@ -75,6 +75,14 @@
         "com.unity.entities": "1.4.6"
       }
     },
+    "com.gamecore.gameplay.contracts": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.contracts",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "1.0.0"
+      }
+    },
     "com.gamecore.gameplay.narrative": {
       "version": "file:../../../Packages/com.gamecore.gameplay.narrative",
       "depth": 0,
@@ -113,7 +121,7 @@
       "source": "local",
       "dependencies": {
         "com.gamecore.contracts": "1.0.0",
-        "com.gamecore.studio.core": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
         "com.gamecore.unity.app": "1.0.0",
         "com.gamecore.unity.runtime": "1.0.0"
       }

@@ -11,6 +11,9 @@
 //   entity.applyOverride     set (or clear, with an empty value) one overridable field
 //   entity.layoutRing        place N copies of a definition on a ring, facing its centre
 //   entity.layoutLine        place N copies of a definition evenly along a segment
+//
+// AuthoredAssetLookup (P1.7b) is the shared Editor helper the packages' authoring.migrateRefs migrations and
+// validators use to find authored assets by [Authorable] type id and to resolve legacy string references.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -276,6 +279,182 @@ namespace GameCore.Gameplay.Entities.Editor
             {
                 EditorSceneManager.MarkSceneDirty(entity.gameObject.scene);
             }
+        }
+    }
+
+    /// <summary>Finds authored assets by [Authorable] type id and resolves legacy string references to them (P1.7b).</summary>
+    public static class AuthoredAssetLookup
+    {
+        /// <summary>The [Authorable] type id of <paramref name="value"/>'s type, or empty.</summary>
+        public static string TypeIdOf(UnityEngine.Object? value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            object[] attributes = value.GetType().GetCustomAttributes(typeof(AuthorableAttribute), false);
+            return attributes.Length == 1 ? ((AuthorableAttribute)attributes[0]).ObjectTypeId : string.Empty;
+        }
+
+        /// <summary>True when <paramref name="value"/> is null or its type's [Authorable] id is <paramref name="typeId"/>.</summary>
+        public static bool IsNullOrOfType(UnityEngine.Object? value, string typeId) =>
+            value == null || string.Equals(TypeIdOf(value), typeId, StringComparison.Ordinal);
+
+        /// <summary>Project-relative asset folders: empty or null means the whole Assets folder.</summary>
+        public static string[] Folders(IReadOnlyList<string>? folders)
+        {
+            if (folders == null || folders.Count == 0)
+            {
+                return new[] { "Assets" };
+            }
+
+            var list = new List<string>();
+            for (int i = 0; i < folders.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(folders[i]) && AssetDatabase.IsValidFolder(folders[i]))
+                {
+                    list.Add(folders[i]);
+                }
+            }
+
+            return list.Count > 0 ? list.ToArray() : new[] { "Assets" };
+        }
+
+        /// <summary>Every asset of type <typeparamref name="T"/> under <paramref name="folders"/>, in path order.</summary>
+        public static IReadOnlyList<T> AssetsOf<T>(IReadOnlyList<string>? folders) where T : UnityEngine.Object
+        {
+            var result = new List<T>();
+            string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name, Folders(folders));
+            var paths = new List<string>();
+            for (int i = 0; i < guids.Length; i++)
+            {
+                paths.Add(AssetDatabase.GUIDToAssetPath(guids[i]));
+            }
+
+            paths.Sort(StringComparer.Ordinal);
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < paths.Count; i++)
+            {
+                if (!seen.Add(paths[i]))
+                {
+                    continue;
+                }
+
+                UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(paths[i]);
+                for (int o = 0; o < objects.Length; o++)
+                {
+                    if (objects[o] is T typed)
+                    {
+                        result.Add(typed);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>Every ScriptableObject asset whose type carries [Authorable] <paramref name="typeId"/>.</summary>
+        public static IReadOnlyList<ScriptableObject> AssetsOfType(string typeId, IReadOnlyList<string>? folders)
+        {
+            var result = new List<ScriptableObject>();
+            var types = new List<Type>();
+            foreach (Type type in TypeCache.GetTypesWithAttribute<AuthorableAttribute>())
+            {
+                object[] attributes = type.GetCustomAttributes(typeof(AuthorableAttribute), false);
+                if (attributes.Length == 1 && typeof(ScriptableObject).IsAssignableFrom(type)
+                    && string.Equals(((AuthorableAttribute)attributes[0]).ObjectTypeId, typeId, StringComparison.Ordinal))
+                {
+                    types.Add(type);
+                }
+            }
+
+            types.Sort((a, b) => string.CompareOrdinal(a.FullName, b.FullName));
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            for (int t = 0; t < types.Count; t++)
+            {
+                string[] guids = AssetDatabase.FindAssets("t:" + types[t].Name, Folders(folders));
+                Array.Sort(guids, StringComparer.Ordinal);
+                for (int i = 0; i < guids.Length; i++)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                    UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(path);
+                    for (int o = 0; o < objects.Length; o++)
+                    {
+                        if (objects[o] is ScriptableObject asset && types[t].IsInstanceOfType(asset)
+                            && seen.Add(path + "#" + asset.name + "#" + types[t].FullName))
+                        {
+                            result.Add(asset);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Resolves a legacy string reference among <paramref name="candidates"/>: an exact authoring id first, then an
+        /// alias (<see cref="IAuthoringAlias"/>), then the definition name or asset name. Null when nothing matches or
+        /// the name is ambiguous (<paramref name="ambiguous"/> true).
+        /// </summary>
+        public static ScriptableObject? Resolve(string text, IReadOnlyList<ScriptableObject> candidates, out bool ambiguous)
+        {
+            ambiguous = false;
+            if (string.IsNullOrEmpty(text) || candidates == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (candidates[i] is IAuthoredObject authored && string.Equals(authored.AuthoringId, text, StringComparison.Ordinal))
+                {
+                    return candidates[i];
+                }
+            }
+
+            ScriptableObject? match = Unique(text, candidates, c => c is IAuthoringAlias alias ? alias.AuthoringAlias : string.Empty, out ambiguous);
+            if (match != null || ambiguous)
+            {
+                return match;
+            }
+
+            match = Unique(text, candidates, c => c is IDefinitionAsset definition ? definition.DefinitionName : string.Empty, out ambiguous);
+            if (match != null || ambiguous)
+            {
+                return match;
+            }
+
+            return Unique(text, candidates, c => c.name, out ambiguous);
+        }
+
+        /// <summary>The asset path and object name of <paramref name="value"/> for migration reports.</summary>
+        public static string Describe(UnityEngine.Object value)
+        {
+            string path = AssetDatabase.GetAssetPath(value);
+            return (string.IsNullOrEmpty(path) ? "(unsaved)" : path) + (AssetDatabase.IsSubAsset(value) ? "#" + value.name : string.Empty);
+        }
+
+        private static ScriptableObject? Unique(string text, IReadOnlyList<ScriptableObject> candidates, Func<ScriptableObject, string> key, out bool ambiguous)
+        {
+            ambiguous = false;
+            ScriptableObject? found = null;
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (candidates[i] != null && string.Equals(key(candidates[i]), text, StringComparison.Ordinal))
+                {
+                    if (found != null && found != candidates[i])
+                    {
+                        ambiguous = true;
+                        return null;
+                    }
+
+                    found = candidates[i];
+                }
+            }
+
+            return found;
         }
     }
 }

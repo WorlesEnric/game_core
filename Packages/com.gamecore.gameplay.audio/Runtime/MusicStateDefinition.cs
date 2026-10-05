@@ -21,13 +21,13 @@ namespace GameCore.Gameplay.Audio
         [AuthorField(Doc = "Stable state id (e.g. music.explore); audio.musicState holds its key.")]
         [SerializeField] private string stateId = string.Empty;
 
-        [AuthorField(Doc = "Bank clip id of the loop (empty = silence while in this state).")]
+        [AuthorRef(Category = AuthorRefCategories.AudioClip, Required = false, Doc = "The loop: a clip id of the audio bank (empty = silence while in this state).")]
         [SerializeField] private string clipId = string.Empty;
 
         [AuthorField(Unit = "ms", Min = 0, Max = 20000, Doc = "Crossfade into this state.")]
         [SerializeField] private int fadeMs = 2000;
 
-        [AuthorField(Doc = "Bank clip id of a stinger played on entry (empty = none).")]
+        [AuthorRef(Category = AuthorRefCategories.AudioClip, Required = false, Doc = "Stinger played on entry: a clip id of the audio bank (empty = none).")]
         [SerializeField] private string stingerId = string.Empty;
 
         public string AuthoringId => authoringId;

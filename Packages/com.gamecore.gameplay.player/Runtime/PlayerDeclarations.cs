@@ -2,8 +2,8 @@
 //
 // One plugin type, one owner (gameplay.player.owner) and one authoritative domain (gameplay.player.domain.player, v1)
 // holding eight int32 slots on the player's entity target. One stage (gameplay.player.stage.command) runs one managed
-// system that drains three command routes - player.move, player.interact and player.setFocus - each with its own
-// bounded ingress lane. The shapes copy EntityDeclarations; the catalog names below are contributed to the generated
+// system that drains four command routes - player.move, player.interact, player.setFocus and (declared by P1.7b,
+// handled by P1.7a) player.restoreStamina - each with its own bounded ingress lane. The shapes copy EntityDeclarations; the catalog names below are contributed to the generated
 // catalog by the Editor's PlayerCatalogContributor.
 #nullable enable
 using System.Collections.Generic;
@@ -65,6 +65,13 @@ namespace GameCore.Gameplay.Player
         public static readonly FactoryKey MoveOrder = GameplayIds.Key("player.order.move");
         public static readonly FactoryKey InteractOrder = GameplayIds.Key("player.order.interact");
         public static readonly FactoryKey SetFocusOrder = GameplayIds.Key("player.order.set-focus");
+
+        /// <summary>
+        /// The tool/action id of the stamina restore command (ActionKind.RestoreStamina runs it). Route, schema and
+        /// lane: PlayerMotionSlots.RestoreStaminaRoute/RestoreStaminaCommand and RestoreStaminaBuffer (P1.7a); payload:
+        /// <see cref="RestoreStaminaPayload"/> (one int32 amount, stamina units, &gt; 0).
+        /// </summary>
+        public const string RestoreStaminaCommandId = "player.restoreStamina";
 
         public static readonly FactoryKey RestoreStaminaOrder = GameplayIds.Key("player.order.restore-stamina");
 
@@ -184,6 +191,17 @@ namespace GameCore.Gameplay.Player
 
         public static SystemRegistration CommandSystemRegistration() =>
             new ManagedSystemRegistration<PlayerCommandSystem>(CommandSystem, Stage, "GameplayPlayerCommandSystem");
+
+        /// <summary>Encodes a player.restoreStamina payload (P1.7a's layout), refusing a non-positive amount (GP-LOG-031).</summary>
+        public static FrozenPayload EncodeRestoreStamina(int amount)
+        {
+            if (amount <= 0)
+            {
+                throw new System.ArgumentOutOfRangeException(nameof(amount), AuthoringHardeningCodes.RestoreStaminaInvalid + ": stamina amounts are positive");
+            }
+
+            return RestoreStaminaPayload.Encode(amount);
+        }
 
         private static StateSlotSpec Slot(SlotId slot, string field)
         {

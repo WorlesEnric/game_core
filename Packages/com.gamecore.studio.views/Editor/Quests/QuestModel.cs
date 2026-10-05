@@ -229,7 +229,7 @@ namespace GameCore.Studio.Views
                         i,
                         AuthoredData.Int(objective["stage"]),
                         AuthoredData.Text(objective["kind"]),
-                        AuthoredData.Ref(objective["target"]),
+                        AuthoredData.Ref(TypedTarget(objective, "target", "fact", "item", "region", "graph")),
                         AuthoredData.Text(objective["targetEntityId"]),
                         AuthoredData.Int(objective["required"], 1),
                         AuthoredData.Int(objective["branch"]),
@@ -243,7 +243,7 @@ namespace GameCore.Studio.Views
                 for (int i = 0; i < rawRewards.Count; i++)
                 {
                     JToken reward = rawRewards[i];
-                    rewards.Add(new QuestReward(i, AuthoredData.Text(reward["kind"]), AuthoredData.Ref(reward["target"]), AuthoredData.Int(reward["value"], 1), AuthoredData.Int(reward["branch"])));
+                    rewards.Add(new QuestReward(i, AuthoredData.Text(reward["kind"]), AuthoredData.Ref(TypedTarget(reward, "target", "item", "fact")), AuthoredData.Int(reward["value"], 1), AuthoredData.Int(reward["branch"])));
                 }
             }
 
@@ -257,6 +257,24 @@ namespace GameCore.Studio.Views
             }
 
             return new QuestDocument(current, target.name, AuthoredData.Text(AuthoredData.Read(runtime, target, "title")), stages, objectives, rewards, branchNames);
+        }
+
+        /// <summary>
+        /// The first set reference among <paramref name="fields"/>: P1.7b split the untyped <c>target</c> of objectives and
+        /// rewards into one typed field per kind (fact, item, region, graph); older data still has <c>target</c>.
+        /// </summary>
+        private static JToken? TypedTarget(JToken entry, params string[] fields)
+        {
+            foreach (string field in fields)
+            {
+                JToken? value = entry[field];
+                if (value != null && AuthoredData.Ref(value) != null)
+                {
+                    return value;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>A document over explicit data (tests).</summary>

@@ -67,6 +67,7 @@ namespace GameCore.Gameplay.Compile
                     Name = portal.name,
                     RegionA = portal.RegionA != null ? portal.RegionA.AuthoringId : string.Empty,
                     RegionB = portal.RegionB != null ? portal.RegionB.AuthoringId : string.Empty,
+                    ConditionRef = portal.ConditionRef,
                 };
                 world.Portals.Add(baked);
                 portalsById[portal.AuthoringId] = baked;
@@ -83,8 +84,37 @@ namespace GameCore.Gameplay.Compile
                 ReadRegion(region, world, portalsById, result);
             }
 
+            // P1.7b: a portal end that names a spawn point of its arrival region arrives there, not at the end's own pose.
+            for (int i = 0; i < definition.Portals.Count; i++)
+            {
+                PortalDefinition portal = definition.Portals[i];
+                if (portal == null || !portalsById.TryGetValue(portal.AuthoringId, out BakedPortal? baked))
+                {
+                    continue;
+                }
+
+                if (portal.RegionA != null && portal.SpawnPointA.Length > 0 && portal.RegionA.TryGetSpawnPoint(portal.SpawnPointA, out RegionSpawnPoint arriveA))
+                {
+                    baked.ArrivalA = PoseOf(arriveA);
+                }
+
+                if (portal.RegionB != null && portal.SpawnPointB.Length > 0 && portal.RegionB.TryGetSpawnPoint(portal.SpawnPointB, out RegionSpawnPoint arriveB))
+                {
+                    baked.ArrivalB = PoseOf(arriveB);
+                }
+            }
+
             world.Canonicalize();
             return result;
+        }
+
+        private static BakedPose PoseOf(RegionSpawnPoint point)
+        {
+            return new BakedPose(
+                GameplayUnits.ToMillimetres(point.position.x),
+                GameplayUnits.ToMillimetres(point.position.y),
+                GameplayUnits.ToMillimetres(point.position.z),
+                GameplayUnits.NormalizeYaw(GameplayUnits.DegreesToMilliradians(point.yaw)));
         }
 
         private static void ReadRegion(RegionDefinition region, BakedWorld world, Dictionary<string, BakedPortal> portals, WorldReadResult result)
