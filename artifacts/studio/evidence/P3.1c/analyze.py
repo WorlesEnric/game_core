@@ -54,7 +54,9 @@ def analyze(run):
     # Verify that the inherited load/restore marker rule adds no extra exclusions on this route.
     extra_windows = [t for t in stats["transitions"] if "region:" not in t["marker"]]
     result = {
-        "test": "P31c_GPU_TwoGraphicalPlaythroughs", "exit": exit_code,
+        "budgetTest": "P31c_BFRAME_UnchangedBudget",
+        "profileTest": "P31c_GPU_RequiredProfile",
+        "routeTest": "P31c_GPU_TwoGraphicalPlaythroughs", "exit": exit_code,
         "complete": complete, "missingRouteMarkers": missing,
         "renderer": renderer[1] if renderer else None,
         "screen": screen[1] if screen else None, "requiredProfile": profile,

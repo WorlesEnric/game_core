@@ -1,0 +1,29 @@
+{
+  "budgetTest": "P31c_BFRAME_UnchangedBudget",
+  "profileTest": "P31c_GPU_RequiredProfile",
+  "routeTest": "P31c_GPU_TwoGraphicalPlaythroughs",
+  "exit": 0,
+  "complete": true,
+  "missingRouteMarkers": [],
+  "renderer": "NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2",
+  "screen": "1920x1080 NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2 OpenGLCore",
+  "requiredProfile": true,
+  "p95Ms": 17.912,
+  "over100OutsideTransitions": 2,
+  "marshToBelfry": {
+    "frame": 20249,
+    "time_s": 340.1806,
+    "marker": "region:Blackmere Marsh->Drowned Belfry",
+    "max_dt_ms": 18.518
+  },
+  "manualSaveWorstFrameMs": 31.579,
+  "steadySeconds": 609.22,
+  "nonRegionTransitionWindows": [],
+  "checks": {
+    "p95_le_16_7ms": false,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": true
+  },
+  "verdict": "FAIL"
+}
