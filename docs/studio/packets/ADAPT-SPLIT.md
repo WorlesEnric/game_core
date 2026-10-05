@@ -17,7 +17,13 @@ Both games install the new package. Unity resolves their locks during host valid
 
 ## Validation
 
-In progress. Unity tests use `bash studio/tools/unity-batch.sh`, one Editor at a time,
+Host results so far: boundary regressions 2/2, metadata self-tests 31/31, stage-slot
+self-tests 29/29, stage Python 16/16; dotnet Gameplay 307/307 and Model 104/104
+(TRX counters); Rust fmt/clippy clean, ordinary cargo suite 114 passed / 0 failed /
+7 ignored external fixtures. The initial parallel dotnet restore collision is retained;
+the sequential rerun passed.
+
+Unity tests use `bash studio/tools/unity-batch.sh`, one Editor at a time,
 with result XML retained under `studio/agent/evidence/adapt-split/`.
 The STAGE-INT acceptance harness is copied to a temporary crate by `prepare-harness.py`;
 only repository/binary, scratch-root and evidence paths change. Its authentication fixture,
@@ -36,5 +42,10 @@ No installed companion/node or sibling clone is modified.
 ## Left open
 
 - P31 admission acceptance cannot be claimed on this baseline: its source/test is absent.
+  The exact requested standalone PlayMode filter selects zero cases (NotRun); R2_G
+  lives in its EditMode assembly, including a test that enters a real Play world.
+  All 18 R2_G cases passed in the initial broad EditMode run. That run had 316 passed,
+  one Views metadata failure due to cleanproof's not-yet-resolved lock, and six
+  expected live-node/graphics skips; a final rerun follows cleanproof resolution.
 - The companion manifest is already Rust 2024 / 1.97.1; this packet does not own it.
   No companion production Rust source or edition is changed.

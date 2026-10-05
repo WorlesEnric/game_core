@@ -21,6 +21,7 @@ manifest = ('[package]\nname = "adapt-split-acceptance"\nversion = "0.1.0"\n'
 manifest = manifest.replace('[dependencies]', '[dependencies]\ngamecore-studio = { path = '
                             + json.dumps(str(source)) + ' }', 1)
 (scratch / 'Cargo.toml').write_text(manifest)
+shutil.copyfile(source / 'Cargo.lock', scratch / 'Cargo.lock')
 shutil.copytree(source / 'tests/support', scratch / 'support')
 text = (source / 'tests/stage_int.rs').read_text()
 text = text.replace('let repo = Path::new(env!("CARGO_MANIFEST_DIR"))\n'
