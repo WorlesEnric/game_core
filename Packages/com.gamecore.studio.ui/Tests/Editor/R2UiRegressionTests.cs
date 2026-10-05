@@ -178,15 +178,20 @@ namespace GameCore.Studio.UI.Tests
             try
             {
                 routing.Update(true);
-                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
-                InputSystem.Update();
+                InputState.Change(keyboard, new KeyboardState(Key.W));
                 Assert.That(keyboard.wKey.isPressed, Is.True);
                 routing.Update(false);
                 Assert.That(keyboard.wKey.isPressed, Is.False, "focus loss cancels held gameplay state synchronously");
                 typeof(PlayInputRouting).GetMethod("Guard")!.Invoke(routing, new object[] { (Func<bool>)(() => true) });
-                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
-                InputSystem.Update();
-                Assert.That(keyboard.wKey.isPressed, Is.False, "text/control ownership suppresses game state even with permissive global input settings");
+                // Allocate through reflection to keep Unity.Collections out of this package's public dependency set.
+                MethodInfo from = typeof(StateEvent).GetMethods().Single(method => method.Name == "From" && method.GetParameters().Length == 3);
+                object[] arguments = { keyboard, default(InputEventPtr), from.GetParameters()[2].DefaultValue };
+                using (IDisposable buffer = (IDisposable)from.Invoke(null, arguments)!)
+                {
+                    InputEventPtr input = (InputEventPtr)arguments[1];
+                    typeof(PlayInputRouting).GetMethod("OnEvent", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(routing, new object[] { input, keyboard });
+                    Assert.That(input.handled, Is.True, "text/control ownership suppresses game events even with permissive global input settings");
+                }
             }
             finally { InputSystem.RemoveDevice(keyboard); }
         }
@@ -194,6 +199,7 @@ namespace GameCore.Studio.UI.Tests
         [Test]
         public void R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers()
         {
+            if (!ViewportRenderer.CanRender) Assert.Ignore("R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required.");
             StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
             try
             {
