@@ -366,12 +366,6 @@ namespace GameCore.Gameplay.Ui
                 case UiAction.Continue:
                     return Continue();
                 case UiAction.NewGame:
-                    if (!playedSinceBoot)
-                    {
-                        playedSinceBoot = true;
-                        return "new game: this world is fresh";
-                    }
-
                     return options.Session != null && options.Session.NewGame(this) ? "new game: restarted" : "new game: no session actions";
                 case UiAction.Restart:
                     return options.Session != null && options.Session.Restart(this) ? "restarted" : "restart: no session actions";
@@ -537,6 +531,7 @@ namespace GameCore.Gameplay.Ui
             Commands = new UiCommandIssuer(world);
             cursor = new EventCursor(world.Root.World, EventSequence.Zero);
             Attaches++;
+            playedSinceBoot = Attaches > 1 || Commands.State().ScreenValue == UiScreen.Hud;
             PresentationServices services = world.Presentation;
             services.Register<IPromptPresenter>(this);
             services.Register<IDialogueView>(this);
@@ -591,11 +586,6 @@ namespace GameCore.Gameplay.Ui
             screen.MessageVisible = message.Length > 0;
             eventValues["message"] = message;
             eventValues["screen"] = screen.ScreenName;
-            if (state.ScreenValue == UiScreen.Hud)
-            {
-                playedSinceBoot = true;
-            }
-
             ReadEvents(world);
             Models.Hud.RegionBannerVisible = Models.Hud.RegionName.Length > 0 && clock.ElapsedMilliseconds < bannerUntilMs;
             RefreshVolumes(world);
@@ -631,9 +621,17 @@ namespace GameCore.Gameplay.Ui
         private void OnScreenChanged(ScreenChanged change)
         {
             ScreenChanges++;
-            if (change.HostAction != UiAction.None)
+
+            // A new game from a world that has not been played yet needs nothing: this world is the new game.
+            bool fresh = change.HostAction == UiAction.NewGame && !playedSinceBoot;
+            if (change.HostAction != UiAction.None && !fresh)
             {
                 hostActions.Enqueue(change);
+            }
+
+            if (change.ToScreen == UiScreen.Hud)
+            {
+                playedSinceBoot = true;
             }
 
             if (change.ToScreen == UiScreen.Save || change.ToScreen == UiScreen.Load)

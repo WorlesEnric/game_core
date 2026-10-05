@@ -126,6 +126,11 @@ namespace GameCore.Gameplay.Ui
 
         private bool Reload()
         {
+            if (!Application.isPlaying)
+            {
+                return false;
+            }
+
             UiSettingsStore.RequestStartScreen(UiScreen.Hud);
             UnityEngine.SceneManagement.Scene active = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             if (!active.IsValid())
