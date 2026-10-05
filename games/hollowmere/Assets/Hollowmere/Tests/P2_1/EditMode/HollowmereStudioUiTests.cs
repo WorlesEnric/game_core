@@ -15,6 +15,7 @@ using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UIElements;
 using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace Hollowmere.P2_1.Tests
@@ -125,7 +126,7 @@ namespace Hollowmere.P2_1.Tests
         [Test]
         public void SettingsPage_BuildsEverySection()
         {
-            UnityEngine.UIElements.VisualElement root = new UnityEngine.UIElements.VisualElement();
+            VisualElement root = new VisualElement();
             StudioSettingsProvider.Build(root);
             Assert.That(root.childCount, Is.GreaterThan(0));
             Assert.That(root.Q("settings-journal"), Is.Not.Null);
