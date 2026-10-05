@@ -134,7 +134,15 @@ impl StageRunner {
                     .filter(|r| r.join("studio/stage/make-slot.py").is_file())
             })
             .or_else(pipeline::discover_repo);
-        StageRunner::with_paths(cfg, ledger, hub, store, state_dir, slot::default_root(), repo)
+        StageRunner::with_paths(
+            cfg,
+            ledger,
+            hub,
+            store,
+            state_dir,
+            slot::default_root(),
+            repo,
+        )
     }
 
     /// A runner with an explicit slot root and repository checkout (tests, tools).
@@ -289,7 +297,10 @@ impl StageRunner {
         let steps = match &req.steps {
             None => None,
             Some(list) => {
-                if let Some(bad) = list.iter().find(|s| !verdict::STEP_IDS.contains(&s.as_str())) {
+                if let Some(bad) = list
+                    .iter()
+                    .find(|s| !verdict::STEP_IDS.contains(&s.as_str()))
+                {
                     return Err(ApiError::bad_request(format!(
                         "unknown step {bad:?}; steps are {}",
                         verdict::STEP_IDS.join(", ")
@@ -299,15 +310,20 @@ impl StageRunner {
             }
         };
         let repo = self.repo()?;
-        let candidate = self.ledger.candidate(&req.change_set_id).map_err(|e| match e {
-            LedgerError::NotFound(_) => ApiError::not_found(format!(
-                "no candidate {}; the staging lane stages validated candidates",
-                req.change_set_id
-            )),
-            other => other.into(),
-        })?;
+        let candidate = self
+            .ledger
+            .candidate(&req.change_set_id)
+            .map_err(|e| match e {
+                LedgerError::NotFound(_) => ApiError::not_found(format!(
+                    "no candidate {}; the staging lane stages validated candidates",
+                    req.change_set_id
+                )),
+                other => other.into(),
+            })?;
         let package_ref = proposed_package(&candidate.change_set).ok_or_else(|| {
-            ApiError::bad_request("the change set carries no mechanism.propose with a package artifact")
+            ApiError::bad_request(
+                "the change set carries no mechanism.propose with a package artifact",
+            )
         })?;
         let collected = slot::gc(&self.root, slot::MAX_SLOT_AGE);
         if !collected.is_empty() {
@@ -320,7 +336,8 @@ impl StageRunner {
                 "slot {slot_id} is being staged; one stage per slot"
             )));
         }
-        let mut opts = pipeline::StageOptions::from_env(&repo, &slot_id, pipeline::SlotSource::Existing);
+        let mut opts =
+            pipeline::StageOptions::from_env(&repo, &slot_id, pipeline::SlotSource::Existing);
         opts.root = self.root.clone();
         opts.steps = steps;
         if let Some(p) = &req.source_project {
@@ -375,7 +392,13 @@ impl StageRunner {
         Ok(())
     }
 
-    fn run_lane(&self, id: &str, mut opts: pipeline::StageOptions, change_set: &Value, artifacts: &Value) {
+    fn run_lane(
+        &self,
+        id: &str,
+        mut opts: pipeline::StageOptions,
+        change_set: &Value,
+        artifacts: &Value,
+    ) {
         let incoming = self.root.join(".incoming").join(id);
         if let Ok(job) = self.ledger.update_stage(id, "running", None, None) {
             self.emit(&job);
@@ -415,7 +438,14 @@ impl StageRunner {
                     }
                 }
                 tracing::info!(job = id, pass = v.pass, slot = %v.slot, ms = v.duration_ms, "stage verdict");
-                (if v.failure.is_some() { "failed" } else { "done" }, value)
+                (
+                    if v.failure.is_some() {
+                        "failed"
+                    } else {
+                        "done"
+                    },
+                    value,
+                )
             }
             Err(message) => (
                 "failed",
@@ -613,7 +643,12 @@ pub fn proposed_package(change_set: &Value) -> Option<String> {
     change_set["operations"]
         .as_array()?
         .iter()
-        .filter(|op| matches!(op["tool"].as_str(), Some("mechanism.propose" | "mechanism.admit")))
+        .filter(|op| {
+            matches!(
+                op["tool"].as_str(),
+                Some("mechanism.propose" | "mechanism.admit")
+            )
+        })
         .find_map(|op| {
             let p = &op["args"]["package"];
             p.as_str()
@@ -657,13 +692,15 @@ mod tests {
     #[test]
     fn lane_requests_are_strict() {
         let ok: StageRunRequest = serde_json::from_value(json!({
-            "changeSetId": "cs_01JAPP0000000000000000PLAT", "slot": "s1", "steps": ["scan"]
+            "changeSetId": "cs_01JAPP0000000000000000PXAT", "slot": "s1", "steps": ["scan"]
         }))
         .unwrap();
         assert_eq!(ok.slot.as_deref(), Some("s1"));
-        assert!(serde_json::from_value::<StageRunRequest>(json!({
-            "changeSetId": "cs_01JAPP0000000000000000PLAT", "unexpected": 1
-        }))
-        .is_err());
+        assert!(
+            serde_json::from_value::<StageRunRequest>(json!({
+                "changeSetId": "cs_01JAPP0000000000000000PXAT", "unexpected": 1
+            }))
+            .is_err()
+        );
     }
 }

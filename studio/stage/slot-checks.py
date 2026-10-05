@@ -19,6 +19,9 @@ No rule is relaxed. A mechanism package is not a `com.gamecore.*` package, so th
 the lock-source rule do not apply to it: it is never locked in a committed project lock before admission.
 
 usage: slot-checks.py --slot <slot-dir> [--repo <repo root>]
+       slot-checks.py --package-dir <dir> --package <name> [--repo <repo root>]
+The second form runs the same C# and metadata rules on an installed package (Studio's admission re-runs the checkers
+on the live project after the package is copied in; there is no slot then, so check_stage_slot.py is skipped).
 The last stdout line is JSON `{ok, problems, csharpFiles, asmdefs, slotProblems}`; exit 1 when a problem exists.
 """
 
@@ -82,7 +85,9 @@ def csharp_checks(ccs, package_dir: Path, package_name: str, problems: list[str]
 
 def metadata_checks(cpm, repo: Path, package_dir: Path, package_name: str, problems: list[str]) -> int:
     manifest = json.loads((package_dir / "package.json").read_text(encoding="utf-8"))
-    packages = cpm.discover_packages(repo)
+    # Every com.gamecore.* package lives in the repository's Packages/ (P0.2 layout); walking only that directory keeps
+    # the check off the large artifacts/ tree. The discovery function itself is the checker's own.
+    packages = cpm.discover_packages(repo / "Packages")
     assemblies = cpm.discover_asmdefs(packages)
     own = cpm.discover_asmdefs({package_name: {"dir": package_dir}})
     for assembly, owner in own.items():
@@ -116,22 +121,32 @@ def metadata_checks(cpm, repo: Path, package_dir: Path, package_name: str, probl
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--slot", required=True)
+    parser.add_argument("--slot")
+    parser.add_argument("--package-dir")
+    parser.add_argument("--package")
     parser.add_argument("--repo")
     args = parser.parse_args(argv[1:])
-    slot = Path(args.slot).expanduser().resolve()
-    record = json.loads((slot / "stage.json").read_text(encoding="utf-8"))
-    repo = Path(args.repo or (record.get("source") or {}).get("repo") or HERE.parents[1]).resolve()
+    if bool(args.slot) == bool(args.package_dir) or (args.package_dir and not args.package):
+        parser.error("use --slot DIR, or --package-dir DIR with --package NAME")
+    problems: list[str] = []
+    slot_problems: list[str] = []
+    if args.slot:
+        slot = Path(args.slot).expanduser().resolve()
+        record = json.loads((slot / "stage.json").read_text(encoding="utf-8"))
+        repo = Path(args.repo or (record.get("source") or {}).get("repo") or HERE.parents[1]).resolve()
+        package_name = record["package"]["name"]
+        package_dir = slot / "project" / "Packages" / package_name
+    else:
+        repo = Path(args.repo or HERE.parents[1]).resolve()
+        package_name = args.package
+        package_dir = Path(args.package_dir).expanduser().resolve()
     tools = repo / "tools"
     ccs = load_module("check_game_core_csharp", tools / "check_game_core_csharp.py")
     cpm = load_module("check_package_metadata", tools / "check_package_metadata.py")
-    css = load_module("check_stage_slot", tools / "check_stage_slot.py")
-
-    package_name = record["package"]["name"]
-    package_dir = slot / "project" / "Packages" / package_name
-    problems: list[str] = []
-    slot_problems = css.check_slot(slot)
-    problems.extend(f"slot: {p}" for p in slot_problems)
+    if args.slot:
+        css = load_module("check_stage_slot", tools / "check_stage_slot.py")
+        slot_problems = css.check_slot(slot)
+        problems.extend(f"slot: {p}" for p in slot_problems)
     csharp_files = csharp_checks(ccs, package_dir, package_name, problems)
     asmdefs = metadata_checks(cpm, repo, package_dir, package_name, problems)
     for problem in problems:

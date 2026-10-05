@@ -48,8 +48,7 @@ use crate::events::EventHub;
 use crate::index::{IndexError, Indexer};
 use crate::ledger::{Ledger, LedgerError};
 use crate::model::{
-    CandidateView, Diagnostic, GenerateRequest, Hello, IndexDelta, RequestList,
-    StoredArtifact,
+    CandidateView, Diagnostic, GenerateRequest, Hello, IndexDelta, RequestList, StoredArtifact,
 };
 use crate::ops::MediaOps;
 use crate::stage::StageRunner;

@@ -120,7 +120,7 @@ fn put_candidate(l: &Lane, cs: &str, code: &str) -> String {
 }
 
 async fn wait_job(l: &Lane, id: &str) -> Value {
-    for _ in 0..600 {
+    for _ in 0..3000 {
         let j = l.ledger.stage(id).unwrap();
         if j.state == "done" || j.state == "failed" {
             return serde_json::to_value(j).unwrap();
@@ -137,7 +137,7 @@ const FORBIDDEN: &str = "#nullable enable\nnamespace Example.StageLane\n{\n    p
 #[tokio::test(flavor = "multi_thread")]
 async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
     let l = lane();
-    let cs = "cs_01JAPP0000000000000000LAN1";
+    let cs = "cs_01JAPP0000000000000000SAN1";
     let sha = put_candidate(&l, cs, CLEAN);
     let answer = l
         .runner
@@ -146,7 +146,7 @@ async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
     assert_eq!(answer.status.as_u16(), 202, "{}", answer.body);
     assert_eq!(answer.body["packageRef"], sha);
     let slot = answer.body["slot"].as_str().unwrap().to_string();
-    assert_eq!(slot, "cs-01japp0000000000000000lan1");
+    assert_eq!(slot, "cs-01japp0000000000000000san1");
     let job = wait_job(&l, answer.body["jobId"].as_str().unwrap()).await;
     assert_eq!(job["state"], "done", "{job}");
     let v = &job["verdict"];
@@ -172,7 +172,10 @@ async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
     let bytes = l.store.get(reference).unwrap().unwrap();
     let parsed = verdict::parse(&bytes).unwrap();
     assert_eq!(parsed.verdict_ref(), reference);
-    assert_eq!(std::fs::read(l.root.join(&slot).join("out/verdict.json")).unwrap(), bytes);
+    assert_eq!(
+        std::fs::read(l.root.join(&slot).join("out/verdict.json")).unwrap(),
+        bytes
+    );
     // Step logs are written and referenced.
     let scan_log = l.root.join(&slot).join("out/logs/scan.log");
     assert!(scan_log.is_file());
@@ -182,8 +185,17 @@ async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
         .arg(l.root.join(&slot))
         .output()
         .unwrap();
-    assert!(check.status.success(), "{}", String::from_utf8_lossy(&check.stdout));
-    assert!(!l.root.join(".incoming").join(answer.body["jobId"].as_str().unwrap()).exists());
+    assert!(
+        check.status.success(),
+        "{}",
+        String::from_utf8_lossy(&check.stdout)
+    );
+    assert!(
+        !l.root
+            .join(".incoming")
+            .join(answer.body["jobId"].as_str().unwrap())
+            .exists()
+    );
 
     // One slot per change set.
     let err = l
@@ -204,7 +216,7 @@ async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
 #[tokio::test(flavor = "multi_thread")]
 async fn forbidden_content_fails_the_scan_and_no_code_runs() {
     let l = lane();
-    let cs = "cs_01JAPP0000000000000000LAN2";
+    let cs = "cs_01JAPP0000000000000000SAN2";
     put_candidate(&l, cs, FORBIDDEN);
     let answer = l.runner.request(json!({"changeSetId": cs})).unwrap();
     let job = wait_job(&l, answer.body["jobId"].as_str().unwrap()).await;
@@ -226,7 +238,10 @@ async fn forbidden_content_fails_the_scan_and_no_code_runs() {
             .find(|s| s["id"] == id)
             .unwrap();
         assert_eq!(step["status"], "skipped", "{id}: {step}");
-        assert!(step["detail"].as_str().unwrap().contains("scan failed"), "{step}");
+        assert!(
+            step["detail"].as_str().unwrap().contains("scan failed"),
+            "{step}"
+        );
     }
 }
 
@@ -235,12 +250,12 @@ async fn bad_lane_requests_are_refused() {
     let l = lane();
     let e = l
         .runner
-        .request(json!({"changeSetId": "cs_01JAPP0000000000000000LAN3"}))
+        .request(json!({"changeSetId": "cs_01JAPP0000000000000000SAN3"}))
         .unwrap_err();
     assert_eq!(e.code(), "not_found");
     let e = l
         .runner
-        .request(json!({"changeSetId": "cs_01JAPP0000000000000000LAN3", "steps": ["compile"]}))
+        .request(json!({"changeSetId": "cs_01JAPP0000000000000000SAN3", "steps": ["compile"]}))
         .unwrap_err();
     assert_eq!(e.code(), "bad_request");
     let e = l
@@ -250,7 +265,7 @@ async fn bad_lane_requests_are_refused() {
     assert_eq!(e.code(), "bad_request");
     let a = l
         .runner
-        .request(json!({"changeSetId": "cs_01JAPP0000000000000000LAN3", "action": "discard"}))
+        .request(json!({"changeSetId": "cs_01JAPP0000000000000000SAN3", "action": "discard"}))
         .unwrap();
     assert_eq!(a.body["discarded"], false);
 }

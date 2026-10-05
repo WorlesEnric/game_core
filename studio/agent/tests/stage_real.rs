@@ -32,12 +32,16 @@ fn fixture(name: &str) -> PathBuf {
 
 fn stage(slot_id: &str, candidate: &Path, budget: Duration) -> StageVerdict {
     let r = repo();
-    let mut opts = StageOptions::from_env(&r, slot_id, SlotSource::Candidate(candidate.to_path_buf()));
+    let mut opts =
+        StageOptions::from_env(&r, slot_id, SlotSource::Candidate(candidate.to_path_buf()));
     opts.budget = budget;
     opts.force = true;
     let v = pipeline::run_stage(&opts).unwrap();
     for s in &v.steps {
-        eprintln!("   {:<15} {:?} {:>8} ms  {}", s.id, s.status, s.duration_ms, s.detail);
+        eprintln!(
+            "   {:<15} {:?} {:>8} ms  {}",
+            s.id, s.status, s.duration_ms, s.detail
+        );
     }
     v
 }
@@ -53,14 +57,25 @@ fn stage_real_pressure_plate() {
     let warm = root.join("_warm").join("Library");
     let mut warmup_ms = None;
     if !warm.is_dir() {
-        let v = stage("warmup-plate", &fixture("candidate"), Duration::from_secs(1800));
+        let v = stage(
+            "warmup-plate",
+            &fixture("candidate"),
+            Duration::from_secs(1800),
+        );
         warmup_ms = Some(v.duration_ms);
-        assert!(v.step("unity-editmode").unwrap().status == StepStatus::Pass, "warm-up compile failed");
+        assert!(
+            v.step("unity-editmode").unwrap().status == StepStatus::Pass,
+            "warm-up compile failed"
+        );
         slot::remove_slot(&root.join("warmup-plate")).unwrap();
     }
     let slot_id = "stage-real-plate";
     slot::remove_slot(&root.join(slot_id)).unwrap();
-    let v = stage(slot_id, &fixture("candidate"), Duration::from_millis(B_STAGE_MS));
+    let v = stage(
+        slot_id,
+        &fixture("candidate"),
+        Duration::from_millis(B_STAGE_MS),
+    );
     let record = json!({
         "test": "stage_real_pressure_plate",
         "changeSetId": v.change_set_id,
@@ -75,10 +90,22 @@ fn stage_real_pressure_plate() {
         "catalogDelta": v.catalog_delta,
         "host": v.runner.host,
     });
-    std::fs::write(root.join("stage-real.json"), serde_json::to_vec_pretty(&record).unwrap()).unwrap();
+    std::fs::write(
+        root.join("stage-real.json"),
+        serde_json::to_vec_pretty(&record).unwrap(),
+    )
+    .unwrap();
     println!("STAGE_REAL {record}");
-    assert!(v.pass, "the pressure plate must stage: {}", serde_json::to_string_pretty(&v.to_value()).unwrap());
-    assert!(v.duration_ms <= B_STAGE_MS, "B-STAGE exceeded: {} ms", v.duration_ms);
+    assert!(
+        v.pass,
+        "the pressure plate must stage: {}",
+        serde_json::to_string_pretty(&v.to_value()).unwrap()
+    );
+    assert!(
+        v.duration_ms <= B_STAGE_MS,
+        "B-STAGE exceeded: {} ms",
+        v.duration_ms
+    );
     assert!(v.catalog_delta.predicted.is_some());
     assert_eq!(v.catalog_delta.mechanisms.len(), 1);
 }
@@ -86,7 +113,11 @@ fn stage_real_pressure_plate() {
 #[test]
 #[ignore = "host only: batchmode Unity, dotnet and python3 (cargo test -- --ignored stage_real)"]
 fn stage_real_negative_fixtures() {
-    let v = stage("stage-real-forbidden", &fixture("candidate-forbidden"), Duration::from_secs(900));
+    let v = stage(
+        "stage-real-forbidden",
+        &fixture("candidate-forbidden"),
+        Duration::from_secs(900),
+    );
     assert!(!v.pass);
     assert_eq!(status(&v, "scan"), StepStatus::Fail);
     let rules: Vec<&str> = v.forbidden_hits.iter().map(|h| h.rule.as_str()).collect();
@@ -94,12 +125,23 @@ fn stage_real_negative_fixtures() {
     assert!(rules.contains(&"static-mutable"), "{rules:?}");
     assert_eq!(status(&v, "unity-editmode"), StepStatus::Skipped);
 
-    let v = stage("stage-real-failing-test", &fixture("candidate-failing-test"), Duration::from_secs(1800));
+    let v = stage(
+        "stage-real-failing-test",
+        &fixture("candidate-failing-test"),
+        Duration::from_secs(1800),
+    );
     assert!(!v.pass);
     assert_eq!(status(&v, "scan"), StepStatus::Pass);
     assert_eq!(status(&v, "checkers"), StepStatus::Pass);
     assert_eq!(status(&v, "unity-editmode"), StepStatus::Fail);
-    assert!(v.step("unity-editmode").unwrap().detail.contains("EditMode test"), "{:?}", v.step("unity-editmode"));
+    assert!(
+        v.step("unity-editmode")
+            .unwrap()
+            .detail
+            .contains("EditMode test"),
+        "{:?}",
+        v.step("unity-editmode")
+    );
     assert_eq!(status(&v, "playmode-smoke"), StepStatus::Skipped);
     for s in ["stage-real-forbidden", "stage-real-failing-test"] {
         slot::remove_slot(&slot::default_root().join(s)).unwrap();

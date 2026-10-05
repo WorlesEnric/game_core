@@ -227,7 +227,7 @@ def self_test() -> int:
             (project / "Packages" / "manifest.json").write_text(json.dumps({
                 "dependencies": {"com.gamecore.contracts": "file:" + kernel.as_posix(), "com.unity.burst": "1.8.28"},
                 "testables": ["com.example.plate"]}))
-            record = {"schema": SLOT_SCHEMA, "slotId": slot_name, "changeSetId": "cs_01JAPP0000000000000000PLAT",
+            record = {"schema": SLOT_SCHEMA, "slotId": slot_name, "changeSetId": "cs_01JAPP0000000000000000PXAT",
                       "package": {"name": "com.example.plate"},
                       "files": [{"path": "package.json", "sha256": sha256_file(pkg / "package.json")}],
                       "stageInputs": ["Assets/World/W.asset"],

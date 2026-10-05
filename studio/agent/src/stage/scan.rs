@@ -106,7 +106,9 @@ fn is_ident_char(c: char) -> bool {
 /// Positive `UNITY_EDITOR` guard of a preprocessor line (`#if UNITY_EDITOR`, `#if A && UNITY_EDITOR`).
 fn editor_positive(condition: &str) -> bool {
     let compact: String = condition.chars().filter(|c| !c.is_whitespace()).collect();
-    compact.contains("UNITY_EDITOR") && !compact.contains("!UNITY_EDITOR") && !compact.contains("||")
+    compact.contains("UNITY_EDITOR")
+        && !compact.contains("!UNITY_EDITOR")
+        && !compact.contains("||")
 }
 
 fn lex(text: &str) -> Lexed {
@@ -139,7 +141,6 @@ fn lex(text: &str) -> Lexed {
             let directive = directive.trim();
             let (keyword, condition) = directive
                 .split_once(char::is_whitespace)
-                .map(|(k, c)| (k, c))
                 .unwrap_or((directive, ""));
             match keyword {
                 "if" => guard.push(editor_positive(condition)),
@@ -255,7 +256,9 @@ fn lex(text: &str) -> Lexed {
         }
         if c.is_ascii_digit() {
             let mut j = i;
-            while j < chars.len() && (chars[j].is_ascii_alphanumeric() || chars[j] == '.' || chars[j] == '_') {
+            while j < chars.len()
+                && (chars[j].is_ascii_alphanumeric() || chars[j] == '.' || chars[j] == '_')
+            {
                 j += 1;
             }
             tokens.push(Token {
@@ -534,7 +537,11 @@ fn static_field(tokens: &[Token], i: usize) -> Option<&'static str> {
 }
 
 fn excerpt_of(lines: &[&str], line: usize) -> String {
-    let text = lines.get(line.saturating_sub(1)).copied().unwrap_or("").trim();
+    let text = lines
+        .get(line.saturating_sub(1))
+        .copied()
+        .unwrap_or("")
+        .trim();
     let text = mask_secrets(&redact(text));
     if text.chars().count() > 160 {
         let cut: String = text.chars().take(157).collect();
@@ -612,7 +619,8 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             || (name == "Directory"
                 && punct(tokens.get(i + 1), '.')
                 && ident(tokens.get(i + 2)).is_some_and(|m| DIRECTORY_WRITES.contains(&m)))
-            || (WRITER_TYPES.contains(&name) && ident(i.checked_sub(1).and_then(|p| tokens.get(p))) == Some("new"));
+            || (WRITER_TYPES.contains(&name)
+                && ident(i.checked_sub(1).and_then(|p| tokens.get(p))) == Some("new"));
         if file_call {
             let exempt = statement_string(tokens, i)
                 .is_some_and(|s| allowed_prefixes.iter().any(|p| s.starts_with(p.as_str())))
@@ -622,7 +630,11 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             }
         }
         // editor-in-runtime
-        if name == "UnityEditor" && !editor_assembly && !in_editor_folder && !lexed.editor_lines.contains(&line) {
+        if name == "UnityEditor"
+            && !editor_assembly
+            && !in_editor_folder
+            && !lexed.editor_lines.contains(&line)
+        {
             add("editor-in-runtime", line);
         }
         // dllimport
@@ -630,8 +642,13 @@ pub fn scan_csharp(rel: &str, text: &str, editor_assembly: bool, ctx: &ScanConte
             add("dllimport", line);
         }
         // unsafe
-        if (name == "unsafe" || name == "stackalloc" || (name == "fixed" && punct(tokens.get(i + 1), '(')))
-            && ctx.allow_unsafe.as_deref().is_none_or(|r| r.trim().is_empty())
+        if (name == "unsafe"
+            || name == "stackalloc"
+            || (name == "fixed" && punct(tokens.get(i + 1), '(')))
+            && ctx
+                .allow_unsafe
+                .as_deref()
+                .is_none_or(|r| r.trim().is_empty())
         {
             add("unsafe", line);
         }
@@ -671,7 +688,10 @@ pub fn scan_asmdef(rel: &str, text: &str, ctx: &ScanContext) -> Vec<Hit> {
     };
     let editor_only = is_editor_only(&doc);
     if doc.get("allowUnsafeCode").and_then(Value::as_bool) == Some(true)
-        && ctx.allow_unsafe.as_deref().is_none_or(|r| r.trim().is_empty())
+        && ctx
+            .allow_unsafe
+            .as_deref()
+            .is_none_or(|r| r.trim().is_empty())
     {
         hits.push(Hit {
             rule: "unsafe".into(),
@@ -726,13 +746,19 @@ pub fn scan_credentials(rel: &str, text: &str) -> Vec<Hit> {
 fn credential_in(line: &str) -> bool {
     let token_len = |s: &str| {
         s.chars()
-            .take_while(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | '~' | '+' | '/' | '='))
+            .take_while(|c| {
+                c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | '~' | '+' | '/' | '=')
+            })
             .count()
     };
     for prefix in ["etk_", "ett_", "etp_", "eta_"] {
         let mut rest = line;
         while let Some(pos) = rest.find(prefix) {
-            let boundary = pos == 0 || !rest[..pos].chars().last().is_some_and(|c| c.is_ascii_alphanumeric());
+            let boundary = pos == 0
+                || !rest[..pos]
+                    .chars()
+                    .last()
+                    .is_some_and(|c| c.is_ascii_alphanumeric());
             if boundary && token_len(&rest[pos + prefix.len()..]) >= 4 {
                 return true;
             }
@@ -741,7 +767,11 @@ fn credential_in(line: &str) -> bool {
     }
     let mut rest = line;
     while let Some(pos) = rest.find("sk-") {
-        let boundary = pos == 0 || !rest[..pos].chars().last().is_some_and(|c| c.is_ascii_alphanumeric());
+        let boundary = pos == 0
+            || !rest[..pos]
+                .chars()
+                .last()
+                .is_some_and(|c| c.is_ascii_alphanumeric());
         let n = rest[pos + 3..]
             .chars()
             .take_while(|c| c.is_ascii_alphanumeric() || *c == '-' || *c == '_')
@@ -763,7 +793,9 @@ fn credential_in(line: &str) -> bool {
     false
 }
 
-const NATIVE_EXTENSIONS: &[&str] = &["dll", "so", "dylib", "bundle", "a", "lib", "jar", "aar", "jnilib", "exe"];
+const NATIVE_EXTENSIONS: &[&str] = &[
+    "dll", "so", "dylib", "bundle", "a", "lib", "jar", "aar", "jnilib", "exe",
+];
 
 fn owning_asmdef_editor_only(root: &Path, file: &Path) -> bool {
     let mut dir = file.parent();
@@ -799,7 +831,9 @@ fn collect(dir: &Path, out: &mut Vec<PathBuf>) -> std::io::Result<()> {
         if ft.is_symlink() {
             out.push(p);
         } else if ft.is_dir() {
-            if p.extension().is_some_and(|x| x == "framework" || x == "bundle") {
+            if p.extension()
+                .is_some_and(|x| x == "framework" || x == "bundle")
+            {
                 out.push(p);
             } else {
                 collect(&p, out)?;
@@ -827,7 +861,10 @@ pub fn scan_package(root: &Path, ctx: &ScanContext) -> std::io::Result<ScanRepor
             .extension()
             .map(|e| e.to_string_lossy().to_ascii_lowercase())
             .unwrap_or_default();
-        if meta.file_type().is_symlink() || meta.is_dir() || NATIVE_EXTENSIONS.contains(&ext.as_str()) {
+        if meta.file_type().is_symlink()
+            || meta.is_dir()
+            || NATIVE_EXTENSIONS.contains(&ext.as_str())
+        {
             report.hits.push(Hit {
                 rule: "native-plugin".into(),
                 path: rel.clone(),
@@ -873,7 +910,9 @@ pub fn scan_package(root: &Path, ctx: &ScanContext) -> std::io::Result<ScanRepor
             _ => {}
         }
     }
-    report.hits.sort_by(|a, b| (a.path.as_str(), a.line, a.rule.as_str()).cmp(&(b.path.as_str(), b.line, b.rule.as_str())));
+    report.hits.sort_by(|a, b| {
+        (a.path.as_str(), a.line, a.rule.as_str()).cmp(&(b.path.as_str(), b.line, b.rule.as_str()))
+    });
     report.hits.dedup();
     Ok(report)
 }
@@ -899,34 +938,95 @@ mod tests {
     #[test]
     fn every_rule_has_a_positive_case() {
         let cases: &[(&str, &str)] = &[
-            ("reflection-emit", "using System.Reflection.Emit;\nclass A {}"),
-            ("reflection-emit", "class A { void F() { var g = default(ILGenerator); } }"),
-            ("process-start", "class A { void F() { System.Diagnostics.Process.Start(\"curl\"); } }"),
-            ("process-start", "class A { void F() { Process . Start(\"x\"); } }"),
-            ("process-start", "class A { object o = new ProcessStartInfo(); }"),
-            ("file-write", "class A { void F() { System.IO.File.WriteAllText(\"/tmp/x\", \"y\"); } }"),
+            (
+                "reflection-emit",
+                "using System.Reflection.Emit;\nclass A {}",
+            ),
+            (
+                "reflection-emit",
+                "class A { void F() { var g = default(ILGenerator); } }",
+            ),
+            (
+                "process-start",
+                "class A { void F() { System.Diagnostics.Process.Start(\"curl\"); } }",
+            ),
+            (
+                "process-start",
+                "class A { void F() { Process . Start(\"x\"); } }",
+            ),
+            (
+                "process-start",
+                "class A { object o = new ProcessStartInfo(); }",
+            ),
+            (
+                "file-write",
+                "class A { void F() { System.IO.File.WriteAllText(\"/tmp/x\", \"y\"); } }",
+            ),
             ("file-write", "class A { void F() { File.Delete(path); } }"),
-            ("file-write", "class A { void F() { Directory.CreateDirectory(\"Assets/Other/x\"); } }"),
-            ("file-write", "class A { void F() { using var s = new FileStream(p, m); } }"),
+            (
+                "file-write",
+                "class A { void F() { Directory.CreateDirectory(\"Assets/Other/x\"); } }",
+            ),
+            (
+                "file-write",
+                "class A { void F() { using var s = new FileStream(p, m); } }",
+            ),
             ("editor-in-runtime", "using UnityEditor;\nclass A {}"),
-            ("dllimport", "class A { [DllImport(\"libc\")] static extern int getpid(); }"),
+            (
+                "dllimport",
+                "class A { [DllImport(\"libc\")] static extern int getpid(); }",
+            ),
             ("unsafe", "class A { unsafe void F() {} }"),
-            ("unsafe", "class A { void F() { int* p = stackalloc int[4]; } }"),
+            (
+                "unsafe",
+                "class A { void F() { int* p = stackalloc int[4]; } }",
+            ),
             ("network", "using System.Net.Http;\nclass A {}"),
-            ("network", "class A { void F() { UnityWebRequest.Get(u); } }"),
+            (
+                "network",
+                "class A { void F() { UnityWebRequest.Get(u); } }",
+            ),
             ("network", "using UnityEngine.Networking;\nclass A {}"),
-            ("resources-absolute", "class A { void F() { Resources.Load(\"/etc/passwd\"); } }"),
-            ("resources-absolute", "class A { void F() { Resources.Load<T>(\"../x\"); } }"),
-            ("static-mutable", "class A { private static int pressCount; }"),
-            ("static-mutable", "class A { public static string Name = \"x\"; }"),
-            ("static-mutable", "class A { static readonly List<int> All = new List<int>(); }"),
-            ("static-mutable", "class A { private static readonly int[] Table = { 1 }; }"),
-            ("static-mutable", "class A { public static event System.Action Fired; }"),
+            (
+                "resources-absolute",
+                "class A { void F() { Resources.Load(\"/etc/passwd\"); } }",
+            ),
+            (
+                "resources-absolute",
+                "class A { void F() { Resources.Load<T>(\"../x\"); } }",
+            ),
+            (
+                "static-mutable",
+                "class A { private static int pressCount; }",
+            ),
+            (
+                "static-mutable",
+                "class A { public static string Name = \"x\"; }",
+            ),
+            (
+                "static-mutable",
+                "class A { static readonly List<int> All = new List<int>(); }",
+            ),
+            (
+                "static-mutable",
+                "class A { private static readonly int[] Table = { 1 }; }",
+            ),
+            (
+                "static-mutable",
+                "class A { public static event System.Action Fired; }",
+            ),
             ("static-mutable", "class A { [ThreadStatic] static int t; }"),
-            ("static-mutable", "class A { [SerializeField] private static Dictionary<string, int> map; }"),
+            (
+                "static-mutable",
+                "class A { [SerializeField] private static Dictionary<string, int> map; }",
+            ),
         ];
         for (rule, src) in cases {
-            assert!(rules(src).iter().any(|r| r == rule), "{rule} not found in: {src} -> {:?}", rules(src));
+            assert!(
+                rules(src).iter().any(|r| r == rule),
+                "{rule} not found in: {src} -> {:?}",
+                rules(src)
+            );
         }
     }
 
@@ -979,7 +1079,10 @@ namespace Hollowmere.Mechanism.PressurePlate
         let negated = "#if !UNITY_EDITOR\nusing UnityEditor;\n#endif\nclass A {}";
         assert_eq!(scan_csharp("Runtime/A.cs", negated, false, &ctx()).len(), 1);
         let else_branch = "#if UNITY_EDITOR\nint a;\n#else\nusing UnityEditor;\n#endif\n";
-        assert_eq!(scan_csharp("Runtime/A.cs", else_branch, false, &ctx()).len(), 1);
+        assert_eq!(
+            scan_csharp("Runtime/A.cs", else_branch, false, &ctx()).len(),
+            1
+        );
     }
 
     #[test]
@@ -989,7 +1092,10 @@ namespace Hollowmere.Mechanism.PressurePlate
         with_reason.allow_unsafe = Some("SIMD ring buffer".into());
         assert!(scan_csharp("Runtime/A.cs", src, false, &with_reason).is_empty());
         with_reason.allow_unsafe = Some("  ".into());
-        assert_eq!(scan_csharp("Runtime/A.cs", src, false, &with_reason).len(), 1);
+        assert_eq!(
+            scan_csharp("Runtime/A.cs", src, false, &with_reason).len(),
+            1
+        );
         let asmdef = r#"{"name":"A","allowUnsafeCode":true,"references":["UnityEditor.UI"]}"#;
         let hits = scan_asmdef("Runtime/A.asmdef", asmdef, &ctx());
         let rules: Vec<&str> = hits.iter().map(|h| h.rule.as_str()).collect();
@@ -1002,7 +1108,10 @@ namespace Hollowmere.Mechanism.PressurePlate
     fn credentials_are_found_and_redacted() {
         let text = "key = etk_abcdef123456\nurl = \"sk-ABCDEFGHIJKLMNOPQRST\"\nAuthorization: Bearer abc.def.ghi\nnot: sk-short desk_ett\n";
         let hits = scan_credentials("Runtime/Config.json", text);
-        assert_eq!(hits.iter().map(|h| h.line).collect::<Vec<_>>(), vec![1, 2, 3]);
+        assert_eq!(
+            hits.iter().map(|h| h.line).collect::<Vec<_>>(),
+            vec![1, 2, 3]
+        );
         for h in &hits {
             assert!(!h.excerpt.contains("abcdef123456"), "{}", h.excerpt);
             assert!(!h.excerpt.contains("ABCDEFGHIJKLMNOPQRST"), "{}", h.excerpt);
@@ -1019,12 +1128,28 @@ namespace Hollowmere.Mechanism.PressurePlate
         std::fs::create_dir_all(root.join("Plugins")).unwrap();
         std::fs::write(root.join("package.json"), "{\"name\":\"com.x.y\"}").unwrap();
         std::fs::write(root.join("Runtime/R.asmdef"), "{\"name\":\"R\"}").unwrap();
-        std::fs::write(root.join("Runtime/R.cs"), "using UnityEditor;\nclass R { static int s; }").unwrap();
-        std::fs::write(root.join("Editor/E.asmdef"), "{\"name\":\"E\",\"includePlatforms\":[\"Editor\"]}").unwrap();
+        std::fs::write(
+            root.join("Runtime/R.cs"),
+            "using UnityEditor;\nclass R { static int s; }",
+        )
+        .unwrap();
+        std::fs::write(
+            root.join("Editor/E.asmdef"),
+            "{\"name\":\"E\",\"includePlatforms\":[\"Editor\"]}",
+        )
+        .unwrap();
         std::fs::write(root.join("Editor/E.cs"), "using UnityEditor;\nclass E {}").unwrap();
         std::fs::write(root.join("Plugins/native.so"), [0u8, 1, 2]).unwrap();
-        std::fs::write(root.join("big.bytes"), vec![b'a'; (MAX_UNMANIFESTED_BLOB + 1) as usize]).unwrap();
-        std::fs::write(root.join("declared.bytes"), vec![b'b'; (MAX_UNMANIFESTED_BLOB + 1) as usize]).unwrap();
+        std::fs::write(
+            root.join("big.bytes"),
+            vec![b'a'; (MAX_UNMANIFESTED_BLOB + 1) as usize],
+        )
+        .unwrap();
+        std::fs::write(
+            root.join("declared.bytes"),
+            vec![b'b'; (MAX_UNMANIFESTED_BLOB + 1) as usize],
+        )
+        .unwrap();
         let mut c = ctx();
         c.blobs.insert("declared.bytes".into());
         let report = scan_package(root, &c).unwrap();

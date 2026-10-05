@@ -266,8 +266,8 @@ mod tests {
         steps[0].log_ref = Some("a".repeat(64));
         let mut v = StageVerdict {
             schema: VERDICT_SCHEMA.into(),
-            change_set_id: "cs_01JAPP0000000000000000PLAT".into(),
-            slot: "cs-01japp0000000000000000plat".into(),
+            change_set_id: "cs_01JAPP0000000000000000PXAT".into(),
+            slot: "cs-01japp0000000000000000pxat".into(),
             package: "com.hollowmere.mechanism.pressureplate".into(),
             steps,
             pass: false,
@@ -309,7 +309,7 @@ mod tests {
         let v = sample();
         assert!(v.pass);
         let value = v.to_value();
-        assert_eq!(value["changeSetId"], "cs_01JAPP0000000000000000PLAT");
+        assert_eq!(value["changeSetId"], "cs_01JAPP0000000000000000PXAT");
         assert_eq!(value["steps"][0]["status"], "pass");
         assert_eq!(value["steps"][0]["durationMs"], 10);
         assert_eq!(value["steps"][0]["logRef"], "a".repeat(64));
@@ -349,7 +349,10 @@ mod tests {
         let mut v = sample();
         v.steps[4] = StepResult::new("playmode-smoke", StepStatus::Skipped, 0, "not requested");
         v.settle();
-        assert!(!v.pass, "a skipped step that is applicable is not acceptable");
+        assert!(
+            !v.pass,
+            "a skipped step that is applicable is not acceptable"
+        );
 
         let mut v = sample();
         v.partial = true;

@@ -26,7 +26,9 @@ pub fn default_root() -> PathBuf {
     if let Some(v) = std::env::var_os("XDG_CACHE_HOME").filter(|v| !v.is_empty()) {
         return PathBuf::from(v).join("gamecore-studio").join("stage");
     }
-    let home = std::env::var_os("HOME").map(PathBuf::from).unwrap_or_else(std::env::temp_dir);
+    let home = std::env::var_os("HOME")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir);
     home.join(".cache").join("gamecore-studio").join("stage")
 }
 
@@ -35,7 +37,8 @@ pub fn valid_slot_id(id: &str) -> bool {
     let mut chars = id.chars();
     matches!(chars.next(), Some(c) if c.is_ascii_lowercase() || c.is_ascii_digit())
         && id.len() <= 64
-        && chars.all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '.' | '_' | '-'))
+        && chars
+            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '.' | '_' | '-'))
 }
 
 /// The default slot of a change set: `cs-<ulid in lower case>`.
@@ -48,7 +51,9 @@ pub fn default_slot_id(change_set_id: &str) -> String {
 pub fn slot_change_set(slot_dir: &Path) -> Option<String> {
     let text = std::fs::read_to_string(slot_dir.join("stage.json")).ok()?;
     let v: Value = serde_json::from_str(&text).ok()?;
-    v.get("changeSetId").and_then(Value::as_str).map(str::to_string)
+    v.get("changeSetId")
+        .and_then(Value::as_str)
+        .map(str::to_string)
 }
 
 /// Slot directories under `root` (sorted).
@@ -72,11 +77,17 @@ pub fn slots(root: &Path) -> Vec<PathBuf> {
 /// The slot for a change set: the one already holding it, else `requested`, else the default.
 /// One slot per change set: asking for a different slot than the one holding it is refused,
 /// and so is a slot holding another change set.
-pub fn resolve_slot(root: &Path, change_set_id: &str, requested: Option<&str>) -> Result<String, String> {
+pub fn resolve_slot(
+    root: &Path,
+    change_set_id: &str,
+    requested: Option<&str>,
+) -> Result<String, String> {
     if let Some(r) = requested
         && !valid_slot_id(r)
     {
-        return Err(format!("slot {r:?} is not a slot id ([a-z0-9._-], at most 64)"));
+        return Err(format!(
+            "slot {r:?} is not a slot id ([a-z0-9._-], at most 64)"
+        ));
     }
     let holding = slots(root)
         .into_iter()
@@ -107,10 +118,15 @@ impl SlotLock {
     /// Take the lock of `slot_dir` (creating the directory). A lock left by a process that no
     /// longer runs (Linux: no `/proc/<pid>`; elsewhere: older than `stale_after`) is replaced.
     pub fn acquire(slot_dir: &Path, stale_after: Duration) -> Result<SlotLock, String> {
-        std::fs::create_dir_all(slot_dir).map_err(|e| format!("cannot create {}: {e}", slot_dir.display()))?;
+        std::fs::create_dir_all(slot_dir)
+            .map_err(|e| format!("cannot create {}: {e}", slot_dir.display()))?;
         let path = slot_dir.join(LOCK_NAME);
         for _ in 0..2 {
-            match std::fs::OpenOptions::new().write(true).create_new(true).open(&path) {
+            match std::fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&path)
+            {
                 Ok(mut f) => {
                     use std::io::Write;
                     let _ = writeln!(f, "{}", std::process::id());
@@ -124,7 +140,10 @@ impl SlotLock {
                     let holder = std::fs::read_to_string(&path).unwrap_or_default();
                     return Err(format!(
                         "slot {} is being staged (pid {}); one stage per slot",
-                        slot_dir.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default(),
+                        slot_dir
+                            .file_name()
+                            .map(|n| n.to_string_lossy().into_owned())
+                            .unwrap_or_default(),
                         holder.trim()
                     ));
                 }
@@ -167,10 +186,14 @@ fn age(path: &Path) -> Option<Duration> {
 
 /// The age of a slot: since its newest of `stage.json` / `out/verdict.json` (else the directory).
 pub fn slot_age(slot_dir: &Path) -> Option<Duration> {
-    [slot_dir.join("stage.json"), slot_dir.join("out").join("verdict.json"), slot_dir.to_path_buf()]
-        .iter()
-        .filter_map(|p| age(p))
-        .min()
+    [
+        slot_dir.join("stage.json"),
+        slot_dir.join("out").join("verdict.json"),
+        slot_dir.to_path_buf(),
+    ]
+    .iter()
+    .filter_map(|p| age(p))
+    .min()
 }
 
 /// Remove a slot directory (read-only stage inputs included).
@@ -216,7 +239,11 @@ pub fn gc(root: &Path, max_age: Duration) -> Vec<String> {
             continue;
         }
         if slot_age(&dir).is_some_and(|a| a > max_age) && remove_slot(&dir).is_ok() {
-            removed.push(dir.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default());
+            removed.push(
+                dir.file_name()
+                    .map(|n| n.to_string_lossy().into_owned())
+                    .unwrap_or_default(),
+            );
         }
     }
     removed
@@ -226,12 +253,16 @@ pub fn gc(root: &Path, max_age: Duration) -> Vec<String> {
 mod tests {
     use super::*;
 
-    const CS: &str = "cs_01JAPP0000000000000000PLAT";
+    const CS: &str = "cs_01JAPP0000000000000000PXAT";
 
     fn make(root: &Path, slot: &str, cs: &str) -> PathBuf {
         let d = root.join(slot);
         std::fs::create_dir_all(d.join("project")).unwrap();
-        std::fs::write(d.join("stage.json"), format!("{{\"changeSetId\":\"{cs}\"}}")).unwrap();
+        std::fs::write(
+            d.join("stage.json"),
+            format!("{{\"changeSetId\":\"{cs}\"}}"),
+        )
+        .unwrap();
         d
     }
 
@@ -242,14 +273,14 @@ mod tests {
 
     #[test]
     fn slot_ids_and_defaults() {
-        assert!(valid_slot_id("cs-01japp0000000000000000plat"));
+        assert!(valid_slot_id("cs-01japp0000000000000000pxat"));
         assert!(valid_slot_id("1"));
         assert!(!valid_slot_id(""));
         assert!(!valid_slot_id("-a"));
         assert!(!valid_slot_id("A"));
         assert!(!valid_slot_id("a/b"));
         assert!(!valid_slot_id(&"a".repeat(65)));
-        assert_eq!(default_slot_id(CS), "cs-01japp0000000000000000plat");
+        assert_eq!(default_slot_id(CS), "cs-01japp0000000000000000pxat");
         assert!(valid_slot_id(&default_slot_id(CS)));
     }
 
@@ -261,9 +292,17 @@ mod tests {
         make(root, "s1", CS);
         assert_eq!(resolve_slot(root, CS, None).unwrap(), "s1");
         assert_eq!(resolve_slot(root, CS, Some("s1")).unwrap(), "s1");
-        assert!(resolve_slot(root, CS, Some("s2")).unwrap_err().contains("one slot per change set"));
+        assert!(
+            resolve_slot(root, CS, Some("s2"))
+                .unwrap_err()
+                .contains("one slot per change set")
+        );
         let other = "cs_01JAPP0000000000000000NEG1";
-        assert!(resolve_slot(root, other, Some("s1")).unwrap_err().contains("one change set per slot"));
+        assert!(
+            resolve_slot(root, other, Some("s1"))
+                .unwrap_err()
+                .contains("one change set per slot")
+        );
         assert_eq!(resolve_slot(root, other, Some("s3")).unwrap(), "s3");
         assert!(resolve_slot(root, other, Some("../x")).is_err());
     }

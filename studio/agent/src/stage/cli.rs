@@ -76,7 +76,11 @@ impl Args {
     }
 
     fn check(&self, allowed: &[&str]) -> Result<(), String> {
-        match self.options.iter().find(|(n, _)| !allowed.contains(&n.as_str())) {
+        match self
+            .options
+            .iter()
+            .find(|(n, _)| !allowed.contains(&n.as_str()))
+        {
             Some((n, _)) => Err(format!("unknown option --{n}")),
             None => Ok(()),
         }
@@ -136,10 +140,18 @@ fn run(a: &Args) -> i32 {
     let [slot_id] = a.positional.as_slice() else {
         return fail(&format!("run takes exactly one slot id\n{USAGE}"));
     };
-    let Some(repo) = a.get("repo").map(PathBuf::from).or_else(pipeline::discover_repo) else {
+    let Some(repo) = a
+        .get("repo")
+        .map(PathBuf::from)
+        .or_else(pipeline::discover_repo)
+    else {
         return fail("no game_core checkout found; pass --repo or set GAMECORE_STAGE_REPO");
     };
-    let source = match (a.get("candidate"), a.get("package-dir"), a.get("change-set-id")) {
+    let source = match (
+        a.get("candidate"),
+        a.get("package-dir"),
+        a.get("change-set-id"),
+    ) {
         (Some(c), None, None) => SlotSource::Candidate(PathBuf::from(c)),
         (None, Some(d), Some(cs)) => SlotSource::PackageDir {
             dir: PathBuf::from(d),
@@ -163,7 +175,10 @@ fn run(a: &Args) -> i32 {
     if let Some(list) = a.get("steps") {
         let steps: BTreeSet<String> = list.split(',').map(|s| s.trim().to_string()).collect();
         if let Some(bad) = steps.iter().find(|s| !STEP_IDS.contains(&s.as_str())) {
-            return fail(&format!("unknown step {bad:?}; steps are {}", STEP_IDS.join(", ")));
+            return fail(&format!(
+                "unknown step {bad:?}; steps are {}",
+                STEP_IDS.join(", ")
+            ));
         }
         opts.steps = Some(steps);
     }
@@ -190,7 +205,10 @@ fn run(a: &Args) -> i32 {
         );
     }
     for h in &verdict.forbidden_hits {
-        eprintln!("   forbidden {} {}:{} {}", h.rule, h.path, h.line, h.excerpt);
+        eprintln!(
+            "   forbidden {} {}:{} {}",
+            h.rule, h.path, h.line, h.excerpt
+        );
     }
     let reference = verdict.verdict_ref();
     eprintln!(
@@ -308,17 +326,30 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let pkg = dir.path().join("pkg");
         std::fs::create_dir_all(pkg.join("Runtime")).unwrap();
-        std::fs::write(pkg.join("Runtime/A.cs"), "class A { void F() { System.Diagnostics.Process.Start(\"x\"); } }").unwrap();
-        assert_eq!(main(&[String::from("scan"), pkg.to_string_lossy().into_owned()]), 1);
+        std::fs::write(
+            pkg.join("Runtime/A.cs"),
+            "class A { void F() { System.Diagnostics.Process.Start(\"x\"); } }",
+        )
+        .unwrap();
+        assert_eq!(
+            main(&[String::from("scan"), pkg.to_string_lossy().into_owned()]),
+            1
+        );
         std::fs::write(pkg.join("Runtime/A.cs"), "class A { }").unwrap();
-        assert_eq!(main(&[String::from("scan"), pkg.to_string_lossy().into_owned()]), 0);
+        assert_eq!(
+            main(&[String::from("scan"), pkg.to_string_lossy().into_owned()]),
+            0
+        );
 
         let root = dir.path().join("root");
         std::fs::create_dir_all(root.join("s1")).unwrap();
         let r = root.to_string_lossy().into_owned();
         assert_eq!(main(&[String::from("gc"), "--root".into(), r.clone()]), 0);
         assert!(root.join("s1").exists());
-        assert_eq!(main(&[String::from("discard"), "s1".into(), "--root".into(), r]), 0);
+        assert_eq!(
+            main(&[String::from("discard"), "s1".into(), "--root".into(), r]),
+            0
+        );
         assert!(!root.join("s1").exists());
     }
 }

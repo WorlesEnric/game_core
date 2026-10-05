@@ -71,7 +71,9 @@ pub struct Toolchain {
 impl Toolchain {
     /// The tools of a repository checkout (`GAMECORE_STAGE_PYTHON`, `DOTNET` override).
     pub fn of_repo(repo: &Path) -> Toolchain {
-        let home = std::env::var_os("HOME").map(PathBuf::from).unwrap_or_default();
+        let home = std::env::var_os("HOME")
+            .map(PathBuf::from)
+            .unwrap_or_default();
         let dotnet = std::env::var_os("DOTNET")
             .map(PathBuf::from)
             .or_else(|| {
@@ -726,10 +728,20 @@ impl Run<'_> {
         );
     }
 
-    fn unity(&mut self, label: &str, platform: &str, log: &mut StepLog) -> (ChildOutcome, Option<TestTotals>) {
+    fn unity(
+        &mut self,
+        label: &str,
+        platform: &str,
+        log: &mut StepLog,
+    ) -> (ChildOutcome, Option<TestTotals>) {
         let results = self.out_dir().join(format!("{label}.xml"));
         let _ = std::fs::remove_file(&results);
-        let attempt = self.opts.unity_attempt.min(self.remaining()).as_secs().max(10);
+        let attempt = self
+            .opts
+            .unity_attempt
+            .min(self.remaining())
+            .as_secs()
+            .max(10);
         let out = run_child(
             Command::new("bash")
                 .arg(&self.opts.tools.unity_batch)
@@ -795,10 +807,9 @@ impl Run<'_> {
         let mut log = StepLog::new();
         let (out, totals) = self.unity("editmode", "EditMode", &mut log);
         let errors = Self::compile_errors(&out.output);
-        let delta: Option<CatalogDelta> =
-            std::fs::read(self.out_dir().join("catalog-delta.json"))
-                .ok()
-                .and_then(|b| serde_json::from_slice(&b).ok());
+        let delta: Option<CatalogDelta> = std::fs::read(self.out_dir().join("catalog-delta.json"))
+            .ok()
+            .and_then(|b| serde_json::from_slice(&b).ok());
         let integrity = integrity_problems(&self.package_dir(), &self.declared());
         for p in &integrity {
             log.line(format!("integrity: {p}"));
@@ -817,10 +828,7 @@ impl Run<'_> {
         let (status, detail) = if out.timed_out || out.code == Some(124) {
             (StepStatus::Fail, "the Unity Editor timed out".to_string())
         } else if !errors.is_empty() {
-            (
-                StepStatus::Fail,
-                format!("compile failed: {}", errors[0]),
-            )
+            (StepStatus::Fail, format!("compile failed: {}", errors[0]))
         } else if !integrity.is_empty() {
             (
                 StepStatus::Fail,
@@ -843,13 +851,15 @@ impl Run<'_> {
                         tt.failures.first().map(String::as_str).unwrap_or("?")
                     ),
                 ),
-                Some(tt) if tt.total == 0 => {
-                    (StepStatus::Fail, "no EditMode test ran".to_string())
+                Some(tt) if tt.total == 0 => (StepStatus::Fail, "no EditMode test ran".to_string()),
+                Some(_)
+                    if wants_catalog && delta.as_ref().is_none_or(|d| d.mechanisms.is_empty()) =>
+                {
+                    (
+                        StepStatus::Fail,
+                        "the catalog probe wrote no mechanism catalog".to_string(),
+                    )
                 }
-                Some(_) if wants_catalog && delta.as_ref().is_none_or(|d| d.mechanisms.is_empty()) => (
-                    StepStatus::Fail,
-                    "the catalog probe wrote no mechanism catalog".to_string(),
-                ),
                 Some(tt) if out.ok() => (
                     StepStatus::Pass,
                     format!("compiled; {} EditMode test(s) passed", tt.passed),
@@ -925,7 +935,10 @@ impl Run<'_> {
         } else if !integrity.is_empty() {
             (
                 StepStatus::Fail,
-                format!("the candidate package changed during the Unity run ({})", integrity[0]),
+                format!(
+                    "the candidate package changed during the Unity run ({})",
+                    integrity[0]
+                ),
             )
         } else if let Some(tt) = totals.as_ref().filter(|tt| tt.failed > 0) {
             (
@@ -939,19 +952,32 @@ impl Run<'_> {
         } else if s1.is_null() {
             (
                 StepStatus::Fail,
-                format!("the smoke runner wrote no result (unity-batch exit {:?})", out.code),
+                format!(
+                    "the smoke runner wrote no result (unity-batch exit {:?})",
+                    out.code
+                ),
             )
         } else if !smoke_ok(&s1) {
             (
                 StepStatus::Fail,
                 format!(
                     "smoke: {} frame(s), {} sanctioned pump(s), {} duplicate, {} bypass, {} error(s){}",
-                    s1["frames"], s1["sanctionedPumps"], s1["duplicateFramePumps"], s1["bypassPumps"], s1["errors"],
-                    s1["firstError"].as_str().map(|e| format!(": {e}")).unwrap_or_default()
+                    s1["frames"],
+                    s1["sanctionedPumps"],
+                    s1["duplicateFramePumps"],
+                    s1["bypassPumps"],
+                    s1["errors"],
+                    s1["firstError"]
+                        .as_str()
+                        .map(|e| format!(": {e}"))
+                        .unwrap_or_default()
                 ),
             )
         } else if !out.ok() {
-            (StepStatus::Fail, format!("the Unity Editor exited {:?}", out.code))
+            (
+                StepStatus::Fail,
+                format!("the Unity Editor exited {:?}", out.code),
+            )
         } else {
             (
                 StepStatus::Pass,
@@ -989,7 +1015,11 @@ impl Run<'_> {
         } else if h1 != h2 {
             (
                 StepStatus::Fail,
-                format!("the two smoke runs diverged: {} != {}", &h1[..12], &h2[..12]),
+                format!(
+                    "the two smoke runs diverged: {} != {}",
+                    &h1[..12],
+                    &h2[..12]
+                ),
             )
         } else {
             (
@@ -1070,7 +1100,11 @@ pub fn prepare_slot(opts: &StageOptions, timeout: Duration) -> Result<Value, Str
             .map(str::to_string)
             .unwrap_or_else(|| {
                 let tail: String = out.output.chars().rev().take(600).collect();
-                format!("make-slot.py failed (exit {:?}): {}", out.code, tail.chars().rev().collect::<String>())
+                format!(
+                    "make-slot.py failed (exit {:?}): {}",
+                    out.code,
+                    tail.chars().rev().collect::<String>()
+                )
             }))
     }
 }
@@ -1147,7 +1181,11 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         } else {
             run.step_checkers();
         }
-        if run.steps.last().is_some_and(|s| s.status == StepStatus::Fail) {
+        if run
+            .steps
+            .last()
+            .is_some_and(|s| s.status == StepStatus::Fail)
+        {
             blocked.get_or_insert_with(|| format!("skipped: {id} failed (no candidate code runs)"));
         }
     }
@@ -1164,7 +1202,11 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     };
     if gate(&mut run, "dotnet", &blocked) {
         run.step_dotnet();
-        if run.steps.last().is_some_and(|s| s.status == StepStatus::Fail) {
+        if run
+            .steps
+            .last()
+            .is_some_and(|s| s.status == StepStatus::Fail)
+        {
             blocked = Some("skipped: dotnet failed".into());
         }
     } else if run.timed_out {
@@ -1180,7 +1222,12 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     let mut smoke = None;
     if gate(&mut run, "playmode-smoke", &blocked) {
         smoke = run.step_playmode();
-        if run.steps.last().is_some_and(|s| s.status == StepStatus::Fail) && smoke.is_none() {
+        if run
+            .steps
+            .last()
+            .is_some_and(|s| s.status == StepStatus::Fail)
+            && smoke.is_none()
+        {
             blocked = Some("skipped: playmode-smoke failed".into());
         }
     }
@@ -1201,10 +1248,18 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         facts: json!({"elapsedMs": ms(elapsed), "budgetMs": ms(opts.budget)}),
         ..StepResult::new(
             "budget",
-            if budget_ok { StepStatus::Pass } else { StepStatus::Fail },
+            if budget_ok {
+                StepStatus::Pass
+            } else {
+                StepStatus::Fail
+            },
             0,
             if budget_ok {
-                format!("{} s within B-STAGE {} s", elapsed.as_secs(), opts.budget.as_secs())
+                format!(
+                    "{} s within B-STAGE {} s",
+                    elapsed.as_secs(),
+                    opts.budget.as_secs()
+                )
             } else {
                 format!(
                     "stage_failed{{timeout}}: {} s, B-STAGE {} s",
@@ -1215,7 +1270,12 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         )
     });
     // Keep the report order stable whatever happened.
-    run.steps.sort_by_key(|s| STEP_IDS.iter().position(|id| *id == s.id).unwrap_or(usize::MAX));
+    run.steps.sort_by_key(|s| {
+        STEP_IDS
+            .iter()
+            .position(|id| *id == s.id)
+            .unwrap_or(usize::MAX)
+    });
 
     let mut artifacts = Vec::new();
     for (role, key) in [("package", "artifact"), ("proposal", "proposal")] {
@@ -1228,7 +1288,10 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     }
     let mut verdict = StageVerdict {
         schema: VERDICT_SCHEMA.into(),
-        change_set_id: run.record["changeSetId"].as_str().unwrap_or_default().into(),
+        change_set_id: run.record["changeSetId"]
+            .as_str()
+            .unwrap_or_default()
+            .into(),
         slot: opts.slot.clone(),
         package: run.package(),
         steps: std::mem::take(&mut run.steps),
@@ -1275,7 +1338,10 @@ mod tests {
 </test-run>"#;
         let t = parse_nunit(xml).unwrap();
         assert_eq!((t.total, t.passed, t.failed, t.skipped), (3, 2, 1, 0));
-        assert_eq!(t.failures, vec!["Plate.Tests.Breaks \"on purpose\"".to_string()]);
+        assert_eq!(
+            t.failures,
+            vec!["Plate.Tests.Breaks \"on purpose\"".to_string()]
+        );
         assert!(parse_nunit("<nothing/>").is_none());
     }
 
@@ -1295,8 +1361,16 @@ mod tests {
         std::fs::write(p.join("package.json"), "a").unwrap();
         std::fs::write(p.join("Runtime/A.cs"), "b").unwrap();
         let declared = vec![
-            PackageFile { path: "package.json".into(), sha256: sha256_hex(b"a"), bytes: 1 },
-            PackageFile { path: "Runtime/A.cs".into(), sha256: sha256_hex(b"b"), bytes: 1 },
+            PackageFile {
+                path: "package.json".into(),
+                sha256: sha256_hex(b"a"),
+                bytes: 1,
+            },
+            PackageFile {
+                path: "Runtime/A.cs".into(),
+                sha256: sha256_hex(b"b"),
+                bytes: 1,
+            },
         ];
         assert!(integrity_problems(p, &declared).is_empty());
         std::fs::write(p.join("Runtime/A.cs.meta"), "m").unwrap();
@@ -1304,7 +1378,11 @@ mod tests {
         std::fs::remove_file(p.join("Runtime/A.cs")).unwrap();
         assert_eq!(
             integrity_problems(p, &declared),
-            vec!["Runtime/A.cs is missing", "Runtime/A.cs.meta appeared", "package.json changed"]
+            vec![
+                "Runtime/A.cs is missing",
+                "Runtime/A.cs.meta appeared",
+                "package.json changed"
+            ]
         );
     }
 
@@ -1312,7 +1390,9 @@ mod tests {
     fn a_child_gets_the_allowlisted_env_and_is_killed_at_its_deadline() {
         let dir = tempfile::tempdir().unwrap();
         let out = run_child(
-            Command::new("sh").arg("-c").arg("env; echo token etk_abcdefghijkl; echo key sk-ABCDEFGHIJKLMNOPQRSTUV"),
+            Command::new("sh")
+                .arg("-c")
+                .arg("env; echo token etk_abcdefghijkl; echo key sk-ABCDEFGHIJKLMNOPQRSTUV"),
             &[("GAMECORE_STAGE_MARK", "1")],
             &dir.path().join("a.raw"),
             Duration::from_secs(20),
@@ -1323,7 +1403,13 @@ mod tests {
             if let Some((name, _)) = line.split_once('=')
                 && !name.contains(' ')
             {
-                assert!(super::super::env::allowed(name) || name == "PWD" || name == "SHLVL" || name == "_", "{name} leaked");
+                assert!(
+                    super::super::env::allowed(name)
+                        || name == "PWD"
+                        || name == "SHLVL"
+                        || name == "_",
+                    "{name} leaked"
+                );
             }
         }
         assert!(!out.output.contains("abcdefghijkl"));
@@ -1332,7 +1418,9 @@ mod tests {
 
         let t = Instant::now();
         let out = run_child(
-            Command::new("sh").arg("-c").arg("sleep 30 & sleep 30; echo never"),
+            Command::new("sh")
+                .arg("-c")
+                .arg("sleep 30 & sleep 30; echo never"),
             &[],
             &dir.path().join("b.raw"),
             Duration::from_millis(500),
