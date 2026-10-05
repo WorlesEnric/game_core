@@ -97,14 +97,15 @@ namespace GameCore.Gameplay.Ui
     /// <summary>The HUD: stamina, objective line, region banner.</summary>
     public sealed class HudViewModel : UiViewModel
     {
-        private static readonly string[] Names =
+        private static IReadOnlyList<string> Names { get; } = Array.AsReadOnly(new[]
         {
-            nameof(Stamina), nameof(StaminaVisible), nameof(ObjectiveText), nameof(ObjectiveVisible), nameof(RegionName), nameof(RegionBannerVisible),
-        };
+            nameof(Stamina), nameof(StaminaVisible), nameof(ObjectiveText), nameof(QuestStageTitle), nameof(ObjectiveVisible), nameof(RegionName), nameof(RegionBannerVisible),
+        });
 
         private float stamina = 100f;
         private bool staminaVisible;
         private string objectiveText = string.Empty;
+        private string questStageTitle = string.Empty;
         private bool objectiveVisible;
         private string regionName = string.Empty;
         private bool regionBannerVisible;
@@ -117,6 +118,9 @@ namespace GameCore.Gameplay.Ui
         [CreateProperty] public bool StaminaVisible { get => staminaVisible; set => Set(ref staminaVisible, value, nameof(StaminaVisible)); }
 
         [CreateProperty] public string ObjectiveText { get => objectiveText; set => Set(ref objectiveText, value ?? string.Empty, nameof(ObjectiveText)); }
+
+        /// <summary>Current stage title of the first active quest; empty when none is active.</summary>
+        [CreateProperty] public string QuestStageTitle { get => questStageTitle; set => Set(ref questStageTitle, value ?? string.Empty, nameof(QuestStageTitle)); }
 
         [CreateProperty] public bool ObjectiveVisible { get => objectiveVisible; set => Set(ref objectiveVisible, value, nameof(ObjectiveVisible)); }
 
@@ -305,6 +309,9 @@ namespace GameCore.Gameplay.Ui
         /// <summary>The last journal model received.</summary>
         public JournalViewModel Last { get; private set; } = new JournalViewModel(Array.Empty<QuestView>(), 0);
 
+        /// <summary>The first active quest's current stage title, empty when none is active.</summary>
+        public string TrackedStageTitle { get; private set; } = string.Empty;
+
         /// <summary>
         /// Applies P1.4's journal model; returns the HUD objective line of the tracked quest (the first active quest),
         /// empty when none is active.
@@ -329,6 +336,7 @@ namespace GameCore.Gameplay.Ui
                 }
             }
 
+            TrackedStageTitle = tracked >= 0 ? quests[tracked].StageTitle : string.Empty;
             QuestLines = lines;
             Empty = quests.Count == 0;
             int shown = tracked >= 0 ? tracked : (quests.Count > 0 ? 0 : -1);

@@ -246,6 +246,27 @@ namespace GameCore.Gameplay.Entities.Editor
             return placed;
         }
 
+        [AuthorOperation("entity.setMaterialTexture", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Scope = AuthorScope.Definition, Validator = typeof(EntityValidator),
+            Doc = "Binds an imported Texture2D to a renderer material slot on every view of this definition. Omit texture to clear the binding. Changes content stamp, not recipe revision; rebuild views to apply.")]
+        public static void SetMaterialTexture(
+            EntityDefinition definition,
+            [AuthorArg(Category = "texture.texture2d", Required = false, Doc = "Imported texture AuthoringRef; omit to clear.")] Texture2D? texture,
+            [AuthorArg(Min = 0, Required = false, Doc = "Renderer index in prefab depth-first order, including inactive children.")] int renderer = 0,
+            [AuthorArg(Min = 0, Required = false, Doc = "Renderer material slot.")] int slot = 0,
+            [AuthorArg(Required = false, Doc = "Shader Texture2D property, for example _BaseMap or _MainTex.")] string property = "_BaseMap")
+        {
+            if (definition == null) throw new ArgumentException(MaterialTextureBinding.InvalidCode + ": an entity definition is required");
+            var binding = new MaterialTextureBinding { renderer = renderer, slot = slot, property = property, texture = texture };
+            string problem = MaterialTextureBinding.Validate(definition, binding);
+            if (problem.Length > 0) throw new ArgumentException(MaterialTextureBinding.InvalidCode + ": " + problem);
+            if (texture != null && !(AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) is TextureImporter))
+                throw new ArgumentException(MaterialTextureBinding.InvalidCode + ": texture must be an imported image asset");
+            Undo.RecordObject(definition, "entity.setMaterialTexture");
+            definition.SetMaterialTexture(binding);
+            EditorUtility.SetDirty(definition);
+        }
+
         private static void Require(AuthoredEntity entity)
         {
             if (entity == null)

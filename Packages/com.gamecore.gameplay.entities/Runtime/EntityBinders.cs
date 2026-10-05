@@ -353,6 +353,7 @@ namespace GameCore.Gameplay.Entities
                 CreatedCount++;
                 instance.transform.SetParent(RootOf(regionId), false);
                 ApplyTint(instance, spec, variant);
+                MaterialTextureBinding.Apply(instance, spec.Definition.MaterialTextures);
                 for (int h = 0; h < hooks.Count; h++)
                 {
                     hooks[h].OnViewCreated(spec.Target, instance);

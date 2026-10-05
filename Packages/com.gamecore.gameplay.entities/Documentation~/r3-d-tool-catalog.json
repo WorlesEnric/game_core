@@ -1,0 +1,611 @@
+{
+  "schema": "gamecore.studio.toolcatalog/1",
+  "revision": "f5e43511968c607fc6eb0a23142df2becf6df2b8648ca18f5598c406fd277a26",
+  "objectTypes": [
+    {
+      "typeId": "dialogue.graph",
+      "displayName": "Dialogue Graph",
+      "doc": "A conversation: line, choice, branch, action and end nodes joined by edges; conditions read facts and state.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "speaker",
+          "type": "string",
+          "required": false,
+          "doc": "Default speaker name of the graph's lines."
+        },
+        {
+          "name": "speakerEntityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Default speaker entity, by authoring id (optional)."
+        },
+        {
+          "name": "npcGraphRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        },
+        {
+          "name": "entry",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Entry node index."
+        },
+        {
+          "name": "nodes",
+          "type": "object[]",
+          "required": false,
+          "doc": "The nodes; an edge names them by index."
+        },
+        {
+          "name": "edges",
+          "type": "object[]",
+          "required": false,
+          "doc": "The edges."
+        }
+      ]
+    },
+    {
+      "typeId": "entity.definition",
+      "displayName": "Entity Definition",
+      "doc": "An entity definition: the prefab a placed entity presents, its defaults, variants and overridable fields.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "prefab",
+          "type": "ref",
+          "required": true,
+          "category": "asset.prefab",
+          "doc": "The view prefab instantiated for every placed entity."
+        },
+        {
+          "name": "defaultScaleMilli",
+          "type": "int",
+          "required": false,
+          "unit": "milli",
+          "min": 1.0,
+          "max": 100000.0,
+          "doc": "Uniform scale in thousandths."
+        },
+        {
+          "name": "startsVisible",
+          "type": "bool",
+          "required": false,
+          "doc": "Whether a placed entity starts visible."
+        },
+        {
+          "name": "startsAlive",
+          "type": "bool",
+          "required": false,
+          "doc": "Whether a placed entity starts alive (spawned)."
+        },
+        {
+          "structural": true,
+          "name": "variants",
+          "type": "ref[]",
+          "required": false,
+          "category": "entity.variant",
+          "doc": "Variants 1..n; variant 0 is the definition itself."
+        },
+        {
+          "structural": true,
+          "name": "overridableFields",
+          "type": "string[]",
+          "required": false,
+          "doc": "Fields a placed entity may override: scaleMilli, visible, alive, tint."
+        },
+        {
+          "name": "animatorBindings",
+          "type": "object[]",
+          "required": false,
+          "doc": "Animator integer parameters driven from entity slots."
+        },
+        {
+          "structural": true,
+          "name": "interactionKind",
+          "type": "string",
+          "required": false,
+          "doc": "Interaction kind exposed to interaction systems (empty = not interactable)."
+        },
+        {
+          "name": "materialTextures",
+          "type": "object[]",
+          "required": false,
+          "doc": "Texture bindings for renderer material slots; presentation content, not recipe structure."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.conditionSet",
+      "displayName": "Condition Set",
+      "doc": "Conditions over facts, items, quests, regions and time, combined with all or any.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "mode",
+          "type": "enum",
+          "required": false,
+          "doc": "All conditions must hold, or any one.",
+          "enumValues": [
+            "All",
+            "Any"
+          ]
+        },
+        {
+          "name": "conditions",
+          "type": "object[]",
+          "required": false,
+          "doc": "The conditions, in evaluation order."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.contentSet",
+      "displayName": "Gameplay Content Set",
+      "doc": "Lists the narrative definitions (facts, graphs, quests, items, rules...) of one world; the bake writes its content manifest.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Compile",
+      "fields": [
+        {
+          "name": "world",
+          "type": "ref",
+          "required": true,
+          "category": "world.definition",
+          "doc": "The world this content belongs to."
+        },
+        {
+          "name": "definitions",
+          "type": "ref[]",
+          "required": true,
+          "category": "narrative.definition",
+          "doc": "Every narrative definition of the world (any type providing the narrative.definition capability)."
+        }
+      ]
+    },
+    {
+      "typeId": "narrative.fact",
+      "displayName": "Fact",
+      "doc": "A named int32 world fact (narrative.fact.<name>), set by dialogue, rules and quests and read by conditions.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "factName",
+          "type": "string",
+          "required": false,
+          "doc": "Fact name: lowercase letters, digits and underscores (the slot is narrative.fact.<name>)."
+        },
+        {
+          "name": "initialValue",
+          "type": "int",
+          "required": false,
+          "doc": "Value before anything sets it."
+        },
+        {
+          "name": "persistent",
+          "type": "bool",
+          "required": false,
+          "doc": "False = the fact returns to its initial value when a conversation ends (a conversation-local flag)."
+        }
+      ]
+    },
+    {
+      "typeId": "ui.document",
+      "displayName": "UI Document",
+      "doc": "A runtime UI Toolkit document: UXML, style sheets, draw layer, the screen it belongs to and its binding map.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "screen",
+          "type": "enum",
+          "required": false,
+          "doc": "The screen (ui.screen value) the document is shown on; Hud documents also show under modal screens.",
+          "enumValues": [
+            "None",
+            "Hud",
+            "Menu",
+            "Pause",
+            "Settings",
+            "Save",
+            "Load",
+            "Ending",
+            "Journal",
+            "Inventory"
+          ]
+        },
+        {
+          "name": "layer",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 100.0,
+          "doc": "Draw order; larger is drawn above."
+        },
+        {
+          "structural": true,
+          "name": "uxml",
+          "type": "ref",
+          "required": true,
+          "category": "asset.uxml",
+          "doc": "The document's UXML (its element layout)."
+        },
+        {
+          "name": "styles",
+          "type": "ref[]",
+          "required": false,
+          "category": "asset.uss",
+          "doc": "Extra style sheets of this document."
+        },
+        {
+          "name": "bindings",
+          "type": "object[]",
+          "required": false,
+          "doc": "Binding map: element -> property <- source (vm:/slot:/event:/command:)."
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "dialogue.generateVoice",
+      "tier": "Compose",
+      "doc": "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (the paired Editor session supplies the provider).",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "node",
+          "type": "int",
+          "required": true,
+          "doc": "Line node index."
+        },
+        {
+          "name": "voice",
+          "type": "string",
+          "required": false,
+          "doc": "Voice name for the provider."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.linkCondition",
+      "tier": "Compose",
+      "doc": "Sets the condition of a branch node, or the availability condition of one option of a choice node.",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "node",
+          "type": "int",
+          "required": true,
+          "doc": "Node index."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "The condition (empty = none)."
+        },
+        {
+          "name": "option",
+          "type": "int",
+          "required": false,
+          "doc": "Option index of a choice node (-1 = the node itself, a branch)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.setFact",
+      "tier": "Configure",
+      "doc": "Creates (or updates) a fact on a content set: name, initial value and whether it persists past a conversation.",
+      "targetType": "logic.contentSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "factName",
+          "type": "string",
+          "required": true,
+          "doc": "Fact name (lowercase letters, digits, underscores)."
+        },
+        {
+          "name": "initial",
+          "type": "int",
+          "required": false,
+          "doc": "Initial value."
+        },
+        {
+          "name": "persistent",
+          "type": "bool",
+          "required": false,
+          "doc": "False = reset when a conversation ends."
+        },
+        {
+          "name": "authoringId",
+          "type": "string",
+          "required": false,
+          "doc": "Optional canonical GUID for a newly created fact; later candidate refs use this authoringId. Existing facts cannot be re-identified."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.contentSet",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Compile",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.setFactCondition",
+      "tier": "Configure",
+      "doc": "Replaces a condition set with one typed fact comparison. The fact AuthoringRef can name an earlier candidate output once the engine resolves dependency-ordered references; link this condition with dialogue.linkCondition.",
+      "targetType": "logic.conditionSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "fact",
+          "type": "ref",
+          "required": true,
+          "category": "narrative.fact",
+          "doc": "Fact AuthoringRef, including the output of an earlier dialogue.setFact operation."
+        },
+        {
+          "name": "comparison",
+          "type": "enum",
+          "required": false,
+          "enumValues": [
+            "Equal",
+            "NotEqual",
+            "Less",
+            "LessOrEqual",
+            "Greater",
+            "GreaterOrEqual"
+          ]
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "required": false
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "entity.setMaterialTexture",
+      "tier": "Configure",
+      "doc": "Binds an imported Texture2D to a renderer material slot on every view of this definition. Omit texture to clear the binding. Changes content stamp, not recipe revision; rebuild views to apply.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "texture",
+          "type": "ref",
+          "required": false,
+          "category": "texture.texture2d",
+          "doc": "Imported texture AuthoringRef; omit to clear."
+        },
+        {
+          "name": "renderer",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Renderer index in prefab depth-first order, including inactive children."
+        },
+        {
+          "name": "slot",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Renderer material slot."
+        },
+        {
+          "name": "property",
+          "type": "string",
+          "required": false,
+          "doc": "Shader Texture2D property, for example _BaseMap or _MainTex."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui.bind",
+      "tier": "Configure",
+      "doc": "Binds an element property (text, value, visible, enabled, selected, items) of a UI document to a vm:, slot: or event: source.",
+      "targetType": "ui.document",
+      "targetKinds": [
+        "Definition",
+        "UiElement"
+      ],
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "element",
+          "type": "string",
+          "required": true,
+          "doc": "Element name in the document's UXML."
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": true,
+          "doc": "vm:<model>.<Property> (hud.QuestStageTitle = first active quest stage title; hud.ObjectiveText = first unfinished objective) | slot:<owner>/<domain>.<member>@<target> | event:<name>."
+        },
+        {
+          "name": "property",
+          "type": "string",
+          "required": false,
+          "doc": "text | value | visible | enabled | selected | items."
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "required": false,
+          "doc": "Format: a {0} pattern or percent:<max>; for items, command:<prefix>."
+        }
+      ],
+      "runtimeApply": "Live",
+      "validators": [
+        {
+          "id": "ui.validator",
+          "codes": [
+            "GP-UI-001",
+            "GP-UI-002",
+            "GP-UI-003",
+            "GP-UI-004",
+            "GP-UI-005",
+            "GP-UI-006",
+            "GP-UI-007"
+          ]
+        }
+      ]
+    }
+  ]
+}
