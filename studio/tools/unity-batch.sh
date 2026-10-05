@@ -14,7 +14,8 @@
 # All four launchers source unity-slot.sh. Its allocator mutex covers reservation plus the count of
 # interactive/batch Editors and outstanding reservations (AssetImportWorker children are excluded).
 # At most three host-wide Editors; this wrapper holds one reservation until its child is reaped.
-# Each attempt has a deadline and a silence watchdog; timeouts retry once unless --attempts 1.
+# Each attempt has a deadline and a silence watchdog. Only the documented missing
+# /tmp/ilpp.sock-* startup fault retries once (unless --attempts 1). See tools/PACKET.md.
 # Logs use -logFile - and run-redacted.py: stdout/stderr are redacted before any durable write.
 # TERM/INT/HUP reach the entire child process group, with KILL after eight seconds if necessary.
 # Add -quit for a plain compile; tests and StageCommandLine entries exit themselves.
@@ -24,6 +25,8 @@
 # Operator environment: UNITY (Editor command), GC_STUDIO_REMOTE_BASE (default wkspace/gc-studio),
 # GC_STUDIO_UNITY_SLOTS (1..3, default 3), UNITY_TIMEOUT (default 1500 seconds),
 # UNITY_SILENCE_TIMEOUT (default 600 seconds; 0 disables silence detection).
+# Non-secret GAMECORE_* config/gates pass through; credential/proxy names are excluded
+# by run-redacted.py. Env-gated XML skips report SKIPPED (env-gated), with gate names.
 # Service launches must use trusted tool configuration and reserve outside the Docker sandbox.
 # Exit: 0 successful compile/all-passed XML; 1 failure or partial/missing XML; 124 timeout; 2 usage.
 set -euo pipefail
@@ -138,28 +141,44 @@ for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   args+=("${extra[@]}")
   echo "-- attempt ${attempt}/${max_attempts}: Unity (arguments withheld from logs)"
   rc=0
-  attempt_start="$(date +%s)"
+  attempt_start="$(date +%s.%N)"
   python3 "${unity_tools_dir}/../stage/run-redacted.py" --log "$log" --timeout "$attempt_timeout" --silence "$silence_limit" -- "${unity}" "${args[@]}" &
   watched=$!
   wait "$watched" || rc=$?
   watched=""
   if (( rc == 124 || rc == 137 )); then
     echo "   Unity Editor timed out (limit ${attempt_timeout}s, silence limit ${silence_limit}s; exit ${rc}, attempt ${attempt}/${max_attempts})" >&2
+    break
+  fi
+  if grep -qE "Can't find file /tmp/ilpp[.]sock-[A-Za-z0-9]+" "$log"; then
+    rc=1
     if (( attempt < max_attempts )); then
-      echo "-- retrying once after a timeout (known intermittent hang; docs/operator/editor-hang.md)"
+      echo "-- retrying once after documented ILPP startup fault: Can't find file /tmp/ilpp.sock-* (log ${log})"
       continue
     fi
+    echo '-- ILPP startup fault persists or retry disabled; failing this invocation'
   fi
   break
 done
 unity_rc="$rc"
 elapsed=$(( $(date +%s) - start ))
+env_gates=""
 if [[ -n "$results" && -s "$results" && "$rc" != 124 && "$rc" != 137 ]]; then
   summary_rc=0
   python3 "${unity_tools_dir}/../stage/test-results.py" "$results" "${required_tests[@]}" || summary_rc=$?
   if (( summary_rc == 0 && (rc == 0 || rc == 2) )); then rc=0; else rc=1; fi
+  if (( summary_rc == 2 && (unity_rc == 0 || unity_rc == 2) )); then
+    env_gates=$(python3 "${unity_tools_dir}/unity-diagnostics.py" env-gates "$results")
+  fi
 fi
 
+compiler_errors=$(python3 "${unity_tools_dir}/unity-diagnostics.py" errors "$log" "$project" "$attempt_start")
+if [[ -n "$compiler_errors" ]]; then
+  echo '-- compiler diagnostics (Editor / current Bee log):'
+  printf '%s\n' "$compiler_errors"
+  env_gates=""
+  if (( rc != 124 && rc != 137 )); then rc=1; fi
+fi
 errors="$(grep -E 'error CS[0-9]+|Scripts have compiler errors|Aborting batchmode|An error occurred while resolving packages|\[Package Manager\].*[Ee]rror|Compilation failed|Fatal Error' "${log}" 2>/dev/null | sort -u | head -n 200 || true)"
 if [[ -n "${errors}" ]]; then
   echo "-- error lines from ${log}:"
@@ -176,6 +195,7 @@ if (( rc == 124 || rc == 137 )); then
   exit_code=124
 elif (( rc != 0 )); then
   verdict="FAIL"
+  if [[ -n "$env_gates" ]]; then verdict="SKIPPED (env-gated): ${env_gates}"; fi
   exit_code=1
 elif [[ -n "${results}" && ! -s "${results}" ]]; then
   echo "   no test results at ${results}: NotRun, not Pass" >&2

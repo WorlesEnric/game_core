@@ -14,6 +14,20 @@ import time
 from redact import redact
 
 
+def child_environment(environment):
+    """Operator gates/config only; see studio/tools/PACKET.md (D25).
+
+    GAMECORE_* is the application configuration namespace. Credential/proxy names
+    are excluded even inside it. Service mode still requires an env-cleared sandbox.
+    """
+    fixed = ('HOME', 'USER', 'LOGNAME', 'PATH', 'LANG', 'LC_ALL', 'DISPLAY', 'XAUTHORITY',
+             'XDG_RUNTIME_DIR', 'GCS_EVIDENCE_DIR', 'GCS_FLIP')
+    sensitive = re.compile(r'KEY|TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|AUTH|PROXY|COOKIE', re.I)
+    return {name: value for name, value in environment.items()
+            if name in fixed or (re.fullmatch(r'GAMECORE_[A-Z0-9_]+', name)
+                                 and not sensitive.search(name))}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--log', required=True)
@@ -22,11 +36,7 @@ def main():
     parser.add_argument('command', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
-    # Operator UI variables are enumerated, never prefix-matched. Service mode must still run
-    # this inside R2-F's env-cleared sandbox with slot-local HOME and trusted absolute command.
-    child_env = {name: os.environ[name] for name in (
-        'HOME', 'USER', 'LOGNAME', 'PATH', 'LANG', 'LC_ALL', 'DISPLAY', 'XAUTHORITY',
-        'XDG_RUNTIME_DIR', 'GCS_EVIDENCE_DIR', 'GCS_FLIP') if name in os.environ}
+    child_env = child_environment(os.environ)
     child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                              start_new_session=True, env=child_env)
     interrupted = []
