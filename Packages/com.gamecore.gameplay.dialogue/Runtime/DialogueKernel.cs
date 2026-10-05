@@ -47,7 +47,7 @@ namespace GameCore.Gameplay.Dialogue
         public static NarrativePluginSpec Spec(NarrativeModelSet models)
         {
             var spec = new NarrativePluginSpec(Stem, NarrativeCatalogNames.Dialogue, DialogueIds.Owner)
-                .Route(DialogueIds.StartRoute, DialogueIds.StartCommand, "start", 3)
+                .Route(DialogueIds.StartRoute, DialogueIds.StartCommand, "start", 3, 1)
                 .Route(DialogueIds.ChooseRoute, DialogueIds.ChooseCommand, "choose", 1)
                 .Route(DialogueIds.AdvanceRoute, DialogueIds.AdvanceCommand, "advance", 1)
                 .Route(DialogueIds.InterruptRoute, DialogueIds.InterruptCommand, "interrupt", 1)
@@ -221,9 +221,16 @@ namespace GameCore.Gameplay.Dialogue
 
             var step = new DialogueStep(rt, em, message.Target);
             DiagnosticCode refusal;
+            int obligation = 0;
             if (message.Route.Equals(DialogueIds.StartRoute))
             {
-                refusal = step.Start(command[0], command[1], command[2]);
+                // P1.7a (A1): dialogue.start from the delivery carries an obligation request id (claimed, settled below).
+                obligation = NarrativeObligations.OptionalRequest(command, 3);
+                refusal = NarrativeObligations.Admit(rt.Tap, null, obligation);
+                if (refusal == DiagnosticCode.None)
+                {
+                    refusal = step.Start(command[0], command[1], command[2]);
+                }
             }
             else if (message.Route.Equals(DialogueIds.ChooseRoute))
             {
@@ -239,6 +246,7 @@ namespace GameCore.Gameplay.Dialogue
             }
             else if (message.Route.Equals(DialogueIds.SetFactRoute))
             {
+                obligation = command[2];
                 refusal = step.SetFact(command[0], command[1], command[2]);
             }
             else
@@ -252,13 +260,14 @@ namespace GameCore.Gameplay.Dialogue
                 return;
             }
 
-            if (!step.Events.CommitAll(plane, message))
+            if (!step.Events.CommitAll(plane, message, rt.Tap))
             {
                 Refuse(plane, message, DiagnosticCode.BudgetExceeded);
                 return;
             }
 
             step.Apply();
+            NarrativeObligations.Settle(rt.Tap, obligation);
             Started += step.StartedCount;
             Ended += step.EndedCount;
             FactsSet += step.FactCount;
@@ -394,8 +403,8 @@ namespace GameCore.Gameplay.Dialogue
                 return DiagnosticCode.MissingDependency;
             }
 
-            if (RequestRing.IsTracked(request)
-                && RequestRing.Contains(NarrativeSlots.ReadRing(rt.Registry, em, state, DialogueIds.Owner, DialogueIds.Req), request))
+            int[]? ring = RequestRing.IsTracked(request) ? NarrativeSlots.ReadRing(rt.Registry, em, state, DialogueIds.Owner, DialogueIds.Req) : null;
+            if (NarrativeObligations.Admit(rt.Tap, ring, request) != DiagnosticCode.None)
             {
                 return DiagnosticCode.IdempotencyConflict;
             }

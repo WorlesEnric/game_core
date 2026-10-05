@@ -58,20 +58,21 @@ namespace GameCore.Gameplay.Player
             }
 
             var player = extension.Player;
-            if (!world.Slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosX, out int x)
-                || !world.Slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosZ, out int z))
+            // P1.7a (A4): world.pos is the authoritative pose.
+            if (!world.Slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosX, out int x)
+                || !world.Slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out int z))
             {
                 return 0;
             }
 
-            // A travel committed but not adopted yet: the player pose is still the departure pose.
+            // A travel committed but not adopted by the player kernel yet: wait one step before probing again.
             if (world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.Region, 0)
                 != world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.RegionKey, 0))
             {
                 return 0;
             }
 
-            int y = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.PosY, 0);
+            int y = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.PosY, 0);
             var feet = new Vector3((float)GameplayUnits.ToMetres(x), (float)GameplayUnits.ToMetres(y), (float)GameplayUnits.ToMetres(z));
             for (int i = 0; i < portals.Count; i++)
             {

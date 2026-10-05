@@ -15,6 +15,14 @@
 // the committed residency slot always describes what the streamer actually did. Residency listeners (IResidencyAware,
 // e.g. the view binder) are told of every committed change. The streamer is also the IResidencyQuery Studio reads.
 // Cancellation (Cancel or the CancellationToken) stops all streaming: nothing new is loaded and loaded regions unload.
+//
+// P1.7a (A3): a streamer is created per attach, so its first tick after an attach - a fresh boot or a restored root -
+// reconciles each region's committed residency with the scene the loader actually has (StreamingRules.Reconcile):
+// committed Resident with no loaded scene loads the scene without moving the residency (a restored world's focus
+// region), committed Unloaded with a loaded scene unloads it (the previous root's scenes). A failed load backs off
+// (StreamingRules.BackoffFrames) and, after StreamingRules.MaxLoadFailures consecutive failures, latches that region with
+// a GP-WLD-032 diagnostic instead of retrying every frame; ResetLatch re-arms it. In the Editor a region scene that is
+// not in the build settings is reported once (GP-WLD-031): it streams in Play Mode but a player build cannot load it.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -221,6 +229,7 @@ namespace GameCore.Gameplay.World
         private readonly List<RegionState> regions = new List<RegionState>();
         private readonly List<string> regionIds = new List<string>();
         private readonly List<IResidencyAware> listeners = new List<IResidencyAware>();
+        private readonly List<GameplayDiagnostic> diagnostics = new List<GameplayDiagnostic>();
         private readonly int startRegionKey;
         private CancellationTokenSource cancellation = new CancellationTokenSource();
         private CancellationToken external;
@@ -237,6 +246,8 @@ namespace GameCore.Gameplay.World
                 regions.Add(new RegionState(world.Worlds.Regions[i]));
                 regionIds.Add(world.Worlds.Regions[i].AuthoringId);
             }
+
+            WarnScenesOutsideBuild();
         }
 
         /// <summary>The traveller whose region is kept resident; default means "the start region".</summary>
@@ -264,6 +275,30 @@ namespace GameCore.Gameplay.World
 
         public int Ticks { get; private set; }
 
+        /// <summary>Scenes loaded or unloaded by the first-tick reconciliation (A3).</summary>
+        public int Reconciliations { get; private set; }
+
+        /// <summary>Regions whose streaming latched after repeated load failures.</summary>
+        public int LatchedRegions
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 0; i < regions.Count; i++)
+                {
+                    if (StreamingRules.IsLatched(regions[i].Failures))
+                    {
+                        count++;
+                    }
+                }
+
+                return count;
+            }
+        }
+
+        /// <summary>Streaming diagnostics (GP-WLD-030/031/032), oldest first (at most 64).</summary>
+        public IReadOnlyList<GameplayDiagnostic> Diagnostics => diagnostics;
+
         public ISceneLoader Loader => loader;
 
         /// <summary>Observes an external cancellation token (e.g. the owning behaviour's lifetime).</summary>
@@ -282,6 +317,36 @@ namespace GameCore.Gameplay.World
                     }
                 }
             }
+        }
+
+        /// <summary>True when a region's streaming latched after repeated load failures.</summary>
+        public bool IsLatched(string regionId)
+        {
+            for (int i = 0; i < regions.Count; i++)
+            {
+                if (string.Equals(regions[i].Record.AuthoringId, regionId, StringComparison.Ordinal))
+                {
+                    return StreamingRules.IsLatched(regions[i].Failures);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>Re-arms a latched region (after its scene was fixed); false for an unknown region.</summary>
+        public bool ResetLatch(string regionId)
+        {
+            for (int i = 0; i < regions.Count; i++)
+            {
+                if (string.Equals(regions[i].Record.AuthoringId, regionId, StringComparison.Ordinal))
+                {
+                    regions[i].Failures = 0;
+                    regions[i].RetryAtTick = 0;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>Stops streaming: nothing new loads, and loaded regions unload on the following ticks.</summary>
@@ -327,7 +392,7 @@ namespace GameCore.Gameplay.World
                     RegionState state = regions[i];
                     int committed = CommittedOf(state.Record);
                     int final = wanted.Contains(state.Record.Key) ? Residency.Resident : Residency.Unloaded;
-                    if (committed != final || state.Operation != null || state.Expected >= 0)
+                    if (committed != final || state.Operation != null || state.Reconciling != null || state.Expected >= 0)
                     {
                         return false;
                     }
@@ -388,6 +453,21 @@ namespace GameCore.Gameplay.World
                 }
             }
 
+            if (!state.Reconciled)
+            {
+                state.Reconciled = true;
+                if (Reconcile(state, committed, want))
+                {
+                    return;
+                }
+            }
+
+            if (state.Reconciling != null)
+            {
+                FinishReconcile(state, committed);
+                return;
+            }
+
             if (state.Expected >= 0)
             {
                 if (committed == state.Expected)
@@ -409,7 +489,7 @@ namespace GameCore.Gameplay.World
             switch (committed)
             {
                 case Residency.Unloaded:
-                    if (want)
+                    if (want && !StreamingRules.IsLatched(state.Failures) && Ticks >= state.RetryAtTick)
                     {
                         Submit(state, Residency.Loading);
                     }
@@ -440,8 +520,8 @@ namespace GameCore.Gameplay.World
 
                     if (state.Operation.Failed)
                     {
-                        LoadFailures++;
                         state.Operation = null;
+                        RecordLoadFailure(state);
                         Submit(state, Residency.Unloaded);
                         break;
                     }
@@ -449,6 +529,7 @@ namespace GameCore.Gameplay.World
                     if (want)
                     {
                         state.Operation = null;
+                        state.Failures = 0;
                         Submit(state, Residency.Resident);
                         break;
                     }
@@ -485,6 +566,114 @@ namespace GameCore.Gameplay.World
 
                     break;
             }
+        }
+
+        /// <summary>The first-tick reconciliation of one region; true when a scene operation started.</summary>
+        private bool Reconcile(RegionState state, int committed, bool want)
+        {
+            string path = state.Record.ScenePath;
+            if (string.IsNullOrEmpty(path) || state.Operation != null)
+            {
+                return false;
+            }
+
+            ReconcileAction action = StreamingRules.Reconcile(committed, loader.IsLoaded(path), want);
+            if (action == ReconcileAction.LoadScene)
+            {
+                state.Reconciling = loader.Load(path);
+                state.ReconcileLoads = true;
+                LoadsStarted++;
+                Reconciliations++;
+                return true;
+            }
+
+            if (action == ReconcileAction.UnloadScene)
+            {
+                state.Reconciling = loader.Unload(path);
+                state.ReconcileLoads = false;
+                UnloadsStarted++;
+                Reconciliations++;
+                return true;
+            }
+
+            return false;
+        }
+
+        private void FinishReconcile(RegionState state, int committed)
+        {
+            ISceneOperation? operation = state.Reconciling;
+            if (operation == null || !operation.IsDone)
+            {
+                return;
+            }
+
+            state.Reconciling = null;
+            if (state.ReconcileLoads && operation.Failed)
+            {
+                // The restored region's scene did not load: leave Resident through the legal path so the ordinary
+                // machine retries it with back-off.
+                RecordLoadFailure(state);
+                if (committed == Residency.Resident)
+                {
+                    Submit(state, Residency.Unloading);
+                }
+            }
+        }
+
+        private void RecordLoadFailure(RegionState state)
+        {
+            LoadFailures++;
+            state.Failures++;
+            state.RetryAtTick = Ticks + StreamingRules.BackoffFrames(state.Failures);
+            bool latched = StreamingRules.IsLatched(state.Failures);
+            string failures = state.Failures.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            string message = latched
+                ? "region scene " + state.Record.ScenePath + " failed to load " + failures + " times; streaming of region "
+                  + state.Record.Name + " is latched until ResetLatch"
+                : "region scene " + state.Record.ScenePath + " failed to load (attempt " + failures + "); retrying in "
+                  + StreamingRules.BackoffFrames(state.Failures).ToString(System.Globalization.CultureInfo.InvariantCulture) + " frames";
+            Report(new GameplayDiagnostic(latched ? WorldRefusalCodes.SceneLoadLatched : WorldRefusalCodes.SceneLoadFailed, state.Record.AuthoringId, message));
+        }
+
+        private void Report(GameplayDiagnostic diagnostic)
+        {
+            if (diagnostics.Count >= 64)
+            {
+                diagnostics.RemoveAt(0);
+            }
+
+            diagnostics.Add(diagnostic);
+            Debug.LogWarning("[GameCore] " + diagnostic);
+        }
+
+        private void WarnScenesOutsideBuild()
+        {
+#if UNITY_EDITOR
+            if (!(loader is UnitySceneLoader))
+            {
+                return;
+            }
+
+            var inBuild = new HashSet<string>(StringComparer.Ordinal);
+            UnityEditor.EditorBuildSettingsScene[] scenes = UnityEditor.EditorBuildSettings.scenes;
+            for (int i = 0; i < scenes.Length; i++)
+            {
+                if (scenes[i] != null && scenes[i].enabled)
+                {
+                    inBuild.Add(scenes[i].path);
+                }
+            }
+
+            for (int i = 0; i < regions.Count; i++)
+            {
+                string path = regions[i].Record.ScenePath;
+                if (!string.IsNullOrEmpty(path) && !inBuild.Contains(path))
+                {
+                    Report(new GameplayDiagnostic(WorldRefusalCodes.SceneNotInBuild, regions[i].Record.AuthoringId,
+                        "region scene " + path + " is not in the build settings: it streams in Play Mode, but a player build cannot load it"));
+                }
+            }
+#endif
         }
 
         private void Submit(RegionState state, int residency)
@@ -530,6 +719,21 @@ namespace GameCore.Gameplay.World
 
             /// <summary>Last committed residency told to listeners; -1 before the first tick.</summary>
             public int Notified { get; set; } = -1;
+
+            /// <summary>True once the first-tick reconciliation ran (A3).</summary>
+            public bool Reconciled { get; set; }
+
+            /// <summary>The reconciliation's scene operation (no residency change rides on it); null when none.</summary>
+            public ISceneOperation? Reconciling { get; set; }
+
+            /// <summary>True while <see cref="Reconciling"/> is a load.</summary>
+            public bool ReconcileLoads { get; set; }
+
+            /// <summary>Consecutive load failures (reset by a successful load or ResetLatch).</summary>
+            public int Failures { get; set; }
+
+            /// <summary>The tick before which a failed region is not loaded again.</summary>
+            public int RetryAtTick { get; set; }
         }
     }
 }

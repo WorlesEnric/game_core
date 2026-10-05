@@ -263,4 +263,120 @@ namespace GameCore.Rules.Gameplay.World
             return graph.TryFindPortal(from, to, out PortalLink _) ? TravelRefusal.None : TravelRefusal.NoPortal;
         }
     }
+
+    /// <summary>
+    /// Stable refusal and diagnostic codes of the world plugin's runtime (P1.7a). They extend the GP-WLD group of
+    /// GameplayDiagnosticCodes (P1.1) without renumbering it; the gameplay contracts list them once the integrator folds
+    /// them in (PACKET.md).
+    /// </summary>
+    public static class WorldRefusalCodes
+    {
+        /// <summary>world.travel: the portal's condition evaluated false.</summary>
+        public const string TravelConditionFailed = "GP-WLD-013";
+
+        /// <summary>world.travel: the portal's condition reference is unknown to the world's evaluator.</summary>
+        public const string TravelConditionUnknown = "GP-WLD-014";
+
+        /// <summary>world.travel: the traveller is not a live target with a region.</summary>
+        public const string TravelStaleTraveller = "GP-WLD-015";
+
+        /// <summary>world.travel: the portal or destination record is missing.</summary>
+        public const string TravelMissingPortal = "GP-WLD-016";
+
+        /// <summary>world.travel: the obligation that carried it was already applied.</summary>
+        public const string TravelAlreadyApplied = "GP-WLD-017";
+
+        /// <summary>world.place: the issuer is neither the host nor Studio.</summary>
+        public const string PlaceNotAllowed = "GP-WLD-022";
+
+        /// <summary>world.place: the target is not a live target with a region.</summary>
+        public const string PlaceStaleTarget = "GP-WLD-023";
+
+        /// <summary>A region scene failed to load (the streamer backs off and retries).</summary>
+        public const string SceneLoadFailed = "GP-WLD-030";
+
+        /// <summary>A region scene is not in the build settings: a player build cannot load it.</summary>
+        public const string SceneNotInBuild = "GP-WLD-031";
+
+        /// <summary>A region scene failed to load <see cref="StreamingRules.MaxLoadFailures"/> times; its streaming latched.</summary>
+        public const string SceneLoadLatched = "GP-WLD-032";
+
+        /// <summary>A malformed or unsupported world command payload.</summary>
+        public const string MalformedCommand = "GP-WLD-040";
+
+        /// <summary>Every runtime code, in declaration order.</summary>
+        public static IReadOnlyList<string> All { get; } = Array.AsReadOnly(new[]
+        {
+            TravelConditionFailed, TravelConditionUnknown, TravelStaleTraveller, TravelMissingPortal, TravelAlreadyApplied,
+            PlaceNotAllowed, PlaceStaleTarget, SceneLoadFailed, SceneNotInBuild, SceneLoadLatched, MalformedCommand,
+        });
+
+        /// <summary>The code of a travel validation refusal (the P1.1 codes GP-WLD-010..012).</summary>
+        public static string OfTravel(TravelRefusal refusal)
+        {
+            switch (refusal)
+            {
+                case TravelRefusal.UnknownRegion: return "GP-WLD-012";
+                case TravelRefusal.SameRegion: return "GP-WLD-011";
+                default: return "GP-WLD-010";
+            }
+        }
+    }
+
+    /// <summary>What the streamer does to reconcile a region's committed residency with its loaded scene.</summary>
+    public enum ReconcileAction
+    {
+        None = 0,
+
+        /// <summary>Committed Resident but the scene is not loaded (a restored world): load it, keep the residency.</summary>
+        LoadScene = 1,
+
+        /// <summary>Committed Unloaded, not wanted, but the scene is loaded (left over by the previous root): unload it.</summary>
+        UnloadScene = 2,
+    }
+
+    /// <summary>Region streaming decisions that do not touch an engine object (P1.7a, A3).</summary>
+    public static class StreamingRules
+    {
+        /// <summary>Consecutive load failures after which a region's streaming latches (until reset).</summary>
+        public const int MaxLoadFailures = 3;
+
+        /// <summary>Frames waited before the first retry; each further failure doubles it.</summary>
+        public const int BaseBackoffFrames = 30;
+
+        /// <summary>
+        /// The reconciliation of one region on the first tick after an attach. A wanted region whose committed residency
+        /// is Unloaded but whose scene is already loaded needs nothing here: the ordinary Loading step adopts the loaded
+        /// scene.
+        /// </summary>
+        public static ReconcileAction Reconcile(int committed, bool sceneLoaded, bool wanted)
+        {
+            if (committed == Residency.Resident && !sceneLoaded)
+            {
+                return ReconcileAction.LoadScene;
+            }
+
+            if (committed == Residency.Unloaded && sceneLoaded && !wanted)
+            {
+                return ReconcileAction.UnloadScene;
+            }
+
+            return ReconcileAction.None;
+        }
+
+        /// <summary>True once a region failed <see cref="MaxLoadFailures"/> consecutive loads.</summary>
+        public static bool IsLatched(int consecutiveFailures) => consecutiveFailures >= MaxLoadFailures;
+
+        /// <summary>Frames to wait after <paramref name="consecutiveFailures"/> failures before loading again (0 for none).</summary>
+        public static int BackoffFrames(int consecutiveFailures)
+        {
+            if (consecutiveFailures <= 0)
+            {
+                return 0;
+            }
+
+            int shift = Math.Min(consecutiveFailures - 1, 8);
+            return BaseBackoffFrames << shift;
+        }
+    }
 }

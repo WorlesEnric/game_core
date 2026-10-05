@@ -43,6 +43,13 @@ namespace GameCore.Gameplay.World
         public int arrivalBY;
         public int arrivalBZ;
         public int arrivalBYaw;
+
+        /// <summary>
+        /// The portal's condition reference (P1.7a, A4): world.travel through this portal is refused unless the world's
+        /// condition evaluator says True. Empty (the default, and every manifest baked before PortalDefinition carries
+        /// the field) means always allowed.
+        /// </summary>
+        public string conditionRef = string.Empty;
     }
 
     [Serializable]
@@ -52,10 +59,20 @@ namespace GameCore.Gameplay.World
         public string name = string.Empty;
         public EntityDefinition? definition;
         public string contentStamp = string.Empty;
+
+        /// <summary>
+        /// The structural stamp (P1.7a A8, SADR-012 studio): the hash of the definition's structural fields only, written by
+        /// the bake. Empty in manifests baked before P1.7a; <see cref="Revision"/> then falls back to the content stamp.
+        /// </summary>
+        public string structuralStamp = string.Empty;
+
         public int variantCount = 1;
 
-        /// <summary>The exact recipe revision: the first eight bytes of the content stamp.</summary>
-        public ulong Revision => AuthoringIds.RevisionOfContentStamp(contentStamp);
+        /// <summary>
+        /// The exact recipe revision: the first eight bytes of the structural stamp (the content stamp when no structural
+        /// stamp was baked), so a cosmetic or tuning edit keeps the revision and a checkpoint taken before it restores.
+        /// </summary>
+        public ulong Revision => AuthoringIds.RevisionOfContentStamp(structuralStamp.Length == 64 ? structuralStamp : contentStamp);
     }
 
     [Serializable]

@@ -1,7 +1,8 @@
 // GameCore.Gameplay.Logic.Editor - the narrative part of the gameplay bake (P1.4, through IGameplayBakeExtension).
 //
 // For the world being baked, the logic extension finds its one GameplayContentSet, collects the listed narrative
-// definitions plus every narrative definition they reference (transitively), mints missing authoring ids, converts
+// definitions plus every narrative definition they reference (transitively), refuses any of them whose authoring id is
+// missing or malformed (GP-ID-001/002: planning never mints ids or dirties assets, P1.7a A10), converts
 // them with every package converter (TypeCache) to validate them - each conversion problem is a GP-* diagnostic that
 // refuses the bake - and computes the content manifest: entries (kind, authoring id, name, key, content stamp, asset)
 // in authoring-id order, the fact table in name order, and a SHA-256 content hash. Write stamps every definition and
@@ -156,13 +157,19 @@ namespace GameCore.Gameplay.Logic.Editor
                 }
             }
 
+            // P1.7a A10: planning (shared by Bake and Verify) never mints an id or dirties an asset. An un-minted or malformed
+            // authoring id, or a reference that is neither a saved asset nor an authored object, refuses the bake instead.
+            int refused = 0;
             for (int i = 0; i < plan.Definitions.Count; i++)
             {
-                var definition = (INarrativeDefinition)plan.Definitions[i];
-                if (definition.EnsureAuthoringId())
-                {
-                    EditorUtility.SetDirty(plan.Definitions[i]);
-                }
+                IReadOnlyList<GameplayDiagnostic> problems = DefinitionCanonicalizer.Validate(plan.Definitions[i]);
+                refused += problems.Count;
+                diagnostics.AddRange(problems);
+            }
+
+            if (refused > 0)
+            {
+                return plan;
             }
 
             NarrativeConversion conversion = NarrativeContent.Convert(worldId, plan.Definitions, Converters());

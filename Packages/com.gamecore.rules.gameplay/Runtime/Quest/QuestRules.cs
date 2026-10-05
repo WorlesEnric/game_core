@@ -152,6 +152,21 @@ namespace GameCore.Rules.Gameplay.Quest
             IReadOnlyList<RewardModel> rewards,
             ConditionSetModel? failConditions,
             IReadOnlyList<string>? branchNames)
+            : this(key, name, stages, objectives, rewards, failConditions, branchNames, null, null)
+        {
+        }
+
+        /// <summary>A quest with prerequisite and dependent quest keys (P1.7a; the converter fills them from the definition).</summary>
+        public QuestModel(
+            int key,
+            string name,
+            IReadOnlyList<StageModel> stages,
+            IReadOnlyList<ObjectiveModel> objectives,
+            IReadOnlyList<RewardModel> rewards,
+            ConditionSetModel? failConditions,
+            IReadOnlyList<string>? branchNames,
+            IReadOnlyList<int>? prerequisites,
+            IReadOnlyList<int>? dependents)
         {
             Key = key;
             Name = name ?? string.Empty;
@@ -160,6 +175,8 @@ namespace GameCore.Rules.Gameplay.Quest
             Rewards = rewards ?? Array.Empty<RewardModel>();
             FailConditions = failConditions;
             BranchNames = branchNames ?? Array.Empty<string>();
+            Prerequisites = prerequisites ?? Array.Empty<int>();
+            Dependents = dependents ?? Array.Empty<int>();
         }
 
         public int Key { get; }
@@ -178,6 +195,12 @@ namespace GameCore.Rules.Gameplay.Quest
         /// <summary>Display names of branches 1..n (index 0 = branch 1).</summary>
         public IReadOnlyList<string> BranchNames { get; }
 
+        /// <summary>Quest keys that must be completed before this quest may start (P1.7a).</summary>
+        public IReadOnlyList<int> Prerequisites { get; }
+
+        /// <summary>Quest keys closed (failed) when this quest fails, besides every quest that lists it as a prerequisite (P1.7a).</summary>
+        public IReadOnlyList<int> Dependents { get; }
+
         public string BranchName(int branch) =>
             branch >= 1 && branch <= BranchNames.Count ? BranchNames[branch - 1] : "branch " + branch.ToString(CultureInfo.InvariantCulture);
     }
@@ -190,6 +213,9 @@ namespace GameCore.Rules.Gameplay.Quest
         AlreadyStarted = 2,
         StageOutOfRange = 3,
         ObjectiveOutOfRange = 4,
+
+        /// <summary>A prerequisite quest is not completed (P1.7a).</summary>
+        PrerequisitesUnmet = 5,
     }
 
     /// <summary>The mutable state of one quest (its slots).</summary>
@@ -300,6 +326,82 @@ namespace GameCore.Rules.Gameplay.Quest
             events.Add(new QuestEvent(QuestEventKind.StageEntered, 0, -1, 0, 0));
             CheckStage(quest, state, events);
             return QuestRefusal.None;
+        }
+
+        /// <summary>
+        /// True when every prerequisite of <paramref name="quest"/> is completed; <paramref name="statusOf"/> returns a quest
+        /// key's quest.status (an unknown key reads as inactive, so it blocks). <paramref name="unmet"/> is the first one
+        /// that is not (0 when all are).
+        /// </summary>
+        public static bool PrerequisitesMet(QuestModel quest, Func<int, int> statusOf, out int unmet)
+        {
+            unmet = 0;
+            for (int i = 0; i < quest.Prerequisites.Count; i++)
+            {
+                int key = quest.Prerequisites[i];
+                if (statusOf(key) != Completed)
+                {
+                    unmet = key;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary><see cref="Start"/> refused with PrerequisitesUnmet when a prerequisite quest is not completed (P1.7a).</summary>
+        public static QuestRefusal Start(QuestModel quest, QuestState state, Func<int, int> statusOf, List<QuestEvent> events)
+        {
+            if (state.Status == Inactive && !PrerequisitesMet(quest, statusOf, out int _))
+            {
+                return QuestRefusal.PrerequisitesUnmet;
+            }
+
+            return Start(quest, state, events);
+        }
+
+        /// <summary>
+        /// The quests a failure of <paramref name="failed"/> closes, in key order without duplicates: its declared
+        /// dependents and every quest that lists it as a prerequisite (P1.7a). The failed quest itself is never included.
+        /// </summary>
+        public static List<int> DependentsOf(QuestModel failed, IEnumerable<QuestModel> quests)
+        {
+            var keys = new SortedSet<int>();
+            for (int i = 0; i < failed.Dependents.Count; i++)
+            {
+                keys.Add(failed.Dependents[i]);
+            }
+
+            foreach (QuestModel quest in quests)
+            {
+                for (int i = 0; i < quest.Prerequisites.Count; i++)
+                {
+                    if (quest.Prerequisites[i] == failed.Key)
+                    {
+                        keys.Add(quest.Key);
+                        break;
+                    }
+                }
+            }
+
+            keys.Remove(failed.Key);
+            return new List<int>(keys);
+        }
+
+        /// <summary>
+        /// Closes a dependent of a failed quest (P1.7a): an inactive or active quest becomes failed (a Failed event at its
+        /// stage); a completed or already failed quest is left alone. True when it changed.
+        /// </summary>
+        public static bool CloseDependent(QuestState state, List<QuestEvent> events)
+        {
+            if (state.Status != Inactive && state.Status != Active)
+            {
+                return false;
+            }
+
+            state.Status = Failed;
+            events.Add(new QuestEvent(QuestEventKind.Failed, state.Stage, 0, 0, 0));
+            return true;
         }
 
         /// <summary>Sets an objective of the current stage to <paramref name="count"/>; done latches once the count reaches the requirement.</summary>
