@@ -602,7 +602,7 @@ namespace GameCore.Studio.Edit
                     return Refuse(candidate.Id, "play_mode", "Stop Play Mode before admitting a mechanism, or choose capture & stop.");
                 }
 
-                captureSlot = "admit-" + candidate.Id;
+                captureSlot = "admit-" + candidate.Id.ToLowerInvariant();
                 string? captureProblem = "no capture hook is registered (AdmissionOptions.Capture)";
                 if (Options.Capture == null || !Options.Capture.TryCapture(captureSlot, out captureProblem))
                 {

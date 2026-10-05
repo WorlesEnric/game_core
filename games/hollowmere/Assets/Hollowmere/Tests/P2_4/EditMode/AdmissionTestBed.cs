@@ -75,6 +75,27 @@ namespace Hollowmere.P2_4.EditMode.Tests
         }
     }
 
+    internal sealed class FakeCapture : IAdmissionCapture
+    {
+        public List<string> Captured { get; } = new List<string>();
+
+        public List<string> Restored { get; } = new List<string>();
+
+        public bool TryCapture(string slot, out string? problem)
+        {
+            Captured.Add(slot);
+            problem = null;
+            return true;
+        }
+
+        public bool TryRestore(string slot, out string? problem)
+        {
+            Restored.Add(slot);
+            problem = null;
+            return true;
+        }
+    }
+
     internal sealed class FakeChecker : IAdmissionChecker
     {
         public int Runs { get; private set; }

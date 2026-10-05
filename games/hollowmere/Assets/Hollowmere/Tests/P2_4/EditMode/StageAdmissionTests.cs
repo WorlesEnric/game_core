@@ -179,6 +179,37 @@ namespace Hollowmere.P2_4.EditMode.Tests
         }
 
         [Test]
+        public void PlayModeMustStopOrBeCapturedFirst()
+        {
+            bool playing = true;
+            FakeCapture capture = new FakeCapture();
+            _bed.Admission.Options.PlayModeProbe = () => playing;
+            _bed.Admission.Options.StopPlayMode = () => playing = false;
+            SortedDictionary<string, byte[]> files = AdmissionTestBed.PackageFiles();
+            ChangeSet candidate = _bed.Candidate(AdmissionTestBed.TarGz(files), out string packageSha, out string proposalSha);
+            byte[] verdict = _bed.Verdict(candidate.Id, packageSha, proposalSha, files);
+
+            AdmissionResult refused = _bed.Admission.Admit(candidate, verdict);
+            Assert.That(refused.Outcome, Is.EqualTo(AdmissionOutcome.Refused));
+            Assert.That(refused.Reason, Is.EqualTo("play_mode"));
+            Assert.That(playing, Is.True, "a plain Admit never stops the game");
+
+            AdmissionResult noHook = _bed.Admission.Admit(candidate, null, captureAndStop: true);
+            Assert.That(noHook.Reason, Is.EqualTo("capture_failed"), "capture & stop without a capture hook is refused");
+            Assert.That(playing, Is.True);
+            Assert.That(Directory.Exists(_bed.PackageDirectory), Is.False);
+
+            _bed.Admission.Options.Capture = capture;
+            AdmissionResult admitted = _bed.Admission.Admit(candidate, null, captureAndStop: true);
+            Assert.That(admitted.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), admitted.Detail);
+            Assert.That(playing, Is.False, "Play Mode was stopped after the capture");
+            Assert.That(capture.Captured, Is.EqualTo(new[] { "admit-" + candidate.Id.ToLowerInvariant() }));
+            Assert.That(admitted.CaptureSlot, Is.EqualTo(capture.Captured[0]));
+            Assert.That(_bed.Admission.RestoreCapture(admitted.CaptureSlot!, out string? problem), Is.True, problem);
+            Assert.That(capture.Restored, Is.EqualTo(capture.Captured));
+        }
+
+        [Test]
         public void UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash()
         {
             SortedDictionary<string, byte[]> files = AdmissionTestBed.PackageFiles();
