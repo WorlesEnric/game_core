@@ -686,8 +686,10 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
         std::thread::spawn(move || {
             while !done.load(std::sync::atomic::Ordering::Relaxed) {
                 if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                    // Cancellation may arrive while cache/licensing preparation is still
+                    // running. Keep removing until run_controlled has finished, including
+                    // a container whose launch raced the first removal.
                     sandbox.stop_container();
-                    break;
                 }
                 std::thread::sleep(Duration::from_millis(50));
             }

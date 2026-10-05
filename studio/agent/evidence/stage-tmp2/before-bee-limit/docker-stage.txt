@@ -1,0 +1,23 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 29s
+     Running tests/stage_tmp2_acceptance.rs (studio/agent/target/debug/deps/stage_tmp2_acceptance-b0d42fb24bd2adc1)
+
+running 1 test
+test stage_tmp2_docker_cold_warm_pressure has been running for over 60 seconds
+
+thread 'stage_tmp2_docker_cold_warm_pressure' (2522596) panicked at tests/stage_tmp2_acceptance.rs:294:5:
+assertion `left == right` failed: pressure acceptance blocked; see retained evidence
+  left: [false, false]
+ right: [true, true]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test stage_tmp2_docker_cold_warm_pressure ... FAILED
+
+failures:
+
+failures:
+    stage_tmp2_docker_cold_warm_pressure
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 623.86s
+
+error: test failed, to rerun pass `--test stage_tmp2_acceptance`

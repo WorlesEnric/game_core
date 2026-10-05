@@ -1,0 +1,152 @@
+{
+  "branch": "codex/stage-tmp2",
+  "base": "880d26cf",
+  "acceptanceImplementation": "6e8156f2",
+  "dockerStage": "PASS",
+  "rust": {
+    "ordinaryPassed": 125,
+    "ordinaryFailed": 0,
+    "ordinaryIgnored": 10,
+    "explicitDockerPassed": 3,
+    "signedServiceAcceptancePassed": 1,
+    "uniqueExecutedPasses": 129,
+    "remainingUnrunIgnored": 6,
+    "diagnosticBeforeBeeLimitFailedCases": 1
+  },
+  "pythonPassed": 19,
+  "slotSelfTestsPassed": 29,
+  "acceptedSlotChecksPassed": 2,
+  "analyzerDockerPassed": 50,
+  "negative": {
+    "exitCode": 3,
+    "findings": 21,
+    "ruleIds": [
+      "SG001",
+      "SG002",
+      "SG003",
+      "SG004",
+      "SG005",
+      "SG006",
+      "SG007",
+      "SG008",
+      "SG009",
+      "SG010"
+    ]
+  },
+  "unity": {
+    "cold": {
+      "editmodePassed": 33,
+      "playmodePassed": 2,
+      "rulesPassed": 15
+    },
+    "warm": {
+      "editmodePassed": 33,
+      "playmodePassed": 2,
+      "rulesPassed": 15
+    }
+  },
+  "timings": [
+    {
+      "run": "cold",
+      "pass": true,
+      "durationMs": 417486,
+      "budgetMs": 360000,
+      "coldCache": true,
+      "confinement": "docker",
+      "configuredBudgetMs": 360000,
+      "executionBudgetMs": 1800000,
+      "warmMeasurementReason": "Cold acceptance run; warm measurement is the subsequent request",
+      "serviceJobElapsedMs": 426197,
+      "warmMeasurement": false,
+      "status": "verdict-produced",
+      "candidateXmlCounts": {
+        "editmode": {
+          "id": "2",
+          "testcasecount": "33",
+          "result": "Passed",
+          "total": "33",
+          "passed": "33",
+          "failed": "0",
+          "inconclusive": "0",
+          "skipped": "0",
+          "asserts": "0",
+          "engine-version": "3.5.0.0",
+          "clr-version": "4.0.30319.42000",
+          "start-time": "2026-10-05 15:11:20Z",
+          "end-time": "2026-10-05 15:11:21Z",
+          "duration": "0.8112546"
+        },
+        "playmode": {
+          "id": "2",
+          "testcasecount": "2",
+          "result": "Passed",
+          "total": "2",
+          "passed": "2",
+          "failed": "0",
+          "inconclusive": "0",
+          "skipped": "0",
+          "asserts": "0",
+          "engine-version": "3.5.0.0",
+          "clr-version": "4.0.30319.42000",
+          "start-time": "2026-10-05 15:12:03Z",
+          "end-time": "2026-10-05 15:12:03Z",
+          "duration": "0.2845628"
+        }
+      }
+    },
+    {
+      "run": "warm",
+      "pass": true,
+      "durationMs": 265617,
+      "budgetMs": 360000,
+      "coldCache": false,
+      "confinement": "docker",
+      "configuredBudgetMs": 360000,
+      "executionBudgetMs": 360000,
+      "warmMeasurementReason": null,
+      "serviceJobElapsedMs": 265653,
+      "warmMeasurement": true,
+      "status": "verdict-produced",
+      "candidateXmlCounts": {
+        "editmode": {
+          "id": "2",
+          "testcasecount": "33",
+          "result": "Passed",
+          "total": "33",
+          "passed": "33",
+          "failed": "0",
+          "inconclusive": "0",
+          "skipped": "0",
+          "asserts": "0",
+          "engine-version": "3.5.0.0",
+          "clr-version": "4.0.30319.42000",
+          "start-time": "2026-10-05 15:15:58Z",
+          "end-time": "2026-10-05 15:16:00Z",
+          "duration": "1.5169335"
+        },
+        "playmode": {
+          "id": "2",
+          "testcasecount": "2",
+          "result": "Passed",
+          "total": "2",
+          "passed": "2",
+          "failed": "0",
+          "inconclusive": "0",
+          "skipped": "0",
+          "asserts": "0",
+          "engine-version": "3.5.0.0",
+          "clr-version": "4.0.30319.42000",
+          "start-time": "2026-10-05 15:16:40Z",
+          "end-time": "2026-10-05 15:16:40Z",
+          "duration": "0.6756901"
+        }
+      }
+    }
+  ],
+  "noPaidOps": true,
+  "checks": {
+    "fmt": "PASS",
+    "clippyAllTargetsDenyWarnings": "PASS",
+    "diffCheck": "PASS"
+  }
+}

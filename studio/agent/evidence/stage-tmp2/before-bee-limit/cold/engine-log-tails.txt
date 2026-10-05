@@ -1,0 +1,492 @@
+out/logs/checkers.log
+$ slot-checks.py  (exit Some(0), 26223 ms)
+slot-checks: 14 C# file(s), 6 asmdef(s), 0 problem(s)
+{"asmdefs": 6, "csharpFiles": 14, "ok": true, "problems": [], "slotProblems": 0}
+
+out/logs/dotnet.log
+$ Roslyn semantic analyzer  (exit Some(0), 71258 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+$ dotnet build Rules.csproj  (exit Some(0), 2103 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.31
+$ dotnet test Rules.Tests.csproj  (exit Some(0), 4104 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+  Determining projects to restore...
+  Restored /tmp/gamecore-stage-tmp2-service/node-lKiV1S/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/dotnet/Rules.Tests/Rules.Tests.csproj (in 148 ms).
+  1 of 2 projects are up-to-date for restore.
+  Rules -> /tmp/gamecore-stage-tmp2-service/node-lKiV1S/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/dotnet/Rules/bin/Debug/netstandard2.1/Hollowmere.Mechanism.PressurePlate.Rules.dll
+  Rules.Tests -> /tmp/gamecore-stage-tmp2-service/node-lKiV1S/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/dotnet/Rules.Tests/bin/Debug/net8.0/Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll
+Test run for /tmp/gamecore-stage-tmp2-service/node-lKiV1S/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/dotnet/Rules.Tests/bin/Debug/net8.0/Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.8.0 (x64)
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    15, Skipped:     0, Total:    15, Duration: 18 ms - Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll (net8.0)
+
+out/logs/editmode-20261005T225552-2535033-a1.log
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 96.0060ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.dll, with 124 defines and 243 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 100.5127ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.PressurePlate.dll, with 124 defines and 249 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+  - EILPP : GameCore.Gameplay.Cards : : 29ms (~12ms)
+    - EILPP : GameCore.Gameplay.Cards : ComponentDataPP: 1ms 
+    - EILPP : GameCore.Gameplay.Cards : StaticTypeRegistryPostProcessor: 11ms 
+    - EILPP : GameCore.Gameplay.Cards : WriteAssembly: 5ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.Gameplay.Narrative.Fixtures : : 129ms (~41ms)
+    - EILPP : GameCore.Gameplay.Narrative.Fixtures : ComponentDataPP: 4ms 
+    - EILPP : GameCore.Gameplay.Narrative.Fixtures : StaticTypeRegistryPostProcessor: 43ms 
+    - EILPP : GameCore.Gameplay.Narrative.Fixtures : WriteAssembly: 41ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 47.6313ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.World.dll, with 124 defines and 247 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 146.9020ms
+  - EILPP : GameCore.Unity.Fixtures : : 147ms (~40ms)
+    - EILPP : GameCore.Unity.Fixtures : ComponentDataPP: 41ms 
+    - EILPP : GameCore.Unity.Fixtures : StaticTypeRegistryPostProcessor: 14ms 
+    - EILPP : GameCore.Unity.Fixtures : WriteAssembly: 52ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : Hollowmere.Mechanism.PressurePlate : : 60ms (~45ms)
+    - EILPP : Hollowmere.Mechanism.PressurePlate : ComponentDataPP: 4ms 
+    - EILPP : Hollowmere.Mechanism.PressurePlate : StaticTypeRegistryPostProcessor: 2ms 
+    - EILPP : Hollowmere.Mechanism.PressurePlate : WriteAssembly: 9ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+  - EILPP : GameCore.Gameplay.World : : 29ms (~15ms)
+    - EILPP : GameCore.Gameplay.World : ComponentDataPP: 1ms 
+    - EILPP : GameCore.Gameplay.World : StaticTypeRegistryPostProcessor: 2ms 
+    - EILPP : GameCore.Gameplay.World : WriteAssembly: 11ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 74.1885ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Logic.dll, with 124 defines and 248 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+ExitCode: 2 Duration: 25s
+STDOUT:
+Finished compiling graph: 1371 nodes, 27580 flattened edges (20650 ToBuild, 264 ToUse), maximum node priority 2057
+[incomplete structured log omitted]
+
+out/logs/scan.log
+scanned 52 file(s), 155562 byte(s): 0 hit(s)
+
+out/logs/unity-editmode.log
+$ unity-batch.sh editmode (EditMode)  (exit Some(1), 127014 ms)
+-- attempt 1/2: Unity (arguments withheld from logs)
+RESULT editmode: FAIL (unity exit 1, 127s, attempts 1, log /tmp/gamecore-stage-tmp2-service/node-lKiV1S/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/out/logs/editmode-20261005T225552-2535033-a1.log)
+
+unity-stream-a1.log
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (36ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (72ms)
+			ProcessInitializeOnLoadAttributes (133ms)
+			ProcessInitializeOnLoadMethodAttributes (18ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Start importing Library/BuildPlayer.prefs using Guid(00000000000000005000000000000000) (DefaultImporter) -> (artifact id: '083d37eb6b0e82b8f5c1ec86344d848d') in 0.062355272 seconds
+Start importing Packages/com.unity.sysroot.linux-x86_64/CHANGELOG.md using Guid(d079a46bd2b13441ebad731de9b00dbe) (TextScriptImporter) -> (artifact id: '57ce7193d96ac7cb884973f5dc96cc1b') in 0.000978814 seconds
+Start importing Packages/com.unity.sysroot/README.md using Guid(51f3a1b7b38fe39689977681fe22df32) (TextScriptImporter) -> (artifact id: '741f6247cd2243e151c583a3bf0e1439') in 0.000665614 seconds
+Start importing Packages/com.unity.sysroot.linux-x86_64/package.json using Guid(82b3e10190ae04847a3432984fd63265) (PackageManifestImporter) -> (artifact id: '4094a568cd5cd3cfeb4c917c630408bc') in 0.000888651 seconds
+Start importing Packages/com.unity.sysroot/package.json using Guid(0445a7983a983d97f848d19d5eeebf7b) (PackageManifestImporter) -> (artifact id: '7f1dd2edd35db95076b342361c26c918') in 0.00049631 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/README.md using Guid(e476833ad0eb3d6afa792f32246c42d2) (TextScriptImporter) -> (artifact id: '21f55eb396a552c7f8bac32a390811cf') in 0.000493841 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/LICENSE.md using Guid(25c7823ec1068a4d49626b816b321aab) (TextScriptImporter) -> (artifact id: '1bf07f43fff9386dc7e95e7eccf8ba7e') in 0.000573477 seconds
+Start importing Packages/com.unity.sysroot.linux-x86_64/README.md using Guid(169a1eb50937145adaa82ac869cadee2) (TextScriptImporter) -> (artifact id: 'b332939361d9146fe489ad078f14c787') in 0.00048758 seconds
+Start importing Packages/com.unity.sysroot/Third Party Notices.md using Guid(77480111a80ad46e7b0d10da3fd3a092) (TextScriptImporter) -> (artifact id: '33805c2bba0dba0746d6a85a888020d7') in 0.00044425 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/package.json using Guid(b75d9a0470b1635b1a19f29fe9d743da) (PackageManifestImporter) -> (artifact id: '981fbf2bfd73b90175aa90fe3fedb2a6') in 0.000526209 seconds
+Start importing Packages/com.unity.sysroot/LICENSE.md using Guid(e76167c495d53ba6abcbb8df07973457) (TextScriptImporter) -> (artifact id: 'ebca5aabf661e3ccc2603fde66d31286') in 0.000546319 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/ValidationConfig.json using Guid(19ec794be6c353ba2a3ca871b1793808) (TextScriptImporter) -> (artifact id: '0de4dea32159aaaeccb132b172fc06b9') in 0.000466666 seconds
+Start importing Packages/com.unity.sysroot/CHANGELOG.md using Guid(6903637d170abe311a972b9d76142805) (TextScriptImporter) -> (artifact id: '55e969f3ab6baf63ae71ad6e78823962') in 0.00044007 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/Third Party Notices.md using Guid(fb6d64d4cca2e56778082a1c7685fbac) (TextScriptImporter) -> (artifact id: '4143ea85c7b1e05d8d47eea64edaa883') in 0.000495325 seconds
+Start importing Packages/com.unity.toolchain.linux-x86_64/CHANGELOG.md using Guid(ac31dd48a6c63fbdb8593e0542545f0d) (TextScriptImporter) -> (artifact id: '83e2fa1f565a5e1ab5a1df883c0aca94') in 0.00046095 seconds
+Start importing Packages/com.unity.sysroot.linux-x86_64/LICENSE.md using Guid(6e81a17100c6f4c2a9256fd0e4e3915c) (TextScriptImporter) -> (artifact id: '547779d1c2685e2aee2ebc98bbabff85') in 0.001641699 seconds
+Loading style catalogs (6)
+	StyleSheets/Extensions/base/common.uss
+	UIPackageResources/StyleSheets/Default/Variables/Public/common.uss
+	StyleSheets/Northstar/common.uss
+	StyleSheets/Extensions/fonts/inter.uss
+	StyleSheets/Extensions/base/dark.uss
+	UIPackageResources/StyleSheets/Default/Northstar/Palette/dark.uss
+Refreshing native plugins compatible for Editor in 0.00 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=75be76468fb58d1bc8f3af8c2d6d5f5a): Total: 18.176 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=55 (actual=55, local cache=0, cache server=0)
+		Asset DB Process Time: managed=5 ms, native=558 ms
+		Asset DB Callback time: managed=623 ms, native=86 ms
+		Scripting: domain reloads=1, domain reload time=334 ms, compile time=16565 ms, other=3 ms
+		Project Asset Count: scripts=39, non-scripts=16
+		Asset File Changes: new=63, changed=63, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 84.203ms
+	ApplyChangesToAssetFolders: 0.056ms
+	Scan: 29.646ms
+	OnSourceAssetsModified: 0.757ms
+	CategorizeAssetsWithTransientArtifact: 0.092ms
+	ProcessAssetsWithTransientArtifactChanges: 0.189ms
+	CategorizeAssets: 0.258ms
+	ImportOutOfDateAssets: 490.085ms (-16191.507ms without children)
+		ImportManagerImport: 116.206ms (6.164ms without children)
+			ImportInProcess: 109.936ms
+			UpdateCategorizedAssets: 0.106ms
+		CompileScripts: 16565.044ms
+		ReloadNativeAssets: 0.000ms
+		UnloadImportedAssets: 0.198ms
+		ReloadImportedAssets: 0.009ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.007ms
+		InitializingProgressBar: 0.005ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.122ms
+	PostProcessAllAssets: 624.146ms
+	Hotreload: 0.925ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 0.093ms
+	PersistCurrentRevisions: 0.046ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 0.003ms
+	Untracked: 16945.823ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.885ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-p
+Curl error 6: Could not resolve host: config.uca.cloud.unity3d.com
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 23 unused Assets / (0.6 MB). Loaded Objects now: 537.
+Memory consumption went from 75.0 MB to 74.4 MB.
+Total: 3.851491 ms (FindLiveObjects: 0.022642 ms CreateObjectMapping: 0.002959 ms MarkObjects: 3.521652 ms  DeleteObjects: 0.303773 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-ubuntu-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ubuntu channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+Cleanup mono
+debugger-agent: Unable to listen on 30
+Exiting batchmode successfully now!
+
+unity-stream-a2.log
+The backend process appears to still be running.
+AssetDatabase: script compilation time: 27.569580s
+Total cache size 33529259
+Total cache size after purge 33529259, took 00:00:00.0522577
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.dll, with 124 defines and 243 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.dll, with 124 defines and 244 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.Fixtures.dll, with 124 defines and 244 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 220.5520ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+  - EILPP : GameCore.Gameplay.Cards.Fixtures : : 26ms (~26ms)
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.Unity.App : : 43ms (~39ms)
+    - EILPP : GameCore.Unity.App : ComponentDataPP: 4ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 405.6114ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 53.6990ms
+  - EILPP : GameCore.Gameplay.Logic : : 246ms (~215ms)
+    - EILPP : GameCore.Gameplay.Logic : ComponentDataPP: 9ms 
+    - EILPP : GameCore.Gameplay.Logic : StaticTypeRegistryPostProcessor: 5ms 
+    - EILPP : GameCore.Gameplay.Logic : WriteAssembly: 17ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.Gameplay.Traversal : : 61ms (~42ms)
+    - EILPP : GameCore.Gameplay.Traversal : ComponentDataPP: 2ms 
+    - EILPP : GameCore.Gameplay.Traversal : StaticTypeRegistryPostProcessor: 4ms 
+    - EILPP : GameCore.Gameplay.Traversal : WriteAssembly: 13ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 114.1105ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 141.6325ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 333.8264ms
+Scripts have compiler errors.
+
+Aborting batchmode due to failure:
+Scripts have compiler errors.
+
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 652.9433ms
+
+unity-stream.log
+The backend process appears to still be running.
+AssetDatabase: script compilation time: 27.569580s
+Total cache size 33529259
+Total cache size after purge 33529259, took 00:00:00.0522577
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Unity.App.dll, with 124 defines and 243 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Traversal.dll, with 124 defines and 244 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gameplay.Cards.Fixtures.dll, with 124 defines and 244 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 220.5520ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+  - EILPP : GameCore.Gameplay.Cards.Fixtures : : 26ms (~26ms)
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.Unity.App : : 43ms (~39ms)
+    - EILPP : GameCore.Unity.App : ComponentDataPP: 4ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 405.6114ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 53.6990ms
+  - EILPP : GameCore.Gameplay.Logic : : 246ms (~215ms)
+    - EILPP : GameCore.Gameplay.Logic : ComponentDataPP: 9ms 
+    - EILPP : GameCore.Gameplay.Logic : StaticTypeRegistryPostProcessor: 5ms 
+    - EILPP : GameCore.Gameplay.Logic : WriteAssembly: 17ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.Gameplay.Traversal : : 61ms (~42ms)
+    - EILPP : GameCore.Gameplay.Traversal : ComponentDataPP: 2ms 
+    - EILPP : GameCore.Gameplay.Traversal : StaticTypeRegistryPostProcessor: 4ms 
+    - EILPP : GameCore.Gameplay.Traversal : WriteAssembly: 13ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 114.1105ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 141.6325ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 333.8264ms
+Scripts have compiler errors.
+
+Aborting batchmode due to failure:
+Scripts have compiler errors.
+
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 652.9433ms

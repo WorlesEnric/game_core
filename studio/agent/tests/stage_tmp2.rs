@@ -19,18 +19,19 @@ fn stage_tmp2_streams_before_exit_and_retains_interrupted_attempts() {
     sandbox.editor = temp.path().join("editor");
     std::fs::create_dir_all(&sandbox.editor).unwrap();
     std::fs::create_dir_all(&sandbox.slot).unwrap();
+    let executable = temp.path().join("gamecore-studio");
+    std::fs::copy(env!("CARGO_BIN_EXE_gamecore-studio"), &executable).unwrap();
     let engine = sandbox.editor.join("Unity");
     std::fs::write(
         &engine,
-        "#!/bin/sh\nprintf 'progress Bearer synthetic-test-secret\\n'\nsleep 30\n",
+        "#!/bin/sh\ntouch engine-started\nprintf 'progress Bearer synthetic-test-secret\\n'\nsleep 30\n",
     )
     .unwrap();
     std::fs::set_permissions(&engine, std::fs::Permissions::from_mode(0o700)).unwrap();
     let config = temp.path().join("sandbox.json");
     std::fs::write(&config, serde_json::to_vec(&sandbox).unwrap()).unwrap();
     for attempt in 1..=2 {
-        let started = Instant::now();
-        let mut child = Command::new(env!("CARGO_BIN_EXE_gamecore-studio"))
+        let mut child = Command::new(&executable)
             .args(["stage", "sandbox-unity"])
             .arg(&config)
             .stdout(Stdio::piped())
@@ -40,16 +41,25 @@ fn stage_tmp2_streams_before_exit_and_retains_interrupted_attempts() {
         BufReader::new(child.stdout.take().unwrap())
             .read_line(&mut line)
             .unwrap();
-        assert!(started.elapsed() < Duration::from_secs(5));
+        assert!(
+            std::fs::metadata(sandbox.slot.join("engine-started"))
+                .unwrap()
+                .modified()
+                .unwrap()
+                .elapsed()
+                .unwrap()
+                < Duration::from_secs(5)
+        );
         assert!(child.try_wait().unwrap().is_none());
         assert!(line.contains("progress Bearer [redacted]"));
         assert!(!line.contains("synthetic-test-secret"));
+        let interrupted = Instant::now();
         Command::new("kill")
             .args(["-TERM", &child.id().to_string()])
             .status()
             .unwrap();
         assert!(!child.wait().unwrap().success());
-        assert!(started.elapsed() < Duration::from_secs(8));
+        assert!(interrupted.elapsed() < Duration::from_secs(8));
         let retained =
             std::fs::read_to_string(sandbox.slot.join(format!("unity-stream-a{attempt}.log")))
                 .unwrap();
@@ -69,11 +79,24 @@ fn stage_tmp2_timeout_removes_attempt_container_before_next_attempt() {
         .ancestors()
         .nth(2)
         .unwrap();
-    let cache = std::path::PathBuf::from(std::env::var_os("STAGE_TMP_CACHE").unwrap());
+    let provisioned = std::path::PathBuf::from(std::env::var_os("STAGE_TMP_CACHE").unwrap());
+    let cache = temp.path().join("cache");
+    // This is a shell engine fixture. It needs the verified compiler closure, no UPM.
+    assert!(
+        Command::new(repo.join("studio/stage/provision-cache.sh"))
+            .arg(&cache)
+            .arg("--offline-from")
+            .arg(provisioned.join("nuget"))
+            .status()
+            .unwrap()
+            .success()
+    );
     let mut sandbox = Sandbox::defaults(&temp.path().join("slot"), &cache, repo);
     sandbox.editor = temp.path().join("editor");
     std::fs::create_dir_all(&sandbox.editor).unwrap();
     std::fs::create_dir_all(&sandbox.slot).unwrap();
+    let executable = temp.path().join("gamecore-studio");
+    std::fs::copy(env!("CARGO_BIN_EXE_gamecore-studio"), &executable).unwrap();
     let engine = sandbox.editor.join("Unity");
     std::fs::write(&engine, "#!/bin/sh\necho attempt-started\nsleep 30\n").unwrap();
     std::fs::set_permissions(&engine, std::fs::Permissions::from_mode(0o700)).unwrap();
@@ -89,16 +112,9 @@ fn stage_tmp2_timeout_removes_attempt_container_before_next_attempt() {
             .arg(repo.join("studio/stage/run-redacted.py"))
             .arg("--log")
             .arg(temp.path().join(format!("outer-{attempt}.log")))
-            .args([
-                "--timeout",
-                "10",
-                "--silence",
-                "600",
-                "--",
-                env!("CARGO_BIN_EXE_gamecore-studio"),
-                "stage",
-                "sandbox-unity",
-            ])
+            .args(["--timeout", "10", "--silence", "600", "--"])
+            .arg(&executable)
+            .args(["stage", "sandbox-unity"])
             .arg(&config)
             .output()
             .unwrap();
