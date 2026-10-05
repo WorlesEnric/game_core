@@ -82,6 +82,10 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         {
             Context?.Dispose();
             Runtime?.Dispose();
+
+            // An edit whose undo failed can still be only in memory (dirty, not yet written); write it now so the
+            // byte comparison below sees it and the restore replaces it, instead of a later save writing it back.
+            AssetDatabase.SaveAssets();
             string project = Directory.GetParent(Application.dataPath)!.FullName;
             foreach (KeyValuePair<string, byte[]> asset in _backup)
             {
