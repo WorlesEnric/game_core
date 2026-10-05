@@ -23,7 +23,6 @@ using GameCore.Gameplay.Entities.Editor;
 using GameCore.Gameplay.World;
 using GameCore.Gameplay.World.Editor;
 using Hollowmere.Boot;
-using Hollowmere.Boot.Debug;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -179,8 +178,6 @@ namespace Hollowmere.WorldAuthoring
             var boot = new GameObject("GameBoot");
             GameBoot gameBoot = boot.AddComponent<GameBoot>();
             gameBoot.Configure(manifest, false);
-            DebugTravelKeys keys = boot.AddComponent<DebugTravelKeys>();
-            keys.Configure(gameBoot);
             SceneManager.MoveGameObjectToScene(boot, scene);
 
             var cameraObject = new GameObject("Main Camera");
@@ -188,8 +185,6 @@ namespace Hollowmere.WorldAuthoring
             cameraObject.AddComponent<Camera>();
             cameraObject.AddComponent<AudioListener>();
             cameraObject.transform.SetPositionAndRotation(new Vector3(0f, 25f, -45f), Quaternion.Euler(28f, 0f, 0f));
-            DebugFlyCamera fly = cameraObject.AddComponent<DebugFlyCamera>();
-            fly.Configure(gameBoot);
             SceneManager.MoveGameObjectToScene(cameraObject, scene);
 
             EditorSceneManager.SaveScene(scene);

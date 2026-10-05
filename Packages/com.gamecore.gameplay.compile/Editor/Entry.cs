@@ -3,7 +3,8 @@
 // Bake reads one WorldDefinition and its region scenes (WorldReader), validates the model (BakeValidator), and only
 // when nothing is wrong writes, in this order:
 //
-//   1. <dir>/Catalog/<World>Catalog.catalog.json   the gamecore.catalog-description/1 document
+//   1. <dir>/Catalog/<World>Catalog.catalog.json   the gamecore.catalog-description/1 document (static registrations
+//                                                  plus every discovered IGameplayCatalogContributor, P1.3 seam)
 //   2. <generated dir>/<World>Catalog.g.cs (+ coverage)  through the content compiler (CatalogGenerator)
 //   3. <dir>/Catalog/<World>.bake.json            the canonical bake report, carrying the catalog fingerprint
 //   4. <dir>/<World>.manifest.asset               the RegionManifest the runtime boots from
@@ -319,7 +320,7 @@ namespace GameCore.Gameplay.Compile
                 return null;
             }
 
-            string description = CatalogDescriptionWriter.Write(read.World, paths.Naming);
+            string description = CatalogDescriptionWriter.Write(read.World, paths.Naming, CatalogContributionDiscovery.Discover());
             CatalogCompilationResult compiled = CatalogDescriptionReader.Read(description);
             if (!compiled.Succeeded)
             {

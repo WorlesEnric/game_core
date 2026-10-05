@@ -1,0 +1,26 @@
+{
+  "name": "com.gamecore.gameplay.player",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Player",
+  "description": "Catalog row 3 of the gameplay plugin library (P1.3): player exploration. Kernel half: the player plugin with the player.posX/Y/Z, yaw, stamina, focus (and regionKey, regenDelayMs bookkeeping) slots, the player.move/interact/setFocus routes and the PlayerMoved/FocusChanged/InteractRequested events, a DisableAutoCreation command system that applies the pure player rules, and a world extension that composes it into a GameplayWorld. Presentation and input: PlayerInputAdapter (Input System actions sampled once per frame into one player.move), PlayerLocomotion (CharacterController collision resolution fed back as the next move, view follows committed slots), ThirdPersonCamera (orbit with collision), InteractionFocus (ranked focus candidates, player.setFocus, prompt through IPromptPresenter), PortalProbe (portal travel from the committed pose). Authoring: PlayerDefinition and InputProfile; Editor tools player.setSpawn, player.tuneMovement, player.setCamera and the player validator.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "player"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6",
+    "com.unity.inputsystem": "1.19.0"
+  }
+}

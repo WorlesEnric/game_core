@@ -1,0 +1,25 @@
+{
+  "name": "com.gamecore.gameplay.npc",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay NPC",
+  "description": "Catalog row 4 of the gameplay plugin library (P1.3): NPCs. Kernel half: the npc plugin with the npc.state, behaviour, patrolIndex, mood, schedulePhase, targetX/Z (and logical posX/Z, yaw, timerMs) slots, the npc.setBehaviour/goTo/face/setMood/converse routes and the NpcArrived/NpcStateChanged/NpcUpdated events, and a DisableAutoCreation system that steps every NPC each step with the NpcLogicalMover (all NPCs move regardless of residency, at a reduced rate when their region is not resident) and applies schedule phases by step-derived world time. Presentation: NavMeshAgentBinder (resident views follow the logical pose through a NavMeshAgent, warped when they drift), NpcAnimatorBinder, NpcBubble (name/state bubble), all headless-safe. Talk: player.interact on a focused NPC asks IConversationStarter (P1.4) and holds the NPC in converse. Authoring: NpcDefinition, BehaviourDefinition, ScheduleDefinition, NpcRoster; Editor tools npc.addAt, npc.setPatrol, npc.setSchedule, npc.setBehaviour and the npc validator.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "npc"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

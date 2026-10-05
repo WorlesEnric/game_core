@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: DrownedBell
+  m_EditorClassIdentifier: 
+  authoringId: 3a8c25e4-9b7b-4f3b-a4c3-640c942ecd6e
+  entity: {fileID: 11400000, guid: 1d4b2e8101dbaea66a3fb54c1fc9e507, type: 2}
+  kind: 4
+  initialState: off
+  prompts:
+  - state: off
+    text: Ring the bell
+  - state: on
+    text: Silence the bell
+  conditionRef: 
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 1
+  range: 3.5
+  focusPriority: 0
+  focusHeight: 1
+  cue: 
+  contentStamp: 
