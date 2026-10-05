@@ -428,7 +428,7 @@ namespace Hollowmere.P3_2.Workflows
             }
             else
             {
-                SelectionSnapshot selection = context.Selection.Capture(EditorApplication.isPlaying ? SelectionMode.Play : SelectionMode.Edit);
+                SelectionSnapshot selection = context.Selection.Capture(EditorApplication.isPlaying ? GameCore.Studio.Model.SelectionMode.Play : GameCore.Studio.Model.SelectionMode.Edit);
                 prepared = context.Requests.Build(text, selection, IntentOrigin.Agent, null, null, null, worker);
                 ((JArray)r["ids"]!).Add(prepared.ChangeSetId);
                 St.SetReq(tag, r);
