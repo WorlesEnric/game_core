@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "note": "Socket reconnect/cursor replay passes; killing/restarting etosd is expressly forbidden, so the complete companion-death/node-death attribution scenario cannot run.",
+  "command": "studio/tools/verify-all.sh reconnect",
+  "row": "W-ETOS-06",
+  "scenario": "Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly",
+  "requirement": "SR-4.5, SR-9.2",
+  "reportedAt": "2026-10-05T21:03:25.252494+00:00",
+  "evidence": [
+    "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md"
+  ]
+}

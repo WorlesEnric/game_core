@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Fresh-boot restore retains the unloaded NPC\u2019s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
+    "NpcPatrol_CommitsWhatTheLogicalMoverComputes_AndRaisesNpcArrived"
+  ],
+  "row": "W-PLUG-04",
+  "scenario": "Patrol index across unload/reload and save/load",
+  "requirement": "SR-6.4",
+  "reportedAt": "2026-10-05T21:03:25.257636+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

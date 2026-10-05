@@ -1,0 +1,1 @@
+Initial orchestrator regression: 7 passed, 1 error. Malformed XML crashed the evidence collector. Fixed collector retains a FAIL record and continues; see p42-regressions. This is harness development evidence, not product acceptance.

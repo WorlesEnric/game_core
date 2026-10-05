@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "note": "Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established.",
+  "command": "GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L02_",
+  "row": "W-ETOS-02",
+  "scenario": "Unity key against another agent: `forbidden`; shown in Studio log",
+  "requirement": "SR-4.2",
+  "reportedAt": "2026-10-05T21:03:25.251558+00:00",
+  "evidence": [
+    "W-HOST-01/installed-hello-authority-20261005T185555.694549Z/live/dotnet-w-etos-02-authority.json"
+  ]
+}

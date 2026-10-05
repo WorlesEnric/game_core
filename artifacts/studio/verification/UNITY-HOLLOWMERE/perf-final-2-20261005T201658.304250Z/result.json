@@ -1,0 +1,26 @@
+{
+  "label": "perf-final-2",
+  "revision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:16:58.305558+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z/logs --label perf-final-2 --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z/results.xml -- -runTests -testPlatform PlayMode -testFilter 'Hollowmere\\.P1_1\\..*|Hollowmere\\.P1_3\\..*|Hollowmere\\.P1_7a\\..*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z",
+  "queuedAtRevision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "executionStarted": "2026-10-05T20:16:58.306894+00:00",
+  "sourceDiffSha256": "0ad7703f2f66a8c71b69ad3c0a982bca95850d398a938efdfa8f6063977145c3",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T20:17:35.171874+00:00",
+  "seconds": 36.86758426693268,
+  "suites": {
+    "results.xml": {
+      "total": 8,
+      "counts": {
+        "Passed": 8
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

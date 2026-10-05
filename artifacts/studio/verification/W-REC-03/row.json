@@ -1,0 +1,13 @@
+{
+  "status": "BLOCKED",
+  "note": "Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation.",
+  "command": "studio/tools/verify-all.sh stage",
+  "row": "W-REC-03",
+  "scenario": "Cancel region load mid-way; cancel staging job",
+  "requirement": "SR-9.1",
+  "reportedAt": "2026-10-05T21:03:25.262426+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+    "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md"
+  ]
+}

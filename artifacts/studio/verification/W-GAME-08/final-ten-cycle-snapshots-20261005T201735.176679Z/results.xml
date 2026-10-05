@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.5048073">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="464" result="Passed" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.504807" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1589" name="Hollowmere.P4_2.Tests.dll" fullname="~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.371878" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3652949" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1590" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.357477" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1591" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.350487" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1585" name="MemoryAndPumpAcceptanceTests" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-05 20:19:53Z" end-time="2026-10-05 20:20:38Z" duration="45.321355" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1586" name="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" methodname="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Explicit" seed="1981082755" result="Passed" start-time="2026-10-05 20:18:08Z" end-time="2026-10-05 20:20:38Z" duration="149.895707" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 graphical ten-cycle acceptance with real native/managed snapshots" />
+                <property name="Timeout" value="1200000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

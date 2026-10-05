@@ -1,0 +1,13 @@
+{
+  "label": "saltmarsh-linux-build",
+  "revision": "20e34d1e6a6800e4b0bd4a1e3ebd44611a968c55",
+  "host": "worlesenric",
+  "started": "2026-10-05T18:42:20.326196+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/cleanproof --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z/logs --label saltmarsh-build --timeout 3600 -- -quit -executeMethod Saltmarsh.Build.BuildLinuxPlayer",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-05T18:43:39.792184+00:00",
+  "seconds": 79.4675118769519
+}

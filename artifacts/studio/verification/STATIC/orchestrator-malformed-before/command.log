@@ -1,0 +1,67 @@
+test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh) ... ok
+test_P42_secret_and_home_redaction (test_verify.EvidenceTests.test_P42_secret_and_home_redaction) ... ok
+test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes) ... START TEST/xml
+END TEST/xml: BLOCKED (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes) ... START TEST/xml
+END TEST/xml: BLOCKED (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure) ... START TEST/xml
+ERROR
+test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=5 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+START TEST/xml
+END TEST/xml: PASS (0.0s)
+~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py:27: ResourceWarning: unclosed file <_io.TextIOWrapper name=5 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+======================================================================
+ERROR: test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 44, in test_R2_38_malformed_xml_is_retained_as_failure
+    r = self.invoke('<test-run')
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 95, in run
+    record['suites'] = {str(p.relative_to(folder)): xml_counts(p) for p in paths}
+                                                    ^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 40, in xml_counts
+    root = ET.parse(path).getroot()
+           ^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xml/etree/ElementTree.py", line 1204, in parse
+    tree.parse(source, parser)
+  File "/usr/lib/python3.12/xml/etree/ElementTree.py", line 569, in parse
+    self._root = parser._parse_whole(source)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+xml.etree.ElementTree.ParseError: unclosed token: line 1, column 0
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.353s
+
+FAILED (errors=1)

@@ -1,0 +1,37 @@
+{
+  "label": "editmode",
+  "revision": "38baed3d6484f29674131fba4c2773c41ebf68ab",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:00:38.584918+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/cleanproof --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-CLEANPROOF/editmode-20261005T190038.583676Z/logs --label editmode --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-CLEANPROOF/editmode-20261005T190038.583676Z/results.xml -- -runTests -testPlatform EditMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/UNITY-CLEANPROOF/editmode-20261005T190038.583676Z",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-05T19:01:14.410966+00:00",
+  "seconds": 35.82724849996157,
+  "suites": {
+    "results.xml": {
+      "total": 11,
+      "counts": {
+        "Passed": 10,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Saltmarsh",
+        "~/wkspace/gc-studio/p4.2/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.P4_2.Editor.Tests.dll",
+        "Saltmarsh",
+        "Saltmarsh.P4_2",
+        "Saltmarsh.P4_2.StageContractAcceptanceTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake",
+          "result": "Failed",
+          "detail": "R3-C requires CompanionClient.StageAppCandidateAsync(changeSetId, projectId, sourceRevision, catalogRevision, changeSet, toolCatalog, artifactBytes, ct). CompanionStageService must route app/sample candidates through signed /v1/stage/app-candidate.\n  Expected: True\n  But was:  False\n \n                 at Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake () [0x00033] in ~/wkspace/gc-studio/p4.2/games/cleanproof/Assets/Saltmarsh/Tests/P4_2/Editor/StageContractAcceptanceTests.cs:17\n \n               \n               Saving results to: ~/.config/unity3d/GameCore/Saltmarsh/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

@@ -1,0 +1,646 @@
+{
+  "W-UI-01": {
+    "status": "FAIL",
+    "note": "Graphical walking/picking captured and 1280×720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md",
+      "W-UI-01/layout-1280x720-*/README.md",
+      "GRAPHICAL/graphics-required-tests-20261005T191*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui\nstudio/tools/verify-all.sh graphics"
+  },
+  "W-UI-02": {
+    "status": "BLOCKED",
+    "note": "The capture includes marquee/overlap UI, but not the required three NPCs behind a fence with the resulting overlap choices.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui"
+  },
+  "W-UI-03": {
+    "status": "BLOCKED",
+    "note": "Logical-object selection is captured; the lantern subpart/prefab/scope chooser sequence is not demonstrated by this driver.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui"
+  },
+  "W-UI-04": {
+    "status": "PASS",
+    "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
+    "patterns": [
+      "W-GAME-08/final-ten-cycle-snapshots-*/README.md",
+      "W-GAME-08/final-ten-cycle-snapshots-*/memory-and-pumps.json",
+      "W-GAME-08/final-ten-cycle-snapshots-*/snapshot-manifest.json"
+    ],
+    "command": "studio/tools/verify-all.sh memory"
+  },
+  "W-UI-05": {
+    "status": "BLOCKED",
+    "note": "Recorded small-sample click p95 exceeds 16 ms, but the mandatory 100-pick p95 and 500-candidate marquee dataset is absent. Neither a qualified pass nor a full-workload timing verdict is inferred.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui"
+  },
+  "W-MODEL-02": {
+    "status": "BLOCKED",
+    "note": "Current index/impact tests cover typed references and lantern reward/stock; the exact deleted-item dialogue-line/objective witness is not exercised.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock"
+    ]
+  },
+  "W-TOOL-01": {
+    "status": "PASS",
+    "note": "Saltmarsh exports only installed production tools; fixture, Hollowmere and internal admission tools are absent. Catalog and installed-package manifest retained.",
+    "patterns": [
+      "UNITY-CLEANPROOF/editmode-20261005T190*/README.md",
+      "W-TOOL-01/*/tool-catalog.json",
+      "W-TOOL-01/*/installed-packages.json"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools"
+    ]
+  },
+  "W-TOOL-02": {
+    "status": "PASS",
+    "note": "Package metadata and exact asmdef-derived dependencies pass on the final harness tree.",
+    "patterns": [
+      "W-TOOL-02/final-metadata-*/README.md"
+    ],
+    "command": "python3 tools/check_package_metadata.py"
+  },
+  "W-EDIT-01": {
+    "status": "BLOCKED",
+    "note": "Real task/candidate IDs are recorded, but the worker move is rejected for missing scope, so no applied joined task/GameCore-operation History entry exists.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui"
+  },
+  "W-EDIT-02": {
+    "status": "PASS",
+    "note": "Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing",
+      "WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
+    ]
+  },
+  "W-EDIT-03": {
+    "status": "BLOCKED",
+    "note": "No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence.",
+    "patterns": [
+      "W-ETOS-07/installed-media-*/README.md",
+      "W-ETOS-07/direct-image-price-refusal-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh media"
+  },
+  "W-EDIT-04": {
+    "status": "BLOCKED",
+    "note": "Stale-target pieces pass, but the exact live NPC → exit Play → apply → delete → apply sequence is not retained as a combined acceptance run.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-EDIT-05": {
+    "status": "PASS",
+    "note": "Core and viewport gizmo tests compare the resulting journal entries with typed moves.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries",
+      "WEdit05_ViewportGizmoDragEqualsTypedMove"
+    ]
+  },
+  "W-EDIT-06": {
+    "status": "BLOCKED",
+    "note": "No durable Apply-to-authored workflow for runtime-only moves is exposed by the current engine/UI seam; runtime-only refusal tests are not this persistence workflow.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo"
+    ]
+  },
+  "W-EDIT-07": {
+    "status": "PASS",
+    "note": "Per-operation conflict/rebase tests pass; the retained real worker candidate also refuses with StaleContext after an actual registry revision change.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "W-EDIT-07/live-catalog-candidate-mode-*/README.md",
+      "W-EDIT-07/live-catalog-candidate-mode-*/stale-context.json"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "Conflict_RebaseReplansAgainstTheCurrentStamp",
+      "R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext"
+    ]
+  },
+  "W-EDIT-08": {
+    "status": "BLOCKED",
+    "note": "Existing timings are isolated operations; there is no completed 20-apply single-target/Marsh p95 and 1.5k-target compose dataset. The fixed budgets are not inferred from smaller probes.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-HOST-01": {
+    "status": "BLOCKED",
+    "note": "Immutable reinstall, no-op and authenticated hello pass. Full fresh install would touch provider credentials/restart etosd; node still reports TTS cost 0 after on-disk price updates, and image/describe/realtime acceptance is incomplete.",
+    "patterns": [
+      "W-HOST-01/immutable-install-*/README.md",
+      "W-HOST-01/installed-hello-authority-*/README.md",
+      "W-AI-07/installed-3d-refusal-tts-tamper-*/fixtures/generate-tts.json"
+    ],
+    "command": "bash artifacts/studio/verification/TOOLS/install-companion.sh"
+  },
+  "W-ETOS-01": {
+    "status": "BLOCKED",
+    "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope.",
+    "patterns": [
+      "W-ETOS-01/security-scan-*/README.md",
+      "W-ETOS-01/proxy-missing-app-*/README.md",
+      "W-ETOS-01/proxy-wrong-token-*/README.md",
+      "MACHINE/final-index-security.json"
+    ],
+    "command": "studio/tools/verify-all.sh security"
+  },
+  "W-ETOS-02": {
+    "status": "BLOCKED",
+    "note": "Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established.",
+    "patterns": [
+      "W-HOST-01/installed-hello-authority-*/live/dotnet-w-etos-02-authority.json"
+    ],
+    "command": "GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L02_"
+  },
+  "W-ETOS-04": {
+    "status": "BLOCKED",
+    "note": "The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh ui"
+  },
+  "W-ETOS-05": {
+    "status": "BLOCKED",
+    "note": "Live client cancellation completes in 556 ms with one task/no candidate, but the creator tray-button portion is not exercised.",
+    "patterns": [
+      "W-ETOS-06/installed-stream-resume-cancel-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh reconnect"
+  },
+  "W-ETOS-06": {
+    "status": "BLOCKED",
+    "note": "Socket reconnect/cursor replay passes; killing/restarting etosd is expressly forbidden, so the complete companion-death/node-death attribution scenario cannot run.",
+    "patterns": [
+      "W-ETOS-06/installed-stream-resume-cancel-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh reconnect"
+  },
+  "W-ETOS-07": {
+    "status": "FAIL",
+    "note": "Legacy Unity media calls fail 404 for an unregistered local request ID. Direct TTS generation/download/import/undo and tamper refusal pass, but a new texture/import is not achieved.",
+    "patterns": [
+      "W-ETOS-07/installed-media-*/README.md",
+      "W-ETOS-07/direct-tts-import-*/README.md",
+      "W-ETOS-07/direct-tts-import-*/tts-import.json",
+      "W-AI-07/installed-3d-refusal-tts-tamper-*/live/dotnet-f-i-refusals.json",
+      "W-ETOS-07/direct-image-price-refusal-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh media"
+  },
+  "W-ETOS-08": {
+    "status": "BLOCKED",
+    "note": "Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run.",
+    "patterns": [
+      "W-HOST-01/immutable-install-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh media"
+  },
+  "W-ETOS-09": {
+    "status": "BLOCKED",
+    "note": "Client cursor replay is real; a source recompile/domain reload while an in-flight task returns to the tray was not completed. Simulated reload tests remain component evidence.",
+    "patterns": [
+      "W-ETOS-06/installed-stream-resume-cancel-*/README.md",
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh reconnect"
+  },
+  "W-VOICE-01": {
+    "status": "FAIL",
+    "note": "Real PipeWire speech reached the microphone (44 frames, peak 0.199); the final transcript was “To lead every N P C in the village” with no partial revisions. Requests/journal/tray stayed unchanged.",
+    "patterns": [
+      "W-VOICE-01/capture-ready-recorded-wav-*/README.md",
+      "W-VOICE-01/capture-ready-recorded-wav-*/voice-result.json"
+    ],
+    "command": "studio/tools/verify-all.sh voice"
+  },
+  "W-AI-01": {
+    "status": "BLOCKED",
+    "note": "The image tariff remains unverified and manual media request ownership is broken; no current generated robe/material/undo workflow completed. R3 texture-binding regression passes only as component evidence.",
+    "patterns": [
+      "W-ETOS-07/installed-media-*/README.md",
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "D9_ImportedTextureTypedChangeSetUndoRedoAndBakeImpact"
+    ]
+  },
+  "W-AI-02": {
+    "status": "BLOCKED",
+    "note": "The packet’s one bounded text task produced a rejected well move. Ferryman dialogue/patrol/NavMesh behaviour in Play remains historical/partial P3.2 evidence, not a current end-to-end run.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md",
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-AI-03": {
+    "status": "BLOCKED",
+    "note": "R3-F fact handoff regressions pass, but no current real-worker conditional Odd line was produced and played; the bounded live task failed earlier on target scope.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "W-UI-01/ui-capture-20261005T192*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine"
+    ]
+  },
+  "W-AI-04": {
+    "status": "BLOCKED",
+    "note": "The stage-title binding exists and its tests pass; no current live-worker HUD edit and creator apply is retained.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "D10b_StageTitleTracksFirstActiveQuestAndClearsOnCompletion"
+    ]
+  },
+  "W-AI-05": {
+    "status": "BLOCKED",
+    "note": "Quest scope inference has regression coverage, but the requested live two-oil-flask edit and consequences in Play are not completed.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "D5_ProductionQuestSingletonInfersButRobeRemainsAmbiguous"
+    ]
+  },
+  "W-AI-06": {
+    "status": "BLOCKED",
+    "note": "The live edit was rejected before apply, so there is no current six-workflow undo/redo/close/reopen sequence to verify. Local journal/process recovery is reported separately.",
+    "patterns": [
+      "W-UI-01/ui-capture-20261005T192*/README.md",
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-AI-07": {
+    "status": "BLOCKED",
+    "note": "Hello honestly reports 3D not_configured and no 3D provider is called. The actual refusal is 409 budget_unpriced, failing the specified not_configured/blocked-code test; provider absence and tariff absence are conflated.",
+    "patterns": [
+      "W-AI-07/installed-3d-refusal-tts-tamper-*/README.md",
+      "W-AI-07/installed-3d-refusal-tts-tamper-*/live/dotnet-f-i-refusals.json"
+    ],
+    "command": "GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L05_"
+  },
+  "W-PLUG-01": {
+    "status": "BLOCKED",
+    "note": "Real three-region travel/pose/residency tests pass. Region texture/audio release and the required peak-relative Memory Profiler delta remain unmeasured.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md",
+      "B-REGION/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "TravelsVillageMarshBelfryVillage"
+    ]
+  },
+  "W-PLUG-02": {
+    "status": "BLOCKED",
+    "note": "Despawn/respawn variant and scale override preservation passes; the required real Animator-binding part is not asserted by this suite.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides"
+    ]
+  },
+  "W-PLUG-03": {
+    "status": "BLOCKED",
+    "note": "Real walking, focus/interact and travel pass; the deterministic script includes Jump but does not assert clearing a ledge and landing, so that required observation stays open.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WalksInteractsTalksPastNpcsAndTravels"
+    ]
+  },
+  "W-PLUG-04": {
+    "status": "PASS",
+    "note": "Fresh-boot restore retains the unloaded NPC’s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md",
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
+      "NpcPatrol_CommitsWhatTheLogicalMoverComputes_AndRaisesNpcArrived"
+    ]
+  },
+  "W-PLUG-05": {
+    "status": "PASS",
+    "note": "The actual Causeway Gate condition explain names the failed condition; committed locked-gate refusal and condition-controlled travel are exercised.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate",
+      "UsingTheWellSucceeds_AndTheLockedGateRefusesWithItsCode",
+      "APortalCondition_RefusesTravelWithAStableCode_UntilItHolds"
+    ]
+  },
+  "W-PLUG-06": {
+    "status": "PASS",
+    "note": "Conditional dialogue differs by fact; fresh-boot restoration preserves heard_rumour/gate_open and reattaches conversations.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "Dialogue_PreviewDiffersByFact",
+      "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+    ]
+  },
+  "W-PLUG-07": {
+    "status": "PASS",
+    "note": "Both quest branches pass; failure closes dependents transitively, cycles refuse, and the actual LanternLost failure ending is reached.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused",
+      "Failure_LanternLost"
+    ]
+  },
+  "W-PLUG-08": {
+    "status": "BLOCKED",
+    "note": "Exactly-once outbox restoration and grant IDs pass, but the specific repeated lantern pickup plus reload yielding exactly one lantern is not asserted by the retained tests.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply"
+    ]
+  },
+  "W-PLUG-09": {
+    "status": "PASS",
+    "note": "The real Hollowmere logic why-not trace names the failed condition and the change that would make it true.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt"
+    ]
+  },
+  "W-PLUG-10": {
+    "status": "BLOCKED",
+    "note": "Definition and tool validators run, but the same invalid definition is not compared through inspector, validator and live-agent fronts in one retained parity case.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-PLUG-11": {
+    "status": "BLOCKED",
+    "note": "Boot/UI/audio and direct TTS import pass; audible ambience crossfade and native clip release have no current combined capture/snapshot proof.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md",
+      "W-ETOS-07/direct-tts-import-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity"
+  },
+  "W-PLUG-12": {
+    "status": "PASS",
+    "note": "Both final-tree rebakes/Entry.Verify pass without output changes; byte identity and single-definition revision tests pass. Structural recipe revisions did not change, preserving existing save compatibility.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "W-PLUG-12/bake-hollowmere-20261005T185*/README.md",
+      "W-PLUG-12/bake-cleanproof-20261005T185*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh bake\nstudio/tools/verify-all.sh unity",
+    "tests": [
+      "BakeTwice_IsByteIdentical_AndVerifyPasses",
+      "OneFieldChange_ChangesOnlyThatDefinitionsRevision"
+    ]
+  },
+  "W-KERNEL-01": {
+    "status": "PASS",
+    "note": "Production GameApplication boot with a corrupted catalog returns CatalogFingerprintMismatch and creates no world.",
+    "patterns": [
+      "W-GAME-06/v1-gate-retry-*/gate/unity/editmode-results.xml"
+    ],
+    "command": "studio/tools/verify-all.sh v1",
+    "tests": [
+      "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
+    ]
+  },
+  "W-PERSIST-01": {
+    "status": "PASS",
+    "note": "Belfry save/fresh-boot restore preserves canonical slots, items/facts, resident region and in-flight work exactly once; real game mid-quest restore continues to ending C.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
+      "SaveRestoreMidQuest"
+    ]
+  },
+  "W-PERSIST-02": {
+    "status": "BLOCKED",
+    "note": "Cosmetic-content save compatibility passes, but the literal prefab rename/reopen case is not exercised; no claim is inferred from stable GUID design alone.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch"
+    ]
+  },
+  "W-PERSIST-03": {
+    "status": "PASS",
+    "note": "Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged.",
+    "patterns": [
+      "W-GAME-06/v1-gate-retry-*/gate/unity/editmode-results.xml"
+    ],
+    "command": "studio/tools/verify-all.sh v1",
+    "tests": [
+      "AV1SaveIsMigratedToV2OnRestore",
+      "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
+    ]
+  },
+  "W-REC-01": {
+    "status": "PASS",
+    "note": "Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained.",
+    "patterns": [
+      "W-REC-01/rollback-state-20261005T202*/README.md",
+      "W-REC-01/resume-state-20261005T202*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh recovery",
+    "tests": [
+      "R2-03-R2-38-rollback",
+      "R2-03-R2-38-resume"
+    ]
+  },
+  "W-REC-03": {
+    "status": "BLOCKED",
+    "note": "Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/editmode-final-gated-*/README.md",
+      "W-MECH-01/pressure-plate-explicit-paired-ui-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh stage"
+  },
+  "W-MECH-01": {
+    "status": "FAIL",
+    "note": "Installed paired UI Stage returns 404 no owned resource for the app-origin pressure-plate and semantic-negative samples; no signed verdict, coldCache, cold/warm stage duration, Admit or undo exists. No host fallback.",
+    "patterns": [
+      "W-MECH-01/pressure-plate-explicit-paired-ui-*/README.md",
+      "W-MECH-01/negative-semantic-explicit-paired-ui-*/README.md",
+      "W-MECH-01/semantic-analyzer-unit-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh stage",
+    "tests": [
+      "R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake"
+    ]
+  },
+  "W-GAME-01": {
+    "status": "BLOCKED",
+    "note": "The P3.1 recording is reused, as requested. It predates P3.1b and failed B-FRAME; P3.1b’s later 640×480 llvmpipe measurements cannot qualify final-tree RTX/1080p performance.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "Read the linked retained P3.1/P3.1b recording and frame manifests; do not make another ten-minute recording.",
+    "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made."
+  },
+  "W-GAME-05": {
+    "status": "BLOCKED",
+    "note": "Editor full-quest endings and save/load pass; a current standalone menu→save→load→ending→restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "tests": [
+      "EndingA_Silence",
+      "EndingB_Toll",
+      "EndingC_FreedEcho",
+      "SaveRestoreMidQuest"
+    ],
+    "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made."
+  },
+  "W-GAME-06": {
+    "status": "PASS",
+    "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
+    "patterns": [
+      "W-GAME-06/hollowmere-linux-retry-*/README.md",
+      "W-GAME-06/hollowmere-linux-retry-*/binary.json",
+      "W-GAME-06/v1-gate-retry-*/README.md",
+      "W-GAME-06/v1-resume-phases-9-11-*/README.md",
+      "W-GAME-06/v1-release-evidence-resume-*/README.md",
+      "W-GAME-06/final-player-manifests-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh build\nstudio/tools/verify-all.sh v1"
+  },
+  "W-GAME-07": {
+    "status": "BLOCKED",
+    "note": "Stopping etosd is forbidden by the packet; network-namespace isolation is unavailable on this host. Historical no-socket observation does not prove this exact final-tree stopped-node scenario.",
+    "patterns": [
+      "UNITY-HOLLOWMERE/playmode-final-harness-*/README.md"
+    ],
+    "command": "No service-stop command is authorized for this packet.",
+    "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made."
+  },
+  "W-GAME-08": {
+    "status": "PASS",
+    "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
+    "patterns": [
+      "W-GAME-08/final-ten-cycle-snapshots-*/README.md",
+      "W-GAME-08/final-ten-cycle-snapshots-*/memory-and-pumps.json",
+      "W-GAME-08/final-ten-cycle-snapshots-*/snapshot-manifest.json"
+    ],
+    "command": "studio/tools/verify-all.sh memory"
+  },
+  "W-CLEAN-01": {
+    "status": "PASS",
+    "note": "Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01.",
+    "patterns": [
+      "W-PLUG-12/bake-cleanproof-20261005T185*/README.md",
+      "UNITY-CLEANPROOF/clean-recheck-editmode-*/README.md",
+      "UNITY-CLEANPROOF/clean-recheck-playmode-*/README.md",
+      "W-CLEAN-01/cleanproof-fresh-build-cache-*/README.md",
+      "W-CLEAN-01/final-player-600-frames-*/README.md",
+      "W-GAME-06/final-player-manifests-*/cleanproof-player.sha256"
+    ],
+    "command": "studio/tools/verify-all.sh bake\nstudio/tools/verify-all.sh clean\nstudio/tools/verify-all.sh build"
+  },
+  "W-CLEAN-02": {
+    "status": "PASS",
+    "note": "After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/.",
+    "patterns": [
+      "W-CLEAN-02/package-diff-20261005T202*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh clean"
+  },
+  "W-DOC-01": {
+    "status": "BLOCKED",
+    "note": "No independent new-creator exercise of the draft guide is available; authoring automation cannot stand in for a novice following the document.",
+    "patterns": [
+      "W-PLUG-12/bake-cleanproof-20261005T185*/README.md"
+    ],
+    "command": "Follow docs/studio/08-creator-guide.md in the clean project; independent creator evidence is required."
+  },
+  "W-DOC-02": {
+    "status": "BLOCKED",
+    "note": "No developer-only-guide lever-plugin walkthrough is retained. The pressure-plate sample and existing unit tests do not establish that documentation acceptance.",
+    "patterns": [
+      "W-MECH-01/pressure-plate-explicit-paired-ui-*/README.md"
+    ],
+    "command": "Follow docs/studio/09-plugin-developer-guide.md to author the lever; independent walkthrough evidence is required."
+  },
+  "W-E2E-01": {
+    "status": "BLOCKED",
+    "note": "The integrated tree has real live-scope, app-origin stage, media-ownership and graphical/voice failures plus explicitly unqualified budgets; all rows are disposed, not all accepted.",
+    "patterns": [
+      "STATIC/final-evidence-regressions-*/README.md"
+    ],
+    "command": "studio/tools/verify-all.sh all\n# Display/node jobs are separate documented subcommands."
+  }
+}

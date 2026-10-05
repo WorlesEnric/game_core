@@ -1,0 +1,15 @@
+{
+  "status": "BLOCKED",
+  "note": "No durable Apply-to-authored workflow for runtime-only moves is exposed by the current engine/UI seam; runtime-only refusal tests are not this persistence workflow.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo"
+  ],
+  "row": "W-EDIT-06",
+  "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
+  "requirement": "SR-1.8",
+  "reportedAt": "2026-10-05T21:03:25.248859+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

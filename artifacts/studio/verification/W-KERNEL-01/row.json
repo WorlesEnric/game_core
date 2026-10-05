@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "note": "Production GameApplication boot with a corrupted catalog returns CatalogFingerprintMismatch and creates no world.",
+  "command": "studio/tools/verify-all.sh v1",
+  "tests": [
+    "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
+  ],
+  "row": "W-KERNEL-01",
+  "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
+  "requirement": "SR-7.1",
+  "reportedAt": "2026-10-05T21:03:25.260624+00:00",
+  "evidence": [
+    "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/unity/editmode-results.xml"
+  ]
+}

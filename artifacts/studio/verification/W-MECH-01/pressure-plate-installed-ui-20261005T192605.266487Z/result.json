@@ -1,0 +1,13 @@
+{
+  "label": "pressure-plate-installed-ui",
+  "revision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:26:05.267675+00:00",
+  "command": "bash -c 'set -euo pipefail\npgrep -af '\"'\"'Unity|ffmpeg|xvfb'\"'\"' || true\nif pgrep -x Unity >/dev/null; then echo '\"'\"'BLOCKED: another Editor is active'\"'\"'; exit 2; fi\nunity_tools_dir=\"$PWD/studio/tools\"\nsource \"$unity_tools_dir/unity-slot.sh\"\nunity_slot_acquire\ntrap unity_slot_release EXIT\nout=\"$1\"; shift\npython3 studio/stage/run-redacted.py --log \"$out/editor.log\" --timeout 1500 --silence 600 -- env \"$@\"\n' p42-graphics ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z DISPLAY=:1 GAMECORE_P42_EVIDENCE=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z GAMECORE_ETOS_LIVE=1 GAMECORE_ETOS_AUTOSTART=1 GAMECORE_ETOS_PROJECT_ID=fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8 GAMECORE_ETOS_KEY_FILE=~/.config/gamecore-studio/app-key.json GC_ETOS_EVIDENCE_DIR=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/live GC_ETOS_FIXTURE_OUT=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/fixtures GCS_P32_WORKFLOW=mech-b GCS_P32_OUT=~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/workflow GCS_P32_MECH_CANDIDATE=~/wkspace/gc-studio/p4.2/samples/mechanisms/pressure-plate/candidate ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -projectPath ~/wkspace/gc-studio/p4.2/games/hollowmere -logFile - -executeMethod Hollowmere.P3_2.Workflows.WorkflowRunner.Run",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-05T19:32:38.260335+00:00",
+  "seconds": 392.99383290391415
+}

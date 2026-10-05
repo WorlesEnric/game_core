@@ -1,0 +1,114 @@
+{
+  "label": "B-MEMORY-15-percent",
+  "revision": "50a4c07c202151e2e877dece26579dff6420cd66",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:48:27.753250+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/logs --label editmode-final-gated --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/results.xml -- -runTests -testPlatform EditMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z",
+  "queuedAtRevision": "50a4c07c202151e2e877dece26579dff6420cd66",
+  "executionStarted": "2026-10-05T20:48:27.754462+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "BLOCKED",
+  "ended": "2026-10-05T20:51:48.606564+00:00",
+  "seconds": 200.85446654097177,
+  "suites": {
+    "results.xml": {
+      "total": 464,
+      "counts": {
+        "Passed": 447,
+        "Skipped": 17
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+          "result": "Skipped",
+          "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+          "result": "Skipped",
+          "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+          "result": "Skipped",
+          "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+        },
+        {
+          "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+          "result": "Skipped",
+          "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+          "result": "Skipped",
+          "detail": "P4.2 physical layout requires a graphical Editor; run the layout qualification command."
+        },
+        {
+          "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+          "result": "Skipped",
+          "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+        },
+        {
+          "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        }
+      ]
+    }
+  },
+  "note": "Allocated growth 1.13%; budget 15%. Full Memory Profiler snapshots are absent."
+}

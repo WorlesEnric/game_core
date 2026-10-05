@@ -1,0 +1,11 @@
+-- attempt 1/2: Unity (arguments withheld from logs)
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/../stage/run-redacted.py", line 119, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/../stage/run-redacted.py", line 104, in main
+    write(line+b'\n')
+  File "~/wkspace/gc-studio/p4.2/studio/tools/../stage/run-redacted.py", line 79, in write
+    output.write(redact(text))
+OSError: [Errno 28] No space left on device
+RESULT saltmarsh-build: FAIL (unity exit 1, 79s, attempts 1, log ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z/logs/saltmarsh-build-20261006T024220-3344270-a1.log)

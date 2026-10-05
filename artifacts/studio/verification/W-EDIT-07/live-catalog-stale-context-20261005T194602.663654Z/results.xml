@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.3828653">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="463" result="Failed" site="Child" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.382865" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1588" name="Hollowmere.P4_2.Tests.dll" fullname="~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.370801" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3542966" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1589" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.369767" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1590" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.368350" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1578" name="CatalogLiveTests" fullname="Hollowmere.P4_2.CatalogLiveTests" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.365236" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1579" name="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" fullname="Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" methodname="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Explicit" seed="413512450" result="Failed" start-time="2026-10-05 19:46:36Z" end-time="2026-10-05 19:46:37Z" duration="0.355496" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Fetches the retained real worker candidate; no new task or paid operation" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  {
+  "requestId": "cs_01M46RHDNPQ3ZH1V5A0864010R",
+  "taskId": "t37c5b3de59d3b13c7592770e",
+  "candidateCatalog": "f139b366348e5a2222efae4ea1c41922df390218f864cf769115f19bce564ea8",
+  "before": "39debaa89f1582228a0f913fb08527e6c072bc0bfaf27a459d6f36ab894334ba",
+  "after": "8ca96fa35a41a8e6764f5ceae862e770aec682e7b14453140d618de915809033",
+  "ok": false,
+  "diagnostics": [
+    {
+      "code": "StaleTarget",
+      "message": "The region that holds the target is not loaded.",
+      "hint": "Load the region (or open its scene) and validate the selection again.",
+      "where": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      }
+    },
+    {
+      "code": "StaleTarget",
+      "message": "The region that holds the target is not loaded.",
+      "hint": "Load the region (or open its scene) and validate the selection again.",
+      "where": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      }
+    }
+  ]
+}
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.P4_2.CatalogLiveTests+<R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext>d__0.MoveNext () [0x00341] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/CatalogLiveTests.cs:46
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Live, 3d NotConfigured, describe Live
+[GameCore.Studio/etos] candidate cs_01M46RHDNPQ3ZH1V5A0864010R refused at staging in 330 ms (0 artifact(s) verified) (StaleTarget: The region that holds the target is not loaded. @ Entity(auth:e3baad87-1923-4823-82fe-69c3cc399bf4))
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

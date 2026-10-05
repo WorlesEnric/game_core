@@ -1,0 +1,13 @@
+{
+  "status": "FAIL",
+  "note": "Real PipeWire speech reached the microphone (44 frames, peak 0.199); the final transcript was \u201cTo lead every N P C in the village\u201d with no partial revisions. Requests/journal/tray stayed unchanged.",
+  "command": "studio/tools/verify-all.sh voice",
+  "row": "W-VOICE-01",
+  "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial revisions visible",
+  "requirement": "SR-4.8",
+  "reportedAt": "2026-10-05T21:03:25.254136+00:00",
+  "evidence": [
+    "W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/README.md",
+    "W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/voice-result.json"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "note": "Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing",
+    "WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
+  ],
+  "row": "W-EDIT-02",
+  "scenario": "5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report",
+  "requirement": "SR-3.2",
+  "reportedAt": "2026-10-05T21:03:25.247534+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

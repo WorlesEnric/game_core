@@ -41,14 +41,19 @@ fi
 host="${GC_STUDIO_HOST:-myubuntu}"
 remote_base="${GC_STUDIO_REMOTE_BASE:-wkspace/gc-studio}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-dest="${root}/artifacts/studio/evidence/P2.1"
+dest="${EVIDENCE_DEST:-${root}/artifacts/studio/evidence/P2.1}"
+on_host=0
+[[ "$(uname -s)" != Linux ]] || on_host=1
+host_exec() {
+  if (( on_host )); then bash -c "$2"; else command ssh "$@"; fi
+}
 sha="$(cd "${root}" && /usr/bin/git rev-parse HEAD)"
 stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 
 echo "-- evidence for ${packet}/${project} at ${sha} on ${host}"
 set +e
-remote_out="$(ssh "${host}" \
-  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' GCS_FLIP='${GCS_FLIP:-0}' bash -s" <<'HOST'
+remote_out="$(host_exec "${host}" \
+  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' EVIDENCE_ENTRY='${EVIDENCE_ENTRY:-Hollowmere.P2_1.Evidence.StudioUiEvidence.Run}' GCS_FLIP='${GCS_FLIP:-0}' bash -s" <<'HOST'
 set -euo pipefail
 unity="${UNITY_BIN:-${HOME}/Unity/Hub/Editor/6000.0.75f1/Editor/Unity}"
 base="${HOME}/${REMOTE_BASE}/${PACKET}"
@@ -86,10 +91,15 @@ screen="$(xdpyinfo -display "${EVIDENCE_DISPLAY}" 2>/dev/null | awk '/dimensions
 silence_limit="${EVIDENCE_SILENCE_TIMEOUT:-600}"
 rc=0
 for attempt in 1 2; do
-  rm -f "${out}"/*.png "${out}/evidence-log.jsonl"
+  if (( attempt > 1 )); then
+    mkdir -p "${out}/attempt-$((attempt - 1))"
+    for evidence in "${out}"/*.png "${out}/evidence-log.jsonl"; do
+      [[ ! -f "$evidence" ]] || mv "$evidence" "${out}/attempt-$((attempt - 1))/"
+    done
+  fi
   log="${out}/editor-a${attempt}.log"
-  DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout "$EVIDENCE_TIMEOUT" --silence "${EVIDENCE_SILENCE_TIMEOUT:-600}" -- "${unity}" -projectPath "${project_dir}" \
-    -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile - >/dev/null 2>&1 &
+  DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout "$EVIDENCE_TIMEOUT" --silence "${EVIDENCE_SILENCE_TIMEOUT:-600}" -- env GAMECORE_ETOS_KEY_FILE="${HOME}/.config/gamecore-studio/app-key.json" "${unity}" -projectPath "${project_dir}" \
+    -executeMethod "${EVIDENCE_ENTRY:-Hollowmere.P2_1.Evidence.StudioUiEvidence.Run}" -logFile - >/dev/null 2>&1 &
   pid=$!
   echo "-- attempt ${attempt}/2: interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY} (${screen}); output ${out}" >&2
   start=$(date +%s)
@@ -118,7 +128,9 @@ for attempt in 1 2; do
   fi
   echo "-- attempt ${attempt} finished rc=${rc} after $(( $(date +%s) - start ))s" >&2
   cp -f "${log}" "${out}/editor.log" 2>/dev/null || true
-  if (( rc != 124 )); then
+  # R3-E: only the documented ILPP startup failure may retry, before any live request.
+  if ! grep -qE "Can't find file /tmp/ilpp[.]sock-[A-Za-z0-9]+" "$log" ||
+     grep -q 'live-submit' "${out}/evidence-log.jsonl" 2>/dev/null || (( attempt == 2 )); then
     break
   fi
   rm -f "${project_dir}/Temp/UnityLockfile"
@@ -160,8 +172,12 @@ fi
 
 mkdir -p "${dest}"
 rm -f "${dest}"/*.png "${dest}/evidence-log.jsonl"
-scp -q "${host}:${out_dir}/*.png" "${host}:${out_dir}/evidence-log.jsonl" "${dest}/" || true
-ssh "${host}" "grep -E '\\[P2\\.1 evidence\\]|error CS|Exception' '${out_dir}/editor.log' | tail -n 80" > "${TMPDIR:-/tmp}/evidence-p2.1-editor-excerpt.txt" 2>/dev/null || true
+if (( on_host )); then
+  cp -a "${out_dir}/." "${dest}/"
+else
+  scp -q "${host}:${out_dir}/*.png" "${host}:${out_dir}/evidence-log.jsonl" "${dest}/" || true
+fi
+host_exec "${host}" "grep -E '\\[P2\\.1 evidence\\]|error CS|Exception' '${out_dir}/editor.log' | tail -n 80" > "${TMPDIR:-/tmp}/evidence-p2.1-editor-excerpt.txt" 2>/dev/null || true
 echo "-- editor log excerpt: ${TMPDIR:-/tmp}/evidence-p2.1-editor-excerpt.txt"
 
 python3 - "${dest}" "${sha}" "${host}" "${out_dir}" "${editor_rc}" <<'PY'

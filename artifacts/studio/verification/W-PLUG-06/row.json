@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Conditional dialogue differs by fact; fresh-boot restoration preserves heard_rumour/gate_open and reattaches conversations.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "Dialogue_PreviewDiffersByFact",
+    "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+  ],
+  "row": "W-PLUG-06",
+  "scenario": "Conditional choice and persisted fact",
+  "requirement": "SR-6.6",
+  "reportedAt": "2026-10-05T21:03:25.258289+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}

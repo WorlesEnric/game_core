@@ -1,0 +1,135 @@
+{
+  "label": "B-MEMORY-15-percent",
+  "revision": "74005cef34475678cb0bb539ea28962cb0d5dfdb",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:41:30.783212+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-harness-20261005T204130.782071Z/logs --label editmode-final-harness --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-harness-20261005T204130.782071Z/results.xml -- -runTests -testPlatform EditMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-final-harness-20261005T204130.782071Z",
+  "queuedAtRevision": "74005cef34475678cb0bb539ea28962cb0d5dfdb",
+  "executionStarted": "2026-10-05T20:41:30.784413+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "BLOCKED",
+  "ended": "2026-10-05T20:44:57.540691+00:00",
+  "seconds": 206.75855714594945,
+  "suites": {
+    "results.xml": {
+      "total": 464,
+      "counts": {
+        "Passed": 446,
+        "Skipped": 12,
+        "Failed": 6
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P3_1",
+        "Hollowmere.P3_1.EditMode",
+        "Hollowmere.P3_1.EditMode.Tests",
+        "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests",
+        "~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P4_2",
+        "Hollowmere.P4_2.CatalogLiveTests",
+        "Hollowmere.P4_2.DirectMediaTests",
+        "Hollowmere.P4_2.LayoutAcceptanceTests",
+        "Hollowmere.P4_2.VoiceAcceptanceTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+          "result": "Skipped",
+          "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+          "result": "Skipped",
+          "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+          "result": "Skipped",
+          "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+        },
+        {
+          "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+          "result": "Skipped",
+          "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+        },
+        {
+          "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent",
+          "result": "Failed",
+          "detail": "the second run applied steps: media.voices-28.Bram\n  Expected: <empty>\n  But was:  < \"media.voices-28.Bram\" >\n \n                     at Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent () [0x001ec] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31AuthoringTests.cs:82\n \n                   \n                   [GameCore.Studio/engine] applied cs_01M46WX0PH2DHFGCM6J3WV54KY -> Applied (1 op(s), 37.5 ms)\n[P3.1] AuthorAll second run: ok=True applied=1 skipped=71 ops=1 bake=True verify=True seconds=0.5; journal 117 -> 118; files 1224, changed 0; 624 ms"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+          "result": "Failed",
+          "detail": "System.InvalidOperationException : evidence required \n                   at Hollowmere.P4_2.CatalogLiveTests+<R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext>d__0.MoveNext () [0x00397] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/CatalogLiveTests.cs:48 \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+          "result": "Failed",
+          "detail": "System.InvalidOperationException : evidence required \n                   at Hollowmere.P4_2.DirectMediaTests+<R2_38_DirectImagePriceRefusalIsRecorded>d__0.MoveNext () [0x00263] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/DirectMediaTests.cs:36 \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+          "result": "Failed",
+          "detail": "String lengths are both 1. Strings differ at index 0.\n  Expected: \"1\"\n  But was:  \"0\"\n  -----------^\n \n                 at Hollowmere.P4_2.DirectMediaTests+<R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes>d__1.MoveNext () [0x0001a] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/DirectMediaTests.cs:43\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+          "result": "Failed",
+          "detail": "Expected: True\n  But was:  False\n \n                 at Hollowmere.P4_2.LayoutAcceptanceTests+<R2_30_1280By720WorkspaceContainsEveryStudioPanel>d__0.MoveNext () [0x0001f] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/LayoutAcceptanceTests.cs:21\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+          "result": "Skipped",
+          "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+        },
+        {
+          "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+          "result": "Failed",
+          "detail": "String lengths are both 1. Strings differ at index 0.\n  Expected: \"1\"\n  But was:  \"0\"\n  -----------^\n \n                 at Hollowmere.P4_2.VoiceAcceptanceTests+<R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits>d__0.MoveNext () [0x00036] in ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/VoiceAcceptanceTests.cs:25\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        }
+      ]
+    }
+  },
+  "note": "Allocated growth 0.08%; budget 15%. Full Memory Profiler snapshots are absent."
+}

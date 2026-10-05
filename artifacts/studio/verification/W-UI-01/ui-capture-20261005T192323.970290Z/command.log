@@ -1,0 +1,56 @@
+-- evidence for p4.2/games/hollowmere at d26494a498d422c9495ef503d88afbd1551d79c3 on myubuntu
+-- attempt 1/2: interactive Editor pid 3482473 on :1 (1920x1080); output ~/wkspace/gc-studio/p4.2/.evidence/P2.1-20261005T192605Z
+-- attempt 1 finished rc=1 after 130s
+01-first-run.png: 1600x850 120427 bytes
+02-studio-layout.png: 1600x871 216891 bytes
+03-select-click.png: 1600x871 253579 bytes
+04-inspect-hover.png: 1600x871 264458 bytes
+05-marquee.png: 1600x871 251495 bytes
+06-point-at.png: 1600x871 276976 bytes
+07-candidate-preview.png: 1600x871 107970 bytes
+08-candidate-applied.png: 1600x871 300815 bytes
+09-bounded-sample-undo.png: 1600x871 300815 bytes
+10-prompt-bar.png: 1600x871 303836 bytes
+12-live-request.png: 1600x871 99944 bytes
+13-bounded-history-error.png: 1600x871 99944 bytes
+16-play-mode.png: 1600x871 254556 bytes
+17-play-select.png: 1600x871 120622 bytes
+18-paused.png: 1600x871 121317 bytes
+-- editor log excerpt: /tmp/evidence-p2.1-editor-excerpt.txt
+# P2.1 studio-ui graphical evidence
+
+Commit `d26494a498d422c9495ef503d88afbd1551d79c3`, host `myubuntu` (interactive Unity 6000.0.75f1 on display :1, not batch mode), run directory `~/wkspace/gc-studio/p4.2/.evidence/P2.1-20261005T192605Z`, editor exit code 1.
+Produced by `studio/tools/evidence-p2.1.sh` driving `Hollowmere.P2_1.Evidence.StudioUiEvidence.Run`.
+
+| Step | Screenshot | UTC | What it shows | Viewport | Pump readout |
+|---|---|---|---|---|---|
+| 1 | [01-first-run.png](01-first-run.png) (117 KB) | 2026-10-05T19:26:42.104Z | First-run guide over the Studio layout (viewport, context, tasks, candidates, history). | Select 1048x583 pt, RT 1048x583, render 0.70 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 2 | [02-studio-layout.png](02-studio-layout.png) (211 KB) | 2026-10-05T19:26:44.738Z | GameCore/Studio/Open Studio over Thornwick Village (Edit mode, free camera framed on Village Well). | Select 1048x583 pt, RT 1048x583, render 0.65 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 3 | [03-select-click.png](03-select-click.png) (247 KB) | 2026-10-05T19:26:47.484Z | Select mode: click on Village Well (4 candidate(s), chosen from the overlap list); the overlap list shows every object under the cursor and the context panel the generated inspector and tools. | Select 1048x583 pt, RT 1048x583, render 0.70 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 4 | [04-inspect-hover.png](04-inspect-hover.png) (258 KB) | 2026-10-05T19:26:50.096Z | Inspect mode: hover card with type id, name, authoring id, definition@revision and stale badge. | Inspect 1048x583 pt, RT 1048x583, render 1.43 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 5 | [05-marquee.png](05-marquee.png) (245 KB) | 2026-10-05T19:26:52.768Z | Marquee (partial containment): 33 object(s) selected; badges show residency/stale state. | Select 1048x583 pt, RT 1048x583, render 0.70 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 6 | [06-point-at.png](06-point-at.png) (270 KB) | 2026-10-05T19:26:55.393Z | Right-click point-at: no ground hit added to the selection. | Select 1048x583 pt, RT 1048x583, render 2.98 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 7 | [07-candidate-preview.png](07-candidate-preview.png) (105 KB) | 2026-10-05T19:26:58.1Z | Candidate panel: Preview staged (diagnostics, 14.9 ms), ghost in the viewport, strip bottom-right. | Select 1048x583 pt, RT 1048x583, render 3.19 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 8 | [08-candidate-applied.png](08-candidate-applied.png) (293 KB) | 2026-10-05T19:27:00.723Z | Apply (Rejected in 27.0 ms); the History panel lists the agent entry. | Select 1048x583 pt, RT 1048x583, render 2.41 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 9 | [09-bounded-sample-undo.png](09-bounded-sample-undo.png) (293 KB) | 2026-10-05T19:27:00.8415700Z | Synthetic candidate did not apply; no unrelated History entry was undone. |   pt, RT -, render - | - |
+| 10 | [10-prompt-bar.png](10-prompt-bar.png) (296 KB) | 2026-10-05T19:27:03.334Z | Prompt bar with the live provider chips (Connected, gateway EtosAgentGateway); Send is enabled for "Move this well one metre to the east" with the well selected. | Select 1048x597 pt, RT 1048x583, render 0.88 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 12 | [12-live-request.png](12-live-request.png) (97 KB) | 2026-10-05T19:27:44.884Z | Live gateway round trip for "Move this well one metre to the east" (cs_01M46RHDNPQ3ZH1V5A0864010R) after 39 s: candidate Invalid (staged by the etos gateway, adopted by the panel): 1 op: move x1; worker gc-designer, etos done, tasks t37c5b3de59d3b13c7592770e. | Select 1048x583 pt, RT 1048x583, render 0.71 ms | health=NoWorld pumpsPerFrame=n/a framesObserved=0 pumpsObserved=0 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=0.00 maxFrameMs=0.00 state=edit mode |
+| 13 | [13-bounded-history-error.png](13-bounded-history-error.png) (97 KB) | 2026-10-05T19:27:45.0038870Z | Candidate cs_01M46RHDNPQ3ZH1V5A0864010R is Invalid; it cannot be staged or applied. |   pt, RT -, render - | - |
+| 16 | [16-play-mode.png](16-play-mode.png) (248 KB) | 2026-10-05T19:28:00.032Z | Play mode in the viewport: the player camera (ThirdPersonCamera's camera), input routed to the game (routing active, 1 Input System event(s)); W held for 2.5 s moved the player 6.30 m; pump 1.00 pumps/frame · 4.3 ms. | Play 1048x583 pt, RT 1048x583, render 0.64 ms | health=Ok pumpsPerFrame=1.000 framesObserved=1576 pumpsObserved=1576 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=4.27 maxFrameMs=1708.62 state=running |
+| 17 | [17-play-select.png](17-play-select.png) (117 KB) | 2026-10-05T19:28:02.681Z | Select in Play (free camera framed on Maren): clicked Maren (2 candidate(s), nearest), Village Well (3 candidate(s), target not under the cursor); selection: GameBoot [hollowmere.game]. | Select 1048x583 pt, RT 1048x583, render 1.04 ms | health=Ok pumpsPerFrame=1.000 framesObserved=2148 pumpsObserved=2148 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=4.40 maxFrameMs=1708.62 state=running |
+| 18 | [18-paused.png](18-paused.png) (118 KB) | 2026-10-05T19:28:05.263Z | Pause bound to the application root; pump 1.00 pumps/frame · 4.8 ms. | Select 1048x583 pt, RT 1048x583, render 0.50 ms | health=Ok pumpsPerFrame=1.000 framesObserved=2624 pumpsObserved=2624 framesOffByOne=0 duplicate=0 bypass=0 meanFrameMs=4.78 maxFrameMs=1708.62 state=running |
+
+## B-SELECT timings (picking queries, Stopwatch, ms)
+
+Last cumulative report: `click n=2 p50=1.22 p95=5.61 max=5.61 ms`
+
+## HUD walking
+
+Committed world.posX/posZ: 6.297 m in 2.505 s; HUD=True, image input=True.
+
+## Problems
+
+- step 9: Synthetic candidate did not apply; no unrelated History entry was undone.
+- step 13: Candidate cs_01M46RHDNPQ3ZH1V5A0864010R is Invalid; it cannot be staged or applied.
+
+15 screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); the live prompt used P2.2's gateway with the app key read from its key file, which no Studio window displays (the ETOS settings page is never opened), so no secret can be on screen.

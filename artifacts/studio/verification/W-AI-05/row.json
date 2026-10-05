@@ -1,0 +1,15 @@
+{
+  "status": "BLOCKED",
+  "note": "Quest scope inference has regression coverage, but the requested live two-oil-flask edit and consequences in Play are not completed.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "D5_ProductionQuestSingletonInfersButRobeRemainsAmbiguous"
+  ],
+  "row": "W-AI-05",
+  "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
+  "requirement": "mandate \u00a710",
+  "reportedAt": "2026-10-05T21:03:25.255876+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

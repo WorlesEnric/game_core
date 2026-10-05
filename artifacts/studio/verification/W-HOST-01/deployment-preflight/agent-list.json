@@ -1,0 +1,42 @@
+[
+  {
+    "agent": "gamecore-studio",
+    "version": "0.1.0",
+    "label": "GameCore Studio companion",
+    "source": "~/wkspace/gc-studio/main/studio/etos/agent",
+    "linked": true,
+    "state": "ready",
+    "pid": 2741620,
+    "restarts": 0,
+    "last_error": null,
+    "started_at": 1791214724258,
+    "connection": {
+      "connected": true,
+      "ready": true,
+      "sdk": "etos-sdk/rust/1.0.0",
+      "since": 1791214724537,
+      "endpoint": "http://127.0.0.1:39601",
+      "pending": 0
+    },
+    "grants": [
+      "logger",
+      "query",
+      "changes",
+      "tasks",
+      "files",
+      "topics",
+      "ops",
+      "providers",
+      "realtime",
+      "proxy",
+      "services"
+    ],
+    "workers": [
+      "gc-designer",
+      "gc-mechanic"
+    ],
+    "entrances": [],
+    "installed_at": 1791142156232,
+    "updated_at": 1791190286245
+  }
+]

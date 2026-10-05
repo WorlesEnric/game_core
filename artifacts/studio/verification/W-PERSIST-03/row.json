@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "note": "Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged.",
+  "command": "studio/tools/verify-all.sh v1",
+  "tests": [
+    "AV1SaveIsMigratedToV2OnRestore",
+    "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
+  ],
+  "row": "W-PERSIST-03",
+  "scenario": "Schema version bump with migration: restored; without: actionable refusal",
+  "requirement": "SR-6.12",
+  "reportedAt": "2026-10-05T21:03:25.261623+00:00",
+  "evidence": [
+    "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/unity/editmode-results.xml"
+  ]
+}

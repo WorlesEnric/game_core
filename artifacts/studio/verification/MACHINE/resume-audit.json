@@ -1,0 +1,408 @@
+[
+  {
+    "attempt": "GRAPHICAL/graphics-required-tests-20261005T172641.170099Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Failed",
+        "detail": "real UI Toolkit event delivery\n  Expected: 1\n  But was:  0\n \n                     at GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers () [0x00140] in ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:219"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+        "result": "Failed",
+        "detail": "Expected: (x:20.00, y:40.00, width:1048.00, height:772.00)\n  But was:  (x:100.00, y:100.00, width:800.00, height:700.00)\n \n                     at GameCore.Studio.UI.Tests.R3UiRegressionTests+<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__2.MoveNext () [0x000e9] in ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:70\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+      }
+    ]
+  },
+  {
+    "attempt": "STATIC/collector-temp-root-regression-before-20261005T180136.487684Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "STATIC/dotnet-20261005T170105.969990Z",
+    "status": "BLOCKED",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L06_CandidateStageFetchesAndVerifiesTheSignedRecord",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L02_TheAppKeyReachesNothingButItsOwnAgent",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L04_VoiceTranscribesARealSpokenPromptThroughTheNode",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L01_HelloThroughTheProxyReportsProviderStates",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      }
+    ]
+  },
+  {
+    "attempt": "STATIC/dotnet-20261005T185357.113798Z",
+    "status": "BLOCKED",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L02_TheAppKeyReachesNothingButItsOwnAgent",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L04_VoiceTranscribesARealSpokenPromptThroughTheNode",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L06_CandidateStageFetchesAndVerifiesTheSignedRecord",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "L01_HelloThroughTheProxyReportsProviderStates",
+        "result": "NotExecuted",
+        "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      }
+    ]
+  },
+  {
+    "attempt": "STATIC/host-local-before-20261005T170758.504928Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "STATIC/host-python-20261005T170215.225826Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "STATIC/host-python-20261005T185456.069013Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "UNITY-CLEANPROOF/clean-recheck-editmode-20261005T182050.502116Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake",
+        "result": "Failed",
+        "detail": "R3-C requires CompanionClient.StageAppCandidateAsync(changeSetId, projectId, sourceRevision, catalogRevision, changeSet, toolCatalog, artifactBytes, ct). CompanionStageService must route app/sample candidates through signed /v1/stage/app-candidate.\n  Expected: True\n  But was:  False\n \n                 at Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake () [0x00033] in ~/wkspace/gc-studio/p4.2/games/cleanproof/Assets/Saltmarsh/Tests/P4_2/Editor/StageContractAcceptanceTests.cs:17\n \n               \n               Saving results to: ~/.config/unity3d/GameCore/Saltmarsh/TestResults.xml"
+      }
+    ]
+  },
+  {
+    "attempt": "UNITY-CLEANPROOF/editmode-20261005T190038.583676Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake",
+        "result": "Failed",
+        "detail": "R3-C requires CompanionClient.StageAppCandidateAsync(changeSetId, projectId, sourceRevision, catalogRevision, changeSet, toolCatalog, artifactBytes, ct). CompanionStageService must route app/sample candidates through signed /v1/stage/app-candidate.\n  Expected: True\n  But was:  False\n \n                 at Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake () [0x00033] in ~/wkspace/gc-studio/p4.2/games/cleanproof/Assets/Saltmarsh/Tests/P4_2/Editor/StageContractAcceptanceTests.cs:17\n \n               \n               Saving results to: ~/.config/unity3d/GameCore/Saltmarsh/TestResults.xml"
+      }
+    ]
+  },
+  {
+    "attempt": "UNITY-HOLLOWMERE/editmode-20261005T171102.242838Z",
+    "status": "BLOCKED",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+        "result": "Skipped",
+        "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      },
+      {
+        "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+        "result": "Skipped",
+        "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      }
+    ]
+  },
+  {
+    "attempt": "UNITY-HOLLOWMERE/editmode-20261005T185625.043671Z",
+    "status": "BLOCKED",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+        "result": "Skipped",
+        "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      },
+      {
+        "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+        "result": "Skipped",
+        "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+        "result": "Skipped",
+        "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+      }
+    ]
+  },
+  {
+    "attempt": "W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z",
+    "status": "FAIL",
+    "diskSymptoms": [
+      {
+        "file": "W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z/command.log",
+        "line": 10,
+        "message": "OSError: [Errno 28] No space left on device"
+      },
+      {
+        "file": "W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z/logs/saltmarsh-build-20261006T024220-3344270-a1.log",
+        "line": 269,
+        "message": "Warning: Disk space low. The project is on a drive with diskspace below 1.00 GB. Please free up some space for Unity to work correctly."
+      }
+    ],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "W-GAME-06/hollowmere-linux-build-20261005T183343.413775Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "W-GAME-06/v1-gate-20261005T173334.352630Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "W-GAME-06/v1-resumed-phases-6-10-20261005T182148.098597Z",
+    "status": "INCOMPLETE",
+    "diskSymptoms": [
+      {
+        "file": "W-GAME-06/v1-resumed-phases-6-10-20261005T182148.098597Z/command.log",
+        "line": 1926,
+        "message": "mkdir: cannot create directory \u2018~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-06/v1-resume-artifacts/release/codegen-attempts\u2019: No space left on device"
+      }
+    ],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "W-GAME-08/memory-20261005T185951.720007Z",
+    "status": "BLOCKED",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+        "result": "Skipped",
+        "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      },
+      {
+        "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+        "result": "Skipped",
+        "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+        "result": "Skipped",
+        "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+      }
+    ]
+  },
+  {
+    "attempt": "W-REC-01/resume-killed-editor-20261005T174227.978810Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  },
+  {
+    "attempt": "W-REC-01/rollback-killed-editor-20261005T174119.215565Z",
+    "status": "FAIL",
+    "diskSymptoms": [],
+    "expectedTermination": false,
+    "nonpassing": []
+  }
+]

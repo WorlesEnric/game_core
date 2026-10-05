@@ -1,0 +1,30 @@
+{
+  "label": "installed-3d-refusal-tts-tamper",
+  "revision": "d26494a498d422c9495ef503d88afbd1551d79c3",
+  "host": "worlesenric",
+  "started": "2026-10-05T19:29:45.991231+00:00",
+  "command": "dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter 'FullyQualifiedName~L05_' --logger trx --results-directory ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-05T19:29:51.023472+00:00",
+  "seconds": 5.0334419689606875,
+  "suites": {
+    "trx/_worlesenric_2026-10-06_03_29_50.trx": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused",
+          "result": "Failed",
+          "detail": "Expected: \"not_configured\" or \"blocked\"\n  But was:  \"budget_unpriced\"\n \n              at GameCore.Studio.Etos.Client.Tests.LiveTests.L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused() in ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/LiveTests.cs:line 272\n   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.BlockUntilCompleted()\n   at NUnit.Framework.Internal.MessagePumpStrategy.NoMessagePumpStrategy.WaitForCompletion(AwaitAdapter awaiter)\n   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)\n   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()\n   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)\n\n1)    at GameCore.Studio.Etos.Client.Tests.LiveTests.L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused() in ~/wkspace/gc-studio/p4.2/dotnet/tests/GameCore.Studio.Etos.Client.Tests/LiveTests.cs:line 272"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

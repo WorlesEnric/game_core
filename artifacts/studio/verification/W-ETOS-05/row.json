@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "note": "Live client cancellation completes in 556 ms with one task/no candidate, but the creator tray-button portion is not exercised.",
+  "command": "studio/tools/verify-all.sh reconnect",
+  "row": "W-ETOS-05",
+  "scenario": "Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task",
+  "requirement": "SR-4.4",
+  "reportedAt": "2026-10-05T21:03:25.252159+00:00",
+  "evidence": [
+    "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md"
+  ]
+}

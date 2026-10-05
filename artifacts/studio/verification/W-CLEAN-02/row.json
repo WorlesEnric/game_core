@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "note": "After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/.",
+  "command": "studio/tools/verify-all.sh clean",
+  "row": "W-CLEAN-02",
+  "scenario": "Kernel diff empty after the clean exercise",
+  "requirement": "SR-7.3",
+  "reportedAt": "2026-10-05T21:03:25.267282+00:00",
+  "evidence": [
+    "W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md"
+  ]
+}

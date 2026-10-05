@@ -1,0 +1,114 @@
+test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh) ... ok
+test_P42_secret_and_home_redaction (test_verify.EvidenceTests.test_P42_secret_and_home_redaction) ... ok
+test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip) ... ERROR
+test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes) ... ERROR
+test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes) ... ERROR
+test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes) ... ERROR
+test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure) ... ERROR
+test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts) ... ERROR
+
+======================================================================
+ERROR: test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 36, in test_R2_37_failure_wins_over_skip
+    r = self.invoke('<test-run><test-case result="Failed"/><test-case result="Skipped"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmp6uw76bnx/TEST/xml-20261005T180136.552098Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+======================================================================
+ERROR: test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 32, in test_R2_37_skipped_xml_never_passes
+    r = self.invoke('<test-run><test-case result="Passed"/><test-case result="Skipped"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmp43ons0da/TEST/xml-20261005T180136.553908Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+======================================================================
+ERROR: test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 40, in test_R2_37_suite_setup_failure_never_passes
+    r = self.invoke('<test-run result="Failed"><test-case result="Passed"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmplqb8vfpf/TEST/xml-20261005T180136.555154Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+======================================================================
+ERROR: test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 49, in test_R2_38_empty_xml_never_passes
+    self.assertEqual('BLOCKED', self.invoke('<test-run/>')['status'])
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmpgyty6r7x/TEST/xml-20261005T180136.556541Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+======================================================================
+ERROR: test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 44, in test_R2_38_malformed_xml_is_retained_as_failure
+    r = self.invoke('<test-run')
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmp6or2xiqk/TEST/xml-20261005T180136.558644Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+======================================================================
+ERROR: test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 52, in test_R2_38_repeat_keeps_both_attempts
+    self.invoke('<test-run><test-case result="Failed"/></test-run>')
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 27, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=str(folder.relative_to(ROOT)))
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/tmpa72ne2ey/TEST/xml-20261005T180136.560349Z' is not in the subpath of '~/wkspace/gc-studio/p4.2'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.031s
+
+FAILED (errors=6)

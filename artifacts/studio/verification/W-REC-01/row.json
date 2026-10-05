@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "note": "Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained.",
+  "command": "studio/tools/verify-all.sh recovery",
+  "tests": [
+    "R2-03-R2-38-rollback",
+    "R2-03-R2-38-resume"
+  ],
+  "row": "W-REC-01",
+  "scenario": "Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback",
+  "requirement": "SR-3.3",
+  "reportedAt": "2026-10-05T21:03:25.261906+00:00",
+  "evidence": [
+    "W-REC-01/rollback-state-20261005T202208.950937Z/README.md",
+    "W-REC-01/resume-state-20261005T202307.744000Z/README.md"
+  ]
+}

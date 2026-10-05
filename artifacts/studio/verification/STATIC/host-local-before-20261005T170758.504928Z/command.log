@@ -1,0 +1,14 @@
+test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh) ... FAIL
+
+======================================================================
+FAIL: test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2/studio/tools/Tests/P4_2/test_verify.py", line 74, in test_P42_HOST_01_local_linux_never_uses_ssh
+    self.assertNotIn('UNEXPECTED_SSH', p.stdout + p.stderr)
+AssertionError: 'UNEXPECTED_SSH' unexpectedly found in '-- evidence for p4.2/games/hollowmere at 813e6b4591d864c30450ffd436bd8008bb0e67e1 on myubuntu\nUNEXPECTED_SSH\nevidence-p2.1.sh: the host run produced no output directory (rc=99)\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+FAILED (failures=1)

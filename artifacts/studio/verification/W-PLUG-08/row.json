@@ -1,0 +1,15 @@
+{
+  "status": "BLOCKED",
+  "note": "Exactly-once outbox restoration and grant IDs pass, but the specific repeated lantern pickup plus reload yielding exactly one lantern is not asserted by the retained tests.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply"
+  ],
+  "row": "W-PLUG-08",
+  "scenario": "Take spam + reload: exactly one lantern",
+  "requirement": "SR-6.8",
+  "reportedAt": "2026-10-05T21:03:25.258921+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+  ]
+}

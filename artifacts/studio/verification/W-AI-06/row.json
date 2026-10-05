@@ -1,0 +1,13 @@
+{
+  "status": "BLOCKED",
+  "note": "The live edit was rejected before apply, so there is no current six-workflow undo/redo/close/reopen sequence to verify. Local journal/process recovery is reported separately.",
+  "command": "studio/tools/verify-all.sh unity",
+  "row": "W-AI-06",
+  "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
+  "requirement": "mandate \u00a710",
+  "reportedAt": "2026-10-05T21:03:25.256112+00:00",
+  "evidence": [
+    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

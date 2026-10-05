@@ -1,0 +1,14 @@
+# R2-03-R2-38-resume
+
+Verdict: **PASS**. A real SIGKILL at the engine fault hook; the killed-editor attempt is an expected nonzero exit, retained separately. Recovery is checked in a different Editor process.
+
+Source revision: `c532b77edd93099ddd1e45d20f48db5d627413b3`; host: `worlesenric`.
+Started: 2026-10-05T20:23:33.361032+00:00; ended: 2026-10-05T20:24:04.698299+00:00; duration: 31.338 s.
+
+Command (from repository root unless cwd specified):
+
+```sh
+bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/resume-reopened-editor-20261005T202333.359864Z/logs --label recovery-reopen -- -executeMethod Hollowmere.P4_2.ProcessRecovery.Recover -p42State ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/resume-state-20261005T202307.744000Z
+```
+
+Text evidence redacts credentials and substitutes `~` for absolute home paths. XML dispositions are unchanged; trailing log whitespace is normalized. Hashes describe these retained sanitized bytes.

@@ -1,0 +1,16 @@
+{
+  "label": "rollback-reopened-editor",
+  "revision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:22:37.273889+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/rollback-reopened-editor-20261005T202237.272767Z/logs --label recovery-reopen -- -executeMethod Hollowmere.P4_2.ProcessRecovery.Recover -p42State ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-REC-01/rollback-state-20261005T202208.950937Z",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-REC-01/rollback-reopened-editor-20261005T202237.272767Z",
+  "queuedAtRevision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "executionStarted": "2026-10-05T20:22:37.275220+00:00",
+  "sourceDiffSha256": "0ad7703f2f66a8c71b69ad3c0a982bca95850d398a938efdfa8f6063977145c3",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T20:23:07.740849+00:00",
+  "seconds": 30.468037062091753
+}

@@ -1,0 +1,15 @@
+{
+  "status": "BLOCKED",
+  "note": "Current index/impact tests cover typed references and lantern reward/stock; the exact deleted-item dialogue-line/objective witness is not exercised.",
+  "command": "studio/tools/verify-all.sh unity",
+  "tests": [
+    "IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock"
+  ],
+  "row": "W-MODEL-02",
+  "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
+  "requirement": "SR-2.2",
+  "reportedAt": "2026-10-05T21:03:25.245592+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+  ]
+}

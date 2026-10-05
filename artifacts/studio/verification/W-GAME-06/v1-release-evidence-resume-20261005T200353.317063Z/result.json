@@ -1,0 +1,16 @@
+{
+  "label": "v1-release-evidence-resume",
+  "revision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "host": "worlesenric",
+  "started": "2026-10-05T20:03:54.199876+00:00",
+  "command": "bash -c 'set -euo pipefail\nmkdir -p \"$ARTIFACTS/toolchain\"\ncp \"$P42_PHASE1/toolchain/probe-replay.json\" \"$ARTIFACTS/toolchain/probe-replay.json\"\nsha256sum \"$P42_PHASE1/toolchain/probe-replay.json\" \"$ARTIFACTS/toolchain/probe-replay.json\"\nbash artifacts/studio/verification/TOOLS/v1-resume-release.sh'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z",
+  "queuedAtRevision": "c532b77edd93099ddd1e45d20f48db5d627413b3",
+  "executionStarted": "2026-10-05T20:03:54.203299+00:00",
+  "sourceDiffSha256": "7ca830fc5c7510cf3a50fb51bf204e389da6f970ca6fd7ccd54ae08dbf7d581e",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T20:10:45.216008+00:00",
+  "seconds": 411.83295417018235
+}

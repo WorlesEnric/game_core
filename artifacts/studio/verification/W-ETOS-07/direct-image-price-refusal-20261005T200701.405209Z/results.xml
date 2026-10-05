@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.0646421">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="464" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.064642" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1589" name="Hollowmere.P4_2.Tests.dll" fullname="~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.054140" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3645994" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1590" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.053199" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1591" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.052598" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1580" name="DirectMediaTests" fullname="Hollowmere.P4_2.DirectMediaTests" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.051130" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1581" name="R2_38_DirectImagePriceRefusalIsRecorded" fullname="Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded" methodname="R2_38_DirectImagePriceRefusalIsRecorded" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Explicit" seed="1933030826" result="Passed" start-time="2026-10-05 20:16:04Z" end-time="2026-10-05 20:16:04Z" duration="0.041748" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="One direct image request against the installed operator pricing policy" />
+                <property name="Timeout" value="360000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Live, 3d NotConfigured, describe Live
+[GameCore.Studio/etos] candidate cs_01M46RHDNPQ3ZH1V5A0864010R refused at staging in 10 ms (0 artifact(s) verified) (StaleTarget: The region that holds the target is not loaded. @ Entity(auth:e3baad87-1923-4823-82fe-69c3cc399bf4))
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

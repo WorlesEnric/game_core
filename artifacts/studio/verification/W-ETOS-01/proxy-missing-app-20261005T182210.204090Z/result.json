@@ -1,0 +1,15 @@
+{
+  "label": "proxy-missing-app",
+  "revision": "20e34d1e6a6800e4b0bd4a1e3ebd44611a968c55",
+  "host": "worlesenric",
+  "started": "2026-10-05T18:22:10.205407+00:00",
+  "command": "curl --silent --show-error --noproxy '*' --max-time 10 --write-out '\nHTTP %{http_code}\n' http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http/v1/hello",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "evidencePath": "artifacts/studio/verification/W-ETOS-01/proxy-missing-app-20261005T182210.204090Z",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T18:22:10.215437+00:00",
+  "seconds": 0.011308958986774087,
+  "httpStatus": 401,
+  "note": "Unauthenticated proxy probe: expected HTTP 401. This exercises the node boundary, not an independently authenticated companion app-header check."
+}
