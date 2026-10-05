@@ -53,7 +53,7 @@ namespace GameCore.Studio.UI
                 }
                 catch (Exception error) when (error is MissingMethodException || error is System.Reflection.TargetInvocationException || error is MemberAccessException)
                 {
-                    Debug.LogWarning("GameCore Studio: settings section " + type.FullName + " could not be created: " + error.Message);
+                    Debug.LogWarning(StudioStyles.Safe("GameCore Studio: settings section " + type.FullName + " could not be created: " + error.Message));
                 }
             }
 
@@ -101,8 +101,8 @@ namespace GameCore.Studio.UI
             StudioRuntime runtime = StudioServices.Runtime;
 
             VisualElement journal = Section(root, "Journal");
-            journal.Add(new Label("History: " + runtime.Paths.HistoryRoot));
-            journal.Add(new Label("Artifacts: " + runtime.Paths.ArtifactsRoot));
+            journal.Add(new Label(StudioStyles.Safe("History: " + runtime.Paths.HistoryRoot)));
+            journal.Add(new Label(StudioStyles.Safe("Artifacts: " + runtime.Paths.ArtifactsRoot)));
             journal.Add(new Label("The journal location is fixed by the edit engine (Studio/History under the project root, 03 s6)."));
             Button reveal = new Button(() => EditorUtility.RevealInFinder(runtime.Paths.HistoryRoot)) { text = "Reveal journal folder" };
             journal.Add(reveal);
@@ -135,13 +135,13 @@ namespace GameCore.Studio.UI
 
             VisualElement agent = Section(root, "Agent gateway");
             IAgentGateway gateway = StudioAgentGateways.Resolve(runtime);
-            agent.Add(new Label("Gateway: " + (gateway is NullAgentGateway ? "none registered (NullAgentGateway)" : gateway.GetType().FullName)));
+            agent.Add(new Label(StudioStyles.Safe("Gateway: " + (gateway is NullAgentGateway ? "none registered (NullAgentGateway)" : gateway.GetType().FullName))));
             ProviderStatus status = gateway.Status;
-            agent.Add(new Label("Connection: " + ProviderNames.ConnectionOf(status) + (status.Problem != null ? " (" + status.Problem.Code + ")" : string.Empty)
-                + (status.CompanionVersion != null ? ", companion " + status.CompanionVersion : string.Empty)));
+            agent.Add(new Label(StudioStyles.Safe("Connection: " + ProviderNames.ConnectionOf(status) + (status.Problem != null ? " (" + status.Problem.Code + ")" : string.Empty)
+                + (status.CompanionVersion != null ? ", companion " + status.CompanionVersion : string.Empty))));
             if (status.Problem != null)
             {
-                Label detail = new Label(status.Problem.Message + (status.Problem.Hint != null ? " " + status.Problem.Hint : string.Empty));
+                Label detail = new Label(StudioStyles.Safe(status.Problem.Message + (status.Problem.Hint != null ? " " + status.Problem.Hint : string.Empty)));
                 detail.AddToClassList("gcs-wrap");
                 agent.Add(detail);
             }
@@ -168,7 +168,7 @@ namespace GameCore.Studio.UI
                 }
                 catch (Exception error) when (!(error is OutOfMemoryException))
                 {
-                    container.Add(new Label("This section failed to build: " + error.Message));
+                    container.Add(new Label(StudioStyles.Safe("This section failed to build: " + error.Message)));
                 }
             }
 
@@ -184,7 +184,7 @@ namespace GameCore.Studio.UI
         {
             VisualElement section = new VisualElement { name = "settings-" + title.ToLowerInvariant().Replace(' ', '-') };
             section.AddToClassList("gcs-section");
-            Label header = new Label(title);
+            Label header = new Label(StudioStyles.Safe(title));
             header.AddToClassList("gcs-section__title");
             section.Add(header);
             root.Add(section);

@@ -241,7 +241,7 @@ namespace GameCore.Studio.Etos.Client.Tests
         {
             using FakeSetup setup = new FakeSetup();
             string id = Samples.ChangeSetId();
-            StageJobInfo job = await setup.Client.StageAsync(id, new string('a', 64));
+            StageJobInfo job = await setup.Client.StageAsync(id, setup.Options.ProjectId, new string('b', 40), Samples.CatalogRevision);
             Assert.That(job.State, Is.EqualTo("queued"));
             StageJobInfo read = await setup.Client.GetStageAsync(job.JobId);
             Assert.That(read.ChangeSetId, Is.EqualTo(id));
@@ -284,7 +284,7 @@ namespace GameCore.Studio.Etos.Client.Tests
         [Test]
         public void Errors_AnUnreachableNodeIsTransport()
         {
-            EtosClientOptions options = new EtosClientOptions { NodeUrl = "http://127.0.0.1:9", RequestTimeout = TimeSpan.FromSeconds(5) };
+            EtosClientOptions options = new EtosClientOptions { ProjectId = new string('a', 64), NodeUrl = "http://127.0.0.1:9", RequestTimeout = TimeSpan.FromSeconds(5) };
             using CompanionClient client = new CompanionClient(options, new EtosCredentials(FakeCompanion.AppKey, null, "fixture"));
             EtosException down = Assert.ThrowsAsync<EtosException>(() => client.HelloAsync())!;
             Assert.That(down.Code, Is.EqualTo(EtosCodes.Transport).Or.EqualTo(EtosCodes.Timeout));

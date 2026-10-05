@@ -197,7 +197,7 @@ namespace GameCore.Studio.Views
         }
     }
 
-    /// <summary>The window hosting one view (menu GameCore/Studio/...; minimum 640x360, opened at 1280x720).</summary>
+    /// <summary>The window hosting one view (menu GameCore/Studio/...; standalone minimum 1280x720, embedded panel minimum 640x360).</summary>
     public abstract class StudioViewWindow : EditorWindow
     {
         private StudioViewContext? _ownedContext;
@@ -213,8 +213,8 @@ namespace GameCore.Studio.Views
         public static T Open<T>() where T : StudioViewWindow
         {
             T window = GetWindow<T>();
-            window.minSize = new Vector2(StudioViewIds.MinWidth, StudioViewIds.MinHeight);
-            if (window.position.width < StudioViewIds.MinWidth || window.position.height < StudioViewIds.MinHeight)
+            window.EnforceMinimum();
+            if (window.position.width < window.minSize.x || window.position.height < window.minSize.y)
             {
                 window.position = new Rect(60f, 60f, StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
             }
@@ -223,6 +223,15 @@ namespace GameCore.Studio.Views
             window.Focus();
             return window;
         }
+
+        /// <summary>Docked panels share the overall Studio layout; a floating view is its own surface (D6).</summary>
+        public static Vector2 MinimumFor(bool isDocked) => isDocked
+            ? new Vector2(StudioViewIds.MinWidth, StudioViewIds.MinHeight)
+            : new Vector2(StudioViewIds.LayoutMinWidth, StudioViewIds.LayoutMinHeight);
+
+        private void EnforceMinimum() => minSize = MinimumFor(docked);
+        private void OnEnable() => EnforceMinimum();
+        private void OnFocus() => EnforceMinimum();
 
         /// <summary>Hosts a view over an explicit context (evidence, integrator layouts); the caller owns the context.</summary>
         public void Host(StudioViewContext context)
@@ -239,7 +248,7 @@ namespace GameCore.Studio.Views
         public void CreateGUI()
         {
             titleContent = new GUIContent(ViewTitle);
-            minSize = new Vector2(StudioViewIds.MinWidth, StudioViewIds.MinHeight);
+            EnforceMinimum();
             if (View != null)
             {
                 rootVisualElement.Add(View);

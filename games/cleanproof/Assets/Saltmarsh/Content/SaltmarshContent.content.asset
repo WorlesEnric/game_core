@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e5b65982f74d69919496795afdca14, type: 3}
+  m_Name: SaltmarshContent.content
+  m_EditorClassIdentifier: 
+  formatId: gamecore.gameplay-content/1
+  worldId: 0e658722-0a97-7568-0540-42f978711f0b
+  contentHash: 8e0bdc0a1d84688b44698d8fc86b7712aa462c0cc6ea086d5a9b6d0b0633656f
+  entries:
+  - kind: quest.quest
+    authoringId: 0468846c-9b21-b856-d273-de13d522b6bb
+    name: RelightTheCoast
+    key: 627789260
+    contentStamp: 2f9bea3ae65a74c8c05430e21cc5bda932ceab4a58dd115e67855b9d87899d3e
+    asset: {fileID: 11400000, guid: 1baf58b71086408d98e23210a5eb28a5, type: 2}
+  - kind: logic.actionSet
+    authoringId: 13bfbeba-5764-de97-ea58-df215d458488
+    name: UseSpare
+    key: 1513943345
+    contentStamp: 73a6a51377747247f45ffb12a33d9e5af345fefa7b0439d585d4b5b3ca8f65f8
+    asset: {fileID: 11400000, guid: 1f60dddc0cc8c1cbbac5035f8942271a, type: 2}
+  - kind: narrative.fact
+    authoringId: 13d652b1-01b1-f4db-9211-59ecb2962bf1
+    name: beacon_lit
+    key: 1409384153
+    contentStamp: 83d442d09749747a8507d02029c67444b4d795d0b793cf5fee74ae1db817015b
+    asset: {fileID: 11400000, guid: 46e345fa4851296eea80a459ab1a5f41, type: 2}
+  - kind: inventory.item
+    authoringId: 154d4e61-440f-10dc-89bf-fb8db7bca9c3
+    name: CopperWire
+    key: 767804127
+    contentStamp: 02d88d842b2283746a863e1b8baf3afb28ed118124ba14ccfd12b253b41261da
+    asset: {fileID: 11400000, guid: c0d35bde9e63acf43873ef5b392352de, type: 2}
+  - kind: logic.actionSet
+    authoringId: 2f258a8f-ba78-ab48-9014-9f4c3ae4ae2c
+    name: AcceptSignal
+    key: 1136238917
+    contentStamp: 741b4f25a9a1c0c79ca05077a21e1d50f82724f9bbad108d0da11f10172e3e09
+    asset: {fileID: 11400000, guid: 824a015092dd41c59bd8a4576eddc135, type: 2}
+  - kind: dialogue.graph
+    authoringId: 3a4a2ce8-bc7e-6c1a-a636-cf30c77c077b
+    name: NeriDialogue
+    key: 533570776
+    contentStamp: a1849410b4ca974aa02b11cb2f396a569890dfed37cbf741e3ab8e8ee6e10348
+    asset: {fileID: 11400000, guid: 3b25fc4bc51b2ad5e98d3156dbf100e9, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 3aaf18ec-13f1-5831-218d-2fe486f698e4
+    name: HasWire
+    key: 1317790602
+    contentStamp: a548300cba5f3ee5b83a5bbad5bbd026e6be68f958a6da1e95e9c2adb8a0fdb0
+    asset: {fileID: 11400000, guid: 660c355e956a6f770b927b97a2e2b0f8, type: 2}
+  - kind: dialogue.graph
+    authoringId: 48b91997-d5d1-1661-ed63-f4dd15ba8ed2
+    name: AdaDialogue
+    key: 556519163
+    contentStamp: e0adbc0503ec7b308755b619cb1cd2c0b5a960545b83b82f2674bfbf36ed144d
+    asset: {fileID: 11400000, guid: 770f1cb17e74e7b4c889a8440674dc3a, type: 2}
+  - kind: logic.actionSet
+    authoringId: 4a8d27f2-216c-1de1-0704-34c7b8c34b22
+    name: RecoverGlass
+    key: 241840129
+    contentStamp: 03f7d62e68e4db5e1bb38a36fe877527cc9f84a0f2168982b8b1c42f3ea46312
+    asset: {fileID: 11400000, guid: 5a00269e3ef750811a689dab202ad67d, type: 2}
+  - kind: narrative.fact
+    authoringId: 677d59e5-6422-b0c4-fb0f-2688bed7e7d1
+    name: accepted
+    key: 2028859905
+    contentStamp: 71c17d4a4e60159b00b81ccb1acf5bbd86d4d5363d7df056eda47779beaf3834
+    asset: {fileID: 11400000, guid: 7f4cfd773d89b9ae1966972720da4689, type: 2}
+  - kind: logic.rule
+    authoringId: 70d6077f-dc23-4682-6107-0c50896ed71f
+    name: SafeHarbour
+    key: 1640112659
+    contentStamp: d45bf4fa9b1b7c6bb76f261aad057068457ed0c00a3b7227dcb655ce9d6eebfe
+    asset: {fileID: 11400000, guid: c0ddfa234ba6bb75c85bc5a537280b92, type: 2}
+  - kind: inventory.item
+    authoringId: 75937aa0-65bf-6538-0963-6f2b490b8fcd
+    name: SpareLens
+    key: 1807879216
+    contentStamp: 19df989747cb30c9ea9e97647c69a57b47dc529a3cfc187fc02345129309cc77
+    asset: {fileID: 11400000, guid: 1e7e2babe0bf6056c920a5766f0dfe0f, type: 2}
+  - kind: inventory.item
+    authoringId: 7da6ac5c-6903-8b5b-472e-72e8a699d0c8
+    name: SeaGlass
+    key: 1089883787
+    contentStamp: 3aac3df34ab909f01230262825fc2a75da10dbee4039ff35831de3f1b6e065cd
+    asset: {fileID: 11400000, guid: e02180f3b1bd30f0eb989d6577f621ef, type: 2}
+  - kind: narrative.fact
+    authoringId: 9113327e-6216-ee6a-3d86-b1ff6d065da9
+    name: harbour_safe
+    key: 76527381
+    contentStamp: 73920132381142e291fd78d81828aace6bc7ed48d271eb54cd939c2f4ba86aee
+    asset: {fileID: 11400000, guid: bee3ab7e90b5bb3658015686bf9bd3a7, type: 2}
+  - kind: dialogue.graph
+    authoringId: 9594530e-8feb-d11d-bed9-a9f343310243
+    name: SolDialogue
+    key: 608857441
+    contentStamp: 1b1ee38701b85a793a33badde64c9620e4ec1d71f02e25a9b1769e7f20db5327
+    asset: {fileID: 11400000, guid: df51d3b8f18b6d96ba00b56724ad89c8, type: 2}
+  - kind: narrative.fact
+    authoringId: 97d7dcb7-a5e2-97b9-a1a4-df3a6fa9e3cf
+    name: salvaged
+    key: 1446852947
+    contentStamp: 3d67157139d0862fe32c78afed2de76a50bd7927260120d770bf667d0d188ee1
+    asset: {fileID: 11400000, guid: d763babf24927b543a8991eee7e9348d, type: 2}
+  - kind: logic.actionSet
+    authoringId: ac5e5994-691c-af49-3f4a-274ff7b872e7
+    name: LightBeacon
+    key: 855075268
+    contentStamp: 8f54560a819f57d2362d8e85798674b41311ad88b4f0c618f982a9b4910d4fed
+    asset: {fileID: 11400000, guid: 5a1398db9467e3bdebe49fbf30e4b005, type: 2}
+  - kind: inventory.item
+    authoringId: ccc428a0-25fd-3e5d-fb18-71a297186b9d
+    name: KeepersBadge
+    key: 1956198974
+    contentStamp: 7be99ecc9609270b9eaea517c5dc48ae803ea92c068f1fb6c764c71dd9335d6e
+    asset: {fileID: 11400000, guid: 4da92df8dcb6bc0e1a72aabe3f542d8b, type: 2}
+  - kind: narrative.fact
+    authoringId: d9c3762b-5cdc-580b-b5d4-140707715fe8
+    name: spare_used
+    key: 1816147684
+    contentStamp: 44efd01768c50a25ef442b53e92090aeb240015c6b36eff128430793abaa0eaa
+    asset: {fileID: 11400000, guid: b72e338453801873787e8fde8800ac4d, type: 2}
+  - kind: inventory.inventory
+    authoringId: e7cb4777-7fe6-42ee-5a25-6e33ca50cd04
+    name: CourierInventory
+    key: 1397287887
+    contentStamp: e8358ef18bf5c729bff1f50f0a3a3f733a829ecc2d0921bb5c40c759110c6faa
+    asset: {fileID: 11400000, guid: 2780c2f5e3cd15f7ebb9cb8ee480de6d, type: 2}
+  facts:
+  - name: accepted
+    key: 2028859905
+    initial: 0
+    persistent: 1
+    authoringId: 677d59e5-6422-b0c4-fb0f-2688bed7e7d1
+  - name: beacon_lit
+    key: 1409384153
+    initial: 0
+    persistent: 1
+    authoringId: 13d652b1-01b1-f4db-9211-59ecb2962bf1
+  - name: harbour_safe
+    key: 76527381
+    initial: 0
+    persistent: 1
+    authoringId: 9113327e-6216-ee6a-3d86-b1ff6d065da9
+  - name: salvaged
+    key: 1446852947
+    initial: 0
+    persistent: 1
+    authoringId: 97d7dcb7-a5e2-97b9-a1a4-df3a6fa9e3cf
+  - name: spare_used
+    key: 1816147684
+    initial: 0
+    persistent: 1
+    authoringId: d9c3762b-5cdc-580b-b5d4-140707715fe8

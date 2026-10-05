@@ -39,8 +39,14 @@ namespace GameCore.Studio.Views.Canvas
         private readonly Dictionary<string, CanvasNode> _byId = new Dictionary<string, CanvasNode>(StringComparer.Ordinal);
         private readonly Dictionary<long, List<CanvasNode>> _grid = new Dictionary<long, List<CanvasNode>>();
         private readonly List<CanvasNode> _visible = new List<CanvasNode>();
-        private List<CanvasNode> _nodes = new List<CanvasNode>();
-        private List<CanvasEdge> _edges = new List<CanvasEdge>();
+        private readonly List<CanvasNode> _nodes = new List<CanvasNode>();
+        private readonly List<CanvasEdge> _edges = new List<CanvasEdge>();
+        private readonly HashSet<string> _visibilitySeen = new HashSet<string>(StringComparer.Ordinal);
+        private readonly Dictionary<Color, List<CanvasEdge>> _edgeGroups = new Dictionary<Color, List<CanvasEdge>>();
+        private readonly Stack<List<CanvasNode>> _gridPool = new Stack<List<CanvasNode>>();
+        private readonly Stopwatch _refreshWatch = new Stopwatch();
+        private readonly Stopwatch _paintWatch = new Stopwatch();
+
         private Vector2 _pan = new Vector2(40f, 40f);
         private float _zoom = 1f;
         private Vector2 _worldMin;
@@ -100,6 +106,11 @@ namespace GameCore.Studio.Views.Canvas
             RegisterCallback<PointerUpEvent>(OnPointerUp);
             RegisterCallback<KeyDownEvent>(OnKeyDown);
             RegisterCallback<DetachFromPanelEvent>(_ => StopTicker());
+            RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                if (LayoutPending && _layoutTicker == null)
+                    _layoutTicker = schedule.Execute(() => StepLayout(LayoutBudgetMs)).Every(1);
+            });
         }
 
         private enum Gesture
@@ -170,8 +181,11 @@ namespace GameCore.Studio.Views.Canvas
         public void SetGraph(IReadOnlyList<CanvasNode> nodes, IReadOnlyList<CanvasEdge> edges, IEnumerable<string>? roots = null, bool keepPositions = true, bool vertical = false, bool frame = false)
         {
             Dictionary<string, CanvasNode> previous = new Dictionary<string, CanvasNode>(_byId, StringComparer.Ordinal);
-            _nodes = new List<CanvasNode>(nodes ?? Array.Empty<CanvasNode>());
-            _edges = new List<CanvasEdge>(edges ?? Array.Empty<CanvasEdge>());
+            _nodes.Clear();
+            if (nodes != null) _nodes.AddRange(nodes);
+            _edges.Clear();
+            if (edges != null) _edges.AddRange(edges);
+            RefreshEdgeStyles();
             _byId.Clear();
             bool needsLayout = false;
             foreach (CanvasNode node in _nodes)
@@ -196,7 +210,8 @@ namespace GameCore.Studio.Views.Canvas
             _frameWhenLaidOut = frame || previous.Count == 0;
             if (_layout != null)
             {
-                StepLayout(LayoutBudgetMs * 0.5);
+                // Large graphs start on the next scheduled slice; keep initial card projection below a frame.
+                if (_nodes.Count <= MaxCards) StepLayout(LayoutBudgetMs * 0.5);
                 if (!_layout.Done && panel != null)
                 {
                     _layoutTicker = schedule.Execute(() => StepLayout(LayoutBudgetMs)).Every(1);
@@ -204,7 +219,7 @@ namespace GameCore.Studio.Views.Canvas
             }
             else
             {
-                Rebuild();
+                Rebuild(!_frameWhenLaidOut);
                 if (_frameWhenLaidOut)
                 {
                     FrameAll();
@@ -224,7 +239,7 @@ namespace GameCore.Studio.Views.Canvas
             if (done)
             {
                 StopTicker();
-                Rebuild();
+                Rebuild(!_frameWhenLaidOut);
                 if (_frameWhenLaidOut)
                 {
                     _frameWhenLaidOut = false;
@@ -298,8 +313,15 @@ namespace GameCore.Studio.Views.Canvas
         }
 
         /// <summary>Re-indexes positions, repaints edges and rebinds the visible cards.</summary>
-        public void Rebuild()
+        public void Rebuild() => Rebuild(true);
+
+        private void Rebuild(bool refresh)
         {
+            foreach (List<CanvasNode> bucket in _grid.Values)
+            {
+                bucket.Clear();
+                _gridPool.Push(bucket);
+            }
             _grid.Clear();
             _worldMin = new Vector2(float.MaxValue, float.MaxValue);
             _worldMax = new Vector2(float.MinValue, float.MinValue);
@@ -328,13 +350,13 @@ namespace GameCore.Studio.Views.Canvas
             _edgeLayer.style.width = _worldMax.x - _worldMin.x;
             _edgeLayer.style.height = _worldMax.y - _worldMin.y;
             _edgeLayer.MarkDirtyRepaint();
-            Refresh();
+            if (refresh) Refresh();
         }
 
         /// <summary>Rebinds the cards of the visible rect (cheap; runs on pan, zoom, selection and data changes).</summary>
         public void Refresh()
         {
-            Stopwatch watch = Stopwatch.StartNew();
+            _refreshWatch.Restart();
             Vector2 viewport = Viewport;
             Rect visible = new Rect(-_pan / _zoom, viewport / _zoom);
             visible.xMin -= 32f;
@@ -367,7 +389,7 @@ namespace GameCore.Studio.Views.Canvas
 
             VisibleCardCount = bound;
             RefreshEdgeLabels(visible);
-            LastRefreshMilliseconds = watch.Elapsed.TotalMilliseconds;
+            LastRefreshMilliseconds = _refreshWatch.Elapsed.TotalMilliseconds;
         }
 
         private void OnGeometryChanged(GeometryChangedEvent evt)
@@ -483,27 +505,32 @@ namespace GameCore.Studio.Views.Canvas
             }
         }
 
-        private void OnGenerateEdges(MeshGenerationContext context)
+        /// <summary>Call after changing edge colors or highlights; panning and painting reuse these buckets.</summary>
+        public void RefreshEdgeStyles()
         {
-            Stopwatch watch = Stopwatch.StartNew();
-            Painter2D painter = context.painter2D;
-            Vector2 origin = _worldMin;
-            bool arrows = _edges.Count <= 600 && !_compact;
-            Dictionary<Color, List<CanvasEdge>> groups = new Dictionary<Color, List<CanvasEdge>>();
+            foreach (List<CanvasEdge> bucket in _edgeGroups.Values) bucket.Clear();
             foreach (CanvasEdge edge in _edges)
             {
                 Color color = edge.Highlighted ? ViewPalette.EdgeHighlight : edge.Color;
-                if (!groups.TryGetValue(color, out List<CanvasEdge>? list))
+                if (!_edgeGroups.TryGetValue(color, out List<CanvasEdge>? bucket))
                 {
-                    list = new List<CanvasEdge>();
-                    groups.Add(color, list);
+                    bucket = new List<CanvasEdge>();
+                    _edgeGroups.Add(color, bucket);
                 }
-
-                list.Add(edge);
+                bucket.Add(edge);
             }
+            _edgeLayer.MarkDirtyRepaint();
+        }
 
-            foreach (KeyValuePair<Color, List<CanvasEdge>> group in groups)
+        private void OnGenerateEdges(MeshGenerationContext context)
+        {
+            _paintWatch.Restart();
+            Painter2D painter = context.painter2D;
+            Vector2 origin = _worldMin;
+            bool arrows = _edges.Count <= 600 && !_compact;
+            foreach (KeyValuePair<Color, List<CanvasEdge>> group in _edgeGroups)
             {
+                if (group.Value.Count == 0) continue;
                 painter.strokeColor = group.Key;
                 painter.lineWidth = _compact ? 1f : group.Value[0].Width;
                 painter.BeginPath();
@@ -567,7 +594,7 @@ namespace GameCore.Studio.Views.Canvas
                 painter.Stroke();
             }
 
-            LastEdgePaintMilliseconds = watch.Elapsed.TotalMilliseconds;
+            LastEdgePaintMilliseconds = _paintWatch.Elapsed.TotalMilliseconds;
         }
 
         /// <summary>Where an edge leaves a card towards a point (the card's border).</summary>
@@ -598,7 +625,7 @@ namespace GameCore.Studio.Views.Canvas
                     long key = CellKey(x, y);
                     if (!_grid.TryGetValue(key, out List<CanvasNode>? list))
                     {
-                        list = new List<CanvasNode>();
+                        list = _gridPool.Count > 0 ? _gridPool.Pop() : new List<CanvasNode>();
                         _grid.Add(key, list);
                     }
 
@@ -614,12 +641,12 @@ namespace GameCore.Studio.Views.Canvas
             int x1 = Mathf.FloorToInt(visible.xMax / GridCell);
             int y1 = Mathf.FloorToInt(visible.yMax / GridCell);
             long cells = (long)(x1 - x0 + 1) * (y1 - y0 + 1);
-            HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
+            _visibilitySeen.Clear();
             if (cells > _grid.Count)
             {
                 foreach (List<CanvasNode> list in _grid.Values)
                 {
-                    AddVisible(list, visible, into, seen);
+                    AddVisible(list, visible, into, _visibilitySeen);
                 }
 
                 return;
@@ -631,7 +658,7 @@ namespace GameCore.Studio.Views.Canvas
                 {
                     if (_grid.TryGetValue(CellKey(x, y), out List<CanvasNode>? list))
                     {
-                        AddVisible(list, visible, into, seen);
+                        AddVisible(list, visible, into, _visibilitySeen);
                     }
                 }
             }

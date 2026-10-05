@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using GameCore.Studio.Authoring;
 using UnityEditor;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ namespace GameCore.Studio.Views
         public GameplayCommandResult(GameplayCommandStatus status, string detail)
         {
             Status = status;
-            Detail = detail ?? string.Empty;
+            Detail = new SecretRedactor().Redact(detail ?? string.Empty);
         }
 
         public GameplayCommandStatus Status { get; }
@@ -159,6 +160,8 @@ namespace GameCore.Studio.Views
         private UnityEngine.Object? _owner;
         private bool _hasOwner;
         private string _found = "not playing";
+        private string _diagnostic = string.Empty;
+        private object? _lastRegistered;
         private double _lastScan = -10.0;
 
         public ReflectionGameplayBridge(Func<object?>? registered = null, Func<bool>? isPlaying = null)
@@ -176,7 +179,7 @@ namespace GameCore.Studio.Views
             get
             {
                 Locate();
-                return _found;
+                return _diagnostic.Length == 0 ? _found : _found + "; " + _diagnostic;
             }
         }
 
@@ -208,21 +211,21 @@ namespace GameCore.Studio.Views
                 return false;
             }
 
-            MethodInfo? quest = FindMethod(state!.GetType(), "Quest", 2);
+            MethodInfo? quest = FindMethod(state!.GetType(), "Quest", new object?[] { key, null }, enumParameter: 1);
             if (quest == null)
             {
                 return false;
             }
 
             Type fieldType = quest.GetParameters()[1].ParameterType;
-            if (!fieldType.IsEnum)
+            if (!fieldType.IsEnum || !Enum.IsDefined(fieldType, "Status") || !Enum.IsDefined(fieldType, "Stage") || !Enum.IsDefined(fieldType, "Branch"))
             {
                 return false;
             }
 
-            if (!TryInt(quest.Invoke(state, new[] { (object)key, Enum.Parse(fieldType, "Status") }), out int status)
-                || !TryInt(quest.Invoke(state, new[] { (object)key, Enum.Parse(fieldType, "Stage") }), out int stage)
-                || !TryInt(quest.Invoke(state, new[] { (object)key, Enum.Parse(fieldType, "Branch") }), out int branch))
+            if (!TryInt(Invoke(state, "Quest", new[] { (object)key, Enum.Parse(fieldType, "Status") }), out int status)
+                || !TryInt(Invoke(state, "Quest", new[] { (object)key, Enum.Parse(fieldType, "Stage") }), out int stage)
+                || !TryInt(Invoke(state, "Quest", new[] { (object)key, Enum.Parse(fieldType, "Branch") }), out int branch))
             {
                 return false;
             }
@@ -335,13 +338,14 @@ namespace GameCore.Studio.Views
                 return new GameplayCommandResult(GameplayCommandStatus.Unsupported, "the running world has no narrative plugins (no NarrativeWorld found; " + _found + ")");
             }
 
-            object? started = Invoke(starter, "TryStart", new object?[] { speakerEntityId ?? string.Empty, graphRef ?? string.Empty });
+            object? started = InvokeCommand(starter, "TryStart", new object?[] { speakerEntityId ?? string.Empty, graphRef ?? string.Empty }, false);
             if (started == null)
             {
-                return new GameplayCommandResult(GameplayCommandStatus.Unsupported, starter.GetType().Name + " has no TryStart(string, string)");
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, _diagnostic.Length > 0 ? _diagnostic : starter.GetType().Name + " returned no conversation result");
             }
 
-            bool ok = Get(started, "Started") is bool flag && flag;
+            if (!(Get(started, "Started") is bool ok))
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, "BridgeContractMismatch: conversation result needs bool Started");
             string detail = Get(started, "Detail") as string ?? string.Empty;
             return new GameplayCommandResult(ok ? GameplayCommandStatus.Submitted : GameplayCommandStatus.Refused, ok ? "dialogue.start " + graphRef : detail);
         }
@@ -360,26 +364,21 @@ namespace GameCore.Studio.Views
                 return new GameplayCommandResult(GameplayCommandStatus.Unsupported, "the running world exposes no Commands/Focus");
             }
 
-            MethodInfo? travel = FindMethod(commands.GetType(), "Travel", 3);
-            if (travel == null)
-            {
-                return new GameplayCommandResult(GameplayCommandStatus.Unsupported, commands.GetType().Name + " has no Travel(traveller, region, portal)");
-            }
-
-            object? receipt;
-            try
-            {
-                receipt = travel.Invoke(commands, new[] { focus, regionId, string.Empty });
-            }
-            catch (TargetInvocationException error)
-            {
-                return new GameplayCommandResult(GameplayCommandStatus.Refused, (error.InnerException ?? error).Message);
-            }
-
-            object? result = receipt == null ? null : Get(receipt, "Result");
-            string text = result?.ToString() ?? "submitted";
-            bool refused = text.IndexOf("Refus", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("Reject", StringComparison.OrdinalIgnoreCase) >= 0;
-            return new GameplayCommandResult(refused ? GameplayCommandStatus.Refused : GameplayCommandStatus.Submitted, "world.travel " + regionId + ": " + text);
+            object? receipt = InvokeCommand(commands, "Travel", new[] { focus, regionId, string.Empty }, true);
+            if (receipt == null)
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, _diagnostic.Length > 0 ? _diagnostic : "BridgeContractMismatch: Travel returned no receipt");
+            object? result = Get(receipt, "Result");
+            object? kind = result == null ? null : Get(result, "Kind");
+            if (!(Get(receipt, "Admitted") is bool admitted) || kind == null || !kind.GetType().IsEnum)
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, "BridgeContractMismatch: receipt requires bool Admitted and enum Result.Kind");
+            string kindName = Enum.GetName(kind.GetType(), kind) ?? "Unknown";
+            bool accepted = kindName == "Accepted" || kindName == "Committed";
+            if (admitted != accepted)
+                return new GameplayCommandResult(GameplayCommandStatus.Refused, "BridgeContractMismatch: inconsistent Admitted/Result.Kind");
+            object? diagnostic = Get(result!, "Reason") ?? Get(result!, "Diagnostic");
+            string detail = diagnostic == null ? string.Empty : ": " + diagnostic;
+            return new GameplayCommandResult(admitted ? GameplayCommandStatus.Submitted : GameplayCommandStatus.Refused,
+                "world.travel " + regionId + ": " + kindName + detail);
         }
 
         /// <summary>Forgets the located world (Play Mode exit, a new registration).</summary>
@@ -391,6 +390,8 @@ namespace GameCore.Studio.Views
             _hasOwner = false;
             _found = "not playing";
             _lastScan = -10.0;
+            _diagnostic = string.Empty;
+            _lastRegistered = null;
         }
 
         private bool TryResolveKey(string reference, out int key, out object? state)
@@ -438,15 +439,22 @@ namespace GameCore.Studio.Views
             }
 
             object? registered = _registered();
+            if (!ReferenceEquals(registered, _lastRegistered))
+            {
+                Reset();
+                _lastRegistered = registered;
+            }
             if (registered != null)
             {
                 Adopt(registered, null, "registered " + registered.GetType().Name);
                 return _gameplay != null;
             }
 
-            if (_gameplay != null && (!_hasOwner || _owner != null))
+            if (_hasOwner && _owner == null)
             {
-                return true;
+                _gameplay = null;
+                _narrative = null;
+                _lastScan = -10.0;
             }
 
             double now = EditorApplication.timeSinceStartup;
@@ -516,7 +524,7 @@ namespace GameCore.Studio.Views
             }
         }
 
-        private static IEnumerable<KeyValuePair<string, object>> WorldMembers(MonoBehaviour behaviour)
+        private IEnumerable<KeyValuePair<string, object>> WorldMembers(MonoBehaviour behaviour)
         {
             Type type = behaviour.GetType();
             foreach (PropertyInfo property in type.GetProperties(Public))
@@ -531,8 +539,9 @@ namespace GameCore.Studio.Views
                 {
                     value = property.GetValue(behaviour);
                 }
-                catch (TargetInvocationException)
+                catch (TargetInvocationException error)
                 {
+                    RecordFailure(property.Name, error);
                     continue;
                 }
 
@@ -553,80 +562,127 @@ namespace GameCore.Studio.Views
 
         private static bool IsWorldType(Type type) => type.Name == "NarrativeWorld" || type.Name == "GameplayWorld";
 
-        private static object? Get(object target, string name)
+        private object? Get(object target, string name)
         {
-            Type type = target.GetType();
-            PropertyInfo? property = type.GetProperty(name, Public);
-            if (property != null && property.GetIndexParameters().Length == 0)
-            {
-                try
-                {
-                    return property.GetValue(target);
-                }
-                catch (TargetInvocationException)
-                {
-                    return null;
-                }
-            }
-
-            FieldInfo? field = type.GetField(name, Public);
-            if (field != null)
-            {
-                return field.GetValue(target);
-            }
-
-            foreach (Type contract in type.GetInterfaces())
-            {
-                PropertyInfo? declared = contract.GetProperty(name);
-                if (declared != null && declared.GetIndexParameters().Length == 0)
-                {
-                    return declared.GetValue(target);
-                }
-            }
-
-            return null;
-        }
-
-        private static MethodInfo? FindMethod(Type type, string name, int parameters)
-        {
-            foreach (MethodInfo method in type.GetMethods(Public))
-            {
-                if (method.Name == name && method.GetParameters().Length == parameters)
-                {
-                    return method;
-                }
-            }
-
-            foreach (Type contract in type.GetInterfaces())
-            {
-                foreach (MethodInfo method in contract.GetMethods())
-                {
-                    if (method.Name == name && method.GetParameters().Length == parameters)
-                    {
-                        return method;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private static object? Invoke(object target, string name, object?[] args)
-        {
-            MethodInfo? method = FindMethod(target.GetType(), name, args.Length);
-            if (method == null)
-            {
-                return null;
-            }
-
             try
             {
-                return method.Invoke(target, args);
-            }
-            catch (Exception error) when (error is TargetInvocationException || error is ArgumentException)
-            {
+                Type type = target.GetType();
+                PropertyInfo? property = type.GetProperty(name, Public);
+                if (property != null && property.GetIndexParameters().Length == 0) return property.GetValue(target);
+                FieldInfo? field = type.GetField(name, Public);
+                if (field != null) return field.GetValue(target);
+                foreach (Type contract in type.GetInterfaces())
+                {
+                    PropertyInfo? declared = contract.GetProperty(name);
+                    if (declared != null && declared.GetIndexParameters().Length == 0) return declared.GetValue(target);
+                }
                 return null;
             }
+            catch (Exception error) when (error is TargetInvocationException || error is ArgumentException || error is AmbiguousMatchException || error is MethodAccessException)
+            {
+                RecordFailure(name, error);
+                return null;
+            }
+        }
+
+        private MethodInfo? FindMethod(Type type, string name, object?[] args, int enumParameter = -1)
+        {
+            MethodInfo? selected = null;
+            foreach (MethodInfo method in type.GetMethods(Public))
+                if (Matches(method, name, args, enumParameter))
+                {
+                    if (selected != null)
+                    {
+                        _diagnostic = "BridgeContractMismatch: ambiguous " + type.FullName + "." + name;
+                        return null;
+                    }
+                    selected = method;
+                }
+            if (selected != null) return selected;
+            foreach (Type contract in type.GetInterfaces())
+                foreach (MethodInfo method in contract.GetMethods())
+                    if (Matches(method, name, args, enumParameter))
+                    {
+                        if (selected != null)
+                        {
+                            _diagnostic = "BridgeContractMismatch: ambiguous interface " + name;
+                            return null;
+                        }
+                        selected = method;
+                    }
+            if (selected == null) _diagnostic = "BridgeContractMismatch: no compatible " + type.FullName + "." + name;
+            return selected;
+        }
+
+        private static bool Matches(MethodInfo method, string name, object?[] args, int enumParameter)
+        {
+            if (method.Name != name || method.ContainsGenericParameters) return false;
+            ParameterInfo[] parameters = method.GetParameters();
+            if (parameters.Length != args.Length) return false;
+            for (int i = 0; i < args.Length; i++)
+            {
+                Type type = parameters[i].ParameterType;
+                if (type.IsByRef) type = type.GetElementType()!;
+                if (i == enumParameter) { if (!type.IsEnum) return false; }
+                else if (args[i] == null) { if (!parameters[i].IsOut) return false; }
+                else if (type != args[i]!.GetType()) return false;
+            }
+            return true;
+        }
+
+        private object? InvokeCommand(object target, string name, object?[] args, bool travel)
+        {
+            _diagnostic = string.Empty;
+            MethodInfo? method = FindMethod(target.GetType(), name, args);
+            if (method == null) return null;
+            Type result = method.ReturnType;
+            Type? detail = MemberType(result, travel ? "Result" : "Detail");
+            bool compatible = MemberType(result, travel ? "Admitted" : "Started") == typeof(bool)
+                && (travel ? detail != null && MemberType(detail, "Kind")?.IsEnum == true : detail == typeof(string));
+            if (!compatible)
+            {
+                _diagnostic = "BridgeContractMismatch: incompatible return type for " + target.GetType().FullName + "." + name;
+                return null;
+            }
+            return Call(target, method, args);
+        }
+
+        private Type? MemberType(Type type, string name)
+        {
+            try
+            {
+                PropertyInfo? property = type.GetProperty(name, Public);
+                if (property != null && property.GetIndexParameters().Length == 0 && property.GetMethod != null) return property.PropertyType;
+                return type.GetField(name, Public)?.FieldType;
+            }
+            catch (AmbiguousMatchException error)
+            {
+                RecordFailure(name, error);
+                return null;
+            }
+        }
+
+        private object? Invoke(object target, string name, object?[] args)
+        {
+            _diagnostic = string.Empty;
+            MethodInfo? method = FindMethod(target.GetType(), name, args);
+            if (method == null) return null;
+            return Call(target, method, args);
+        }
+
+        private object? Call(object target, MethodInfo method, object?[] args)
+        {
+            try { return method.Invoke(target, args); }
+            catch (Exception error) when (error is TargetInvocationException || error is ArgumentException || error is MethodAccessException)
+            {
+                RecordFailure(method.Name, error);
+                return null;
+            }
+        }
+
+        private void RecordFailure(string member, Exception error)
+        {
+            _diagnostic = new SecretRedactor().Redact("BridgeInvocationFailed: " + member + ": " + (error.InnerException ?? error).Message);
         }
 
         private static bool TryInt(object? value, out int result)

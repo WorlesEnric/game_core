@@ -18,6 +18,11 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using GameCore.Studio.Authoring;
+using GameCore.Gameplay.Contracts;
+using GameCore.Rules.Gameplay.Ui;
+using Hollowmere.Boot;
+using Hollowmere.UiAudio;
+using UnityEngine.UIElements;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
@@ -69,6 +74,7 @@ namespace Hollowmere.P2_1.Evidence
             File.WriteAllText(LogPath, string.Empty);
             SessionState.SetBool(ActiveKey, true);
             SessionState.SetInt(StepKey, 0);
+            SessionState.SetBool("GameCore.Studio.P21.Evidence.NewGame", false);
             SessionState.SetBool(FailedKey, false);
             SessionState.SetBool(FirstRunKey, StudioUiSettings.FirstRunDone);
             StudioUiSettings.FirstRunDone = false;
@@ -110,7 +116,7 @@ namespace Hollowmere.P2_1.Evidence
             {
                 SessionState.SetBool(FailedKey, true);
                 Log(step, "error", error.GetType().Name + ": " + error.Message, null);
-                Debug.LogError("[P2.1 evidence] step " + step + " failed: " + error);
+                Debug.LogError(StudioStyles.Safe("[P2.1 evidence] step " + step + " failed: " + error));
                 SessionState.SetInt(StepKey, step + 1);
             }
 
@@ -255,7 +261,7 @@ namespace Hollowmere.P2_1.Evidence
                     {
                         if (clock.Waits % 8 == 0)
                         {
-                            Debug.Log("[P2.1 evidence] waiting for the gateway: " + prompt.DisabledReason);
+                            Debug.Log(StudioStyles.Safe("[P2.1 evidence] waiting for the gateway: " + prompt.DisabledReason));
                         }
 
                         return false;
@@ -329,7 +335,7 @@ namespace Hollowmere.P2_1.Evidence
                     {
                         if (clock.Waits++ % 8 == 0)
                         {
-                            Debug.Log("[P2.1 evidence] live request " + clock.LiveId + ": " + (row != null ? row.StateLabel + " " + row.localState + " " + row.progress : "no row") + " after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s");
+                            Debug.Log(StudioStyles.Safe("[P2.1 evidence] live request " + clock.LiveId + ": " + (row != null ? row.StateLabel + " " + row.localState + " " + row.progress : "no row") + " after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s"));
                         }
 
                         return false;
@@ -385,17 +391,37 @@ namespace Hollowmere.P2_1.Evidence
                         return false;
                     }
 
-                    clock.Waits = 0;
+                    GameBoot? boot = UnityEngine.Object.FindAnyObjectByType<GameBoot>();
+                    HollowmereUiAudio? rig = boot == null ? null : UiAudioBootstrap.RigOf(boot.gameObject);
+                    if (boot?.World == null || boot.PlayerExtension == null || rig == null)
+                    {
+                        if (clock.Waits++ < 60) return false;
+                        throw new InvalidOperationException("Walk evidence: gameplay/UI bootstrap unavailable.");
+                    }
+                    if (!SessionState.GetBool("GameCore.Studio.P21.Evidence.NewGame", false))
+                    {
+                        if (!rig.Ui.Dispatcher.Dispatch("newgame").Accepted) throw new InvalidOperationException("New game refused.");
+                        SessionState.SetBool("GameCore.Studio.P21.Evidence.NewGame", true);
+                        return false;
+                    }
+                    if (rig.Ui.Screen != UiScreen.Hud || rig.Ui.GameplayPaused || !boot.World.Streamer.IsSettled)
+                    {
+                        if (clock.Waits++ < 60) return false;
+                        throw new InvalidOperationException("Walk evidence: HUD/region did not become ready.");
+                    }
                     StudioViewportWindow viewport = Viewport();
                     viewport.Renderer.ForceFreeCamera = false;
-                    viewport.SetMode(ViewportMode.Play);
+                    if (viewport.Mode != ViewportMode.Play) viewport.SetMode(ViewportMode.Play);
                     viewport.Focus();
-                    CharacterController? player = UnityEngine.Object.FindAnyObjectByType<CharacterController>();
-                    clock.PlayerStart = player != null ? player.transform.position : Vector3.zero;
-                    clock.HasPlayer = player != null;
+                    viewport.rootVisualElement.Q<Image>("viewport-image").Focus();
+                    if (!viewport.Routing.Active) return false;
+                    clock.Waits = 0;
+                    clock.PlayerStart = CommittedPosition(boot);
+                    clock.HasPlayer = true;
+                    SessionState.SetFloat("GameCore.Studio.P21.Evidence.WalkStart", (float)EditorApplication.timeSinceStartup);
                     Keyboard keyboard = Keyboard.current ?? InputSystem.AddDevice<Keyboard>();
                     InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
-                    Log(step, "input", "Viewport focused in Play mode; W held through the Input System (player " + (player != null ? player.name : "not found") + ").", null);
+                    Log(step, "input", "New game dispatched; HUD active; viewport image owns W input. Measuring committed world.posX/posZ.", null);
                     return true;
                 }
 
@@ -403,8 +429,15 @@ namespace Hollowmere.P2_1.Evidence
                 {
                     StudioViewportWindow viewport = Viewport();
                     viewport.Focus();
-                    CharacterController? player = UnityEngine.Object.FindAnyObjectByType<CharacterController>();
-                    float moved = player != null && clock.HasPlayer ? Vector3.Distance(player.transform.position, clock.PlayerStart) : -1f;
+                    GameBoot boot = UnityEngine.Object.FindAnyObjectByType<GameBoot>() ?? throw new InvalidOperationException("Player world missing.");
+                    float moved = Vector3.Distance(CommittedPosition(boot), clock.PlayerStart);
+                    double seconds = EditorApplication.timeSinceStartup - SessionState.GetFloat("GameCore.Studio.P21.Evidence.WalkStart", 0);
+                    Log(step, "walk-measurement", "Committed world.posX/posZ displacement on HUD.", new JObject
+                    {
+                        ["hud"] = UiAudioBootstrap.RigOf(boot.gameObject)?.Ui.Screen == UiScreen.Hud,
+                        ["routing"] = viewport.Routing.Active, ["metres"] = moved, ["seconds"] = seconds,
+                        ["source"] = "world.posX/posZ",
+                    });
                     Shot(step, "play-mode", "Play mode in the viewport: the player camera (ThirdPersonCamera's camera), input routed to the game"
                         + " (routing " + (viewport.Routing.Active ? "active" : "inactive") + ", " + viewport.Routing.EventsRouted + " Input System event(s)); W held for "
                         + StepSeconds.ToString("0.0", CultureInfo.InvariantCulture) + " s moved the player " + (moved < 0f ? "n/a" : moved.ToString("0.00", CultureInfo.InvariantCulture) + " m")
@@ -414,6 +447,7 @@ namespace Hollowmere.P2_1.Evidence
                     {
                         InputSystem.QueueStateEvent(keyboard, new KeyboardState());
                     }
+                    if (!clock.HasPlayer || moved <= 0.05f || !viewport.Routing.Active) throw new InvalidOperationException("HUD walk evidence failed: no committed movement or input ownership.");
 
                     return true;
                 }
@@ -675,6 +709,14 @@ namespace Hollowmere.P2_1.Evidence
             Log(step, name, caption, extra);
         }
 
+        private static Vector3 CommittedPosition(GameBoot boot)
+        {
+            if (boot.World == null || boot.PlayerExtension == null) throw new InvalidOperationException("Committed player unavailable.");
+            return new Vector3(
+                boot.World.Slots.ReadOrDefault(boot.PlayerExtension.Player, GameplaySlots.WorldOwner, GameplaySlots.PosX, 0) / 1000f, 0f,
+                boot.World.Slots.ReadOrDefault(boot.PlayerExtension.Player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, 0) / 1000f);
+        }
+
         private static void Log(int step, string name, string caption, JObject? extra)
         {
             JObject line = extra ?? new JObject();
@@ -682,8 +724,10 @@ namespace Hollowmere.P2_1.Evidence
             line["name"] = name;
             line["caption"] = caption;
             line["utc"] = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'", CultureInfo.InvariantCulture);
-            File.AppendAllText(LogPath, line.ToString(Newtonsoft.Json.Formatting.None) + "\n");
-            Debug.Log("[P2.1 evidence] " + line.ToString(Newtonsoft.Json.Formatting.None));
+            line = (JObject)new SecretRedactor().RedactJson(line);
+            using (StreamWriter sink = new StreamWriter(LogPath, true))
+            using (RedactingTextWriter writer = new RedactingTextWriter(sink)) writer.WriteLine(line.ToString(Newtonsoft.Json.Formatting.None));
+            Debug.Log(StudioStyles.Safe("[P2.1 evidence] " + line.ToString(Newtonsoft.Json.Formatting.None)));
         }
     }
 

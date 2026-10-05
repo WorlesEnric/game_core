@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: NeriDialogue
+  m_EditorClassIdentifier: 
+  authoringId: 3a4a2ce8-bc7e-6c1a-a636-cf30c77c077b
+  contentStamp: a1849410b4ca974aa02b11cb2f396a569890dfed37cbf741e3ab8e8ee6e10348
+  speaker: Neri
+  speakerEntityId: ebfbddff-ef5d-68f5-cead-bc99b8a0dcfe
+  npcGraphRef: 
+  entry: 0
+  nodes:
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: We can use my spare lens, or recover the sea glass with Sol. Choose what
+      the coast will remember.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: Which light will guide the ships?
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: Recover sea glass; keep the spare safe.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Use the spare; save time before nightfall.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 5a00269e3ef750811a689dab202ad67d, type: 2}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 1f60dddc0cc8c1cbbac5035f8942271a, type: 2}
+    options: []
+  edges:
+  - from: 1
+    port: 2
+    option: 0
+    to: 2
+  - from: 1
+    port: 2
+    option: 1
+    to: 3
+  - from: 0
+    port: 0
+    option: 0
+    to: 1

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d977c98c31d04a1eb0f9b44e82ae7d72, type: 3}
+  m_Name: AudioSet
+  m_EditorClassIdentifier: 
+  authoringId: 323a57f8-5d32-20b8-c334-df288a3cee07
+  bank: {fileID: 11400000, guid: 47924c1818068cc0ea469e147f17eecd, type: 2}
+  musicStates:
+  - {fileID: 11400000, guid: 9c623a414d8d1c7b2937dfab1408caaa, type: 2}
+  startMusicState: music.coast
+  ambiences:
+  - {fileID: 11400000, guid: 371f1c39c76657a398ff9943d511ca76, type: 2}
+  - {fileID: 11400000, guid: 3ff84c4b403d371cb84d4ae497ba0dc4, type: 2}
+  - {fileID: 11400000, guid: d1a58b943ce6511eeac395c958f18a33, type: 2}
+  feedbackPrefix: sfx.

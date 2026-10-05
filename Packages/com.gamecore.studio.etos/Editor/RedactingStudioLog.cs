@@ -1,5 +1,5 @@
 // GameCore.Studio.Etos - every etos line goes through the shared redaction (EtosRedaction: etk_/ett_/etp_/eta_ tokens,
-// bearer values, tickets) before it reaches the Studio log, whose own redactor knows only etk_ keys (SADR-018).
+// bearer values, tickets) before it reaches the Studio log, using the shared core policy (D9).
 #nullable enable
 using System;
 using GameCore.Studio.Authoring;
@@ -21,13 +21,13 @@ namespace GameCore.Studio.Etos
         public void Write(StudioLogLevel level, string category, string message, Diagnostic? diagnostic = null)
         {
             Diagnostic? clean = diagnostic == null ? null : Redact(diagnostic);
-            _inner.Write(level, category, EtosRedaction.Redact(message), clean);
+            _inner.Write(level, EtosRedaction.Redact(category), EtosRedaction.Redact(message), clean);
         }
 
-        /// <summary>The diagnostic with its message and hint redacted (code, where and data kept).</summary>
+        /// <summary>The diagnostic with its message and hint redacted (structured data sanitized).</summary>
         public static Diagnostic Redact(Diagnostic diagnostic)
         {
-            return new Diagnostic(diagnostic.Code, EtosRedaction.Redact(diagnostic.Message), diagnostic.Hint == null ? null : EtosRedaction.Redact(diagnostic.Hint), diagnostic.Where, diagnostic.Data);
+            return new Diagnostic(EtosRedaction.Redact(diagnostic.Code), EtosRedaction.Redact(diagnostic.Message), diagnostic.Hint == null ? null : EtosRedaction.Redact(diagnostic.Hint), diagnostic.Where, diagnostic.Data == null ? null : (Newtonsoft.Json.Linq.JObject)EtosRedaction.RedactJson(diagnostic.Data));
         }
     }
 }

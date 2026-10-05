@@ -12,7 +12,7 @@
 #        Unity -projectPath <copy> -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile <out>/editor.log
 #      The evidence entry (games/hollowmere/Assets/Hollowmere/Tests/P2_1/Editor/StudioUiEvidence.cs) walks the steps
 #      (first-run guide, Studio layout, select the Village Well, inspect hover, marquee, point-at, candidate preview,
-#      apply, undo, prompt bar, Play mode on the player camera with W routed through the Input System and the pump
+#      apply, undo, prompt bar, Play mode after newgame reaches HUD, measuring world.posX/posZ with W routed through the Input System and the pump
 #      indicator, Maren and the well selected in Play, pause). After each step it composes the Studio windows' own
 #      pixels into a PNG (never the desktop, so nothing else on the host display can appear) and finally exits;
 #   2. waits for that Editor's PID (EVIDENCE_TIMEOUT seconds, default 1800, and a log-silence watchdog of
@@ -192,6 +192,11 @@ lines += ["", "## B-SELECT timings (picking queries, Stopwatch, ms)", ""]
 selects = [entry.get("bSelect") for entry in entries if entry.get("bSelect")]
 lines.append(f"Last cumulative report: `{selects[-1]}`" if selects else "No picking samples were recorded.")
 problems = [entry for entry in entries if entry.get("problem") or entry.get("name") == "error"]
+walks = [entry for entry in entries if entry.get("name") == "walk-measurement"]
+if not walks or not all(w.get("hud") and w.get("routing") and w.get("source") == "world.posX/posZ" and w.get("metres", 0) > 0.05 and w.get("seconds", 0) > 0 for w in walks):
+    problems.append({"step": 16, "problem": "Missing or failed HUD walk measurement from committed world.posX/posZ."})
+lines += ["", "## HUD walking", ""]
+lines += [f"Committed world.posX/posZ: {w.get('metres', 0):.3f} m in {w.get('seconds', 0):.3f} s; HUD={w.get('hud')}, image input={w.get('routing')}." for w in walks]
 lines += ["", "## Problems", ""]
 lines += [f"- step {entry['step']}: {entry.get('problem') or entry.get('caption')}" for entry in problems] or (["None."] if int(rc) == 0 else [f"The Editor run ended with exit code {rc} (124 = killed by the watchdog)."])
 lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); the live prompt used P2.2's gateway with the app key read from its key file, which no Studio window displays (the ETOS settings page is never opened), so no secret can be on screen."]

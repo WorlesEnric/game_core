@@ -9,6 +9,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using GameCore.Studio.Authoring;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
@@ -82,6 +85,9 @@ namespace GameCore.Studio.UI
 
         /// <summary>Attachments larger than this are refused (04 s2: 16 MiB).</summary>
         public const long MaxAttachmentBytes = 16L * 1024 * 1024;
+        public const int MaxAttachments = 8;
+        public const int MaxContextObjects = 128;
+        public const long MaxTotalAttachmentBytes = 16L * 1024 * 1024;
 
         /// <summary>The default worker mode (gc-designer); <c>mechanism</c> selects gc-mechanic.</summary>
         public const string DesignWorker = "design";
@@ -128,58 +134,89 @@ namespace GameCore.Studio.UI
                 _runtime.Index.Rebuild();
             }
 
+            if (ByteCap < 256 || ByteCap > SliceByteCap) throw new ArgumentOutOfRangeException(nameof(ByteCap), "Context cap must be 256..65536 bytes.");
+            if (selection.Targets.Count > MaxContextObjects || (selection.Parts?.Count ?? 0) > MaxContextObjects)
+                throw new ArgumentException("Select at most 128 objects/parts per request.", nameof(selection));
             List<AuthoringRef> closure = new List<AuthoringRef>();
             foreach (AuthoringRef target in selection.Targets)
-            {
-                if (target.Kind != AuthoringKind.Location)
-                {
-                    closure.Add(target);
-                }
-            }
-
+                if (target.Kind != AuthoringKind.Location) closure.Add(target);
             if (selection.Parts != null)
-            {
                 foreach (PartRef part in selection.Parts)
-                {
-                    closure.Add(part.Owner);
-                }
-            }
+                    if (closure.Count < MaxContextObjects) closure.Add(part.Owner);
 
             IndexSlice slice = _runtime.Index.Slice(closure, Depth, ByteCap);
+            JObject packed = (JObject)new SecretRedactor().RedactJson(StudioJson.ToToken(slice.Index));
+            // Secret-key fields are omitted rather than deserialized into an invalid IndexField shape.
+            foreach (JObject node in packed["nodes"] as JArray ?? new JArray())
+                if (node["fields"] is JObject fields)
+                    foreach (JProperty field in new List<JProperty>(fields.Properties()))
+                        if (field.Value is not JObject) field.Remove();
+            bool truncated = slice.Truncated || (selection.Parts != null && selection.Targets.Count + selection.Parts.Count > MaxContextObjects);
+            int omitted = slice.OmittedNodes;
+            // Core estimates node bytes; enforce the actual envelope including property names and UTF-8.
+            while (JsonBytes(packed).Length > ByteCap)
+            {
+                truncated = true;
+                if (packed["scopes"] is JArray scopes && scopes.Count > 0) scopes.Last!.Remove();
+                else if (packed["edges"] is JArray edges && edges.Count > 0) edges.Last!.Remove();
+                else if (packed["nodes"] is JArray nodes && nodes.Count > 0) { nodes.Last!.Remove(); omitted++; }
+                else throw new ArgumentException("Context envelope exceeds byte cap.");
+            }
+            SemanticIndex boundedIndex = StudioJson.Deserialize<SemanticIndex>(packed.ToString(Formatting.None));
             ToolCatalog catalog = _runtime.Registry.Catalog;
             string revision = catalog.Revision ?? catalog.ComputeRevision();
             Intent intent = new Intent(text.Trim(), origin, voiceTranscriptId);
-            AgentRequest request = new AgentRequest(intent.Text, selection, slice.Index, revision)
+            AgentRequest request = new AgentRequest(intent.Text, selection, boundedIndex, revision)
             {
                 Mode = worker,
                 Parent = parent,
                 VoiceTranscriptId = voiceTranscriptId,
                 ChangeSetId = IdDerivation.NewChangeSetId(),
             };
-            foreach (PromptAttachment attachment in attachments ?? Array.Empty<PromptAttachment>())
+            IReadOnlyList<PromptAttachment> files = attachments ?? Array.Empty<PromptAttachment>();
+            if (files.Count > MaxAttachments) throw new ArgumentException("At most eight attachments are allowed.", nameof(attachments));
+            AgentAttachment? scene = SceneContext(closure);
+            long total = scene?.Data.LongLength ?? 0;
+            // Validate the complete budget before reading any attachment bytes.
+            foreach (PromptAttachment attachment in files)
             {
                 FileInfo file = new FileInfo(attachment.Path);
-                if (!file.Exists)
-                {
-                    throw new FileNotFoundException("The attachment is gone: " + attachment.Path, attachment.Path);
-                }
-
-                if (file.Length > MaxAttachmentBytes)
-                {
-                    throw new ArgumentException("The attachment " + attachment.Name + " is larger than 16 MiB.", nameof(attachments));
-                }
-
-                request.Attachments.Add(new AgentAttachment(attachment.Name, attachment.MediaType, File.ReadAllBytes(file.FullName), "reference"));
+                if (!file.Exists) throw new FileNotFoundException("The attachment is gone.", attachment.Path);
+                if (file.Length > MaxAttachmentBytes || (total += file.Length) > MaxTotalAttachmentBytes)
+                    throw new ArgumentException("Attachments including scene context exceed the 16 MiB total budget.", nameof(attachments));
             }
-
-            AgentAttachment? scene = SceneContext(closure);
+            total = scene?.Data.LongLength ?? 0;
+            foreach (PromptAttachment attachment in files)
+            {
+                byte[] bytes = ReadBoundedAttachment(attachment.Path, MaxTotalAttachmentBytes - total);
+                total += bytes.LongLength;
+                request.Attachments.Add(new AgentAttachment(attachment.Name, attachment.MediaType, bytes, "reference"));
+            }
             if (scene != null)
             {
                 request.Attachments.Add(scene);
+                truncated |= JObject.Parse(Encoding.UTF8.GetString(scene.Data))["truncated"]!.Value<bool>();
             }
-
-            return new PreparedRequest(request, intent, slice.Bytes, slice.Truncated, slice.OmittedNodes);
+            return new PreparedRequest(request, intent, JsonBytes(packed).Length, truncated, omitted);
         }
+
+        private static byte[] ReadBoundedAttachment(string path, long remaining)
+        {
+            using FileStream input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            if (input.Length > remaining || input.Length > MaxAttachmentBytes) throw new ArgumentException("Attachment exceeds remaining byte budget.");
+            byte[] bytes = new byte[(int)input.Length];
+            int offset = 0;
+            while (offset < bytes.Length)
+            {
+                int count = input.Read(bytes, offset, bytes.Length - offset);
+                if (count == 0) throw new IOException("Attachment changed while reading.");
+                offset += count;
+            }
+            if (input.ReadByte() != -1) throw new IOException("Attachment grew while reading.");
+            return bytes;
+        }
+
+        private static byte[] JsonBytes(JToken value) => Encoding.UTF8.GetBytes(value.ToString(Formatting.None));
 
         /// <summary>The attachment name of the scene context (the same as P2.2's AgentRequestBuilder.SceneContextName).</summary>
         public const string SceneContextName = "scene-context.json";
@@ -189,9 +226,18 @@ namespace GameCore.Studio.UI
         /// </summary>
         public AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets)
         {
+            if (ByteCap < 256 || ByteCap > SliceByteCap) throw new ArgumentOutOfRangeException(nameof(ByteCap));
             JArray objects = new JArray();
+            JObject document = new JObject
+            {
+                ["schema"] = "gamecore.studio.scenecontext/1", ["units"] = "metres",
+                ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
+                ["objects"] = objects, ["truncated"] = false,
+            };
+            int scanned = 0;
             foreach (AuthoringRef target in targets)
             {
+                if (scanned++ >= MaxContextObjects) { document["truncated"] = true; break; }
                 UnityEngine.Object? resolved = _runtime.Resolver.Find(target);
                 UnityEngine.GameObject? gameObject = resolved as UnityEngine.GameObject ?? (resolved as UnityEngine.Component)?.gameObject;
                 if (gameObject == null || !gameObject.scene.IsValid())
@@ -200,41 +246,38 @@ namespace GameCore.Studio.UI
                 }
 
                 UnityEngine.Transform transform = gameObject.transform;
-                objects.Add(new JObject
+                JObject item = new JObject
                 {
                     ["ref"] = StudioJson.ToToken(target),
-                    ["name"] = gameObject.name,
+                    ["name"] = BoundedText(gameObject.name),
                     ["path"] = HierarchyPath(transform),
-                    ["scene"] = gameObject.scene.path,
+                    ["scene"] = BoundedText(gameObject.scene.path),
                     ["position"] = new JArray(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z)),
                     ["rotation"] = new JArray(Round(transform.rotation.x), Round(transform.rotation.y), Round(transform.rotation.z), Round(transform.rotation.w)),
                     ["scale"] = new JArray(Round(transform.localScale.x), Round(transform.localScale.y), Round(transform.localScale.z)),
-                });
+                };
+                objects.Add(new SecretRedactor().RedactJson(item));
+                if (JsonBytes(document).Length > ByteCap)
+                {
+                    objects.Last!.Remove();
+                    document["truncated"] = true;
+                    break;
+                }
             }
-
-            if (objects.Count == 0)
-            {
-                return null;
-            }
-
-            JObject document = new JObject
-            {
-                ["schema"] = "gamecore.studio.scenecontext/1",
-                ["units"] = "metres",
-                ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
-                ["objects"] = objects,
-            };
-            return new AgentAttachment(SceneContextName, "application/json", System.Text.Encoding.UTF8.GetBytes(document.ToString(Newtonsoft.Json.Formatting.Indented)), "context");
+            if (objects.Count == 0 && !document["truncated"]!.Value<bool>()) return null;
+            return new AgentAttachment(SceneContextName, "application/json", JsonBytes(document), "context");
         }
+
+        private static string BoundedText(string value) => StudioStyles.Safe(value.Length > 512 ? value.Substring(0, 512) + "…" : value);
 
         private static double Round(float value) => Math.Round(value, 4);
 
         private static string HierarchyPath(UnityEngine.Transform transform)
         {
-            string path = transform.name;
-            for (UnityEngine.Transform? parent = transform.parent; parent != null; parent = parent.parent)
+            string path = BoundedText(transform.name);
+            for (UnityEngine.Transform? parent = transform.parent; parent != null && path.Length < 512; parent = parent.parent)
             {
-                path = parent.name + "/" + path;
+                path = BoundedText(parent.name + "/" + path);
             }
 
             return path;

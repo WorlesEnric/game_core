@@ -41,6 +41,7 @@ namespace GameCore.Studio.Etos.Client.Tests
             _credentials = EtosCredentials.FromKeyFile(keyFile ?? string.Empty);
             EtosClientOptions options = new EtosClientOptions
             {
+                ProjectId = Environment.GetEnvironmentVariable("GAMECORE_ETOS_PROJECT_ID") ?? string.Empty,
                 NodeUrl = _credentials.NodeUrl ?? "http://127.0.0.1:7410",
                 DefaultMaxCostUsd = 0.50,
                 Log = line => { lock (_log) { _log.Add(line); } },
@@ -330,6 +331,31 @@ namespace GameCore.Studio.Etos.Client.Tests
             }
 
             return name.StartsWith("generate", StringComparison.Ordinal) ? "generate" : name;
+        }
+
+        [Test]
+        public async Task L06_CandidateStageFetchesAndVerifiesTheSignedRecord()
+        {
+            string? candidate = Environment.GetEnvironmentVariable("GAMECORE_ETOS_STAGE_CHANGESET");
+            if (string.IsNullOrEmpty(candidate)) Assert.Ignore("R2-H supplies an owned candidate for stage qualification.");
+            StageJobInfo job = await _client!.StageAsync(candidate!, _client.Options.ProjectId,
+                Environment.GetEnvironmentVariable("GAMECORE_ETOS_STAGE_SOURCE") ?? "",
+                Environment.GetEnvironmentVariable("GAMECORE_ETOS_STAGE_CATALOG") ?? "");
+            DateTime deadline = DateTime.UtcNow.AddMinutes(25); // Cold Unity cache may exceed the warm budget once.
+            while (job.State == "queued" || job.State == "running")
+            {
+                Assert.That(DateTime.UtcNow, Is.LessThan(deadline), "stage job deadline");
+                await Task.Delay(3000);
+                job = await _client.GetStageAsync(job.JobId);
+            }
+            Write("GC_ETOS_EVIDENCE_DIR", "stage-job.json", job.Raw);
+            JObject signed = await _client.FetchTrustedVerdictAsync(job.JobId);
+            Assert.That(await _client.VerifyVerdictAsync(job.JobId, signed), Is.True);
+            Assert.That((string?)signed["projectId"], Is.EqualTo(_client.Options.ProjectId));
+            Assert.That((string?)signed["changeSetId"], Is.EqualTo(candidate));
+            Assert.That((bool?)signed["pass"], Is.True);
+            Assert.That((string?)signed["verdictRef"], Is.Not.Null.And.Not.Empty);
+            Write("GC_ETOS_EVIDENCE_DIR", "stage-signed-record.json", signed);
         }
 
         private void Write(string variable, string file, JObject content)

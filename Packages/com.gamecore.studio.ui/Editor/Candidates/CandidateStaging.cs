@@ -93,20 +93,6 @@ namespace GameCore.Studio.UI
             return false;
         }
 
-        /// <summary>True when an entry admitted a mechanism (its undo must go through StageAdmission.Undo).</summary>
-        public static bool IsAdmission(ChangeSet changeSet)
-        {
-            foreach (Operation operation in changeSet.Operations)
-            {
-                if (operation.Tool == MechanismAdmission.AdmitTool)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>The staging scenarios of the journal entry (else of <paramref name="fallback"/>).</summary>
         public static StageState StateOf(StudioRuntime runtime, string changeSetId, ChangeSet? fallback = null)
         {
@@ -158,25 +144,5 @@ namespace GameCore.Studio.UI
             return found;
         }
 
-        /// <summary>The verdict reference of a finished stage job (<c>verdict.verdictRef</c>), or null.</summary>
-        public static string? VerdictRef(JObject job)
-        {
-            return job["verdict"] is JObject verdict ? (string?)verdict["verdictRef"] : null;
-        }
-
-        /// <summary>The failure of a stage job (<c>{code:"stage_failed", reason, message, hint}</c>) as a diagnostic, or null.</summary>
-        public static Diagnostic? FailureOf(JObject job)
-        {
-            if (!(job["verdict"] is JObject verdict) || verdict["code"] == null)
-            {
-                return (string?)job["state"] == "failed" ? new Diagnostic(DiagnosticCodes.StageFailed, "The stage job failed without a verdict.") : null;
-            }
-
-            string reason = (string?)verdict["reason"] ?? "unknown";
-            return new Diagnostic((string?)verdict["code"] ?? DiagnosticCodes.StageFailed, (string?)verdict["message"] ?? ("stage failed: " + reason), (string?)verdict["hint"], null, new JObject { ["reason"] = reason });
-        }
-
-        /// <summary>Strips the <c>sha256:</c> prefix.</summary>
-        public static string Digest(string reference) => reference.StartsWith(ContentStamp.Prefix, StringComparison.Ordinal) ? reference.Substring(ContentStamp.Prefix.Length) : reference;
     }
 }

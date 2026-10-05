@@ -59,6 +59,22 @@ namespace GameCore.Studio.Etos
             return done.Task;
         }
 
+        public async Task Run(Action work, CancellationToken token)
+        {
+            var done = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using (token.Register(() => done.TrySetCanceled()))
+            {
+                Post(() =>
+                {
+                    if (token.IsCancellationRequested) { done.TrySetCanceled(); return; }
+                    try { work(); done.TrySetResult(true); }
+                    catch (Exception error) { done.TrySetException(new Exception(new SecretRedactor().Redact(error.Message))); }
+                });
+                await done.Task.ConfigureAwait(false);
+            }
+            return;
+        }
+
         /// <summary>Drains up to <paramref name="max"/> items on the calling (main) thread; returns how many ran.</summary>
         public int Pump(int max = 256)
         {
@@ -72,7 +88,7 @@ namespace GameCore.Studio.Etos
                 }
                 catch (Exception error)
                 {
-                    _log?.Write(StudioLogLevel.Error, "etos", "a main-thread callback failed: " + error.Message);
+                    _log?.Write(StudioLogLevel.Error, "etos", new SecretRedactor().Redact("a main-thread callback failed: " + error.Message));
                 }
             }
 

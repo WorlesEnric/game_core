@@ -111,7 +111,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         }
 
         [Test]
-        public void World_AddPortalAndConnectRegionsMakeChangeSets()
+        public void R2_34_WorldAddPortalAndConnectAreSingleChangeSets()
         {
             WorldView view = new WorldView(Context);
             view.Refresh();
@@ -119,7 +119,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             WorldRegion thornwick = First(world.Regions, region => region.ScenePath == Thornwick);
             WorldPortal portal = First(world.Portals, item => item.RegionA == thornwick.Key || item.RegionB == thornwick.Key);
 
-            Operation add = WorldEdits.AddPortal(portal, thornwick.Spawn!.Value + new Vector3(3f, 0f, 0f), 90f);
+            Operation add = WorldEdits.AddPortal(portal, thornwick, thornwick.Spawn!.Value + new Vector3(3f, 0f, 0f), 90f);
             Assert.That(add.Tool, Is.EqualTo(WorldEdits.AddPortalTool));
             Assert.That(add.Target!.IdentityKey, Is.EqualTo(portal.Ref.IdentityKey), "world.addPortal's engine target is the portal");
             ApplyReport added = Context.Edits.Apply(ViewEdits.Build("P2.3 test: add portal end", new[] { add }));
@@ -136,8 +136,8 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             }
 
             WorldRegion belfry = First(world.Regions, region => region.Key != thornwick.Key && world.Between(region.Key, thornwick.Key) != null);
-            int expected = ToolBinding.IsBindable(WorldEdits.ConnectRegionsTool) ? 1 : 2;
-            Assert.That(WorldEdits.ConnectRegions(Runtime, world, thornwick, belfry).Count, Is.EqualTo(expected));
+            int expected = 1;
+            Assert.That(WorldEdits.ConnectRegions(Runtime, world, thornwick, belfry).Operations.Count, Is.EqualTo(expected));
             IReadOnlyList<ApplyReport> connected = view.Connect(thornwick, belfry);
             foreach (ApplyReport report in connected)
             {

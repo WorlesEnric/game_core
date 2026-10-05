@@ -4,7 +4,7 @@
 // (property diff, image before/after/diff, audio playback), Apply (policy picker, what happens in Play vs Edit, timed,
 // per-op outcomes) and Reject (reason kept by the gateway). A change set that proposes a mechanism shows its staging
 // state instead of Apply (journal `validation`: verdict pending/pass/fail, admission, undo) with Stage (the companion's
-// staging lane through the gateway), Record verdict (a verdict file from `gamecore-studio stage run`) and Admit
+// staging lane through IStageService), Refresh verdict (authenticated after reload) and Admit
 // (StageAdmission, enabled only on a passing verdict). All actions go through CandidateCoordinator, which only calls
 // the edit engine and StageAdmission.
 #nullable enable
@@ -83,7 +83,7 @@ namespace GameCore.Studio.UI
                     row.Add(StudioStyles.Badge(stage.Label, VerdictModifier(stage)));
                 }
 
-                Label summary = new Label(entry.ChangeSet.Intent.Text + " - " + entry.Summary) { tooltip = entry.Id };
+                Label summary = new Label(StudioStyles.Safe(entry.ChangeSet.Intent.Text + " - " + entry.Summary)) { tooltip = StudioStyles.Safe(entry.Id) };
                 summary.AddToClassList("gcs-tray__intent");
                 row.Add(summary);
                 string id = entry.Id;
@@ -142,7 +142,7 @@ namespace GameCore.Studio.UI
             _details.Add(StudioStyles.Header("Preview"));
             VisualElement previewRow = new VisualElement();
             previewRow.AddToClassList("gcs-row");
-            Button preview = new Button(() => Run(() => _context.Candidates.Preview(entry), "Staged with previews.")) { name = "candidate-preview", text = entry.Stage == CandidateStage.Previewing ? "Re-stage" : "Preview" };
+            Button preview = new Button(() => Run(() => _context.Candidates.Preview(entry), "Staged with previews.")) { name = "candidate-preview", text = StudioStyles.Safe(entry.Stage == CandidateStage.Previewing ? "Re-stage" : "Preview") };
             preview.SetEnabled(entry.IsOpen);
             previewRow.Add(preview);
             Toggle after = new Toggle("Show after") { name = "candidate-after", value = entry.ShowingAfter };
@@ -160,7 +160,7 @@ namespace GameCore.Studio.UI
 
                 if (staged.Conflicts.Count > 0)
                 {
-                    _details.Add(new Button(() => Run(() => _context.Candidates.Rebase(entry), "Rebased conflicting operations.")) { name = "candidate-rebase", text = "Rebase " + staged.Conflicts.Count + " conflicting op(s)" });
+                    _details.Add(new Button(() => Run(() => _context.Candidates.Rebase(entry), "Rebased conflicting operations.")) { name = "candidate-rebase", text = StudioStyles.Safe("Rebase " + staged.Conflicts.Count + " conflicting op(s)") });
                 }
             }
 
@@ -226,7 +226,7 @@ namespace GameCore.Studio.UI
             applyRow.Add(apply);
             TextField reason = new TextField { name = "candidate-reject-reason" };
             reason.AddToClassList("gcs-grow");
-            reason.tooltip = "Why you reject it (sent back to the companion)";
+            reason.tooltip = "Why you reject it (recorded locally)";
             applyRow.Add(reason);
             Button reject = new Button(() => Run(() => _context.Candidates.Reject(entry, reason.value), "Rejected.")) { name = "candidate-reject", text = "Reject" };
             reject.SetEnabled(entry.Stage != CandidateStage.Applied && entry.Stage != CandidateStage.Rejected);
@@ -261,7 +261,7 @@ namespace GameCore.Studio.UI
             }
         }
 
-        /// <summary>The staging-lane block: verdict state from the journal, Stage / Record verdict / Admit.</summary>
+        /// <summary>The staging-lane block: journal progress, authenticated verdict details and explicit Admit.</summary>
         private void BuildStaging(CandidateEntry entry)
         {
             _details.Add(StudioStyles.Header("Staging lane"));
@@ -283,26 +283,32 @@ namespace GameCore.Studio.UI
                 }
             }
 
+            if (entry.StageJobId != null) _details.Add(StudioStyles.Text("Job: " + entry.StageJobId));
+            StageVerdict? verdict = entry.VerifiedVerdict;
+            if (verdict != null)
+            {
+                _details.Add(StudioStyles.Text("Verified verdict: " + verdict.Reference));
+                _details.Add(StudioStyles.Text("Confinement: " + verdict.Confinement + "; coldCache: " + verdict.ColdCache));
+                if (verdict.Confinement == "host")
+                    _details.Add(StudioStyles.Text("Warning: host confinement runs without OS sandbox isolation. Companion operator opt-in is required.", "gcs-diagnostic"));
+                foreach (StageVerdictStep step in verdict.Steps)
+                    _details.Add(StudioStyles.Text(step.Id + ": " + step.Status + " (" + step.DurationMs + " ms) " + step.Detail));
+                _details.Add(StudioStyles.Text("Forbidden hits: " + verdict.ForbiddenHits));
+                foreach (Newtonsoft.Json.Linq.JToken hit in verdict.Document["forbiddenHits"] as Newtonsoft.Json.Linq.JArray ?? new Newtonsoft.Json.Linq.JArray())
+                    _details.Add(StudioStyles.Text(hit.ToString(), "gcs-diagnostic"));
+            }
+
             _details.Add(StudioStyles.Text("Generated code reaches the editor only with a passing verdict for exactly these artifacts and an explicit Admit (compile, checkers, catalog check; rolled back on any failure).", "gcs-muted"));
             VisualElement row = new VisualElement();
             row.AddToClassList("gcs-row");
             bool canStage = _context.Candidates.CanRequestStage;
             Button stageButton = new Button(() => _ = StageAsync(entry)) { name = "candidate-stage", text = "Stage" };
-            stageButton.tooltip = canStage ? "Stage in an isolated slot project (POST /v1/stage); the verdict is recorded in the journal." : "The registered gateway has no staging lane; run gamecore-studio stage run and use Record verdict.";
+            stageButton.tooltip = StudioStyles.Safe(canStage ? "Stage in an isolated slot project (POST /v1/stage); the verdict is recorded in the journal." : "The registered gateway has no staging lane; configure the authenticated companion stage service.");
             stageButton.SetEnabled(canStage && entry.IsOpen && !entry.Staging);
             row.Add(stageButton);
-            Button record = new Button(() => Run(() =>
-            {
-                string path = EditorUtility.OpenFilePanel("Stage verdict", string.Empty, "json");
-                if (!string.IsNullOrEmpty(path))
-                {
-                    StageVerdict verdict = _context.Candidates.RecordVerdictFile(entry, path);
-                    LastMessage = "Verdict " + (verdict.Pass ? "pass" : "fail") + " recorded: " + verdict.Summary;
-                }
-            }, null))
-            { name = "candidate-record-verdict", text = "Record verdict...", tooltip = "Record a verdict file (gamecore-studio stage run --verdict-out FILE)" };
-            record.SetEnabled(entry.IsOpen);
-            row.Add(record);
+            Button refresh = new Button(() => _ = RefreshStageAsync(entry)) { name = "candidate-refresh-verdict", text = "Refresh verdict" };
+            refresh.SetEnabled(canStage && entry.IsOpen && !entry.Staging && entry.StageJobId != null);
+            row.Add(refresh);
             Toggle capture = new Toggle("Capture and stop Play") { name = "candidate-admit-capture", value = EditorApplication.isPlaying };
             capture.SetEnabled(EditorApplication.isPlaying);
             row.Add(capture);
@@ -313,14 +319,22 @@ namespace GameCore.Studio.UI
             }, null))
             { name = "candidate-admit", text = "Admit" };
             admit.AddToClassList("gcs-primary");
-            admit.tooltip = stage.VerdictPassed ? "Install the staged package through StageAdmission (compile, checkers, catalog check)." : "Admit needs a passing stage verdict.";
-            admit.SetEnabled(entry.IsOpen && stage.VerdictPassed && !entry.Staging);
+            admit.tooltip = StudioStyles.Safe(_context.Candidates.CanAdmit(entry) ? "Install the staged package through StageAdmission (compile, checkers, catalog check)." : "Admit needs a passing stage verdict.");
+            admit.SetEnabled(_context.Candidates.CanAdmit(entry));
             row.Add(admit);
             _details.Add(row);
             if (entry.Admission != null)
             {
                 _details.Add(StudioStyles.Text("Admission: " + entry.Admission.Outcome + (entry.Admission.Reason != null ? " (" + entry.Admission.Reason + ")" : string.Empty) + " - " + entry.Admission.Detail, entry.Admission.Outcome == AdmissionOutcome.Admitted || entry.Admission.Outcome == AdmissionOutcome.Pending ? "gcs-muted" : "gcs-diagnostic"));
             }
+        }
+
+        private async System.Threading.Tasks.Task RefreshStageAsync(CandidateEntry entry)
+        {
+            Diagnostic? failure = await _context.Candidates.RefreshStage(entry);
+            LastMessage = failure == null ? "Verified verdict refreshed." : StudioStyles.Safe(failure.Message);
+            Rebuild();
+            return;
         }
 
         private async System.Threading.Tasks.Task StageAsync(CandidateEntry entry)
@@ -349,9 +363,9 @@ namespace GameCore.Studio.UI
             row.AddToClassList("gcs-op");
             VisualElement line = new VisualElement();
             line.AddToClassList("gcs-row");
-            line.Add(new Label(operation.OpId + "  " + operation.Tool) { tooltip = operation.Args?.ToString(Newtonsoft.Json.Formatting.None) ?? string.Empty });
+            line.Add(new Label(StudioStyles.Safe(operation.OpId + "  " + operation.Tool)) { tooltip = StudioStyles.Safe(operation.Args?.ToString(Newtonsoft.Json.Formatting.None) ?? string.Empty) });
             string target = operation.Target == null ? "-" : (operation.Target.Path ?? operation.Target.AuthoringId ?? operation.Target.Kind.ToString());
-            Label targetLabel = new Label(target);
+            Label targetLabel = new Label(StudioStyles.Safe(target));
             targetLabel.AddToClassList("gcs-muted");
             targetLabel.AddToClassList("gcs-grow");
             line.Add(targetLabel);
@@ -424,7 +438,7 @@ namespace GameCore.Studio.UI
         {
             VisualElement row = new VisualElement { name = "audio-" + artifact.Sha256.Substring(0, 8) };
             row.AddToClassList("gcs-row");
-            row.Add(new Label("Audio " + (artifact.Name ?? artifact.Sha256.Substring(0, 12))));
+            row.Add(new Label(StudioStyles.Safe("Audio " + (artifact.Name ?? artifact.Sha256.Substring(0, 12)))));
             Label status = new Label();
             status.AddToClassList("gcs-muted");
             row.Add(new Button(() =>
@@ -432,13 +446,13 @@ namespace GameCore.Studio.UI
                 AudioClip? clip = CandidateCompare.LoadAudio(_context.Runtime, artifact, out string? reason);
                 if (clip == null)
                 {
-                    status.text = reason ?? "cannot decode";
+                    status.text = StudioStyles.Safe(reason ?? "cannot decode");
                     return;
                 }
 
                 _ownedTextures.Add(clip);
                 _audio.Play(clip);
-                status.text = "playing " + clip.length.ToString("0.0", CultureInfo.InvariantCulture) + " s";
+                status.text = StudioStyles.Safe("playing " + clip.length.ToString("0.0", CultureInfo.InvariantCulture) + " s");
             }) { text = "Play" });
             row.Add(new Button(_audio.Stop) { text = "Stop" });
             row.Add(status);
@@ -449,7 +463,7 @@ namespace GameCore.Studio.UI
         {
             VisualElement cell = new VisualElement();
             cell.AddToClassList("gcs-image-cell");
-            cell.Add(new Label(caption));
+            cell.Add(new Label(StudioStyles.Safe(caption)));
             if (texture != null)
             {
                 Image image = new Image { image = texture, scaleMode = ScaleMode.ScaleToFit };
@@ -472,7 +486,7 @@ namespace GameCore.Studio.UI
             row.EnableInClassList("gcs-table__row--changed", changed);
             foreach (string text in new[] { op, field, current, proposed })
             {
-                Label cell = new Label(text) { tooltip = text };
+                Label cell = new Label(StudioStyles.Safe(text)) { tooltip = StudioStyles.Safe(text) };
                 cell.AddToClassList("gcs-table__cell");
                 row.Add(cell);
             }
@@ -586,7 +600,7 @@ namespace GameCore.Studio.UI
             style.display = open.Count == 0 && LastMessage.Length == 0 ? DisplayStyle.None : DisplayStyle.Flex;
             if (open.Count > 0)
             {
-                Label title = new Label("Candidates (" + open.Count + ")");
+                Label title = new Label(StudioStyles.Safe("Candidates (" + open.Count + ")"));
                 title.AddToClassList("gcs-section__title");
                 Add(title);
             }
@@ -596,10 +610,12 @@ namespace GameCore.Studio.UI
                 CandidateEntry entry = open[i];
                 VisualElement card = new VisualElement { name = "strip-" + entry.Id };
                 card.AddToClassList("gcs-strip__card");
-                Label summary = new Label(entry.ChangeSet.Intent.Text) { tooltip = entry.Id };
+                Label summary = new Label(StudioStyles.Safe(entry.ChangeSet.Intent.Text)) { tooltip = StudioStyles.Safe(entry.Id) };
                 summary.AddToClassList("gcs-tray__intent");
                 card.Add(summary);
-                card.Add(new Label(entry.Summary + " · " + entry.Stage));
+                if (entry.VerifiedVerdict?.Confinement == "host")
+                    card.Add(StudioStyles.Text("Warning: host confinement; operator opt-in required.", "gcs-diagnostic"));
+                card.Add(new Label(StudioStyles.Safe(entry.Summary + " · " + entry.Stage)));
                 bool staging = CandidateRequirements.NeedsStageVerdict(entry.ChangeSet);
                 StageState? stage = staging ? _context.Candidates.StageStateOf(entry) : null;
                 VisualElement badges = new VisualElement();
@@ -631,8 +647,8 @@ namespace GameCore.Studio.UI
                     {
                         AdmissionResult result = _context.Candidates.Admit(entry, EditorApplication.isPlaying);
                         LastMessage = "Admit " + result.Outcome + (result.Reason != null ? " (" + result.Reason + ")" : string.Empty);
-                    }, null)) { text = "Admit", tooltip = stage.VerdictPassed ? "Admit through StageAdmission" : "Admit needs a passing stage verdict (open the panel to stage)." };
-                    admit.SetEnabled(stage.VerdictPassed && entry.IsOpen);
+                    }, null)) { text = "Admit", tooltip = StudioStyles.Safe(_context.Candidates.CanAdmit(entry) ? "Admit through StageAdmission" : "Admit needs a passing stage verdict (open the panel to stage).") };
+                    admit.SetEnabled(_context.Candidates.CanAdmit(entry));
                     buttons.Add(admit);
                 }
 
@@ -644,7 +660,7 @@ namespace GameCore.Studio.UI
 
             if (LastMessage.Length > 0)
             {
-                Label message = new Label(LastMessage);
+                Label message = new Label(StudioStyles.Safe(LastMessage));
                 message.AddToClassList("gcs-status");
                 Add(message);
             }

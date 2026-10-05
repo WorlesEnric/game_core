@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.0672501">
+  <test-suite type="TestSuite" id="1000" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.067250" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1005" name="Saltmarsh.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.EditMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.052095" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="866775" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.051761" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="Tests" fullname="Saltmarsh.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.051640" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="CleanProofAuthoringTests" fullname="Saltmarsh.Tests.CleanProofAuthoringTests" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="1.050877" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1003" name="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AllTwelveGroupsAreDiscoverable" methodname="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="656473218" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:44Z" duration="0.101831" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" methodname="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="426644309" result="Passed" start-time="2026-10-05 07:41:44Z" end-time="2026-10-05 07:41:45Z" duration="0.869537" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M45G5W4VQ8WRD0Z5D64N6QMY -> Applied (1 op(s), 59.4 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WC9DYG1JK7P1CZ8VBKD -> Applied (1 op(s), 30.4 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WD91NWVR2ZPRGPRYS3J -> Applied (1 op(s), 9.2 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WDMTBG91QR3FZYJDA6V -> Applied (1 op(s), 127.2 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WHNF2TDZKF2BKYHQAR0 -> Applied (1 op(s), 10.8 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+[GameCore.Studio/engine] applied cs_01M45G5WKFR6EK44H3P9XKX0KG -> Applied (1 op(s), 9.8 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WPSA7QQ5BTFD3EA7B8N -> Applied (1 op(s), 4.9 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WPZQWEHX4XFAFSXJ3EK -> Applied (1 op(s), 13.8 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WQEWVKCAEN4KHCPHJST -> Applied (1 op(s), 34.8 ms)
+[GameCore.Studio/engine] applied cs_01M45G5WRJAXZZJZNXCB7S1517 -> Applied (1 op(s), 12.7 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+]]></output>
+            </test-case>
+            <test-case id="1004" name="W_CLEAN_02_BakeVerifyDetectsStaleOutput" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_02_BakeVerifyDetectsStaleOutput" methodname="W_CLEAN_02_BakeVerifyDetectsStaleOutput" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="956039623" result="Passed" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.070213" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1012" name="Saltmarsh.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.PlayMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.009651" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="866775" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1013" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.008825" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1014" name="Tests" fullname="Saltmarsh.Tests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.008674" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1008" name="SaltmarshQuestHeadless" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.008543" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1009" name="W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" methodname="W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="817988253" result="Failed" label="Error" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.006442" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[SetUp : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.OpenScene() instead.
+TearDown : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.NewScene() instead.]]></message>
+                <stack-trace><![CDATA[--SetUp
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,int,UnityEngine.SceneManagement.LoadSceneParameters&,bool)
+  at UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x0002a] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManagerAPI.LoadSceneAsyncByNameOrIndex (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00000] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:39 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00011] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:114 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneParameters parameters) [0x00001] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:180 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneMode mode) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:168 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<BootRealGame>d__1.MoveNext () [0x0002d] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:18 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x00132] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:155 
+--TearDown
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManager.CreateScene_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,UnityEngine.SceneManagement.CreateSceneParameters&,UnityEngine.SceneManagement.Scene&)
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName, UnityEngine.SceneManagement.CreateSceneParameters parameters) [0x00039] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:106 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<Shutdown>d__5.MoveNext () [0x00053] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:50 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x0043e] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:248 ]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1010" name="W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" methodname="W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="1704369019" result="Failed" label="Error" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.000386" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[SetUp : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.OpenScene() instead.
+TearDown : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.NewScene() instead.]]></message>
+                <stack-trace><![CDATA[--SetUp
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,int,UnityEngine.SceneManagement.LoadSceneParameters&,bool)
+  at UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x0002a] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManagerAPI.LoadSceneAsyncByNameOrIndex (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00000] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:39 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00011] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:114 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneParameters parameters) [0x00001] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:180 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneMode mode) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:168 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<BootRealGame>d__1.MoveNext () [0x0002d] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:18 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x00132] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:155 
+--TearDown
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManager.CreateScene_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,UnityEngine.SceneManagement.CreateSceneParameters&,UnityEngine.SceneManagement.Scene&)
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName, UnityEngine.SceneManagement.CreateSceneParameters parameters) [0x00039] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:106 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<Shutdown>d__5.MoveNext () [0x00053] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:50 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x0043e] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:248 ]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1011" name="W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" methodname="W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="1543328475" result="Failed" label="Error" start-time="2026-10-05 07:41:45Z" end-time="2026-10-05 07:41:45Z" duration="0.000297" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[SetUp : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.OpenScene() instead.
+TearDown : System.InvalidOperationException : This can only be used during play mode, please use EditorSceneManager.NewScene() instead.]]></message>
+                <stack-trace><![CDATA[--SetUp
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,int,UnityEngine.SceneManagement.LoadSceneParameters&,bool)
+  at UnityEngine.SceneManagement.SceneManagerAPIInternal.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x0002a] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManagerAPI.LoadSceneAsyncByNameOrIndex (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00000] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:39 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsyncNameIndexInternal (System.String sceneName, System.Int32 sceneBuildIndex, UnityEngine.SceneManagement.LoadSceneParameters parameters, System.Boolean mustCompleteNextFrame) [0x00011] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.bindings.cs:114 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneParameters parameters) [0x00001] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:180 
+  at UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (System.String sceneName, UnityEngine.SceneManagement.LoadSceneMode mode) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:168 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<BootRealGame>d__1.MoveNext () [0x0002d] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:18 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x00132] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:155 
+--TearDown
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManager.CreateScene_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,UnityEngine.SceneManagement.CreateSceneParameters&,UnityEngine.SceneManagement.Scene&)
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName, UnityEngine.SceneManagement.CreateSceneParameters parameters) [0x00039] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName) [0x00009] in /home/bokken/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:106 
+  at Saltmarsh.Tests.SaltmarshQuestHeadless+<Shutdown>d__5.MoveNext () [0x00053] in /home/worlesenric/wkspace/gc-studio/p4.1/games/cleanproof/Assets/Saltmarsh/Tests/PlayMode/SaltmarshQuestHeadless.cs:50 
+  at UnityEngine.TestTools.EnumeratorHelper+<ProgressOnEnumerator>d__5.MoveNext () [0x00017] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/EnumeratorHelper.cs:35 
+  at UnityEngine.TestTools.BeforeAfterTestCommandBase`1+<ExecuteEnumerable>d__16[T].MoveNext () [0x0043e] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:248 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Saltmarsh/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
