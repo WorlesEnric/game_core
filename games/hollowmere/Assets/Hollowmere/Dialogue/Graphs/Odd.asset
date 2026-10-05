@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: Odd
+  m_EditorClassIdentifier: 
+  authoringId: aa779457-076d-496c-84b5-72019a826681
+  contentStamp: 7cf9f4a53eeb98b35ca8855374525a76e9a10c2c80f997211766790619c50e96
+  speaker: Odd
+  speakerEntityId: feae7fb3-57f9-4711-8549-04fa8f161ac2
+  npcGraphRef: dialogue.odd
+  entry: 0
+  nodes:
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The gate key? Three old coins, and no haggling.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: Here are three coins.
+      condition: {fileID: 11400000, guid: c1de2c141423889659daf3556d78f3a3, type: 2}
+      hideWhenUnavailable: 0
+    - text: Maren sent me. She trusts me.
+      condition: {fileID: 11400000, guid: 20525d4762e7ea943baf62305ce6e41c, type: 2}
+      hideWhenUnavailable: 1
+    - text: Not now.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Pleasure doing business. Mind the reeds.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 1b459c779c5c6191b9a13e56b29434c6, type: 2}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: For Maren, then. Take it, and do not drown.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 1
+    port: 2
+    option: 0
+    to: 2
+  - from: 1
+    port: 2
+    option: 1
+    to: 3
+  - from: 1
+    port: 2
+    option: 2
+    to: -1
+  - from: 0
+    port: 0
+    option: 0
+    to: 1
+  - from: 3
+    port: 0
+    option: 0
+    to: 4
