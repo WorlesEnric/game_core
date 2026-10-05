@@ -38,8 +38,8 @@
 #   UNITY_TIMEOUT          seconds per Editor attempt (default: 1500)
 #   UNITY_SILENCE_TIMEOUT  seconds without log growth before an attempt is killed as hung (default: 600; 0 = off)
 #
-# Exit codes: 0 compiled with no error (and the result XML says Passed with 0 failed; Inconclusive and skipped tests
-# are listed but do not fail the run, even though Unity then exits 2); 1 compile error, failed test, missing
+# Exit codes: 0 compiled with no error (and the result XML has 0 failed and >0 passed; Inconclusive and ignored tests
+# are listed but do not fail the run, even though Unity may exit 2); 1 compile error, failed test, missing
 # test results, zero selected tests (a filter that matches nothing is not a pass) or a timeout on both
 # attempts; 2 bad usage or missing project copy.
 set -euo pipefail
@@ -290,10 +290,14 @@ for case in inconclusive[:100]:
     text = (message.text or "").strip().splitlines()[0] if message is not None and message.text else ""
     print("   INCONCLUSIVE {0}: {1}".format(case.get("fullname"), text[:300]))
 total = int(attrs.get("total") or 0)
-sys.exit(1 if failed or total == 0 or not str(attrs.get("result", "")).startswith("Passed") else 0)
+passed = int(attrs.get("passed") or 0)
+# The run-level result is Passed, or Skipped:Ignored / Inconclusive when every non-pass is ignored or inconclusive;
+# only Failed (or nothing passing) fails the verdict.
+outcome = str(attrs.get("result", ""))
+sys.exit(1 if failed or total == 0 or passed == 0 or outcome.startswith("Failed") else 0)
 PY
-    # Unity exits 2 whenever a run is not all-green, including runs whose only non-passes are Inconclusive (or
-    # skipped). The XML is the verdict: result Passed, 0 failed and >0 selected is a PASS even with exit 2.
+    # Unity exits 2 whenever a run is not all-green, including runs whose only non-passes are Inconclusive. The XML
+    # is the verdict: 0 failed and >0 passed is a PASS even with exit 2.
     tests_rc_ok=0
     if (( rc == 0 || (rc == 2 && summary_rc == 0) )); then
       tests_rc_ok=1
