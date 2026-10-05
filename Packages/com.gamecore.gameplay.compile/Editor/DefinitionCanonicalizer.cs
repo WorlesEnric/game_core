@@ -22,8 +22,9 @@
 //                      implementation id, the bake report revision) derives from it, so a cosmetic or tuning edit keeps
 //                      the revision and a save taken before the edit still restores.
 //
-// Until the authoring attributes carry a Structural marker (requested from P1.7b), the structural fields are the
-// explicit per-type lists below; a type without a list is structural in every field (conservative: every edit
+// A type whose [AuthorField]/[AuthorRef] attributes mark at least one field Structural (P1.7b, B4) takes exactly its
+// marked fields. Otherwise the structural fields are the explicit per-type lists below (they equal the entity types'
+// markers and stay as the fallback); a type with neither is structural in every field (conservative: every edit
 // changes its revision). A referenced authorable definition contributes its structural stamp to the structural
 // canonical form, so a variant tint edit does not change the revision of the definition that lists the variant.
 //
@@ -96,6 +97,41 @@ namespace GameCore.Gameplay.Compile
                 default:
                     return Array.Empty<string>();
             }
+        }
+
+        /// <summary>
+        /// True when <paramref name="field"/> of <paramref name="type"/> takes part in the structural stamp: its Structural
+        /// marker when the type marks any field (P1.7b), else the explicit list of <paramref name="typeId"/>.
+        /// </summary>
+        public static bool IsStructural(Type type, string typeId, FieldInfo field)
+        {
+            if (DeclaresStructuralFields(type))
+            {
+                return IsMarkedStructural(field);
+            }
+
+            return IsStructural(typeId, field.Name);
+        }
+
+        /// <summary>True when any [AuthorField]/[AuthorRef] field of <paramref name="type"/> (base classes included) is marked Structural.</summary>
+        public static bool DeclaresStructuralFields(Type type)
+        {
+            foreach (FieldInfo field in AuthorableFields(type))
+            {
+                if (IsMarkedStructural(field))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsMarkedStructural(FieldInfo field)
+        {
+            AuthorFieldAttribute? value = field.GetCustomAttribute<AuthorFieldAttribute>(true);
+            AuthorRefAttribute? reference = field.GetCustomAttribute<AuthorRefAttribute>(true);
+            return (value != null && value.Structural) || (reference != null && reference.Structural);
         }
 
         /// <summary>True when field <paramref name="fieldName"/> of type <paramref name="typeId"/> takes part in the structural stamp.</summary>
@@ -268,7 +304,7 @@ namespace GameCore.Gameplay.Compile
             var fields = new CanonicalFields(authorable.ObjectTypeId);
             foreach (FieldInfo field in AuthorableFields(type))
             {
-                if (structural && !IsStructural(authorable.ObjectTypeId, field.Name))
+                if (structural && !IsStructural(type, authorable.ObjectTypeId, field))
                 {
                     continue;
                 }

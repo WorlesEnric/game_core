@@ -1,0 +1,214 @@
+# PACKET P1.7b gameplay-hardening (authoring metadata, tools, package hygiene)
+
+Owner: Opus 5.5. Branch `worktree-agent-a05edc7a6e52c5648` (from main `168c93f`; verified at `17337e6`; main merged in twice: `10e5ef6`, P1.6
+follow-up, and `aeca03d`, P1.7a). Host: `myubuntu`, Unity 6000.0.75f1, .NET 8. Nothing was compiled, built or tested
+on the Mac; the Mac ran only `check_game_core_csharp.py`, `check_package_metadata.py` and `validate_game_core_docs.py`.
+
+The review found four problems: cross-definition references were strings without `AuthorRef`, tool ids diverged from
+the catalog contract, the save package depended on Studio, and acceptance tests were missing for several W-PLUG rows.
+Decisions B1–B7 are implemented below, together with five later coordinator items (restoreStamina/Buy ids, P2.3
+left-open 3 and 4, the `narrative.definition` capability, the P1.6 `authoringId` merge, P1.7a's eight requests).
+
+## 1. What was built
+
+### B1 typed references (+ migration)
+- Every cross-definition reference is an `[AuthorRef]` whose category is the **target's `[Authorable]` type id**
+  (`dialogue.graph`, `logic.conditionSet`, `logic.actionSet`, `narrative.fact`, `quest.quest`, `inventory.item`,
+  `inventory.vendor`, `world.region`, `entity.variant`, ...). Non-type categories kept on purpose:
+  `entity.instance` (a placed entity by authoring id; replaces the former `[AuthorField(Type="authoringId")]` strings,
+  16 fields), `audio.clip`, `audio.musicState`. Constants: `AuthorRefCategories` (contracts).
+- The P1.4 pseudo-category `narrative.subject` is split: `ConditionEntry`, `ActionEntry`, `RuleDefinition` trigger,
+  `ObjectiveDefinition` and `QuestRewardEntry` hold one typed field per kind (fact/item/quest/region/graph/rule/
+  conditionSet/actionSet/vendor/worldItem). A `subject`/`target` C# property keeps the old read/write shape.
+- `NpcDefinition.dialogue` (dialogue.graph) and `appearance` (entity.variant); `InteractableDefinition` /
+  `TriggerDefinition`: typed `condition` (logic.conditionSet) or `conditionFact`+op+value (narrative.fact), typed
+  `actions` (logic.actionSet) or a built-in action.
+- **Serialized compatibility.** Old fields stay as hidden legacy fields (`[FormerlySerializedAs]` for the object refs;
+  `dialogueGraph`, `conditionRef`, `actionRef`, `npcGraphRef` strings). `OnAfterDeserialize` moves legacy object refs
+  into the typed fields in memory; effective string properties (`DialogueGraph`, `ConditionRef`, `ActionRef`) keep
+  every runtime consumer working on unmigrated content. String overloads (`InteractionTools.LinkCondition(def,
+  string, string)`, `NpcDefinition.Configure(..., graph)`) keep the P3.1 authoring scripts compiling.
+- **`authoring.migrateRefs(folders, apply)`** runs every `IAuthoringRefMigration` (`npc.dialogueGraph`,
+  `interaction.conditionActionRefs`, `logic.narrativeSubjects`); dry run by default. On Hollowmere: 25 changes, 0
+  unresolved (section 4).
+- **Capability for polymorphic refs.** `GameplayContentSet.definitions` has category `narrative.definition`
+  (`NarrativeKinds.Definition`); every `NarrativeDefinitionAsset` provides it through the existing mechanism
+  (a public `IEnumerable<string> Capabilities` property read by `AuthoringIdentity.GetCapabilities`). It is the only
+  polymorphic category; every other ref category is one type id. `create <type>` + `assign definitions` works for all
+  11 narrative types (test below).
+
+### B2 definitions
+- `RegionDefinition`: bounds, neighbours (world.region), named spawn points, ambience (audio.ambience).
+- `PortalDefinition`: arrival spawn point per side, condition set (`IConditionGated.ConditionRef`).
+- `WorldDefinition`: start spawn point; `focusEntityId` is `entity.instance`.
+- `QuestDefinition`: `prerequisites` (quest.quest; a failure closes dependents), completion / failure action sets.
+- The bake now carries the portal condition (`BakedPortal.ConditionRef` → `ManifestPortal.conditionRef`) and overrides
+  a portal end's arrival pose with the named spawn point; the quest converter fills `QuestModel.Prerequisites` (the
+  kernel derives dependents; P1.7a's `QuestRules.DependentsOf`).
+
+### B3 tool ids (05 amendments) and new tools
+- Built ids kept, catalog amended (section 5). New tools: `npc.setDialogue`, `npc.setAppearance`,
+  `interaction.setActions`, `interaction.explain`, `dialogue.setConsequence`, `quest.setBranch`,
+  `quest.setConsequence`, `quest.setPrerequisites`, `quest.inspectRuntime`, `inventory.setPrice`, `inventory.bindUse`,
+  `logic.whyNot`, `world.configurePortal`, `world.setRegionBounds`, `authoring.migrateRefs`.
+- **Pure tools are ReadOnly** (P2.3 left-open 4): new `AuthorOperation.ReadOnly` (Studio model + mirror +
+  `AuthoringMetadata` reader); `ReflectedTool.ReadOnly` reads it and records no undo, dirty state, inverse or touched
+  object. Marked: `dialogue.preview`, `quest.simulate`, `quest.inspectRuntime`, `logic.explain`, `logic.test`,
+  `logic.whyNot`, `interaction.explain`. `ToolRegistry.Invoke` runs them; P2.3's `ReadOnlyToolInvoker` can go.
+- **Engine-bindable world tools** (P2.3 left-open 3): `world.addPortal` targets the portal (optional `region` arg,
+  default: the portal's region whose scene is open); `world.setSpawnPoint` targets the region definition (scene marker
+  updated when open, else only the definition); `world.connectRegions` takes `regionA/B` as `[AuthorArg]` refs. The
+  `AuthoredRegion` overloads remain for scripts. P2.3's add-portal test now asserts Ok and passes.
+- `dialogue.generateVoice` / `audio.generate*`: `Compose` + prerequisite `agent.media` (ToolTier has no Agent member).
+
+### B4 `Structural`
+- `Structural` (default false) on `[AuthorField]`/`[AuthorRef]` (Studio model, dotnet mirror, contracts mirror);
+  `FieldSpec.structural` written only when true; schemas regenerated (`tool-catalog.schema.json`, also copied to
+  `studio/agent/schemas/`). Marked: prefab, variant set, kinds, slot layout, region/portal topology, scene path, save
+  slots. `DefinitionCanonicalizer` now uses the markers when a type has any (its explicit lists stay as fallback and
+  equal the entity markers), per P1.7a request 4.
+
+### B5 save package hygiene
+- `com.gamecore.gameplay.save` depends on `gameplay.contracts`, not studio.core: `SaveSchemaDefinition` uses the
+  mirror attributes and is an `IDefinitionAsset` (authoring id, content stamp). `SaveStudioOperations` moved to the new
+  Editor assembly `GameCore.Gameplay.Save.Editor` with `SaveValidator` (GP-SAV-001/002, plus derived kernel-key
+  collisions). **The Runtime asmdef no longer references `GameCore.Studio.Model`**, which fixes P3.1's IL2CPP CS0234.
+
+### B6 immutability, codes, ids
+- `Commands` lists are `IReadOnlyList` (Array.AsReadOnly); `AuthoringHardeningCodes` (21 codes, `All`), unique and not
+  reused from any other table (dotnet test scans contracts and rules). World authoring codes moved to
+  **GP-WLD-050..054** because P1.7a took 030..032 for streaming. P1.7a's `WorldRefusalCodes` are folded into
+  `GameplayDiagnosticCodes` (same values, listed in `All`, test keeps them equal).
+
+### Engine fixes found by the new tests (studio.core, flagged)
+- `ReflectedTool` touches a returned `UnityEngine.Object` (the index sees a created portal before the next flush).
+- `ChangeSetEngine.Rewitness`: after-stamps are retaken once `StopAssetEditing` ran. Inside asset editing a created
+  asset is not imported, so a reference to it serialized without its GUID and every later undo reported a false
+  conflict (P2.3's connect/undo test, `ConnectRegionsUndoTests`). An object a later op of the same change set touched
+  keeps its in-loop stamp.
+- `world.connectRegions` names the portal asset before creating it.
+
+### Coordinator: P3.1 ids
+- `player.restoreStamina` (`PlayerDeclarations.RestoreStaminaCommandId`); route/schema/lane are P1.7a's
+  (`PlayerMotionSlots.RestoreStaminaRoute`, `player.command.restore-stamina` v1, `RestoreStaminaBuffer`); payload
+  `int amount` (stamina units, > 0; P1.7a's `RestoreStaminaPayload` with optional request id).
+- `ActionKind.RestoreStamina = 17` (Value = amount), `ActionKind.Buy = 18` (Key = item, Key2 = vendor, Value = count);
+  `ActionEntry.Buy(vendor,item,count)` / `RestoreStamina(amount)` with `inventory.vendor` / `inventory.item` refs;
+  validator GP-LOG-030 (Buy) / GP-LOG-031 (RestoreStamina).
+
+## 2. Verification (host, at `dcd6fe9`/`17337e6`; later commits add only this file)
+
+| Command | Result | Duration |
+|---|---|---|
+| `studio/tools/dotnet-test.sh p1.7b dotnet/GameCore.sln` | PASS, every project: Rules.Gameplay 307, Studio.Model (P0.3 model + schema) 104, Contracts 173, Execution 178, Composition 189, Planning 163, Derivation 118, Rules.Narrative 118, Benchmarks 90, Replay 57, Etos.Client 58 (+5 skipped live), Content.Compiler 49, Recovery 47, Adapters 42, ReferenceConformance 27, Cards 26, Traversal 23, ReferenceSeams 21, ProtocolFixtures 10+10 | 82 s |
+| `unity-compile.sh p1.7b games/hollowmere --tests EditMode` | 214 total, **209 passed, 0 failed**, 5 skipped (4 live-etos opt-in, 1 `-nographics` preview). Of these P1_7b 28, P2.3 views 10+14, studio.core Edit 37, P1_1 16, P1_3 17, P1_4 7, P1_5 12, P1_7a 9, P2_1 3, P2_2 15, P2_4 8, UI 31 | 95 s |
+| `unity-compile.sh p1.7b games/hollowmere --tests PlayMode` | 11/11 | 55 s |
+| `unity-compile.sh p1.7b unity/GameCore.Validation --tests EditMode` | 1312/1312 (persistence, W3 gate, W4 profile included) | 491 s |
+| `tools/studio/emit_studio_schemas.py` (host) | up to date after regeneration | — |
+| Mac: `check_game_core_csharp.py` / `check_package_metadata.py` / `validate_game_core_docs.py` | ok / agree / passed | — |
+| `studio/tools/clean-clone-verify.sh worktree-agent-a05edc7a6e52c5648` (W-PLUG-12, fresh clone at `dcd6fe9` + script fix, no Library) | **PASS**: committed outputs verify = fail as expected (GP-CMP-002 stale content stamps / content manifest, section 4), `Entry.Bake` = pass, verify after bake = pass; the bake rewrote 28 content assets' stamps + `HollowmereContent.content.asset`. Report `~/wkspace/gc-studio/.clean-clones/logs/clean-verify-worktree-agent-a05edc7a6e52c5648-20261005T140759.json` | 205 s (import + check; check 0.9 s) |
+
+Logs and result XML: `~/wkspace/gc-studio/p1.7b/.unity-logs/` (e.g. `games_hollowmere-editmode-20261005T135447-a1.xml`,
+`games_hollowmere-playmode-20261005T135640-a1.log`, `unity_GameCore.Validation-editmode-20261005T135828-a1.log`).
+
+P1_7b tests (`games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode`, 28):
+- `IndexEdgeTests` — after `authoring.migrateRefs` (in memory), the index has NPC→graph, interactable→conditionSet,
+  quest→reward item, vendor→item, portal→condition edges; `ImpactOf(Lantern)` lists the quest reward and the vendor
+  stock (the lantern is stocked temporarily: Odd's stall sells the GateKey).
+- `ToolJournalTests` — every new mutating tool applies through `ChangeSetEngine` and is journaled Applied; pure tools
+  via `ToolRegistry.Invoke`; catalog has every new id; media tools are Compose + `agent.media`.
+- `ExplainAndQuestTests` — W-PLUG-05 `interaction.explain` and W-PLUG-09 `logic.whyNot` on the Causeway Gate
+  (fails at `gate_open`, passes with `fact.gate_open=1`, names the rules/action sets that set it); W-PLUG-07
+  `quest.simulate` (failure closes dependents transitively, cycles refused); W-PLUG-02 despawn→respawn keeps variant
+  and scale; B4 catalog structural flags.
+- `ReadOnlyAndWorldBindingTests` — the 7 pure tools via `ToolRegistry.Invoke` (output, no inverse, target clean); a
+  mutating tool is still refused there; world tools bind every parameter and apply through the engine.
+- `NarrativeRegistrationTests` — `create` each of the 11 narrative types + `assign GameplayContentSet.definitions`.
+- `ConnectRegionsUndoTests` — connectRegions on the Hollowmere world undoes through the journal.
+- `CleanCloneBakeCheck` — batch entry for W-PLUG-12 (not a test).
+- dotnet: `StructuralFieldTests` (3), `AuthoringHardeningTests` (Structural/ReadOnly parity, codes, folded world codes,
+  ActionKind 17/18, explanation/migration shapes).
+
+Tests never save Hollowmere content: the fixture reverts Undo and reloads every dirty Hollowmere asset from disk. The
+older P1.3/P1.4 authoring tests do re-save content; on this branch that rewrites ~39 assets into the new format (host
+diff kept at `.unity-logs/editmode-asset-rewrites.diff`); the host clone was reset after each run.
+
+## 3. Review finding → fix
+
+| Finding | Fix | Evidence |
+|---|---|---|
+| Cross-definition refs are strings without AuthorRef | B1 typed refs by target type id; `narrative.subject` split; legacy fields + `authoring.migrateRefs`; `narrative.definition` capability | `IndexEdgeTests`, `NarrativeRegistrationTests` |
+| Tool ids diverge from the catalog | built ids kept, 05 amended; missing tools added; P2.3 views stay reflective-free | `ToolJournalTests`, `ReadOnlyAndWorldBindingTests`, P2.3 suite green |
+| Save package depends on Studio | B5 (Runtime → contracts only, Editor assembly for Studio ops) | Validation persistence tests, W3/W4 gates, check_package_metadata |
+| Missing W-PLUG acceptance tests | W-PLUG-02/05/07/09/12 + IndexEdges + journal round trips | section 2 |
+
+## 4. Migration notes for P3.1 (content owner)
+
+Run `authoring.migrateRefs` with `apply = true` on `Assets/Hollowmere`, save, then **re-bake** (content stamps change
+with the new fields, so the committed bake outputs are stale until then). Dry run on the committed content: 25
+changes, 0 unresolved:
+- NPC `dialogueGraph` → `dialogue`: `Npcs/Definitions/{BelfryEcho,Hale,Maren,Odd,Pip}.asset`.
+- `Interactables/Definitions/CausewayGate.asset`: `conditionRef 'narrative.fact.gate_open'` → `conditionFact`
+  `Dialogue/Facts/gate_open.asset != 0` (VillageWell and DrownedBell have empty refs).
+- Untyped subject/target → typed fields: `Rules/Actions/{MarenTrust,OddPersuaded,PipAsked,MarenIntro,EchoFreed,
+  RingBell,OpenGate}.asset`, `Rules/Conditions/{HasGateKey,MarenTrustsPlayer,GateOpen,HasBellClapper,
+  HasThreeOldCoins,BellRung}.asset`, `Rules/{GateKeyOpensGate,EchoFreedAmbience,OddPaidOnTrade,BellKeepsGateOpen,
+  ReturnToMaren}.asset`, `Quests/DrownedBell.asset` (11 refs).
+- Authoring scripts keep compiling; new code should call `NpcDefinition.SetDialogue`, `InteractionTools.LinkCondition
+  (def, conditionSet)` / `SetCondition(set, fact, op, value)`, `ActionEntry.Of(kind, typedAsset, ...)`.
+- Clearing a string ref through `set ""` is refused by studio.core's reference check (open item 1); use the tools.
+
+## 5. Amendments to `docs/studio/05-plugin-catalog.md`
+
+Tool columns name the built ids; renames `player.setSpeed→tuneMovement`, `setStart→setSpawn`,
+`interaction.setCondition→linkCondition`, `dialogue.addNode→addLine`, `dialogue.setCondition→linkCondition`,
+`quest.setReward→linkReward`, `ui.setBinding→bind`, `ui.setStyle→setTheme`; built extras added; `dialogue.graphView`
+and `world.flowView` struck (P2.3 views); `ui.editText` still to build; pure tools ReadOnly; engine binding rule;
+media tools Compose + `agent.media`; B1/B2/B4/B5 notes; the agreed restoreStamina/Buy ids (section "Amendments").
+
+## 6. P1.7a's requests (packet §5) — status
+
+| # | Request | Status |
+|---|---|---|
+| 1 | Portal condition + spawn point into the manifest | Done: `BakedPortal.ConditionRef`, `WorldReader`, `Entry` writes `ManifestPortal.conditionRef`; named spawn points override arrival poses |
+| 2 | Quest prerequisites into `QuestModel` | Done (`QuestDefinitions` converter); dependents derived by the kernel |
+| 3 | AuthorRef category for Buy's vendor | Done: `ActionEntry.vendor` (inventory.vendor), converter vendor → Key2 |
+| 4 | `Structural` marker for the canonicalizer | Done, and the canonicalizer reads it |
+| 5 | Fold `WorldRefusalCodes` into `GameplayDiagnosticCodes` | Done (+ dotnet equality test) |
+| 6 | No SetDirty on read-only tools | Done (`ReflectedTool`, `ReadOnly`) |
+| 7 | SADR-013 option (a) `RuleConfigBinding` rows | **Open** — needs the install-config derivation shape; not attempted here |
+| 8 | Declare `player.restoreStamina` in the player catalog | Done as a declaration (`RestoreStaminaCommandId`, ActionKind 17 in action sets); no edit-time Studio tool (it is a runtime command) |
+
+## 7. Needs from P1.7a (runtime)
+
+- Run `QuestDefinition.completionActions` / `failActions` in the quest kernel (fields and tools exist).
+- NPC `appearance` (variant) at spawn; region bounds/neighbours/ambience consumption (streamer, audio).
+- `EntityRules.Spawn` forces `visible = true`, so a hidden override does not survive despawn/respawn (variant and scale
+  do; W-PLUG-02 asserts those).
+- A live seam for `quest.inspectRuntime` (today it reads definitions + a simulated state).
+- `AudioPlayers.Parameters` is a public mutable array.
+
+## 8. Edits outside the exclusive paths (review at integration)
+
+- studio.core: `ReflectedTool` (ReadOnly, touch returned object), `ChangeSetEngine` (Rewitness), `AuthoringMetadata`
+  reader (Structural, ReadOnly), `SemanticIndexService` / `AuthoringInspectorBuilder` / `ToolCatalog(Builder)` /
+  `AuthoringIdentity` (Structural, nested refs — first session).
+- studio.views (P2.3): `QuestModel.TypedTarget` reads the split objective/reward fields.
+- compile (P1.7a): `BakeModel`, `WorldReader`, `Entry` (portal condition/spawn), `DefinitionCanonicalizer` (markers).
+- rules.gameplay `ActionRules` (17/18 — P1.7a's merged version kept); contracts `GameplayDiagnosticCodes`,
+  `NarrativeDefinitions` (`NarrativeKinds.Definition`).
+- `games/hollowmere/.../Tests/P1_3/EditMode/P13ToolTests.cs` (expected tool list gains the 4 P1.7b tools);
+  Validation `manifest.json`/`packages-lock.json`/`GameCore.Persistence.Tests.asmdef`; `studio/tools/
+  clean-clone-verify.sh` (new); `studio/agent/schemas/tool-catalog.schema.json` (copy).
+
+## 9. Left open
+
+1. studio.core `ChangeSetValidator.CheckReference` refuses `""` for a string-valued ref, so a string ref cannot be
+   cleared with `set` (tools clear them).
+2. `ui.editText` is not built; `UiViewModels` still exposes arrays.
+3. P1.7a request 7 (RuleConfigBinding rows).
+4. Committed Hollowmere bake outputs are stale until P3.1 migrates and re-bakes; W-PLUG-12's first verify on the
+   committed outputs is expected to report that, the re-bake verify must pass.
+5. `world.connectRegions` undo restores the world's portal list; the created portal asset and the regions' neighbour
+   entries stay (no asset-level inverse from a gameplay tool, which cannot reference Studio types).
+

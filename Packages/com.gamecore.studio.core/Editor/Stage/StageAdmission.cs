@@ -1,30 +1,9 @@
 #nullable enable
-// GameCore.Studio.Edit - StageAdmission: the only path by which staged code reaches the live editor (P2.4,
-// docs/studio/03 s8, 02 s7, W-MECH-01).
-//
-// RecordVerdict  retains a stage verdict (bytes, by digest) and writes the journal's "stage.verdict" validation
-//                scenario (pending/pass/fail; P2.1 shows it).
-// Admit          the creator's explicit Admit of a staged mechanism.propose candidate:
-//                  1. Play Mode must be stopped (or, with captureAndStop, the running game is captured to the save
-//                     slot admit-<id> through the registered capture hook and Play Mode is stopped first);
-//                  2. the candidate becomes a mechanism.admit change set (same id) whose validator RequiresStageVerdict
-//                     refuses it without a passing verdict for exactly its artifacts; the engine applies it (journal
-//                     Interrupted -> per-op checkpoint -> Applied), writing the package from the retained archive;
-//                  3. the entry is held Interrupted ("stage.admission" pending) and a pending record is written under
-//                     Library/GameCoreStudio/stage, then the project recompiles;
-//                  4. compile errors (no domain reload) or, after the domain reload (AdmissionResumer), a failing
-//                     checker run, re-bake or catalog check roll the admission back: journal RollbackInterrupted (the
-//                     mechanism.remove inverse deletes the package) and a recompile; a capture is offered for restore;
-//                  5. otherwise the live catalog-set hash Combine(world, {mechanism}) must equal the verdict's predicted
-//                     catalogDelta, and the entry becomes Applied ("stage.admission" pass).
-// Undo           journal undo of an admitted change set (mechanism.remove), recompile, then the live catalog hash
-//                must return to its value before the admission ("stage.undo").
-// Compilation, the catalog and the checkers are behind interfaces so EditMode tests drive every branch without a domain
-// reload; the Unity implementations are in UnityAdmissionServices.
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using UnityEditor;
 using System.Text;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Model;
@@ -40,7 +19,7 @@ namespace GameCore.Studio.Edit
         {
             Succeeded = succeeded;
             ReloadPending = reloadPending;
-            Detail = detail;
+            Detail = new SecretRedactor().Redact(detail);
             Errors = errors ?? Array.Empty<string>();
         }
 
@@ -79,6 +58,7 @@ namespace GameCore.Studio.Edit
     /// <summary>Captures and restores the running game around an admission (SaveService through the game's hook).</summary>
     public interface IAdmissionCapture
     {
+        /// <summary>Capture once per slot. Retries must validate/reuse an existing checkpoint, never overwrite it.</summary>
         bool TryCapture(string slot, out string? problem);
 
         bool TryRestore(string slot, out string? problem);
@@ -87,6 +67,21 @@ namespace GameCore.Studio.Edit
     /// <summary>Where the fault hook is called (rollback tests).</summary>
     public enum AdmissionFaultPoint
     {
+        Pending,
+        Capture,
+        AfterCapture,
+        StopPlay,
+        Compile,
+        Reload,
+        Rebake,
+        Verify,
+        Applied,
+        UndoPending,
+        UndoCompile,
+        UndoVerify,
+        RestorePlay,
+        RestoreCapture,
+        Smoke,
         AfterApply,
         BeforeCompile,
         BeforeChecks,
@@ -112,6 +107,16 @@ namespace GameCore.Studio.Edit
         public IAdmissionChecker? Checker { get; set; }
 
         public IAdmissionCapture? Capture { get; set; }
+        public IStageService? StageService { get; set; }
+        public string? ProjectId { get; set; }
+        public Func<string>? SourceRevision { get; set; }
+        public Func<string>? CatalogRevision { get; set; }
+        public bool AllowHostConfinement { get; set; }
+        public Action? StartPlayMode { get; set; }
+        public Func<bool>? SessionReady { get; set; }
+        public Func<StageVerdict, bool>? SmokeTest { get; set; }
+        // Trusted game bootstrap re-registers these services after every domain reload.
+
 
         public Func<bool>? PlayModeProbe { get; set; }
 
@@ -146,7 +151,7 @@ namespace GameCore.Studio.Edit
         {
             ChangeSetId = changeSetId;
             Outcome = outcome;
-            Detail = detail;
+            Detail = new SecretRedactor().Redact(detail);
         }
 
         public string ChangeSetId { get; }
@@ -173,6 +178,10 @@ namespace GameCore.Studio.Edit
 
         public string? Predicted { get; set; }
 
+        public string? Confinement { get; set; }
+
+        public bool? ColdCache { get; set; }
+
         /// <summary>The save slot captured before the admission (offer restore when rolled back).</summary>
         public string? CaptureSlot { get; set; }
 
@@ -197,6 +206,8 @@ namespace GameCore.Studio.Edit
             Add(json, "before", Before);
             Add(json, "live", Live);
             Add(json, "predicted", Predicted);
+            Add(json, "confinement", Confinement);
+            if (ColdCache.HasValue) json["coldCache"] = ColdCache.Value;
             Add(json, "captureSlot", CaptureSlot);
             if (Diagnostics.Count > 0)
             {
@@ -222,14 +233,14 @@ namespace GameCore.Studio.Edit
     }
 
     /// <summary>The staging lane's admission service of one Studio runtime.</summary>
-    public sealed class StageAdmission
+    public sealed partial class StageAdmission
     {
         public const string VerdictScenario = "stage.verdict";
         public const string AdmissionScenario = "stage.admission";
         public const string UndoScenario = "stage.undo";
         public const string VerdictMediaType = "application/vnd.gamecore.stage-verdict+json";
 
-        private static readonly ConditionalWeakTable<StudioRuntime, StageAdmission> Instances = new ConditionalWeakTable<StudioRuntime, StageAdmission>();
+
 
         private readonly StudioRuntime _runtime;
         private readonly Dictionary<string, DateTime> _started = new Dictionary<string, DateTime>(StringComparer.Ordinal);
@@ -247,7 +258,7 @@ namespace GameCore.Studio.Edit
         /// <summary>Raised when an admission or undo finishes (not for Pending).</summary>
         public event Action<AdmissionResult>? Finished;
 
-        public string StateRoot => Path.Combine(_runtime.Paths.LibraryRoot, "stage");
+        public string StateRoot => Path.Combine(_runtime.Paths.StateRoot, "Studio", "Admission");
 
         /// <summary>The admission service of <paramref name="runtime"/> (Unity defaults unless configured first).</summary>
         public static StageAdmission Of(StudioRuntime runtime)
@@ -257,7 +268,7 @@ namespace GameCore.Studio.Edit
                 throw new ArgumentNullException(nameof(runtime));
             }
 
-            return Instances.GetValue(runtime, r => new StageAdmission(r, new AdmissionOptions()));
+            return AdmissionSession.instance.Instances.GetValue(runtime, r => new StageAdmission(r, new AdmissionOptions()));
         }
 
         /// <summary>Sets the options of <paramref name="runtime"/>'s admission service (tests, tools); call before first use.</summary>
@@ -268,9 +279,9 @@ namespace GameCore.Studio.Edit
                 throw new ArgumentNullException(nameof(runtime));
             }
 
-            Instances.Remove(runtime);
+            AdmissionSession.instance.Instances.Remove(runtime);
             StageAdmission admission = new StageAdmission(runtime, options ?? new AdmissionOptions());
-            Instances.Add(runtime, admission);
+            AdmissionSession.instance.Instances.Add(runtime, admission);
             return admission;
         }
 
@@ -338,6 +349,14 @@ namespace GameCore.Studio.Edit
         public string? CheckRemovable(string path, string package)
         {
             string full = Path.GetFullPath(path).TrimEnd('/', '\\');
+            if (package.StartsWith("com.gamecore.", StringComparison.OrdinalIgnoreCase)
+                || package.StartsWith("com.unity.", StringComparison.OrdinalIgnoreCase)) return "reserved_package";
+            JObject? owner = ReadState("admitted.json")[package] as JObject;
+            string? id = (string?)owner?["changeSetId"];
+            if (id == null || _runtime.Journal.Read(id) == null
+                || !string.Equals((string?)owner?["directory"], ProjectRelative(full), StringComparison.Ordinal)) return "package_not_admitted";
+            StageDataPaths.ContainedFile(Path.GetDirectoryName(full)!, Path.GetFileName(full));
+
             if (!string.Equals(Path.GetFileName(full), package, StringComparison.Ordinal))
             {
                 return "The directory " + full + " is not named after the package " + package + ".";
@@ -389,7 +408,7 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Adds <c>"name": "file:..."</c> to the project manifest (shared policy); null on success.</summary>
-        public string? AddManifestEntry(string package, string directory)
+        internal string? AddManifestEntry(string package, string directory)
         {
             string path = Path.Combine(_runtime.Paths.ProjectRoot, "Packages", "manifest.json");
             try
@@ -409,7 +428,7 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Removes a package from the project manifest; null on success.</summary>
-        public string? RemoveManifestEntry(string package)
+        internal string? RemoveManifestEntry(string package)
         {
             string path = Path.Combine(_runtime.Paths.ProjectRoot, "Packages", "manifest.json");
             try
@@ -436,12 +455,19 @@ namespace GameCore.Studio.Edit
                 return;
             }
 
-            foreach (string file in System.IO.Directory.GetFiles(path, "*", SearchOption.AllDirectories))
+            if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
             {
-                File.SetAttributes(file, FileAttributes.Normal);
+                System.IO.Directory.Delete(path);
+                return;
             }
+            foreach (string file in System.IO.Directory.GetFiles(path))
+            {
+                if ((File.GetAttributes(file) & FileAttributes.ReparsePoint) == 0) File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+            foreach (string directory in System.IO.Directory.GetDirectories(path)) DeleteDirectory(directory);
+            System.IO.Directory.Delete(path);
 
-            System.IO.Directory.Delete(path, true);
         }
 
         // ------------------------------------------------------------------------------------------- verdicts
@@ -449,10 +475,12 @@ namespace GameCore.Studio.Edit
         /// <summary>Retains the artifacts of a candidate directory (change-set.json + artifacts/) and returns the change set.</summary>
         public ChangeSet RetainCandidate(string candidateDirectory)
         {
-            string text = File.ReadAllText(Path.Combine(candidateDirectory, "change-set.json"), Encoding.UTF8);
+            string text = File.ReadAllText(StageDataPaths.ContainedFile(candidateDirectory, "change-set.json"), Encoding.UTF8);
             ChangeSet changeSet = StudioJson.Deserialize<ChangeSet>(text);
             foreach (ArtifactRef artifact in changeSet.Artifacts ?? Array.Empty<ArtifactRef>())
             {
+                if (artifact.Name != null && (Path.GetFileName(artifact.Name) != artifact.Name || artifact.Name.Contains("\\") || artifact.Name == "." || artifact.Name == ".."))
+                    throw new ArgumentException("artifact_path_forbidden");
                 string? file = null;
                 foreach (string? candidate in new[] { artifact.Name, artifact.Sha256, "sha256-" + artifact.Sha256 })
                 {
@@ -463,7 +491,7 @@ namespace GameCore.Studio.Edit
 
                     foreach (string folder in new[] { Path.Combine(candidateDirectory, "artifacts"), candidateDirectory })
                     {
-                        string path = Path.Combine(folder, candidate);
+                        string path = StageDataPaths.ContainedFile(folder, candidate);
                         if (file == null && File.Exists(path))
                         {
                             file = path;
@@ -488,29 +516,86 @@ namespace GameCore.Studio.Edit
             SetScenario(changeSetId, VerdictScenario, ScenarioStatus.Pending, "staging" + (slot == null ? string.Empty : " in slot " + slot));
         }
 
-        /// <summary>Retains verdict bytes and records the verdict in the journal ("stage.verdict").</summary>
+        private readonly Dictionary<string, StageVerdict> _verified = new Dictionary<string, StageVerdict>(StringComparer.Ordinal);
+
+        // Compatibility reader for old clients: display/evidence only, never authorization.
         public StageVerdict RecordVerdict(byte[] bytes)
         {
-            StageVerdict verdict = StageVerdict.Parse(bytes, out string? problem) ?? throw new ArgumentException("Not a stage verdict: " + problem, nameof(bytes));
+            StageVerdict verdict = StageVerdict.Parse(bytes, out string? problem) ?? throw new ArgumentException(problem);
             _runtime.Artifacts.Put(bytes, new ArtifactRef(verdict.Digest, VerdictMediaType, bytes.LongLength, "verdict.json", null, "verdict"));
-            JObject index = ReadState("verdicts.json");
-            index[verdict.ChangeSetId] = verdict.Digest;
-            WriteState("verdicts.json", index);
-            SetScenario(verdict.ChangeSetId, VerdictScenario, verdict.Pass ? ScenarioStatus.Pass : ScenarioStatus.Fail, verdict.Summary + "; " + verdict.Reference);
-            _runtime.Log.Write(StudioLogLevel.Info, "stage", "verdict for " + verdict.ChangeSetId + ": " + verdict.Summary);
+            SetScenario(verdict.ChangeSetId, VerdictScenario, ScenarioStatus.Fail, "verdict_untrusted: authenticated stage fetch required");
             return verdict;
         }
 
-        /// <summary>The latest recorded verdict of a change set, or null.</summary>
-        public StageVerdict? VerdictOf(string changeSetId)
+        public async Task<StageVerdict> FetchVerdict(string jobId, StageRequest expected)
         {
-            string? digest = (string?)ReadState("verdicts.json")[changeSetId];
-            if (digest == null || !_runtime.Artifacts.Has(digest))
-            {
-                return null;
-            }
+            _verified.Remove(expected.ChangeSetId);
+            IStageService service = Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
+            SignedVerdict signed = await service.GetVerdict(jobId);
+            if (string.IsNullOrWhiteSpace(jobId) || signed.JobId != jobId || string.IsNullOrWhiteSpace(signed.Signature))
+                throw new InvalidOperationException(VerdictReasons.Untrusted);
+            StageVerification verified = await service.VerifyVerdict(jobId, new StageVerificationRequest(signed, expected));
+            if (!verified.Verified || verified.JobId != jobId) throw new InvalidOperationException(VerdictReasons.Untrusted);
+            JObject document = signed.Verdict;
+            foreach (var pair in new[] { new KeyValuePair<string, string>("jobId", jobId),
+                new KeyValuePair<string, string>("projectId", expected.ProjectId),
+                new KeyValuePair<string, string>("sourceRevision", expected.SourceRevision),
+                new KeyValuePair<string, string>("catalogRevision", expected.CatalogRevision),
+                new KeyValuePair<string, string>("changeSetId", expected.ChangeSetId) })
+                if ((string?)document[pair.Key] != pair.Value) throw new InvalidOperationException(VerdictReasons.Mismatch);
+            byte[] bytes = Encoding.UTF8.GetBytes(document.ToString(Formatting.None));
+            StageVerdict verdict = StageVerdict.Parse(bytes, out string? problem) ?? throw new ArgumentException(problem);
+            verdict.CompanionVerified = true;
+            verdict.HostAllowed = Options.AllowHostConfinement;
+            string? reason = VerdictCheck.Check(verdict, expected.ChangeSetId, expected.PackageDigest, expected.ProposalDigest, null, out string message);
+            if (reason != null) throw new InvalidOperationException(reason + ": " + message);
+            _runtime.Artifacts.Put(bytes, new ArtifactRef(verdict.Digest, VerdictMediaType, bytes.LongLength, "verdict.json", null, "verdict"));
+            _verified[expected.ChangeSetId] = verdict;
+            JObject index = ReadState("verdicts.json");
+            index[expected.ChangeSetId] = new JObject { ["jobId"] = jobId, ["expected"] = JObject.FromObject(expected), ["digest"] = verdict.Digest };
+            WriteState("verdicts.json", index);
+            SetScenario(expected.ChangeSetId, VerdictScenario, ScenarioStatus.Pass, verdict.Summary + "; " + verdict.Reference);
+            return verdict;
+        }
 
-            return StageVerdict.Parse(_runtime.Artifacts.Read(digest), out _);
+        public StageVerdict? VerdictOf(string changeSetId) => _verified.TryGetValue(changeSetId, out StageVerdict value) ? value : null;
+
+        public async Task<int> RefreshPendingVerdicts()
+        {
+            int count = 0;
+            foreach (JProperty item in ReadState("verdicts.json").Properties())
+            {
+                if (ReadPending(item.Name) == null || item.Value is not JObject record) continue;
+                StageRequest expected = record["expected"]!.ToObject<StageRequest>()!;
+                await FetchVerdict((string)record["jobId"]!, expected);
+                count++;
+            }
+            return count;
+        }
+
+        public StageRequest BuildStageRequest(ChangeSet candidate, string sourceProject)
+        {
+            Operation operation = ProposalOperation(candidate);
+            string package = MechanismAdmission.Digest(operation.Args?["package"]) ?? throw new ArgumentException("package_missing");
+            string proposal = MechanismAdmission.Digest(operation.Args?["proposal"]) ?? throw new ArgumentException("proposal_missing");
+            StageDataPaths.ValidateProposal(JObject.Parse(Encoding.UTF8.GetString(_runtime.Artifacts.Read(proposal))));
+            var inputs = new List<string>();
+            foreach (JToken input in operation.Args?["stageInputs"] as JArray ?? new JArray())
+            {
+                string path = input.Value<string>() ?? "";
+                StageDataPaths.ValidateInput(path);
+                StageDataPaths.ContainedFile(_runtime.Paths.ProjectRoot, path);
+                inputs.Add(path);
+            }
+            return new StageRequest(candidate.Id, Options.ProjectId ?? "", sourceProject, Options.SourceRevision?.Invoke() ?? "",
+                Options.CatalogRevision?.Invoke() ?? "", package, proposal, inputs);
+        }
+
+        private static Operation ProposalOperation(ChangeSet candidate)
+        {
+            if (candidate.Operations.Count != 1 || (candidate.Operations[0].Tool != BuiltInToolIds.MechanismPropose
+                && candidate.Operations[0].Tool != MechanismAdmission.AdmitTool)) throw new ArgumentException("invalid_candidate");
+            return candidate.Operations[0];
         }
 
         /// <summary>
@@ -583,433 +668,6 @@ namespace GameCore.Studio.Edit
                 requirements: new Requirements(RuntimeApply.Compile, false, true, false),
                 links: candidate.Links,
                 timestamps: candidate.Timestamps);
-        }
-
-        // ------------------------------------------------------------------------------------------- admit
-
-        /// <summary>
-        /// Admits a staged candidate (the creator's explicit Admit). <paramref name="verdictBytes"/> records a verdict
-        /// first; otherwise the latest recorded verdict of the change set is used.
-        /// </summary>
-        public AdmissionResult Admit(ChangeSet candidate, byte[]? verdictBytes = null, bool captureAndStop = false)
-        {
-            if (candidate == null)
-            {
-                throw new ArgumentNullException(nameof(candidate));
-            }
-
-            DateTime started = DateTime.UtcNow;
-            StageVerdict? verdict = verdictBytes != null ? RecordVerdict(verdictBytes) : VerdictOf(candidate.Id);
-            string? captureSlot = null;
-            if (IsPlaying)
-            {
-                if (!captureAndStop)
-                {
-                    return Refuse(candidate.Id, "play_mode", "Stop Play Mode before admitting a mechanism, or choose capture & stop.");
-                }
-
-                captureSlot = "admit-" + candidate.Id.ToLowerInvariant();
-                string? captureProblem = "no capture hook is registered (AdmissionOptions.Capture)";
-                if (Options.Capture == null || !Options.Capture.TryCapture(captureSlot, out captureProblem))
-                {
-                    return Refuse(candidate.Id, "capture_failed", "The running game could not be captured to " + captureSlot + ": " + captureProblem);
-                }
-
-                (Options.StopPlayMode ?? (() => UnityEditor.EditorApplication.isPlaying = false))();
-                if (IsPlaying)
-                {
-                    WriteState("admit-after-play-" + candidate.Id + ".json", new JObject { ["captureSlot"] = captureSlot });
-                    return new AdmissionResult(candidate.Id, AdmissionOutcome.Pending, "Captured to " + captureSlot + "; admitting once Play Mode has stopped (call Admit again).") { CaptureSlot = captureSlot };
-                }
-            }
-
-            ChangeSet admission;
-            try
-            {
-                admission = ToAdmission(candidate, verdict);
-            }
-            catch (ArgumentException error)
-            {
-                return Refuse(candidate.Id, "invalid_candidate", error.Message);
-            }
-
-            string? before = LiveHash(null, out string? beforeProblem);
-            ApplyReport report = _runtime.Engine.Apply(admission);
-            if (!report.Ok)
-            {
-                Diagnostic? first = report.Diagnostics.Count > 0 ? report.Diagnostics[0] : null;
-                foreach (Diagnostic diagnostic in report.Diagnostics)
-                {
-                    if (diagnostic.Data?["reason"] != null)
-                    {
-                        first = diagnostic;
-                        break;
-                    }
-                }
-
-                string reason = (string?)first?.Data?["reason"] ?? (first?.Code ?? "refused");
-                string detail = first?.Message ?? ("The admission was " + report.State + ".");
-                SetScenario(candidate.Id, AdmissionScenario, ScenarioStatus.Fail, "refused: " + detail);
-                AdmissionResult refused = new AdmissionResult(candidate.Id, AdmissionOutcome.Refused, detail) { Reason = reason, Diagnostics = report.Diagnostics, Verdict = verdict?.Reference };
-                Finished?.Invoke(refused);
-                return refused;
-            }
-
-            ChangeSet entry = _runtime.Journal.Read(candidate.Id) ?? report.Entry;
-            string package = verdict?.Package ?? string.Empty;
-            string catalogType = verdict != null && verdict.Mechanisms.Count > 0 ? verdict.Mechanisms[0].Key : string.Empty;
-            string directory = ProjectRelative(PackageDirectory(package, Options.SharedPolicy));
-            JObject pending = new JObject
-            {
-                ["schema"] = "gamecore.studio.admission/1",
-                ["changeSetId"] = candidate.Id,
-                ["phase"] = "admit",
-                ["package"] = package,
-                ["directory"] = directory,
-                ["catalogType"] = catalogType,
-                ["verdict"] = verdict?.Digest,
-                ["slot"] = verdict?.Slot,
-                ["startedMs"] = new DateTimeOffset(started).ToUnixTimeMilliseconds(),
-            };
-            if (before != null)
-            {
-                pending["before"] = before;
-            }
-
-            if (captureSlot != null)
-            {
-                pending["captureSlot"] = captureSlot;
-            }
-
-            WritePending(candidate.Id, pending);
-            _runtime.Journal.Write(WithScenario(entry.WithState(ChangeSetState.Interrupted), AdmissionScenario, ScenarioStatus.Pending, "compiling " + package + " (verdict " + verdict?.Digest + ", slot " + verdict?.Slot + ")"));
-            _started[candidate.Id] = started;
-            try
-            {
-                Fault(AdmissionFaultPoint.AfterApply, candidate.Id);
-                Fault(AdmissionFaultPoint.BeforeCompile, candidate.Id);
-            }
-            catch (Exception error) when (!(error is OutOfMemoryException))
-            {
-                return Rollback(candidate.Id, "fault", "Admission failed before the compile: " + error.Message);
-            }
-
-            AdmissionResult? immediate = null;
-            Compiler.Compile("admit " + candidate.Id, result => immediate = OnCompiled(candidate.Id, result));
-            return immediate ?? new AdmissionResult(candidate.Id, AdmissionOutcome.Pending, "Compiling " + package + "; the admission continues after the domain reload.")
-            {
-                Package = package,
-                Directory = directory,
-                Verdict = verdict?.Reference,
-                Slot = verdict?.Slot,
-                Before = before,
-                Predicted = verdict?.Predicted,
-                CaptureSlot = captureSlot,
-            };
-        }
-
-        private AdmissionResult OnCompiled(string changeSetId, AdmissionCompileResult result)
-        {
-            JObject? pending = ReadPending(changeSetId);
-            string phase = (string?)pending?["phase"] ?? "admit";
-            if (!result.Succeeded)
-            {
-                if (phase == "undo")
-                {
-                    return FinishUndo(changeSetId, false, "the recompile after the undo failed: " + result.Detail);
-                }
-
-                return Rollback(changeSetId, "compile_failed", "The project does not compile with the package: " + result.Detail);
-            }
-
-            if (result.ReloadPending)
-            {
-                if (pending != null)
-                {
-                    pending["awaitingReload"] = true;
-                    WritePending(changeSetId, pending);
-                }
-
-                return new AdmissionResult(changeSetId, AdmissionOutcome.Pending, "Compiled; continuing after the domain reload.");
-            }
-
-            return phase == "undo" ? VerifyUndo(changeSetId) : Finalize(changeSetId);
-        }
-
-        /// <summary>Continues every admission or undo a domain reload interrupted (AdmissionResumer calls this).</summary>
-        public IReadOnlyList<AdmissionResult> ResumePending()
-        {
-            List<AdmissionResult> results = new List<AdmissionResult>();
-            if (!System.IO.Directory.Exists(StateRoot))
-            {
-                return results;
-            }
-
-            foreach (string file in System.IO.Directory.GetFiles(StateRoot, "pending-cs_*.json"))
-            {
-                string id = Path.GetFileNameWithoutExtension(file).Substring("pending-".Length);
-                JObject? pending = ReadPending(id);
-                if (pending == null)
-                {
-                    continue;
-                }
-
-                results.Add((string?)pending["phase"] == "undo" ? VerifyUndo(id) : Finalize(id));
-            }
-
-            return results;
-        }
-
-        /// <summary>Checks, re-bake and catalog verification after the package compiled; Applied or rolled back.</summary>
-        public AdmissionResult Finalize(string changeSetId)
-        {
-            JObject? pending = ReadPending(changeSetId);
-            if (pending == null)
-            {
-                return new AdmissionResult(changeSetId, AdmissionOutcome.Refused, "No admission of " + changeSetId + " is pending.");
-            }
-
-            string package = (string?)pending["package"] ?? string.Empty;
-            string directory = FromProjectRelative((string?)pending["directory"] ?? string.Empty);
-            StageVerdict? verdict = VerdictOf(changeSetId);
-            try
-            {
-                Fault(AdmissionFaultPoint.BeforeChecks, changeSetId);
-            }
-            catch (Exception error) when (!(error is OutOfMemoryException))
-            {
-                return Rollback(changeSetId, "fault", "Admission failed before the checkers: " + error.Message);
-            }
-
-            if (!Checker.Check(directory, package, out string checkDetail))
-            {
-                return Rollback(changeSetId, "checkers_failed", "The project checkers reject the admitted package: " + checkDetail);
-            }
-
-            try
-            {
-                Fault(AdmissionFaultPoint.BeforeCatalogCheck, changeSetId);
-            }
-            catch (Exception error) when (!(error is OutOfMemoryException))
-            {
-                return Rollback(changeSetId, "fault", "Admission failed before the catalog check: " + error.Message);
-            }
-
-            if (verdict == null || verdict.World == null || verdict.Predicted == null || verdict.Mechanisms.Count == 0)
-            {
-                return Rollback(changeSetId, "catalog_unpredicted", "The verdict carries no catalog delta (world, mechanism, predicted) to verify against.");
-            }
-
-            string? world = Catalog.WorldFingerprint(out string? worldProblem);
-            if (world == null)
-            {
-                // Right after the domain reload the Editor may still be importing; retry before rolling back.
-                int tries = (int?)pending["rebakeTries"] ?? 0;
-                if (tries < Options.RebakeRetries)
-                {
-                    pending["rebakeTries"] = tries + 1;
-                    WritePending(changeSetId, pending);
-                    _runtime.Log.Write(StudioLogLevel.Warning, "stage", "re-bake refused (attempt " + (tries + 1) + "), retrying in " + RebakeRetrySeconds + " s: " + worldProblem);
-                    (Options.Defer ?? UnityDefer)(RebakeRetrySeconds, () => Finalize(changeSetId));
-                    return new AdmissionResult(changeSetId, AdmissionOutcome.Pending, "The world re-bake was refused; retrying (attempt " + (tries + 1) + " of " + Options.RebakeRetries + ").");
-                }
-
-                return Rollback(changeSetId, "rebake_failed", "The world re-bake failed: " + worldProblem);
-            }
-
-            string catalogType = verdict.Mechanisms[0].Key;
-            string? mechanism = Catalog.MechanismFingerprint(catalogType, out string? mechanismProblem);
-            if (mechanism == null)
-            {
-                return Rollback(changeSetId, "catalog_missing", "The mechanism catalog " + catalogType + " is not loaded after the compile: " + mechanismProblem);
-            }
-
-            string live = CatalogSet.Combine(world, new[] { mechanism });
-            if (!string.Equals(world, verdict.World, StringComparison.Ordinal)
-                || !string.Equals(mechanism, verdict.Mechanisms[0].Value, StringComparison.Ordinal)
-                || !string.Equals(live, verdict.Predicted, StringComparison.Ordinal))
-            {
-                return Rollback(changeSetId, "catalog_mismatch", "The live catalog-set hash " + live + " (world " + world + ", mechanism " + mechanism + ") differs from the predicted " + verdict.Predicted + ".");
-            }
-
-            JObject admitted = ReadState("admitted.json");
-            admitted[package] = new JObject { ["changeSetId"] = changeSetId, ["catalogType"] = catalogType, ["fingerprint"] = mechanism, ["directory"] = (string?)pending["directory"] };
-            WriteState("admitted.json", admitted);
-            string full = LiveHash(null, out _) ?? live;
-            ChangeSet? entry = _runtime.Journal.Read(changeSetId);
-            if (entry != null)
-            {
-                Timestamps stamps = new Timestamps(entry.Timestamps?.Requested, entry.Timestamps?.Candidate, Journal.Now());
-                _runtime.Journal.Write(WithScenario(entry.WithState(ChangeSetState.Applied).WithTimestamps(stamps), AdmissionScenario, ScenarioStatus.Pass, "live catalog " + live + " == predicted; " + checkDetail));
-            }
-
-            DeletePending(changeSetId);
-            AdmissionResult result = new AdmissionResult(changeSetId, AdmissionOutcome.Admitted, "Admitted " + package + "; live catalog-set hash equals the predicted catalogDelta.")
-            {
-                Package = package,
-                Directory = (string?)pending["directory"],
-                Verdict = verdict.Reference,
-                Slot = verdict.Slot,
-                Before = (string?)pending["before"],
-                Live = full,
-                Predicted = verdict.Predicted,
-                CaptureSlot = (string?)pending["captureSlot"],
-                Milliseconds = Elapsed(changeSetId, pending),
-            };
-            _runtime.Log.Write(StudioLogLevel.Info, "stage", result.Detail + " (" + live + ")");
-            Finished?.Invoke(result);
-            return result;
-        }
-
-        private AdmissionResult Rollback(string changeSetId, string reason, string detail)
-        {
-            JObject? pending = ReadPending(changeSetId);
-            HistoryResult history = _runtime.History.RollbackInterrupted(changeSetId);
-            ChangeSet? entry = _runtime.Journal.Read(changeSetId);
-            if (entry != null)
-            {
-                _runtime.Journal.Write(WithScenario(entry, AdmissionScenario, ScenarioStatus.Fail, "rolled back (" + reason + "): " + detail));
-            }
-
-            DeletePending(changeSetId);
-            Compiler.Compile("rollback " + changeSetId, compiled =>
-            {
-                if (!compiled.Succeeded)
-                {
-                    _runtime.Log.Write(StudioLogLevel.Error, "stage", "the recompile after rolling back " + changeSetId + " failed: " + compiled.Detail);
-                }
-            });
-            AdmissionResult result = new AdmissionResult(changeSetId, AdmissionOutcome.RolledBack, detail)
-            {
-                Reason = reason,
-                Package = (string?)pending?["package"],
-                Directory = (string?)pending?["directory"],
-                Before = (string?)pending?["before"],
-                CaptureSlot = (string?)pending?["captureSlot"],
-                Diagnostics = history.Diagnostics,
-                Milliseconds = Elapsed(changeSetId, pending),
-            };
-            _runtime.Log.Write(StudioLogLevel.Warning, "stage", "rolled back " + changeSetId + " (" + reason + "): " + detail + (result.CaptureSlot == null ? string.Empty : "; restore " + result.CaptureSlot + " with RestoreCapture"));
-            Finished?.Invoke(result);
-            return result;
-        }
-
-        /// <summary>Restores the save slot captured before a rolled-back admission.</summary>
-        public bool RestoreCapture(string captureSlot, out string? problem)
-        {
-            if (Options.Capture == null)
-            {
-                problem = "no capture hook is registered (AdmissionOptions.Capture)";
-                return false;
-            }
-
-            return Options.Capture.TryRestore(captureSlot, out problem);
-        }
-
-        // ------------------------------------------------------------------------------------------- undo
-
-        /// <summary>Undoes an admitted change set (the package is removed), recompiles and verifies the catalog hash returns.</summary>
-        public AdmissionResult Undo(string changeSetId)
-        {
-            ChangeSet? entry = _runtime.Journal.Read(changeSetId);
-            if (entry == null || entry.EffectiveState != ChangeSetState.Applied)
-            {
-                return new AdmissionResult(changeSetId, AdmissionOutcome.UndoFailed, "Change set " + changeSetId + " is not an applied admission.");
-            }
-
-            JObject admitted = ReadState("admitted.json");
-            string? package = null;
-            foreach (JProperty property in admitted.Properties())
-            {
-                if ((string?)property.Value["changeSetId"] == changeSetId)
-                {
-                    package = property.Name;
-                }
-            }
-
-            JObject? record = package == null ? null : admitted[package] as JObject;
-            if (package != null)
-            {
-                admitted.Remove(package);
-            }
-
-            string? expected = LiveHash(admitted, out _);
-            HistoryResult history = _runtime.History.Undo(changeSetId);
-            if (!history.Ok)
-            {
-                string detail = history.Diagnostics.Count > 0 ? history.Diagnostics[0].Message : "the journal undo failed";
-                return new AdmissionResult(changeSetId, AdmissionOutcome.UndoFailed, detail) { Diagnostics = history.Diagnostics };
-            }
-
-            WriteState("admitted.json", admitted);
-            JObject pending = new JObject
-            {
-                ["schema"] = "gamecore.studio.admission/1",
-                ["changeSetId"] = changeSetId,
-                ["phase"] = "undo",
-                ["package"] = package,
-                ["catalogType"] = (string?)record?["catalogType"],
-                ["directory"] = (string?)record?["directory"],
-                ["startedMs"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-            };
-            if (expected != null)
-            {
-                pending["before"] = expected;
-            }
-
-            WritePending(changeSetId, pending);
-            _started[changeSetId] = DateTime.UtcNow;
-            AdmissionResult? immediate = null;
-            Compiler.Compile("undo " + changeSetId, result => immediate = OnCompiled(changeSetId, result));
-            return immediate ?? new AdmissionResult(changeSetId, AdmissionOutcome.Pending, "Removed " + package + "; verifying the catalog after the domain reload.") { Package = package, Before = expected };
-        }
-
-        private AdmissionResult VerifyUndo(string changeSetId)
-        {
-            JObject? pending = ReadPending(changeSetId);
-            if (pending == null)
-            {
-                return new AdmissionResult(changeSetId, AdmissionOutcome.UndoFailed, "No undo of " + changeSetId + " is pending.");
-            }
-
-            string? catalogType = (string?)pending["catalogType"];
-            string? stillLoaded = string.IsNullOrEmpty(catalogType) ? null : Catalog.MechanismFingerprint(catalogType!, out _);
-            string? live = LiveHash(null, out string? problem);
-            string? expected = (string?)pending["before"];
-            string? directory = (string?)pending["directory"];
-            bool removed = directory == null || !System.IO.Directory.Exists(FromProjectRelative(directory));
-            if (stillLoaded != null || !removed)
-            {
-                return FinishUndo(changeSetId, false, "the package is still " + (removed ? "loaded (" + catalogType + ")" : "on disk at " + directory) + " after the undo");
-            }
-
-            if (live == null || expected == null || !string.Equals(live, expected, StringComparison.Ordinal))
-            {
-                return FinishUndo(changeSetId, false, "the live catalog hash " + (live ?? "(" + problem + ")") + " did not return to " + (expected ?? "(unknown)"));
-            }
-
-            return FinishUndo(changeSetId, true, "catalog hash returned to " + live, live);
-        }
-
-        private AdmissionResult FinishUndo(string changeSetId, bool ok, string detail, string? live = null)
-        {
-            JObject? pending = ReadPending(changeSetId);
-            ChangeSet? entry = _runtime.Journal.Read(changeSetId);
-            if (entry != null)
-            {
-                _runtime.Journal.Write(WithScenario(entry, UndoScenario, ok ? ScenarioStatus.Pass : ScenarioStatus.Fail, detail));
-            }
-
-            DeletePending(changeSetId);
-            AdmissionResult result = new AdmissionResult(changeSetId, ok ? AdmissionOutcome.Undone : AdmissionOutcome.UndoFailed, detail)
-            {
-                Package = (string?)pending?["package"],
-                Before = (string?)pending?["before"],
-                Live = live,
-                Milliseconds = Elapsed(changeSetId, pending),
-            };
-            Finished?.Invoke(result);
-            return result;
         }
 
         // ------------------------------------------------------------------------------------------- helpers
@@ -1100,6 +758,7 @@ namespace GameCore.Studio.Edit
         /// <summary>The change set with <paramref name="scenario"/> replaced (or added).</summary>
         public static ChangeSet WithScenario(ChangeSet entry, string scenario, ScenarioStatus status, string detail)
         {
+            detail = new SecretRedactor().Redact(detail);
             List<ValidationScenario> validation = new List<ValidationScenario>();
             foreach (ValidationScenario existing in entry.Validation ?? Array.Empty<ValidationScenario>())
             {
@@ -1167,7 +826,9 @@ namespace GameCore.Studio.Edit
 
         private void WritePending(string changeSetId, JObject pending)
         {
-            StudioPaths.WriteAllTextAtomic(PendingPath(changeSetId), Pruned(pending).ToString(Formatting.Indented).Replace("\r\n", "\n") + "\n");
+            bool first = !File.Exists(PendingPath(changeSetId));
+            WriteDurable(PendingPath(changeSetId), Pruned(pending).ToString(Formatting.Indented).Replace("\r\n", "\n") + "\n");
+            if (first) AdmissionResumer.Wake();
         }
 
         private void DeletePending(string changeSetId)
@@ -1199,7 +860,21 @@ namespace GameCore.Studio.Edit
 
         private void WriteState(string name, JObject value)
         {
-            StudioPaths.WriteAllTextAtomic(Path.Combine(StateRoot, name), Pruned(value).ToString(Formatting.Indented).Replace("\r\n", "\n") + "\n");
+            WriteDurable(Path.Combine(StateRoot, name), Pruned(value).ToString(Formatting.Indented).Replace("\r\n", "\n") + "\n");
+        }
+
+        private static void WriteDurable(string path, string text)
+        {
+            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            string temp = path + ".tmp";
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            using (var stream = new FileStream(temp, FileMode.Create, FileAccess.Write))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush(true);
+            }
+            if (File.Exists(path)) File.Replace(temp, path, null);
+            else File.Move(temp, path);
         }
 
         private static JObject Pruned(JObject value)

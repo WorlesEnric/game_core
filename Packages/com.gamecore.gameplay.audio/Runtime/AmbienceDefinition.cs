@@ -18,10 +18,10 @@ namespace GameCore.Gameplay.Audio
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "world.region", Doc = "The region whose ambience this is.")]
+        [AuthorRef(Category = "world.region", Structural = true, Doc = "The region whose ambience this is.")]
         [SerializeField] private RegionDefinition? region;
 
-        [AuthorField(Doc = "Bank clip id of the loop.")]
+        [AuthorRef(Category = AuthorRefCategories.AudioClip, Doc = "The loop: a clip id of the audio bank.")]
         [SerializeField] private string clipId = string.Empty;
 
         [AuthorField(Min = 0, Max = 1, Doc = "Loop volume (linear, before the mixer).")]

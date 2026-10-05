@@ -4,6 +4,10 @@
 //   npc.setPatrol     set the patrol points of an NPC's behaviour (creating the behaviour asset beside it when missing)
 //   npc.setSchedule   assign a (well-formed) day schedule to an NPC
 //   npc.setBehaviour  assign a standing behaviour to an NPC
+//   npc.setDialogue   assign the dialogue graph a talk starts (P1.7b)
+//   npc.setAppearance select one of the NPC's entity variants as its appearance (P1.7b)
+//
+// NpcRefMigration (authoring.migrateRefs, P1.7b) moves the P1.3 string dialogue graph ids into the typed reference.
 //
 // Every tool validates before it changes anything, records Undo, marks what it edited dirty and refuses with an
 // ArgumentException whose message starts with the GP-* code.
@@ -132,6 +136,108 @@ namespace GameCore.Gameplay.Npc.Editor
             npc.SetBehaviour(behaviour);
             EditorUtility.SetDirty(npc);
         }
+
+        [AuthorOperation("npc.setDialogue", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(NpcValidator), Requires = "npc.definition",
+            Doc = "Assigns the dialogue graph a talk with the NPC starts; null removes it (the NPC has nothing to say).")]
+        public static void SetDialogue(
+            NpcDefinition npc,
+            [AuthorArg(Category = "dialogue.graph", Required = false, Doc = "The dialogue graph (a DialogueGraphDefinition).")] ScriptableObject? graph)
+        {
+            if (npc == null)
+            {
+                throw new ArgumentException(PlayerNpcInteractionCodes.NpcMissingEntityDefinition + ": an NPC definition is required");
+            }
+
+            if (graph != null && !AuthoredAssetLookup.IsNullOrOfType(graph, "dialogue.graph"))
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.WrongReferenceCategory + ": " + graph.name + " is not a dialogue.graph");
+            }
+
+            Undo.RecordObject(npc, "npc.setDialogue");
+            npc.SetDialogue(graph);
+            EditorUtility.SetDirty(npc);
+        }
+
+        [AuthorOperation("npc.setAppearance", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(NpcValidator), Requires = "npc.definition",
+            Doc = "Selects the NPC's appearance: one of its entity definition's variants; null uses the definition itself.")]
+        public static void SetAppearance(
+            NpcDefinition npc,
+            [AuthorArg(Category = "entity.variant", Required = false, Doc = "A variant of the NPC's entity definition.")] VariantDefinition? variant)
+        {
+            if (npc == null || npc.Entity == null)
+            {
+                throw new ArgumentException(PlayerNpcInteractionCodes.NpcMissingEntityDefinition + ": an NPC definition with an entity definition is required");
+            }
+
+            if (variant != null && !Contains(npc.Entity.Variants, variant))
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.NpcAppearanceNotVariant + ": " + variant.name + " is not a variant of " + npc.Entity.name);
+            }
+
+            Undo.RecordObject(npc, "npc.setAppearance");
+            npc.SetAppearance(variant);
+            EditorUtility.SetDirty(npc);
+        }
+
+        private static bool Contains(IReadOnlyList<VariantDefinition> variants, VariantDefinition variant)
+        {
+            for (int i = 0; i < variants.Count; i++)
+            {
+                if (variants[i] == variant)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    /// <summary>authoring.migrateRefs for NPC definitions: string dialogue graph ids become the typed dialogue reference.</summary>
+    public sealed class NpcRefMigration : IAuthoringRefMigration
+    {
+        public string MigrationId => "npc.dialogueGraph";
+
+        public AuthoringMigrationReport Migrate(IReadOnlyList<string> folders, bool apply)
+        {
+            var report = new AuthoringMigrationReport(MigrationId);
+            IReadOnlyList<ScriptableObject>? graphs = null;
+            IReadOnlyList<NpcDefinition> npcs = AuthoredAssetLookup.AssetsOf<NpcDefinition>(folders);
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                NpcDefinition npc = npcs[i];
+                string legacy = npc.LegacyDialogueGraph;
+                if (legacy.Length == 0)
+                {
+                    continue;
+                }
+
+                if (graphs == null)
+                {
+                    graphs = AuthoredAssetLookup.AssetsOfType("dialogue.graph", null);
+                }
+
+                string where = AuthoredAssetLookup.Describe(npc) + ": dialogueGraph '" + legacy + "'";
+                ScriptableObject? graph = npc.Dialogue != null ? npc.Dialogue : AuthoredAssetLookup.Resolve(legacy, graphs, out bool _);
+                if (graph == null)
+                {
+                    report.AddUnresolved(where + " names no dialogue graph (or more than one)");
+                    continue;
+                }
+
+                report.AddChanged(where + " -> dialogue " + AuthoredAssetLookup.Describe(graph));
+                if (apply)
+                {
+                    Undo.RecordObject(npc, "authoring.migrateRefs");
+                    npc.SetDialogue(graph);
+                    EditorUtility.SetDirty(npc);
+                }
+            }
+
+            return report;
+        }
     }
 
     /// <summary>Validates NPC rosters and definitions.</summary>
@@ -142,6 +248,9 @@ namespace GameCore.Gameplay.Npc.Editor
         PlayerNpcInteractionCodes.NpcSpeedOutOfRange,
         PlayerNpcInteractionCodes.NpcPatrolEmpty,
         PlayerNpcInteractionCodes.NpcScheduleMalformed,
+        AuthoringHardeningCodes.NpcAppearanceNotVariant,
+        AuthoringHardeningCodes.LegacyReference,
+        AuthoringHardeningCodes.WrongReferenceCategory,
     })]
     public static class NpcValidator
     {
@@ -201,6 +310,23 @@ namespace GameCore.Gameplay.Npc.Editor
             if (npc.Schedule != null && !npc.Schedule.IsWellFormed)
             {
                 diagnostics.Add(new GameplayDiagnostic(PlayerNpcInteractionCodes.NpcScheduleMalformed, npc.AuthoringId, npc.name + " has a malformed schedule"));
+            }
+
+            if (npc.Appearance != null && npc.AppearanceVariant < 0)
+            {
+                diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.NpcAppearanceNotVariant, npc.AuthoringId,
+                    npc.name + " appears as " + npc.Appearance.name + ", which is not a variant of its entity definition"));
+            }
+
+            if (npc.Dialogue == null && npc.LegacyDialogueGraph.Length > 0)
+            {
+                diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.LegacyReference, npc.AuthoringId,
+                    npc.name + " names its dialogue graph by the string '" + npc.LegacyDialogueGraph + "'; run authoring.migrateRefs"));
+            }
+
+            if (!AuthoredAssetLookup.IsNullOrOfType(npc.Dialogue, "dialogue.graph"))
+            {
+                diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.WrongReferenceCategory, npc.AuthoringId, npc.name + "'s dialogue is not a dialogue.graph"));
             }
 
             return diagnostics;

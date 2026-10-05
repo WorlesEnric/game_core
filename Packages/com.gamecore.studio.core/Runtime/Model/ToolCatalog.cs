@@ -277,10 +277,21 @@ namespace GameCore.Studio.Model
             double? step = null,
             string? category = null,
             string? doc = null,
-            IReadOnlyList<string>? enumValues = null)
+            IReadOnlyList<string>? enumValues = null,
+            bool? structural = null)
             : base(name, type, required, unit, min, max, step, category, doc, enumValues)
         {
+            // Only true is written: a tuning field omits the member (null policy, 03 s9), so catalogs without
+            // structural fields keep their canonical text and revision.
+            Structural = structural == true ? true : (bool?)null;
         }
+
+        /// <summary>
+        /// True when the field shapes what the runtime builds (prefab, slot layout, variant set, kind): changing it needs
+        /// a new recipe revision (a Rebuild). Absent for tuning fields.
+        /// </summary>
+        [JsonProperty("structural", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Structural { get; }
     }
 
     /// <summary>An argument of a tool (<c>[AuthorArg]</c>). Immutable.</summary>

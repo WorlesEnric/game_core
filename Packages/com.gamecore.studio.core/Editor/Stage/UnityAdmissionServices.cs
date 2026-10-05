@@ -175,7 +175,7 @@ namespace GameCore.Studio.Edit
 
             if (!succeeded)
             {
-                UnityEngine.Debug.LogWarning("[GameCore Studio] stage: the committed bake is stale (" + summary + "); the re-baked fingerprint " + fingerprint + " is used.");
+                UnityEngine.Debug.LogWarning("[GameCore Studio] stage: the committed bake is stale (" + new GameCore.Studio.Authoring.SecretRedactor().Redact(summary) + "); the re-baked fingerprint " + fingerprint + " is used.");
             }
 
             return fingerprint;
@@ -361,12 +361,13 @@ namespace GameCore.Studio.Edit
                     string[] lines = output.Trim().Split('\n');
                     string last = lines.Length > 0 ? lines[lines.Length - 1] : string.Empty;
                     detail = process.ExitCode == 0 ? "checkers clean: " + last : "checkers failed: " + output.Trim() + " " + errors.Trim();
+                    detail = new GameCore.Studio.Authoring.SecretRedactor().Redact(detail);
                     return process.ExitCode == 0;
                 }
             }
             catch (Exception error) when (error is InvalidOperationException || error is System.ComponentModel.Win32Exception || error is IOException)
             {
-                detail = "the checkers could not run: " + error.Message;
+                detail = new GameCore.Studio.Authoring.SecretRedactor().Redact("the checkers could not run: " + error.Message);
                 return false;
             }
         }

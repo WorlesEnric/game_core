@@ -9,13 +9,17 @@
 // Identities are stable names, derived with the kernel's `StableNameKeyDerivation` exactly as every plugin derives its
 // owner, slot and schema ids (P-004): the owner `game.player`, the slot `game.player.health`, the schema
 // `game.player.health.schema`.
+//
+// P1.7b (B5): the package depends on no Studio package. Its authoring attributes are the engine-free mirrors in
+// GameCore.Gameplay.Contracts (Studio reads them by name); the Studio operations live in the Editor assembly
+// GameCore.Gameplay.Save.Editor. The schema carries an authoring id like every other definition (IDefinitionAsset).
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution.Persistence;
-using GameCore.Studio.Model;
+using GameCore.Gameplay.Contracts;
 using GameCore.Unity.App;
 using UnityEngine;
 
@@ -25,15 +29,19 @@ namespace GameCore.Gameplay.Save
     [Serializable]
     public sealed class SaveSlotSchemaEntry
     {
+        [AuthorField(Structural = true, Doc = "Stable name of the slot's owner (derived to an OwnerId).")]
         [Tooltip("Stable name of the slot's owner (derived to an OwnerId).")]
         public string owner = string.Empty;
 
+        [AuthorField(Structural = true, Doc = "Stable name of the slot (derived to a SlotId).")]
         [Tooltip("Stable name of the slot (derived to a SlotId).")]
         public string slot = string.Empty;
 
+        [AuthorField(Structural = true, Doc = "Stable name of the slot's schema (derived to a SchemaId).")]
         [Tooltip("Stable name of the slot's schema (derived to a SchemaId).")]
         public string schema = string.Empty;
 
+        [AuthorField(Min = 1, Doc = "The schema version this build writes.")]
         [Tooltip("The schema version this build writes.")]
         public uint currentVersion = 1U;
     }
@@ -42,14 +50,18 @@ namespace GameCore.Gameplay.Save
     [Serializable]
     public sealed class SaveMigrationEntry
     {
+        [AuthorField(Doc = "Stable migration id; the game registers a SlotMigrationStep with the same id.")]
         [Tooltip("Stable migration id; the game registers a SlotMigrationStep with the same id.")]
         public string migrationId = string.Empty;
 
+        [AuthorField(Doc = "Stable name of the slot schema the migration converts.")]
         [Tooltip("Stable name of the slot schema the migration converts.")]
         public string schema = string.Empty;
 
+        [AuthorField(Min = 1, Doc = "Version the migration converts from.")]
         public uint fromVersion = 1U;
 
+        [AuthorField(Min = 2, Doc = "Version the migration converts to.")]
         public uint toVersion = 2U;
     }
 
@@ -71,17 +83,42 @@ namespace GameCore.Gameplay.Save
     [Authorable("save.schema", DisplayName = "Save schema", Scope = AuthorScope.Definition, RuntimeApplicability = RuntimeApply.Rebuild,
         Doc = "Slot schemas a save carries, the version this build writes, the forward migration ids a save may need and the compatible catalogs.")]
     [CreateAssetMenu(menuName = "GameCore/Save Schema", fileName = "SaveSchema")]
-    public sealed class SaveSchemaDefinition : ScriptableObject
+    public sealed class SaveSchemaDefinition : ScriptableObject, IDefinitionAsset
     {
+        [SerializeField] private string authoringId = string.Empty;
+
+        [AuthorField(Doc = "The game id written to every save header; a save from another game id is refused.")]
         [Tooltip("The game id written to every save header; a save from another game id is refused.")]
         public string gameId = string.Empty;
 
+        [AuthorField(Structural = true, Doc = "The slot schemas a save carries and the version this build writes of each.")]
         public List<SaveSlotSchemaEntry> slotSchemas = new List<SaveSlotSchemaEntry>();
 
+        [AuthorField(Doc = "Forward migrations a save from an older build may need, by id.")]
         public List<SaveMigrationEntry> migrations = new List<SaveMigrationEntry>();
 
+        [AuthorField(Doc = "Lowercase hex fingerprints of earlier catalogs this build declares compatible through its migrations.")]
         [Tooltip("Lowercase hex fingerprints of earlier catalogs this build declares compatible through its migrations.")]
         public List<string> compatibleCatalogs = new List<string>();
+
+        [SerializeField] private string contentStamp = string.Empty;
+
+        public string AuthoringId => authoringId;
+
+        public string DefinitionName => name;
+
+        public string ContentStamp => contentStamp;
+
+        /// <summary>Mints the authoring id when missing; true when it changed.</summary>
+        public bool EnsureAuthoringId()
+        {
+            string next = AuthoringIds.IsValid(authoringId) ? authoringId : AuthoringIds.Mint();
+            bool changed = !string.Equals(next, authoringId, StringComparison.Ordinal);
+            authoringId = next;
+            return changed;
+        }
+
+        public void SetContentStamp(string stamp) => contentStamp = stamp ?? string.Empty;
 
         /// <summary>Checks names, versions and migration chains without touching any registered body.</summary>
         public SaveSchemaValidation Validate()
@@ -271,6 +308,16 @@ namespace GameCore.Gameplay.Save
             options.CompatibleCatalogs = ToCompatibleCatalogs();
             options.SchemaVersions = ToSchemaVersions();
             return problems;
+        }
+
+        private void Reset() => EnsureAuthoringId();
+
+        private void OnValidate()
+        {
+            if (!AuthoringIds.IsValid(authoringId))
+            {
+                EnsureAuthoringId();
+            }
         }
 
         private static void CheckName(SaveSchemaValidation validation, string at, string? name)

@@ -35,6 +35,21 @@ impl EventHub {
         Ok(cursor)
     }
 
+    /// Append an event with explicit app/project ownership before waking readers.
+    pub fn emit_owned(
+        &self,
+        owner: &str,
+        kind: &str,
+        request_id: Option<&str>,
+        data: &Value,
+    ) -> LedgerResult<i64> {
+        let cursor = self
+            .ledger
+            .append_owned_event(owner, kind, request_id, data)?;
+        self.notify(cursor);
+        Ok(cursor)
+    }
+
     /// Wake subscribers after the ledger appended an event itself (request updates).
     pub fn notify(&self, cursor: i64) {
         self.latest.send_if_modified(|c| {

@@ -26,6 +26,15 @@ namespace GameCore.Gameplay.Logic
 
         public abstract string NarrativeKind { get; }
 
+        /// <summary>
+        /// Capability ids studio.core reads through AuthoringIdentity.GetCapabilities: every narrative definition provides
+        /// <see cref="NarrativeKinds.Definition"/>, so a reference with that category (GameplayContentSet.definitions)
+        /// accepts any of them through the generic create/assign/set tools.
+        /// </summary>
+        public virtual IEnumerable<string> Capabilities => DefinitionCapabilities;
+
+        private static readonly IReadOnlyList<string> DefinitionCapabilities = Array.AsReadOnly(new[] { NarrativeKinds.Definition });
+
         public bool EnsureAuthoringId()
         {
             string next = AuthoringIdField.Ensure(authoringId);

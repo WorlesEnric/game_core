@@ -36,6 +36,12 @@ pub const DEFAULT_AGENT: &str = "gamecore-studio";
 /// The staging shell's settings.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StageConfig {
+    /// OS execution boundary; default Docker, host is explicit degraded opt-in.
+    pub confinement: crate::stage::sandbox::Confinement,
+    /// Pre-provisioned, versioned sandbox image (no implicit pull).
+    pub docker_image: String,
+    /// Operator-owned map of project identities to local source paths.
+    pub projects: std::collections::BTreeMap<String, PathBuf>,
     /// `stage.sh` (called as `<command> <slot> <package-dir>`); `None` when not found.
     pub command: Option<PathBuf>,
     /// Slot names handed to the command; one job per slot at a time.
@@ -120,6 +126,9 @@ struct FileConfig {
 #[derive(Debug, Default, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct FileStage {
+    confinement: Option<crate::stage::sandbox::Confinement>,
+    docker_image: Option<String>,
+    projects: Option<std::collections::BTreeMap<String, PathBuf>>,
     command: Option<PathBuf>,
     slots: Option<Vec<String>>,
     timeout_s: Option<u64>,
@@ -169,6 +178,9 @@ impl Config {
             max_slice_bytes: 2 * 1024 * 1024,
             ops_max_cost_usd: None,
             stage: StageConfig {
+                confinement: Default::default(),
+                docker_image: "gamecore-stage:6000.0.75f1-v1".into(),
+                projects: Default::default(),
                 command: None,
                 slots: vec!["1".into()],
                 timeout_s: 15 * 60,
@@ -261,6 +273,15 @@ impl Config {
             self.ops_max_cost_usd = Some(v);
         }
         if let Some(s) = f.stage {
+            if let Some(mode) = s.confinement {
+                self.stage.confinement = mode;
+            }
+            if let Some(image) = s.docker_image {
+                self.stage.docker_image = image;
+            }
+            if let Some(projects) = s.projects {
+                self.stage.projects = projects;
+            }
             self.stage.command = s.command.or(self.stage.command.take());
             if let Some(v) = s.slots.filter(|v| !v.is_empty()) {
                 self.stage.slots = v;

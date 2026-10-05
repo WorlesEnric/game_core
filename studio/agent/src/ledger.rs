@@ -131,6 +131,12 @@ CREATE TABLE IF NOT EXISTS tool_catalogs (
   catalog    TEXT NOT NULL,
   created_at INTEGER NOT NULL
 );
+CREATE TABLE IF NOT EXISTS resource_owners (
+  kind TEXT NOT NULL,
+  id TEXT NOT NULL,
+  owner TEXT NOT NULL,
+  PRIMARY KEY(kind, id, owner)
+);
 CREATE TABLE IF NOT EXISTS meta (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL
@@ -387,6 +393,71 @@ impl Ledger {
         self.conn.lock().map_err(|_| LedgerError::Poisoned)
     }
 
+    /// Associate a resource with an authenticated app/project owner.
+    pub fn grant(&self, kind: &str, id: &str, owner: &str) -> LedgerResult<()> {
+        self.lock()?.execute(
+            "INSERT OR IGNORE INTO resource_owners VALUES (?1, ?2, ?3)",
+            params![kind, id, owner],
+        )?;
+        Ok(())
+    }
+
+    /// Explicit association, or candidate artifact ownership through its manifest.
+    pub fn owns(&self, kind: &str, id: &str, owner: &str) -> LedgerResult<bool> {
+        let conn = self.lock()?;
+        let explicit: bool = conn.query_row(
+            "SELECT EXISTS(SELECT 1 FROM resource_owners WHERE kind=?1 AND id=?2 AND owner=?3)",
+            params![kind, id, owner],
+            |r| r.get(0),
+        )?;
+        if explicit || kind != "artifact" {
+            return Ok(explicit);
+        }
+        Ok(conn.query_row("SELECT EXISTS(SELECT 1 FROM candidates c JOIN requests r ON r.request_id=c.request_id, json_each(c.artifacts) a WHERE r.app=?1 AND (json_extract(a.value,'$.sha256')=?2 OR json_extract(a.value,'$.sha256')='sha256:'||?2))", params![owner,id], |r| r.get(0))?)
+    }
+
+    /// Publish the owner association and event atomically, before any replay can see it.
+    pub fn append_owned_event(
+        &self,
+        owner: &str,
+        kind: &str,
+        request_id: Option<&str>,
+        data: &Value,
+    ) -> LedgerResult<i64> {
+        let mut conn = self.lock()?;
+        let tx = conn.transaction()?;
+        tx.execute(
+            "INSERT INTO events(at,kind,request_id,data) VALUES (?1,?2,?3,?4)",
+            params![now_ms(), kind, request_id, serde_json::to_string(data)?],
+        )?;
+        let cursor = tx.last_insert_rowid();
+        tx.execute(
+            "INSERT INTO resource_owners VALUES ('event',?1,?2)",
+            params![cursor.to_string(), owner],
+        )?;
+        tx.commit()?;
+        Ok(cursor)
+    }
+
+    /// Event filtering keeps global cursors but exposes only its owner's payload.
+    pub fn owns_event(&self, event: &EventView, owner: &str) -> LedgerResult<bool> {
+        if event
+            .request_id
+            .as_ref()
+            .is_some_and(|id| self.request(id).is_ok_and(|r| r.app == owner))
+        {
+            return Ok(true);
+        }
+        if let Some(id) = event.data["sessionId"].as_str() {
+            return Ok(self.lock()?.query_row(
+                "SELECT EXISTS(SELECT 1 FROM voice_sessions WHERE session_id=?1 AND app=?2)",
+                params![id, owner],
+                |r| r.get(0),
+            )?);
+        }
+        self.owns("event", &event.cursor.to_string(), owner)
+    }
+
     // -----------------------------------------------------------------------------------------
     // Requests.
 
@@ -396,14 +467,17 @@ impl Ledger {
     pub fn insert_request(&self, new: &NewRequest) -> LedgerResult<Inserted> {
         let mut conn = self.lock()?;
         let tx = conn.transaction()?;
-        let existing: Option<String> = tx
+        let existing: Option<(String, String)> = tx
             .query_row(
-                "SELECT digest FROM requests WHERE request_id = ?1",
+                "SELECT digest, app FROM requests WHERE request_id = ?1",
                 params![new.change_set_id],
-                |r| r.get(0),
+                |r| Ok((r.get(0)?, r.get(1)?)),
             )
             .optional()?;
-        if let Some(digest) = existing {
+        if let Some((digest, owner)) = existing {
+            if owner != new.app {
+                return Err(LedgerError::NotFound("request".into()));
+            }
             if digest != new.digest {
                 return Err(LedgerError::Conflict(format!(
                     "change set {} was already requested with a different body",
@@ -1001,6 +1075,17 @@ impl Ledger {
             )
             .optional()?;
         json_opt(text)
+    }
+
+    /// Catalog revisions available to this project only.
+    pub fn owned_catalog_revisions(&self, owner: &str) -> LedgerResult<Vec<String>> {
+        let conn = self.lock()?;
+        let mut stmt = conn.prepare(
+            "SELECT id FROM resource_owners WHERE kind='catalog' AND owner=?1 ORDER BY id LIMIT 20",
+        )?;
+        Ok(stmt
+            .query_map(params![owner], |r| r.get(0))?
+            .collect::<rusqlite::Result<_>>()?)
     }
 
     /// Revisions of the stored tool catalogs, newest first.

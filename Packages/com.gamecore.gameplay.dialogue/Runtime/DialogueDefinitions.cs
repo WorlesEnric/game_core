@@ -66,20 +66,20 @@ namespace GameCore.Gameplay.Dialogue
     [Serializable]
     public sealed class DialogueNodeEntry
     {
-        [AuthorField(Doc = "Line, choice, branch, action or end.")]
+        [AuthorField(Structural = true, Doc = "Line, choice, branch, action or end.")]
         public DialogueNodeKind kind = DialogueNodeKind.Line;
 
         [AuthorField(Doc = "Speaker name (empty = the graph's speaker).")]
         public string speaker = string.Empty;
 
-        [AuthorField(Type = "authoringId", Doc = "Speaker entity authoring id (optional; empty = the graph's speaker).")]
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Speaker entity, by authoring id (optional; empty = the graph's speaker).")]
         public string speakerEntityId = string.Empty;
 
         [AuthorField(Doc = "The spoken line (line nodes) or the prompt (choice nodes).")]
         [TextArea(1, 6)]
         public string text = string.Empty;
 
-        [AuthorRef(Category = "audio.clip", Required = false, Doc = "Voice clip of the line (presentation only).")]
+        [AuthorRef(Category = AuthorRefCategories.AudioClip, Required = false, Doc = "Voice clip of the line (presentation only).")]
         public AudioClip? voiceClip;
 
         [AuthorRef(Category = "texture.sprite", Required = false, Doc = "Speaker portrait (presentation only).")]

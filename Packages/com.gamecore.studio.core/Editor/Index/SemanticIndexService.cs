@@ -11,9 +11,13 @@
 // records for incremental reloads).
 #nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Model;
 using Newtonsoft.Json;
@@ -860,6 +864,110 @@ namespace GameCore.Studio.Edit
             return new SourceRecord(nodes, edges, sink.Scopes);
         }
 
+        /// <summary>Nesting depth followed into serializable entries (a quest's rewards, a vendor's stock, a graph's nodes).</summary>
+        private const int MaxNestedDepth = 4;
+
+        private static readonly Regex AuthoringIdText =
+            new Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// One [AuthorRef] value as a `refs` entry and a `references` edge: an object reference through the resolver, an
+        /// authoring-id string (entity.instance refs and other authoring-id refs, P1.7b) by its id, and an asset-path
+        /// string (asset.scene) by its asset GUID. Other strings (bank clip ids, state ids) name no indexed node.
+        /// </summary>
+        private void AddReference(string field, string? category, object? item, AuthoringRef from, List<IndexRef> outgoing, List<IndexEdge> edges)
+        {
+            AuthoringRef? to = null;
+            if (item is UnityEngine.Object target)
+            {
+                if (target == null)
+                {
+                    return;
+                }
+
+                to = _resolver.BuildRef(target, null, false);
+            }
+            else if (item is string text && text.Length > 0)
+            {
+                if (AuthoringIdText.IsMatch(text))
+                {
+                    to = new AuthoringRef(string.Equals(category, "entity.instance", StringComparison.Ordinal) ? AuthoringKind.Entity : AuthoringKind.Definition, text);
+                }
+                else if (text.StartsWith("Assets/", StringComparison.Ordinal))
+                {
+                    string guid = AssetDatabase.AssetPathToGUID(text);
+                    if (!string.IsNullOrEmpty(guid))
+                    {
+                        to = new AuthoringRef(AuthoringKind.Asset, null, null, guid, text);
+                    }
+                }
+            }
+
+            if (to == null)
+            {
+                return;
+            }
+
+            outgoing.Add(new IndexRef(field, to));
+            edges.Add(new IndexEdge(from, to, EdgeKind.References));
+        }
+
+        /// <summary>
+        /// The [AuthorRef] members of serializable entries inside a value field (lists of plain classes), as refs named by
+        /// their path (<c>rewards[0].item</c>), so ImpactOf and ReferencesTo see a quest's reward item or a vendor's stock.
+        /// </summary>
+        private void AddNestedReferences(string path, object? value, AuthoringRef from, List<IndexRef> outgoing, List<IndexEdge> edges, int depth)
+        {
+            if (value == null || depth >= MaxNestedDepth || value is string || value is UnityEngine.Object)
+            {
+                return;
+            }
+
+            Type type = value.GetType();
+            if (type.IsPrimitive || type.IsEnum || type == typeof(decimal))
+            {
+                return;
+            }
+
+            if (value is IList list)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    AddNestedReferences(path + "[" + i.ToString(CultureInfo.InvariantCulture) + "]", list[i], from, outgoing, edges, depth + 1);
+                }
+
+                return;
+            }
+
+            if (type.IsValueType || !type.IsDefined(typeof(SerializableAttribute), false))
+            {
+                return;
+            }
+
+            foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                if (!AuthoringIdentity.IsUnitySerialized(field))
+                {
+                    continue;
+                }
+
+                object? nested = field.GetValue(value);
+                AuthorRefAttribute? reference = AuthoringMetadata.Reference(field);
+                if (reference != null)
+                {
+                    IReadOnlyList<object?> items = field.FieldType != typeof(string) && nested is IList ? AuthoringIdentity.Items(nested) : new[] { nested };
+                    foreach (object? item in items)
+                    {
+                        AddReference(path + "." + field.Name, reference.Category, item, from, outgoing, edges);
+                    }
+                }
+                else if (AuthoringMetadata.Field(field) != null)
+                {
+                    AddNestedReferences(path + "." + field.Name, nested, from, outgoing, edges, depth + 1);
+                }
+            }
+        }
+
         private IndexNode? BuildNode(AuthoredObjectEntry entry, List<IndexEdge> edges)
         {
             AuthorScope scope = entry.Location == AuthoredObjectLocation.Asset ? AuthorScope.Definition
@@ -881,19 +989,7 @@ namespace GameCore.Studio.Edit
                     IReadOnlyList<object?> targets = member.IsCollection ? AuthoringIdentity.Items(value) : new[] { value };
                     foreach (object? item in targets)
                     {
-                        if (!(item is UnityEngine.Object target) || target == null)
-                        {
-                            continue;
-                        }
-
-                        AuthoringRef? to = _resolver.BuildRef(target, null, false);
-                        if (to == null)
-                        {
-                            continue;
-                        }
-
-                        outgoing.Add(new IndexRef(member.Name, to));
-                        edges.Add(new IndexEdge(from, to, EdgeKind.References));
+                        AddReference(member.Name, member.Spec.Category, item, from, outgoing, edges);
                     }
 
                     continue;
@@ -902,6 +998,7 @@ namespace GameCore.Studio.Edit
                 FieldSpec spec = member.Spec;
                 IReadOnlyList<double>? range = spec.Min.HasValue && spec.Max.HasValue ? new[] { spec.Min.Value, spec.Max.Value } : null;
                 fields[member.Name] = new IndexField(spec.Type, _resolver.Codec.FromClr(value), spec.Unit, range);
+                AddNestedReferences(member.Name, value, from, outgoing, edges, 0);
             }
 
             string name = entry.Target is Component component ? component.gameObject.name : entry.Target.name;

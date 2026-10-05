@@ -50,6 +50,7 @@ struct Api {
     url: String,
     token: String,
     app: String,
+    project: String,
     http: reqwest::Client,
 }
 
@@ -59,6 +60,7 @@ impl Api {
             url: running.url.clone(),
             token: node.token(),
             app: "gamecore-unity".into(),
+            project: "a".repeat(64),
             http: reqwest::Client::new(),
         }
     }
@@ -80,6 +82,7 @@ impl Api {
             .request(method, format!("{}{path}", self.url))
             .header("x-etos-proxy-token", &self.token)
             .header("x-etos-app", &self.app)
+            .header("x-gamecore-project", &self.project)
             .header("content-type", "application/json")
             .body(body)
             .send()
@@ -105,7 +108,8 @@ impl Api {
             .http
             .request(method, format!("{}{path}", self.url))
             .header("x-etos-proxy-token", &self.token)
-            .header("x-etos-app", &self.app);
+            .header("x-etos-app", &self.app)
+            .header("x-gamecore-project", &self.project);
         if let Some(b) = body {
             req = req.json(&b);
         }
@@ -146,6 +150,10 @@ impl Api {
             .insert("x-etos-proxy-token", self.token.parse().unwrap());
         req.headers_mut()
             .insert("x-etos-app", "gamecore-unity".parse().unwrap());
+        req.headers_mut()
+            .insert("x-etos-app", self.app.parse().unwrap());
+        req.headers_mut()
+            .insert("x-gamecore-project", self.project.parse().unwrap());
         let (ws, _) = tokio_tungstenite::connect_async(req).await.unwrap();
         ws
     }
@@ -309,6 +317,7 @@ async fn request_task_candidate_with_verified_artifacts() {
         .get(format!("{}/v1/artifacts/{}", running.url, sha(&wav)))
         .header("x-etos-proxy-token", node.token())
         .header("x-etos-app", "gamecore-unity")
+        .header("x-gamecore-project", "a".repeat(64))
         .send()
         .await
         .unwrap();
@@ -631,6 +640,18 @@ async fn voice_session_ready_transcripts_and_close() {
         (Some("error"), Some("too_large")),
         "{refused}"
     );
+    // R2-28: missing sequence, a nonzero first sequence, duplicate/gap and malformed
+    // PCM never consume sequence zero or reach the provider.
+    for frame in [
+        json!({"type":"audio","pcm16":"AAA="}),
+        json!({"type":"audio","seq":9,"pcm16":"AAA="}),
+        json!({"type":"audio","seq":0,"pcm16":"AA=="}),
+    ] {
+        ws.send(Message::Text(frame.to_string().into()))
+            .await
+            .unwrap();
+        assert_eq!(next_json(&mut ws).await["type"], "error");
+    }
     // Three frames of at most 24 KiB → three etos chunks.
     for (i, n) in [24 * 1024, 24 * 1024, 60_000 - 48 * 1024]
         .into_iter()
@@ -638,7 +659,7 @@ async fn voice_session_ready_transcripts_and_close() {
     {
         let b64 = base64::engine::general_purpose::STANDARD.encode(vec![0u8; n]);
         ws.send(Message::Text(
-            json!({"type": "audio", "seq": i + 1, "pcm16": b64})
+            json!({"type": "audio", "seq": i, "pcm16": b64})
                 .to_string()
                 .into(),
         ))
@@ -768,6 +789,7 @@ async fn proxy_token_and_app_are_checked_and_follow_restarts() {
         http.get(format!("{}/v1/hello", running.url))
             .header("x-etos-proxy-token", token)
             .header("x-etos-app", app)
+            .header("x-gamecore-project", "a".repeat(64))
             .send()
     };
     let r = hello("etp_wrong_token_0000001", "gamecore-unity")
@@ -798,6 +820,7 @@ async fn proxy_token_and_app_are_checked_and_follow_restarts() {
     let r = http
         .get(format!("{}/api/v1/agents/{AGENT}/http/v1/hello", node.url))
         .header("authorization", format!("Bearer {APP_KEY}"))
+        .header("x-gamecore-project", "a".repeat(64))
         .send()
         .await
         .unwrap();
@@ -808,6 +831,7 @@ async fn proxy_token_and_app_are_checked_and_follow_restarts() {
     let t = http
         .post(format!("{}/api/v1/tickets", node.url))
         .header("authorization", format!("Bearer {APP_KEY}"))
+        .header("x-gamecore-project", "a".repeat(64))
         .json(&json!({"path": format!("/api/v1/agents/{AGENT}/http/v1/events")}))
         .send()
         .await
@@ -987,6 +1011,15 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
+    assert_eq!(
+        api.post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000011")
+        )
+        .await
+        .0,
+        200
+    );
     node.set_op(
         "generate.image",
         200,
@@ -1147,9 +1180,12 @@ async fn index_deltas_are_coalesced_and_delivered() {
         );
     }
     node.until("entity trace", |g| {
-        g.traces
-            .iter()
-            .any(|t| t["kind"] == "gc_entity" && t["key"] == "e-ferryman")
+        g.traces.iter().any(|t| {
+            t["kind"] == "gc_entity"
+                && t["key"]
+                    .as_str()
+                    .is_some_and(|s| s.ends_with(":e-ferryman"))
+        })
     })
     .await;
     {
@@ -1157,7 +1193,12 @@ async fn index_deltas_are_coalesced_and_delivered() {
         let ferry: Vec<&Value> = g
             .traces
             .iter()
-            .filter(|t| t["kind"] == "gc_entity" && t["key"] == "e-ferryman")
+            .filter(|t| {
+                t["kind"] == "gc_entity"
+                    && t["key"]
+                        .as_str()
+                        .is_some_and(|s| s.ends_with(":e-ferryman"))
+            })
             .collect();
         assert_eq!(
             ferry.len(),
@@ -1165,10 +1206,15 @@ async fn index_deltas_are_coalesced_and_delivered() {
             "five deltas within one window coalesce into one row"
         );
         assert_eq!(ferry[0]["values"]["name"], "Ferryman v5");
-        assert_eq!(ferry[0]["values"]["region"], "marsh");
+        assert!(
+            ferry[0]["values"]["region"]
+                .as_str()
+                .unwrap()
+                .ends_with(":marsh")
+        );
         assert!(ferry[0]["user"].is_null(), "global state");
         assert!(g.traces.iter().any(|t| t["kind"] == "gc_entity"
-            && t["key"] == "e-old"
+            && t["key"].as_str().is_some_and(|s| s.ends_with(":e-old"))
             && t["values"]["removed"] == true));
         assert!(
             g.traces
@@ -1187,77 +1233,27 @@ async fn index_deltas_are_coalesced_and_delivered() {
 }
 
 #[tokio::test]
-async fn stage_shell_runs_the_command_or_reports_stage_failed() {
+async fn r2_19_legacy_stage_extractor_is_retired() {
     let node = FakeNode::start().await;
     let dir = tempfile::tempdir().unwrap();
-    // No command configured.
-    let running = companion(&node, dir.path(), |c| c.stage.command = None).await;
+    let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
-    let (s, v) = api
+    let (status, _) = api
         .post(
             "/v1/stage",
-            json!({"changeSetId": "cs_01J9ZQ00000000000000000012", "packageRef": "0".repeat(64)}),
+            json!({"changeSetId":"cs_01J9ZQ00000000000000000012","packageRef":"a".repeat(64)}),
         )
         .await;
-    assert_eq!((s, v["code"].as_str()), (503, Some("stage_failed")), "{v}");
-    assert!(v["hint"].as_str().unwrap().contains("stage.sh"));
-    running.shutdown().await;
-
-    // A stand-in stage.sh that checks its arguments and prints a verdict.
-    let script = dir.path().join("stage.sh");
-    std::fs::write(
-        &script,
-        "#!/bin/sh\nset -e\ntest -f \"$2/package.json\"\necho staging slot $1 >&2\necho '{\"ok\":true,\"compile\":{\"errors\":[]},\"tests\":{\"passed\":2,\"failed\":0,\"names\":[]},\"forbidden\":[]}'\n",
-    )
-    .unwrap();
-    std::fs::set_permissions(&script, std::os::unix::fs::PermissionsExt::from_mode(0o755)).unwrap();
-    let pkg_src = dir.path().join("pkgsrc");
-    std::fs::create_dir_all(&pkg_src).unwrap();
-    std::fs::write(
-        pkg_src.join("package.json"),
-        "{\"name\":\"com.example.plate\"}",
-    )
-    .unwrap();
-    let tgz = dir.path().join("package.tgz");
-    let st = std::process::Command::new("tar")
-        .arg("-czf")
-        .arg(&tgz)
-        .arg("-C")
-        .arg(&pkg_src)
-        .arg(".")
-        .status()
-        .unwrap();
-    assert!(st.success());
-    let s2 = script.clone();
-    let running = companion(&node, dir.path(), move |c| c.stage.command = Some(s2)).await;
-    let api = Api::new(&running, &node);
-    let (h, _) = running
-        .state
-        .store
-        .put(&std::fs::read(&tgz).unwrap(), None)
-        .unwrap();
-    let (s, job) = api
-        .post(
-            "/v1/stage",
-            json!({"changeSetId": "cs_01J9ZQ00000000000000000012", "packageRef": format!("sha256:{h}")}),
-        )
-        .await;
-    assert_eq!(s, 202, "{job}");
-    let id = job["jobId"].as_str().unwrap().to_string();
-    let mut last = Value::Null;
-    for _ in 0..250 {
-        let (_, j) = api.get(&format!("/v1/stage/{id}")).await;
-        if j["state"] == "done" || j["state"] == "failed" {
-            last = j;
-            break;
-        }
-        tokio::time::sleep(Duration::from_millis(20)).await;
-    }
-    assert_eq!(last["state"], "done", "{last}");
-    assert_eq!(last["slot"], "1");
-    assert_eq!(last["verdict"]["ok"], true);
-    assert_eq!(last["verdict"]["tests"]["passed"], 2);
-    assert_eq!(last["verdict"]["exitCode"], 0);
+    assert_eq!(status, 404); // no owned candidate, before any extraction
+    assert!(
+        running
+            .state
+            .stage
+            .request(
+                json!({"changeSetId":"cs_01J9ZQ00000000000000000012","packageRef":"a".repeat(64)})
+            )
+            .is_err()
+    );
     running.shutdown().await;
 }
 
@@ -1564,7 +1560,7 @@ async fn a_slow_media_op_is_held_up_to_the_op_timeout() {
     node.lock().op_delay_ms = 3_500;
     let (s, v) = api.post("/v1/ops/generate", body.clone()).await;
     assert_eq!((s, v["code"].as_str()), (504, Some("transport")), "{v}");
-    assert_eq!(v["data"]["key"], key.as_str(), "{v}");
+    assert_eq!(v["data"]["key"], "[redacted]", "{v}");
     assert!(v["hint"].as_str().unwrap().contains(&key), "{v}");
     // The identical resend carries the same key (etops answers it without generating again).
     node.lock().op_delay_ms = 0;
@@ -1578,5 +1574,177 @@ async fn a_slow_media_op_is_held_up_to_the_op_timeout() {
         .map(|(_, b)| b["key"].clone())
         .collect();
     assert!(keys.iter().all(|k| k == key.as_str()), "{keys:?}");
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r2_25_all_routes_isolate_apps_and_projects_and_replay_cursors() {
+    use gamecore_studio::model::StageJobView;
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| {
+        c.allowed_apps.push("second-app".into())
+    })
+    .await;
+    let owner = Api::new(&running, &node);
+    let second_app = owner.as_app("second-app");
+    let mut second_project = owner.clone();
+    second_project.project = "b".repeat(64);
+    let id = "cs_01J9ZQ00000000000000000091";
+    let request = edit_request(id);
+    let (status, submitted) = owner.post("/v1/requests", request.clone()).await;
+    assert_eq!(status, 200, "{submitted}");
+    let wav = b"RIFF owned";
+    node.complete(
+        submitted["taskId"].as_str().unwrap(),
+        &[
+            ("changeset.json", changeset(id, wav, None)),
+            ("ferryman_line_07.wav", wav.to_vec()),
+        ],
+    );
+    owner.until_state(id, "candidate").await;
+    running
+        .state
+        .ledger
+        .insert_stage(&StageJobView {
+            job_id: "stg_owned".into(),
+            change_set_id: id.into(),
+            package_ref: sha(wav),
+            state: "done".into(),
+            slot: None,
+            verdict: None,
+            created_at: 0,
+            updated_at: 0,
+        })
+        .unwrap();
+    for other in [&second_app, &second_project] {
+        for path in [
+            format!("/v1/requests/{id}"),
+            format!("/v1/candidates/{id}"),
+            format!("/v1/artifacts/{}", sha(wav)),
+            "/v1/stage/stg_owned".into(),
+            "/v1/stage/stg_owned/verdict".into(),
+        ] {
+            assert_eq!(other.get(&path).await.0, 404, "{path}");
+        }
+        assert_eq!(
+            other
+                .post(
+                    "/v1/ops/generate",
+                    json!({"op":"describe","spec":{"artifact":sha(wav)}})
+                )
+                .await
+                .0,
+            404
+        );
+        assert_eq!(other.post("/v1/requests", request.clone()).await.0, 404);
+        assert_eq!(
+            other
+                .post(&format!("/v1/requests/{id}/cancel"), json!({}))
+                .await
+                .0,
+            404
+        );
+        assert_eq!(
+            other
+                .post(
+                    "/v1/stage",
+                    json!({"changeSetId":id,"projectId":other.project,"action":"discard"})
+                )
+                .await
+                .0,
+            404
+        );
+        assert_eq!(
+            other
+                .post("/v1/stage/stg_owned/verify", json!({"pass":true}))
+                .await
+                .0,
+            404
+        );
+        let identity = json!([other.app, other.project]).to_string();
+        let cursor = running
+            .state
+            .hub
+            .emit_owned(&identity, "marker", None, &json!({"owner":other.project}))
+            .unwrap();
+        let mut events = other.ws("/v1/events?after=0").await;
+        let event = next_json(&mut events).await;
+        assert_eq!(event["type"], "marker", "foreign event leaked: {event}");
+        assert_eq!(event["cursor"], cursor);
+        events.close(None).await.unwrap();
+    }
+    assert_eq!(
+        owner.get(&format!("/v1/artifacts/{}", sha(wav))).await.0,
+        200
+    );
+    assert_eq!(owner.post("/v1/requests", request).await.0, 200);
+    let (status, failure) = owner.post("/v1/stage", json!({"changeSetId":id,"projectId":owner.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev()})).await;
+    assert_eq!(status, 503, "{failure}");
+    assert!(failure["message"].as_str().unwrap().contains("registered"));
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
+    use gamecore_studio::model::StageJobView;
+    use gamecore_studio::stage::signing;
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let id = "cs_01J9ZQ00000000000000000092";
+    assert_eq!(api.post("/v1/requests", edit_request(id)).await.0, 200);
+    let record = signing::sign(dir.path(), json!({"jobId":"stg_signed","projectId":api.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev(),"packageDigest":"b".repeat(64),"proposalDigest":"c".repeat(64),"steps":gamecore_studio::stage::verdict::STEP_IDS.iter().map(|id|json!({"id":id,"status":"pass"})).collect::<Vec<_>>(),"forbiddenHits":[],"pass":true,"confinement":"docker","coldCache":false})).unwrap();
+    // A fixture representing the trusted stage service's persisted record.
+    running
+        .state
+        .ledger
+        .insert_stage(&StageJobView {
+            job_id: "stg_signed".into(),
+            change_set_id: id.into(),
+            package_ref: "b".repeat(64),
+            state: "done".into(),
+            slot: None,
+            verdict: Some(record.clone()),
+            created_at: 0,
+            updated_at: 0,
+        })
+        .unwrap();
+    assert_eq!(api.get("/v1/stage/stg_signed/verdict").await.1, record);
+    assert_eq!(
+        api.post("/v1/stage/stg_signed/verify", record.clone())
+            .await
+            .1["verified"],
+        true
+    );
+    for field in [
+        "jobId",
+        "projectId",
+        "sourceRevision",
+        "catalogRevision",
+        "packageDigest",
+        "proposalDigest",
+        "confinement",
+    ] {
+        let mut forged = record.clone();
+        forged[field] = "forged".into();
+        assert_eq!(
+            api.post("/v1/stage/stg_signed/verify", forged).await.1["verified"],
+            false,
+            "{field}"
+        );
+    }
+    running
+        .state
+        .ledger
+        .update_stage(
+            "stg_signed",
+            "done",
+            None,
+            Some(&json!({"pass":false,"partial":true})),
+        )
+        .unwrap();
+    assert_eq!(api.get("/v1/stage/stg_signed/verdict").await.0, 404);
     running.shutdown().await;
 }

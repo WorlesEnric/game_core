@@ -3,6 +3,8 @@
 //   inventory.grantStarting  set the starting count of an item in an inventory (0 removes it)
 //   inventory.placeItem      place an item in a region (a WorldItemDefinition on the content set)
 //   inventory.setStock       set a vendor's stock line (count or unlimited, buy and sell prices)
+//   inventory.setPrice       set an item's base price, or one vendor's buy price for it (P1.7b)
+//   inventory.bindUse        set the action set using an item runs (P1.7b)
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -109,6 +111,59 @@ namespace GameCore.Gameplay.Inventory.Editor
             EditorUtility.SetDirty(vendor);
             NarrativeAuthoring.ThrowIfInvalid(vendor);
         }
+
+        [AuthorOperation("inventory.setPrice", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(InventoryValidator), Requires = NarrativeKinds.Item,
+            Doc = "Sets an item's base price; with a vendor, sets that vendor's buy price for the item instead (-1 = the item's price).")]
+        public static void SetPrice(
+            ItemDefinition item,
+            [AuthorArg(Min = -1, Doc = "Price (currency units); -1 only with a vendor.")] int price,
+            [AuthorArg(Category = NarrativeKinds.Vendor, Required = false, Doc = "Vendor whose stock line price to set (empty: the item's base price).")] VendorDefinition? vendor = null)
+        {
+            if (item == null)
+            {
+                throw new ArgumentException(NarrativeDiagnosticCodes.ItemUnknown + ": an item is required");
+            }
+
+            if (price < (vendor != null ? -1 : 0))
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.PriceInvalid + ": " + price + " is not a price");
+            }
+
+            if (vendor == null)
+            {
+                Undo.RecordObject(item, "inventory.setPrice");
+                item.SetPrice(price);
+                EditorUtility.SetDirty(item);
+                return;
+            }
+
+            Undo.RecordObject(vendor, "inventory.setPrice");
+            if (!vendor.SetBuyPrice(item, price))
+            {
+                throw new ArgumentException(NarrativeDiagnosticCodes.VendorMissingStock + ": " + vendor.name + " does not stock " + item.DisplayName);
+            }
+
+            EditorUtility.SetDirty(vendor);
+        }
+
+        [AuthorOperation("inventory.bindUse", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(InventoryValidator), Requires = NarrativeKinds.Item,
+            Doc = "Sets what using an item does: an action set run through the outbox; null makes the item unusable.")]
+        public static void BindUse(
+            ItemDefinition item,
+            [AuthorArg(Category = NarrativeKinds.ActionSet, Required = false, Doc = "The actions using the item runs.")] ActionSetDefinition? actions)
+        {
+            if (item == null)
+            {
+                throw new ArgumentException(NarrativeDiagnosticCodes.ItemUnknown + ": an item is required");
+            }
+
+            Undo.RecordObject(item, "inventory.bindUse");
+            item.SetUseActions(actions);
+            EditorUtility.SetDirty(item);
+            NarrativeAuthoring.ThrowIfInvalid(item);
+        }
     }
 
     /// <summary>Validation of items, inventories, vendors, loot tables and world items.</summary>
@@ -120,10 +175,36 @@ namespace GameCore.Gameplay.Inventory.Editor
         NarrativeDiagnosticCodes.WorldItemMissingRegion,
         NarrativeDiagnosticCodes.LootTableEmpty,
         NarrativeDiagnosticCodes.ItemUnknown,
+        AuthoringHardeningCodes.PriceInvalid,
+        AuthoringHardeningCodes.EntityReferenceInvalid,
     })]
     public static class InventoryValidator
     {
-        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
+        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition)
+        {
+            var diagnostics = new List<GameplayDiagnostic>(LogicValidator.Validate(definition));
+            string entityId = definition is VendorDefinition vendor ? vendor.VendorEntityId
+                : definition is InventoryDefinition inventory ? inventory.OwnerEntityId
+                : definition is WorldItemDefinition worldItem ? worldItem.EntityId : string.Empty;
+            if (entityId.Length > 0 && !AuthoringIds.IsValid(entityId))
+            {
+                diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.EntityReferenceInvalid, ((IAuthoredObject)definition).AuthoringId,
+                    definition.name + " names entity '" + entityId + "', which is not an authoring id"));
+            }
+
+            if (definition is VendorDefinition priced)
+            {
+                for (int i = 0; i < priced.Stock.Count; i++)
+                {
+                    if (priced.Stock[i].buyPrice < -1 || priced.Stock[i].sellPrice < -1)
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.PriceInvalid, priced.AuthoringId, priced.name + " stock line " + i + " has a negative price"));
+                    }
+                }
+            }
+
+            return diagnostics;
+        }
     }
 
     /// <summary>The inventory plugin's catalog registrations (P1.3's catalog contribution seam).</summary>

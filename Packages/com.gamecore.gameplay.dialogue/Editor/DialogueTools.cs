@@ -5,8 +5,10 @@
 //   dialogue.linkCondition  set a branch node's condition or a choice option's availability condition
 //   dialogue.setFact        create or update a fact (name, initial value, persistence) on a content set
 //   dialogue.preview        walk a graph over the content's initial facts plus overrides and print every path
+//   dialogue.setConsequence set the action set an action node runs (P1.7b)
 //   dialogue.generateVoice  ask the media generation gateway for a voice clip of a line (Studio 05 tier Agent; the
-//                           shared ToolTier has no Agent member, so it is declared Mechanism and documented as Agent)
+//                           shared ToolTier has no Agent member, so it is a Compose tool that requires agent.media,
+//                           like audio.generate*)
 //
 // Every tool validates before it changes anything, records Undo and refuses with an ArgumentException whose message
 // starts with the GP-* code; a change that leaves the graph invalid is refused by re-validating the graph.
@@ -177,7 +179,7 @@ namespace GameCore.Gameplay.Dialogue.Editor
             return fact;
         }
 
-        [AuthorOperation("dialogue.preview", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("dialogue.preview", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph,
             Doc = "Walks the graph over the initial facts plus overrides ('bell_rung=1; odd_paid=1') and prints every reachable path.")]
         public static string Preview(
@@ -219,8 +221,30 @@ namespace GameCore.Gameplay.Dialogue.Editor
             return DialoguePreview.Preview(model, state, models, overrides);
         }
 
-        [AuthorOperation("dialogue.generateVoice", Tier = ToolTier.Mechanism, RuntimeApplicability = RuntimeApply.Rebuild,
+        [AuthorOperation("dialogue.setConsequence", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph,
+            Doc = "Sets the action set an action node runs (facts apply in the step, everything else through the outbox); null clears it.")]
+        public static void SetConsequence(
+            DialogueGraphDefinition graph,
+            [AuthorArg(Doc = "Action node index.")] int node,
+            [AuthorArg(Category = NarrativeKinds.ActionSet, Required = false, Doc = "The actions (empty = none).")] ActionSetDefinition? actions)
+        {
+            Require(graph);
+            RequireNode(graph, node, false);
+            DialogueNodeEntry entry = graph.Node(node);
+            if (entry.kind != DialogueNodeKind.Action)
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.DialogueNodeNotAction + ": node " + node + " is a " + entry.kind + ", not an action node");
+            }
+
+            Undo.RecordObject(graph, "dialogue.setConsequence");
+            entry.actions = actions;
+            EditorUtility.SetDirty(graph);
+            NarrativeAuthoring.ThrowIfInvalid(graph);
+        }
+
+        [AuthorOperation("dialogue.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph + ",agent.media",
             Doc = "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (NotConfigured until P3 wires a provider).")]
         public static MediaGenerationResult GenerateVoice(
             DialogueGraphDefinition graph,
@@ -276,10 +300,41 @@ namespace GameCore.Gameplay.Dialogue.Editor
         NarrativeDiagnosticCodes.FactInvalidName,
         NarrativeDiagnosticCodes.FactDuplicate,
         NarrativeDiagnosticCodes.ConditionInvalid,
+        AuthoringHardeningCodes.DialogueNodeNotAction,
+        AuthoringHardeningCodes.EntityReferenceInvalid,
     })]
     public static class DialogueValidator
     {
-        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
+        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition)
+        {
+            var diagnostics = new List<GameplayDiagnostic>(LogicValidator.Validate(definition));
+            if (definition is DialogueGraphDefinition graph)
+            {
+                if (graph.SpeakerEntityId.Length > 0 && !AuthoringIds.IsValid(graph.SpeakerEntityId))
+                {
+                    diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.EntityReferenceInvalid, graph.AuthoringId,
+                        graph.name + "'s speaker entity '" + graph.SpeakerEntityId + "' is not an authoring id"));
+                }
+
+                for (int i = 0; i < graph.Nodes.Count; i++)
+                {
+                    DialogueNodeEntry node = graph.Nodes[i];
+                    if (node.actions != null && node.kind != DialogueNodeKind.Action)
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.DialogueNodeNotAction, graph.AuthoringId,
+                            graph.name + " node " + i + " is a " + node.kind + " but names actions, which only action nodes run"));
+                    }
+
+                    if (node.speakerEntityId.Length > 0 && !AuthoringIds.IsValid(node.speakerEntityId))
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.EntityReferenceInvalid, graph.AuthoringId,
+                            graph.name + " node " + i + "'s speaker entity '" + node.speakerEntityId + "' is not an authoring id"));
+                    }
+                }
+            }
+
+            return diagnostics;
+        }
     }
 
     /// <summary>The dialogue plugin's catalog registrations (P1.3's catalog contribution seam).</summary>
