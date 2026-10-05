@@ -245,6 +245,7 @@ namespace GameCore.Gameplay.Ui
         {
             string objective = Models.Journal.Apply(model);
             Models.Hud.ObjectiveText = objective;
+            Models.Hud.QuestStageTitle = Models.Journal.TrackedStageTitle;
             Models.Hud.ObjectiveVisible = objective.Length > 0;
         }
 

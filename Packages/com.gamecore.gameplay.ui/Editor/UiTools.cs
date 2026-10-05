@@ -30,7 +30,7 @@ namespace GameCore.Gameplay.Ui.Editor
         public static UiBindingEntry Bind(
             UiDocumentDefinition document,
             [AuthorArg(Doc = "Element name in the document's UXML.")] string element,
-            [AuthorArg(Doc = "vm:<model>.<Property> | slot:<owner>/<domain>.<member>@<target> | event:<name>.")] string source,
+            [AuthorArg(Doc = "vm:<model>.<Property> (hud.QuestStageTitle = first active quest stage title; hud.ObjectiveText = first unfinished objective) | slot:<owner>/<domain>.<member>@<target> | event:<name>.")] string source,
             [AuthorArg(Required = false, Doc = "text | value | visible | enabled | selected | items.")] string property = "text",
             [AuthorArg(Required = false, Doc = "Format: a {0} pattern or percent:<max>; for items, command:<prefix>.")] string format = "")
         {
