@@ -25,14 +25,16 @@ namespace GameCore.Studio.Views
         public const string ChangesMenu = MenuRoot + "Changes";
 
         /// <summary>Every built-in view id, in menu order.</summary>
-        public static readonly System.Collections.Generic.IReadOnlyList<string> All = new[] { Relationships, Dialogue, Quests, World, Tables, Changes };
+        public static readonly System.Collections.Generic.IReadOnlyList<string> All = System.Array.AsReadOnly(new[] { Relationships, Dialogue, Quests, World, Tables, Changes });
 
-        /// <summary>The minimum window size every view supports (1280x720 screens, docked or floating).</summary>
+        /// <summary>The minimum individual view panel; the overall Studio layout is at least 1280x720 (D6).</summary>
         public const float MinWidth = 640f;
         public const float MinHeight = 360f;
 
         /// <summary>The size the evidence capture and a fresh floating window use.</summary>
-        public const float DefaultWidth = 1280f;
-        public const float DefaultHeight = 720f;
+        public const float LayoutMinWidth = 1280f;
+        public const float LayoutMinHeight = 720f;
+        public const float DefaultWidth = LayoutMinWidth;
+        public const float DefaultHeight = LayoutMinHeight;
     }
 }
