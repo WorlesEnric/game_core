@@ -207,21 +207,26 @@ namespace Hollowmere.Authoring
                 list.Add(new JObject { ["state"] = prompt.Substring(0, eq), ["text"] = prompt.Substring(eq + 1) });
             }
 
-            return StudioAuthor.Create("x_" + name, "interaction.interactable", Interactable(name), name, StudioAuthor.Id("interactable." + name), new JObject
+            var fields = new JObject
             {
                 ["entity"] = Interactables + "/" + name + "Entity.asset",
                 ["kind"] = kind,
                 ["initialState"] = initial,
                 ["prompts"] = list,
-                ["conditionRef"] = condition,
-                ["actionRef"] = string.Empty,
                 ["maxUses"] = 0,
                 ["cooldownSeconds"] = 0.5f,
                 ["range"] = range,
                 ["focusPriority"] = 2,
                 ["focusHeight"] = 0.8f,
                 ["cue"] = "sfx.ui.click",
-            });
+            };
+            if (condition.Length > 0)
+            {
+                // The condition set by authoring id (the interaction module resolves names and authoring ids).
+                fields["conditionRef"] = StudioAuthor.Id("conditions." + condition);
+            }
+
+            return StudioAuthor.Create("x_" + name, "interaction.interactable", Interactable(name), name, StudioAuthor.Id("interactable." + name), fields);
         }
 
         // ------------------------------------------------------------------ NPCs
