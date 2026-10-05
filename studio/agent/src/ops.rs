@@ -159,13 +159,12 @@ impl MediaOps {
             .lock()
             .map(|v| v.clone())
             .unwrap_or_else(|_| status::UNKNOWN.into());
-        if let Ok(c) = self.cache.lock()
-            && let Some((when, at, map)) = c.as_ref()
-            && when.elapsed() < self.ttl
-        {
-            let mut m = map.clone();
-            m.insert("voice".into(), voice);
-            return (m, Some(*at));
+        if let Ok(c) = self.cache.lock() {
+            if let Some((_, at, map)) = c.as_ref().filter(|(when, _, _)| when.elapsed() < self.ttl) {
+                let mut m = map.clone();
+                m.insert("voice".into(), voice);
+                return (m, Some(*at));
+            }
         }
         let ops = [
             ("image", "image"),
@@ -209,8 +208,10 @@ impl MediaOps {
             }
         }
         let at = now_ms();
-        if cacheable && let Ok(mut c) = self.cache.lock() {
-            *c = Some((Instant::now(), at, m.clone()));
+        if cacheable {
+            if let Ok(mut c) = self.cache.lock() {
+                *c = Some((Instant::now(), at, m.clone()));
+            }
         }
         m.insert("voice".into(), voice);
         (m, Some(at))

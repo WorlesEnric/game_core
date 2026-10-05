@@ -82,9 +82,7 @@ pub fn resolve_slot(
     change_set_id: &str,
     requested: Option<&str>,
 ) -> Result<String, String> {
-    if let Some(r) = requested
-        && !valid_slot_id(r)
-    {
+    if let Some(r) = requested.filter(|r| !valid_slot_id(r)) {
         return Err(format!(
             "slot {r:?} is not a slot id ([a-z0-9._-], at most 64)"
         ));

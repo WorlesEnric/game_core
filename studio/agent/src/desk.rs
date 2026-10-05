@@ -147,8 +147,11 @@ fn model_degraded(text: &str) -> bool {
 /// Add `reason: "model_degraded"` and the model's error text to an outcome when one of the
 /// texts names a degraded model.
 fn with_model_reason(mut outcome: Value, texts: &[Option<&str>]) -> Value {
-    if let Some(t) = texts.iter().flatten().find(|t| model_degraded(t))
-        && let Some(o) = outcome.as_object_mut()
+    if let Some((t, o)) = texts
+        .iter()
+        .flatten()
+        .find(|t| model_degraded(t))
+        .zip(outcome.as_object_mut())
     {
         o.insert("reason".into(), json!("model_degraded"));
         o.insert("modelError".into(), json!(redact(t)));
@@ -442,8 +445,10 @@ impl Desk {
                     ),
                 ));
             }
-            if let Some(d) = &a.sha256
-                && normalize_sha256(d) != Some(sha256_hex(&bytes))
+            if let Some(d) = a
+                .sha256
+                .as_ref()
+                .filter(|d| normalize_sha256(d) != Some(sha256_hex(&bytes)))
             {
                 return Err(ApiError::bad_request(format!(
                     "attachment {} does not have sha256 {d}",
@@ -514,9 +519,7 @@ impl Desk {
     async fn upload(&self, name: &str, media: &str, bytes: &[u8]) -> ApiResult<Value> {
         let info = self.client.files().put(name, media, bytes).await?;
         let ours = sha256_hex(bytes);
-        if let Some(theirs) = normalize_sha256(&info.digest)
-            && theirs != ours
-        {
+        if let Some(theirs) = normalize_sha256(&info.digest).filter(|theirs| *theirs != ours) {
             return Err(ApiError::new(
                 axum::http::StatusCode::BAD_GATEWAY,
                 "protocol",

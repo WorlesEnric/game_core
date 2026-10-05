@@ -53,8 +53,9 @@ pub fn refusal_of(e: &etos_sdk::Error) -> (String, String) {
     match e {
         etos_sdk::Error::Refused { code, message, .. } => (code.clone(), message.clone()),
         etos_sdk::Error::Protocol(m) => {
-            if let Some(i) = m.find('{')
-                && let Ok(v) = serde_json::from_str::<Value>(&m[i..])
+            if let Some(v) = m
+                .find('{')
+                .and_then(|i| serde_json::from_str::<Value>(&m[i..]).ok())
             {
                 let err = v.get("error").unwrap_or(&v);
                 if let Some(code) = err.get("code").and_then(Value::as_str) {
@@ -212,11 +213,11 @@ impl VoiceBridge {
             Ok(Ok(pair)) => pair,
             Ok(Err(e)) => {
                 let (mut code, mut message) = refusal_of(&e);
-                if message.contains("HTTP error")
-                    && let Some((c, m)) = probe_refusal(&self.client, &self.cfg.provider).await
-                {
-                    code = c;
-                    message = m;
+                if message.contains("HTTP error") {
+                    if let Some((c, m)) = probe_refusal(&self.client, &self.cfg.provider).await {
+                        code = c;
+                        message = m;
+                    }
                 }
                 match code.as_str() {
                     "not_configured" => self.ops.set_voice_status(status::NOT_CONFIGURED),

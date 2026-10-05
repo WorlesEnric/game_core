@@ -558,10 +558,10 @@ impl Indexer {
         self.deliver().await;
         self.closed.store(true, std::sync::atomic::Ordering::SeqCst);
         self.wake.notify_waiters();
-        if let Some(l) = self.logger.lock().await.as_ref()
-            && let Err(e) = l.close().await
-        {
-            tracing::warn!(error = %e, "index logger did not deliver everything on close");
+        if let Some(l) = self.logger.lock().await.as_ref() {
+            if let Err(e) = l.close().await {
+                tracing::warn!(error = %e, "index logger did not deliver everything on close");
+            }
         }
     }
 }

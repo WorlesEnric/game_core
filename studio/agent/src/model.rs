@@ -510,8 +510,7 @@ impl Diagnostic {
 
     /// The rule a companion finding names (the message up to the first `:`), else the code.
     pub fn rule(&self) -> &str {
-        if self.code == CANDIDATE_INVALID
-            && let Some((rule, _)) = self.message.split_once(':')
+        if let Some((rule, _)) = self.message.split_once(':').filter(|_| self.code == CANDIDATE_INVALID)
         {
             return rule;
         }

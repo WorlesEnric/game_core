@@ -1083,9 +1083,10 @@ impl Ledger {
         let mut stmt = conn.prepare(
             "SELECT id FROM resource_owners WHERE kind='catalog' AND owner=?1 ORDER BY id LIMIT 20",
         )?;
-        Ok(stmt
+        let rows = stmt
             .query_map(params![owner], |r| r.get(0))?
-            .collect::<rusqlite::Result<_>>()?)
+            .collect::<rusqlite::Result<_>>()?;
+        Ok(rows)
     }
 
     /// Revisions of the stored tool catalogs, newest first.
