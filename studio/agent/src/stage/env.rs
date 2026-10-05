@@ -1,9 +1,9 @@
 //! The environment of every stage child process (04 §1: the companion inherits etosd's
 //! environment, provider keys included; nothing staged may see it).
 //!
-//! A child gets `env_clear()` plus the allowlisted names below, minus anything whose name
-//! looks like a secret. The Unity Editor needs `HOME` (its licence and caches) and `UNITY`;
-//! dotnet needs `DOTNET_*`/`NUGET_PACKAGES`; the shared Unity lock reads `GC_STUDIO_*`.
+//! Children receive only LANG/LC_ALL and a fixed system PATH. Trusted launch code sets
+//! slot-local HOME and required tool/cache paths explicitly. No inherited runtime hooks,
+//! tool overrides, broad prefix matches, proxy settings or credentials pass through.
 
 /// Exact names passed to stage children.
 pub const ENV_ALLOW: &[&str] = &["LANG", "LC_ALL"];

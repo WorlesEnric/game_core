@@ -96,6 +96,10 @@ impl Toolchain {
 /// Everything one stage needs.
 #[derive(Debug, Clone)]
 pub struct StageOptions {
+    /// HTTP request's source revision, rechecked after slot preparation.
+    pub expected_source_revision: Option<String>,
+    /// Trusted execution boundary for all candidate compilation and tests.
+    pub sandbox: super::sandbox::Sandbox,
     /// Slot root.
     pub root: PathBuf,
     /// The repository checkout (checkers, template, tools).
@@ -131,6 +135,12 @@ impl StageOptions {
                 .unwrap_or(default)
         };
         StageOptions {
+            expected_source_revision: None,
+            sandbox: super::sandbox::Sandbox::defaults(
+                &slot::default_root().join(slot),
+                &slot::default_root().join("_warm"),
+                repo,
+            ),
             root: slot::default_root(),
             repo: repo.to_path_buf(),
             source_project: std::env::var_os("GAMECORE_STAGE_SOURCE_PROJECT")
@@ -241,13 +251,29 @@ pub fn run_child(
         .envs(stage_env())
         .envs(extra_env.iter().map(|(k, v)| (*k, *v)))
         .stdin(Stdio::null())
-        .stdout(Stdio::from(file))
-        .stderr(Stdio::from(err))
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
         .process_group(0);
     let mut child = match cmd.spawn() {
         Ok(c) => c,
         Err(e) => return fail(format!("cannot start {:?}: {e}", cmd.get_program())),
     };
+    let stdout = child.stdout.take();
+    let stderr = child.stderr.take();
+    let out_writer = std::thread::spawn(move || {
+        if let Some(pipe) = stdout {
+            crate::redact::copy_redacted(pipe, crate::redact::BoundedLog::new(file))
+        } else {
+            Ok(())
+        }
+    });
+    let err_writer = std::thread::spawn(move || {
+        if let Some(pipe) = stderr {
+            crate::redact::copy_redacted(pipe, crate::redact::BoundedLog::new(err))
+        } else {
+            Ok(())
+        }
+    });
     let pid = child.id();
     let mut timed_out = false;
     let code = loop {
@@ -273,6 +299,11 @@ pub fn run_child(
         }
         std::thread::sleep(Duration::from_millis(100));
     };
+    // Terminate descendants even when their parent exited before them.
+    kill_group(pid, "KILL");
+    let written =
+        matches!(out_writer.join(), Ok(Ok(()))) && matches!(err_writer.join(), Ok(Ok(())));
+    let code = if written { code } else { None };
     let raw = std::fs::read(scratch).unwrap_or_default();
     let _ = std::fs::remove_file(scratch);
     let mut output = redact_all(&String::from_utf8_lossy(&raw));
@@ -662,33 +693,42 @@ impl Run<'_> {
     // -- (c) ------------------------------------------------------------------------------
     fn step_dotnet(&mut self) {
         let t = Instant::now();
+        let mut semantic_log = StepLog::new();
+        let semantic = self.semantic_scan();
+        semantic_log.child("Roslyn semantic analyzer", &semantic);
+        if !semantic.ok() {
+            self.finish(
+                StepResult::new(
+                    "dotnet",
+                    StepStatus::Fail,
+                    ms(t.elapsed()),
+                    "semantic analyzer missing, failed, or reported forbidden code",
+                ),
+                semantic_log,
+            );
+            return;
+        }
         let dotnet = self.record["dotnet"].clone();
         if !dotnet.is_object() {
             self.steps.push(StepResult {
                 facts: json!({"notApplicable": true}),
                 ..StepResult::new(
                     "dotnet",
-                    StepStatus::Skipped,
-                    0,
-                    "the package has no Unity-free rules half",
+                    StepStatus::Pass,
+                    ms(t.elapsed()),
+                    "semantic scan passed; the package has no Unity-free rules half",
                 )
             });
             return;
         }
         let mut log = StepLog::new();
-        let env = [
-            ("DOTNET_CLI_TELEMETRY_OPTOUT", "1"),
-            ("DOTNET_NOLOGO", "1"),
-            ("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "1"),
-        ];
         let dir = self.slot_dir.join("dotnet");
-        let build = run_child(
+        let build = self.opts.sandbox.run(
             Command::new(&self.opts.tools.dotnet)
                 .arg("build")
                 .arg(dir.join("Rules").join("Rules.csproj"))
                 .args(["-nologo", "-v:q", "-p:NuGetAudit=false"])
                 .current_dir(&dir),
-            &env,
             &self.scratch("dotnet-build"),
             self.remaining(),
         );
@@ -711,13 +751,12 @@ impl Run<'_> {
                 "rules half builds; it ships no dotnet tests".to_string(),
             )
         } else {
-            let test = run_child(
+            let test = self.opts.sandbox.run(
                 Command::new(&self.opts.tools.dotnet)
                     .arg("test")
                     .arg(dir.join("Rules.Tests").join("Rules.Tests.csproj"))
                     .args(["-nologo", "-p:NuGetAudit=false"])
                     .current_dir(&dir),
-                &env,
                 &self.scratch("dotnet-test"),
                 self.remaining(),
             );
@@ -754,6 +793,66 @@ impl Run<'_> {
         );
     }
 
+    fn semantic_scan(&self) -> ChildOutcome {
+        let analyzer = self.opts.repo.join("studio/stage/analyzer");
+        let output = self.out_dir().join("semantic-findings.json");
+        let _ = std::fs::remove_file(&output);
+        let mut cmd = Command::new(&self.opts.tools.dotnet);
+        // Copy trusted analyzer source into the writable slot; never candidate selected.
+        let target = self.slot_dir.join("semantic-analyzer");
+        if target.exists() {
+            let _ = slot::remove_slot(&target);
+        }
+        if !analyzer.is_dir()
+            || !Command::new("cp")
+                .arg("-a")
+                .arg(&analyzer)
+                .arg(&target)
+                .status()
+                .is_ok_and(|s| s.success())
+        {
+            return ChildOutcome {
+                code: Some(1),
+                timed_out: false,
+                output: "semantic analyzer unavailable".into(),
+                elapsed: Duration::ZERO,
+            };
+        }
+        let rules = self.slot_dir.join("semantic-rules.json");
+        let policy = json!({"schema":"gamecore.stage.semantic-rules/1", "package":self.package(), "forbidEditorHooks":true,"forbidUnsafe":true,"forbidProcess":true,"forbidNetwork":true,"fileRoots":[format!("Assets/{}",self.package()),"persistentDataPath"]});
+        if std::fs::write(&rules, policy.to_string()).is_err() {
+            return ChildOutcome {
+                code: Some(1),
+                timed_out: false,
+                output: "cannot write semantic rules".into(),
+                elapsed: Duration::ZERO,
+            };
+        }
+        cmd.arg("run")
+            .arg("--project")
+            .arg(target)
+            .arg("--")
+            .arg("--root")
+            .arg(&self.slot_dir)
+            .arg("--rules")
+            .arg(rules)
+            .arg("--out")
+            .arg(&output);
+        let mut result = self
+            .opts
+            .sandbox
+            .run(&cmd, &self.scratch("semantic"), self.remaining());
+        let findings = std::fs::read(&output)
+            .ok()
+            .and_then(|b| serde_json::from_slice::<Value>(&b).ok());
+        if !findings.is_some_and(|v| {
+            v["pass"] == true && v["findings"].as_array().is_some_and(Vec::is_empty)
+        }) {
+            result.code = Some(1);
+        }
+        result
+    }
+
     fn unity(
         &mut self,
         label: &str,
@@ -768,52 +867,25 @@ impl Run<'_> {
             .min(self.remaining())
             .as_secs()
             .max(10);
-        let out = run_child(
-            Command::new("bash")
-                .arg(&self.opts.tools.unity_batch)
-                .arg("--project")
-                .arg(self.slot_dir.join("project"))
-                .arg("--log-dir")
-                .arg(self.out_dir().join("logs"))
-                .arg("--label")
-                .arg(label)
-                .arg("--results")
-                .arg(&results)
-                .arg("--timeout")
-                .arg(attempt.to_string())
-                .arg("--attempts")
-                .arg("2")
-                .arg("--")
-                .args(["-runTests", "-testPlatform", platform]),
-            &[],
-            &self.scratch(label),
-            self.remaining(),
+        let out = self.opts.sandbox.run_unity(
+            &self.opts.tools.unity_batch,
+            &self.slot_dir.join("project"),
+            label,
+            &[
+                "-runTests".into(),
+                "-testPlatform".into(),
+                platform.into(),
+                "-testResults".into(),
+                results.display().to_string(),
+            ],
+            Duration::from_secs(attempt),
         );
         log.child(&format!("unity-batch.sh {label} ({platform})"), &out);
-        self.redact_unity_logs(label);
         self.timed_out |= out.timed_out || out.code == Some(124);
         let totals = std::fs::read_to_string(&results)
             .ok()
             .and_then(|x| parse_nunit(&x));
         (out, totals)
-    }
-
-    fn redact_unity_logs(&self, label: &str) {
-        let Ok(entries) = std::fs::read_dir(self.out_dir().join("logs")) else {
-            return;
-        };
-        for e in entries.filter_map(Result::ok) {
-            let name = e.file_name().to_string_lossy().into_owned();
-            if name.starts_with(&format!("{label}-")) && name.ends_with(".log") {
-                let p = e.path();
-                if let Ok(raw) = std::fs::read(&p) {
-                    let clean = redact_all(&String::from_utf8_lossy(&raw));
-                    if clean.as_bytes() != raw.as_slice() {
-                        let _ = std::fs::write(&p, clean);
-                    }
-                }
-            }
-        }
     }
 
     fn compile_errors(output: &str) -> Vec<String> {
@@ -1106,7 +1178,7 @@ pub fn prepare_slot(opts: &StageOptions, timeout: Duration) -> Result<Value, Str
                 .arg(change_set_id);
         }
     }
-    let warm = opts.root.join("_warm").join("Library");
+    let warm = opts.sandbox.cache.join("Library");
     if warm.is_dir() {
         cmd.arg("--warm-library").arg(&warm);
     }
@@ -1135,9 +1207,39 @@ pub fn prepare_slot(opts: &StageOptions, timeout: Duration) -> Result<Value, Str
     }
 }
 
+/// Cache identity changes automatically with the Unity version and package version set.
+pub fn cache_version(opts: &StageOptions) -> Result<String, String> {
+    let mut inputs = std::fs::read(
+        opts.source_project
+            .join("ProjectSettings/ProjectVersion.txt"),
+    )
+    .map_err(|e| e.to_string())?;
+    let mut packages = std::fs::read_dir(opts.repo.join("Packages"))
+        .map_err(|e| e.to_string())?
+        .filter_map(Result::ok)
+        .map(|e| e.path())
+        .collect::<Vec<_>>();
+    packages.sort();
+    for path in packages {
+        let name = path.file_name().unwrap_or_default().to_string_lossy();
+        if path.is_dir()
+            && name.starts_with("com.gamecore.")
+            && !name.starts_with("com.gamecore.studio.")
+        {
+            let bytes = std::fs::read(path.join("package.json")).map_err(|e| e.to_string())?;
+            inputs.extend_from_slice(name.as_bytes());
+            inputs.extend(bytes);
+        }
+    }
+    Ok(sha256_hex(&inputs))
+}
+
 /// Seed the warm Library cache from a slot that compiled (first successful stage only).
 fn seed_warm_library(root: &Path, project: &Path) {
-    let warm = root.join("_warm");
+    let Ok(_cache_lock) = SlotLock::acquire(root, slot::MAX_SLOT_AGE) else {
+        return;
+    };
+    let warm = root.to_path_buf();
     let target = warm.join("Library");
     let library = project.join("Library");
     if target.exists() || !library.is_dir() || std::fs::create_dir_all(&warm).is_err() {
@@ -1159,20 +1261,58 @@ fn seed_warm_library(root: &Path, project: &Path) {
     }
 }
 
+/// Cold-cache grace can be consumed once per cache version, even if that attempt fails.
+fn cold_budget(cache: &Path, warm: Duration) -> Result<(bool, Duration), String> {
+    std::fs::create_dir_all(cache).map_err(|e| e.to_string())?;
+    let cold = !cache.join("Library").is_dir();
+    let first = cold
+        && std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(cache.join(".cold-grace-used"))
+            .is_ok();
+    Ok((
+        cold,
+        if first {
+            warm.max(Duration::from_secs(1800))
+        } else {
+            warm
+        },
+    ))
+}
+
 /// Run one stage. `Err` only when no verdict can be made (bad slot, slot busy, the candidate
 /// cannot be staged); every step outcome, timeouts included, is a verdict.
 pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
+    let mut effective = opts.clone();
+    effective.sandbox.slot = effective.slot_dir();
+    effective.sandbox.cache = effective
+        .root
+        .join("_warm")
+        .join(cache_version(&effective)?);
+    let (cold_cache, budget) = cold_budget(&effective.sandbox.cache, effective.budget)?;
+    effective.budget = budget;
+    let opts = &effective;
     let started = Instant::now();
     if !slot::valid_slot_id(&opts.slot) {
         return Err(format!("{:?} is not a slot id", opts.slot));
     }
     let slot_dir = opts.slot_dir();
     let _lock = SlotLock::acquire(&slot_dir, opts.budget.saturating_mul(4))?;
+    // Probe before any candidate compiler is allowed to start. No fallback on failure.
+    opts.sandbox.probe()?;
     prepare_slot(opts, opts.budget)?;
     let record: Value = std::fs::read(slot_dir.join("stage.json"))
         .ok()
         .and_then(|b| serde_json::from_slice(&b).ok())
         .ok_or("the slot has no readable stage.json")?;
+    if opts
+        .expected_source_revision
+        .as_ref()
+        .is_some_and(|revision| record["source"]["commit"].as_str() != Some(revision.as_str()))
+    {
+        return Err("source revision changed while preparing the stage slot".into());
+    }
     if let SlotSource::PackageDir { change_set_id, .. } = &opts.source
         && record["changeSetId"].as_str() != Some(change_set_id.as_str())
     {
@@ -1196,6 +1336,7 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     for id in ["scan", "checkers"] {
         if !run.requested(id) {
             run.skip(id, "not requested");
+            blocked.get_or_insert_with(|| format!("mandatory prefilter {id} did not run"));
             continue;
         }
         if run.budget_gone(id) {
@@ -1313,6 +1454,8 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         }
     }
     let mut verdict = StageVerdict {
+        confinement: opts.sandbox.mode.name().into(),
+        cold_cache,
         schema: VERDICT_SCHEMA.into(),
         change_set_id: run.record["changeSetId"]
             .as_str()
@@ -1341,7 +1484,7 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     verdict.settle();
     let _ = std::fs::write(slot_dir.join("out").join("verdict.json"), verdict.bytes());
     if editmode_ok {
-        seed_warm_library(&opts.root, &slot_dir.join("project"));
+        seed_warm_library(&opts.sandbox.cache, &slot_dir.join("project"));
     }
     Ok(verdict)
 }
@@ -1349,6 +1492,36 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn r2_11_cache_versions_and_one_cold_budget() {
+        let dir = tempfile::tempdir().unwrap();
+        let repo = dir.path();
+        std::fs::create_dir_all(repo.join("Packages/com.gamecore.contracts")).unwrap();
+        std::fs::create_dir_all(repo.join("project/ProjectSettings")).unwrap();
+        let manifest = repo.join("Packages/com.gamecore.contracts/package.json");
+        let unity = repo.join("project/ProjectSettings/ProjectVersion.txt");
+        std::fs::write(&manifest, r#"{"version":"1"}"#).unwrap();
+        std::fs::write(&unity, "6000.0.75f1").unwrap();
+        std::fs::write(repo.join("Packages/com.gamecore.contracts.meta"), "meta").unwrap();
+        let mut opts = StageOptions::from_env(repo, "test", SlotSource::Existing);
+        opts.source_project = repo.join("project");
+        let first = cache_version(&opts).unwrap();
+        std::fs::write(&manifest, r#"{"version":"2"}"#).unwrap();
+        assert_ne!(first, cache_version(&opts).unwrap());
+        let second = cache_version(&opts).unwrap();
+        std::fs::write(&unity, "6000.1").unwrap();
+        assert_ne!(second, cache_version(&opts).unwrap());
+        let cache = repo.join("cache");
+        let warm = Duration::from_secs(360);
+        assert_eq!(
+            cold_budget(&cache, warm).unwrap(),
+            (true, Duration::from_secs(1800))
+        );
+        assert_eq!(cold_budget(&cache, warm).unwrap(), (true, warm));
+        std::fs::create_dir(cache.join("Library")).unwrap();
+        assert_eq!(cold_budget(&cache, warm).unwrap(), (false, warm));
+    }
 
     #[test]
     fn nunit_totals_and_failures() {
@@ -1413,6 +1586,37 @@ mod tests {
     }
 
     #[test]
+    fn r2_19_child_log_is_redacted_before_process_exit() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("stream.log");
+        let capture = path.clone();
+        let child = std::thread::spawn(move || {
+            run_child(
+                Command::new("sh").args(["-c", "printf etk_; sleep 0.1; echo abcdefgh; sleep 0.5"]),
+                &[],
+                &capture,
+                Duration::from_secs(3),
+            )
+        });
+        let deadline = Instant::now() + Duration::from_secs(2);
+        let mut observed = false;
+        while Instant::now() < deadline && !child.is_finished() {
+            let bytes = std::fs::read_to_string(&path).unwrap_or_default();
+            assert!(!bytes.contains("abcdefgh"));
+            if bytes.contains("[redacted]") {
+                observed = true;
+                break;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        assert!(
+            observed,
+            "redacted durable output must exist before the child exits"
+        );
+        assert!(child.join().unwrap().ok());
+    }
+
+    #[test]
     fn a_child_gets_the_allowlisted_env_and_is_killed_at_its_deadline() {
         let dir = tempfile::tempdir().unwrap();
         let out = run_child(
@@ -1431,6 +1635,8 @@ mod tests {
             {
                 assert!(
                     super::super::env::allowed(name)
+                        || name == "GAMECORE_STAGE_MARK"
+                        || name == "PATH"
                         || name == "PWD"
                         || name == "SHLVL"
                         || name == "_",
