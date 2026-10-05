@@ -1,0 +1,84 @@
+PlayerPrefs - Creating folder: /home/worlesenric/.config/unity3d/GameCore/Hollowmere
+Unable to load player prefs
+Refreshing native plugins compatible for Editor in 0.00 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /home/worlesenric/.cache/gamecore-studio/stage-int/service/node-uNIpyo/slots/2c7a11a490ff1ffb26cabb751aa760e2656d139f5ddbcf1a1ff358ebbfab7db6/cs-01k6rw0mech00000000000000a/project/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56001
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001647 seconds.
+- Loaded All Assemblies, in  0.241 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Package Manager] getaddrinfo EAI_AGAIN packages.unity.com
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.376 seconds
+Domain Reload Profiling: 617ms
+	BeginReloadAssembly (59ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (38ms)
+	LoadAllAssembliesAndSetupDomain (112ms)
+		LoadAssemblies (58ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (110ms)
+			TypeCache.Refresh (110ms)
+				TypeCache.ScanAssembly (100ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (376ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (349ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (153ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (49ms)
+			ProcessInitializeOnLoadAttributes (106ms)
+			ProcessInitializeOnLoadMethodAttributes (37ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[SignatureVerifier] Application signature verification not supported on this platform.
+  Version:                 1.17.4+4293ba1
+  Correlation Id:          837d810a44a1d54a71f22477947ed202
+  External correlation Id: 5782139440047341101
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Done resolving packages in 51.32 seconds
+An error occurred while resolving packages:
+  Project has invalid dependencies:
+    com.unity.burst: getaddrinfo EAI_AGAIN packages.unity.com
+    com.unity.collections: getaddrinfo EAI_AGAIN packages.unity.com
+    com.unity.entities: getaddrinfo EAI_AGAIN packages.unity.com
+    com.unity.toolchain.linux-x86_64: getaddrinfo EAI_AGAIN packages.unity.com
+  Package com.gamecore.gameplay.world@file:/home/worlesenric/wkspace/gc-studio/stage-int/Packages/com.gamecore.gameplay.world has invalid dependencies or related test packages:
+    com.gamecore.studio.core (dependency): getaddrinfo EAI_AGAIN packages.unity.com

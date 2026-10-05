@@ -357,7 +357,7 @@ def write_dotnet(slot: Path, package_dir: Path, proposal: dict | None) -> dict |
     remove_tree(dotnet)
     (dotnet / "Rules").mkdir(parents=True)
     template = TEMPLATE / "dotnet"
-    for name in ("Directory.Build.props",):
+    for name in ("Directory.Build.props", "NuGet.Config"):
         shutil.copyfile(template / name, dotnet / name)
     rules = (template / "Rules.csproj.tmpl").read_text(encoding="utf-8")
     rules = rules.replace("@@ASSEMBLY@@", assembly).replace("@@RULES_DIR@@", escape(rules_dir.as_posix(), {'"': "&quot;"}))

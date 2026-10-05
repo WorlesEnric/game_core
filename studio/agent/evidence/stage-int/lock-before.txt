@@ -1,0 +1,19 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/stage-int/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.82s
+     Running unittests src/lib.rs (studio/agent/target/debug/deps/gamecore_studio-7c49548b0c6f1153)
+
+running 1 test
+
+thread 'stage::slot::tests::r2_16_stage_int_guard_drop_unlocks_inherited_description' (1750139) panicked at src/stage/slot.rs:324:9:
+assertion failed: !is_locked(&slot)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test stage::slot::tests::r2_16_stage_int_guard_drop_unlocks_inherited_description ... FAILED
+
+failures:
+
+failures:
+    stage::slot::tests::r2_16_stage_int_guard_drop_unlocks_inherited_description
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 89 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

@@ -16,7 +16,7 @@ namespace GameCore.Studio.Views.Tests
     public sealed class R2ViewsRegressionTests
     {
         public enum ReceiptKind { Accepted, Committed, Refused }
-        public sealed class Result
+        public sealed class CheckerResult
         {
             public ReceiptKind Kind { get; set; }
             public string Diagnostic => "test refusal witness";
@@ -25,7 +25,7 @@ namespace GameCore.Studio.Views.Tests
         public sealed class Receipt
         {
             public bool Admitted => Result.Kind != ReceiptKind.Refused;
-            public Result Result { get; } = new Result();
+            public CheckerResult Result { get; } = new CheckerResult();
         }
         public sealed class Commands
         {

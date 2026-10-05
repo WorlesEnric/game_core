@@ -1,0 +1,50 @@
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Package Manager] getaddrinfo EAI_AGAIN download.packages.unity.com
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  8.787 seconds
+Domain Reload Profiling: 9191ms
+	BeginReloadAssembly (241ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (36ms)
+	LoadAllAssembliesAndSetupDomain (98ms)
+		LoadAssemblies (240ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (96ms)
+			TypeCache.Refresh (96ms)
+				TypeCache.ScanAssembly (87ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (8787ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (8763ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (8590ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (41ms)
+			ProcessInitializeOnLoadAttributes (93ms)
+			ProcessInitializeOnLoadMethodAttributes (35ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Done resolving packages in 1.34 seconds
+An error occurred while resolving packages:
+  One or more packages could not be added to the local file system:
+    com.unity.burst: getaddrinfo EAI_AGAIN download.packages.unity.com
+    com.unity.collections: getaddrinfo EAI_AGAIN download.packages.unity.com
+    com.unity.entities: getaddrinfo EAI_AGAIN download.packages.unity.com
+    com.unity.sysroot: getaddrinfo EAI_AGAIN download.packages.unity.com
+    com.unity.sysroot.linux-x86_64: getaddrinfo EAI_AGAIN download.packages.unity.com
+    com.unity.toolchain.linux-x86_64: getaddrinfo EAI_AGAIN download.packages.unity.com
