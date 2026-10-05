@@ -103,11 +103,18 @@ namespace Hollowmere.P3_2.Workflows
             }
 
             r["stateAt"] = states;
+            // Only state transitions carry a fresh companion updatedAt (task_progress events re-raise the view with the
+            // request's previous updatedAt), so the visibility lag is measured on transitions only.
             JArray lags = r["lags"] as JArray ?? new JArray();
-            if (view.UpdatedAt > 1_000_000_000_000)
+            JObject last = r["lastState"] as JObject ?? new JObject();
+            string current = view.State + "/" + view.TaskStatus;
+            if (view.UpdatedAt > 1_000_000_000_000 && (string?)last[view.RequestId] != current)
             {
                 lags.Add(now - view.UpdatedAt);
             }
+
+            last[view.RequestId] = current;
+            r["lastState"] = last;
 
             r["lags"] = lags;
             P32State.instance.SetReq(tag, r);
@@ -405,22 +412,55 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         });
 
+        /// <summary>Adds project assets to the current selection (Ctrl-click in the Project window).</summary>
+        public static Step AddAsset(params string[] paths) => new Step("add asset " + string.Join(", ", paths.Select(Path.GetFileNameWithoutExtension)), () =>
+        {
+            StudioUiContext context = Context;
+            foreach (string path in paths)
+            {
+                UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(path) ?? throw new InvalidOperationException("No asset at " + path);
+                AuthoringRef reference = context.Selection.RefOf(asset) ?? throw new InvalidOperationException("No authoring ref for " + path);
+                context.Selection.Set(new[] { reference }, SelectionOp.Add);
+            }
+
+            StudioContextWindow.Open();
+            string badges = string.Join(", ", context.Selection.Describe().Select(b => b.Label + " [" + b.TypeId + "]"));
+            WorkflowRunner.Shot("add-asset", "Added " + string.Join(", ", paths.Select(Path.GetFileNameWithoutExtension)) + " to the selection: " + badges + ".", new JObject { ["selection"] = badges });
+            return true;
+        });
+
         /// <summary>Right-click point-at on the ground near <paramref name="near"/> plus an offset (metres).</summary>
         public static Step PointAt(string near, Vector3 offset) => new Step("point-at near " + near, () =>
         {
             StudioViewportWindow viewport = Viewport();
             GameObject anchor = Require(near);
             Vector3 world = anchor.transform.position + offset;
-            FrameOn(new List<GameObject> { anchor }, 2.5f);
-            Vector2? point = viewport.Project(world);
-            if (point == null || !viewport.ImageRect.Contains(point.Value))
+            FrameOn(new List<GameObject> { anchor }, 1.5f);
+            Rect area = viewport.ImageRect;
+            List<Vector2> points = new List<Vector2>();
+            Vector2? projected = viewport.Project(world);
+            if (projected != null && area.Contains(projected.Value))
             {
-                throw new InvalidOperationException("The point-at location " + world + " is off screen.");
+                points.Add(projected.Value);
             }
 
+            points.Add(new Vector2(area.width * 0.62f, area.height * 0.82f));
+            points.Add(new Vector2(area.width * 0.5f, area.height * 0.9f));
+            points.Add(new Vector2(area.width * 0.35f, area.height * 0.85f));
             viewport.Overlap?.Hide();
-            LocationPick location = viewport.PointAtLocation(point.Value);
-            JObject extra = new JObject { ["wanted"] = Vec(world), ["hit"] = location.Hit, ["position"] = Vec(location.Position), ["source"] = location.Source.ToString(), ["surface"] = location.Surface != null ? location.Surface.name : null };
+            LocationPick location = viewport.PointAtLocation(points[0]);
+            JArray tries = new JArray();
+            foreach (Vector2 point in points)
+            {
+                location = viewport.PointAtLocation(point);
+                tries.Add(new JObject { ["point"] = new JArray(Math.Round(point.x, 1), Math.Round(point.y, 1)), ["hit"] = location.Hit, ["source"] = location.Source.ToString() });
+                if (location.Hit)
+                {
+                    break;
+                }
+            }
+
+            JObject extra = new JObject { ["wanted"] = Vec(world), ["tries"] = tries, ["hit"] = location.Hit, ["position"] = Vec(location.Position), ["source"] = location.Source.ToString(), ["surface"] = location.Surface != null ? location.Surface.name : null };
             St.Set("pointAt", Vec(location.Position));
             WorkflowRunner.Shot("point-at", "Right-click point-at near " + near + ": " + (location.Hit ? location.Source + " location at " + Vec(location.Position) : "no ground hit") + " added to the selection.", extra);
             if (!location.Hit)
@@ -539,7 +579,16 @@ namespace Hollowmere.P3_2.Workflows
             StudioUiContext context = Context;
             LiveRequests.Collect(tag);
             JObject r = St.Req(tag);
-            string id = LiveRequests.Ids(r).Last();
+            string? last = LiveRequests.Ids(r).LastOrDefault();
+            if (last == null)
+            {
+                r["result"] = "not_sent";
+                St.SetReq(tag, r);
+                WorkflowRunner.Log(tag + "-not-sent", "Nothing was sent for " + tag + " (see the previous step).", null);
+                return true;
+            }
+
+            string id = last;
             r["id"] = id;
             St.SetReq(tag, r);
             TaskRow? row = context.Tasks.Find(id);

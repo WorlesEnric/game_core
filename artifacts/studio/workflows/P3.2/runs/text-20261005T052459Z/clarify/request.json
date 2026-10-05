@@ -1,0 +1,172 @@
+{
+  "changeSetId": "cs_01M458D5JZJFA2XW49ABWHDZAJ",
+  "intent": {
+    "text": "Make one of them patrol around the well.",
+    "origin": "agent"
+  },
+  "parent": null,
+  "worker": "design",
+  "toolCatalogRevision": "f9ca18c2a338655709858661220a7396adbc94bcccf22fc0b4c01750f4cfd01b",
+  "contextBytes": 2699,
+  "contextTruncated": false,
+  "contextOmittedNodes": 0,
+  "selection": {
+    "id": "sel_01M458D5HQRVE52DM7HYMW526V",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip",
+        "stamp": "sha256:df04e0e8c931c7ce15841f79c057a7654303ae3a146f674ed3546ceb73f64311"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-708947954-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Odd",
+        "stamp": "sha256:6aa58329ffbb13e31299e0ae1c4bf1d2fcfb94848efc2e3053869152ac6d1915"
+      }
+    ],
+    "frame": {
+      "camera": {
+        "position": [
+          -1.8000001907348633,
+          0.75724995136260986,
+          -76.6458969116211
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fov": 60.0,
+        "aspect": 2.271062271062271
+      },
+      "viewport": [
+        1240,
+        532
+      ],
+      "image": "sha256:d072215b363079cc27d5bcc0c255336816224835f4930eea84d0ff67c95bf5b6"
+    },
+    "indexRevision": 50
+  },
+  "attachments": [
+    {
+      "name": "scene-context.json",
+      "mediaType": "application/json",
+      "role": "context",
+      "bytes": 2429,
+      "content": {
+        "schema": "gamecore.studio.scenecontext/1",
+        "units": "metres",
+        "axes": {
+          "north": "+z",
+          "east": "+x",
+          "up": "+y"
+        },
+        "objects": [
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+              "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+            },
+            "name": "Maren",
+            "path": "Maren",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              -8.0,
+              0.0,
+              -8.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip",
+              "stamp": "sha256:df04e0e8c931c7ce15841f79c057a7654303ae3a146f674ed3546ceb73f64311"
+            },
+            "name": "Pip",
+            "path": "Pip",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              5.0,
+              0.0,
+              3.0
+            ],
+            "rotation": [
+              0.0,
+              0.7071,
+              0.0,
+              0.7071
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-708947954-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Odd",
+              "stamp": "sha256:6aa58329ffbb13e31299e0ae1c4bf1d2fcfb94848efc2e3053869152ac6d1915"
+            },
+            "name": "Odd",
+            "path": "Odd",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              -8.0,
+              0.0,
+              6.0
+            ],
+            "rotation": [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

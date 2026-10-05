@@ -1,0 +1,80 @@
+{
+  "assumedRates": {
+    "inputPerM": 5.0,
+    "outputPerM": 20.0,
+    "image": 0.04,
+    "tts": 0.002,
+    "voice": 0.01,
+    "describe": 0.02
+  },
+  "runs": [
+    {
+      "run": "text-20261005T052459Z",
+      "workflow": "text",
+      "revision": "e1cf52c79b63a6ff15e9d9c372f98b04829c1af2",
+      "exit": 1,
+      "tasks": [
+        "t06b09f0561ee4d59983ccdac",
+        "t1d062d1abb5a3d0c28a5db5e",
+        "t525d2057e49ba6ce4ea0fa92",
+        "tbe66ce5f3dc2411e206120c7"
+      ],
+      "requests": [
+        {
+          "tag": "clarify",
+          "result": "needs_clarification",
+          "tasks": [
+            "t06b09f0561ee4d59983ccdac",
+            "t525d2057e49ba6ce4ea0fa92"
+          ],
+          "submitToAcceptedMs": 862,
+          "submitToFirstEventMs": 252,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 154,
+          "visibleLagMaxMs": 154,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "move-patrol",
+          "result": "needs_clarification",
+          "tasks": [
+            "t1d062d1abb5a3d0c28a5db5e",
+            "tbe66ce5f3dc2411e206120c7"
+          ],
+          "submitToAcceptedMs": 359,
+          "submitToFirstEventMs": 148,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 136,
+          "visibleLagMaxMs": 136,
+          "visibleLagN": 6
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "input_tokens": 445906,
+    "output_tokens": 4345,
+    "tasks": 4,
+    "images": 0,
+    "tts": 0,
+    "voice": 0,
+    "describe": 0,
+    "estimatedUsd": 2.32,
+    "stateVisibleLagMs": {
+      "n": 12,
+      "p95": 154,
+      "max": 154,
+      "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"
+    }
+  }
+}

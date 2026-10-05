@@ -1,0 +1,135 @@
+{
+  "changeSetId": "cs_01M458GGY5EA1T74BMAN2BAJBM",
+  "intent": {
+    "text": "Move Maren two metres north and make her patrol around the well.",
+    "origin": "agent"
+  },
+  "parent": null,
+  "worker": "design",
+  "toolCatalogRevision": "f9ca18c2a338655709858661220a7396adbc94bcccf22fc0b4c01750f4cfd01b",
+  "contextBytes": 1852,
+  "contextTruncated": false,
+  "contextOmittedNodes": 0,
+  "selection": {
+    "id": "sel_01M458GGY52F8V6BF7TP3KJ2PM",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      }
+    ],
+    "frame": {
+      "camera": {
+        "position": [
+          -4.375,
+          0.75724995136260986,
+          -49.157855987548828
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fov": 60.0,
+        "aspect": 2.3308270676691731
+      },
+      "viewport": [
+        1240,
+        532
+      ],
+      "image": "sha256:cdfe3c342da618aec899701fe8ec7a4e759f7354f38b49a5ae91e68a5ab9c664"
+    },
+    "indexRevision": 50
+  },
+  "attachments": [
+    {
+      "name": "scene-context.json",
+      "mediaType": "application/json",
+      "role": "context",
+      "bytes": 1698,
+      "content": {
+        "schema": "gamecore.studio.scenecontext/1",
+        "units": "metres",
+        "axes": {
+          "north": "+z",
+          "east": "+x",
+          "up": "+y"
+        },
+        "objects": [
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+              "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+            },
+            "name": "Maren",
+            "path": "Maren",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              -8.0,
+              0.0,
+              -8.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+              "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+            },
+            "name": "Village Well",
+            "path": "Village Well",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              0.0,
+              0.0,
+              -1.9
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

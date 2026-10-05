@@ -58,6 +58,7 @@ namespace Hollowmere.P3_2.Workflows
             {
                 case "smoke": return Smoke();
                 case "text": return Text();
+                case "text2": return Text2();
                 case "robe": return Robe();
                 case "narrative": return Narrative();
                 case "reopen": return Reopen();
@@ -167,6 +168,76 @@ namespace Hollowmere.P3_2.Workflows
             };
         }
 
+        /// <summary>
+        /// The one retry of the text workflow with an improved selection: the first attempt showed that the context slice
+        /// of a placed NPC does not contain its npc.definition (npc.setPatrol / npc.addAt target that kind), so the
+        /// creator also selects the NPC definitions in the Project window (and, for the ferryman, Odd's definition as the
+        /// template the catalog needs).
+        /// </summary>
+        private static IReadOnlyList<Step> Text2()
+        {
+            const string PipNpc = "Assets/Hollowmere/Npcs/Definitions/Pip.asset";
+            const string OddNpc = "Assets/Hollowmere/Npcs/Definitions/Odd.asset";
+            return new[]
+            {
+                S.OpenScene(S.VillageScene), S.Relayout(),
+                S.WaitGateway(),
+
+                S.Select("Maren", "Pip", "Odd"),
+                S.AddAsset(MarenNpc, PipNpc, OddNpc),
+                S.Send("clarify2", "Make one of them patrol around the well."),
+                S.Await("clarify2", q => "Maren (npc.definition Maren). Centre a loop of four points on the Village Well, about 3 m from it (+Z north, +X east, metres)."),
+                S.Do("preview clarify2", () => ReviewOrSkip("clarify2")),
+                S.Reject("clarify2", "P3.2: clarification round trip recorded; reviewed, not applied."),
+
+                S.Select("Maren", "Village Well"),
+                S.AddAsset(MarenNpc),
+                S.Note("roster before", () => Roster("move-patrol2", "before")),
+                S.Send("move-patrol2", "Move Maren two metres north and make her patrol around the well."),
+                S.Await("move-patrol2", PositionAnswer),
+                S.Do("preview move-patrol2", () => Guard("move-patrol2", () => S.Preview("move-patrol2").Run())),
+                S.Do("hashes before move-patrol2", () => Guard("move-patrol2", () => HashStep("move-patrol2", "before", MarenBehaviour, MarenNpc, MarenEntity))),
+                S.Do("apply move-patrol2", () => Guard("move-patrol2", () => S.Apply("move-patrol2").Run())),
+                S.Do("after move-patrol2", () => Guard("move-patrol2", () =>
+                {
+                    Roster("move-patrol2", "applied");
+                    DescribeTargets("move-patrol2", "applied");
+                    return HashStep("move-patrol2", "applied", MarenBehaviour, MarenNpc, MarenEntity);
+                })),
+                S.Do("undo move-patrol2", () => Guard("move-patrol2", () => AppliedOr("move-patrol2", () => S.Undo("move-patrol2").Run()))),
+                S.Do("after undo move-patrol2", () => Guard("move-patrol2", () =>
+                {
+                    Roster("move-patrol2", "undone");
+                    return HashStep("move-patrol2", "undone", MarenBehaviour, MarenNpc, MarenEntity);
+                })),
+
+                S.Note("clear selection", () => S.Context.Selection.Clear()),
+                S.PointAt("Village Well", new Vector3(4f, 0f, 3f)),
+                S.AddAsset(OddNpc),
+                S.Note("roster before ferryman2", () => Roster("ferryman2", "before")),
+                S.Send("ferryman2", "Add a ferryman NPC here who talks about the bell."),
+                S.Await("ferryman2", q => "Create a new NPC called Ferryman Bram at the selected location (create new definitions from Odd's as templates if the catalog needs them), " +
+                                          "with his own short dialogue about the Drowned Bell, a small patrol within 3 m of the location, and navigation like the other village NPCs.", 1200),
+                S.Do("preview ferryman2", () => Guard("ferryman2", () => S.Preview("ferryman2").Run())),
+                S.Do("apply ferryman2", () => Guard("ferryman2", () => S.Apply("ferryman2").Run())),
+                S.Do("after ferryman2", () => Guard("ferryman2", () =>
+                {
+                    Roster("ferryman2", "applied");
+                    DescribeTargets("ferryman2", "applied");
+                    return true;
+                })),
+                S.Do("undo ferryman2", () => Guard("ferryman2", () => AppliedOr("ferryman2", () => S.Undo("ferryman2").Run()))),
+                S.Note("roster after ferryman2 undo", () => Roster("ferryman2", "undone")),
+                S.Do("reject leftovers", () =>
+                {
+                    RejectIfOpen("move-patrol2");
+                    RejectIfOpen("ferryman2");
+                    WorkflowRunner.Recording(false);
+                    return true;
+                }),
+            };
+        }
+
         // -------------------------------------------------------------------------------------------------- robe
 
         private static IReadOnlyList<Step> Robe()
@@ -234,6 +305,7 @@ namespace Hollowmere.P3_2.Workflows
 
                 // W-AI-03
                 S.Select("Odd"),
+                S.AddAsset(OddGraph),
                 S.Send("odd-line", "Add a line Odd only says after the shrine is lit."),
                 S.Await("odd-line", q => "There is no shrine in the game yet. Add a new fact shrine_lit (0 at the start) and one new line in Odd's dialogue graph that is only " +
                                          "available when shrine_lit is 1, for example: \"So the old shrine burns again. The marsh feels less hungry tonight.\" Change nothing else.", 1200),
