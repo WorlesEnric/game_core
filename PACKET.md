@@ -9,7 +9,9 @@ Branch `codex/r2-g`, Linux build host. First command after inspecting the branch
 - R2-41: additive Unity-free `IMediaGenerationGatewayProvider` and
   `MediaGenerationLookup.Resolve(IEnumerable<object>)` in gameplay contracts. The
   dialogue/audio tools resolve existing Editor session registrations. No provider
-  constructor discovery, cached gateway, or static mutable state. Two distinct
+  constructor discovery, cached gateway, or static mutable state. Removed the
+  impossible authored-index prerequisite `agent.media`; service availability is
+  determined by the registered gateway. Two distinct
   registrations fail closed; null unregisters. Optional
   `ISoundEffectGenerationGateway.RequestSoundEffect(string clipId, string description, int durationMs)`
   supports audio.generateSfx without breaking voice-only providers.
@@ -88,7 +90,9 @@ Branch `codex/r2-g`, Linux build host. First command after inspecting the branch
 Pending Unity XML counts; final evidence is appended below. Regression names:
 
 - R2-41: `R2_41_ToolsUseRegisteredGatewayAndObserveReplacementAndUnregister`,
-  `R2_41_AmbiguousRegistrationsFailClosed`.
+  `R2_41_AmbiguousRegistrationsFailClosed`,
+  `R2_41_UnregisteredConcreteTypesAreNotConstructed`,
+  `R2_41_RegisteredToolIdsReachGatewayThroughChangeSetEngine`.
 - R2-34: `R2_34_WorldToolReferencesAreBindableArguments` (already passing after P1.7b).
 - Admission: `R2_B_BindingReplacesServicesAndRejectsUnverifiedSmoke`.
 - R2-06: `R2_06_RuntimeMetadataAndReloadRegistration`,

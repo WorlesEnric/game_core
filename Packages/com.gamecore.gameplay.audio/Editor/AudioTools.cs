@@ -177,7 +177,7 @@ namespace GameCore.Gameplay.Audio.Editor
             return state;
         }
 
-        [AuthorOperation("audio.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live, Requires = AgentMedia,
+        [AuthorOperation("audio.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live,
             Doc = "Requests a spoken line through the media gateway (etos op tts); the clip arrives later as a candidate for audio.assignClip. NotConfigured (GP-AUD-020) until a gateway exists.")]
         public static MediaGenerationResult GenerateVoice(
             AudioBankDefinition bank,
@@ -205,7 +205,7 @@ namespace GameCore.Gameplay.Audio.Editor
                 : result;
         }
 
-        [AuthorOperation("audio.generateSfx", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live, Requires = AgentMedia,
+        [AuthorOperation("audio.generateSfx", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live,
             Doc = "Requests a sound effect through the registered optional sound-effect capability; otherwise answers NotConfigured (GP-AUD-020).")]
         public static MediaGenerationResult GenerateSfx(
             AudioBankDefinition bank,
