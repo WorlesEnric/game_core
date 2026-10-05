@@ -5,7 +5,7 @@
 // Returns: OperationResult as is; void/null means Applied; false means Refused; any other value becomes the output.
 // When the method supplies no inverse, the engine-side inverse is a `set` restoring every authorable member it changed.
 // A [AuthorOperation(ReadOnly = true)] tool is a pure query: ToolRegistry.Invoke runs it directly and Apply records no
-// undo, dirty state, inverse or touched object for its target.
+// undo, dirty state, inverse or touched object for its target. A returned UnityEngine.Object is touched as well.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -168,7 +168,19 @@ namespace GameCore.Studio.Edit
                 }
             }
 
-            return ReadOnly ? result : result.Touch(target);
+            if (ReadOnly)
+            {
+                return result;
+            }
+
+            // An object the tool returns (a created portal asset, a placed scene object) is touched too, so the engine
+            // stamps it and the index sees it before the next Flush.
+            if (returned is UnityEngine.Object produced && produced != null)
+            {
+                result.Touch(produced);
+            }
+
+            return result.Touch(target);
         }
 
         private object?[] BindArguments(EditContext context, ToolStageResult problems)
