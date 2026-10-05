@@ -163,6 +163,30 @@ namespace GameCore.Studio.Etos.Client
             return new StageJobInfo(await SendObjectAsync(HttpMethod.Post, "/v1/stage", body, Options.RequestTimeout, ct).ConfigureAwait(false));
         }
 
+        /// <summary>App-authored retained candidate intake; signs the exact UTF-8 payload, including catalog and CAS bytes.</summary>
+        public async Task<StageJobInfo> StageAppCandidateAsync(string changeSetId, string projectId, string sourceRevision,
+            string catalogRevision, JObject changeSet, JObject toolCatalog, IReadOnlyList<byte[]> artifactBytes, CancellationToken ct = default)
+        {
+            if (projectId != Options.ProjectId || Json.NormalizeSha256(projectId) == null
+                || string.IsNullOrWhiteSpace(sourceRevision) || Json.NormalizeSha256(catalogRevision) == null
+                || (string?)changeSet?["id"] != changeSetId || (string?)toolCatalog?["revision"] != catalogRevision)
+                throw new EtosException(new EtosError(0, EtosCodes.BadRequest, "stage_context_invalid"));
+            var files = new JArray();
+            foreach (byte[] bytes in artifactBytes) files.Add(new JObject { ["bytesBase64"] = Convert.ToBase64String(bytes) });
+            var payload = new JObject
+            {
+                ["app"] = Options.AppName,
+                ["request"] = new JObject { ["changeSetId"] = changeSetId, ["projectId"] = projectId,
+                    ["sourceRevision"] = sourceRevision, ["catalogRevision"] = catalogRevision },
+                ["changeSet"] = changeSet!.DeepClone(), ["toolCatalog"] = toolCatalog!.DeepClone(), ["files"] = files,
+            };
+            if (Json.FirstNull(payload) != null) throw EtosException.Protocol("stage_payload_null");
+            byte[] exact = Encoding.UTF8.GetBytes(Json.Write(payload));
+            var envelope = new JObject { ["payloadBase64"] = Convert.ToBase64String(exact), ["signature"] = _credentials.SignAppCandidate(exact) };
+            return new StageJobInfo(await SendObjectAsync(HttpMethod.Post, "/v1/stage/app-candidate", envelope,
+                Options.RequestTimeout, ct, stageKey: true).ConfigureAwait(false));
+        }
+
         public Task<JObject> FetchTrustedVerdictAsync(string jobId, CancellationToken ct = default) =>
             GetObjectAsync("/v1/stage/" + Escape(jobId) + "/verdict", ct);
 
@@ -420,7 +444,7 @@ namespace GameCore.Studio.Etos.Client
             return SendObjectAsync(HttpMethod.Get, path, null, Options.RequestTimeout, ct);
         }
 
-        private async Task<JObject> SendObjectAsync(HttpMethod method, string path, JObject? body, TimeSpan timeout, CancellationToken ct, bool absolute = false)
+        private async Task<JObject> SendObjectAsync(HttpMethod method, string path, JObject? body, TimeSpan timeout, CancellationToken ct, bool absolute = false, bool stageKey = false)
         {
             string full = absolute ? path : BasePath + path;
             Stopwatch watch = Stopwatch.StartNew();
@@ -428,6 +452,7 @@ namespace GameCore.Studio.Etos.Client
             using (HttpRequestMessage message = NewMessage(method, full))
             {
                 deadline.CancelAfter(timeout);
+                if (stageKey) message.Headers.TryAddWithoutValidation("X-GameCore-Stage-Key", _credentials.StageKey);
                 if (body != null)
                 {
                     message.Content = new StringContent(Json.Write(body), Encoding.UTF8, "application/json");

@@ -1,6 +1,8 @@
 #nullable enable
 using System;
 using System.IO;
+using System.Reflection;
+using GameCore.Studio.Model;
 using System.Text;
 using System.Text.RegularExpressions;
 using GameCore.Studio.Edit;
@@ -48,10 +50,26 @@ namespace GameCore.Studio.Etos
             throw new InvalidOperationException("source_revision_unavailable");
         }
 
+        /// <summary>Optional UI seam, read on the Editor thread. ETOS does not require the UI package.
+        /// Only the existing context for this exact runtime can supply an unpreviewed retained candidate.</summary>
+        public static ChangeSet? OpenCandidate(StudioRuntime runtime, string id)
+        {
+            Type? session = Type.GetType("GameCore.Studio.UI.StudioUiSession, GameCore.Studio.UI.Editor");
+            object? context = session?.GetProperty("ContextIfCreated", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+            if (context == null || !ReferenceEquals(context.GetType().GetProperty("Runtime")?.GetValue(context), runtime)) return null;
+            object? candidates = context.GetType().GetProperty("Candidates")?.GetValue(context);
+            object? entry = candidates?.GetType().GetMethod("Find", new[] { typeof(string) })?.Invoke(candidates, new object[] { id });
+            return entry?.GetType().GetProperty("ChangeSet")?.GetValue(entry) as ChangeSet;
+        }
+
+        public static CompanionStageService CreateStageService(CompanionClient client, StudioRuntime runtime) =>
+            new CompanionStageService(client, id => runtime.Engine.Previews.TryGetValue(id, out StagedChangeSet staged)
+                ? staged.ChangeSet : EtosProjectContext.OpenCandidate(runtime, id) ?? runtime.Journal.Read(id), () => runtime.Registry.Catalog, runtime.Artifacts.Read);
+
         public static void Bind(StudioRuntime runtime, CompanionClient client)
         {
             var options = StageAdmission.Of(runtime).Options;
-            options.StageService = new CompanionStageService(client);
+            options.StageService = CreateStageService(client, runtime);
             options.ProjectId = client.Options.ProjectId;
             options.SourceRevision = () => SourceRevision(runtime.Paths.ProjectRoot);
             options.CatalogRevision = () => runtime.Registry.Catalog.Revision ?? runtime.Registry.Catalog.ComputeRevision();

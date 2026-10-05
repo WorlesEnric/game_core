@@ -5,6 +5,8 @@
 #nullable enable
 using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -47,6 +49,25 @@ namespace GameCore.Studio.Etos.Client
 
         /// <summary>The header value; used only to build the Authorization header.</summary>
         internal string AuthorizationValue => "Bearer " + _key;
+
+        internal string StageKey => _key;
+
+        internal string SignAppCandidate(byte[] payload)
+        {
+            byte[] domain = Encoding.UTF8.GetBytes("gamecore.stage.app-candidate/1\n");
+            byte[] message = new byte[domain.Length + payload.Length];
+            Buffer.BlockCopy(domain, 0, message, 0, domain.Length);
+            Buffer.BlockCopy(payload, 0, message, domain.Length, payload.Length);
+            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_key)))
+                return BitConverter.ToString(hmac.ComputeHash(message)).Replace("-", "").ToLowerInvariant();
+        }
+
+        /// <summary>Automatic startup uses the explicit host override or documented pairing location, never project settings.</summary>
+        public static string? ResolveAutomaticKeyFile()
+        {
+            string? configured = Environment.GetEnvironmentVariable(KeyFileVariable);
+            return string.IsNullOrWhiteSpace(configured) ? DefaultKeyFile() : ExpandHome(configured!.Trim());
+        }
 
         /// <summary>True when <paramref name="text"/> contains this key (used by redaction tests and evidence checks).</summary>
         public bool AppearsIn(string? text) => text != null && text.IndexOf(_key, StringComparison.Ordinal) >= 0;
