@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r4-c/studio/etos/install-state.py", line 256, in <module>
+    main()
+  File "/home/worlesenric/wkspace/gc-studio/r4-c/studio/etos/install-state.py", line 246, in main
+    apply_prices(args.root, args.only)
+  File "/home/worlesenric/wkspace/gc-studio/r4-c/studio/etos/install-state.py", line 123, in apply_prices
+    raise ValueError("live_run_active: a P3 live run is active; no config changes made")
+ValueError: live_run_active: a P3 live run is active; no config changes made

@@ -1,0 +1,112 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-05T21:28:44.254126Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+
+COMMAND LINE ARGUMENTS:
+/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-batchmode
+-nographics
+-projectPath
+/home/worlesenric/wkspace/gc-studio/r4-c/games/hollowmere
+-logFile
+-
+-testResults
+/home/worlesenric/wkspace/gc-studio/r4-c/studio/agent/evidence/r4-c/unity/results.xml
+-runTests
+-testPlatform
+EditMode
+-testFilter
+Hollowmere\.R4_C.*|GameCore\.Studio\.Core.*
+Successfully changed project path to: /home/worlesenric/wkspace/gc-studio/r4-c/games/hollowmere
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              a3d746e9198d499c98053023a8593905
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 3494439370498512962
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.38s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-05T21:28:44.635178Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.25
+[Licensing::Module] Licensing Background thread has ended after 0.63s
+
+(process:3883970): Gtk-CRITICAL **: 05:28:45.560: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+(process:3883970): Gtk-CRITICAL **: 05:28:46.419: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-studio/r4-c/games/hollowmere
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+Player connection [126110386435392]  Target information:
+
+Player connection [126110386435392]  * "[IP] 192.168.0.21 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 172.18.0.1 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 172.17.0.1 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 10.42.0.0 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 10.42.0.1 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 100.66.195.58 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 172.19.0.1 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392]  * "[IP] 172.20.0.1 [Port] 55505 [Flags] 2 [Guid] 3363089840 [EditorId] 3363089840 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [126110386435392] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [126110386435392] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Could not connect to IPC stream "Upm-3883970" after 30.0 seconds.
+[Package Manager] Could not establish a connection with the Unity Package Manager local server process.

@@ -104,6 +104,48 @@ refuses unknown fields, so the companion omits it and refuses `describe` itself 
 Partial speech: transcript events carry `revision` and `done`; only `done=true` text is placed in the prompt box.
 No voice utterance triggers a tool directly.
 
+### Tariffs and budgets
+
+Provider availability precedes budget validation. A free node status lookup must establish the
+requested provider before a media call can return `budget_unpriced`; absent providers return
+`not_configured`. Configured operations with no binding tariff remain refused.
+
+A binding tariff is either `published`, with the provider's list-price `url`, or `operator`, with an
+explicit non-empty declaration `note`. Both require a positive finite `per_unit` and the correct
+quantity unit. An operator estimate binds `max_cost_usd` but is not a published price or an invoice.
+Image counts and Alibaba's billable text-character count are included in preflight. Model,
+parameter and reference overrides without a matching priced contract remain refused.
+
+`ops.toml` is the installation source of truth: `# @studio source = "operator"` (or `"published"`),
+`# @studio note = "..."`, `# @studio url = "https://..."` and `# @studio unit = "..."` are TOML
+comment annotations on the enclosing provider. The pinned etops `CostConfig` denies unknown fields;
+this versioned comment convention retains provenance without putting metadata in provider options
+or weakening its parser. `install-state.py` parses the annotations as TOML and derives companion
+`[[ops_prices]]` from that provider's **name**, model and cost. `echo-images` is the image operation
+provider; `echo/gpt-image-2` is not an operation-provider alias. TTS uses `bailian-tts` with model
+`qwen3-tts-flash`. `models.toml` token prices do not establish a total image-generation tariff.
+
+No Echo list price is claimed. The image template contains `per_unit = "SET_BY_OPERATOR"` and an
+operator note placeholder. `install.sh` refuses this template before any installation write. The
+operator must set a positive total per-image estimate (including input) and replace the note. A
+TTS-only apply, `studio/etos/install.sh --apply-prices --only tts`, leaves other prices untouched.
+The TTS source is [Alibaba's Mainland Qwen3-TTS-Flash list price](https://www.alibabacloud.com/help/en/model-studio/model-pricing),
+$0.114682 per 10,000 billable characters, checked 2026-10-06.
+
+The R4 companion reloads only tariffs from its operator-owned `state/config.toml` on each hello or
+media request. Removing or corrupting that file fails closed. Hello adds
+`tariffs: [{op, tariff: {kind, provider, model, unit, perUnitUsd, url, note}}]`; over-budget diagnostics
+include `data.tariff`; successful media responses include `charge: {tariff, quantity, costUsd}`.
+The companion retains that binding charge in SQLite `media_charges`, keyed by the operation's
+idempotency key. This is local ceiling accounting, distinct from the provider's eventual invoice.
+
+Older installed binaries and the pinned node have no tariff reload route. Editing files alone does
+not update those processes. Only the integrator may activate a reviewed R4 release and restart the
+companion (`ETOS_ROOT="$HOME/.local/share/etos-studio" "$HOME/.local/opt/etos/bin/etos" agent restart gamecore-studio`),
+and schedule `systemctl --user restart etosd.service` for changed node prices. R4-C does not run either
+restart. The live-run guard must be clear before a live template apply or the single cheap proof in
+`studio/etos/verify-r4-tts.sh`; this probe refuses before spending if R4 tariff provenance is absent.
+
 ## 6. Staging (code admission)
 
 R2 uses a candidate-only typed request. All routes require the authenticated proxy app and

@@ -1,0 +1,54 @@
+test_r3_d14_templates_prices_and_apply_diff (test_install.Installer.test_r3_d14_templates_prices_and_apply_diff) ... ERROR
+test_r3_d15_copy_is_immutable_atomic_switch_and_rollback (test_install.Installer.test_r3_d15_copy_is_immutable_atomic_switch_and_rollback) ... ok
+test_r3_d24_register_preserves_config_and_matches_client_identity (test_install.Installer.test_r3_d24_register_preserves_config_and_matches_client_identity) ... ok
+
+======================================================================
+ERROR: test_r3_d14_templates_prices_and_apply_diff (test_install.Installer.test_r3_d14_templates_prices_and_apply_diff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r4-c/studio/etos/tests/test_install.py", line 110, in test_r3_d14_templates_prices_and_apply_diff
+    result = subprocess.run(["bash", str(HERE / "install.sh"), "--apply-prices"],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '/home/worlesenric/wkspace/gc-studio/r4-c/studio/etos/install.sh', '--apply-prices']' returned non-zero exit status 1.
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.188s
+
+FAILED (errors=1)
+healthy: 0.1.0-b3bb10554403b0c2; previous release retained: /tmp/tmpn6k_j750/build-clone
+healthy: 0.1.0-ab08e3559633fe5b; previous release retained: 0.1.0-b3bb10554403b0c2
+unchanged: release 0.1.0-ab08e3559633fe5b (checksums verified)
+healthy: 0.1.0-ab08e3559633fe5b; previous release retained: 0.1.0-ab08e3559633fe5b
+--- /tmp/tmp3w9_czch/agents/gamecore-studio/state/config.toml
++++ /tmp/tmp3w9_czch/agents/gamecore-studio/state/config.toml
+@@ -14,10 +14,10 @@
+ # Copy the required keys into the companion state directory's config.toml.
+ # This is an example only; no installed service configuration is changed by R2-F.
+ [stage]
+-confinement = "docker"
+-docker_image = "gamecore-stage:6000.0.75f1-v1"
+-# Degraded environments can explicitly choose confinement = "host".
+-# There is no automatic fallback. Admission UI must warn for host verdicts.
++"command" = "/home/worlesenric/wkspace/gc-studio/r4-c/studio/stage/stage.sh"
++"confinement" = "docker"
++"docker_image" = "gamecore-stage:6000.0.75f1-v1"
+
+ [stage.projects]
+-# "<stable SHA-256 project id>" = "/absolute/path/to/Unity/project"
++"5a3670f9a6c75fb57bd12ff5343ea53815c6db70f06b2bd84f3b95fb8b4691a7" = "/tmp/tmp3w9_czch/project space"
++
+
+registered 5a3670f9a6c75fb57bd12ff5343ea53815c6db70f06b2bd84f3b95fb8b4691a7 -> /tmp/tmp3w9_czch/project space
+registered 5a3670f9a6c75fb57bd12ff5343ea53815c6db70f06b2bd84f3b95fb8b4691a7 -> /tmp/tmp3w9_czch/project space
+--- /tmp/tmp3w9_czch/agents/gamecore-studio/state/config.toml
++++ /tmp/tmp3w9_czch/agents/gamecore-studio/state/config.toml
+@@ -20,4 +20,5 @@
+
+ [stage.projects]
+ "5a3670f9a6c75fb57bd12ff5343ea53815c6db70f06b2bd84f3b95fb8b4691a7" = "/tmp/tmp3w9_czch/project space"
++"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" = "/tmp/tmp3w9_czch/second"
+
+
+registered bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -> /tmp/tmp3w9_czch/second
