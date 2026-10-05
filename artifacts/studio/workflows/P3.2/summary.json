@@ -89,6 +89,45 @@
       }
     },
     {
+      "run": "harness-20261005T124954Z",
+      "workflow": null,
+      "revision": null,
+      "exit": null,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "harness-20261005T130114Z",
+      "workflow": null,
+      "revision": null,
+      "exit": null,
+      "tasks": [
+        "t79d745a84a6e913884a66940",
+        "ta374179e81fa7bcd52846f30"
+      ],
+      "requests": [],
+      "usage": {
+        "input_tokens": 104377,
+        "output_tokens": 1053,
+        "tasks": 2,
+        "images": 2,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.36
+      }
+    },
+    {
       "run": "honesty-20261005T093618Z",
       "workflow": "honesty",
       "revision": "a212892eb294d9e5f85596c16ded37ce1089d8b0",
@@ -179,6 +218,83 @@
         "voice": 0,
         "describe": 1,
         "estimatedUsd": 0.38
+      }
+    },
+    {
+      "run": "mech-a-20261005T113219Z",
+      "workflow": "mech-a",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 0,
+      "tasks": [
+        "t16cb27e25a1cbf156a9474e5",
+        "t60d38464f28fd858cca07ce8"
+      ],
+      "requests": [
+        {
+          "tag": "mech",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t16cb27e25a1cbf156a9474e5",
+            "t60d38464f28fd858cca07ce8"
+          ],
+          "submitToAcceptedMs": 4726,
+          "submitToFirstEventMs": 231,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 2331,
+          "visibleLagMaxMs": 2331,
+          "visibleLagN": 6
+        }
+      ],
+      "usage": {
+        "input_tokens": 1198091,
+        "output_tokens": 12554,
+        "tasks": 2,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 3.18
+      }
+    },
+    {
+      "run": "mech-b-20261005T120918Z",
+      "workflow": "mech-b",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "mech-b-20261005T124205Z",
+      "workflow": "mech-b",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
       }
     },
     {
@@ -698,17 +814,17 @@
     }
   ],
   "totals": {
-    "input_tokens": 3889299,
-    "output_tokens": 36913,
-    "tasks": 30,
-    "images": 7,
-    "tts": 8,
+    "input_tokens": 5191767,
+    "output_tokens": 50520,
+    "tasks": 34,
+    "images": 9,
+    "tts": 9,
     "voice": 4,
     "describe": 1,
-    "estimatedUsd": 10.63,
-    "estimatedUsdHigh": 20.54,
+    "estimatedUsd": 14.18,
+    "estimatedUsdHigh": 27.41,
     "stateVisibleLagMs": {
-      "n": 87,
+      "n": 93,
       "p95": 4886,
       "max": 10130,
       "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"

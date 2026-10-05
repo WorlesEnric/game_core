@@ -1,0 +1,50 @@
+{"show":
+{
+  "task": {
+    "id": "ta374179e81fa7bcd52846f30",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m462mhgkvft76drek1x6zg9r",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M462MHGKVFT76DREK1X6ZG9R (attempt 0): Give Pip a patrol around the village square, four points about three metres apart.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "cancelled",
+    "container": null,
+    "hostless": false,
+    "result": null,
+    "error": "cancelled by the owner",
+    "created_at": 1791205460159,
+    "started_at": 1791205460178,
+    "ended_at": 1791205460849
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:ta374179e81fa7bcd52846f30",
+    "limits": {},
+    "used": {}
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 4796578,
+      "micro_usd": 0,
+      "output_tokens": 50884,
+      "tokens": 4847462
+    }
+  }
+}
+}

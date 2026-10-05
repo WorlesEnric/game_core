@@ -62,7 +62,8 @@ node reports tokens but no prices (D14), so cost uses the assumed rates below.
 | **Mechanism via the agent** (pressure plate opens the Causeway Gate) | mech-a-20261005T113219Z | **4635746** | fail: gc-mechanic built the package and proposal (Rules tests 9/9, then 12/12 after the companion re-ask), but the change set was `candidate_invalid` on both attempts. The final diagnostics are `schema_violation` at `/intent` (`description` unexpected; `origin` and `text` required). Stage / admit / Play / undo were not reached. No retry: the stage seam cannot stage it (D23, D24) | t16cb27e2…, t60d38464… | 3.18 | submit→accepted 4.7 s; settled after 1709 s | worker error, D23 |
 | Mechanism fallback: P2.4 pressure-plate sample, run 1 | mech-b-20261005T120918Z | **4635746** | blocked (infrastructure): Unity start-up hit `Can't find file /tmp/ilpp.sock-…` (IL post-processor), so no etos gateway was registered; Stage → `stage_service_unavailable` | none | 0.00 | | D18 |
 | **Mechanism fallback: sample, rerun** | mech-b-20261005T124205Z | **4635746** | **blocked**: the candidate was retained in the panel and Stage was pressed. The companion answered `not_found: no request cs_01K6RW0MECH00000000000000A [HTTP 404]`: it stages only change sets that are its own ledger requests, and main has no verdict-file path any more, so a sample candidate cannot be staged or admitted | none | 0.00 | stage answer 1.3 s | D23 |
-| Headless EditMode variants (H1 typed edit, H2 media gen/bind/TTS/0.001 budget, H3 cancel) | HARNESS_ROW | **4635746** | HARNESS_RESULT | HARNESS_TASKS | HARNESS_USD | | HARNESS_DEFECTS |
+| Headless EditMode variants, run 1 | harness-20261005T124954Z | **4635746** | not run: all 3 cases Skipped. The shared Unity runner (`studio/stage/run-redacted.py`) clears the child environment to an allowlist, so `GAMECORE_ETOS_LIVE=1` never reached the tests. The driver now passes the gate through `Library/P3_2/headless-env.json` | none | 0.00 | | D25 |
+| **Headless EditMode variants** (H1 typed edit, H2 media gen/import/assign/TTS, H3 cancel) | harness-20261005T130114Z | **4635746** | **3/3 cases ran** (NUnit Passed=3: each records its outcome). **H1 pass**: "Move Maren two metres north." gives a 1-op `move` candidate, applied in **33.5 ms**, then undone. **H2 partial**: image generated and imported, TTS imported and undone, but **bind as Sprite refused**: `media_importer_invalid: unsupported setting spriteImportMode` (D8, now on main). **H3 pass**: cancel `cancelled` in **232 ms**, no candidate | t79d745a8… (H1), ta374179e… (H3) | 0.36 | H1 submit→accepted 862 ms, →candidate 91.3 s, import 82 ms, undo 47 ms; image 31.6 s; TTS 1.2 s | D8 |
 
 `…` abbreviates a 25-character task id. The full ids are in each request folder's `task-ids.txt` and in the run's
 `usage.json`.
@@ -71,7 +72,7 @@ node reports tokens but no prices (D14), so cost uses the assumed rates below.
 
 Input $2.5/M tokens, output $15/M tokens; image $0.04, TTS line $0.002, realtime voice session $0.01, describe $0.02.
 A high estimate uses input $5/M and output $20/M. The totals are in [summary.json](summary.json), regenerated with
-`studio/tools/workflow-p3.2-summary.sh`. **Total so far: TOTAL_LINE**
+`studio/tools/workflow-p3.2-summary.sh`. **Total: 34 agent tasks, 5,191,767 input + 50,520 output tokens, 9 images, 9 TTS lines, 4 realtime voice takes, 1 describe: estimated **USD 14.18** at the assumed rates (high estimate USD 27.41).** The mid estimate is under the 20 USD cap; the high estimate is over it. No usage figure in USD was reported by the node. After the mechanism run no further agent spend was started.
 
 ## Rows in 07 (status and evidence only)
 
@@ -92,9 +93,10 @@ state/taskStatus transitions only. Per-request values are in each folder's `timi
 
 | Budget | Measured | Verdict |
 |---|---|---|
-| Task state change visible in the tray ≤ 1 s | Period D: honesty explain p95 150 ms, cancel 207 ms, batch2 158 ms; batch with a clarification 4886 ms. All runs: n = 87 transitions, **p95 4886 ms, max 10130 ms**. The slow transitions are the done/candidate ones, 1.2–10 s after `updatedAt`, under host load average ~18 (D13). requested/running transitions are ≤ ~230 ms | **over budget** at p95 |
+| Task state change visible in the tray ≤ 1 s | Period D: honesty explain p95 150 ms, cancel 207 ms, batch2 158 ms; batch with a clarification 4886 ms. All runs: n = 93 transitions, **p95 4886 ms, max 10130 ms**. The slow transitions are the done/candidate ones, 1.2–10 s after `updatedAt`, under host load average ~18 (D13). requested/running transitions are ≤ ~230 ms | **over budget** at p95 |
 | Cancel acknowledged ≤ 2 s | **224 ms** (honesty-095503Z; `cancelled` 1.5 s after submit) | within |
 | WebSocket reconnect ≤ 5 s | not exercised by P3.2 | — |
+| (B-APPLY, informational) single-target apply ≤ 200 ms | 33.5 ms (H1 headless `move`); undo 47 ms | within |
 | (informational) submit → accepted / first event | 629–1541 ms / 140–329 ms in period D; up to 17.9 s / 2.3 s under peak host load | |
 | (informational) preview / apply / undo | preview 121–631 ms; ferryman 6-op apply 675.5 ms, undo 519.2 ms; media undo 2.6 s | |
 

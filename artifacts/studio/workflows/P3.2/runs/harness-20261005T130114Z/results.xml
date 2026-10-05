@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.786019">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="378" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.786019" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1517" name="Hollowmere.P3_2.Headless.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.2/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.776000" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2051577" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1518" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.775668" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1519" name="P3_2" fullname="Hollowmere.P3_2" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.775546" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1520" name="Headless" fullname="Hollowmere.P3_2.Headless" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.775415" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1513" name="HeadlessWorkflowTests" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:04:20Z" duration="143.774511" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Category" value="Live" />
+              </properties>
+              <test-case id="1514" name="H1_TypedEdit_OnASelection" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection" methodname="H1_TypedEdit_OnASelection" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="1942278832" result="Passed" start-time="2026-10-05 13:01:57Z" end-time="2026-10-05 13:03:29Z" duration="92.237249" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="1500000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1515" name="H2_Media_GenerateImportAssign" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign" methodname="H2_Media_GenerateImportAssign" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="919419591" result="Passed" start-time="2026-10-05 13:03:29Z" end-time="2026-10-05 13:04:19Z" duration="49.757926" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="1200000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1516" name="H3_Cancel_WhileRunning" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning" methodname="H3_Cancel_WhileRunning" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="246513600" result="Passed" start-time="2026-10-05 13:04:19Z" end-time="2026-10-05 13:04:20Z" duration="1.767839" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="900000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

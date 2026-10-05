@@ -20,14 +20,14 @@ kept, and the reruns on main 4635746 (R2-B2) sit alongside them.
 | W-AI-05 lantern quest needs two oil flasks | same | narrative-072920Z | blocked: `candidate_invalid` ScopeNotAllowed (D5) |
 | W-AI-06 undo/redo, close/reopen, consistency | `workflow-p3.2-narrative.sh --only persist/reopen` | persist-080347Z (attempt 1 hung, D18) / reopen-083218Z | partial: consistent for the journaled media change sets; no applied agent edit existed to carry over |
 | Text → typed edit; clarification round trip | `workflow-p3.2-text.sh` | text2-061054Z | clarification round trip recorded (`needs_clarification` → tray answer → follow-up); typed move/patrol `candidate_invalid` (worker targeted npc.behaviour) |
-| Asset generation → import → assign, plus TTS | robe / persist / honesty | robe2-070105Z, persist-080347Z, honesty-095503Z | generate.image, import, bind as Sprite, TTS line and `history.undo` all work (bind needs `spriteImportMode`, D8) |
+| Asset generation → import → assign, plus TTS | robe / persist / honesty | robe2-070105Z, persist-080347Z, honesty-095503Z, harness-130114Z | generate.image, import, TTS line and `history.undo` work on every base. The Sprite bind worked only pre-P1.7b with `spriteImportMode`; on 4635746 that setting is refused (D8) |
 | Inspect / explain | `workflow-p3.2-honesty.sh` | honesty-095503Z (rerun on 4635746) | pass: worker read-only candidate (interaction.explain + query.impact), plus local interaction.explain / logic.whyNot / logic.explain / quest.inspectRuntime |
 | Failure honesty: cancel mid-run | same | honesty-095503Z | pass: `cancelled`, ack 224 ms, no candidate |
 | Failure honesty: image with max_cost_usd 0.001 | same | honesty-095503Z | fail: generated anyway; the ceiling does not bind without prices (D14) |
 | Batch / multi-target with conflict | `workflow-p3.2-batch.sh` | batch-100136Z / batch2-104639Z | partial: correct ring candidate; AllOrNothing → Conflict{expected, actual}; Rebase + BestEffort still rejected (D20) |
 | Voice push-to-talk; W-VOICE-01 | `workflow-p3.2-voice.sh` | voice-105318Z / voice2-112002Z | W-VOICE-01 partial (nothing sent, final transcript shown, no partial text); voice → edit blocked (D19, D22) |
 | Mechanism propose → stage → admit (fallback sample) | `workflow-p3.2-mechanism.sh` | mech-a-113219Z / mech-b-120918Z (ILPP crash) / mech-b-124205Z | blocked: agent `candidate_invalid` (intent schema) after the companion re-ask; the sample cannot be staged through the companion (404, D23), and the installed companion has no `stage.projects` (D24) |
-| Headless EditMode variants | `workflow-p3.2-harness.sh` | HARNESS_RUN | HARNESS_OUTCOME |
+| Headless EditMode variants | `workflow-p3.2-harness.sh` | harness-124954Z (skipped, D25) / harness-130114Z | H1 typed edit pass (apply 33.5 ms, undo); H2 media generated and imported, Sprite bind refused (D8); H3 cancel pass (232 ms) |
 
 ## How to re-run
 
@@ -43,14 +43,14 @@ the step machine `Hollowmere.P3_2.Workflows`, records with ffmpeg x11grab, colle
 
 ## Counts
 
-- Workflow runs: 18 interactive plus 1 headless harness (see README).
-- Agent tasks: TASKS_COUNT. Media ops: IMAGES images, TTS_COUNT TTS lines, VOICE_COUNT realtime sessions, 1 describe.
+- Workflow runs: 21 interactive Editor runs (attempts and retries included) and 2 headless harness runs (see README).
+- Agent tasks: 34 (gc-designer and gc-mechanic, re-ask attempts included). Media ops: 9 images, 9 TTS lines, 4 realtime voice takes, 1 describe.
 - Applied-then-undone change sets with both journal entries kept: ferryman (6 ops); manual crate move; robe texture;
   icon import plus Sprite bind; TTS lines; budget-probe image; persist/reopen undo → redo → undo.
 
 ## B-AGENT-UX
 
-- **State visible ≤ 1 s:** over budget. Across all runs n = 87 transitions, p95 4886 ms, max 10130 ms.
+- **State visible ≤ 1 s:** over budget. Across all runs n = 93 transitions, p95 4886 ms, max 10130 ms.
   requested/running transitions are ≤ ~230 ms. done/candidate transitions arrive 1.2–10 s after `updatedAt` under host
   load average ~18 (D13). The period-D runs alone (4635746, lighter load) stay at p95 150–207 ms, except a
   clarification round trip at 4.9 s.
@@ -60,8 +60,8 @@ the step machine `Hollowmere.P3_2.Workflows`, records with ffmpeg x11grab, colle
 ## Cost
 
 The node reports tokens only (`micro_usd` 0, D14). The estimate uses input $2.5/M, output $15/M, image $0.04,
-TTS $0.002, voice session $0.01 and describe $0.02: **TOTAL_LINE**. That is under the 20 USD cap at the mid
-estimate. Per-run figures are in `summary.json`.
+TTS $0.002, voice session $0.01 and describe $0.02: 34 agent tasks, 5,191,767 input + 50,520 output tokens, 9 images, 9 TTS lines, 4 realtime voice takes, 1 describe: estimated **USD 14.18** at the assumed rates (high estimate USD 27.41). That is under the 20 USD cap at the mid estimate and over it at the high estimate, so no further agent spend was started
+after the mechanism run: no mechanism retry, and text/robe were not rerun on 4635746. Per-run figures are in `summary.json`.
 
 ## Defects for the integrator (no Studio or gameplay code was changed by P3.2)
 
@@ -74,7 +74,7 @@ estimate. Per-run figures are in `summary.json`.
 | D4 | `entity.applyOverride` tint is not validated against the instance contract before apply: `#5C9964FF` passes validation (`#rrggbb(aa)`), then fails at apply with GP-ENT-004 "tint is #rrggbb" and rolls back | `runs/robe-20261005T055032Z/robe` | `ChangeSetValidator.cs:704` / `ValueCodec.cs:806` accept 8 digits; `Packages/com.gamecore.gameplay.entities/Runtime/EntityAuthoring.cs` (tint #rrggbb) |
 | D5 | A target with no `scope` is ScopeNotAllowed, even when the tool and type allow exactly one scope; the validator could infer it, and the companion's re-ask did not repair it | `runs/robe2-20261005T070105Z/robe2`, `runs/narrative-20261005T072920Z/quest` | `Packages/com.gamecore.studio.core/Runtime/Model/ChangeSetValidator.cs:440-451` |
 | D7 | `dialogue.generateVoice` returns NotConfigured, "no media generation gateway is configured", although the etos client is live | robe2 probe | `Packages/com.gamecore.gameplay.contracts/Runtime/Narrative/NarrativeSeams.cs:303` (the gateway is never registered) |
-| D8 | `bind` with importer `{textureType: Sprite}` alone does not produce a Sprite; `spriteImportMode: Single` is needed, and the import policy allowlist does not list `spriteImportMode` | `runs/robe2-20261005T070105Z` ("not a Sprite") vs `runs/persist-20261005T080347Z` (Applied with spriteImportMode) | `Packages/com.gamecore.studio.core/Editor/Tools/BuiltIn/MediaImportPolicy.cs:50`, `ConfigureTools.cs:445` |
+| D8 | Generated images cannot be bound as Sprites on main. `bind` with importer `{textureType: Sprite}` alone produces no Sprite ("not a Sprite"). On the pre-P1.7b base, adding `spriteImportMode: Single` made it work; on 4635746 the media import policy refuses that setting (`media_importer_invalid: unsupported setting spriteImportMode`) | `runs/robe2-20261005T070105Z` ("not a Sprite"), `runs/persist-20261005T080347Z` (Applied, pre-P1.7b), `runs/harness-20261005T130114Z/headless-h2-media.json` (refused on 4635746) | `Packages/com.gamecore.studio.core/Editor/Tools/BuiltIn/MediaImportPolicy.cs:50`, `ConfigureTools.cs:445` |
 | D9 | No catalog tool assigns a texture to a material / renderer, so W-AI-01's "material updated" cannot be expressed | robe runs: the worker falls back to a tint | tool catalog |
 | D10 | Catalog gaps reported by the worker: (a) a dialogue condition cannot reference a fact created in the same change set; (b) no binding source exposes the quest stage title to HUD bindings (only `vm:hud.ObjectiveText`) | `runs/narrative-20261005T072920Z/odd-line`, `/hud` (`outcome.json` holds the exact text) | tool catalog / HUD view-model |
 | D12 | `OpenStudio` window rects are ignored by the window manager on :1 (Relayout re-applies them) | any run's `relayout` step | Studio layout |
@@ -90,6 +90,8 @@ estimate. Per-run figures are in `summary.json`.
 | D22 | A realtime voice take on a fresh session returned no user transcript for the TTS line "Move the well one metre to the east." (24 kHz mono PCM, played into the virtual mic); the session closed "client closed" on release. The destructive line did transcribe in attempt 1. Cause not isolated | `runs/voice2-20261005T112002Z` (`voice/move-transcript.json`, `editor-excerpt.log`) | etos realtime / `EtosVoiceSession` |
 | D23 | Main's stage seam stages only change sets that are companion ledger requests of this app: `StageRunner::request_owned` looks the change-set id up in the ledger, so a P2.4 sample candidate (or any exported/retained candidate) returns 404 `no request <id>`. With `RecordVerdictFile` removed there is no other admission path for the sample fallback the brief names | `runs/mech-b-20261005T124205Z/mech/panel-stage.json` | `studio/agent/src/stage.rs:225-228`; `Packages/com.gamecore.studio.ui/Editor/Candidates/CandidateCoordinator.cs:447-470` |
 | D24 | The installed companion state has no `config.toml` (`~/.local/share/etos-studio/agents/gamecore-studio/state/`), so `stage.projects` is empty: even a valid agent candidate would be refused "project is not registered in stage.projects". Inferred from the code and the missing file; not exercised, because the agent candidate was invalid | `ls` of the state dir | `studio/agent/src/stage.rs:235-238`, `studio/agent/src/config.rs:216-219` |
+| D25 | The shared Unity runner clears the child environment to a fixed allowlist, so env-gated live EditMode tests run through `unity-compile.sh --tests` are silently Skipped (exit PASS-shaped XML with Skipped=3; the runner reports FAIL "PARTIAL/NotRun"). P3.2 works around it with a settings file under `Library/P3_2/` | `runs/harness-20261005T124954Z` | `studio/stage/run-redacted.py:27-29` |
+
 Worker errors (not Studio defects), recorded as-is: npc.setPatrol aimed at an npc.behaviour instead of the
 npc.definition (text2-061054Z); 8-digit tint (robe-055032Z).
 
@@ -98,6 +100,11 @@ npc.definition (text2-061054Z); 8-digit tint (robe-055032Z).
 - W-AI-02 in Play, W-AI-03 and W-AI-05 in Play: blocked by D5 and D10; not attempted with hand-edited candidates.
 - W-AI-01's material update needs D9 (plus D4/D5).
 - The voice → edit path needs D19 and D22.
+- Mechanism propose → stage → admit → Play → undo was not reached. It needs a schema-valid gc-mechanic candidate
+  (intent), a registered `stage.projects` entry in the companion config (D24), and, for the sample fallback, a way
+  to stage a non-ledger candidate (D23). The P3.2 drivers (`StageAdmitSteps` in `Workflows.cs`) already press
+  Stage / Admit / Play / Undo through the panel once those exist.
+- Sprite assignment of generated images (D8) is blocked on main.
 - B-AGENT-UX reconnect ≤ 5 s was not exercised. The visible-lag budget is over at p95 under host load (D13).
 - 07 rows updated: W-AI-01..06 and W-VOICE-01 (status/evidence columns only). B-AGENT-UX has no status column, so it
   is reported in the README.
