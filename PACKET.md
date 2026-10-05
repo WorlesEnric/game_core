@@ -162,7 +162,49 @@ Every cross-plugin effect (rewards, rule actions, dialogue actions, use effects)
 
 ## Verification
 
-VERIFICATION_PLACEHOLDER
+Nothing was compiled, built or tested on the Mac. Every run went through `studio/tools/sync-to-host.sh p1.4`
+(host clone `~/wkspace/gc-studio/p1.4`, logs and NUnit XML under its `.unity-logs/`), one Unity instance at a time.
+
+| What | Command | Result |
+|---|---|---|
+| Rules halves + P1.1/P1.3 rules (dotnet, net8.0, TreatWarningsAsErrors, LangVersion 9) | `GAMECORE_OFFLINE=1 studio/tools/dotnet-test.sh p1.4 dotnet/tests/GameCore.Rules.Gameplay.Tests` | PASS 184/184 after the merge (131/131 before it), 22 s |
+| P1.4 EditMode (author, bake, verify, preview, simulate, tool round trips) | `studio/tools/unity-compile.sh p1.4 games/hollowmere --tests EditMode --filter 'Hollowmere\.P1_4\..*'` | PASS 7/7, 175 s run, 10.3 s of tests (`games_hollowmere-editmode-20261005T101210-a1.xml`) |
+| P1.4 PlayMode `DrownedBellHeadless` (with P1.3's NPC + interaction extensions) | `studio/tools/unity-compile.sh p1.4 games/hollowmere --tests PlayMode --filter 'Hollowmere\.P1_4\..*'` | PASS 1/1, 125 s run, 0.51 s of test (`games_hollowmere-playmode-20261005T102431-a1.xml`) |
+| Hollowmere EditMode, all packets | `... --tests EditMode --filter 'Hollowmere\..*'` | PASS 42/42 (P1.1, P1.3, P1.4 and the rest; `games_hollowmere-editmode-20261005T102920-a1.xml`); the host tree stayed clean, so P1.1's and P1.3's re-bakes reproduce the committed outputs byte for byte |
+| Hollowmere PlayMode, all packets | `... --tests PlayMode --filter 'Hollowmere\..*'` | PASS 3/3 (P1.1 TravelsVillageMarshBelfryVillage, P1.3 WalksInteractsTalksPastNpcsAndTravels, P1.4 PlaysTheDrownedBell; `games_hollowmere-playmode-20261005T103008-a1.xml`) |
+| Package metadata, C# rules | `python3 tools/check_package_metadata.py`, `python3 tools/check_game_core_csharp.py` | both pass (lock entries resolved on the host) |
+
+EditMode test durations: AuthorsAndBakes 6.69 s (author + first bake 6198 ms; the second bake changed nothing, 390 ms;
+`Entry.Verify` 50 ms; 43 content entries, 9 facts, content hash `3e01b898...7d30cd`), DialogueTools_RoundTrip 1.45 s,
+InventoryAndLogicTools_RoundTrip 1.14 s, QuestTools_RoundTrip 0.75 s, MarenPreview 0.015 s, DrownedBell both branches
+0.013 s, RuntimeModels 0.003 s. The Maren preview differs between `bell_rung=0` (rumour, choice) and `bell_rung=1`
+("You rang it!"); `quest.simulate` completes on the pay branch (3 rewards) and on the persuade branch (2 rewards) and
+stays in stage 1 with the gate alone.
+
+`DrownedBellHeadless` (after the merge), one line of its log:
+
+```
+[P1.4] locked gate: fact gate_open != 0 (read 0)
+[P1.4] frames=38 sanctionedPumps=38 events=84 submitted=29 refusedSubmits=0 obligations=12 acknowledged=13
+  alreadyApplied=13 rulesFired=5 rulesSkipped=0 questCommands=8 grants=3 explain=8 interactions=2/1 evaluations=3
+  | boot 338ms/0f | maren intro 56ms/4f | locked gate 11ms/3f | key and gate 14ms/6f | clapper and belfry 3ms/2f
+  | bell 3ms/5f | return to maren 7ms/6f | outbox replay 10ms/11f
+```
+
+It asserts: Maren's conversation starts through `IConversationStarter.TryStart(Maren's entity, "dialogue.maren")`;
+facts `heard_rumour`, `maren_trusts_player`, `odd_paid`, `gate_open`, `bell_rung`, `maren_grateful`; the Causeway Gate
+refuses while locked (P1.3's interaction asked `narrative.fact.gate_open`, answer False) and unlocks once the key is
+held; the bell rings through P1.3's `InteractionSucceeded` and the `RingBellOnUse` rule; quest status/stage/branch
+(stage 1, 2 on branch 1 = pay, 3, Completed); inventory counts (coins 3 -> 0 -> 3, key 1, clapper 1, lantern 1); three
+`RewardGranted` and the rewards granted exactly once even after the in-flight outbox records are reinstated (the replay
+answers AlreadyApplied, `InventoryModule.Granted` unchanged); one sanctioned pump per frame (38/38) and no pump
+violation; no refused obligation. Before the merge the same story (with the scripted gate/bell) passed in 35 frames.
+
+Bake outputs regenerated on the host and committed: `World/Catalog/HollowmereCatalog.catalog.json` and
+`Hollowmere.bake.json`, `World/Generated/HollowmereCatalog.g.cs` and `HollowmereCatalogCoverage.g.cs`,
+`World/Hollowmere.manifest.asset`, and the content under `Dialogue/`, `Items/`, `Quests/`, `Rules/` including
+`Rules/HollowmereContent.content.asset`. `games/hollowmere/Packages/packages-lock.json` carries the four packages
+(resolved on the host; the merged lock was accepted unchanged).
 
 ## Open
 
