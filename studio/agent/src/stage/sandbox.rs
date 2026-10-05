@@ -53,6 +53,7 @@ impl Sandbox {
             image: "gamecore-stage:6000.0.75f1-v1".into(),
             editor: home.join("Unity/Hub/Editor/6000.0.75f1/Editor"),
             licences: vec![
+                home.join(".config/unity3d/Unity/licenses"),
                 home.join(".local/share/unity3d/Unity"),
                 PathBuf::from("/var/lib/unity"),
             ],
@@ -60,6 +61,13 @@ impl Sandbox {
             cache: cache.to_path_buf(),
             packages: repo.join("Packages"),
         }
+    }
+
+    fn docker_config(&self) -> PathBuf {
+        self.slot
+            .parent()
+            .unwrap_or(Path::new("/"))
+            .join(".launch/docker-client")
     }
 
     fn container_name(&self) -> String {
@@ -73,6 +81,10 @@ impl Sandbox {
     pub fn stop_container(&self) {
         if self.mode == Confinement::Docker {
             let _ = Command::new("/usr/bin/docker")
+                .env_clear()
+                .envs(super::env::stage_env())
+                .arg("--config")
+                .arg(self.docker_config())
                 .args(["rm", "-f", &self.container_name()])
                 .stdout(std::process::Stdio::null())
                 .stderr(std::process::Stdio::null())
@@ -82,11 +94,22 @@ impl Sandbox {
 
     /// Build a command with no inherited environment, network, host HOME or live project.
     pub fn command(&self, executable: &Path) -> Result<Command, String> {
-        std::fs::create_dir_all(self.slot.join("home")).map_err(|e| e.to_string())?;
+        for directory in [
+            "home/.local/share/unity3d",
+            "home/.cache/unity3d",
+            "home/.config/unity3d/Unity",
+        ] {
+            std::fs::create_dir_all(self.slot.join(directory)).map_err(|e| e.to_string())?;
+        }
         std::fs::create_dir_all(&self.cache).map_err(|e| e.to_string())?;
         let mut cmd;
         if self.mode == Confinement::Docker {
+            let config = self.docker_config();
+            std::fs::create_dir_all(&config).map_err(|e| e.to_string())?;
             cmd = Command::new("/usr/bin/docker");
+            // The host Docker client must never load config/credential helpers written
+            // into the candidate's HOME. This empty directory is outside all mounts.
+            cmd.arg("--config").arg(config);
             cmd.args([
                 "run",
                 "--rm",
@@ -141,10 +164,15 @@ impl Sandbox {
             ));
             for path in self.licences.iter().filter(|p| p.is_dir()) {
                 // The operator cannot accidentally expose arbitrary config/credential trees.
-                if !path.ends_with("unity3d/Unity") && path != Path::new("/var/lib/unity") {
+                if !path.ends_with("unity3d/Unity")
+                    && !path.ends_with("unity3d/Unity/licenses")
+                    && path != Path::new("/var/lib/unity")
+                {
                     return Err("unsupported Unity licence directory".into());
                 }
-                let target = if path.ends_with("unity3d/Unity") {
+                let target = if path.ends_with("unity3d/Unity/licenses") {
+                    self.slot.join("home/.config/unity3d/Unity/licenses")
+                } else if path.ends_with("unity3d/Unity") {
                     self.slot.join("home/.local/share/unity3d/Unity")
                 } else {
                     path.clone()
@@ -280,7 +308,19 @@ impl Sandbox {
             return Ok("operator opted into host confinement".into());
         }
         let project = self.slot.join("probe-project");
+        std::fs::create_dir_all(project.join("Assets")).map_err(|e| e.to_string())?;
         std::fs::create_dir_all(project.join("ProjectSettings")).map_err(|e| e.to_string())?;
+        let version = self
+            .editor
+            .parent()
+            .and_then(Path::file_name)
+            .and_then(|s| s.to_str())
+            .ok_or("Unity installation must include its version directory")?;
+        std::fs::write(
+            project.join("ProjectSettings/ProjectVersion.txt"),
+            format!("m_EditorVersion: {version}\n"),
+        )
+        .map_err(|e| e.to_string())?;
         std::fs::create_dir_all(project.join("Packages")).map_err(|e| e.to_string())?;
         std::fs::write(
             project.join("Packages/manifest.json"),
@@ -345,6 +385,36 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 mod tests {
     use super::*;
     #[test]
+    #[ignore = "requires the locally provisioned gamecore-stage Docker image; no Unity or ETOS"]
+    fn r2_11_docker_isolation_blocks_host_files_environment_and_network() {
+        let dir = tempfile::tempdir().unwrap();
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .parent()
+            .unwrap();
+        let sandbox = Sandbox::defaults(&dir.path().join("slot"), &dir.path().join("cache"), repo);
+        std::fs::create_dir_all(&sandbox.slot).unwrap();
+        let outside = dir.path().join("outside-sentinel");
+        std::fs::write(&outside, "host-only").unwrap();
+        let command = format!(
+            "set -eu; test ! -e '{}'; test ! -e '{}'; test -z \"${{ETOS_STATE_DIR:-}}\"; touch '{}/allowed'; if touch /forbidden 2>/dev/null; then exit 9; fi; test \"$(wc -l < /proc/net/route)\" -eq 1; echo sandbox-isolation-passed",
+            outside.display(),
+            repo.join("games/hollowmere").display(),
+            sandbox.slot.display()
+        );
+        let out = sandbox.run(
+            Command::new("/bin/sh").args(["-c", &command]),
+            &sandbox.slot.join("isolation.log"),
+            Duration::from_secs(30),
+        );
+        assert!(out.ok(), "{}", out.output);
+        assert!(out.output.contains("sandbox-isolation-passed"));
+        assert!(sandbox.slot.join("allowed").is_file());
+        assert_eq!(std::fs::read_to_string(outside).unwrap(), "host-only");
+    }
+
+    #[test]
     fn r2_11_docker_command_has_no_live_project_or_host_home() {
         let temp = tempfile::tempdir().unwrap();
         let sandbox = Sandbox::defaults(
@@ -367,6 +437,9 @@ mod tests {
         ] {
             assert!(args.contains(required), "{args}");
         }
+        assert_eq!(cmd.get_args().next().unwrap(), "--config");
+        assert!(!sandbox.docker_config().starts_with(&sandbox.slot));
+        assert!(!sandbox.docker_config().starts_with(&sandbox.cache));
         assert!(!args.contains("docker.sock"));
         assert!(!args.contains("games/hollowmere"));
         assert_eq!(Confinement::default(), Confinement::Docker);

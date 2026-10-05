@@ -149,47 +149,36 @@ impl<W: Write> Write for BoundedLog<W> {
     }
 }
 
-/// Stream lines through the shared redactor before the first durable write. Lines over
-/// 64 KiB are discarded entirely, so a split secret is never persisted in a partial chunk.
+/// Stream through the shared redactor before the first durable write. Incomplete sensitive
+/// JSON values are buffered across lines; a 64 KiB bound fails closed instead of leaking
+/// a continuation or allocating unbounded memory.
 pub fn copy_redacted(mut input: impl std::io::Read, mut output: impl Write) -> std::io::Result<()> {
     let mut chunk = [0u8; 4096];
     let mut line = Vec::new();
-    let mut oversized = false;
     loop {
         let n = input.read(&mut chunk)?;
         if n == 0 {
             break;
         }
         for b in &chunk[..n] {
+            if line.len() >= 65536 {
+                return Err(std::io::Error::other("stage log record exceeds 64 KiB"));
+            }
             if *b == b'\n' {
-                if !oversized && redact_json_fields(&String::from_utf8_lossy(&line)).1 {
+                if redact_json_fields(&String::from_utf8_lossy(&line)).1 {
                     line.push(b'\n');
                     continue;
                 }
-                if oversized {
-                    output.write_all(b"[redacted oversized log line]\n")?;
-                } else {
-                    output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
-                    output.write_all(b"\n")?;
-                }
+                output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
+                output.write_all(b"\n")?;
                 output.flush()?;
                 line.clear();
-                oversized = false;
-            } else if !oversized {
-                if line.len() == 65536 {
-                    line.clear();
-                    oversized = true;
-                } else {
-                    line.push(*b);
-                }
+            } else {
+                line.push(*b);
             }
         }
     }
-    if oversized {
-        output.write_all(b"[redacted oversized log line]")?;
-    } else {
-        output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
-    }
+    output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
     output.flush()
 }
 
@@ -278,6 +267,10 @@ Bearer abcdef
         .unwrap();
         assert!(!String::from_utf8_lossy(&output).contains("multiline-private-value"));
         copy_redacted(&raw[..], &mut output).unwrap();
+        let oversized = format!("{{\"apiKey\":\n\"{}", "private".repeat(10000));
+        let mut bounded = Vec::new();
+        assert!(copy_redacted(oversized.as_bytes(), &mut bounded).is_err());
+        assert!(bounded.is_empty());
         let text = String::from_utf8(output).unwrap();
         for secret in ["plain-password", "123", "abcdefgh", "abcdef"] {
             assert!(!text.contains(secret), "{text}");

@@ -215,7 +215,9 @@ impl ChildOutcome {
 }
 
 fn kill_group(pid: u32, signal: &str) {
-    let _ = Command::new("kill")
+    let _ = Command::new("/bin/kill")
+        .env_clear()
+        .envs(stage_env())
         .args(["-s", signal, "--"])
         .arg(format!("-{pid}"))
         .stdout(Stdio::null())
@@ -804,7 +806,9 @@ impl Run<'_> {
             let _ = slot::remove_slot(&target);
         }
         if !analyzer.is_dir()
-            || !Command::new("cp")
+            || !Command::new("/bin/cp")
+                .env_clear()
+                .envs(stage_env())
                 .arg("-a")
                 .arg(&analyzer)
                 .arg(&target)
@@ -1246,7 +1250,9 @@ fn seed_warm_library(root: &Path, project: &Path) {
         return;
     }
     let tmp = warm.join(format!("Library.{}.tmp", std::process::id()));
-    let ok = Command::new("cp")
+    let ok = Command::new("/bin/cp")
+        .env_clear()
+        .envs(stage_env())
         .arg("-a")
         .arg(&library)
         .arg(&tmp)

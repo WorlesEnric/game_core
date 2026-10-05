@@ -251,6 +251,8 @@ impl StageRunner {
             ));
         }
         let revision = std::process::Command::new("/usr/bin/git")
+            .env_clear()
+            .envs(stage_env())
             .args(["-C"])
             .arg(path)
             .args(["rev-parse", "HEAD"])

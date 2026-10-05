@@ -24,6 +24,8 @@ pub const RULES: &[&str] = &[
     "reflection-emit",
     "process-start",
     "file-write",
+    "file-access",
+    "editor-hook",
     "editor-in-runtime",
     "dllimport",
     "native-plugin",
@@ -52,9 +54,9 @@ pub struct Hit {
 /// What the scan needs to know about the package.
 #[derive(Debug, Clone, Default)]
 pub struct ScanContext {
-    /// The package name (`file-write` allows paths under `Assets/<name>/` and `Packages/<name>/`).
+    /// The package name used by diagnostics; it never grants filesystem authority.
     pub package: String,
-    /// The reason the package gives for `unsafe` code (`proposal.allowUnsafe.reason`); `None` forbids it.
+    /// Legacy proposal reason retained for decoding only; unsafe code is always refused.
     pub allow_unsafe: Option<String>,
     /// Paths (relative to the package root) of large binaries the package declares.
     pub blobs: BTreeSet<String>,
@@ -615,27 +617,9 @@ fn excerpt_of(lines: &[&str], line: usize) -> String {
     }
 }
 
-/// `redact` plus `sk-` style provider keys.
+/// Compatibility entry point: all masking uses the shared companion redactor.
 pub fn mask_secrets(text: &str) -> String {
-    let mut out = String::with_capacity(text.len());
-    let mut rest = text;
-    while let Some(pos) = rest.find("sk-") {
-        out.push_str(&rest[..pos]);
-        let after = &rest[pos + 3..];
-        let end = after
-            .char_indices()
-            .find(|(_, c)| !(c.is_ascii_alphanumeric() || *c == '-' || *c == '_'))
-            .map(|(i, _)| i)
-            .unwrap_or(after.len());
-        if end >= 8 {
-            out.push_str("sk-[redacted]");
-        } else {
-            out.push_str(&rest[pos..pos + 3 + end]);
-        }
-        rest = &after[end..];
-    }
-    out.push_str(rest);
-    out
+    redact(text)
 }
 
 /// Scans one C# source.
@@ -1335,7 +1319,7 @@ namespace Hollowmere.Mechanism.PressurePlate
 
     #[test]
     fn rule_list_is_complete() {
-        assert_eq!(RULES.len(), 12);
+        assert_eq!(RULES.len(), 14);
         let unique: BTreeSet<&&str> = RULES.iter().collect();
         assert_eq!(unique.len(), RULES.len());
     }
