@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using GameCore.Gameplay.Contracts;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
