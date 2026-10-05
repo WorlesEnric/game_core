@@ -47,9 +47,11 @@ build() { # tag context [args...]
 
 build localhost/etos-default:latest "$SRC/image/default" -f "$SRC/image/default/Containerfile"
 build localhost/gc-designer:current "$IMAGES/gc-designer"
-build localhost/gc-mechanic:current "$IMAGES/gc-mechanic" \
+build localhost/gc-mechanic-base:current "$IMAGES/gc-mechanic" \
     --build-arg DESIGNER_IMAGE=localhost/gc-designer:current \
     --build-arg DOTNET_SDK_IMAGE="$DOTNET_SDK_IMAGE"
+build localhost/gc-mechanic:current "$HERE/../etos/workers" \
+    --build-arg MECHANIC_IMAGE=localhost/gc-mechanic-base:current
 
 echo "== smoke"
 docker run --rm localhost/gc-designer:current bash -c 'python3 --version && jq --version && git --version && ffmpeg -hide_banner -version | sed -n 1p && { magick -version 2>/dev/null || convert -version; } | sed -n 1p'

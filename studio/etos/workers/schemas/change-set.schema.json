@@ -1,0 +1,640 @@
+{
+  "$defs": {
+    "ApplyPolicy": {
+      "enum": [
+        "AllOrNothing",
+        "BestEffort"
+      ],
+      "type": "string"
+    },
+    "ArtifactImport": {
+      "additionalProperties": false,
+      "properties": {
+        "settings": {
+          "type": "object"
+        },
+        "type": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ArtifactProducer": {
+      "additionalProperties": false,
+      "properties": {
+        "etosTask": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "op": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "import": {
+          "$ref": "#/$defs/ArtifactImport"
+        },
+        "mediaType": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ArtifactProducer"
+        },
+        "role": {
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bytes",
+        "mediaType",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "AuthorScope": {
+      "enum": [
+        "Instance",
+        "Prefab",
+        "Definition",
+        "Scope"
+      ],
+      "type": "string"
+    },
+    "AuthoringKind": {
+      "enum": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject",
+        "Asset",
+        "UiElement",
+        "Scope",
+        "Location"
+      ],
+      "type": "string"
+    },
+    "AuthoringRef": {
+      "additionalProperties": false,
+      "properties": {
+        "assetGuid": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "authoringId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "definition": {
+          "pattern": "^[a-z0-9][a-z0-9._-]*@[0-9A-Za-z]+$",
+          "type": "string"
+        },
+        "global": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/AuthoringKind"
+        },
+        "location": {
+          "$ref": "#/$defs/LocationRef"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/AuthorScope"
+        },
+        "stamp": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "BaseVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "stamp": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "stamp"
+      ],
+      "type": "object"
+    },
+    "CameraPose": {
+      "additionalProperties": false,
+      "properties": {
+        "aspect": {
+          "type": "number"
+        },
+        "fov": {
+          "type": "number"
+        },
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "rotation": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 3,
+          "type": "array"
+        }
+      },
+      "required": [
+        "aspect",
+        "fov",
+        "position",
+        "rotation"
+      ],
+      "type": "object"
+    },
+    "ChangeSetState": {
+      "enum": [
+        "Requested",
+        "Running",
+        "Candidate",
+        "Staged",
+        "Applied",
+        "Rejected",
+        "Failed",
+        "Undone",
+        "Interrupted"
+      ],
+      "type": "string"
+    },
+    "FrameContext": {
+      "additionalProperties": false,
+      "properties": {
+        "camera": {
+          "$ref": "#/$defs/CameraPose"
+        },
+        "image": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "viewport": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        }
+      },
+      "required": [
+        "camera",
+        "viewport"
+      ],
+      "type": "object"
+    },
+    "Intent": {
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "$ref": "#/$defs/IntentOrigin"
+        },
+        "text": {
+          "type": "string"
+        },
+        "voiceTranscriptId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "origin",
+        "text"
+      ],
+      "type": "object"
+    },
+    "IntentOrigin": {
+      "enum": [
+        "agent",
+        "manual",
+        "voice",
+        "replay"
+      ],
+      "type": "string"
+    },
+    "Links": {
+      "additionalProperties": false,
+      "properties": {
+        "etosTasks": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gameCoreOps": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "parent": {
+          "pattern": "^cs_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "LocationRef": {
+      "additionalProperties": false,
+      "properties": {
+        "normal": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "region": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "position",
+        "region"
+      ],
+      "type": "object"
+    },
+    "Operation": {
+      "additionalProperties": false,
+      "properties": {
+        "applyRequirement": {
+          "$ref": "#/$defs/RuntimeApply"
+        },
+        "args": {
+          "type": "object"
+        },
+        "dependsOn": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "opId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "preconditions": {
+          "$ref": "#/$defs/Preconditions"
+        },
+        "target": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "tool": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "opId",
+        "tool"
+      ],
+      "type": "object"
+    },
+    "OperationOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "gameCoreOps": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "opId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/OutcomeStatus"
+        },
+        "undo": {
+          "$ref": "#/$defs/OperationUndo"
+        }
+      },
+      "required": [
+        "opId",
+        "status"
+      ],
+      "type": "object"
+    },
+    "OperationUndo": {
+      "additionalProperties": false,
+      "properties": {
+        "inverse": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "OutcomeStatus": {
+      "enum": [
+        "Applied",
+        "Skipped",
+        "Refused",
+        "Failed"
+      ],
+      "type": "string"
+    },
+    "PartRef": {
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "part": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner",
+        "part"
+      ],
+      "type": "object"
+    },
+    "Preconditions": {
+      "enum": [
+        "stamp",
+        "none"
+      ],
+      "type": "string"
+    },
+    "RegionRect": {
+      "additionalProperties": false,
+      "properties": {
+        "screen": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        }
+      },
+      "required": [
+        "screen"
+      ],
+      "type": "object"
+    },
+    "Requirements": {
+      "additionalProperties": false,
+      "properties": {
+        "build": {
+          "type": "boolean"
+        },
+        "compile": {
+          "type": "boolean"
+        },
+        "max": {
+          "$ref": "#/$defs/RuntimeApply"
+        },
+        "worldRebuild": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "build",
+        "compile",
+        "max",
+        "worldRebuild"
+      ],
+      "type": "object"
+    },
+    "RuntimeApply": {
+      "enum": [
+        "Live",
+        "Rebuild",
+        "Compile",
+        "Build"
+      ],
+      "type": "string"
+    },
+    "ScenarioStatus": {
+      "enum": [
+        "pending",
+        "pass",
+        "fail"
+      ],
+      "type": "string"
+    },
+    "SelectionMode": {
+      "enum": [
+        "Edit",
+        "Play"
+      ],
+      "type": "string"
+    },
+    "SelectionSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "$ref": "#/$defs/FrameContext"
+        },
+        "id": {
+          "pattern": "^sel_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+          "type": "string"
+        },
+        "indexRevision": {
+          "type": "integer"
+        },
+        "mode": {
+          "$ref": "#/$defs/SelectionMode"
+        },
+        "parts": {
+          "items": {
+            "$ref": "#/$defs/PartRef"
+          },
+          "type": "array"
+        },
+        "regionRect": {
+          "$ref": "#/$defs/RegionRect"
+        },
+        "targets": {
+          "items": {
+            "$ref": "#/$defs/AuthoringRef"
+          },
+          "type": "array"
+        },
+        "worldSession": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "indexRevision",
+        "mode",
+        "targets"
+      ],
+      "type": "object"
+    },
+    "Timestamps": {
+      "additionalProperties": false,
+      "properties": {
+        "applied": {
+          "type": "string"
+        },
+        "candidate": {
+          "type": "string"
+        },
+        "requested": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ValidationScenario": {
+      "additionalProperties": false,
+      "properties": {
+        "detail": {
+          "type": "string"
+        },
+        "scenario": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ScenarioStatus"
+        }
+      },
+      "required": [
+        "scenario",
+        "status"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:gamecore:studio:schema:change-set",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactRef"
+      },
+      "type": "array"
+    },
+    "baseVersions": {
+      "items": {
+        "$ref": "#/$defs/BaseVersion"
+      },
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^cs_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "type": "string"
+    },
+    "intent": {
+      "$ref": "#/$defs/Intent"
+    },
+    "links": {
+      "$ref": "#/$defs/Links"
+    },
+    "operations": {
+      "items": {
+        "$ref": "#/$defs/Operation"
+      },
+      "type": "array"
+    },
+    "outcomes": {
+      "items": {
+        "$ref": "#/$defs/OperationOutcome"
+      },
+      "type": "array"
+    },
+    "policy": {
+      "$ref": "#/$defs/ApplyPolicy"
+    },
+    "requirements": {
+      "$ref": "#/$defs/Requirements"
+    },
+    "schema": {
+      "const": "gamecore.studio.changeset/1",
+      "type": "string"
+    },
+    "selection": {
+      "$ref": "#/$defs/SelectionSnapshot"
+    },
+    "state": {
+      "$ref": "#/$defs/ChangeSetState"
+    },
+    "timestamps": {
+      "$ref": "#/$defs/Timestamps"
+    },
+    "validation": {
+      "items": {
+        "$ref": "#/$defs/ValidationScenario"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "intent",
+    "operations",
+    "schema"
+  ],
+  "title": "ChangeSet",
+  "type": "object"
+}

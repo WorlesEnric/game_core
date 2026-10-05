@@ -14,7 +14,7 @@
 # rule: Unity never runs on the Mac.
 #
 # Delegates all host execution to unity-batch.sh: one shared atomic reservation across interactive and
-# batch Editors, at most three host-wide, timeout/silence retry, TERM forwarding and streaming redaction.
+# batch Editors, at most three host-wide, bounded ILPP retry, TERM forwarding and streaming redaction.
 # Without --tests it compiles with -quit; with --tests it preserves the test runner's XML disposition.
 # Repeat --require-test <fullname> to require designated acceptance cases to appear and pass.
 # Skipped/inconclusive/zero cases are partial or NotRun, never PASS. Logs/XML live in .unity-logs/.
@@ -86,7 +86,7 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" ]] && { [[ "$(uname -s)" != "Linux" ]] ||
   if [[ -n "${UNITY:-}" ]]; then
     remote_env+=" UNITY=$(printf '%q' "${UNITY}")"
   fi
-  forwarded=("${packet}" "${project}" "${required_tests[@]}")
+  forwarded=("${packet}" "${project}" ${required_tests[@]+"${required_tests[@]}"})
   [[ -n "${tests}" ]] && forwarded+=(--tests "${tests}")
   [[ -n "${filter}" ]] && forwarded+=(--filter "${filter}")
   rc=0
@@ -109,4 +109,4 @@ if [[ -n "$tests" ]]; then
   result_args=(--results "${logs}/${slug}-${mode}-$(date +%Y%m%dT%H%M%S)-$$.xml")
 fi
 exec bash "${base}/studio/tools/unity-batch.sh" --project "$project_dir" --log-dir "$logs" \
-  --label "${slug}-${mode}" "${result_args[@]}" "${required_tests[@]}" -- "${args[@]}"
+  --label "${slug}-${mode}" ${result_args[@]+"${result_args[@]}"} ${required_tests[@]+"${required_tests[@]}"} -- "${args[@]}"
