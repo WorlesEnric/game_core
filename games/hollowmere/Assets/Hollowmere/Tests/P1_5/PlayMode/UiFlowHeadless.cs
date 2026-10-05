@@ -18,6 +18,7 @@ using System.Globalization;
 using System.IO;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Ui;
 using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Ui;
@@ -124,22 +125,27 @@ namespace Hollowmere.P1_5.PlayMode.Tests
             Assert.That(pumps, Is.EqualTo(pumpFrames).Within(1), "one sanctioned pump per frame");
             Assert.That(firstRoot.PumpCounter.Violations, Is.EqualTo(0), firstRoot.PumpCounter.LastViolation);
 
-            // Dialogue view model, as P1.4's presenter delivers it on LineShown.
+            // Dialogue view model, in P1.4's shape (the real LineShown path runs in BootWiring on Boot.unity).
             IDialogueView? dialogue = world.Presentation.Get<IDialogueView>();
             Assert.That(dialogue, Is.Not.Null);
-            dialogue!.Show(new DialogueViewModel
-            {
-                SpeakerId = "ferryman",
-                SpeakerName = "The Ferryman",
-                Text = "The marsh keeps what it takes.",
-                Choices = new[] { "Then I will take it back.", "Goodbye." },
-                ChoiceDisabled = new[] { 0, 0 },
-            });
+            dialogue!.Show(new DialogueViewModel(
+                true,
+                1,
+                "Ferryman",
+                2,
+                "choice",
+                "The Ferryman",
+                "The marsh keeps what it takes.",
+                null,
+                string.Empty,
+                false,
+                new[] { new DialogueChoiceView(0, "Then I will take it back.", true, string.Empty), new DialogueChoiceView(1, "Goodbye.", true, string.Empty) },
+                1));
             Assert.That(ui.Models.Dialogue.Received, Is.EqualTo(1));
             Assert.That(ui.Models.Dialogue.Text, Is.EqualTo("The marsh keeps what it takes."));
             ui.Navigate(0, -1);
             Assert.That(ui.Models.Dialogue.Selected, Is.EqualTo(1));
-            dialogue.Hide();
+            dialogue.Show(DialogueViewModel.Inactive);
 
             // Ambience follows RegionEntered.
             leg = Stopwatch.StartNew();

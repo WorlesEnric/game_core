@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using Unity.Properties;
 using UnityEngine.UIElements;
 
@@ -158,6 +159,7 @@ namespace GameCore.Gameplay.Ui
         private string text = string.Empty;
         private string[] choices = Array.Empty<string>();
         private int[] choiceDisabled = Array.Empty<int>();
+        private int[] choiceIndices = Array.Empty<int>();
         private bool hasChoices;
         private int selected;
         private string voiceClip = string.Empty;
@@ -189,6 +191,10 @@ namespace GameCore.Gameplay.Ui
         public bool IsChoiceEnabled(int index) =>
             index >= 0 && index < choices.Length && (index >= choiceDisabled.Length || choiceDisabled[index] == 0);
 
+        /// <summary>
+        /// Applies P1.4's dialogue model (DialoguePresenter pushes one per committed node change): an inactive model hides
+        /// the panel; a choice node lists its choices (unavailable ones greyed and skipped by navigation).
+        /// </summary>
         public void Apply(DialogueViewModel vm)
         {
             if (vm == null)
@@ -196,17 +202,41 @@ namespace GameCore.Gameplay.Ui
                 throw new ArgumentNullException(nameof(vm));
             }
 
-            Speaker = vm.SpeakerName.Length > 0 ? vm.SpeakerName : vm.SpeakerId;
+            Received = received + 1;
+            if (!vm.Active)
+            {
+                Clear();
+                return;
+            }
+
+            Speaker = vm.Speaker;
             Text = vm.Text;
-            choiceDisabled = vm.ChoiceDisabled != null ? (int[])vm.ChoiceDisabled.Clone() : Array.Empty<int>();
-            Choices = vm.Choices ?? Array.Empty<string>();
+            IReadOnlyList<DialogueChoiceView> offered = vm.Choices;
+            var texts = new string[offered.Count];
+            var disabled = new int[offered.Count];
+            choiceIndices = new int[offered.Count];
+            for (int i = 0; i < offered.Count; i++)
+            {
+                texts[i] = offered[i].Text;
+                disabled[i] = offered[i].Available ? 0 : 1;
+                choiceIndices[i] = offered[i].Index;
+            }
+
+            choiceDisabled = disabled;
+            Choices = texts;
             HasChoices = choices.Length > 0;
             Selected = HasChoices ? FirstEnabled() : -1;
-            VoiceClip = vm.VoiceClip;
-            NodeId = vm.NodeId;
+            VoiceClip = string.Empty;
+            NodeId = vm.Node;
+            Serial = vm.Serial;
             Visible = true;
-            Received = received + 1;
         }
+
+        /// <summary>The dialogue.serial of the last shown node.</summary>
+        public int Serial { get; private set; }
+
+        /// <summary>The option index (DialogueChoiceView.Index) of the choice shown at <paramref name="row"/>.</summary>
+        public int OptionAt(int row) => row >= 0 && row < choiceIndices.Length ? choiceIndices[row] : row;
 
         /// <summary>Moves the selection by <paramref name="delta"/>, skipping disabled choices; returns the new index.</summary>
         public int Move(int delta)
@@ -272,10 +302,13 @@ namespace GameCore.Gameplay.Ui
 
         [CreateProperty] public bool Empty { get => empty; set => Set(ref empty, value, nameof(Empty)); }
 
-        /// <summary>The last journal model received (copied).</summary>
-        public JournalViewModel Last { get; private set; } = new JournalViewModel();
+        /// <summary>The last journal model received.</summary>
+        public JournalViewModel Last { get; private set; } = new JournalViewModel(Array.Empty<QuestView>(), 0);
 
-        /// <summary>Applies a journal model; returns the HUD objective line of the tracked quest (empty when none).</summary>
+        /// <summary>
+        /// Applies P1.4's journal model; returns the HUD objective line of the tracked quest (the first active quest),
+        /// empty when none is active.
+        /// </summary>
         public string Apply(JournalViewModel vm)
         {
             if (vm == null)
@@ -284,25 +317,33 @@ namespace GameCore.Gameplay.Ui
             }
 
             Last = vm;
-            JournalQuestEntry[] quests = vm.Quests ?? Array.Empty<JournalQuestEntry>();
-            var lines = new string[quests.Length];
-            for (int i = 0; i < quests.Length; i++)
+            IReadOnlyList<QuestView> quests = vm.Quests;
+            var lines = new string[quests.Count];
+            int tracked = -1;
+            for (int i = 0; i < quests.Count; i++)
             {
                 lines[i] = quests[i].Title + " - " + StatusText(quests[i].Status);
+                if (tracked < 0 && quests[i].Status == QuestStatusActive)
+                {
+                    tracked = i;
+                }
             }
 
             QuestLines = lines;
-            Empty = quests.Length == 0;
-            int tracked = vm.TrackedQuest >= 0 && vm.TrackedQuest < quests.Length ? vm.TrackedQuest : (quests.Length > 0 ? 0 : -1);
-            Selected = tracked;
-            DetailLines = tracked >= 0 ? Details(quests[tracked]) : Array.Empty<string>();
-            return vm.TrackedQuest >= 0 && vm.TrackedQuest < quests.Length ? ObjectiveLine(quests[vm.TrackedQuest]) : string.Empty;
+            Empty = quests.Count == 0;
+            int shown = tracked >= 0 ? tracked : (quests.Count > 0 ? 0 : -1);
+            Selected = shown;
+            DetailLines = shown >= 0 ? Details(quests[shown]) : Array.Empty<string>();
+            return tracked >= 0 ? ObjectiveLine(quests[tracked]) : string.Empty;
         }
+
+        /// <summary>QuestIds.Active (P1.4).</summary>
+        public const int QuestStatusActive = 1;
 
         public void Select(int index)
         {
-            JournalQuestEntry[] quests = Last.Quests ?? Array.Empty<JournalQuestEntry>();
-            if (index < 0 || index >= quests.Length)
+            IReadOnlyList<QuestView> quests = Last.Quests;
+            if (index < 0 || index >= quests.Count)
             {
                 return;
             }
@@ -323,45 +364,39 @@ namespace GameCore.Gameplay.Ui
         }
 
         /// <summary>The first unfinished objective of a quest's current stage, or its stage title.</summary>
-        public static string ObjectiveLine(JournalQuestEntry quest)
+        public static string ObjectiveLine(QuestView quest)
         {
-            string[] objectives = quest.Objectives ?? Array.Empty<string>();
-            for (int i = 0; i < objectives.Length; i++)
+            IReadOnlyList<ObjectiveView> objectives = quest.Objectives;
+            for (int i = 0; i < objectives.Count; i++)
             {
-                bool done = quest.ObjectiveDone != null && i < quest.ObjectiveDone.Length && quest.ObjectiveDone[i] != 0;
-                if (!done)
+                if (!objectives[i].Done)
                 {
-                    return objectives[i] + Counter(quest, i);
+                    return objectives[i].Text + Counter(objectives[i]);
                 }
             }
 
             return quest.StageTitle;
         }
 
-        private static string[] Details(JournalQuestEntry quest)
+        private static string[] Details(QuestView quest)
         {
-            string[] objectives = quest.Objectives ?? Array.Empty<string>();
+            IReadOnlyList<ObjectiveView> objectives = quest.Objectives;
             var lines = new List<string> { quest.StageTitle };
-            for (int i = 0; i < objectives.Length; i++)
+            if (quest.StageDescription.Length > 0)
             {
-                bool done = quest.ObjectiveDone != null && i < quest.ObjectiveDone.Length && quest.ObjectiveDone[i] != 0;
-                lines.Add((done ? "[x] " : "[ ] ") + objectives[i] + Counter(quest, i));
+                lines.Add(quest.StageDescription);
+            }
+
+            for (int i = 0; i < objectives.Count; i++)
+            {
+                lines.Add((objectives[i].Done ? "[x] " : "[ ] ") + objectives[i].Text + Counter(objectives[i]));
             }
 
             return lines.ToArray();
         }
 
-        private static string Counter(JournalQuestEntry quest, int i)
-        {
-            int target = quest.ObjectiveTargets != null && i < quest.ObjectiveTargets.Length ? quest.ObjectiveTargets[i] : 0;
-            if (target <= 1)
-            {
-                return string.Empty;
-            }
-
-            int count = quest.ObjectiveCounts != null && i < quest.ObjectiveCounts.Length ? quest.ObjectiveCounts[i] : 0;
-            return " (" + count + "/" + target + ")";
-        }
+        private static string Counter(ObjectiveView objective) =>
+            objective.Required <= 1 ? string.Empty : " (" + objective.Count + "/" + objective.Required + ")";
     }
 
     /// <summary>The inventory screen (IInventoryView): a grid of slots, counts, the selected slot, currency.</summary>
@@ -390,8 +425,10 @@ namespace GameCore.Gameplay.Ui
 
         [CreateProperty] public bool SelectedUsable { get => selectedUsable; set => Set(ref selectedUsable, value, nameof(SelectedUsable)); }
 
-        public InventoryViewModel Last { get; private set; } = new InventoryViewModel();
+        /// <summary>The last inventory model received (null before the first push).</summary>
+        public InventoryViewModel? Last { get; private set; }
 
+        /// <summary>Applies P1.4's inventory model: one grid cell per slot of the capacity; every occupied slot can be used.</summary>
         public void Apply(InventoryViewModel vm)
         {
             if (vm == null)
@@ -400,11 +437,11 @@ namespace GameCore.Gameplay.Ui
             }
 
             Last = vm;
-            InventorySlotEntry[] slots = vm.Slots ?? Array.Empty<InventorySlotEntry>();
-            int cells = Math.Max(vm.Capacity, 0);
-            for (int i = 0; i < slots.Length; i++)
+            IReadOnlyList<InventorySlotView> slots = vm.Slots;
+            int cells = Math.Max(vm.SlotCapacity, 0);
+            for (int i = 0; i < slots.Count; i++)
             {
-                cells = Math.Max(cells, slots[i].SlotIndex + 1);
+                cells = Math.Max(cells, slots[i].Slot + 1);
             }
 
             var labels = new string[cells];
@@ -415,16 +452,16 @@ namespace GameCore.Gameplay.Ui
                 counts[i] = string.Empty;
             }
 
-            for (int i = 0; i < slots.Length; i++)
+            for (int i = 0; i < slots.Count; i++)
             {
-                InventorySlotEntry slot = slots[i];
-                if (slot.SlotIndex < 0)
+                InventorySlotView slot = slots[i];
+                if (slot.Slot < 0)
                 {
                     continue;
                 }
 
-                labels[slot.SlotIndex] = slot.DisplayName.Length > 0 ? slot.DisplayName : slot.ItemId;
-                counts[slot.SlotIndex] = slot.Count > 1 ? "x" + slot.Count : string.Empty;
+                labels[slot.Slot] = slot.ItemName;
+                counts[slot.Slot] = slot.Count > 1 ? "x" + slot.Count : string.Empty;
             }
 
             SlotLabels = labels;
@@ -436,18 +473,18 @@ namespace GameCore.Gameplay.Ui
         public void Select(int index)
         {
             Selected = index;
-            InventorySlotEntry? entry = Find(index);
-            SelectedName = entry != null ? (entry.DisplayName.Length > 0 ? entry.DisplayName : entry.ItemId) : string.Empty;
-            SelectedUsable = entry != null && entry.Usable != 0;
+            InventorySlotView? entry = Find(index);
+            SelectedName = entry != null ? entry.ItemName : string.Empty;
+            SelectedUsable = entry != null;
         }
 
         /// <summary>The occupied slot at a grid index, or null.</summary>
-        public InventorySlotEntry? Find(int index)
+        public InventorySlotView? Find(int index)
         {
-            InventorySlotEntry[] slots = Last.Slots ?? Array.Empty<InventorySlotEntry>();
-            for (int i = 0; i < slots.Length; i++)
+            IReadOnlyList<InventorySlotView> slots = Last != null ? Last.Slots : Array.Empty<InventorySlotView>();
+            for (int i = 0; i < slots.Count; i++)
             {
-                if (slots[i].SlotIndex == index)
+                if (slots[i].Slot == index)
                 {
                     return slots[i];
                 }

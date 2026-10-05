@@ -29,13 +29,19 @@ restart = "always"
 env = { RUST_LOG = "info,gamecore_studio=info" }
 
 # Image and network are set beforehand with `etos worker create <name> --image ... --network
-# allowlist:` (install preserves them); the manifest sets the model and the instructions.
+# offline` (install preserves them; etos refuses an empty `allowlist:`); the manifest sets the
+# model and the instructions.
+#
+# Model: echo/gpt-6-sol (alias `fast`). The preferred `default` (echo/claude-opus-5-5) is
+# refused upstream by Echo since 2026-10-04 (HTTP 401 "OAuth access token has been revoked";
+# artifacts/studio/environment/provider-probe-2026-10-05.md). Switch back to the alias
+# `default` once Echo serves it again.
 [[worker]]
 name = "gc-designer"
-model = "default"
+model = "echo/gpt-6-sol"  # preferred: "default" (echo/claude-opus-5-5)
 instructions = "workers/gc-designer.md"
 
 [[worker]]
 name = "gc-mechanic"
-model = "default"
+model = "echo/gpt-6-sol"  # preferred: "default" (echo/claude-opus-5-5)
 instructions = "workers/gc-mechanic.md"

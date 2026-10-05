@@ -41,24 +41,39 @@ namespace Hollowmere.Generated
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "103ed8e04dee4eb1c1cc422309bc48c0c9f40be9d518de08175bdde17b9cd809";
+        public const string CatalogFingerprint = "4559edd75158840cdfe315149cb2ab45443eeb1ba7bfa5018d79f433e1de6425";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
         {
         };
 
-        /// <summary>Generated key of gameplay.audio.session-applier ('gameplay.audio.session-applier').</summary>
-        public static readonly FactoryKey AudioSessionApplierKey = new FactoryKey(new Id128(0x029D9D9826755419UL, 0xFFF61CE55B079AB5UL), 1U);
+        /// <summary>Generated key of gameplay.quest.applier ('gameplay.quest.applier').</summary>
+        public static readonly FactoryKey QuestApplierKey = new FactoryKey(new Id128(0x015B918DF7C65CB5UL, 0xE940463E6B96A7C3UL), 1U);
 
-        /// <summary>Generated key of gameplay.ui.session-applier ('gameplay.ui.session-applier').</summary>
-        public static readonly FactoryKey UiSessionApplierKey = new FactoryKey(new Id128(0x1CDCBF4A898D81D0UL, 0x4EE4EF9D8C37EDABUL), 1U);
+        /// <summary>Generated key of gameplay.inventory.applier ('gameplay.inventory.applier').</summary>
+        public static readonly FactoryKey InventoryApplierKey = new FactoryKey(new Id128(0x1C72DBBC416A5940UL, 0x6C13C11F5AFD2F1FUL), 1U);
+
+        /// <summary>Generated key of gameplay.inventory.layout.world-item ('gameplay.inventory.layout.world-item').</summary>
+        public static readonly FactoryKey InventoryLayout2Key = new FactoryKey(new Id128(0x273D6F89A74A929EUL, 0xA62C55B3B3F8BA64UL), 1U);
+
+        /// <summary>Generated key of gameplay.inventory.layout.inventory ('gameplay.inventory.layout.inventory').</summary>
+        public static readonly FactoryKey InventoryLayout1Key = new FactoryKey(new Id128(0x31855B172304BFF1UL, 0x15927876BF0FF5D7UL), 1U);
 
         /// <summary>Generated key of gameplay.entities.applier ('gameplay.entities.applier').</summary>
         public static readonly FactoryKey EntityApplierKey = new FactoryKey(new Id128(0x330755B32EE4A446UL, 0x06733F36A299C4D1UL), 1U);
 
+        /// <summary>Generated key of gameplay.dialogue.layout.graph ('gameplay.dialogue.layout.graph').</summary>
+        public static readonly FactoryKey DialogueLayout2Key = new FactoryKey(new Id128(0x372718683F14F289UL, 0x726EE0A7A7EA4AD5UL), 1U);
+
+        /// <summary>Generated key of gameplay.quest.layout.quest ('gameplay.quest.layout.quest').</summary>
+        public static readonly FactoryKey QuestLayout1Key = new FactoryKey(new Id128(0x43927C4BCC35B262UL, 0xCA1289B8304D23BDUL), 1U);
+
         /// <summary>Generated key of gameplay.player.layout.player ('gameplay.player.layout.player').</summary>
         public static readonly FactoryKey PlayerLayoutKey = new FactoryKey(new Id128(0x4989EB0D9212F020UL, 0x2A21B3F0E4BEBE1FUL), 1U);
+
+        /// <summary>Generated key of gameplay.logic.layout.rule ('gameplay.logic.layout.rule').</summary>
+        public static readonly FactoryKey LogicLayout1Key = new FactoryKey(new Id128(0x59A099D98917C4A4UL, 0x1F2A53137C721105UL), 1U);
 
         /// <summary>Generated key of gameplay.interaction.layout.interactable ('gameplay.interaction.layout.interactable').</summary>
         public static readonly FactoryKey InteractionLayoutKey = new FactoryKey(new Id128(0x60AF65BBD9260022UL, 0x3A0A4F9BAEB48453UL), 1U);
@@ -66,14 +81,17 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.world.region-applier ('gameplay.world.region-applier').</summary>
         public static readonly FactoryKey RegionApplierKey = new FactoryKey(new Id128(0x7528312E53050F20UL, 0xBC04946B66DD4259UL), 1U);
 
-        /// <summary>Generated key of gameplay.ui.layout.session ('gameplay.ui.layout.session').</summary>
-        public static readonly FactoryKey UiSessionLayoutKey = new FactoryKey(new Id128(0xAAB05015271DBD5CUL, 0x1B608AF3F60DCA2AUL), 1U);
+        /// <summary>Generated key of gameplay.logic.applier ('gameplay.logic.applier').</summary>
+        public static readonly FactoryKey LogicApplierKey = new FactoryKey(new Id128(0x98FA3052D04E6ECFUL, 0xB12A6451F1486834UL), 1U);
 
         /// <summary>Generated key of gameplay.world.layout.region ('gameplay.world.layout.region').</summary>
         public static readonly FactoryKey RegionLayoutKey = new FactoryKey(new Id128(0xB68E1320847037F4UL, 0x3BAD3E6D61F33660UL), 1U);
 
-        /// <summary>Generated key of gameplay.audio.layout.session ('gameplay.audio.layout.session').</summary>
-        public static readonly FactoryKey AudioSessionLayoutKey = new FactoryKey(new Id128(0xCC52DE4842E72061UL, 0xBE9A9BB7DBF06022UL), 1U);
+        /// <summary>Generated key of gameplay.dialogue.applier ('gameplay.dialogue.applier').</summary>
+        public static readonly FactoryKey DialogueApplierKey = new FactoryKey(new Id128(0xD34058D1E84FD841UL, 0x3C91E3699CD5A3B0UL), 1U);
+
+        /// <summary>Generated key of gameplay.dialogue.layout.state ('gameplay.dialogue.layout.state').</summary>
+        public static readonly FactoryKey DialogueLayout1Key = new FactoryKey(new Id128(0xD8563ED6FC71CA23UL, 0x17AB030573FA64A1UL), 1U);
 
         /// <summary>Generated key of gameplay.entities.layout.entity ('gameplay.entities.layout.entity').</summary>
         public static readonly FactoryKey EntityLayoutKey = new FactoryKey(new Id128(0xE3FA569CE155853EUL, 0xE9E721D87907C11FUL), 1U);
@@ -84,6 +102,9 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.world.layout.placement ('gameplay.world.layout.placement').</summary>
         public static readonly FactoryKey PlacementLayoutKey = new FactoryKey(new Id128(0xF17C1DCC3E423FA3UL, 0x486F60EF3228D52CUL), 1U);
 
+        /// <summary>Generated key of gameplay.inventory.plugin ('gameplay.inventory.plugin').</summary>
+        public static readonly FactoryKey InventoryPluginKey = new FactoryKey(new Id128(0x0C4DC4AC6CC55649UL, 0x1611EADA04DDB45CUL), 1U);
+
         /// <summary>Generated key of gameplay.interaction.plugin ('gameplay.interaction.plugin').</summary>
         public static readonly FactoryKey InteractionPluginKey = new FactoryKey(new Id128(0x23007CED39F1D965UL, 0x502C12739E1711BDUL), 1U);
 
@@ -93,17 +114,20 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.player.plugin ('gameplay.player.plugin').</summary>
         public static readonly FactoryKey PlayerPluginKey = new FactoryKey(new Id128(0x5A225DBA4F91CBADUL, 0xB8D976EDC42F8447UL), 1U);
 
-        /// <summary>Generated key of gameplay.ui.plugin ('gameplay.ui.plugin').</summary>
-        public static readonly FactoryKey UiPluginKey = new FactoryKey(new Id128(0x7A9171989B7E3FFAUL, 0x1B654A2D9E52FC16UL), 1U);
+        /// <summary>Generated key of gameplay.logic.plugin ('gameplay.logic.plugin').</summary>
+        public static readonly FactoryKey LogicPluginKey = new FactoryKey(new Id128(0x6CDF109DDBBFB824UL, 0x4E4A4DB2838B9571UL), 1U);
+
+        /// <summary>Generated key of gameplay.dialogue.plugin ('gameplay.dialogue.plugin').</summary>
+        public static readonly FactoryKey DialoguePluginKey = new FactoryKey(new Id128(0x7D5E492FB89F8052UL, 0x508620B94EB4E3E0UL), 1U);
 
         /// <summary>Generated key of gameplay.world.plugin ('gameplay.world.plugin').</summary>
         public static readonly FactoryKey WorldPluginKey = new FactoryKey(new Id128(0xA1A8B053EAF13687UL, 0xC3A32722D37B59AEUL), 1U);
 
-        /// <summary>Generated key of gameplay.audio.plugin ('gameplay.audio.plugin').</summary>
-        public static readonly FactoryKey AudioPluginKey = new FactoryKey(new Id128(0xBA55FB9CB6B557BDUL, 0x5099177D132733ACUL), 1U);
-
         /// <summary>Generated key of gameplay.entities.plugin ('gameplay.entities.plugin').</summary>
         public static readonly FactoryKey EntitiesPluginKey = new FactoryKey(new Id128(0xBD8E808D834C09D8UL, 0xC51949A4E86E30E6UL), 1U);
+
+        /// <summary>Generated key of gameplay.quest.plugin ('gameplay.quest.plugin').</summary>
+        public static readonly FactoryKey QuestPluginKey = new FactoryKey(new Id128(0xCAF8A3CEF4D014EAUL, 0x9BA247BED2C9B516UL), 1U);
 
         /// <summary>Generated key of gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf ('gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf').</summary>
         public static readonly FactoryKey Recipeb30c7c024a114a929bf9b15f89b7acaf = new FactoryKey(new Id128(0x1214640284BCAF83UL, 0x0179DCC016BB71EEUL), 1U);
@@ -153,9 +177,6 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.world.system.command ('gameplay.world.system.command').</summary>
         public static readonly FactoryKey WorldCommandSystemKey = new FactoryKey(new Id128(0x1FA17AAEEC56AB22UL, 0x60C7CD6E692F8224UL), 1U);
 
-        /// <summary>Generated key of gameplay.ui.system.command ('gameplay.ui.system.command').</summary>
-        public static readonly FactoryKey UiCommandSystemKey = new FactoryKey(new Id128(0x23F00E15E7B3382FUL, 0xB1337096E417A447UL), 1U);
-
         /// <summary>Generated key of gameplay.entities.system.command ('gameplay.entities.system.command').</summary>
         public static readonly FactoryKey EntitiesCommandSystemKey = new FactoryKey(new Id128(0x2F5AE5150DD1DEDCUL, 0xD731CC3FA2AD6D58UL), 1U);
 
@@ -165,11 +186,20 @@ namespace Hollowmere.Generated
         /// <summary>Generated key of gameplay.npc.system.command ('gameplay.npc.system.command').</summary>
         public static readonly FactoryKey NpcCommandSystemKey = new FactoryKey(new Id128(0x4EAB3EAB71D81F90UL, 0xE0E2087B225D69FCUL), 1U);
 
-        /// <summary>Generated key of gameplay.audio.system.command ('gameplay.audio.system.command').</summary>
-        public static readonly FactoryKey AudioCommandSystemKey = new FactoryKey(new Id128(0xC033147150EF4145UL, 0x0C61475CF42CD30AUL), 1U);
+        /// <summary>Generated key of gameplay.logic.system.command ('gameplay.logic.system.command').</summary>
+        public static readonly FactoryKey LogicCommandSystemKey = new FactoryKey(new Id128(0x6FB223DE2ACC5416UL, 0xF20453108F4BADA4UL), 1U);
 
-        /// <summary>Generated serializer key of schema 1bc456373fbe3f868bc2e5c177007664 ('gameplay.audio.serializer.domain-session').</summary>
-        public static readonly FactoryKey AudioSessionDomainSerializerKey = new FactoryKey(new Id128(0xCB2F53E67B0361D8UL, 0xD53CB4D86BCAA38CUL), 1U);
+        /// <summary>Generated key of gameplay.inventory.system.command ('gameplay.inventory.system.command').</summary>
+        public static readonly FactoryKey InventoryCommandSystemKey = new FactoryKey(new Id128(0x7040F706EC3FC387UL, 0x48BEBED0A880EF47UL), 1U);
+
+        /// <summary>Generated key of gameplay.dialogue.system.command ('gameplay.dialogue.system.command').</summary>
+        public static readonly FactoryKey DialogueCommandSystemKey = new FactoryKey(new Id128(0x7A650A077FEA8D7AUL, 0x7CD8A3BA7DDC3BC5UL), 1U);
+
+        /// <summary>Generated key of gameplay.quest.system.command ('gameplay.quest.system.command').</summary>
+        public static readonly FactoryKey QuestCommandSystemKey = new FactoryKey(new Id128(0xC4B2806AA9139100UL, 0x7C1257303E3649E3UL), 1U);
+
+        /// <summary>Generated serializer key of schema 0646108e2c9b02c3de2817bd30ee7e0f ('gameplay.logic.serializer.domain-rule').</summary>
+        public static readonly FactoryKey LogicRuleDomainSerializerKey = new FactoryKey(new Id128(0xA1FA848E5D5A44A2UL, 0xBFC8DCFD20F9E0A3UL), 1U);
 
         /// <summary>Generated serializer key of schema 1f1b4fc9193f8e1733bc1db6de6d0134 ('gameplay.npc.serializer.config').</summary>
         public static readonly FactoryKey NpcConfigSerializerKey = new FactoryKey(new Id128(0x1C86047CAA3FC5EEUL, 0x957A17F06461F095UL), 1U);
@@ -177,14 +207,17 @@ namespace Hollowmere.Generated
         /// <summary>Generated serializer key of schema 2169d0baa981113cde1059c43dd1fd13 ('gameplay.interaction.serializer.domain-interactable').</summary>
         public static readonly FactoryKey InteractionDomainSerializerKey = new FactoryKey(new Id128(0x6B51D0326A25F481UL, 0x99AA3A545FF68EF8UL), 1U);
 
-        /// <summary>Generated serializer key of schema 514b9cfaae18602912501c90f1c06da4 ('gameplay.ui.serializer.domain-session').</summary>
-        public static readonly FactoryKey UiSessionDomainSerializerKey = new FactoryKey(new Id128(0x8C93F49E0E3B7568UL, 0xCC888D24A7416204UL), 1U);
+        /// <summary>Generated serializer key of schema 38d15112d28acadb6465397519364557 ('gameplay.quest.serializer.domain-quest').</summary>
+        public static readonly FactoryKey QuestDomainSerializerKey = new FactoryKey(new Id128(0x7AB999281ADD2504UL, 0x8FB03B918C1B3CF3UL), 1U);
 
-        /// <summary>Generated serializer key of schema 526e30afb16e0beb969141e359dff9fd ('gameplay.ui.serializer.config').</summary>
-        public static readonly FactoryKey UiConfigSerializerKey = new FactoryKey(new Id128(0x97CEA584ED9017F5UL, 0xD2D4313744879D3DUL), 1U);
+        /// <summary>Generated serializer key of schema 3afb67258a3dda2def658105a47fc26a ('gameplay.dialogue.serializer.domain-graph').</summary>
+        public static readonly FactoryKey DialogueGraphDomainSerializerKey = new FactoryKey(new Id128(0x2B77D241C9C94F43UL, 0xE8EF2D60E0AD79A6UL), 1U);
 
-        /// <summary>Generated serializer key of schema 56e032f53333ee2c6dc6e1a6698f7900 ('gameplay.audio.serializer.config').</summary>
-        public static readonly FactoryKey AudioConfigSerializerKey = new FactoryKey(new Id128(0x7D364B83B0A76AB7UL, 0xA1D5034793B208A5UL), 1U);
+        /// <summary>Generated serializer key of schema 4b5734672d486b6a91b9802f79a74e09 ('gameplay.logic.serializer.config').</summary>
+        public static readonly FactoryKey LogicConfigSerializerKey = new FactoryKey(new Id128(0xA50B2757F38BB0B0UL, 0xF008ADAE02897B6AUL), 1U);
+
+        /// <summary>Generated serializer key of schema 4edba65df9246fdbed60cdc2ed88b816 ('gameplay.inventory.serializer.domain-world-item').</summary>
+        public static readonly FactoryKey WorldItemDomainSerializerKey = new FactoryKey(new Id128(0x93AEE77EAAC7EFF0UL, 0x98A8B3A970A31F77UL), 1U);
 
         /// <summary>Generated serializer key of schema 591e4c60589dd3cc036f8ef9b6b36583 ('gameplay.player.serializer.config').</summary>
         public static readonly FactoryKey PlayerConfigSerializerKey = new FactoryKey(new Id128(0x4AC8442B2DCE8D1FUL, 0x5EF7672A8886AF95UL), 1U);
@@ -195,14 +228,29 @@ namespace Hollowmere.Generated
         /// <summary>Generated serializer key of schema 763e0609d0898de043f8aa639960b02b ('gameplay.world.serializer.domain-region').</summary>
         public static readonly FactoryKey RegionDomainSerializerKey = new FactoryKey(new Id128(0x24D45B4A2A4CF69DUL, 0xC40A9C6F6A08F93DUL), 1U);
 
+        /// <summary>Generated serializer key of schema 7b9ec8ce112e6fc07530c359352c41ff ('gameplay.quest.serializer.config').</summary>
+        public static readonly FactoryKey QuestConfigSerializerKey = new FactoryKey(new Id128(0x3D0421368370B4D2UL, 0x80AF03E20F52075CUL), 1U);
+
         /// <summary>Generated serializer key of schema 7e9832f89fea7930769a8da69c625eb6 ('gameplay.entities.serializer.domain-entity').</summary>
         public static readonly FactoryKey EntityDomainSerializerKey = new FactoryKey(new Id128(0x7C86E78F2BAF103CUL, 0x4DF1F37D10C72F1CUL), 1U);
+
+        /// <summary>Generated serializer key of schema 95008c0e39a2fe353887dc478908698d ('gameplay.inventory.serializer.domain-inventory').</summary>
+        public static readonly FactoryKey InventoryDomainSerializerKey = new FactoryKey(new Id128(0x6B0B6313371FE17AUL, 0x73D51FA51374E155UL), 1U);
+
+        /// <summary>Generated serializer key of schema 9723cd74e6b88c9031b8fa1d1767395e ('gameplay.dialogue.serializer.domain-state').</summary>
+        public static readonly FactoryKey DialogueStateDomainSerializerKey = new FactoryKey(new Id128(0x173110283BA60BEDUL, 0x877CDDF6E55E5CA0UL), 1U);
 
         /// <summary>Generated serializer key of schema ae4de82841137791564467a29c5bee08 ('gameplay.player.serializer.domain-player').</summary>
         public static readonly FactoryKey PlayerDomainSerializerKey = new FactoryKey(new Id128(0x894A3E508031E7B1UL, 0x77F915FF742737BCUL), 1U);
 
         /// <summary>Generated serializer key of schema bbe64ff0e171cf3ce1ece89fc954bc82 ('gameplay.world.serializer.config').</summary>
         public static readonly FactoryKey WorldConfigSerializerKey = new FactoryKey(new Id128(0xDD2A05FA075C0853UL, 0x231DEEB83C7059C5UL), 1U);
+
+        /// <summary>Generated serializer key of schema c02eb03e6678a1720470abee65689dbe ('gameplay.dialogue.serializer.config').</summary>
+        public static readonly FactoryKey DialogueConfigSerializerKey = new FactoryKey(new Id128(0x5FFDC8514144595DUL, 0x950E9D3AF9AABBADUL), 1U);
+
+        /// <summary>Generated serializer key of schema cd2052cbaa743793e449cb926eb1c8fd ('gameplay.inventory.serializer.config').</summary>
+        public static readonly FactoryKey InventoryConfigSerializerKey = new FactoryKey(new Id128(0xAAB805EC7E767933UL, 0xFBE99741740D1E3CUL), 1U);
 
         /// <summary>Generated serializer key of schema ce219a2b270de50e7f6c3ddb35afe7a3 ('gameplay.entities.serializer.config').</summary>
         public static readonly FactoryKey EntitiesConfigSerializerKey = new FactoryKey(new Id128(0x7B51043AFC2F5478UL, 0xFE504D77DD48CC19UL), 1U);
@@ -217,21 +265,41 @@ namespace Hollowmere.Generated
         public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] LayoutRegistrations =
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                AudioSessionApplierKey,
-                "gameplay.audio.session-applier",
-                new GameplayCatalogEntry(AudioSessionApplierKey)),
+                QuestApplierKey,
+                "gameplay.quest.applier",
+                new GameplayCatalogEntry(QuestApplierKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                UiSessionApplierKey,
-                "gameplay.ui.session-applier",
-                new GameplayCatalogEntry(UiSessionApplierKey)),
+                InventoryApplierKey,
+                "gameplay.inventory.applier",
+                new GameplayCatalogEntry(InventoryApplierKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                InventoryLayout2Key,
+                "gameplay.inventory.layout.world-item",
+                new GameplayCatalogEntry(InventoryLayout2Key)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                InventoryLayout1Key,
+                "gameplay.inventory.layout.inventory",
+                new GameplayCatalogEntry(InventoryLayout1Key)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 EntityApplierKey,
                 "gameplay.entities.applier",
                 new GameplayCatalogEntry(EntityApplierKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                DialogueLayout2Key,
+                "gameplay.dialogue.layout.graph",
+                new GameplayCatalogEntry(DialogueLayout2Key)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                QuestLayout1Key,
+                "gameplay.quest.layout.quest",
+                new GameplayCatalogEntry(QuestLayout1Key)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 PlayerLayoutKey,
                 "gameplay.player.layout.player",
                 new GameplayCatalogEntry(PlayerLayoutKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                LogicLayout1Key,
+                "gameplay.logic.layout.rule",
+                new GameplayCatalogEntry(LogicLayout1Key)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 InteractionLayoutKey,
                 "gameplay.interaction.layout.interactable",
@@ -241,17 +309,21 @@ namespace Hollowmere.Generated
                 "gameplay.world.region-applier",
                 new GameplayCatalogEntry(RegionApplierKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                UiSessionLayoutKey,
-                "gameplay.ui.layout.session",
-                new GameplayCatalogEntry(UiSessionLayoutKey)),
+                LogicApplierKey,
+                "gameplay.logic.applier",
+                new GameplayCatalogEntry(LogicApplierKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 RegionLayoutKey,
                 "gameplay.world.layout.region",
                 new GameplayCatalogEntry(RegionLayoutKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                AudioSessionLayoutKey,
-                "gameplay.audio.layout.session",
-                new GameplayCatalogEntry(AudioSessionLayoutKey)),
+                DialogueApplierKey,
+                "gameplay.dialogue.applier",
+                new GameplayCatalogEntry(DialogueApplierKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                DialogueLayout1Key,
+                "gameplay.dialogue.layout.state",
+                new GameplayCatalogEntry(DialogueLayout1Key)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 EntityLayoutKey,
                 "gameplay.entities.layout.entity",
@@ -269,15 +341,21 @@ namespace Hollowmere.Generated
         /// <summary>Generated keys of LayoutRegistrations, in the same canonical order.</summary>
         public static readonly FactoryKey[] LayoutKeys =
         {
-            AudioSessionApplierKey,
-            UiSessionApplierKey,
+            QuestApplierKey,
+            InventoryApplierKey,
+            InventoryLayout2Key,
+            InventoryLayout1Key,
             EntityApplierKey,
+            DialogueLayout2Key,
+            QuestLayout1Key,
             PlayerLayoutKey,
+            LogicLayout1Key,
             InteractionLayoutKey,
             RegionApplierKey,
-            UiSessionLayoutKey,
+            LogicApplierKey,
             RegionLayoutKey,
-            AudioSessionLayoutKey,
+            DialogueApplierKey,
+            DialogueLayout1Key,
             EntityLayoutKey,
             NpcLayoutKey,
             PlacementLayoutKey,
@@ -291,16 +369,28 @@ namespace Hollowmere.Generated
         public static readonly FactoryRegistration[] LayoutRegistrationsCatalogRegistrations =
         {
             new FactoryRegistration(
-                AudioSessionApplierKey,
+                QuestApplierKey,
                 FactoryKind.LayoutApply,
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                new Id128(0x72B66B7D57784697UL, 0x47C1F544A92C8634UL),
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                new Id128(0xA1C4F6F1A203E970UL, 0x97C7FBA2ED6DE8C6UL),
                 1U),
             new FactoryRegistration(
-                UiSessionApplierKey,
+                InventoryApplierKey,
                 FactoryKind.LayoutApply,
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                new Id128(0x57D695A5C5027926UL, 0xD188D7AB60945224UL),
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                new Id128(0x3733885478D7971FUL, 0x0191C5C44F53AF3BUL),
+                1U),
+            new FactoryRegistration(
+                InventoryLayout2Key,
+                FactoryKind.LayoutApply,
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                new Id128(0xE867674A9734D090UL, 0x0842725D47DD832EUL),
+                1U),
+            new FactoryRegistration(
+                InventoryLayout1Key,
+                FactoryKind.LayoutApply,
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                new Id128(0x3A737BA827A819DAUL, 0xE287A61FE84C7AD5UL),
                 1U),
             new FactoryRegistration(
                 EntityApplierKey,
@@ -309,10 +399,28 @@ namespace Hollowmere.Generated
                 new Id128(0xADC62CC8019B6371UL, 0x945EB15172F82574UL),
                 1U),
             new FactoryRegistration(
+                DialogueLayout2Key,
+                FactoryKind.LayoutApply,
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                new Id128(0xDDBEDAFC313CD88EUL, 0x37A06977B5B80143UL),
+                1U),
+            new FactoryRegistration(
+                QuestLayout1Key,
+                FactoryKind.LayoutApply,
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                new Id128(0xF4C0FF66BB814742UL, 0x0C9E672926EE1980UL),
+                1U),
+            new FactoryRegistration(
                 PlayerLayoutKey,
                 FactoryKind.LayoutApply,
                 new Id128(0x7E1276C9F1819A5DUL, 0x17369CCE1AA9E8F9UL),
                 new Id128(0xD798B90C96DBE3BEUL, 0x8F5E624A53C61B6DUL),
+                1U),
+            new FactoryRegistration(
+                LogicLayout1Key,
+                FactoryKind.LayoutApply,
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                new Id128(0x702F63A996651B5FUL, 0xAB167F637DF57F0CUL),
                 1U),
             new FactoryRegistration(
                 InteractionLayoutKey,
@@ -327,10 +435,10 @@ namespace Hollowmere.Generated
                 new Id128(0x9297636E49E5C387UL, 0x8C95204E3026426AUL),
                 1U),
             new FactoryRegistration(
-                UiSessionLayoutKey,
+                LogicApplierKey,
                 FactoryKind.LayoutApply,
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                new Id128(0xA3A3F67F0313B484UL, 0x905FE636F930EF5AUL),
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                new Id128(0x5F96C45E0807F359UL, 0x2617C9967AFFC843UL),
                 1U),
             new FactoryRegistration(
                 RegionLayoutKey,
@@ -339,10 +447,16 @@ namespace Hollowmere.Generated
                 new Id128(0x08240A24D154BA4CUL, 0xE433FDEA676F190AUL),
                 1U),
             new FactoryRegistration(
-                AudioSessionLayoutKey,
+                DialogueApplierKey,
                 FactoryKind.LayoutApply,
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                new Id128(0x8C1F83ADE5D35E78UL, 0x1174168DFB927F62UL),
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                new Id128(0x343DAF1D348FEC7EUL, 0x082C74760D5B65AEUL),
+                1U),
+            new FactoryRegistration(
+                DialogueLayout1Key,
+                FactoryKind.LayoutApply,
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                new Id128(0xAEE74DB9555BEC45UL, 0x2E775BB5375C0912UL),
                 1U),
             new FactoryRegistration(
                 EntityLayoutKey,
@@ -368,6 +482,10 @@ namespace Hollowmere.Generated
         public static readonly BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>[] PluginRegistrations =
         {
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                InventoryPluginKey,
+                "gameplay.inventory.plugin",
+                new GameplayCatalogEntry(InventoryPluginKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 InteractionPluginKey,
                 "gameplay.interaction.plugin",
                 new GameplayCatalogEntry(InteractionPluginKey)),
@@ -380,33 +498,39 @@ namespace Hollowmere.Generated
                 "gameplay.player.plugin",
                 new GameplayCatalogEntry(PlayerPluginKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                UiPluginKey,
-                "gameplay.ui.plugin",
-                new GameplayCatalogEntry(UiPluginKey)),
+                LogicPluginKey,
+                "gameplay.logic.plugin",
+                new GameplayCatalogEntry(LogicPluginKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                DialoguePluginKey,
+                "gameplay.dialogue.plugin",
+                new GameplayCatalogEntry(DialoguePluginKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 WorldPluginKey,
                 "gameplay.world.plugin",
                 new GameplayCatalogEntry(WorldPluginKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                AudioPluginKey,
-                "gameplay.audio.plugin",
-                new GameplayCatalogEntry(AudioPluginKey)),
-            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 EntitiesPluginKey,
                 "gameplay.entities.plugin",
                 new GameplayCatalogEntry(EntitiesPluginKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                QuestPluginKey,
+                "gameplay.quest.plugin",
+                new GameplayCatalogEntry(QuestPluginKey)),
         };
 
         /// <summary>Generated keys of PluginRegistrations, in the same canonical order.</summary>
         public static readonly FactoryKey[] PluginKeys =
         {
+            InventoryPluginKey,
             InteractionPluginKey,
             NpcPluginKey,
             PlayerPluginKey,
-            UiPluginKey,
+            LogicPluginKey,
+            DialoguePluginKey,
             WorldPluginKey,
-            AudioPluginKey,
             EntitiesPluginKey,
+            QuestPluginKey,
         };
 
         /// <summary>
@@ -416,6 +540,12 @@ namespace Hollowmere.Generated
         /// </summary>
         public static readonly FactoryRegistration[] PluginRegistrationsCatalogRegistrations =
         {
+            new FactoryRegistration(
+                InventoryPluginKey,
+                FactoryKind.PluginFactory,
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                new Id128(0x678732D08FC2C54BUL, 0xEAF6EE02F8362638UL),
+                1U),
             new FactoryRegistration(
                 InteractionPluginKey,
                 FactoryKind.PluginFactory,
@@ -435,10 +565,16 @@ namespace Hollowmere.Generated
                 new Id128(0xC8BE15DAD0B92FADUL, 0x934E95F73996040FUL),
                 1U),
             new FactoryRegistration(
-                UiPluginKey,
+                LogicPluginKey,
                 FactoryKind.PluginFactory,
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                new Id128(0x831405303DDD0924UL, 0x3ED045E6D16A6708UL),
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                new Id128(0x89136F3D19D73C94UL, 0x2D55F640E40FB481UL),
+                1U),
+            new FactoryRegistration(
+                DialoguePluginKey,
+                FactoryKind.PluginFactory,
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                new Id128(0x4FEB29DAD216AAFDUL, 0x1EBCCFDFC09E46D6UL),
                 1U),
             new FactoryRegistration(
                 WorldPluginKey,
@@ -447,16 +583,16 @@ namespace Hollowmere.Generated
                 new Id128(0x620272D3ADB5D74AUL, 0x4CEBA02958C433E3UL),
                 1U),
             new FactoryRegistration(
-                AudioPluginKey,
-                FactoryKind.PluginFactory,
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                new Id128(0x3D11C67E99EBF0C2UL, 0x2D651747169CEE8CUL),
-                1U),
-            new FactoryRegistration(
                 EntitiesPluginKey,
                 FactoryKind.PluginFactory,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
                 new Id128(0x3A0277DFE2876559UL, 0xE64101339EF28547UL),
+                1U),
+            new FactoryRegistration(
+                QuestPluginKey,
+                FactoryKind.PluginFactory,
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                new Id128(0x992BE007C8076D0EUL, 0x2A0BEC213731EBC4UL),
                 1U),
         };
 
@@ -645,10 +781,6 @@ namespace Hollowmere.Generated
                 "gameplay.world.system.command",
                 new GameplayCatalogEntry(WorldCommandSystemKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                UiCommandSystemKey,
-                "gameplay.ui.system.command",
-                new GameplayCatalogEntry(UiCommandSystemKey)),
-            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
                 EntitiesCommandSystemKey,
                 "gameplay.entities.system.command",
                 new GameplayCatalogEntry(EntitiesCommandSystemKey)),
@@ -661,9 +793,21 @@ namespace Hollowmere.Generated
                 "gameplay.npc.system.command",
                 new GameplayCatalogEntry(NpcCommandSystemKey)),
             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
-                AudioCommandSystemKey,
-                "gameplay.audio.system.command",
-                new GameplayCatalogEntry(AudioCommandSystemKey)),
+                LogicCommandSystemKey,
+                "gameplay.logic.system.command",
+                new GameplayCatalogEntry(LogicCommandSystemKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                InventoryCommandSystemKey,
+                "gameplay.inventory.system.command",
+                new GameplayCatalogEntry(InventoryCommandSystemKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                DialogueCommandSystemKey,
+                "gameplay.dialogue.system.command",
+                new GameplayCatalogEntry(DialogueCommandSystemKey)),
+            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                QuestCommandSystemKey,
+                "gameplay.quest.system.command",
+                new GameplayCatalogEntry(QuestCommandSystemKey)),
         };
 
         /// <summary>Generated keys of SystemRegistrations, in the same canonical order.</summary>
@@ -671,11 +815,13 @@ namespace Hollowmere.Generated
         {
             InteractionCommandSystemKey,
             WorldCommandSystemKey,
-            UiCommandSystemKey,
             EntitiesCommandSystemKey,
             PlayerCommandSystemKey,
             NpcCommandSystemKey,
-            AudioCommandSystemKey,
+            LogicCommandSystemKey,
+            InventoryCommandSystemKey,
+            DialogueCommandSystemKey,
+            QuestCommandSystemKey,
         };
 
         /// <summary>
@@ -698,12 +844,6 @@ namespace Hollowmere.Generated
                 new Id128(0xAAD9D9E51DE0AB68UL, 0xB90722029F91A94CUL),
                 1U),
             new FactoryRegistration(
-                UiCommandSystemKey,
-                FactoryKind.SystemFactory,
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                new Id128(0x9B88925250C20213UL, 0xE4A27AC6B2777879UL),
-                1U),
-            new FactoryRegistration(
                 EntitiesCommandSystemKey,
                 FactoryKind.SystemFactory,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
@@ -722,10 +862,28 @@ namespace Hollowmere.Generated
                 new Id128(0x1ACF48323886BD99UL, 0x5E4AF0FA6EACBE09UL),
                 1U),
             new FactoryRegistration(
-                AudioCommandSystemKey,
+                LogicCommandSystemKey,
                 FactoryKind.SystemFactory,
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                new Id128(0x91C4998B997DEB4DUL, 0x5F7075C806DC48EDUL),
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                new Id128(0xA7EBFBFD78B3719EUL, 0x8038078EC0A7C578UL),
+                1U),
+            new FactoryRegistration(
+                InventoryCommandSystemKey,
+                FactoryKind.SystemFactory,
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                new Id128(0x4A93F57F91FCB106UL, 0x0A8E8743361244FAUL),
+                1U),
+            new FactoryRegistration(
+                DialogueCommandSystemKey,
+                FactoryKind.SystemFactory,
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                new Id128(0xE22B014752BF3C79UL, 0x490988470ABE1763UL),
+                1U),
+            new FactoryRegistration(
+                QuestCommandSystemKey,
+                FactoryKind.SystemFactory,
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                new Id128(0xC387C3AC389208D3UL, 0xE3AE33437F3B946FUL),
                 1U),
         };
 
@@ -733,9 +891,9 @@ namespace Hollowmere.Generated
         public static readonly SchemaRegistration[] SchemaRegistrations =
         {
             new SchemaRegistration(
-                new SchemaRef(new SchemaId(new Id128(0x1BC456373FBE3F86UL, 0x8BC2E5C177007664UL)), 1U),
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                AudioSessionDomainSerializerKey,
+                new SchemaRef(new SchemaId(new Id128(0x0646108E2C9B02C3UL, 0xDE2817BD30EE7E0FUL)), 1U),
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                LogicRuleDomainSerializerKey,
                 true),
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0x1F1B4FC9193F8E17UL, 0x33BC1DB6DE6D0134UL)), 1U),
@@ -748,19 +906,24 @@ namespace Hollowmere.Generated
                 InteractionDomainSerializerKey,
                 true),
             new SchemaRegistration(
-                new SchemaRef(new SchemaId(new Id128(0x514B9CFAAE186029UL, 0x12501C90F1C06DA4UL)), 1U),
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                UiSessionDomainSerializerKey,
+                new SchemaRef(new SchemaId(new Id128(0x38D15112D28ACADBUL, 0x6465397519364557UL)), 1U),
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                QuestDomainSerializerKey,
                 true),
             new SchemaRegistration(
-                new SchemaRef(new SchemaId(new Id128(0x526E30AFB16E0BEBUL, 0x969141E359DFF9FDUL)), 1U),
-                new Id128(0x59E3E7C00E9C7331UL, 0xFEC41E405ED7F9A4UL),
-                UiConfigSerializerKey,
+                new SchemaRef(new SchemaId(new Id128(0x3AFB67258A3DDA2DUL, 0xEF658105A47FC26AUL)), 1U),
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                DialogueGraphDomainSerializerKey,
                 true),
             new SchemaRegistration(
-                new SchemaRef(new SchemaId(new Id128(0x56E032F53333EE2CUL, 0x6DC6E1A6698F7900UL)), 1U),
-                new Id128(0x0248EB1DC93BBD43UL, 0x2CCA1D673BE5812DUL),
-                AudioConfigSerializerKey,
+                new SchemaRef(new SchemaId(new Id128(0x4B5734672D486B6AUL, 0x91B9802F79A74E09UL)), 1U),
+                new Id128(0x517BCB94525A7A5EUL, 0xE5CA5DE819D11620UL),
+                LogicConfigSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0x4EDBA65DF9246FDBUL, 0xED60CDC2ED88B816UL)), 1U),
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                WorldItemDomainSerializerKey,
                 true),
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0x591E4C60589DD3CCUL, 0x036F8EF9B6B36583UL)), 1U),
@@ -778,9 +941,24 @@ namespace Hollowmere.Generated
                 RegionDomainSerializerKey,
                 true),
             new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0x7B9EC8CE112E6FC0UL, 0x7530C359352C41FFUL)), 1U),
+                new Id128(0xBFBDE0469A539D07UL, 0x1855617EB34B4429UL),
+                QuestConfigSerializerKey,
+                true),
+            new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0x7E9832F89FEA7930UL, 0x769A8DA69C625EB6UL)), 1U),
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
                 EntityDomainSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0x95008C0E39A2FE35UL, 0x3887DC478908698DUL)), 1U),
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                InventoryDomainSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0x9723CD74E6B88C90UL, 0x31B8FA1D1767395EUL)), 1U),
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                DialogueStateDomainSerializerKey,
                 true),
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0xAE4DE82841137791UL, 0x564467A29C5BEE08UL)), 1U),
@@ -791,6 +969,16 @@ namespace Hollowmere.Generated
                 new SchemaRef(new SchemaId(new Id128(0xBBE64FF0E171CF3CUL, 0xE1ECE89FC954BC82UL)), 1U),
                 new Id128(0x097C7524BC7C9AC6UL, 0x5817B4E931A440AEUL),
                 WorldConfigSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0xC02EB03E6678A172UL, 0x0470ABEE65689DBEUL)), 1U),
+                new Id128(0xE621D625C5D0D0DFUL, 0xCBFDC589678DFE37UL),
+                DialogueConfigSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0xCD2052CBAA743793UL, 0xE449CB926EB1C8FDUL)), 1U),
+                new Id128(0x3CBDA98BFE825529UL, 0xCCBA62AA9E92C72EUL),
+                InventoryConfigSerializerKey,
                 true),
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0xCE219A2B270DE50EUL, 0x7F6C3DDB35AFE7A3UL)), 1U),
@@ -886,15 +1074,15 @@ namespace Hollowmere.Generated
         }
 
         /// <summary>
-        /// Generated value of schema 1bc456373fbe3f868bc2e5c177007664 ('gameplay.audio.serializer.domain-session').
+        /// Generated value of schema 0646108e2c9b02c3de2817bd30ee7e0f ('gameplay.logic.serializer.domain-rule').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
-        public readonly struct AudioSessionDomainValue
+        public readonly struct LogicRuleDomainValue
         {
             /// <summary>Field id 1, wire type UInt32, required.</summary>
             public readonly uint SchemaVersion;
 
-            public AudioSessionDomainValue(uint schemaVersion)
+            public LogicRuleDomainValue(uint schemaVersion)
             {
                 SchemaVersion = schemaVersion;
             }
@@ -902,25 +1090,25 @@ namespace Hollowmere.Generated
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "AudioSessionDomainValue(SchemaVersion=" + SchemaVersion + ")";
+                return "LogicRuleDomainValue(SchemaVersion=" + SchemaVersion + ")";
             }
         }
 
         /// <summary>
-        /// Generated serializer of schema 1bc456373fbe3f868bc2e5c177007664 version 1. Canonical envelope format only: no reflection,
+        /// Generated serializer of schema 0646108e2c9b02c3de2817bd30ee7e0f version 1. Canonical envelope format only: no reflection,
         /// no dynamic type construction (05 s6, P-054).
         /// </summary>
-        public sealed class AudioSessionDomainSerializer : GeneratedSerializerBase
+        public sealed class LogicRuleDomainSerializer : GeneratedSerializerBase
         {
             private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
 
-            public AudioSessionDomainSerializer()
+            public LogicRuleDomainSerializer()
                 : base(
-                    AudioSessionDomainSerializerKey,
-                    new SchemaRef(new SchemaId(new Id128(0x1BC456373FBE3F86UL, 0x8BC2E5C177007664UL)), 1U),
+                    LogicRuleDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x0646108E2C9B02C3UL, 0xDE2817BD30EE7E0FUL)), 1U),
                     SupportedFeatureIds)
             {
             }
@@ -929,7 +1117,7 @@ namespace Hollowmere.Generated
             protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
 
             /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
-            public byte[] Serialize(AudioSessionDomainValue value)
+            public byte[] Serialize(LogicRuleDomainValue value)
             {
                 EnvelopeWriter writer = CreateWriter();
                 writer.WriteUInt32Field(1, value.SchemaVersion);
@@ -941,9 +1129,9 @@ namespace Hollowmere.Generated
             /// Validates one document against this schema and decodes its declared fields. A false result
             /// reports the exact envelope error and leaves the value at its default.
             /// </summary>
-            public bool TryDeserialize(byte[] document, out AudioSessionDomainValue value, out EnvelopeError error)
+            public bool TryDeserialize(byte[] document, out LogicRuleDomainValue value, out EnvelopeError error)
             {
-                value = default(AudioSessionDomainValue);
+                value = default(LogicRuleDomainValue);
                 GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
                 if (!TryReadDeclaredFields(document, buffer, out error))
                 {
@@ -988,7 +1176,7 @@ namespace Hollowmere.Generated
 
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
-                value = new AudioSessionDomainValue(value0);
+                value = new LogicRuleDomainValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
@@ -1213,15 +1401,15 @@ namespace Hollowmere.Generated
         }
 
         /// <summary>
-        /// Generated value of schema 514b9cfaae18602912501c90f1c06da4 ('gameplay.ui.serializer.domain-session').
+        /// Generated value of schema 38d15112d28acadb6465397519364557 ('gameplay.quest.serializer.domain-quest').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
-        public readonly struct UiSessionDomainValue
+        public readonly struct QuestDomainValue
         {
             /// <summary>Field id 1, wire type UInt32, required.</summary>
             public readonly uint SchemaVersion;
 
-            public UiSessionDomainValue(uint schemaVersion)
+            public QuestDomainValue(uint schemaVersion)
             {
                 SchemaVersion = schemaVersion;
             }
@@ -1229,25 +1417,25 @@ namespace Hollowmere.Generated
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "UiSessionDomainValue(SchemaVersion=" + SchemaVersion + ")";
+                return "QuestDomainValue(SchemaVersion=" + SchemaVersion + ")";
             }
         }
 
         /// <summary>
-        /// Generated serializer of schema 514b9cfaae18602912501c90f1c06da4 version 1. Canonical envelope format only: no reflection,
+        /// Generated serializer of schema 38d15112d28acadb6465397519364557 version 1. Canonical envelope format only: no reflection,
         /// no dynamic type construction (05 s6, P-054).
         /// </summary>
-        public sealed class UiSessionDomainSerializer : GeneratedSerializerBase
+        public sealed class QuestDomainSerializer : GeneratedSerializerBase
         {
             private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
 
-            public UiSessionDomainSerializer()
+            public QuestDomainSerializer()
                 : base(
-                    UiSessionDomainSerializerKey,
-                    new SchemaRef(new SchemaId(new Id128(0x514B9CFAAE186029UL, 0x12501C90F1C06DA4UL)), 1U),
+                    QuestDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x38D15112D28ACADBUL, 0x6465397519364557UL)), 1U),
                     SupportedFeatureIds)
             {
             }
@@ -1256,7 +1444,7 @@ namespace Hollowmere.Generated
             protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
 
             /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
-            public byte[] Serialize(UiSessionDomainValue value)
+            public byte[] Serialize(QuestDomainValue value)
             {
                 EnvelopeWriter writer = CreateWriter();
                 writer.WriteUInt32Field(1, value.SchemaVersion);
@@ -1268,9 +1456,9 @@ namespace Hollowmere.Generated
             /// Validates one document against this schema and decodes its declared fields. A false result
             /// reports the exact envelope error and leaves the value at its default.
             /// </summary>
-            public bool TryDeserialize(byte[] document, out UiSessionDomainValue value, out EnvelopeError error)
+            public bool TryDeserialize(byte[] document, out QuestDomainValue value, out EnvelopeError error)
             {
-                value = default(UiSessionDomainValue);
+                value = default(QuestDomainValue);
                 GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
                 if (!TryReadDeclaredFields(document, buffer, out error))
                 {
@@ -1315,22 +1503,22 @@ namespace Hollowmere.Generated
 
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
-                value = new UiSessionDomainValue(value0);
+                value = new QuestDomainValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
         }
 
         /// <summary>
-        /// Generated value of schema 526e30afb16e0beb969141e359dff9fd ('gameplay.ui.serializer.config').
+        /// Generated value of schema 3afb67258a3dda2def658105a47fc26a ('gameplay.dialogue.serializer.domain-graph').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
-        public readonly struct UiConfigValue
+        public readonly struct DialogueGraphDomainValue
         {
             /// <summary>Field id 1, wire type UInt32, required.</summary>
             public readonly uint SchemaVersion;
 
-            public UiConfigValue(uint schemaVersion)
+            public DialogueGraphDomainValue(uint schemaVersion)
             {
                 SchemaVersion = schemaVersion;
             }
@@ -1338,25 +1526,25 @@ namespace Hollowmere.Generated
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "UiConfigValue(SchemaVersion=" + SchemaVersion + ")";
+                return "DialogueGraphDomainValue(SchemaVersion=" + SchemaVersion + ")";
             }
         }
 
         /// <summary>
-        /// Generated serializer of schema 526e30afb16e0beb969141e359dff9fd version 1. Canonical envelope format only: no reflection,
+        /// Generated serializer of schema 3afb67258a3dda2def658105a47fc26a version 1. Canonical envelope format only: no reflection,
         /// no dynamic type construction (05 s6, P-054).
         /// </summary>
-        public sealed class UiConfigSerializer : GeneratedSerializerBase
+        public sealed class DialogueGraphDomainSerializer : GeneratedSerializerBase
         {
             private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
 
-            public UiConfigSerializer()
+            public DialogueGraphDomainSerializer()
                 : base(
-                    UiConfigSerializerKey,
-                    new SchemaRef(new SchemaId(new Id128(0x526E30AFB16E0BEBUL, 0x969141E359DFF9FDUL)), 1U),
+                    DialogueGraphDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x3AFB67258A3DDA2DUL, 0xEF658105A47FC26AUL)), 1U),
                     SupportedFeatureIds)
             {
             }
@@ -1365,7 +1553,7 @@ namespace Hollowmere.Generated
             protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
 
             /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
-            public byte[] Serialize(UiConfigValue value)
+            public byte[] Serialize(DialogueGraphDomainValue value)
             {
                 EnvelopeWriter writer = CreateWriter();
                 writer.WriteUInt32Field(1, value.SchemaVersion);
@@ -1377,9 +1565,9 @@ namespace Hollowmere.Generated
             /// Validates one document against this schema and decodes its declared fields. A false result
             /// reports the exact envelope error and leaves the value at its default.
             /// </summary>
-            public bool TryDeserialize(byte[] document, out UiConfigValue value, out EnvelopeError error)
+            public bool TryDeserialize(byte[] document, out DialogueGraphDomainValue value, out EnvelopeError error)
             {
-                value = default(UiConfigValue);
+                value = default(DialogueGraphDomainValue);
                 GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
                 if (!TryReadDeclaredFields(document, buffer, out error))
                 {
@@ -1424,22 +1612,22 @@ namespace Hollowmere.Generated
 
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
-                value = new UiConfigValue(value0);
+                value = new DialogueGraphDomainValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
         }
 
         /// <summary>
-        /// Generated value of schema 56e032f53333ee2c6dc6e1a6698f7900 ('gameplay.audio.serializer.config').
+        /// Generated value of schema 4b5734672d486b6a91b9802f79a74e09 ('gameplay.logic.serializer.config').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
-        public readonly struct AudioConfigValue
+        public readonly struct LogicConfigValue
         {
             /// <summary>Field id 1, wire type UInt32, required.</summary>
             public readonly uint SchemaVersion;
 
-            public AudioConfigValue(uint schemaVersion)
+            public LogicConfigValue(uint schemaVersion)
             {
                 SchemaVersion = schemaVersion;
             }
@@ -1447,25 +1635,25 @@ namespace Hollowmere.Generated
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "AudioConfigValue(SchemaVersion=" + SchemaVersion + ")";
+                return "LogicConfigValue(SchemaVersion=" + SchemaVersion + ")";
             }
         }
 
         /// <summary>
-        /// Generated serializer of schema 56e032f53333ee2c6dc6e1a6698f7900 version 1. Canonical envelope format only: no reflection,
+        /// Generated serializer of schema 4b5734672d486b6a91b9802f79a74e09 version 1. Canonical envelope format only: no reflection,
         /// no dynamic type construction (05 s6, P-054).
         /// </summary>
-        public sealed class AudioConfigSerializer : GeneratedSerializerBase
+        public sealed class LogicConfigSerializer : GeneratedSerializerBase
         {
             private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
             {
                 new GeneratedFieldSlot(1, WireType.UInt32, true),
             };
 
-            public AudioConfigSerializer()
+            public LogicConfigSerializer()
                 : base(
-                    AudioConfigSerializerKey,
-                    new SchemaRef(new SchemaId(new Id128(0x56E032F53333EE2CUL, 0x6DC6E1A6698F7900UL)), 1U),
+                    LogicConfigSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x4B5734672D486B6AUL, 0x91B9802F79A74E09UL)), 1U),
                     SupportedFeatureIds)
             {
             }
@@ -1474,7 +1662,7 @@ namespace Hollowmere.Generated
             protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
 
             /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
-            public byte[] Serialize(AudioConfigValue value)
+            public byte[] Serialize(LogicConfigValue value)
             {
                 EnvelopeWriter writer = CreateWriter();
                 writer.WriteUInt32Field(1, value.SchemaVersion);
@@ -1486,9 +1674,9 @@ namespace Hollowmere.Generated
             /// Validates one document against this schema and decodes its declared fields. A false result
             /// reports the exact envelope error and leaves the value at its default.
             /// </summary>
-            public bool TryDeserialize(byte[] document, out AudioConfigValue value, out EnvelopeError error)
+            public bool TryDeserialize(byte[] document, out LogicConfigValue value, out EnvelopeError error)
             {
-                value = default(AudioConfigValue);
+                value = default(LogicConfigValue);
                 GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
                 if (!TryReadDeclaredFields(document, buffer, out error))
                 {
@@ -1533,7 +1721,116 @@ namespace Hollowmere.Generated
 
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
-                value = new AudioConfigValue(value0);
+                value = new LogicConfigValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Generated value of schema 4edba65df9246fdbed60cdc2ed88b816 ('gameplay.inventory.serializer.domain-world-item').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct WorldItemDomainValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public WorldItemDomainValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "WorldItemDomainValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema 4edba65df9246fdbed60cdc2ed88b816 version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class WorldItemDomainSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public WorldItemDomainSerializer()
+                : base(
+                    WorldItemDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x4EDBA65DF9246FDBUL, 0xED60CDC2ED88B816UL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(WorldItemDomainValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out WorldItemDomainValue value, out EnvelopeError error)
+            {
+                value = default(WorldItemDomainValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new WorldItemDomainValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
@@ -1867,6 +2164,115 @@ namespace Hollowmere.Generated
         }
 
         /// <summary>
+        /// Generated value of schema 7b9ec8ce112e6fc07530c359352c41ff ('gameplay.quest.serializer.config').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct QuestConfigValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public QuestConfigValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "QuestConfigValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema 7b9ec8ce112e6fc07530c359352c41ff version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class QuestConfigSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public QuestConfigSerializer()
+                : base(
+                    QuestConfigSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x7B9EC8CE112E6FC0UL, 0x7530C359352C41FFUL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(QuestConfigValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out QuestConfigValue value, out EnvelopeError error)
+            {
+                value = default(QuestConfigValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new QuestConfigValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Generated value of schema 7e9832f89fea7930769a8da69c625eb6 ('gameplay.entities.serializer.domain-entity').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
@@ -1970,6 +2376,224 @@ namespace Hollowmere.Generated
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
                 value = new EntityDomainValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Generated value of schema 95008c0e39a2fe353887dc478908698d ('gameplay.inventory.serializer.domain-inventory').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct InventoryDomainValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public InventoryDomainValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "InventoryDomainValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema 95008c0e39a2fe353887dc478908698d version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class InventoryDomainSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public InventoryDomainSerializer()
+                : base(
+                    InventoryDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x95008C0E39A2FE35UL, 0x3887DC478908698DUL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(InventoryDomainValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out InventoryDomainValue value, out EnvelopeError error)
+            {
+                value = default(InventoryDomainValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new InventoryDomainValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Generated value of schema 9723cd74e6b88c9031b8fa1d1767395e ('gameplay.dialogue.serializer.domain-state').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct DialogueStateDomainValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public DialogueStateDomainValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "DialogueStateDomainValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema 9723cd74e6b88c9031b8fa1d1767395e version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class DialogueStateDomainSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public DialogueStateDomainSerializer()
+                : base(
+                    DialogueStateDomainSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0x9723CD74E6B88C90UL, 0x31B8FA1D1767395EUL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(DialogueStateDomainValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out DialogueStateDomainValue value, out EnvelopeError error)
+            {
+                value = default(DialogueStateDomainValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new DialogueStateDomainValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
@@ -2188,6 +2812,224 @@ namespace Hollowmere.Generated
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
                 value = new WorldConfigValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Generated value of schema c02eb03e6678a1720470abee65689dbe ('gameplay.dialogue.serializer.config').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct DialogueConfigValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public DialogueConfigValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "DialogueConfigValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema c02eb03e6678a1720470abee65689dbe version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class DialogueConfigSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public DialogueConfigSerializer()
+                : base(
+                    DialogueConfigSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0xC02EB03E6678A172UL, 0x0470ABEE65689DBEUL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(DialogueConfigValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out DialogueConfigValue value, out EnvelopeError error)
+            {
+                value = default(DialogueConfigValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new DialogueConfigValue(value0);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Generated value of schema cd2052cbaa743793e449cb926eb1c8fd ('gameplay.inventory.serializer.config').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct InventoryConfigValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint SchemaVersion;
+
+            public InventoryConfigValue(uint schemaVersion)
+            {
+                SchemaVersion = schemaVersion;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "InventoryConfigValue(SchemaVersion=" + SchemaVersion + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema cd2052cbaa743793e449cb926eb1c8fd version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class InventoryConfigSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+            };
+
+            public InventoryConfigSerializer()
+                : base(
+                    InventoryConfigSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0xCD2052CBAA743793UL, 0xE449CB926EB1C8FDUL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(InventoryConfigValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.SchemaVersion);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out InventoryConfigValue value, out EnvelopeError error)
+            {
+                value = default(InventoryConfigValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new InventoryConfigValue(value0);
                 error = EnvelopeError.None;
                 return true;
             }
@@ -2526,18 +3368,24 @@ namespace Hollowmere.Generated
         /// </summary>
         public static readonly ISchemaSerializer[] Serializers =
         {
-            new AudioSessionDomainSerializer(),
+            new LogicRuleDomainSerializer(),
             new NpcConfigSerializer(),
             new InteractionDomainSerializer(),
-            new UiSessionDomainSerializer(),
-            new UiConfigSerializer(),
-            new AudioConfigSerializer(),
+            new QuestDomainSerializer(),
+            new DialogueGraphDomainSerializer(),
+            new LogicConfigSerializer(),
+            new WorldItemDomainSerializer(),
             new PlayerConfigSerializer(),
             new InteractionConfigSerializer(),
             new RegionDomainSerializer(),
+            new QuestConfigSerializer(),
             new EntityDomainSerializer(),
+            new InventoryDomainSerializer(),
+            new DialogueStateDomainSerializer(),
             new PlayerDomainSerializer(),
             new WorldConfigSerializer(),
+            new DialogueConfigSerializer(),
+            new InventoryConfigSerializer(),
             new EntitiesConfigSerializer(),
             new PlacementDomainSerializer(),
             new NpcDomainSerializer(),
@@ -2570,16 +3418,16 @@ namespace Hollowmere.Generated
         /// <summary>Every group's catalog registrations concatenated in declaration order.</summary>
         private static FactoryRegistration[] GroupCatalogRegistrations()
         {
-            FactoryRegistration[] all = new FactoryRegistration[40];
+            FactoryRegistration[] all = new FactoryRegistration[50];
             int offset = 0;
-            Array.Copy(LayoutRegistrationsCatalogRegistrations, 0, all, offset, 12);
-            offset += 12;
-            Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 7);
-            offset += 7;
+            Array.Copy(LayoutRegistrationsCatalogRegistrations, 0, all, offset, 18);
+            offset += 18;
+            Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 9);
+            offset += 9;
             Array.Copy(RecipeRegistrationsCatalogRegistrations, 0, all, offset, 14);
             offset += 14;
-            Array.Copy(SystemRegistrationsCatalogRegistrations, 0, all, offset, 7);
-            offset += 7;
+            Array.Copy(SystemRegistrationsCatalogRegistrations, 0, all, offset, 9);
+            offset += 9;
             return all;
         }
 
@@ -2611,9 +3459,9 @@ namespace Hollowmere.Generated
         public const int RegistrationGroupCount = 4;
 
         /// <summary>Number of declared schemas.</summary>
-        public const int SchemaCount = 15;
+        public const int SchemaCount = 21;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "6f69c4469355a2571cb7eb907d04a9a505af89f82c7ded60d46d27146f9c7270";
+        public const string CatalogFileHash = "f23a8184d3307d96580f938a41e7b7cb9db862edf18393dc60efbe3e101833d9";
     }
 }

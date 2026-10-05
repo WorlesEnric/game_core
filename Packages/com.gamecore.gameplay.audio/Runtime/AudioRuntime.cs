@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Audio;
 using GameCore.Unity.Runtime.Messages;

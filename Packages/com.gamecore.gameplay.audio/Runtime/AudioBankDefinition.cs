@@ -64,6 +64,20 @@ namespace GameCore.Gameplay.Audio
             return false;
         }
 
+        /// <summary>The id of the first entry holding <paramref name="clip"/>, or empty.</summary>
+        public string IdOf(AudioClip clip)
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (clip != null && entries[i].Clip == clip)
+                {
+                    return entries[i].Id;
+                }
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>Adds or replaces the clip of an id (keeps an existing entry's settings); returns the entry.</summary>
         public AudioBankEntry Assign(string id, AudioClip? clip, AudioGroup group, float volume, bool loop, bool spatial)
         {

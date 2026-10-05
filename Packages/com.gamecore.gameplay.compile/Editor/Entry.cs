@@ -9,6 +9,8 @@
 //   3. <dir>/Catalog/<World>.bake.json            the canonical bake report, carrying the catalog fingerprint
 //   4. <dir>/<World>.manifest.asset               the RegionManifest the runtime boots from
 //   5. the content stamp of every entity definition (only when it changed)
+//   6. the outputs of every bake extension (IGameplayBakeExtension, P1.4: the narrative content manifest), planned
+//      together with the bake's diagnostics and checked by Verify
 //
 // Everything is sorted by authoring id, every id is GUID-derived and every text file is LF/UTF-8 without BOM, so two
 // bakes of the same content are byte-identical. Verify recomputes everything in memory and compares it with the files
@@ -215,6 +217,8 @@ namespace GameCore.Gameplay.Compile
                 result.ChangedFiles.Add(paths.ManifestPath);
             }
 
+            GameplayBakeExtensions.Write(outputs.Extensions, result.ChangedFiles);
+
             foreach (KeyValuePair<string, EntityDefinition> pair in outputs.Read.Definitions)
             {
                 BakedDefinition? baked = outputs.Read.World.FindDefinition(pair.Key);
@@ -258,6 +262,8 @@ namespace GameCore.Gameplay.Compile
                     "the region manifest does not record this bake"));
             }
 
+            GameplayBakeExtensions.Verify(outputs.Extensions, mismatches);
+
             var result = new BakeResult(mismatches.Count == 0, mismatches,
                 (mismatches.Count == 0 ? "verified " : "stale bake of ") + paths.WorldAssetPath);
             Fill(result, outputs);
@@ -279,8 +285,9 @@ namespace GameCore.Gameplay.Compile
 
         private sealed class Outputs
         {
-            public Outputs(WorldReadResult read, string description, string generatedCode, string fingerprint, string report, string catalogTypeName)
+            public Outputs(WorldReadResult read, string description, string generatedCode, string fingerprint, string report, string catalogTypeName, GameplayBakeContext extensions)
             {
+                Extensions = extensions;
                 CatalogTypeName = catalogTypeName;
                 Read = read;
                 Description = description;
@@ -300,6 +307,8 @@ namespace GameCore.Gameplay.Compile
             public string Report { get; }
 
             public string CatalogTypeName { get; }
+
+            public GameplayBakeContext Extensions { get; }
         }
 
         private static Outputs? Compute(WorldDefinition world, BakePaths paths, out BakeResult? failure)
@@ -314,6 +323,8 @@ namespace GameCore.Gameplay.Compile
             WorldReadResult read = WorldReader.Read(world);
             var diagnostics = new List<GameplayDiagnostic>(read.Diagnostics);
             diagnostics.AddRange(BakeValidator.Validate(read.World));
+            GameplayBakeContext extensions = GameplayBakeExtensions.Plan(world, paths, read.World);
+            diagnostics.AddRange(extensions.Diagnostics);
             if (diagnostics.Count > 0)
             {
                 failure = new BakeResult(false, diagnostics, "bake of " + paths.WorldAssetPath + " refused with " + diagnostics.Count + " problem(s)");
@@ -331,7 +342,7 @@ namespace GameCore.Gameplay.Compile
             string code = compiled.GeneratedCode!;
             string fingerprint = CatalogGenerator.ExtractStringConstant(code, "CatalogFingerprint") ?? string.Empty;
             string report = BakeReportWriter.Write(read.World, fingerprint);
-            return new Outputs(read, description, code, fingerprint, report, paths.Naming.Namespace + "." + paths.Naming.ClassName);
+            return new Outputs(read, description, code, fingerprint, report, paths.Naming.Namespace + "." + paths.Naming.ClassName, extensions);
         }
 
         private static bool WriteManifest(string path, Outputs outputs)

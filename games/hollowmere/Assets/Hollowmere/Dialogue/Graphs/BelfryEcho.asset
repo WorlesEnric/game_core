@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: BelfryEcho
+  m_EditorClassIdentifier: 
+  authoringId: b9b85886-492d-40a3-9edb-02c9d9a417b0
+  contentStamp: 782423efa5386f1d067e0335fcf2e731c7c63fd929f8a05f7ece0bfd47ef6d13
+  speaker: Belfry Echo
+  speakerEntityId: a91b8bb5-cbd4-4872-871b-118e53cc465d
+  npcGraphRef: dialogue.belfry_echo
+  entry: 0
+  nodes:
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: cbdd4a8b5176fcea6841a70d15db8d3c, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: ...silent... the bell is silent...
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 9ff24c44b07c174059bcd8a609b1f7ff, type: 2}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The toll... I hear it... I am free.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 0
+    port: 1
+    option: 0
+    to: 1
+  - from: 0
+    port: 0
+    option: 0
+    to: 2
+  - from: 2
+    port: 0
+    option: 0
+    to: 3

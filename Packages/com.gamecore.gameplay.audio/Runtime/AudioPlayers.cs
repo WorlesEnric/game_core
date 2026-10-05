@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Rules.Gameplay.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -299,11 +300,17 @@ namespace GameCore.Gameplay.Audio
     }
 
     /// <summary>
-    /// Dialogue voice lines (IVoiceLinePlayer): Play/Stop submit audio.playVoice / audio.stopVoice; the committed events
-    /// start and stop the clip, so a voice line is ordered with the step that showed the line.
+    /// Dialogue voice lines (P1.4's IVoiceLinePlayer): Play/Stop submit audio.playVoice / audio.stopVoice; the committed
+    /// events start and stop the clip, so a voice line is ordered with the step that showed the line. A request's clip is
+    /// the bank entry holding its AudioClip (or whose id is its ClipRef); a clip that is not in the bank is remembered by
+    /// the key of its ClipRef and played directly. A line with neither clip nor ref plays nothing.
     /// </summary>
     public sealed class VoicePlayer : IVoiceLinePlayer
     {
+        /// <summary>Direct (non-bank) clips remembered at most.</summary>
+        public const int MaxDirectClips = 32;
+
+        private readonly Dictionary<int, AudioClip> directClips = new Dictionary<int, AudioClip>();
         private readonly Func<AudioCommandIssuer?> issuer;
         private readonly Func<AudioSetDefinition?> set;
         private AudioSource? source;
@@ -331,14 +338,62 @@ namespace GameCore.Gameplay.Audio
 
         public void AttachSource(AudioSource voice) => source = voice;
 
+        /// <summary>Lines received without a playable clip (no AudioClip and no ClipRef).</summary>
+        public int Silent { get; private set; }
+
+        /// <summary>The last stop reason (IVoiceLinePlayer.Stop).</summary>
+        public string LastStopReason { get; private set; } = string.Empty;
+
+        /// <summary>IVoiceLinePlayer (P1.4's VoiceLinePlayer binder): plays the request's clip, interrupting the current line.</summary>
+        public void Play(VoiceLineRequest request)
+        {
+            if (request == null)
+            {
+                return;
+            }
+
+            AudioSetDefinition? current = set();
+            AudioClip? clip = request.Clip as AudioClip;
+            string id = string.Empty;
+            if (clip != null && current != null && current.Bank != null)
+            {
+                id = current.Bank.IdOf(clip);
+            }
+
+            if (id.Length == 0 && request.ClipRef.Length > 0)
+            {
+                id = request.ClipRef;
+                if (clip != null && (current == null || current.Bank == null || !current.Bank.TryGet(id, out AudioBankEntry? _)))
+                {
+                    if (directClips.Count >= MaxDirectClips)
+                    {
+                        directClips.Clear();
+                    }
+
+                    directClips[PresentationSlots.KeyOf(id)] = clip;
+                }
+            }
+
+            if (id.Length == 0)
+            {
+                Silent++;
+                return;
+            }
+
+            Play(id, request.Speaker);
+        }
+
+        /// <summary>Plays a bank clip id (or a remembered direct clip's ref) for a speaker through audio.playVoice.</summary>
         public void Play(string clipRef, string speakerId)
         {
             Requested++;
             issuer()?.PlayVoice(clipRef ?? string.Empty, speakerId ?? string.Empty);
         }
 
-        public void Stop()
+        /// <summary>IVoiceLinePlayer: stops the current line through audio.stopVoice.</summary>
+        public void Stop(string reason)
         {
+            LastStopReason = reason ?? string.Empty;
             issuer()?.StopVoice();
         }
 
@@ -355,7 +410,8 @@ namespace GameCore.Gameplay.Audio
                 current.Bank.TryGet(clipKey, out entry);
             }
 
-            endsAtMs = nowMs + (entry != null && entry.Clip != null ? (long)(entry.Clip.length * 1000f) : 0L);
+            AudioClip? clip = entry != null ? entry.Clip : (directClips.TryGetValue(clipKey, out AudioClip? direct) ? direct : null);
+            endsAtMs = nowMs + (clip != null ? (long)(clip.length * 1000f) : 0L);
             if (source == null)
             {
                 return;
@@ -363,7 +419,7 @@ namespace GameCore.Gameplay.Audio
 
             source.Stop();
             source.outputAudioMixerGroup = group;
-            source.clip = entry?.Clip;
+            source.clip = clip;
             source.volume = entry != null ? entry.Volume : 1f;
             if (source.clip != null)
             {

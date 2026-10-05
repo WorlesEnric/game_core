@@ -1,9 +1,9 @@
 // GameCore.Gameplay.Ui - UiRuntime: the UI's presentation runtime of one game (P1.5, catalog row 10).
 //
 // One runtime per game, across restores. It owns the UI world extension, the view models, the command dispatcher and
-// the host action queue, and it implements the presentation interfaces the other gameplay packages call:
-// IPromptPresenter, IDialogueView, IJournalView, IInventoryView, IUiIntentSink and IGameplayPauseQuery (registered in
-// the world's PresentationServices on every attach). After each pump its presenter binder (headless-safe: it touches no
+// the host action queue, and it implements the presentation interfaces the other gameplay packages call: P1.3's
+// IPromptPresenter and IUiIntentSink, P1.4's IDialogueView, IJournalView, IInventoryView and INarrativeMessageSink, and
+// IGameplayPauseQuery (registered in the world's PresentationServices on every attach). After each pump its presenter binder (headless-safe: it touches no
 // engine object) reads the committed UI slots and the committed events since the last frame:
 //   * ui.screen / ui.message -> the screen model (screen, pause, message text from the message table);
 //   * ScreenChanged with a host action -> queued for the host (save, load, delete, continue, new game, restart, quit);
@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Save;
 using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Ui;
@@ -71,10 +72,11 @@ namespace GameCore.Gameplay.Ui
     }
 
     /// <summary>The UI presentation runtime of one game.</summary>
-    public sealed class UiRuntime : IPromptPresenter, IDialogueView, IJournalView, IInventoryView, IUiIntentSink, IGameplayPauseQuery
+    public sealed class UiRuntime : IPromptPresenter, IDialogueView, IJournalView, IInventoryView, INarrativeMessageSink, IUiIntentSink, IGameplayPauseQuery
     {
         private readonly UiRuntimeOptions options;
         private readonly Queue<ScreenChanged> hostActions = new Queue<ScreenChanged>();
+        private long narrativeMessageUntilMs;
         private readonly List<IPresentationBinder> viewBinders = new List<IPresentationBinder>();
         private readonly Dictionary<string, string> eventValues = new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly List<CommittedEvent> events = new List<CommittedEvent>();
@@ -235,18 +237,49 @@ namespace GameCore.Gameplay.Ui
             Models.Prompt.Visible = false;
         }
 
-        void IDialogueView.Show(DialogueViewModel vm) => Models.Dialogue.Apply(vm);
+        /// <summary>IDialogueView (P1.4's DialoguePresenter, on every committed node change; an inactive model hides the panel).</summary>
+        public void Show(DialogueViewModel model) => Models.Dialogue.Apply(model);
 
-        void IDialogueView.Hide() => Models.Dialogue.Clear();
-
-        public void Update(JournalViewModel vm)
+        /// <summary>IJournalView (P1.4's JournalPresenter): the journal screen and the HUD objective line.</summary>
+        public void Show(JournalViewModel model)
         {
-            string objective = Models.Journal.Apply(vm);
+            string objective = Models.Journal.Apply(model);
             Models.Hud.ObjectiveText = objective;
             Models.Hud.ObjectiveVisible = objective.Length > 0;
         }
 
-        public void Update(InventoryViewModel vm) => Models.Inventory.Apply(vm);
+        /// <summary>IInventoryView (P1.4's InventoryPresenter): the inventory screen.</summary>
+        public void Show(InventoryViewModel model) => Models.Inventory.Apply(model);
+
+        /// <summary>How long a showMessage line stays on the message line (when no committed ui.message is shown).</summary>
+        public const long NarrativeMessageMilliseconds = 4000;
+
+        /// <summary>How many showMessage messages were received.</summary>
+        public int NarrativeMessages { get; private set; }
+
+        /// <summary>The text of the last showMessage message.</summary>
+        public string LastNarrativeMessage { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// INarrativeMessageSink (P1.4's showMessage actions): shown on the screen's message line for a few seconds;
+        /// presentation only (a committed ui.message takes precedence).
+        /// </summary>
+        public void Show(NarrativeMessage message)
+        {
+            if (message == null || message.Text.Length == 0)
+            {
+                return;
+            }
+
+            NarrativeMessages++;
+            LastNarrativeMessage = message.Text;
+            narrativeMessageUntilMs = clock.ElapsedMilliseconds + NarrativeMessageMilliseconds;
+            if (Models.Screen.MessageText.Length == 0)
+            {
+                Models.Screen.MessageText = message.Text;
+                Models.Screen.MessageVisible = true;
+            }
+        }
 
         /// <summary>IUiIntentSink (P1.3's PlayerInputAdapter): Pause, Journal or Inventory opens/closes screens through ui.open/ui.close.</summary>
         public void Raise(UiIntent intent) => RaiseIntent((int)intent);
@@ -551,6 +584,7 @@ namespace GameCore.Gameplay.Ui
             services.Register<IJournalView>(this);
             services.Register<IInventoryView>(this);
             services.Register<IUiIntentSink>(this);
+            services.Register<INarrativeMessageSink>(this);
             services.Register<IGameplayPauseQuery>(this);
             services.Register<IPlayerSettings>(Settings);
             world.AddBinder(binder);
@@ -595,6 +629,11 @@ namespace GameCore.Gameplay.Ui
             screen.ScreenName = ((UiScreen)state.Screen).ToString();
             screen.GameplayPaused = ScreenFlowRules.PausesGameplay((UiScreen)state.Screen);
             string message = Messages.TextOf(state.Message);
+            if (message.Length == 0 && LastNarrativeMessage.Length > 0 && clock.ElapsedMilliseconds < narrativeMessageUntilMs)
+            {
+                message = LastNarrativeMessage;
+            }
+
             screen.MessageText = message;
             screen.MessageVisible = message.Length > 0;
             eventValues["message"] = message;

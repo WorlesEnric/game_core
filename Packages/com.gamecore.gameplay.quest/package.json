@@ -1,0 +1,26 @@
+{
+  "name": "com.gamecore.gameplay.quest",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Quest",
+  "description": "Catalog row 7 of the gameplay plugin library (P1.4): quests. Authoring: QuestDefinition with stages, ObjectiveDefinition (talk, collect, reach, interact, fact; alternative branches), rewards and fail conditions. Kernel half: one target per quest with the quest.status/stage/branch and quest.obj.<n>.count/done slots, the quest.start/advance/setObjective/fail/complete routes and the QuestStarted/StageEntered/ObjectiveUpdated/QuestCompleted/QuestFailed/RewardGranted events; rewards are delivered exactly once through the narrative outbox as inventory.grant with a request id. Runtime: QuestTracker (objective signals and level objectives to commands), JournalPresenter (IJournalView) and ObjectiveMarker. Editor: quest.addStage, addObjective, linkReward and simulate.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "quest"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.logic": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

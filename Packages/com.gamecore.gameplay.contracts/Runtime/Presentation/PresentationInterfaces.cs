@@ -1,62 +1,32 @@
-// GameCore.Gameplay.Contracts - presentation interfaces shared by the gameplay plugin library (P1.4/P1.5).
+// GameCore.Gameplay.Contracts - presentation interfaces of the UI and audio (P1.5).
 //
-// P1.3's contracts own the player-facing seams (PlayerContracts.cs: IPromptPresenter, UiIntent/IUiIntentSink,
-// IFootstepSink; InteractionContracts.cs: IFeedbackSink), which P1.5 implements. The view and voice interfaces below
-// (IDialogueView, IJournalView, IInventoryView, IVoiceLinePlayer) are declared additively by P1.5 under the names the
-// plan fixes, until P1.4's declarations land; the integrator reconciles same-named declarations. Every member is
-// engine-free: view models are plain classes of strings, ints and arrays.
-//
-// A presentation interface never writes authoritative state. The input interfaces (IDialogueInput, IInventoryInput,
-// IVolumeSettingsSink) are the other direction: the UI calls them with a player's choice, and their implementation
-// (the owning gameplay package) turns it into that package's typed command.
+// The player-facing seams are P1.3's (PlayerContracts.cs: IPromptPresenter, UiIntent/IUiIntentSink, IFootstepSink;
+// InteractionContracts.cs: IFeedbackSink) and the narrative views are P1.4's (Narrative/: IDialogueView, IJournalView,
+// IInventoryView, IVoiceLinePlayer, INarrativeMessageSink); P1.5 implements them. What is declared here is the other
+// direction and P1.5's own queries: the UI calls IDialogueInput, IInventoryInput and IVolumeSettingsSink with a
+// player's choice, and their implementation (the game's boot, or the audio package) turns it into a typed command;
+// IGameplayPauseQuery and IPlayerSettings are read by gameplay input and camera code. Every member is engine-free.
 #nullable enable
 namespace GameCore.Gameplay.Contracts
 {
-    /// <summary>The dialogue panel (P1.4's DialoguePresenter calls it on LineShown/ChoiceOffered/DialogueEnded).</summary>
-    public interface IDialogueView
-    {
-        void Show(DialogueViewModel vm);
-
-        void Hide();
-    }
-
-    /// <summary>The journal (P1.4's JournalPresenter calls it whenever quest state changes).</summary>
-    public interface IJournalView
-    {
-        void Update(JournalViewModel vm);
-    }
-
-    /// <summary>The inventory screen (P1.4's InventoryPresenter calls it whenever inventory slots change).</summary>
-    public interface IInventoryView
-    {
-        void Update(InventoryViewModel vm);
-    }
-
-    /// <summary>Plays dialogue voice lines (implemented by the audio package).</summary>
-    public interface IVoiceLinePlayer
-    {
-        /// <summary>Plays <paramref name="clipRef"/> (an audio bank clip id) for <paramref name="speakerId"/>, interrupting a line in progress.</summary>
-        void Play(string clipRef, string speakerId);
-
-        void Stop();
-    }
-
-    /// <summary>The player's dialogue input (implemented by the dialogue package; the UI calls it).</summary>
+    /// <summary>The player's dialogue input (the game boot implements it over P1.4's DialogueRunner; the UI calls it).</summary>
     public interface IDialogueInput
     {
-        /// <summary>Chooses the offered choice at <paramref name="index"/> (0-based).</summary>
-        void Choose(int index);
+        /// <summary>Chooses the offered option <paramref name="option"/> (DialogueChoiceView.Index).</summary>
+        void Choose(int option);
 
         /// <summary>Advances past a line without choices.</summary>
         void Advance();
     }
 
-    /// <summary>The player's inventory input (implemented by the inventory package; the UI calls it).</summary>
+    /// <summary>The player's inventory input (the game boot implements it over P1.4's InventoryCommands; the UI calls it).</summary>
     public interface IInventoryInput
     {
-        void Use(int slotIndex);
+        /// <summary>Uses (consumes one of) the item with stable key <paramref name="itemKey"/> (InventorySlotView.ItemKey).</summary>
+        void Use(int itemKey);
 
-        void Drop(int slotIndex);
+        /// <summary>Drops one of the item with stable key <paramref name="itemKey"/>.</summary>
+        void Drop(int itemKey);
     }
 
     /// <summary>Volume settings input (implemented by the audio package; the settings screen calls it).</summary>

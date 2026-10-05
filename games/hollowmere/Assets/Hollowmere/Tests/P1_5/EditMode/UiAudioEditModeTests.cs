@@ -7,6 +7,7 @@ using GameCore.Contracts;
 using GameCore.Gameplay.Audio;
 using GameCore.Gameplay.Audio.Editor;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Ui;
 using GameCore.Gameplay.Ui.Editor;
 using GameCore.Gameplay.World;
@@ -196,12 +197,13 @@ namespace Hollowmere.P1_5.EditMode.Tests
         {
             AudioBankDefinition bank = UiAudioHarness.Content().Audio!.Bank!;
             int before = bank.Entries.Count;
-            Assert.That(MediaGateways.Resolve(), Is.InstanceOf<NullMediaGenerationGateway>(), "no gateway is configured before P2.2");
-            MediaGenerationResult voice = AudioTools.GenerateVoice(bank, "voice.test.line", "The bell has not rung in years.", string.Empty, "warden", "Assets/Hollowmere/Audio/Generated/Voice");
-            MediaGenerationResult sfx = AudioTools.GenerateSfx(bank, "sfx.test.creak", "a wet wooden door creaking", 800, true, "Assets/Hollowmere/Audio/Generated/Sfx");
+            Assert.That(MediaGateways.Resolve(), Is.InstanceOf<NotConfiguredMediaGateway>(), "no gateway is configured before P2.2");
+            MediaGenerationResult voice = AudioTools.GenerateVoice(bank, "voice.test.line", "The bell has not rung in years.", string.Empty, "warden");
+            MediaGenerationResult sfx = AudioTools.GenerateSfx(bank, "sfx.test.creak", "a wet wooden door creaking", 800);
             Assert.That(voice.Status, Is.EqualTo(MediaGenerationStatus.NotConfigured));
-            Assert.That(voice.Code, Is.EqualTo(PresentationDiagnosticCodes.MediaNotConfigured));
+            Assert.That(voice.Detail, Does.StartWith(PresentationDiagnosticCodes.MediaNotConfigured));
             Assert.That(sfx.Status, Is.EqualTo(MediaGenerationStatus.NotConfigured));
+            Assert.That(sfx.Detail, Does.StartWith(PresentationDiagnosticCodes.MediaNotConfigured));
             Assert.That(bank.Entries.Count, Is.EqualTo(before));
             Assert.That(Directory.Exists("Assets/Hollowmere/Audio/Generated/Voice"), Is.False, "nothing was written");
         }
@@ -315,14 +317,24 @@ namespace Hollowmere.P1_5.EditMode.Tests
                 var input = new RecordingDialogueInput();
                 h.World.Presentation.Register<IDialogueInput>(input);
                 IDialogueView view = h.World.Presentation.Get<IDialogueView>()!;
-                view.Show(new DialogueViewModel
-                {
-                    SpeakerId = "warden",
-                    SpeakerName = "The Warden",
-                    Text = "Which way did the bell-ringer go?",
-                    Choices = new[] { "To the marsh.", "To the belfry.", "I did not see." },
-                    ChoiceDisabled = new[] { 0, 1, 0 },
-                });
+                view.Show(new DialogueViewModel(
+                    true,
+                    1,
+                    "Warden",
+                    3,
+                    "choice",
+                    "The Warden",
+                    "Which way did the bell-ringer go?",
+                    null,
+                    string.Empty,
+                    false,
+                    new[]
+                    {
+                        new DialogueChoiceView(0, "To the marsh.", true, string.Empty),
+                        new DialogueChoiceView(1, "To the belfry.", false, "needs the lantern"),
+                        new DialogueChoiceView(2, "I did not see.", true, string.Empty),
+                    },
+                    7));
                 DialoguePanelViewModel panel = h.Ui.Models.Dialogue;
                 Assert.That(panel.Received, Is.EqualTo(1));
                 Assert.That(panel.Visible, Is.True);
@@ -333,8 +345,29 @@ namespace Hollowmere.P1_5.EditMode.Tests
                 Assert.That(panel.Selected, Is.EqualTo(2), "down skips the disabled choice");
                 h.Ui.Confirm();
                 Assert.That(input.Chosen, Is.EqualTo(new List<int> { 2 }));
-                view.Hide();
-                Assert.That(panel.Visible, Is.False);
+                view.Show(DialogueViewModel.Inactive);
+                Assert.That(panel.Visible, Is.False, "an inactive model hides the panel");
+
+                IJournalView journal = h.World.Presentation.Get<IJournalView>()!;
+                journal.Show(new JournalViewModel(
+                    new[]
+                    {
+                        new QuestView(11, "The Drowned Bell", 1, 0, "Find the clapper", string.Empty, 0, new[]
+                        {
+                            new ObjectiveView(0, "Ask Maren", 1, 1, true, 0),
+                            new ObjectiveView(1, "Search the marsh", 0, 1, false, 0),
+                        }),
+                    },
+                    1));
+                Assert.That(h.Ui.Models.Hud.ObjectiveText, Is.EqualTo("Search the marsh"), "the HUD tracks the first active quest's open objective");
+
+                IInventoryView inventory = h.World.Presentation.Get<IInventoryView>()!;
+                inventory.Show(new InventoryViewModel(1, "Pack", new[] { new InventorySlotView(1, 42, "Old Coin", 3, 0, 0, null, string.Empty) }, 4, 5, 0, 0, 1));
+                Assert.That(h.Ui.Models.Inventory.SlotLabels, Is.EqualTo(new[] { string.Empty, "Old Coin", string.Empty, string.Empty }));
+                Assert.That(h.Ui.Models.Inventory.Currency, Is.EqualTo(5));
+
+                ((INarrativeMessageSink)h.Ui).Show(new NarrativeMessage("The gate creaks open.", "rule.gate"));
+                Assert.That(h.Ui.Models.Screen.MessageText, Is.EqualTo("The gate creaks open."));
             }
         }
 
@@ -383,8 +416,13 @@ namespace Hollowmere.P1_5.EditMode.Tests
                 h.PumpUntil(() => audio.Voice.Started == 1, "voice event");
                 Assert.That(audio.Sfx.Played, Is.EqualTo(1));
                 Assert.That(audio.Sfx.Missing, Is.EqualTo(1));
-                h.World.Presentation.Get<IVoiceLinePlayer>()!.Stop();
+                h.World.Presentation.Get<IVoiceLinePlayer>()!.Stop("test");
                 h.PumpUntil(() => audio.Voice.Stopped == 1, "voice stopped");
+                IVoiceLinePlayer lines = h.World.Presentation.Get<IVoiceLinePlayer>()!;
+                lines.Play(new VoiceLineRequest(1, 2, "warden", "A line without a clip.", string.Empty, null));
+                Assert.That(audio.Voice.Silent, Is.EqualTo(1), "a P1.4 line without a clip plays nothing");
+                lines.Play(new VoiceLineRequest(1, 3, "warden", "The bell.", "voice.warden.greeting", null));
+                h.PumpUntil(() => audio.Voice.Started == 2, "a P1.4 line with a clip ref commits audio.playVoice");
                 h.World.Presentation.Get<IFootstepSink>()!.OnFootstep(new FootstepEvent("player", 0, 0, 0, 0, false));
                 Assert.That(audio.Sfx.Played, Is.EqualTo(2), "footsteps resolve through the sfx. prefix");
                 IFeedbackSink cues = h.World.Presentation.Get<IFeedbackSink>()!;

@@ -3,16 +3,19 @@
 //   audio.assignClip     put an imported AudioClip into a bank under an id (group, volume, loop, 3D)
 //   audio.setAmbience    give a region its ambience loop (creates the AmbienceDefinition and adds it to the set)
 //   audio.setMusicState  add or edit a music state of a set (loop clip, crossfade, stinger), optionally the start state
-//   audio.generateVoice  speak a line into a .wav through the media gateway and assign it (agent tool)
-//   audio.generateSfx    describe a sound into a .wav through the media gateway and assign it (agent tool)
-// The two generate tools never call a provider: they go through IMediaGenerationGateway. Until P2.2 supplies one the
-// null gateway answers NotConfigured (GP-AUD-020) and nothing changes. 05 calls their tier "Agent"; 03's ToolTier has
-// no such member, so they are Compose tools with Requires = "agent.media".
+//   audio.generateVoice  request a spoken line through the media gateway (agent tool)
+//   audio.generateSfx    request a sound effect (agent tool; no gateway operation exists yet)
+// The generate tools never call a provider: voice goes through P1.4's IMediaGenerationGateway.RequestVoiceLine, whose
+// default (NotConfiguredMediaGateway) answers NotConfigured until P2.2 supplies a gateway; a Requested line arrives
+// later as a candidate clip, which audio.assignClip puts into the bank. The gateway contract has no sound-effect request,
+// so audio.generateSfx answers NotConfigured (GP-AUD-020). Nothing changes on disk in either case. 05 calls their tier
+// "Agent"; 03's ToolTier has no such member, so they are Compose tools with Requires = "agent.media".
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.World;
 using UnityEditor;
 using UnityEngine;
@@ -178,81 +181,65 @@ namespace GameCore.Gameplay.Audio.Editor
         }
 
         [AuthorOperation("audio.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live, Requires = AgentMedia,
-            Doc = "Speaks a line into a .wav through the media gateway (etos op tts) and assigns it to the bank; NotConfigured (GP-AUD-020) until a gateway exists.")]
+            Doc = "Requests a spoken line through the media gateway (etos op tts); the clip arrives later as a candidate for audio.assignClip. NotConfigured (GP-AUD-020) until a gateway exists.")]
         public static MediaGenerationResult GenerateVoice(
             AudioBankDefinition bank,
-            [AuthorArg(Doc = "Bank clip id the line is assigned to (e.g. voice.warden.greeting).")] string clipId,
+            [AuthorArg(Doc = "Bank clip id the line is meant for (e.g. voice.warden.greeting).")] string clipId,
             [AuthorArg(Doc = "The line to speak.")] string text,
             [AuthorArg(Required = false, Doc = "Voice preset.")] string voice = "",
-            [AuthorArg(Required = false, Doc = "Speaker id (provenance).")] string speakerId = "",
-            [AuthorArg(Required = false, Doc = "Project folder for the .wav.")] string folder = "Assets/Audio/Generated/Voice")
+            [AuthorArg(Required = false, Doc = "Speaker id (provenance).")] string speakerId = "")
         {
+            return GenerateVoice(bank, clipId, text, voice, speakerId, MediaGateways.Resolve());
+        }
+
+        /// <summary>The same request through an explicit gateway.</summary>
+        public static MediaGenerationResult GenerateVoice(AudioBankDefinition bank, string clipId, string text, string voice, string speakerId, IMediaGenerationGateway gateway)
+        {
+            RequireClipId(bank, clipId);
             if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentException(PresentationDiagnosticCodes.MediaRefused + ": a line of text is required");
             }
 
-            var request = new MediaGenerationRequest(MediaKind.Voice, text, OutputPath(folder, clipId))
-            {
-                Voice = voice ?? string.Empty,
-                SpeakerId = speakerId ?? string.Empty,
-                ClipId = clipId,
-            };
-            return Generate(bank, request, AudioGroup.Voice, false, MediaGateways.Resolve());
+            MediaGenerationResult result = (gateway ?? new NotConfiguredMediaGateway()).RequestVoiceLine(
+                new VoiceGenerationRequest(clipId, 0, speakerId ?? string.Empty, text, voice ?? string.Empty));
+            return result.Status == MediaGenerationStatus.NotConfigured
+                ? new MediaGenerationResult(MediaGenerationStatus.NotConfigured, result.RequestId, PresentationDiagnosticCodes.MediaNotConfigured + ": " + result.Detail)
+                : result;
         }
 
         [AuthorOperation("audio.generateSfx", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live, Requires = AgentMedia,
-            Doc = "Describes a sound into a .wav through the media gateway and assigns it to the bank; NotConfigured (GP-AUD-020) until a gateway exists.")]
+            Doc = "Requests a sound effect; the media gateway contract has no sound-effect operation yet, so this answers NotConfigured (GP-AUD-020) and changes nothing.")]
         public static MediaGenerationResult GenerateSfx(
             AudioBankDefinition bank,
             [AuthorArg(Doc = "Bank clip id (e.g. sfx.door.creak).")] string clipId,
             [AuthorArg(Doc = "What the sound is.")] string description,
-            [AuthorArg(Required = false, Unit = "ms", Min = 0, Max = 30000, Doc = "Length (0 = the gateway decides).")] int durationMs = 0,
-            [AuthorArg(Required = false, Doc = "Positional (3D) playback.")] bool spatial = true,
-            [AuthorArg(Required = false, Doc = "Project folder for the .wav.")] string folder = "Assets/Audio/Generated/Sfx")
+            [AuthorArg(Required = false, Unit = "ms", Min = 0, Max = 30000, Doc = "Length (0 = the gateway decides).")] int durationMs = 0)
         {
+            RequireClipId(bank, clipId);
             if (string.IsNullOrWhiteSpace(description))
             {
                 throw new ArgumentException(PresentationDiagnosticCodes.MediaRefused + ": a description is required");
             }
 
-            var request = new MediaGenerationRequest(MediaKind.Sfx, description, OutputPath(folder, clipId))
-            {
-                ClipId = clipId,
-                DurationMs = Math.Max(0, durationMs),
-            };
-            return Generate(bank, request, AudioGroup.Sfx, spatial, MediaGateways.Resolve());
+            return new MediaGenerationResult(
+                MediaGenerationStatus.NotConfigured,
+                string.Empty,
+                PresentationDiagnosticCodes.MediaNotConfigured + ": the media gateway contract (IMediaGenerationGateway) has no sound-effect request; "
+                    + "generate the clip elsewhere and assign it with audio.assignClip");
         }
 
-        /// <summary>Runs a request through <paramref name="gateway"/>; a completed file is imported and assigned.</summary>
-        public static MediaGenerationResult Generate(AudioBankDefinition bank, MediaGenerationRequest request, AudioGroup group, bool spatial, IMediaGenerationGateway gateway)
+        private static void RequireClipId(AudioBankDefinition bank, string clipId)
         {
             if (bank == null)
             {
                 throw new ArgumentException(PresentationDiagnosticCodes.AudioMissingClip + ": a bank is required");
             }
 
-            if (request == null || string.IsNullOrEmpty(request.ClipId) || PresentationSlots.KeyOf(request.ClipId) == 0)
+            if (string.IsNullOrEmpty(clipId) || PresentationSlots.KeyOf(clipId) == 0)
             {
                 throw new ArgumentException(PresentationDiagnosticCodes.AudioDuplicateId + ": a clip id is required");
             }
-
-            MediaGenerationResult result = (gateway ?? new NullMediaGenerationGateway()).Generate(request);
-            if (result.Status != MediaGenerationStatus.Completed)
-            {
-                return result;
-            }
-
-            string path = result.OutputPath.Length > 0 ? result.OutputPath : request.OutputPath;
-            AssetDatabase.ImportAsset(path);
-            AudioClip? clip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
-            if (clip == null)
-            {
-                return MediaGenerationResult.Refused("the gateway reported " + path + " but no AudioClip imported there");
-            }
-
-            AssignClip(bank, request.ClipId, clip, group, 1f, false, spatial);
-            return result;
         }
 
         private static void RequireBankClip(AudioSetDefinition set, string clipId)
@@ -261,17 +248,6 @@ namespace GameCore.Gameplay.Audio.Editor
             {
                 throw new ArgumentException(PresentationDiagnosticCodes.AudioMissingClip + ": the bank holds no clip '" + clipId + "'");
             }
-        }
-
-        private static string OutputPath(string folder, string clipId)
-        {
-            string root = string.IsNullOrEmpty(folder) ? "Assets/Audio/Generated" : folder.TrimEnd('/');
-            if (!root.StartsWith("Assets/", StringComparison.Ordinal))
-            {
-                throw new ArgumentException(PresentationDiagnosticCodes.MediaRefused + ": the output folder must be under Assets/");
-            }
-
-            return root + "/" + Sanitize(clipId) + ".wav";
         }
 
         private static string SiblingPath(UnityEngine.Object neighbour, string file)
@@ -295,29 +271,29 @@ namespace GameCore.Gameplay.Audio.Editor
     }
 
     /// <summary>
-    /// Finds the media gateway: the highest-priority concrete IMediaGenerationGateway with a public parameterless
-    /// constructor among the loaded editor types (P2.2 adds one), otherwise the null gateway. Discovery only: nothing is
-    /// cached or registered.
+    /// Finds the media gateway: the first concrete IMediaGenerationGateway (ordinal by full type name) with a public
+    /// parameterless constructor among the loaded editor types, other than P1.4's NotConfiguredMediaGateway (P2.2 adds
+    /// one); otherwise NotConfiguredMediaGateway. Discovery only: nothing is cached or registered.
     /// </summary>
     public static class MediaGateways
     {
         public static IMediaGenerationGateway Resolve()
         {
-            IMediaGenerationGateway best = new NullMediaGenerationGateway();
+            Type? chosen = null;
             foreach (Type type in TypeCache.GetTypesDerivedFrom<IMediaGenerationGateway>())
             {
-                if (type.IsAbstract || type.IsInterface || type == typeof(NullMediaGenerationGateway) || type.GetConstructor(Type.EmptyTypes) == null)
+                if (type.IsAbstract || type.IsInterface || type == typeof(NotConfiguredMediaGateway) || type.GetConstructor(Type.EmptyTypes) == null)
                 {
                     continue;
                 }
 
-                if (Activator.CreateInstance(type) is IMediaGenerationGateway candidate && candidate.Priority > best.Priority)
+                if (chosen == null || string.CompareOrdinal(type.FullName, chosen.FullName) < 0)
                 {
-                    best = candidate;
+                    chosen = type;
                 }
             }
 
-            return best;
+            return chosen != null && Activator.CreateInstance(chosen) is IMediaGenerationGateway gateway ? gateway : new NotConfiguredMediaGateway();
         }
     }
 }

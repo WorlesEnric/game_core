@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Rules.Gameplay.Ui;
 
 namespace GameCore.Gameplay.Ui
@@ -222,7 +223,8 @@ namespace GameCore.Gameplay.Ui
                 return new UiDispatchResult(false, "choice " + index + " is not available");
             }
 
-            return Input<IDialogueInput>(input => input.Choose(index), "choose " + index);
+            int option = dialogue.OptionAt(index);
+            return Input<IDialogueInput>(input => input.Choose(option), "choose " + option);
         }
 
         private UiDispatchResult Item(string verb, string arg)
@@ -239,16 +241,16 @@ namespace GameCore.Gameplay.Ui
                 return new UiDispatchResult(true, "selected item " + cell);
             }
 
-            InventorySlotEntry? entry = inventory.Find(inventory.Selected);
+            InventorySlotView? entry = inventory.Find(inventory.Selected);
             if (entry == null)
             {
                 return new UiDispatchResult(false, "no item selected");
             }
 
-            int slot = entry.SlotIndex;
+            int item = entry.ItemKey;
             return verb == "use"
-                ? Input<IInventoryInput>(input => input.Use(slot), "use " + slot)
-                : Input<IInventoryInput>(input => input.Drop(slot), "drop " + slot);
+                ? Input<IInventoryInput>(input => input.Use(item), "use " + entry.ItemName)
+                : Input<IInventoryInput>(input => input.Drop(item), "drop " + entry.ItemName);
         }
 
         private UiDispatchResult Volume(string arg, int permille)

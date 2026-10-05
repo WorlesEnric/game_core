@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: Pip
+  m_EditorClassIdentifier: 
+  authoringId: dc88c507-3b24-44ea-8eb8-fcb35dcf733e
+  contentStamp: e37d1a51218bcda82910f76f3e2f8f16bcdf95f006f45ebc5f55ef1cdf9e40bb
+  speaker: Pip
+  speakerEntityId: 508f7d78-7b44-42e8-8028-be4b2c9ee4b0
+  npcGraphRef: dialogue.pip
+  entry: 0
+  nodes:
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Did you ever hear the bell? I never have.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: Where is the clapper?
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Bye, Pip.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 608b1d37ab13b50eabfc835f39a42195, type: 2}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Gran says it fell in the marsh, by the dead willow.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 1
+    port: 2
+    option: 0
+    to: 2
+  - from: 1
+    port: 2
+    option: 1
+    to: -1
+  - from: 0
+    port: 0
+    option: 0
+    to: 1
+  - from: 2
+    port: 0
+    option: 0
+    to: 3
