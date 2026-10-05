@@ -273,6 +273,47 @@ namespace Hollowmere.Game
                 (float)GameplayUnits.ToMetres(world.Slots.ReadOrDefault(target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, 0)));
         }
 
+        /// <summary>
+        /// Names the colliders the player's capsule (0.35 m radius, 1.8 m tall) would touch within 1.5 m along
+        /// <paramref name="direction"/> from its committed position, the player's own controller excluded ("nothing" when clear).
+        /// Autoplay diagnostics only.
+        /// </summary>
+        public string ProbeAhead(Vector3 direction)
+        {
+            Vector3 origin = PlayerPosition();
+            Vector3 flat = new Vector3(direction.x, 0f, direction.z);
+            if (flat.sqrMagnitude < 1e-6f)
+            {
+                return "no direction";
+            }
+
+            flat.Normalize();
+            Vector3 bottom = origin + Vector3.up * 0.45f;
+            Vector3 top = origin + Vector3.up * 1.45f;
+            RaycastHit[] hits = Physics.CapsuleCastAll(bottom, top, 0.35f, flat, 1.5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            var names = new System.Text.StringBuilder();
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider is CharacterController)
+                {
+                    continue; // the player's own controller
+                }
+
+                Transform t = hit.collider.transform;
+
+                if (names.Length > 0)
+                {
+                    names.Append("; ");
+                }
+
+                names.Append(Path(t)).Append(" at ").Append(hit.distance.ToString("F2", CultureInfo.InvariantCulture)).Append(" m");
+            }
+
+            return names.Length > 0 ? names.ToString() : "nothing";
+
+            static string Path(Transform t) => t.parent != null ? t.parent.name + "/" + t.name : t.name;
+        }
+
         /// <summary>The committed position (metres) of the placed entity named <paramref name="name"/> (baked manifest name).</summary>
         public bool TryEntityPosition(string name, out Vector3 position)
         {

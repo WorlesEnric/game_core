@@ -159,6 +159,8 @@ namespace Hollowmere.Game
 
         public Vector3 PlayerPosition => game != null ? game.PlayerPosition() : Vector3.zero;
 
+        public string ProbeAhead(Vector3 direction) => game != null ? game.ProbeAhead(direction) : "no game";
+
         public bool TryEntityPosition(string name, out Vector3 position)
         {
             position = Vector3.zero;

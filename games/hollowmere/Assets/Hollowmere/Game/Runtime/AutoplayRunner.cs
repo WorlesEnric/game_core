@@ -1,8 +1,9 @@
 // Hollowmere - runs an autoplay script against the game (P3.1: the player smoke test and the recorded playthrough).
 //
-// The runner executes one command at a time from Update, after the host reports Ready. walk steers toward a world
-// point each frame through IAutoplayHost.SetMove (the real locomotion moves the player) and fails on a timeout or when
-// the player made less than 0.2 m of progress for 6 s; waituntil polls IAutoplayHost.Check each frame; ui, advance,
+// The runner executes one command at a time from Update, after the host reports Ready. walk (a world point) and
+// approach (a placed entity, re-targeted every frame) steer each frame through IAutoplayHost.SetMove (the real
+// locomotion moves the player); without 0.2 m of progress for 1.5 s they sidestep for 0.8 s, and they fail on a timeout
+// or without progress for 6 s (the failure names the collider ahead). A walk ends when a portal moves the player; waituntil polls IAutoplayHost.Check each frame; ui, advance,
 // choose and interact are instantaneous (a refusal is a warning, not a failure). A failure logs
 // "[autoplay] FAILED line N: ..." and quits with exit code 3; quit quits with its code; -quitAfterFrames quits with 0.
 // Every executed command is logged as "[autoplay] <line> <verb> ... frame=<n>".
@@ -23,6 +24,9 @@ namespace Hollowmere.Game
 
         /// <summary>The committed position (metres) of the placed entity named <paramref name="name"/>; false when unknown.</summary>
         bool TryEntityPosition(string name, out Vector3 position);
+
+        /// <summary>Names what the player's capsule would hit within 1.5 m along <paramref name="direction"/> ("nothing" when clear).</summary>
+        string ProbeAhead(Vector3 direction);
 
         /// <summary>Moves the player along a world-space direction (zero stops).</summary>
         void SetMove(Vector3 worldDirection, bool run);
@@ -54,6 +58,12 @@ namespace Hollowmere.Game
         public const float StuckDistance = 0.2f;
         public const float StuckSeconds = 6f;
 
+        /// <summary>Without progress for this long a walk or approach sidesteps once.</summary>
+        public const float SidestepAfterSeconds = 1.5f;
+
+        /// <summary>How long one sidestep lasts.</summary>
+        public const float SidestepSeconds = 0.8f;
+
         /// <summary>A walk ends when the player moves more than this in one frame (a portal moved it).</summary>
         public const float PortalJumpDistance = 8f;
         public const int FailureExitCode = 3;
@@ -69,6 +79,10 @@ namespace Hollowmere.Game
         private Vector3 progressAnchor;
         private float progressSince;
         private Vector3 lastPosition;
+        private Vector3 sidestep;
+        private float sidestepUntil;
+        private float lastSidestep;
+        private int commandSidesteps;
         private string lastCheck = string.Empty;
 
         public bool Running => script != null && !Finished && !Failed;
@@ -83,6 +97,9 @@ namespace Hollowmere.Game
         public int CurrentLine { get; private set; }
 
         public int Executed { get; private set; }
+
+        /// <summary>Sidesteps taken by walks and approaches so far (logged; a measure of how often the path was blocked).</summary>
+        public int Sidesteps { get; private set; }
 
         /// <summary>Starts <paramref name="autoplay"/>; quits with 0 after <paramref name="quitAfter"/> frames when positive.</summary>
         public void Run(AutoplayScript autoplay, IAutoplayHost game, int quitAfter)
@@ -162,6 +179,9 @@ namespace Hollowmere.Game
             commandStartFrame = Time.frameCount;
             progressAnchor = host!.PlayerPosition;
             lastPosition = progressAnchor;
+            sidestepUntil = 0f;
+            lastSidestep = commandStart;
+            commandSidesteps = 0;
             progressSince = commandStart;
             lastCheck = string.Empty;
             Executed++;
@@ -247,53 +267,25 @@ namespace Hollowmere.Game
         {
             IAutoplayHost game = host!;
             Vector3 position = game.PlayerPosition;
-            Vector3 delta = new Vector3(command.X - position.x, 0f, command.Z - position.z);
-            float distance = delta.magnitude;
             Vector3 jump = position - lastPosition;
             lastPosition = position;
             if (jump.magnitude > PortalJumpDistance)
             {
                 // A portal (a region crossing) moved the player: the walk toward the crossing is done.
                 game.SetMove(Vector3.zero, false);
-                game.Log("[autoplay] " + command.Line.ToString(CultureInfo.InvariantCulture) + " crossed a portal to (" + F(position.x) + ", " + F(position.z) + ") after "
-                    + elapsed.ToString("F2", CultureInfo.InvariantCulture) + " s");
+                game.Log("[autoplay] " + Line(command) + " crossed a portal to (" + F(position.x) + ", " + F(position.z) + ") after " + F(elapsed) + " s");
                 return true;
             }
 
-            if (distance <= ArriveDistance)
+            Vector3 target = new Vector3(command.X, 0f, command.Z);
+            if (Arrived(position, target, ArriveDistance))
             {
                 game.SetMove(Vector3.zero, false);
-                game.Log("[autoplay] " + command.Line.ToString(CultureInfo.InvariantCulture) + " arrived at (" + F(position.x) + ", " + F(position.z) + ") after "
-                    + elapsed.ToString("F2", CultureInfo.InvariantCulture) + " s");
+                game.Log("[autoplay] " + Line(command) + " arrived at (" + F(position.x) + ", " + F(position.z) + ") after " + F(elapsed) + " s");
                 return true;
             }
 
-            float now = Time.realtimeSinceStartup;
-            Vector3 moved = position - progressAnchor;
-            moved.y = 0f;
-            if (moved.magnitude >= StuckDistance)
-            {
-                progressAnchor = position;
-                progressSince = now;
-            }
-            else if (now - progressSince > StuckSeconds)
-            {
-                game.SetMove(Vector3.zero, false);
-                Fail(command, "walk stuck at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from (" + F(command.X) + ", " + F(command.Z)
-                    + "): less than " + F(StuckDistance) + " m in " + F(StuckSeconds) + " s");
-                return false;
-            }
-
-            if (elapsed > Timeout(command))
-            {
-                game.SetMove(Vector3.zero, false);
-                Fail(command, "walk timed out after " + Timeout(command).ToString("F0", CultureInfo.InvariantCulture) + " s at (" + F(position.x) + ", " + F(position.z) + "), "
-                    + F(distance) + " m from the target");
-                return false;
-            }
-
-            game.SetMove(delta / distance, command.Run);
-            return false;
+            return Steer(command, "walk", "(" + F(command.X) + ", " + F(command.Z) + ")", position, target, elapsed);
         }
 
         private bool Approach(AutoplayCommand command, float elapsed)
@@ -307,21 +299,34 @@ namespace Hollowmere.Game
             }
 
             Vector3 position = game.PlayerPosition;
-            Vector3 delta = new Vector3(target.x - position.x, 0f, target.z - position.z);
-            float distance = delta.magnitude;
-            if (distance <= command.X)
+            lastPosition = position;
+            if (Arrived(position, target, command.X))
             {
                 game.SetMove(Vector3.zero, false);
+                Vector3 delta = target - position;
                 float yaw = Mathf.Atan2(delta.x, delta.z) * Mathf.Rad2Deg;
                 game.SetFacing(yaw);
-                game.Log("[autoplay] " + command.Line.ToString(CultureInfo.InvariantCulture) + " reached " + command.Argument + " at (" + F(position.x) + ", " + F(position.z)
-                    + "), " + F(distance) + " m, facing " + F(yaw) + " after " + elapsed.ToString("F2", CultureInfo.InvariantCulture) + " s");
+                game.Log("[autoplay] " + Line(command) + " reached " + command.Argument + " at (" + F(position.x) + ", " + F(position.z) + "), "
+                    + F(Flat(delta).magnitude) + " m, facing " + F(yaw) + " after " + F(elapsed) + " s");
                 return true;
             }
 
+            return Steer(command, "approach", command.Argument, position, target, elapsed);
+        }
+
+        /// <summary>
+        /// One steering frame toward <paramref name="target"/>. Without 0.2 m of progress for <see cref="SidestepAfterSeconds"/>
+        /// the player sidesteps perpendicular to the path for <see cref="SidestepSeconds"/> (right first) and then
+        /// resumes; without progress for <see cref="StuckSeconds"/> the command fails, naming the collider ahead.
+        /// </summary>
+        private bool Steer(AutoplayCommand command, string verb, string what, Vector3 position, Vector3 target, float elapsed)
+        {
+            IAutoplayHost game = host!;
+            Vector3 delta = Flat(target - position);
+            float distance = delta.magnitude;
+            Vector3 direction = delta / distance;
             float now = Time.realtimeSinceStartup;
-            Vector3 moved = position - progressAnchor;
-            moved.y = 0f;
+            Vector3 moved = Flat(position - progressAnchor);
             if (moved.magnitude >= StuckDistance)
             {
                 progressAnchor = position;
@@ -330,20 +335,49 @@ namespace Hollowmere.Game
             else if (now - progressSince > StuckSeconds)
             {
                 game.SetMove(Vector3.zero, false);
-                Fail(command, "approach stuck at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + command.Argument);
+                Fail(command, verb + " stuck at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + what
+                    + " after " + Sidesteps.ToString(CultureInfo.InvariantCulture) + " sidestep(s); ahead: " + game.ProbeAhead(direction));
                 return false;
             }
 
             if (elapsed > Timeout(command))
             {
                 game.SetMove(Vector3.zero, false);
-                Fail(command, "approach timed out at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + command.Argument);
+                Fail(command, verb + " timed out at (" + F(position.x) + ", " + F(position.z) + "), " + F(distance) + " m from " + what);
                 return false;
             }
 
-            game.SetMove(delta / distance, command.Run);
+            if (now < sidestepUntil)
+            {
+                game.SetMove(sidestep, command.Run);
+                return false;
+            }
+
+            if (now - progressSince > SidestepAfterSeconds && now - lastSidestep > SidestepAfterSeconds + SidestepSeconds)
+            {
+                Sidesteps++;
+                commandSidesteps++;
+                // The same side within a command (alternating would undo the last sidestep); after three blocked tries
+                // on one side the other side is tried.
+                float side = (commandSidesteps - 1) / 3 % 2 == 0 ? 1f : -1f;
+                sidestep = new Vector3(direction.z * side, 0f, -direction.x * side);
+                sidestepUntil = now + SidestepSeconds;
+                lastSidestep = now;
+                game.Log("[autoplay] " + Line(command) + " sidestep " + (side > 0f ? "right" : "left") + " at (" + F(position.x) + ", " + F(position.z) + "); ahead: "
+                    + game.ProbeAhead(direction));
+                game.SetMove(sidestep, command.Run);
+                return false;
+            }
+
+            game.SetMove(direction, command.Run);
             return false;
         }
+
+        private static bool Arrived(Vector3 position, Vector3 target, float within) => Flat(target - position).magnitude <= within;
+
+        private static Vector3 Flat(Vector3 v) => new Vector3(v.x, 0f, v.z);
+
+        private static string Line(AutoplayCommand command) => command.Line.ToString(CultureInfo.InvariantCulture);
 
         private static float Timeout(AutoplayCommand command) => command.Seconds > 0f ? command.Seconds : AutoplayScript.DefaultTimeoutSeconds;
 
