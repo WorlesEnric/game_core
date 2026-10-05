@@ -22,7 +22,7 @@ namespace GameCore.Studio.Hollowmere.P2_2
     {
         public const string HollowmereFolder = "Assets/Hollowmere";
 
-        private GatewayHarness(EtosCredentials credentials, string nodeUrl, FakeCompanion? fake, string name)
+        private GatewayHarness(EtosCredentials credentials, string nodeUrl, FakeCompanion? fake, string name, AuthoringSourceScope scope = AuthoringSourceScope.Assets)
         {
             Fake = fake;
             StateRoot = Path.Combine(Path.GetTempPath(), "gcstudio-p22-" + name + "-" + Guid.NewGuid().ToString("N"));
@@ -33,7 +33,7 @@ namespace GameCore.Studio.Hollowmere.P2_2
                 Paths = new StudioPaths(ProjectRoot, StateRoot, "p22-" + name),
                 Log = Log,
                 SearchFolders = new[] { HollowmereFolder },
-                IndexScope = AuthoringSourceScope.Assets,
+                IndexScope = scope,
                 LoadIndexCache = false,
             });
             Credentials = credentials;
@@ -73,11 +73,11 @@ namespace GameCore.Studio.Hollowmere.P2_2
         }
 
         /// <summary>The live node (key file from GAMECORE_ETOS_KEY_FILE or the pairing default).</summary>
-        public static GatewayHarness Live()
+        public static GatewayHarness Live(AuthoringSourceScope scope = AuthoringSourceScope.Assets)
         {
             string? keyFile = Environment.GetEnvironmentVariable(EtosCredentials.KeyFileVariable) ?? EtosCredentials.DefaultKeyFile();
             EtosCredentials credentials = EtosCredentials.FromKeyFile(keyFile ?? string.Empty);
-            return new GatewayHarness(credentials, credentials.NodeUrl ?? "http://127.0.0.1:7410", null, "live");
+            return new GatewayHarness(credentials, credentials.NodeUrl ?? "http://127.0.0.1:7410", null, "live", scope);
         }
 
         /// <summary>Pumps the queue until <paramref name="task"/> completes (fails the test on timeout).</summary>

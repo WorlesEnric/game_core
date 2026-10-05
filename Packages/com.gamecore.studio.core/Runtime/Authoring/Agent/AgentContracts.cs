@@ -319,6 +319,9 @@ namespace GameCore.Studio.Authoring.Agent
 
         public string? Provider { get; }
 
+        /// <summary>The etops job state the companion reported (<c>{state, usage, error?}</c>), when it did.</summary>
+        public JToken? State { get; set; }
+
         public bool Succeeded => Refusal == null;
 
         public static OpResult Refused(Diagnostic refusal) => new OpResult(null, null, null, refusal);

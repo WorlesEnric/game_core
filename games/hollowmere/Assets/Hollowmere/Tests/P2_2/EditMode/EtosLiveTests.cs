@@ -34,7 +34,10 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
         public const string GeneratedFolder = "Assets/Hollowmere/Generated/P2_2";
         public const string IconPath = GeneratedFolder + "/wooden_well_icon.png";
         public const string WelcomePath = GeneratedFolder + "/welcome_to_thornwick.wav";
-        public const string TravellerPath = "Assets/Hollowmere/World/Definitions/Traveller.asset";
+        public const string ThornwickScene = "Assets/Hollowmere/Regions/ThornwickVillage.unity";
+
+        /// <summary>The authoring id of the Traveller placed in Thornwick village (its entity component).</summary>
+        public const string PlacedTravellerId = "90f935f8-12d5-4278-b336-107b081e1dfd";
 
         private GatewayHarness? _harness;
 
@@ -66,9 +69,12 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
         [Timeout(1500000)]
         public IEnumerator B_NpcRequest_ReachesStaging()
         {
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(ThornwickScene, UnityEditor.SceneManagement.OpenSceneMode.Single);
+            _harness!.Dispose();
+            _harness = GatewayHarness.Live(AuthoringSourceScope.All);
             H.Runtime.Index.Rebuild();
-            UnityEngine.Object traveller = AssetDatabase.LoadMainAssetAtPath(TravellerPath);
-            Assert.That(traveller, Is.Not.Null, TravellerPath);
+            UnityEngine.Object? traveller = FindPlaced(PlacedTravellerId);
+            Assert.That(traveller, Is.Not.Null, "the placed Traveller (" + PlacedTravellerId + ") in " + ThornwickScene);
             CandidateImport? import = null;
             List<JObject> timeline = new List<JObject>();
             Stopwatch watch = Stopwatch.StartNew();
@@ -90,7 +96,7 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             H.Gateway.Start();
             yield return H.Await(H.Gateway.RefreshStatusAsync(), 60, "hello");
 
-            SelectionSnapshot selection = AgentRequestBuilder.SnapshotOf(H.Runtime, new[] { traveller });
+            SelectionSnapshot selection = AgentRequestBuilder.SnapshotOf(H.Runtime, new[] { traveller! });
             AgentRequest request = AgentRequestBuilder.Build(H.Runtime, selection, "Move this NPC two metres north.");
             request.ChangeSetId = id;
             Task<string> submit = H.Gateway.SubmitAsync(request, CancellationToken.None);
@@ -141,7 +147,8 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             yield return H.Await(H.Gateway.RefreshStatusAsync(), 60, "hello");
             EtosMediaGenerator media = new EtosMediaGenerator(H.Gateway, H.Runtime, H.Queue);
             Stopwatch watch = Stopwatch.StartNew();
-            Task<MediaImport> icon = media.GenerateImageAsync("A wooden well icon: a small stone-ringed village well with a wooden roof and bucket, game UI icon, centered, plain background.", IconPath, 256);
+            string runChangeSet = IdDerivation.NewChangeSetId();
+            Task<MediaImport> icon = media.GenerateImageAsync("A wooden well icon: a small stone-ringed village well with a wooden roof and bucket, game UI icon, centered, plain background.", IconPath, 256, null, runChangeSet);
             yield return H.Await(icon, 400, "the image");
             double iconMs = watch.Elapsed.TotalMilliseconds;
             string iconFile = Path.Combine(GatewayHarness.ProjectRoot, IconPath);
@@ -160,11 +167,13 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
                 ["textureSize"] = texture == null ? null : texture.width + "x" + texture.height,
                 ["journal"] = icon.Result.Report?.Entry.Id,
                 ["problem"] = icon.Result.Problem == null ? null : StudioJson.ToToken(icon.Result.Problem),
+                ["changeSetId"] = runChangeSet,
+                ["opState"] = icon.Result.Result.State?.DeepClone(),
             };
             Evidence("c-image", c);
 
             watch.Restart();
-            Task<MediaImport> speech = media.GenerateSpeechAsync("Welcome to Thornwick.", WelcomePath);
+            Task<MediaImport> speech = media.GenerateSpeechAsync("Welcome to Thornwick.", WelcomePath, null, null, runChangeSet);
             yield return H.Await(speech, 300, "tts");
             string wavFile = Path.Combine(GatewayHarness.ProjectRoot, WelcomePath);
             Evidence("d-tts", new JObject
@@ -190,7 +199,7 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
                 Evidence("e-describe", new JObject { ["ok"] = described.Succeeded, ["ms"] = watch.ElapsedMilliseconds, ["provider"] = described.Provider, ["text"] = described.Text, ["problem"] = described.Refusal == null ? null : StudioJson.ToToken(described.Refusal) });
             }
 
-            Task<MediaImport> mesh = media.Generate3dAsync("a wooden well", GeneratedFolder + "/wooden_well.glb");
+            Task<MediaImport> mesh = media.Generate3dAsync("a wooden well", GeneratedFolder + "/wooden_well.glb", null, runChangeSet);
             yield return H.Await(mesh, 120, "3d");
             Evidence("f-3d-refusal", new JObject { ["ok"] = mesh.Result.Ok, ["status"] = H.Gateway.Status.ThreeD.ToString(), ["problem"] = mesh.Result.Problem == null ? null : StudioJson.ToToken(mesh.Result.Problem) });
 
@@ -237,9 +246,21 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             Task<OpResult> prompt = H.Gateway.GenerateAsync(new OpRequest("tts", new JObject { ["text"] = "Move this NPC two metres north." }), CancellationToken.None);
             yield return H.Await(prompt, 300, "the spoken prompt");
             Assert.That(prompt.Result.Succeeded, Is.True, prompt.Result.Refusal?.Code);
-            EtosVoiceSession voice = H.Gateway.CreateVoiceSession(new WavPcmSource(prompt.Result.Bytes!, 2.0));
-            yield return RunVoice(voice, "j-voice-wav", 30);
-            Assert.That(voice.FinalText, Is.Not.Null, "no final transcript; " + voice.LastError?.Code + " " + voice.LastError?.Message);
+            EtosVoiceSession? voice = null;
+            List<JObject> attempts = new List<JObject>();
+            for (int attempt = 1; attempt <= MaxVoiceAttempts; attempt++)
+            {
+                voice = H.Gateway.CreateVoiceSession(new WavPcmSource(prompt.Result.Bytes!, 2.0));
+                yield return RunVoice(voice, "j-voice-wav", 30, attempts);
+                if (!Retryable(voice))
+                {
+                    break;
+                }
+
+                yield return Pause(VoiceRetryPause);
+            }
+
+            Assert.That(voice!.FinalText, Is.Not.Null, "no final transcript; " + voice.LastError?.Code + " " + voice.LastError?.Message);
             Assert.That(voice.FinalText!.ToLowerInvariant(), Does.Contain("north"));
         }
 
@@ -262,7 +283,24 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             MicrophoneCapture capture = new MicrophoneCapture(device);
             EtosVoiceSession voice = H.Gateway.CreateVoiceSession(capture);
             Task start = voice.StartAsync();
-            yield return H.Until(() => start.IsCompleted, 60, "voice ready");
+            JArray startAttempts = new JArray();
+            for (int attempt = 1; ; attempt++)
+            {
+                yield return H.Until(() => start.IsCompleted, 60, "voice ready");
+                startAttempts.Add(new JObject { ["attempt"] = attempt, ["error"] = start.IsFaulted ? start.Exception?.GetBaseException().Message : null });
+                if (!start.IsFaulted || attempt >= MaxVoiceAttempts || voice.LastError?.Code != "bad_response")
+                {
+                    break;
+                }
+
+                voice.Dispose();
+                yield return Pause(VoiceRetryPause);
+                capture = new MicrophoneCapture(device);
+                voice = H.Gateway.CreateVoiceSession(capture);
+                start = voice.StartAsync();
+            }
+
+            probe["startAttempts"] = startAttempts;
             if (start.IsFaulted)
             {
                 probe["error"] = start.Exception?.GetBaseException().Message;
@@ -304,7 +342,41 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
 
         // ----------------------------------------------------------------------------------- helpers
 
-        private IEnumerator RunVoice(EtosVoiceSession voice, string evidenceName, double maxSeconds)
+        private const int MaxVoiceAttempts = 3;
+
+        private static readonly TimeSpan VoiceRetryPause = TimeSpan.FromSeconds(8);
+
+        /// <summary>A session the realtime provider dropped before any transcript (bad_response at session setup).</summary>
+        private static bool Retryable(EtosVoiceSession voice)
+        {
+            return voice.FinalText == null && voice.LastError != null && voice.LastError.Code == "bad_response";
+        }
+
+        private IEnumerator Pause(TimeSpan span)
+        {
+            DateTime end = DateTime.UtcNow + span;
+            while (DateTime.UtcNow < end)
+            {
+                H.Queue.Pump();
+                yield return null;
+            }
+        }
+
+        private static UnityEngine.Object? FindPlaced(string authoringId)
+        {
+            foreach (MonoBehaviour behaviour in UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                SerializedProperty? id = new SerializedObject(behaviour).FindProperty("authoringId");
+                if (id != null && id.propertyType == SerializedPropertyType.String && id.stringValue == authoringId)
+                {
+                    return behaviour;
+                }
+            }
+
+            return null;
+        }
+
+        private IEnumerator RunVoice(EtosVoiceSession voice, string evidenceName, double maxSeconds, List<JObject> attempts)
         {
             List<JObject> events = new List<JObject>();
             Stopwatch watch = Stopwatch.StartNew();
@@ -330,8 +402,10 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
                     }
                 }
 
+                attempts.Add(new JObject { ["attempt"] = attempts.Count + 1, ["finalTranscript"] = final?.Text, ["error"] = voice.LastError?.Code, ["message"] = voice.LastError?.Message });
                 Evidence(evidenceName, new JObject
                 {
+                    ["attempts"] = new JArray(attempts.ToArray()),
                     ["source"] = voice.Source.Name,
                     ["sessionId"] = voice.Ready?.SessionId,
                     ["readyMs"] = Math.Round(readyMs, 1),
@@ -345,7 +419,8 @@ namespace GameCore.Studio.Hollowmere.P2_2.Live
             }
             else
             {
-                Evidence(evidenceName, new JObject { ["refused"] = start.Exception?.GetBaseException().Message, ["events"] = new JArray(events.ToArray()) });
+                attempts.Add(new JObject { ["attempt"] = attempts.Count + 1, ["refused"] = start.Exception?.GetBaseException().Message, ["error"] = voice.LastError?.Code });
+                Evidence(evidenceName, new JObject { ["attempts"] = new JArray(attempts.ToArray()), ["refused"] = start.Exception?.GetBaseException().Message, ["events"] = new JArray(events.ToArray()) });
             }
 
             voice.Dispose();

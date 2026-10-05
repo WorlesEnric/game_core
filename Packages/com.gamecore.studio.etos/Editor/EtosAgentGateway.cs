@@ -402,12 +402,13 @@ namespace GameCore.Studio.Etos
                 GenerateResult result = await GenerateWithReplayAsync(body, ct).ConfigureAwait(false);
                 if (result.Artifacts.Count == 0)
                 {
-                    return new OpResult(null, null, null, null, result.Text, null, result.Provider);
+                    Diagnostic? failed = body.Op == "describe" ? null : FailedState(result);
+                    return new OpResult(null, null, null, failed, result.Text, null, result.Provider) { State = result.State };
                 }
 
                 StoredArtifactInfo stored = result.Artifacts[0];
                 VerifiedArtifact verified = await Client.DownloadArtifactAsync(stored.Sha256, stored.Bytes, ct).ConfigureAwait(false);
-                return new OpResult(verified.Sha256, stored.MediaType, verified.Bytes, null, result.Text, stored.Name, result.Provider);
+                return new OpResult(verified.Sha256, stored.MediaType, verified.Bytes, null, result.Text, stored.Name, result.Provider) { State = result.State };
             }
             catch (EtosException error)
             {
@@ -429,6 +430,16 @@ namespace GameCore.Studio.Etos
                 try
                 {
                     GenerateResult result = await Client.GenerateAsync(body, ct).ConfigureAwait(false);
+                    if (result.Artifacts.Count == 0 && body.Op != "describe" && !IsFinal(StateName(result.State)) && watch.Elapsed + _options.OpReplayDelay < _options.OpReplayWindow)
+                    {
+                        replays++;
+                        int pending = replays;
+                        string state = StateName(result.State) ?? "unknown";
+                        _queue.Post(() => _log.Write(StudioLogLevel.Info, "etos", "op " + body.Op + " is " + state + "; looking the job up again (" + pending + ")"));
+                        await Task.Delay(_options.OpReplayDelay, ct).ConfigureAwait(false);
+                        continue;
+                    }
+
                     if (replays > 0)
                     {
                         int count = replays;
@@ -817,6 +828,40 @@ namespace GameCore.Studio.Etos
                 default:
                     return ProviderState.Unknown;
             }
+        }
+
+        /// <summary>The job state of an op answer (<c>state</c> as a string or <c>state.state</c>), or null.</summary>
+        public static string? StateName(JToken? state)
+        {
+            if (state == null || state.Type == JTokenType.Null)
+            {
+                return null;
+            }
+
+            if (state.Type == JTokenType.String)
+            {
+                return (string?)state;
+            }
+
+            return state is JObject obj ? Json.Str(obj, "state") : null;
+        }
+
+        /// <summary>True for a final etops job state.</summary>
+        public static bool IsFinal(string? state)
+        {
+            return state == "succeeded" || state == "failed" || state == "cancelled" || state == "canceled" || state == "unknown" || state == "expired";
+        }
+
+        /// <summary>The refusal of an op answer without artifacts: its job failed, or it is still pending after the window.</summary>
+        private static Diagnostic FailedState(GenerateResult result)
+        {
+            string state = StateName(result.State) ?? "unknown";
+            JObject? obj = result.State as JObject;
+            JObject? error = obj?["error"] as JObject;
+            string code = (error == null ? null : Json.Str(error, "code")) ?? (IsFinal(state) ? "op_" + state : "op_pending");
+            string message = (error == null ? null : Json.Str(error, "message")) ?? ("The " + result.Op + " job is " + state + " and returned no artifact.");
+            JObject data = new JObject { ["state"] = result.State?.DeepClone() };
+            return new Diagnostic(code, EtosRedaction.Redact(message), state == "unknown" ? "etos reports the outcome unknown: it is unresolved, not a success." : null, null, data);
         }
 
         /// <summary>The etos op for an asset.generate kind, or null.</summary>

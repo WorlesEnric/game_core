@@ -67,14 +67,14 @@ namespace GameCore.Studio.Etos
         /// Image → PNG at <paramref name="assetPath"/>. With <paramref name="squareSize"/> the provider's image is
         /// down-sampled in the Studio (the provider offers fixed sizes) before it is retained and imported.
         /// </summary>
-        public async Task<MediaImport> GenerateImageAsync(string prompt, string assetPath, int? squareSize = null, double? maxCostUsd = null, CancellationToken ct = default)
+        public async Task<MediaImport> GenerateImageAsync(string prompt, string assetPath, int? squareSize = null, double? maxCostUsd = null, string? changeSetId = null, CancellationToken ct = default)
         {
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.image", new JObject { ["prompt"] = prompt }, maxCostUsd), ct).ConfigureAwait(false);
+            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.image", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
             return await _queue.Run(() => ImportOnMain(result, assetPath, "texture", "Generate image: " + prompt, squareSize)).ConfigureAwait(false);
         }
 
         /// <summary>Text to speech → WAV at <paramref name="assetPath"/>.</summary>
-        public async Task<MediaImport> GenerateSpeechAsync(string text, string assetPath, string? voice = null, double? maxCostUsd = null, CancellationToken ct = default)
+        public async Task<MediaImport> GenerateSpeechAsync(string text, string assetPath, string? voice = null, double? maxCostUsd = null, string? changeSetId = null, CancellationToken ct = default)
         {
             JObject inputs = new JObject { ["text"] = text };
             if (!string.IsNullOrEmpty(voice))
@@ -82,7 +82,7 @@ namespace GameCore.Studio.Etos
                 inputs["voice"] = voice;
             }
 
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("tts", inputs, maxCostUsd), ct).ConfigureAwait(false);
+            OpResult result = await _gateway.GenerateAsync(new OpRequest("tts", inputs, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
             return await _queue.Run(() => ImportOnMain(result, assetPath, "voiceLine", "Speak: " + text, null)).ConfigureAwait(false);
         }
 
@@ -99,9 +99,9 @@ namespace GameCore.Studio.Etos
         }
 
         /// <summary>3D mesh; the companion's refusal (SADR-020) is returned as it came.</summary>
-        public async Task<MediaImport> Generate3dAsync(string prompt, string assetPath, double? maxCostUsd = null, CancellationToken ct = default)
+        public async Task<MediaImport> Generate3dAsync(string prompt, string assetPath, double? maxCostUsd = null, string? changeSetId = null, CancellationToken ct = default)
         {
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.3d", new JObject { ["prompt"] = prompt }, maxCostUsd), ct).ConfigureAwait(false);
+            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.3d", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
             return await _queue.Run(() => ImportOnMain(result, assetPath, "mesh", "Generate mesh: " + prompt, null)).ConfigureAwait(false);
         }
 

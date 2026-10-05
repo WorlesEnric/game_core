@@ -97,6 +97,7 @@ namespace GameCore.Studio.Etos
                 _channel = null;
                 channel.Dispose();
                 Diagnostic diagnostic = EtosAgentGateway.DiagnosticOf(error.Error);
+                LastError = diagnostic;
                 _queue.Post(() => Raise(diagnostic));
                 throw;
             }
