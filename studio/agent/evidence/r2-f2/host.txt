@@ -1,0 +1,18 @@
+COMMAND: UNITY=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity bash /home/worlesenric/wkspace/gc-studio/r2-f2/studio/tools/unity-batch.sh --project /home/worlesenric/.cache/gamecore-studio/r2-f2/host/project --log-dir /home/worlesenric/.cache/gamecore-studio/r2-f2/host/logs --label r2-f2-host --timeout 180 --attempts 1 -- -quit
+WRAPPER_EXIT: 0
+LOG: /home/worlesenric/.cache/gamecore-studio/r2-f2/host/logs/r2-f2-host-20261005T181456-1484426-a1.log
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-05T10:14:59.168742Z"
+[Licensing::Client] Handshaking with LicensingClient:
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-05T10:14:59.170776Z"
+[licensing identifier/token line omitted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+RESULT r2-f2-host: PASS (unity exit 0, 57s, attempts 1, log /home/worlesenric/.cache/gamecore-studio/r2-f2/host/logs/r2-f2-host-20261005T181456-1484426-a1.log)

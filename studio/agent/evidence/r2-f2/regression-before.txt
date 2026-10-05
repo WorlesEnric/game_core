@@ -1,0 +1,22 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r2-f2/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.29s
+     Running tests/stage_licensing.rs (target/debug/deps/stage_licensing-17142875a684025a)
+
+running 1 test
+test r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state ... FAILED
+
+failures:
+
+---- r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state stdout ----
+
+thread 'r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state' (1535059) panicked at tests/stage_licensing.rs:32:5:
+licensing probe exit Some(1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.99s
+
+error: test failed, to rerun pass `--test stage_licensing`
