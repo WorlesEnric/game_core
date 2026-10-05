@@ -1,10 +1,11 @@
 // Hollowmere.P2_1.Evidence - the P2.1 graphical evidence run (studio/tools/evidence-p2.1.sh). Started interactively on
 // the host's display with -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run (not batch mode). A step machine
 // (step index in SessionState, so it continues across the domain reload of entering Play Mode) opens Thornwick Village,
-// lays out the Studio, then: first-run guide, Select click on a placed entity, Inspect hover card, marquee, point-at
-// marker, a canned candidate (a move of the selected entity, built locally as evidence input) previewed with its ghost,
-// applied and undone from History, the prompt bar's disabled reason without a gateway, then Play Mode from Boot.unity
-// with the viewport in Play mode, the pump indicator, and a Select click in Play. After each step the display is
+// lays out the Studio, then: first-run guide, Select click on the Village Well, Inspect hover card, marquee, point-at
+// marker, a canned candidate (a move of the well, built locally as evidence input) previewed with its ghost, applied
+// and undone from History, the prompt bar's disabled reason without a gateway, then Play Mode from Boot.unity with the
+// viewport in Play mode on the player camera, W held through the Input System (the player must move), the pump
+// indicator, Maren (patrolling NPC) and the well selected in Play, and Pause. After each step the display is
 // grabbed with ffmpeg (x11grab) into GCS_EVIDENCE_DIR; evidence-log.jsonl records the step, time, pump readout and
 // B-SELECT timings. The editor exits when done (exit code 0, or 1 when a step failed).
 #nullable enable
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
@@ -23,6 +25,8 @@ using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using Debug = UnityEngine.Debug;
 
 namespace Hollowmere.P2_1.Evidence
@@ -247,27 +251,72 @@ namespace Hollowmere.P2_1.Evidence
                         return false;
                     }
 
+                    clock.Waits = 0;
                     StudioViewportWindow viewport = Viewport();
+                    viewport.Renderer.ForceFreeCamera = false;
                     viewport.SetMode(ViewportMode.Play);
                     viewport.Focus();
-                    clock.Waits = 0;
+                    CharacterController? player = UnityEngine.Object.FindAnyObjectByType<CharacterController>();
+                    clock.PlayerStart = player != null ? player.transform.position : Vector3.zero;
+                    clock.HasPlayer = player != null;
+                    Keyboard keyboard = Keyboard.current ?? InputSystem.AddDevice<Keyboard>();
+                    InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
+                    Log(step, "input", "Viewport focused in Play mode; W held through the Input System (player " + (player != null ? player.name : "not found") + ").", null);
                     return true;
                 }
 
                 case 13:
                 {
                     StudioViewportWindow viewport = Viewport();
-                    Shot(step, "play-mode", "Play mode in the viewport: game camera, input routed to the game, pump indicator " + viewport.Pump.Text() + ".");
+                    viewport.Focus();
+                    CharacterController? player = UnityEngine.Object.FindAnyObjectByType<CharacterController>();
+                    float moved = player != null && clock.HasPlayer ? Vector3.Distance(player.transform.position, clock.PlayerStart) : -1f;
+                    Shot(step, "play-mode", "Play mode in the viewport: the player camera (ThirdPersonCamera's camera), input routed to the game"
+                        + " (routing " + (viewport.Routing.Active ? "active" : "inactive") + ", " + viewport.Routing.EventsRouted + " Input System event(s)); W held for "
+                        + StepSeconds.ToString("0.0", CultureInfo.InvariantCulture) + " s moved the player " + (moved < 0f ? "n/a" : moved.ToString("0.00", CultureInfo.InvariantCulture) + " m")
+                        + "; pump " + viewport.Pump.Text() + ".");
+                    Keyboard? keyboard = Keyboard.current;
+                    if (keyboard != null)
+                    {
+                        InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                    }
+
                     return true;
                 }
 
                 case 14:
                 {
                     StudioViewportWindow viewport = Viewport();
+                    GameObject? maren = FindByName("Maren");
+                    GameObject? well = FindByName("Well");
                     viewport.SetMode(ViewportMode.Select);
-                    Rect area = viewport.ImageRect;
-                    IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(area.center, SelectionOp.Replace);
-                    Shot(step, "play-select", "Select in Play: click at the viewport center (" + candidates.Count + " candidate(s)); pump " + viewport.Pump.Text() + ".");
+                    if (maren != null)
+                    {
+                        FrameOn(viewport, maren, well);
+                    }
+
+                    List<string> picked = new List<string>();
+                    foreach ((GameObject? target, SelectionOp op) in new[] { (maren, SelectionOp.Replace), (well, SelectionOp.Add) })
+                    {
+                        Rect? rect = target == null ? null : viewport.ScreenRectOf(target);
+                        if (rect == null)
+                        {
+                            picked.Add((target != null ? target.name : "?") + " off screen");
+                            continue;
+                        }
+
+                        IReadOnlyList<PickCandidate> candidates = viewport.ClickAt(rect.Value.center, op);
+                        picked.Add(target!.name + " (" + candidates.Count + " candidate(s))");
+                    }
+
+                    viewport.Overlap?.Hide();
+                    StringBuilder selected = new StringBuilder();
+                    foreach (SelectionBadge badge in viewport.Context.Selection.Describe())
+                    {
+                        selected.Append(selected.Length == 0 ? string.Empty : ", ").Append(badge.Label).Append(" [").Append(badge.TypeId).Append(']');
+                    }
+
+                    Shot(step, "play-select", "Select in Play (free camera framed on Maren): clicked " + string.Join(", ", picked) + "; selection: " + selected + ".");
                     return true;
                 }
 
@@ -350,7 +399,7 @@ namespace Hollowmere.P2_1.Evidence
                     if (authored != null && runtime.Identity.Describe(authored)?.TypeId == "entity.instance")
                     {
                         string lower = current.name.ToLowerInvariant();
-                        if (lower.Contains("npc") || lower.Contains("villager") || lower.Contains("smith"))
+                        if (lower == "well" || lower.Contains("village well"))
                         {
                             return current.gameObject;
                         }
@@ -366,12 +415,17 @@ namespace Hollowmere.P2_1.Evidence
             return fallback;
         }
 
-        private static void FrameOn(StudioViewportWindow viewport, GameObject target)
+        private static void FrameOn(StudioViewportWindow viewport, GameObject target, GameObject? also = null)
         {
             Bounds bounds = new Bounds(target.transform.position, Vector3.one * 2f);
             foreach (Renderer renderer in target.GetComponentsInChildren<Renderer>())
             {
                 bounds.Encapsulate(renderer.bounds);
+            }
+
+            if (also != null)
+            {
+                bounds.Encapsulate(also.transform.position);
             }
 
             bounds.Expand(bounds.size.magnitude * 1.5f);
@@ -381,6 +435,26 @@ namespace Hollowmere.P2_1.Evidence
         }
 
         private static GameObject? Find(string name) => string.IsNullOrEmpty(name) ? null : GameObject.Find(name);
+
+        /// <summary>The first active scene object whose name contains <paramref name="fragment"/> and that has a renderer.</summary>
+        private static GameObject? FindByName(string fragment)
+        {
+            foreach (Renderer renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.InstanceID))
+            {
+                Transform? current = renderer.transform;
+                while (current != null)
+                {
+                    if (current.name.IndexOf(fragment, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        return current.gameObject;
+                    }
+
+                    current = current.parent;
+                }
+            }
+
+            return null;
+        }
 
         private static string Ms(double? value) => value.HasValue ? value.Value.ToString("0.0", CultureInfo.InvariantCulture) + " ms" : "n/a";
 
@@ -466,6 +540,24 @@ namespace Hollowmere.P2_1.Evidence
         public double NextAt { get; set; }
 
         public int Waits { get; set; }
+
+        [SerializeField]
+        private Vector3 playerStart;
+
+        [SerializeField]
+        private bool hasPlayer;
+
+        public Vector3 PlayerStart
+        {
+            get => playerStart;
+            set => playerStart = value;
+        }
+
+        public bool HasPlayer
+        {
+            get => hasPlayer;
+            set => hasPlayer = value;
+        }
 
         public string TargetName
         {

@@ -18,9 +18,12 @@ namespace GameCore.Studio.UI
         private readonly SelectionModel _selection;
         private readonly Func<PickingService> _picking;
         private readonly Func<int> _overlapRadius;
+        private readonly RuntimeViewMapper? _mapper;
 
-        public ViewportPicker(SelectionModel selection, Func<PickingService> picking, SelectTimings timings, Func<int>? overlapRadius = null)
+        /// <param name="mapper">Re-targets picks on runtime views (Play mode) to their authored objects; null keeps picks as they are.</param>
+        public ViewportPicker(SelectionModel selection, Func<PickingService> picking, SelectTimings timings, Func<int>? overlapRadius = null, RuntimeViewMapper? mapper = null)
         {
+            _mapper = mapper;
             _selection = selection ?? throw new ArgumentNullException(nameof(selection));
             _picking = picking ?? throw new ArgumentNullException(nameof(picking));
             Timings = timings ?? throw new ArgumentNullException(nameof(timings));
@@ -39,14 +42,14 @@ namespace GameCore.Studio.UI
             Timings.Add("click", center.Timings.TotalMs);
             List<PickCandidate> merged = new List<PickCandidate>();
             List<string> keys = new List<string>();
-            Merge(center, merged, keys);
+            Merge(center, merged, keys, _mapper);
             float radius = _overlapRadius();
             if (radius > 0f)
             {
                 Vector2[] offsets = { new Vector2(radius, 0f), new Vector2(-radius, 0f), new Vector2(0f, radius), new Vector2(0f, -radius) };
                 foreach (Vector2 offset in offsets)
                 {
-                    Merge(picking.Pick(point + offset), merged, keys);
+                    Merge(picking.Pick(point + offset), merged, keys, _mapper);
                 }
             }
 
@@ -97,9 +100,10 @@ namespace GameCore.Studio.UI
             PickResult result = _picking().Marquee(rect, fullContainment);
             Timings.Add("marquee", result.Timings.TotalMs);
             List<AuthoringRef> targets = new List<AuthoringRef>();
-            foreach (AuthoringRef target in result.Targets())
+            foreach (PickCandidate candidate in result.Candidates)
             {
-                if (target.Kind != AuthoringKind.Location)
+                AuthoringRef target = (_mapper?.Map(candidate) ?? candidate).Ref;
+                if (target.Kind != AuthoringKind.Location && !targets.Exists(existing => existing.SameTarget(target)))
                 {
                     targets.Add(target);
                 }
@@ -131,22 +135,23 @@ namespace GameCore.Studio.UI
             {
                 if (candidate.Source != PickSource.Ground && candidate.Source != PickSource.NavMesh)
                 {
-                    return candidate;
+                    return _mapper?.Map(candidate) ?? candidate;
                 }
             }
 
             return null;
         }
 
-        private static void Merge(PickResult result, List<PickCandidate> merged, List<string> keys)
+        private static void Merge(PickResult result, List<PickCandidate> merged, List<string> keys, RuntimeViewMapper? mapper)
         {
-            foreach (PickCandidate candidate in result.Candidates)
+            foreach (PickCandidate picked in result.Candidates)
             {
-                if (candidate.Source == PickSource.Ground || candidate.Source == PickSource.NavMesh)
+                if (picked.Source == PickSource.Ground || picked.Source == PickSource.NavMesh)
                 {
                     continue;
                 }
 
+                PickCandidate candidate = mapper?.Map(picked) ?? picked;
                 string key = candidate.Ref.IdentityKey + "|" + (candidate.Part ?? string.Empty);
                 int index = keys.IndexOf(key);
                 if (index < 0)

@@ -199,6 +199,30 @@ namespace GameCore.Studio.UI.Tests
         }
 
         [Test]
+        public void RuntimeViews_MapToTheirAuthoredObjects()
+        {
+            FixtureNpcDefinition maren = _bed.CreateNpc("Maren", "Morning");
+            _bed.Runtime.Index.Rebuild();
+            GameObject view = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            view.name = "NpcView(Maren)";
+            view.AddComponent<EntityViewTag>().AuthoringId = maren.AuthoringId;
+            PickingService service = new PickingService(_camera, Viewport, _bed.Runtime.Resolver, _bed.Runtime.Identity, null, new PickOptions { GroundHeight = -5f });
+            RuntimeViewMapper mapper = new RuntimeViewMapper(_bed.Runtime);
+            ViewportPicker picker = new ViewportPicker(_bed.Context.Selection, () => service, _timings, () => 4, mapper);
+
+            IReadOnlyList<PickCandidate> candidates = picker.Click(Center, SelectionOp.Replace);
+            Assert.That(candidates.Count, Is.GreaterThanOrEqualTo(1));
+            Assert.That(mapper.Mapped, Is.GreaterThan(0));
+            AssertTargets(maren);
+            Assert.That(picker.Hover(Center)!.Ref.SameTarget(_bed.Ref(maren)), Is.True);
+            picker.Marquee(new Rect(0f, 0f, 800f, 600f), SelectionOp.Replace, false);
+            AssertTargets(maren);
+
+            IReadOnlyList<PickCandidate> unmapped = Picker().Click(Center, SelectionOp.Replace);
+            Assert.That(unmapped.Count == 0 || unmapped[0].Ref.AuthoringId == null, Is.True, "without the mapper the view is a plain scene object");
+        }
+
+        [Test]
         public void Badges_ReportStaleTargets()
         {
             FixtureAuthoredEntity doomed = _bed.SpawnEntity("Doomed", Vector3.zero);

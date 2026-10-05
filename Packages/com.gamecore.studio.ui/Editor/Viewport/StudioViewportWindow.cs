@@ -225,7 +225,7 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>The gesture-to-selection picker over <see cref="Picking"/> (shared with tests).</summary>
-        public ViewportPicker Picker => _picker ??= new ViewportPicker(Context.Selection, () => Picking, _timings, () => StudioUiSettings.instance.OverlapRadiusPixels);
+        public ViewportPicker Picker => _picker ??= new ViewportPicker(Context.Selection, () => Picking, _timings, () => StudioUiSettings.instance.OverlapRadiusPixels, new RuntimeViewMapper(Context.Runtime));
 
         /// <summary>
         /// Candidates under a point and within the overlap radius (center plus four samples at the radius), merged by

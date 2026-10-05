@@ -27,14 +27,17 @@ namespace GameCore.Studio.UI
 
     /// <summary>
     /// Routes keyboard and mouse to the game while the viewport is focused in Play mode: the Input System's editor
-    /// play-mode behaviour is switched to "all device input always goes to the game view" (so the gameplay input sources
-    /// read devices although the Game view is not focused) and restored when routing stops.
+    /// play-mode behaviour is switched to "all device input always goes to the game view" and its background behaviour
+    /// to "ignore focus", so the game's input sources (Hollowmere: PlayerInputAdapter over InputSystemIntentSource and
+    /// Input/Player.inputactions) read the devices although the Game view is not focused; both settings are restored
+    /// when routing stops. There is no second input path.
     /// </summary>
     public sealed class PlayInputRouting : IDisposable
     {
         private readonly Action<InputEventPtr, InputDevice> _handler;
         private bool _active;
         private InputSettings.EditorInputBehaviorInPlayMode _previous;
+        private InputSettings.BackgroundBehavior _previousBackground;
 
         public PlayInputRouting()
         {
@@ -53,7 +56,11 @@ namespace GameCore.Studio.UI
             {
                 InputSettings settings = InputSystem.settings;
                 _previous = settings.editorInputBehaviorInPlayMode;
+                _previousBackground = settings.backgroundBehavior;
                 settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+                // With all input going to the game, the background behaviour applies as in a player; the Game view is
+                // not focused while the viewport is, so devices must not be disabled for lack of focus.
+                settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
                 InputSystem.onEvent += _handler;
                 _active = true;
             }
@@ -78,6 +85,7 @@ namespace GameCore.Studio.UI
             if (settings != null)
             {
                 settings.editorInputBehaviorInPlayMode = _previous;
+                settings.backgroundBehavior = _previousBackground;
             }
         }
 
