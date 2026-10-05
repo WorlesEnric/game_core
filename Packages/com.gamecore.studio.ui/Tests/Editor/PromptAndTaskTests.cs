@@ -74,9 +74,15 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(prepared.ContextBytes, Is.LessThanOrEqualTo(AgentRequestBuilder.SliceByteCap));
             Assert.That(prepared.ContextTruncated, Is.False);
             Assert.That(request.ContextSlice.Nodes.Count, Is.GreaterThanOrEqualTo(2), "depth 2 reaches the referenced definition");
-            Assert.That(request.Attachments.Count, Is.EqualTo(1));
+            Assert.That(request.Attachments.Count, Is.EqualTo(2), "the dragged file plus the scene context");
             Assert.That(request.Attachments[0].MediaType, Is.EqualTo("image/png"));
             Assert.That(request.Attachments[0].Data, Is.EqualTo(new byte[] { 0x89, 0x50, 0x4E, 0x47 }));
+            Assert.That(request.Attachments[1].Name, Is.EqualTo(AgentRequestBuilder.SceneContextName));
+            JObject scene = JObject.Parse(System.Text.Encoding.UTF8.GetString(request.Attachments[1].Data));
+            Assert.That((string?)scene["schema"], Is.EqualTo("gamecore.studio.scenecontext/1"));
+            Assert.That((string?)scene["objects"]![0]!["name"], Is.EqualTo("Smith"));
+            Assert.That(((JArray)scene["objects"]![0]!["position"]!).Count, Is.EqualTo(3));
+            Assert.That((string?)scene["axes"]!["east"], Is.EqualTo("+x"));
             Assert.That(bar.Text, Is.Empty, "an accepted request clears the field");
             Assert.That(_bed.Context.Tasks.Find(prepared.ChangeSetId)!.requestId, Is.EqualTo(handle.RequestId));
         }

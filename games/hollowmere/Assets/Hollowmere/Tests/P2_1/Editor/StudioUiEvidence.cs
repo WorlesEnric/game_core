@@ -49,7 +49,7 @@ namespace Hollowmere.P2_1.Evidence
         private const string LivePrompt = "Move this well one metre to the east";
 
         /// <summary>The answer given when the worker asks for a clarification.</summary>
-        private const string LiveAnswer = "East is +X in this project (scene-context.json axes). Move the Village Well exactly 1 metre along +X; change nothing else.";
+        private const string LiveAnswer = "The Village Well is at ({0:0.###}, {1:0.###}, {2:0.###}) in world metres and east is +X (scene-context.json). Move it to ({3:0.###}, {1:0.###}, {2:0.###}); change nothing else.";
 
         /// <summary>How long the live request may take before the run records it as unanswered.</summary>
         private const double LiveTimeoutSeconds = 540;
@@ -306,7 +306,10 @@ namespace Hollowmere.P2_1.Evidence
                         tray.Select(row.changeSetId);
                         Shot(step, "live-clarification", "The worker (" + row.worker + ") asked for a clarification after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s: \"" + row.question + "\"; the tray shows it with the inline answer.");
                         string parent = row.changeSetId;
-                        _ = tray.Answer(row, LiveAnswer);
+                        GameObject? well = Find(clock.TargetName);
+                        Vector3 at = well != null ? well.transform.position : Vector3.zero;
+                        string answer = string.Format(CultureInfo.InvariantCulture, LiveAnswer, at.x, at.y, at.z, at.x + 1f);
+                        _ = tray.Answer(row, answer);
                         TaskRow? followUp = null;
                         foreach (TaskRow candidateRow in context.Tasks.Rows)
                         {
@@ -318,7 +321,7 @@ namespace Hollowmere.P2_1.Evidence
 
                         clock.Answered = true;
                         clock.LiveId = followUp?.changeSetId ?? clock.LiveId;
-                        Log(step, "live-answer", "Answered \"" + LiveAnswer + "\" as " + clock.LiveId + " (parent " + parent + ").", null);
+                        Log(step, "live-answer", "Answered \"" + answer + "\" as " + clock.LiveId + " (parent " + parent + ").", null);
                         return false;
                     }
 

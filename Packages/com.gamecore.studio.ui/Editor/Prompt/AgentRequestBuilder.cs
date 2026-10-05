@@ -1,7 +1,10 @@
 // GameCore.Studio.UI - builds P2.2's AgentRequest from the prompt bar (docs/studio/04-etos-integration.md s2
 // EditRequest, 03 s2/s3/s9): intent, SelectionSnapshot, the bounded index slice of the selection closure (depth 2,
 // 64 KiB, truncation reported), the tool catalog revision, worker mode and attachments (read from disk, at most 16 MiB
-// each). The change-set id is minted here (02 s4 step 1); P2.2 answers with it as the request id.
+// each), plus P2.2's scene-context.json (gamecore.studio.scenecontext/1: name, hierarchy path, scene, world position,
+// rotation, scale and the axes +Z north / +X east / +Y up) for selected scene objects, because the semantic index
+// carries authored fields, not transforms, and a worker cannot move what it cannot locate (seen live: gc-designer asked
+// for the well's position). The change-set id is minted here (02 s4 step 1); P2.2 answers with it as the request id.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -10,6 +13,7 @@ using System.Text.RegularExpressions;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
+using Newtonsoft.Json.Linq;
 using AgentAttachment = GameCore.Studio.Authoring.Agent.Attachment;
 
 namespace GameCore.Studio.UI
@@ -168,7 +172,72 @@ namespace GameCore.Studio.UI
                 request.Attachments.Add(new AgentAttachment(attachment.Name, attachment.MediaType, File.ReadAllBytes(file.FullName), "reference"));
             }
 
+            AgentAttachment? scene = SceneContext(closure);
+            if (scene != null)
+            {
+                request.Attachments.Add(scene);
+            }
+
             return new PreparedRequest(request, intent, slice.Bytes, slice.Truncated, slice.OmittedNodes);
+        }
+
+        /// <summary>The attachment name of the scene context (the same as P2.2's AgentRequestBuilder.SceneContextName).</summary>
+        public const string SceneContextName = "scene-context.json";
+
+        /// <summary>
+        /// <c>scene-context.json</c> for the targets that resolve to scene objects (P2.2's format), or null when none does.
+        /// </summary>
+        public AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets)
+        {
+            JArray objects = new JArray();
+            foreach (AuthoringRef target in targets)
+            {
+                UnityEngine.Object? resolved = _runtime.Resolver.Find(target);
+                UnityEngine.GameObject? gameObject = resolved as UnityEngine.GameObject ?? (resolved as UnityEngine.Component)?.gameObject;
+                if (gameObject == null || !gameObject.scene.IsValid())
+                {
+                    continue;
+                }
+
+                UnityEngine.Transform transform = gameObject.transform;
+                objects.Add(new JObject
+                {
+                    ["ref"] = StudioJson.ToToken(target),
+                    ["name"] = gameObject.name,
+                    ["path"] = HierarchyPath(transform),
+                    ["scene"] = gameObject.scene.path,
+                    ["position"] = new JArray(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z)),
+                    ["rotation"] = new JArray(Round(transform.rotation.x), Round(transform.rotation.y), Round(transform.rotation.z), Round(transform.rotation.w)),
+                    ["scale"] = new JArray(Round(transform.localScale.x), Round(transform.localScale.y), Round(transform.localScale.z)),
+                });
+            }
+
+            if (objects.Count == 0)
+            {
+                return null;
+            }
+
+            JObject document = new JObject
+            {
+                ["schema"] = "gamecore.studio.scenecontext/1",
+                ["units"] = "metres",
+                ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
+                ["objects"] = objects,
+            };
+            return new AgentAttachment(SceneContextName, "application/json", System.Text.Encoding.UTF8.GetBytes(document.ToString(Newtonsoft.Json.Formatting.Indented)), "context");
+        }
+
+        private static double Round(float value) => Math.Round(value, 4);
+
+        private static string HierarchyPath(UnityEngine.Transform transform)
+        {
+            string path = transform.name;
+            for (UnityEngine.Transform? parent = transform.parent; parent != null; parent = parent.parent)
+            {
+                path = parent.name + "/" + path;
+            }
+
+            return path;
         }
 
         /// <summary>True when the intent text refers to a selection ("this", "these", "here", ...).</summary>
