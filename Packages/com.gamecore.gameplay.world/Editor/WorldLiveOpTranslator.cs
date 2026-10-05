@@ -111,7 +111,11 @@ namespace GameCore.Gameplay.World.Editor
 
         private static void Bind()
         {
-            if (StudioServices.HasRuntime) WorldLiveOpTranslator.Register(StudioServices.Runtime);
+            if (!StudioServices.HasRuntime) return;
+            StudioRuntime runtime = StudioServices.Runtime;
+            WorldLiveOpTranslator.Register(runtime);
+            if (StageAdmission.Of(runtime).Options.PollSmokeTest == null)
+                StudioAdmissionServices.RecoverPendingSmoke(runtime);
         }
     }
 }

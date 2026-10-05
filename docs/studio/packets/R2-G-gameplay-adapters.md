@@ -233,3 +233,83 @@ supersede requests #2, #4–#6 only to the extent explicitly stated.
 - No APP-1 note or restore-adoption note is present in the local `origin/main`
   documentation tree at this packet's baseline. No restore-adoption behaviour is
   inferred, and no game/kernel source is edited by this packet.
+
+### R2-G2 adapter contract and regression mapping
+
+- **R2-14 / R2-G requests #4–#5:** additive
+  `BindAdmission(StudioRuntime, Func<SaveService?>, Func<bool>, Func<StageVerdict, AdmissionSmokeStatus>)`
+  binds `PollSmokeTest` and clears the synchronous assertion. The original bool
+  overload stays synchronous and clears an obsolete poll binding. Replacing a
+  pending poll with a bool binding installs the failed-closed recovery poller;
+  it cannot turn incomplete frame assertions into an immediate success.
+- Readiness is checked before and after the game callback. An unverified verdict
+  object, lost readiness, exception or unknown status returns Failed. The tri-state
+  `RunSmokeTest` overload resolves only the retained digest-bound proposal and
+  preserves Pending through the trusted game dispatcher. It does not reflect
+  candidate method names, boot a root, or drive the world.
+- `RecoverPendingSmoke(runtime)` reads durable `smoke-pending` admissions and
+  re-registers their existing lifecycle through `StageAdmission.Resume`. Calling
+  Bind again uses this same path; the first-party `WorldStudioRegistration` calls
+  it after runtime creation when a poll adapter is absent. Missing registrations
+  return Failed, including when `SmokeTest` is a passing bool. Core still requires
+  fresh authenticated verdict transport after reload before invoking any poll.
+  No second journal or frame counter is introduced; the original persisted
+  frame/time budgets remain authoritative (default 120 polls / 60 seconds).
+- **R2-41 / R2-G request #6:** only the assigned P1.7b test method changes. Its
+  Compose-tier assertions remain, while `agent.media` is asserted absent from
+  authored prerequisites. Existing R2-G actual-tool tests prove registration,
+  replacement and unregister behaviour through the gateway and ChangeSetEngine.
+
+New regression fixture: `Hollowmere.R2_G.EditMode.Tests.AdmissionAdapterTests`.
+Each UnityTest enters **real Hollowmere Play Mode**, loads `Boot.unity`, then exits
+via UnityTearDown. The runtime test fixture advances its smoke assertions only in
+`LateUpdate` against `GameApplication.Current`; repeated polls consume no world
+frames. Installation/compiler/catalog/companion are deterministic doubles and
+package bytes are written only to a temporary directory outside the live project.
+The two reload cases reconstruct StageAdmission against the same durable record.
+
+| Finding | Regression test |
+|---|---|
+| R2-14 | `R2_14_AdapterPendingPassesOnlyAfterNWorldFrames` |
+| R2-14 | `R2_14_AdapterPendingFailureRollsBack` |
+| R2-14 | `R2_14_AdapterSessionStopsBeingReadyFailsClosed` |
+| R2-14 | `R2_14_AdapterReloadDuringPendingFailsClosedDespitePassingBool` |
+| R2-14 | `R2_14_AdapterReloadRebindRetainsBudgetAndRequiresFreshTrust` |
+| R2-14 | `R2_14_AdapterExceptionInvalidStatusAndReadinessLossFailClosed` |
+| R2-14 compatibility | `R2_14_AdapterImmediateBoolRemainsSynchronous` |
+| R2-41 | `Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia` plus existing `R2_41_RegisteredToolIdsReachGatewayThroughChangeSetEngine` |
+
+### Requests to other packets — P3.1 exact binding
+
+In P3.1's `games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereStudioAdmission.cs`,
+after session creation and each restored-root replacement, with `boot` the active
+`GameBoot` and `service` its active `SaveService`, add this line:
+
+```csharp
+StudioAdmissionServices.BindAdmission(StudioServices.Runtime, () => service, () => boot.World != null && boot.Narrative != null && ReferenceEquals(boot.World.Root, service.ActiveRoot) && ReferenceEquals(boot.World.Root, GameApplication.Current), verdict => StudioAdmissionServices.RunSmokeTest(StudioServices.Runtime, verdict, (type, method, steps) => RunAdmittedSmokeEntry(verdict, type, method, steps)));
+```
+
+The game-owned entry must have this signature (superseding request #4's bool):
+`AdmissionSmokeStatus RunAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)`.
+It registers a trusted entry once per verdict digest/active root, returns Pending
+until all `steps` normal game frames and assertions complete, Passed only then,
+and Failed on failure/missing registration/root loss. Advance its Step only from
+P3.1's registered per-frame callback; the poll must never call PumpFrame or run a
+synchronous loop. Rebind and re-register after reload from the verified retained
+proposal; if its progress cannot safely be reconstructed, return Failed. Do not
+call the sandbox Begin harness that owns a separate root. Choose any larger
+trusted poll budget **before** admission begins if game/editor frame pacing requires
+it; rebind cannot reset the persisted budget.
+
+### Left open — game integration and qualification
+
+- The P3.1 Editor admission file and active-world smoke registry are absent from
+  this baseline. They are explicitly outside R2-G2 ownership. The exact line and
+  signature above are the required game side; this packet does not claim that
+  real admitted candidate smoke is integrated in GameBoot.
+- Real process-kill recovery, a domain reload while smoke is Pending, checkpoint
+  adoption/restore continuity and the 90-second admission budget remain integration
+  qualification. Tests exercise actual Play frames and durable service reconstruction,
+  not a killed Editor or live companion. They issue no production signed verdict.
+- No paid ETOS operation, credential-file read, installed companion/etosd restart,
+  or sibling-clone mutation is performed. Rust is unchanged and not rebuilt.
