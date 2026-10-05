@@ -97,7 +97,7 @@ namespace GameCore.Studio.Views.Tests
         }
 
         [Test]
-        public void TwoThousandNodes_RenderWithinTheFrameBudget()
+        public void R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget()
         {
             Stopwatch watch = Stopwatch.StartNew();
             SemanticIndex index = SyntheticIndex.Tree(2000, 13, out AuthoringRef root);
@@ -121,12 +121,20 @@ namespace GameCore.Studio.Views.Tests
             Assert.That(canvas.LayoutPending, Is.False);
             GraphLayout layout = canvas.Layout!;
             double maxRefresh = 0.0;
+            for (int i = 0; i < 10; i++) canvas.ZoomBy(i % 2 == 0 ? 1.25f : 0.8f);
+            long allocatedBefore = System.GC.GetAllocatedBytesForCurrentThread();
             for (int i = 0; i < 30; i++)
             {
                 canvas.ZoomBy(i % 2 == 0 ? 1.25f : 0.8f);
                 maxRefresh = System.Math.Max(maxRefresh, canvas.LastRefreshMilliseconds);
             }
 
+            long allocated = System.GC.GetAllocatedBytesForCurrentThread() - allocatedBefore;
+            Assert.That(allocated, Is.LessThanOrEqualTo(30 * 1024), "warm compact pan/zoom reuses node visibility buffers");
+            long edgeBefore = System.GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 30; i++) canvas.RefreshEdgeStyles();
+            long edgeAllocated = System.GC.GetAllocatedBytesForCurrentThread() - edgeBefore;
+            Assert.That(edgeAllocated, Is.EqualTo(0), "warm edge color buckets are reused");
             canvas.FrameAll();
             int compactCards = canvas.VisibleCardCount;
             bool compact = canvas.IsCompact;
@@ -134,7 +142,7 @@ namespace GameCore.Studio.Views.Tests
             int framedCards = canvas.VisibleCardCount;
             UnityEngine.Debug.Log("[P2.3] 2000-node relationships: index graph " + buildGraph.ToString("0.0") + " ms, neighbourhood " + neighbourhood.Milliseconds.ToString("0.0")
                 + " ms, SetGraph " + setGraph.ToString("0.0") + " ms, layout " + layout.Steps + " slices max " + layout.MaxStepMilliseconds.ToString("0.00")
-                + " ms total " + layout.TotalMilliseconds.ToString("0.0") + " ms, refresh max " + maxRefresh.ToString("0.00") + " ms, cards framed-all "
+                + " ms total " + layout.TotalMilliseconds.ToString("0.0") + " ms, refresh max " + maxRefresh.ToString("0.00") + " ms, warm zoom bytes/frame " + (allocated / 30.0).ToString("0.0") + ", edge regroup bytes/frame " + (edgeAllocated / 30.0).ToString("0.0") + ", cards framed-all "
                 + compactCards + " (compact " + compact + "), cards at root " + framedCards + " (compact " + canvas.IsCompact + ")");
 
             Assert.That(layout.MaxStepMilliseconds, Is.LessThan(16.0), "one layout slice per editor frame stays under 16 ms");
