@@ -197,7 +197,7 @@ namespace Hollowmere.Game
                 return false;
             }
 
-            var result = current.Rig.Ui.Dispatcher.Dispatch(uiCommand);
+            var result = current.Rig.Dispatch(uiCommand);
             detail = result.ToString();
             return result.Accepted;
         }
