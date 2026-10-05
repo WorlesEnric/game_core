@@ -201,6 +201,10 @@ namespace GameCore.Studio.Etos.Testing
 
         public int VoiceStops { get; private set; }
 
+        public TimeSpan VoiceFinalDelay { get; set; }
+
+        public bool VoiceNeverCloses { get; set; }
+
         /// <summary>Every HTTP call (newest last).</summary>
         public IReadOnlyList<FakeCall> Calls
         {
@@ -1014,6 +1018,8 @@ namespace GameCore.Studio.Etos.Testing
                     else if (type == "stop")
                     {
                         VoiceStops++;
+                        if (VoiceNeverCloses) continue;
+                        await Task.Delay(VoiceFinalDelay).ConfigureAwait(false);
                         await socket.SendTextAsync("{\"type\":\"speech_ended\",\"itemId\":\"" + item + "\"}").ConfigureAwait(false);
                         await socket.SendTextAsync(new JObject { ["type"] = "transcript", ["role"] = "assistant", ["itemId"] = "item_assistant", ["revision"] = 0, ["text"] = "dropped by the client", ["final"] = true }.ToString(Formatting.None)).ConfigureAwait(false);
                         await socket.SendTextAsync(new JObject { ["type"] = "transcript", ["role"] = "user", ["itemId"] = item, ["revision"] = revision, ["text"] = VoiceTranscript[VoiceTranscript.Count - 1], ["final"] = true }.ToString(Formatting.None)).ConfigureAwait(false);

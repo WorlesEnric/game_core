@@ -53,6 +53,8 @@ namespace GameCore.Studio.UI.Tests
 
         public bool IsConfigured => true;
 
+        public System.Collections.Generic.IReadOnlyList<string> Workers => new[] { "gc-designer", "gc-mechanic" };
+
         public ProviderStatus Status { get; set; }
 
         public List<RequestView> Listed { get; } = new List<RequestView>();
