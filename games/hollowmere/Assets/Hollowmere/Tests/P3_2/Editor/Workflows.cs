@@ -1057,19 +1057,51 @@ namespace Hollowmere.P3_2.Workflows
 
         // ------------------------------------------------------------------------------------------- mechanisms
 
+        /// <summary>
+        /// W-MECH through the agent on main's stage seam: the gc-mechanic candidate is previewed, staged by the companion
+        /// (Stage in the panel: POST /v1/stage, the verdict fetched and verified), admitted when the verdict passes
+        /// (package written, recompile + domain reload), checked in Play from Boot.unity, and undone from History.
+        /// </summary>
         private static IReadOnlyList<Step> MechA()
         {
-            return new[]
+            List<Step> steps = new List<Step>
             {
                 S.OpenScene(S.MarshScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Select("Causeway Gate"),
+                S.AddAsset(GateInteractable),
                 S.Send("mech", "Add a pressure plate mechanism that opens the marsh gate (the Causeway Gate) while an item sits on the plate.", "mechanism"),
                 S.Await("mech", q => "A floor plate placed next to the Causeway Gate in Blackmere Marsh; the gate is open exactly while at least one item rests on the plate, " +
                                      "and closes when it is removed. Keep the state in int32 slots and include Rules tests.", 2400),
                 S.Do("preview mech", () => Guard("mech", () => S.Preview("mech").Run())),
-                S.Do("panel stage", () => Guard("mech", () => PanelStage("mech"))),
                 S.Do("export candidate", () => Guard("mech", () => ExportCandidate("mech"))),
+            };
+            steps.AddRange(StageAdmitSteps());
+            return steps;
+        }
+
+        /// <summary>Panel Stage -> verdict -> Admit -> wait -> Play -> Undo -> wait (shared by mech-a and mech-b).</summary>
+        private static IEnumerable<Step> StageAdmitSteps()
+        {
+            return new[]
+            {
+                S.Do("panel stage", () => Guard("mech", () => PanelStage("mech"))),
+                S.Do("verdict", () => Guard("mech", () => RecordVerdict())),
+                S.Do("admit", () => Guard("mech", () => Admit())),
+                S.Do("wait admission", () => St.Get("admitStartMs") == null ? true : WaitScenario("admission", 900)),
+                S.Do("play check", () => St.Get("admitStartMs") == null ? true : PlayCheck()),
+                S.Do("exit play", () =>
+                {
+                    if (EditorApplication.isPlaying)
+                    {
+                        EditorApplication.ExitPlaymode();
+                        return false;
+                    }
+
+                    return true;
+                }),
+                S.Do("undo admission", () => St.Get("admitStartMs") == null ? true : UndoAdmission()),
+                S.Do("wait undo", () => St.Get("undoStartMs") == null ? true : WaitScenario("undo", 900)),
                 S.Note("stop", () => WorkflowRunner.Recording(false)),
             };
         }
@@ -1136,34 +1168,28 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         }
 
+        /// <summary>The fallback: P2.4's pressure-plate sample candidate (GCS_P32_MECH_CANDIDATE) through the same seam.</summary>
         private static IReadOnlyList<Step> MechB()
         {
-            return new[]
+            List<Step> steps = new List<Step>
             {
                 S.OpenScene(S.MarshScene), S.Relayout(),
+                S.WaitGateway(),
                 S.Do("find candidate", () => FindMechCandidate()),
-                S.Do("record verdict", () => RecordVerdict()),
-                S.Do("admit", () => Admit()),
-                S.Do("wait admission", () => WaitScenario("admission", 900)),
-                S.Do("play check", () => PlayCheck()),
-                S.Do("exit play", () =>
-                {
-                    if (EditorApplication.isPlaying)
-                    {
-                        EditorApplication.ExitPlaymode();
-                        return false;
-                    }
-
-                    return true;
-                }),
-                S.Do("undo admission", () => UndoAdmission()),
-                S.Do("wait undo", () => WaitScenario("undo", 900)),
-                S.Note("stop", () => WorkflowRunner.Recording(false)),
             };
+            steps.AddRange(StageAdmitSteps());
+            return steps;
         }
 
         private static JObject MechDoc()
         {
+            string? candidate = Environment.GetEnvironmentVariable("GCS_P32_MECH_CANDIDATE");
+            if (!string.IsNullOrEmpty(candidate))
+            {
+                JObject changeSet = JObject.Parse(File.ReadAllText(Path.Combine(candidate, "change-set.json")));
+                return new JObject { ["changeSetId"] = changeSet["id"], ["requestId"] = "p2.4-sample", ["dir"] = candidate, ["sample"] = true };
+            }
+
             string env = Environment.GetEnvironmentVariable("GCS_P32_MECH") ?? Path.Combine(WorkflowRunner.ProjectRoot, Shared, "mech.json");
             return JObject.Parse(File.ReadAllText(env));
         }
@@ -1202,18 +1228,26 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         }
 
+        /// <summary>The verdict the stage seam verified (main has no verdict-file path: the companion's job result only).</summary>
         private static bool RecordVerdict()
         {
             CandidateEntry entry = S.EntryOf("mech") ?? throw new InvalidOperationException("no mechanism candidate");
-            string path = Environment.GetEnvironmentVariable("GCS_P32_VERDICT") ?? throw new InvalidOperationException("GCS_P32_VERDICT is not set");
             StudioUiContext context = S.Context;
-            StageVerdict verdict = context.Candidates.RecordVerdictFile(entry, path);
             StageState state = context.Candidates.StageStateOf(entry);
-            JObject data = new JObject { ["verdictFile"] = Path.GetFileName(path), ["changeSetId"] = verdict.ChangeSetId, ["pass"] = state.VerdictPassed, ["label"] = state.Label, ["problems"] = new JArray(entry.Problems.Select(d => StudioJson.ToToken(d)).ToArray()) };
-            WorkflowRunner.Json("mech/verdict-recorded.json", data);
+            StageVerdict? verdict = entry.VerifiedVerdict;
+            JObject data = new JObject
+            {
+                ["stageJobId"] = entry.StageJobId,
+                ["verified"] = verdict != null,
+                ["verdict"] = verdict == null ? null : JToken.FromObject(verdict),
+                ["canAdmit"] = context.Candidates.CanAdmit(entry),
+                ["label"] = state.Label,
+                ["problems"] = new JArray(entry.Problems.Select(d => StudioJson.ToToken(d)).ToArray()),
+            };
+            WorkflowRunner.Json("mech/verdict.json", data);
             StudioCandidatesWindow.Open(entry.Id);
             WorkflowRunner.Recording(true);
-            WorkflowRunner.Shot("mech-verdict", "Candidate panel after Record verdict: " + state.Label + "; Admit is " + (state.VerdictPassed ? "enabled" : "disabled") + ".", data);
+            WorkflowRunner.Shot("mech-verdict", "Candidate panel after Stage: " + state.Label + "; Admit is " + (context.Candidates.CanAdmit(entry) ? "enabled" : "disabled") + ".", data);
             return true;
         }
 
@@ -1221,11 +1255,11 @@ namespace Hollowmere.P3_2.Workflows
         {
             CandidateEntry entry = S.EntryOf("mech") ?? throw new InvalidOperationException("no mechanism candidate");
             StudioUiContext context = S.Context;
-            if (!context.Candidates.StageStateOf(entry).VerdictPassed)
+            if (!context.Candidates.CanAdmit(entry))
             {
-                WorkflowRunner.MarkFailed("no passing verdict: Admit stays disabled");
-                SessionState.SetInt("GameCore.Studio.P32.Step", Workflows.For(WorkflowRunner.Workflow).Count - 1);
-                return false;
+                WorkflowRunner.MarkFailed("no verified passing verdict: Admit stays disabled");
+                WorkflowRunner.Log("mech-admit-disabled", "Admit is disabled (no verified passing stage verdict); admission, Play and undo are skipped.", null);
+                return true;
             }
 
             St.Set("admitStartMs", WorkflowRunner.NowMs);
@@ -1307,9 +1341,9 @@ namespace Hollowmere.P3_2.Workflows
             HistoryPanelView? panel = EditorWindow.GetWindow<StudioHistoryWindow>().View;
             St.Set("undoStartMs", WorkflowRunner.NowMs);
             HistoryResult result = panel != null ? panel.Undo(id) : S.Context.Runtime.History.Undo(id);
-            JObject data = new JObject { ["ok"] = result.Ok, ["state"] = result.State?.ToString(), ["admission"] = panel?.LastAdmission?.ToJson(), ["diagnostics"] = new JArray(result.Diagnostics.Select(d => StudioJson.ToToken(d)).ToArray()) };
+            JObject data = new JObject { ["ok"] = result.Ok, ["state"] = result.State?.ToString(), ["diagnostics"] = new JArray(result.Diagnostics.Select(d => StudioJson.ToToken(d)).ToArray()) };
             WorkflowRunner.Json("mech/undo-result.json", data);
-            WorkflowRunner.Shot("mech-undo", "History Undo of the admission (routed to StageAdmission.Undo): " + (panel?.LastAdmission?.Outcome.ToString() ?? result.State?.ToString()) + ".", data);
+            WorkflowRunner.Shot("mech-undo", "History Undo of the admission (routed to StageAdmission.Undo): " + result.State?.ToString() + ".", data);
             return true;
         }
 
