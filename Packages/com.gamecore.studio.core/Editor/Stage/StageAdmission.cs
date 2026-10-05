@@ -21,7 +21,10 @@ namespace GameCore.Studio.Edit
             Succeeded = succeeded;
             ReloadPending = reloadPending;
             Detail = new SecretRedactor().Redact(detail);
-            Errors = errors ?? Array.Empty<string>();
+            var redactor = new SecretRedactor();
+            var redactedErrors = new List<string>();
+            foreach (string error in errors ?? Array.Empty<string>()) redactedErrors.Add(redactor.Redact(error));
+            Errors = redactedErrors.AsReadOnly();
         }
 
         public bool Succeeded { get; }

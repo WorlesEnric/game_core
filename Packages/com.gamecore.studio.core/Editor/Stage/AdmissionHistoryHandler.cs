@@ -22,7 +22,7 @@ namespace GameCore.Studio.Edit
         }
         private HistoryResult Convert(AdmissionResult result)
         {
-            bool ok = result.Outcome == AdmissionOutcome.Admitted || result.Outcome == AdmissionOutcome.Undone;
+            bool ok = result.Outcome == AdmissionOutcome.Admitted || result.Outcome == AdmissionOutcome.Undone || result.Outcome == AdmissionOutcome.RolledBack;
             return new HistoryResult(result.ChangeSetId, ok, _admission.Runtime.Journal.Read(result.ChangeSetId)?.EffectiveState,
                 result.Diagnostics, null);
         }

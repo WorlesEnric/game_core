@@ -40,6 +40,10 @@ namespace Hollowmere.R2_B.Tests
             string sensitive = "etk_fixturecredential";
             var result = new AdmissionResult(_candidate.Id, AdmissionOutcome.Refused, sensitive);
             Assert.That(result.Detail, Does.Not.Contain(sensitive));
+            var compile = new AdmissionCompileResult(false, false, sensitive, new[] { sensitive, "{\"password\":\"private\"}" });
+            Assert.That(compile.Detail, Does.Not.Contain(sensitive));
+            Assert.That(compile.Errors[0], Does.Not.Contain(sensitive));
+            Assert.That(compile.Errors[1], Does.Not.Contain("private"));
             byte[] bytes = Mutate(json => { json["steps"]![0]!["status"] = "fail"; json["steps"]![0]!["detail"] = sensitive; });
             Assert.That(StageVerdict.Parse(bytes, out _)!.Summary, Does.Not.Contain(sensitive));
             var entry = StageAdmission.WithScenario(_candidate, "stage", ScenarioStatus.Fail, sensitive);
