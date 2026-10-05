@@ -9,6 +9,87 @@
   },
   "runs": [
     {
+      "run": "narrative-20261005T072920Z",
+      "workflow": "narrative",
+      "revision": "a618d01c6355ac91e88d8d188839bbf247411a13",
+      "exit": 1,
+      "tasks": [
+        "t28c03fc3a61c6f0ea6c2da9a",
+        "t3d3b31b2754049487d964134",
+        "tb2c186da6539f7ff26ecab18",
+        "td662950caf4892786a4154bd",
+        "tdf99497e601db67cdf64dabf",
+        "te4674ea132021d6758b199a3"
+      ],
+      "requests": [
+        {
+          "tag": "hud",
+          "result": "needs_clarification",
+          "tasks": [
+            "t28c03fc3a61c6f0ea6c2da9a",
+            "t3d3b31b2754049487d964134"
+          ],
+          "submitToAcceptedMs": 17900,
+          "submitToFirstEventMs": 2296,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 3849,
+          "visibleLagMaxMs": 3849,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "odd-line",
+          "result": "needs_clarification",
+          "tasks": [
+            "te4674ea132021d6758b199a3",
+            "tb2c186da6539f7ff26ecab18"
+          ],
+          "submitToAcceptedMs": 14489,
+          "submitToFirstEventMs": 235,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 2846,
+          "visibleLagMaxMs": 2846,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "quest",
+          "result": "candidate_invalid",
+          "tasks": [
+            "td662950caf4892786a4154bd",
+            "tdf99497e601db67cdf64dabf"
+          ],
+          "submitToAcceptedMs": 1567,
+          "submitToFirstEventMs": 369,
+          "submitToCandidateMs": 219026,
+          "candidateImportMs": 127.2,
+          "previewMs": 127.2,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 3695,
+          "visibleLagMaxMs": 3695,
+          "visibleLagN": 7
+        }
+      ]
+    },
+    {
+      "run": "persist-20261005T080347Z",
+      "workflow": "persist",
+      "revision": "b83623b2f60b428384f0aaf5208e44fce5dfc0c0",
+      "exit": 0,
+      "tasks": [],
+      "requests": []
+    },
+    {
       "run": "robe-20261005T055032Z",
       "workflow": "robe",
       "revision": "38891db6265b8145014e44e9b2f69312f82b3a68",
@@ -29,8 +110,8 @@
           "submitToFirstEventMs": 209,
           "submitToCandidateMs": 135001,
           "candidateImportMs": 121.1,
-          "previewMs": null,
-          "applyMs": null,
+          "previewMs": 121.1,
+          "applyMs": 131.9,
           "undoMs": null,
           "cancelAckMs": null,
           "visibleLagP95Ms": 132,
@@ -83,7 +164,7 @@
           "submitToFirstEventMs": 395,
           "submitToCandidateMs": 106311,
           "candidateImportMs": 112.5,
-          "previewMs": null,
+          "previewMs": 112.5,
           "applyMs": null,
           "undoMs": null,
           "cancelAckMs": null,
@@ -206,7 +287,7 @@
           "submitToFirstEventMs": 141,
           "submitToCandidateMs": 85214,
           "candidateImportMs": 51.0,
-          "previewMs": null,
+          "previewMs": 51.0,
           "applyMs": null,
           "undoMs": null,
           "cancelAckMs": null,
@@ -270,9 +351,9 @@
           "submitToFirstEventMs": 509,
           "submitToCandidateMs": 611617,
           "candidateImportMs": 125.0,
-          "previewMs": null,
-          "applyMs": null,
-          "undoMs": null,
+          "previewMs": 125.0,
+          "applyMs": 675.5,
+          "undoMs": 519.2,
           "cancelAckMs": null,
           "visibleLagP95Ms": 10130,
           "visibleLagMaxMs": 10130,
@@ -288,7 +369,7 @@
           "submitToFirstEventMs": 181,
           "submitToCandidateMs": 217155,
           "candidateImportMs": 631.0,
-          "previewMs": null,
+          "previewMs": 631.0,
           "applyMs": null,
           "undoMs": null,
           "cancelAckMs": null,
@@ -300,18 +381,18 @@
     }
   ],
   "totals": {
-    "input_tokens": 2330062,
-    "output_tokens": 23973,
-    "tasks": 19,
-    "images": 5,
-    "tts": 3,
+    "input_tokens": 3345845,
+    "output_tokens": 31173,
+    "tasks": 25,
+    "images": 6,
+    "tts": 4,
     "voice": 0,
     "describe": 0,
-    "estimatedUsd": 6.39,
-    "estimatedUsdHigh": 12.34,
+    "estimatedUsd": 9.08,
+    "estimatedUsdHigh": 17.6,
     "stateVisibleLagMs": {
-      "n": 53,
-      "p95": 8283,
+      "n": 72,
+      "p95": 5961,
       "max": 10130,
       "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"
     }

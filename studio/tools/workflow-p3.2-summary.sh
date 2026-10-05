@@ -75,6 +75,14 @@ for run in sorted(glob.glob(os.path.join(runs, "*"))):
         t["visibleLagMs"] = {"n": len(lags), "max": lags[-1] if lags else None,
                              "p95": lags[max(0, -(-len(lags) * 95 // 100) - 1)] if lags else None}
         summary.setdefault("allLags", []).extend(lags)
+        folder = os.path.dirname(timings)
+        staged = load(os.path.join(folder, "staged.json")) or {}
+        if t.get("previewMs") is None and staged.get("previewMs") is not None:
+            t["previewMs"] = staged.get("previewMs")
+        for key, name in (("applyMs", "apply-report.json"), ("undoMs", "undo-result.json")):
+            doc = load(os.path.join(folder, name)) or {}
+            if t.get(key) is None and doc.get("milliseconds") is not None:
+                t[key] = doc.get("milliseconds")
         entry["requests"].append({
             "tag": tag, "result": outcome.get("result"), "tasks": outcome.get("tasks"),
             "submitToAcceptedMs": first.get("submitToAcceptedMs"), "submitToFirstEventMs": first.get("submitToFirstEventMs"),
