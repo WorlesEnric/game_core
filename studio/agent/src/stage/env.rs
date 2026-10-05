@@ -6,23 +6,7 @@
 //! dotnet needs `DOTNET_*`/`NUGET_PACKAGES`; the shared Unity lock reads `GC_STUDIO_*`.
 
 /// Exact names passed to stage children.
-pub const ENV_ALLOW: &[&str] = &[
-    "PATH",
-    "HOME",
-    "USER",
-    "LOGNAME",
-    "LANG",
-    "LC_ALL",
-    "TMPDIR",
-    "DISPLAY",
-    "SHELL",
-    "XDG_RUNTIME_DIR",
-    "UNITY",
-    "NUGET_PACKAGES",
-];
-
-/// Name prefixes passed to stage children (when the name does not look like a secret).
-pub const ENV_ALLOW_PREFIXES: &[&str] = &["GAMECORE_", "UNITY_", "DOTNET_", "GC_STUDIO_"];
+pub const ENV_ALLOW: &[&str] = &["LANG", "LC_ALL"];
 
 /// Name fragments that mark a secret whatever the prefix.
 const SECRET_FRAGMENTS: &[&str] = &[
@@ -46,8 +30,7 @@ pub fn secret_like(name: &str) -> bool {
 
 /// True when `name` may be passed to a stage child.
 pub fn allowed(name: &str) -> bool {
-    (ENV_ALLOW.contains(&name) || ENV_ALLOW_PREFIXES.iter().any(|p| name.starts_with(p)))
-        && !secret_like(name)
+    ENV_ALLOW.contains(&name) && !secret_like(name)
 }
 
 /// The allowlisted subset of `vars`.
@@ -59,7 +42,11 @@ pub fn filter_env(vars: impl IntoIterator<Item = (String, String)>) -> Vec<(Stri
 
 /// The environment a stage child gets (from this process's environment).
 pub fn stage_env() -> Vec<(String, String)> {
-    filter_env(std::env::vars())
+    {
+        let mut env = filter_env(std::env::vars());
+        env.push(("PATH".into(), "/usr/local/bin:/usr/bin:/bin".into()));
+        env
+    }
 }
 
 #[cfg(test)]
@@ -98,18 +85,7 @@ mod tests {
             "SSH_AUTH_SOCK",
         ]));
         let names: Vec<&str> = env.iter().map(|(k, _)| k.as_str()).collect();
-        assert_eq!(
-            names,
-            vec![
-                "DOTNET_ROOT",
-                "GAMECORE_STAGE_ROOT",
-                "GC_STUDIO_UNITY_SLOTS",
-                "HOME",
-                "PATH",
-                "UNITY",
-                "UNITY_SILENCE_TIMEOUT",
-            ]
-        );
+        assert!(names.is_empty());
     }
 
     #[test]
@@ -131,7 +107,7 @@ mod tests {
 
     #[test]
     fn this_process_environment_is_filtered() {
-        assert!(stage_env().iter().all(|(k, _)| allowed(k)));
+        assert!(stage_env().iter().all(|(k, _)| allowed(k) || k == "PATH"));
         assert!(stage_env().iter().all(|(k, _)| !secret_like(k)));
     }
 }

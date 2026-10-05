@@ -9,7 +9,7 @@
 use std::io::Write;
 
 /// Prefixes of etos credentials.
-const PREFIXES: &[&str] = &["etk_", "ett_", "etp_", "eta_"];
+const PREFIXES: &[&str] = &["etk_", "ett_", "etp_", "eta_", "sk-"];
 
 fn token_char(c: char) -> bool {
     c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | '~' | '+' | '/' | '=')
@@ -17,6 +17,8 @@ fn token_char(c: char) -> bool {
 
 /// `text` with every etos credential and bearer value replaced by `[redacted]`.
 pub fn redact(text: &str) -> String {
+    let cleaned = redact_json_fields(text);
+    let text = cleaned.as_str();
     let mut out = String::with_capacity(text.len());
     let mut rest = text;
     'outer: while !rest.is_empty() {
@@ -59,6 +61,103 @@ pub fn redact(text: &str) -> String {
         rest = chars.as_str();
     }
     out
+}
+
+// Also handles JSON fragments embedded in log lines, including escaped string values.
+fn redact_json_fields(text: &str) -> String {
+    let bytes = text.as_bytes();
+    let mut out = String::new();
+    let mut pos = 0;
+    while pos < bytes.len() {
+        if bytes[pos] != b'"' {
+            let c = text[pos..].chars().next().unwrap_or(' ');
+            out.push(c);
+            pos += c.len_utf8();
+            continue;
+        }
+        let start = pos;
+        pos += 1;
+        while pos < bytes.len() {
+            if bytes[pos] == b'\\' {
+                pos = (pos + 2).min(bytes.len());
+            } else if bytes[pos] == b'"' {
+                pos += 1;
+                break;
+            } else {
+                pos += 1;
+            }
+        }
+        let key_end = pos;
+        let key = serde_json::from_str::<String>(&text[start..key_end])
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        if bytes.get(pos) != Some(&b':')
+            || !["key", "token", "secret"].iter().any(|k| key.contains(k))
+        {
+            out.push_str(&text[start..pos]);
+            continue;
+        }
+        pos += 1;
+        while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        out.push_str(&text[start..pos]);
+        // A secret-valued object/array is consumed as a whole using serde's stream offset.
+        let mut stream =
+            serde_json::Deserializer::from_str(&text[pos..]).into_iter::<serde_json::Value>();
+        if stream.next().is_some_and(|v| v.is_ok()) {
+            pos += stream.byte_offset();
+            out.push_str("\"[redacted]\"");
+        } else {
+            // Incomplete JSON must not reveal a partial credential.
+            out.push_str("\"[redacted]\"");
+            break;
+        }
+    }
+    out
+}
+
+/// Stream lines through the shared redactor before the first durable write. Lines over
+/// 64 KiB are discarded entirely, so a split secret is never persisted in a partial chunk.
+pub fn copy_redacted(mut input: impl std::io::Read, mut output: impl Write) -> std::io::Result<()> {
+    let mut chunk = [0u8; 4096];
+    let mut line = Vec::new();
+    let mut oversized = false;
+    loop {
+        let n = input.read(&mut chunk)?;
+        if n == 0 {
+            break;
+        }
+        for b in &chunk[..n] {
+            if *b == b'\n' {
+                if oversized {
+                    output.write_all(b"[redacted oversized log line]\n")?;
+                } else {
+                    output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
+                    output.write_all(b"\n")?;
+                }
+                output.flush()?;
+                line.clear();
+                oversized = false;
+            } else if !oversized {
+                if line.len() == 65536 {
+                    line.clear();
+                    oversized = true;
+                } else {
+                    line.push(*b);
+                }
+            }
+        }
+    }
+    if oversized {
+        output.write_all(b"[redacted oversized log line]")?;
+    } else {
+        output.write_all(redact(&String::from_utf8_lossy(&line)).as_bytes())?;
+    }
+    output.flush()
 }
 
 /// A `tracing-subscriber` writer to standard error that redacts each write.
@@ -106,6 +205,19 @@ impl<'a> tracing_subscriber::fmt::MakeWriter<'a> for RedactingStderr {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn r2_19_stream_and_json_secrets_are_redacted_before_write() {
+        let raw = br#"{"nested":{"apiKey":"plain-password","secret":{"value":123}},"message":"sk-abcdefgh"}
+Bearer abcdef
+"#;
+        let mut output = Vec::new();
+        copy_redacted(&raw[..], &mut output).unwrap();
+        let text = String::from_utf8(output).unwrap();
+        for secret in ["plain-password", "123", "abcdefgh", "abcdef"] {
+            assert!(!text.contains(secret), "{text}");
+        }
+    }
 
     #[test]
     fn keys_tokens_and_bearers_are_redacted() {
