@@ -346,17 +346,24 @@ namespace GameCore.Studio.Views
         public const string SetSpawnPointTool = "world.setSpawnPoint";
 
         /// <summary>Operations connecting two regions with a new portal.</summary>
-        public static IReadOnlyList<Operation> ConnectRegions(StudioRuntime runtime, WorldDocument world, WorldRegion a, WorldRegion b)
+        /// <summary>
+        /// The change sets that connect two regions, applied in order. With a bindable world.connectRegions it is one
+        /// change set of one op. Otherwise it is two: <c>create world.portal</c> (with a minted authoring id and both
+        /// regions), then <c>set portals</c> on the world. They cannot share a change set because the engine defers only
+        /// unresolved op targets to apply time; a reference inside a value (the new portal in <c>portals</c>) must
+        /// resolve at stage time.
+        /// </summary>
+        public static IReadOnlyList<IReadOnlyList<Operation>> ConnectRegions(StudioRuntime runtime, WorldDocument world, WorldRegion a, WorldRegion b)
         {
             if (ToolBinding.IsBindable(ConnectRegionsTool))
             {
-                return new[]
+                return new IReadOnlyList<Operation>[]
                 {
-                    ViewEdits.Op("op1", ConnectRegionsTool, world.Ref, new JObject
+                    new[] { ViewEdits.Op("op1", ConnectRegionsTool, world.Ref, new JObject
                     {
                         ["regionA"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(a.Ref)),
                         ["regionB"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(b.Ref)),
-                    }),
+                    }), },
                 };
             }
 
@@ -382,8 +389,8 @@ namespace GameCore.Studio.Views
             }
 
             portals.Add(StudioJson.ToToken(new AuthoringRef(AuthoringKind.Definition, authoringId: id)));
-            Operation list = ViewEdits.Op("op2", BuiltInToolIdsExt.Set, world.Ref, new JObject { ["field"] = "portals", ["value"] = portals }, new[] { "op1" });
-            return new[] { create, list };
+            Operation list = ViewEdits.Op("op1", BuiltInToolIdsExt.Set, world.Ref, new JObject { ["field"] = "portals", ["value"] = portals });
+            return new IReadOnlyList<Operation>[] { new[] { create }, new[] { list } };
         }
 
         /// <summary>world.addPortal on <paramref name="portal"/> (the tool's reflected target) at a position in the region scene.</summary>

@@ -69,6 +69,27 @@ namespace GameCore.Studio.Views
             return Apply(Build(intent, new[] { operation }));
         }
 
+        /// <summary>
+        /// Applies manual change sets in order (one per op list, each all-or-nothing) and stops at the first that is
+        /// not Ok. Every report is returned, newest last; undo them newest first.
+        /// </summary>
+        public IReadOnlyList<ApplyReport> ApplySequence(string intent, IReadOnlyList<IReadOnlyList<Operation>> steps)
+        {
+            List<ApplyReport> reports = new List<ApplyReport>(steps.Count);
+            for (int i = 0; i < steps.Count; i++)
+            {
+                string text = steps.Count == 1 ? intent : intent + " (" + (i + 1) + "/" + steps.Count + ")";
+                ApplyReport report = Apply(Build(text, steps[i]));
+                reports.Add(report);
+                if (!report.Ok)
+                {
+                    break;
+                }
+            }
+
+            return reports;
+        }
+
         /// <summary>Journal-based undo of a change set the views (or anyone) applied.</summary>
         public HistoryResult Undo(string? changeSetId = null) => _runtime.History.Undo(changeSetId);
 

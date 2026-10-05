@@ -127,17 +127,29 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             }
 
             WorldRegion belfry = First(world.Regions, region => region.Key != thornwick.Key && world.Between(region.Key, thornwick.Key) != null);
-            IReadOnlyList<Operation> connect = WorldEdits.ConnectRegions(Runtime, world, thornwick, belfry);
-            Assert.That(connect.Count, Is.EqualTo(ToolBinding.IsBindable(WorldEdits.ConnectRegionsTool) ? 1 : 2));
-            ApplyReport connected = Context.Edits.Apply(ViewEdits.Build("P2.3 test: connect regions", connect));
-            Log("connect regions (" + connect.Count + " ops): " + ViewEdits.Describe(connected));
-            Assert.That(connected.Ok, Is.True, ViewEdits.Describe(connected));
+            int expected = ToolBinding.IsBindable(WorldEdits.ConnectRegionsTool) ? 1 : 2;
+            Assert.That(WorldEdits.ConnectRegions(Runtime, world, thornwick, belfry).Count, Is.EqualTo(expected));
+            IReadOnlyList<ApplyReport> connected = view.Connect(thornwick, belfry);
+            foreach (ApplyReport report in connected)
+            {
+                Log("connect regions: " + ViewEdits.Describe(report) + " [" + report.Entry.Operations[0].Tool + "]");
+                Assert.That(report.Ok, Is.True, ViewEdits.Describe(report));
+                Assert.That(Runtime.Journal.Exists(report.Entry.Id), Is.True, "journaled");
+            }
+
+            Assert.That(connected.Count, Is.EqualTo(expected));
+            Runtime.Index.Flush();
             view.Refresh();
             Assert.That(view.Document!.Portals.Count, Is.EqualTo(4));
+            Assert.That(view.Canvas.Edges.Count, Is.EqualTo(8));
 
-            HistoryResult undo = Context.Edits.Undo(connected.Entry.Id);
-            Log("undo connect: " + undo.Ok + " " + undo.State);
-            Assert.That(undo.Ok, Is.True, string.Join("; ", undo.Diagnostics));
+            for (int i = connected.Count - 1; i >= 0; i--)
+            {
+                HistoryResult undo = Context.Edits.Undo(connected[i].Entry.Id);
+                Log("undo " + connected[i].Entry.Intent.Text + ": " + undo.Ok + " " + undo.State);
+                Assert.That(undo.Ok, Is.True, string.Join("; ", undo.Diagnostics));
+            }
+
             Runtime.Index.Flush();
             view.Refresh();
             Assert.That(view.Document!.Portals.Count, Is.EqualTo(3));

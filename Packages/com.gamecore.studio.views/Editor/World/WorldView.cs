@@ -122,6 +122,19 @@ namespace GameCore.Studio.Views
             Refresh();
         }
 
+        /// <summary>Connects two regions with a new portal (see <see cref="WorldEdits.ConnectRegions"/>); newest report last.</summary>
+        public IReadOnlyList<ApplyReport> Connect(WorldRegion a, WorldRegion b)
+        {
+            if (Document == null)
+            {
+                return Array.Empty<ApplyReport>();
+            }
+
+            IReadOnlyList<ApplyReport> reports = Context.Edits.ApplySequence("World: connect " + a.Name + " and " + b.Name, WorldEdits.ConnectRegions(Context.Runtime, Document, a, b));
+            Refresh();
+            return reports;
+        }
+
         protected override void OnRefresh()
         {
             IndexGraph graph = Context.Graph();
@@ -245,7 +258,7 @@ namespace GameCore.Studio.Views
                 {
                     if (Document != null)
                     {
-                        ApplyEdit(ViewEdits.Build("World: connect " + region.Name + " and " + others[to.index].Name, WorldEdits.ConnectRegions(Context.Runtime, Document, region, others[to.index])));
+                        Connect(region, others[to.index]);
                     }
                 }) { text = "Connect (portal)" });
             }
