@@ -49,8 +49,8 @@ Game bootstrap must rebind the current project's `StageAdmission.Of(StudioServic
 - **R2-F**, `studio/agent/src/stage.rs` and stage verdict/router modules: implement the signed record and verify route above, scoped ownership, complete-step enforcement, Docker sandbox, versioned warm cache, and real Docker Unity licensing evidence. Never issue an unsigned or partial record.
 - **R2-A**, `Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs`: dispatch matching `IHistoryEntryHandler` before generic undo/redo/recovery; register `new AdmissionHistoryHandler(StageAdmission.Of(runtime))`. Preserve redo bookkeeping until asynchronous `StageAdmission.Finished` reports final Undone/Admitted. Reconcile the provisional interface into the agreed core location without duplicate declarations. Generic history must refuse an admission if no handler is registered; it must not mark it undone merely because no generic inverse is present.
 - **R2-C**, candidate coordinator and panel: build and send `StageRequest`, store job/request, fetch verified verdict, then enable the explicit creator Admit action. Show signed confinement and coldCache; host mode requires explicit opt-in and a warning. Route all history actions through R2-A dispatch.
-- **R2-G**, gameplay world Editor bootstrap: register the capture/session/smoke adapters above after domain reload. A lambda captured only before compile does not survive reload.
-- **R2-A**, shared core redactor seam: provide its exact callable signature for Stage's existing checker/compile diagnostics and evidence writers; R2-B avoids including exception details from untrusted input in new diagnostics.
+- **R2-G**, new `Packages/com.gamecore.gameplay.world/Editor/StudioAdmissionServices.cs`: expose `public static void BindAdmission(StudioRuntime runtime, Func<SaveService?> activeSaveService, Func<bool> sessionReady, Func<StageVerdict,bool> smokeTest)` and have the trusted game bootstrap call it after every domain/game-session startup. Bind the capture/session/smoke options above to the active restored root. A lambda captured only before compile does not survive reload. Smoke receives the verified verdict and may resolve its retained proposal digest through the runtime artifact store; never invoke an unverified proposal.
+- **R2-A**, `Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs`: extend the existing `SecretRedactor.Redact(string)` to D9's full prefix/JSON-key coverage. Stage verdict summaries, admission/compile result details, journal scenarios and checker diagnostics now call that shared implementation; no Stage-specific redactor is introduced. R2-F must redact child output before persistence/signing.
 
 ## Fixes and tests
 
@@ -59,16 +59,39 @@ Game bootstrap must rebind the current project's `StageAdmission.Of(StudioServic
 - R2-08: candidate file basenames, ancestor symlink checks and containment before reads. `R2_08_ArtifactNameCannotReadOutsideCandidate`, `R2_08_SymlinkedCandidateArtifactRefusesBeforeRead`.
 - R2-12 C#: data-only stage input extensions; no Editor/plugins/traversal/directories; contained proposal rules paths. `R2_12_StageInputDataOnly`, `R2_12_ProposalPathsContained`.
 - R2-13: one typed candidate stage request. `R2_13_TypedRequestPreservesCandidateAndBinding`.
-- R2-14: durable pre-effect records under `Studio/Admission`; fresh trust after reload; compile/reload/rebake/verify/apply and undo recovery. `R2_14_CrashAtEachTransitionResumes`, `R2_14_CrashDuringUndoRetainsRecovery`, migrated P2_4 capture/rollback tests.
+- R2-14: durable pre-effect records under `Studio/Admission`; fresh trust after reload; compile/reload/rebake/verify/apply and undo recovery. `R2_14_CrashAtEachTransitionResumes`, `R2_14_CrashDuringUndoRetainsRecovery`, `R2_14_CaptureStopAndRestoreResumeAfterCrash`, `R2_14_AsyncStopAutomaticallyResumesFullCandidate`, `R2_14_FailedUndoKeepsInterruptedRecordAndPreimages`, `R2_14_LegacyAfterPlayRecordIsDetectedAndRefused`, migrated P2_4 capture/rollback tests.
 - R2-15: `AdmissionHistoryHandler` handles undo/redo/resume/rollback, retains exact package preimages and verifies compile/catalog. `R2_15_HistoryHandlerDispatchesUndoAndRedoWithExactPreimages`. This tests the generic **interface dispatch**, not the unmodified external HistoryService integration.
 
 ## Verification
 
-In progress. Unity runs through `bash studio/tools/unity-batch.sh` and its host-wide slot lock, using `-runTests -testPlatform EditMode -testFilter '(Hollowmere\.(P2_4|R2_B)|GameCore\.Studio)\..*' -testResults <xml>`. Pass/fail is read from the XML. Initial direct script execution lacked executable permission; invoking via bash resolves that without changing the shared script.
+Host: myubuntu, Unity 6000.0.75f1, .NET SDK 8.0.425. No paid ETOS operations, credential reads, installed-service changes, or sibling-clone changes.
+
+| Run | Result |
+|---|---|
+| Initial broad EditMode run | XML: 177 total, 173 passed, 0 failed, 4 skipped, 0 inconclusive; cold Editor 746 s |
+| Broad rerun at implementation checkpoint `0f99cc59` | XML: 178 total, 174 passed, 0 failed, 4 skipped, 0 inconclusive; Editor 210 s. R2-B 57/57, P2_4 8/8, existing Studio 109 passed / 4 skipped |
+| Capture-idempotence follow-up | XML: 66/66 passed, 0 failed/skipped; Editor 40 s. Includes a crash after capture and before the stop-play checkpoint |
+| Final focused admission run at `5b1e37fc` | XML: 67/67 passed (R2-B 59/59 + P2_4 8/8), 0 failed/skipped/inconclusive; Editor 55 s. Includes verdict/admission/journal shared-redactor regression |
+| `dotnet test dotnet/tests/GameCore.Studio.Model.Tests/GameCore.Studio.Model.Tests.csproj` | 101 passed, 0 failed/skipped. Initial `--no-restore` attempt had no assets file; rerun with restore passed |
+| `python3 tools/check_package_metadata.py` | Pass: 41 packages, 88 assemblies, exact dependency sets |
+| `python3 tools/check_game_core_csharp.py` | Pass: 1,081 files |
+| `git diff --check` | Pass |
+| Docker Unity probe, no network/live-project mount | `sandbox_unavailable`, exit 127 in 5 s; `libgtk-3.so.0` and `libgdk-3.so.0` missing. Licensing not reached, no verdict or fallback |
+
+Unity ran through `bash studio/tools/unity-batch.sh` under its host-wide lock, holding at most one Editor slot. Broad arguments: `-runTests -testPlatform EditMode -testFilter '(Hollowmere\.(P2_4|R2_B)|GameCore\.Studio)\..*' -testResults <xml>`; the follow-up uses `Hollowmere\.(P2_4|R2_B)\..*`. Results are read from XML, not the wrapper's summary. Evidence files are `.unity-logs/r2-b-initial-results.xml`, `r2-b-final-results.xml`, `r2-b-capture-results.xml`, and `r2-b-admission-results.xml`. The four skipped tests are the existing credential-gated live ETOS NPC request, media, spoken-WAV voice and microphone tests; no skip is counted as a pass. The first direct wrapper invocation lacked executable permission; invoking via bash resolved it without editing the shared script.
+
+Result XML SHA-256 (unmodified host evidence):
+
+- `r2-b-final-results.xml`: `495a303cf964d4b310e4c80b8ff5950faf0748759eb6b40995dde256fc3c8065`
+- `r2-b-capture-results.xml`: `448dca36add876d5f185486450b1f73330f8c0b1519ef46dda97462337e3a6ab`
+- `r2-b-admission-results.xml`: `ef7c8f68e76706ad425fea1b9d1fb69c8c0e03504f1b8c9c09d8089ff0002666`
+
+Capture retry is explicitly idempotent: `SaveServiceAdmissionCapture` validates/reuses the original saved checkpoint, refuses an incomplete existing checkpoint, and never overwrites it after a crash. Custom capture adapters must implement the same contract.
 
 ## Left open
 
 - R2-A generic HistoryService dispatch, R2-D authenticated transport and R2-F signed routes are outside this packet's exclusive paths. The implementation fails closed until these adapters are integrated. Their production integration cannot be claimed from test doubles.
 - R2-G's production capture/session/smoke registration is outside the exclusive paths; real Hollowmere resumed-play continuity and the 90-second budget require that integration. Missing adapters retain Pending instead of reporting success.
-- Legacy `admit-after-play-*` records from the old code omit candidate/job provenance. They are detected and refused with `legacy_admission_incomplete`; automatically admitting them would recreate R2-09. Restage and explicitly Admit. New capture requests persist the full pending record before capture/stop.
-- D3: Docker daemon is available (29.6.2); R2-B does not own the sandbox runner. A Docker Unity license outcome is not yet established here. Host execution of trusted tests is not evidence of candidate sandbox confinement; default admission refuses host verdicts.
+- Legacy `admit-after-play-*` records from the old code omit candidate/job provenance. They are detected and refused with `legacy_admission_incomplete`; automatically admitting them would recreate R2-09. Restage and explicitly Admit. Both the old Library location and the new Studio location are scanned. New capture requests persist the full pending record before capture/stop.
+- D9: the baseline shared core redactor lacks the full new token-prefix and JSON key-name rules. R2-A owns that expansion; Stage now uses the existing shared implementation for its display and diagnostic text.
+- D3: Docker 29.6.2 ran an offline, read-only-root probe using `localhost/gc-mechanic:current`, a read-only Unity Editor mount, slot-local HOME/write mount, no live project, and a read-only licence mount when present. Under the host-wide Unity lock it exited 127 in 5 s: `sandbox_unavailable: loader dependency missing (`libgtk-3.so.0`, `libgdk-3.so.0`); Unity licensing not reached`. The evidence writer discarded raw child output and recorded only fixed classification strings in `.unity-logs/docker-probe/r2-b-docker-license-20261005T143407-a1.log`. No verdict was issued and no host fallback was attempted for the probe. R2-F must supply the sandbox image dependencies and rerun licensing; host execution of trusted tests is not evidence of candidate confinement. Default admission refuses host verdicts.
