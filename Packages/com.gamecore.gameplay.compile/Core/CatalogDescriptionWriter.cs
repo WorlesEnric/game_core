@@ -49,7 +49,19 @@ namespace GameCore.Gameplay.Compile
         /// <summary>The stable name (without prefix) of a definition's recipe registration.</summary>
         public static string RecipeName(string definitionId) => GameplayCatalogNames.DefinitionRecipePrefix + definitionId;
 
-        public static string Write(BakedWorld world, CatalogNaming naming)
+        public static string Write(BakedWorld world, CatalogNaming naming) =>
+            Write(world, naming, Array.Empty<GameplayCatalogNames.SchemaName>(), Array.Empty<GameplayCatalogNames.EntryName>());
+
+        /// <summary>
+        /// The description with extra registrations of plugin packages (GameplayBakeExtensions, P1.4): extra schemas
+        /// follow the static ones, extra entries follow the static ones of their group. With none it is byte-identical
+        /// to <see cref="Write(BakedWorld, CatalogNaming)"/>.
+        /// </summary>
+        public static string Write(
+            BakedWorld world,
+            CatalogNaming naming,
+            IReadOnlyList<GameplayCatalogNames.SchemaName> extraSchemas,
+            IReadOnlyList<GameplayCatalogNames.EntryName> extraEntries)
         {
             if (world == null)
             {
@@ -71,7 +83,18 @@ namespace GameCore.Gameplay.Compile
             json.EmptyArray("supportedFeatureIds");
 
             json.BeginArray("schemas");
-            IReadOnlyList<GameplayCatalogNames.SchemaName> schemas = GameplayCatalogNames.Schemas;
+            var schemas = new List<GameplayCatalogNames.SchemaName>(GameplayCatalogNames.Schemas);
+            if (extraSchemas != null)
+            {
+                schemas.AddRange(extraSchemas);
+            }
+
+            var entries = new List<GameplayCatalogNames.EntryName>(GameplayCatalogNames.StaticEntries);
+            if (extraEntries != null)
+            {
+                entries.AddRange(extraEntries);
+            }
+
             for (int i = 0; i < schemas.Count; i++)
             {
                 GameplayCatalogNames.SchemaName schema = schemas[i];
@@ -99,9 +122,9 @@ namespace GameCore.Gameplay.Compile
             json.EndArray();
 
             json.BeginArray("groups");
-            WriteStaticGroup(json, "PluginFactory", "PluginRegistrations", "PluginKeys", "TryGetPlugin");
-            WriteStaticGroup(json, "SystemFactory", "SystemRegistrations", "SystemKeys", "TryGetSystem");
-            WriteStaticGroup(json, "LayoutApply", "LayoutRegistrations", "LayoutKeys", "TryGetLayout");
+            WriteStaticGroup(json, entries, "PluginFactory", "PluginRegistrations", "PluginKeys", "TryGetPlugin");
+            WriteStaticGroup(json, entries, "SystemFactory", "SystemRegistrations", "SystemKeys", "TryGetSystem");
+            WriteStaticGroup(json, entries, "LayoutApply", "LayoutRegistrations", "LayoutKeys", "TryGetLayout");
             if (world.Definitions.Count > 0)
             {
                 WriteRecipeGroup(json, world);
@@ -129,10 +152,9 @@ namespace GameCore.Gameplay.Compile
             json.BeginArray("entries");
         }
 
-        private static void WriteStaticGroup(CanonicalJson json, string kind, string table, string keys, string lookup)
+        private static void WriteStaticGroup(CanonicalJson json, IReadOnlyList<GameplayCatalogNames.EntryName> entries, string kind, string table, string keys, string lookup)
         {
             WriteGroupHeader(json, kind, table, keys, lookup);
-            IReadOnlyList<GameplayCatalogNames.EntryName> entries = GameplayCatalogNames.StaticEntries;
             for (int i = 0; i < entries.Count; i++)
             {
                 GameplayCatalogNames.EntryName entry = entries[i];

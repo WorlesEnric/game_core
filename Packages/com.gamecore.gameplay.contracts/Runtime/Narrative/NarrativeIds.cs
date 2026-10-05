@@ -368,6 +368,18 @@ namespace GameCore.Gameplay.Contracts.Narrative
         /// <summary>ActionsRun: A=action set key, B=actor key, C=subject key, D=invocation ordinal.</summary>
         public static readonly SchemaRef ActionsRunEvent = GameplayIds.Schema("logic.event.actions-run", 1U);
 
+        /// <summary>
+        /// ActionDue (one per action that only the outbox can deliver): A=action set key, B=action ordinal in the
+        /// flattened set, C=action kind, D=actor key, E=subject key, F=source (1 rule, 2 run, 3 dialogue, 4 item use).
+        /// The narrative delivery turns each one into exactly one obligation.
+        /// </summary>
+        public static readonly SchemaRef ActionDueEvent = GameplayIds.Schema("logic.event.action-due", 1U);
+
+        public const int SourceRule = 1;
+        public const int SourceRun = 2;
+        public const int SourceDialogue = 3;
+        public const int SourceItemUse = 4;
+
         public const int SkipCondition = 1;
         public const int SkipCooldown = 2;
         public const int SkipOnce = 3;
