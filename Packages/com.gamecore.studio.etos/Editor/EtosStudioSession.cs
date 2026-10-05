@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Etos.Client;
@@ -20,7 +21,7 @@ namespace GameCore.Studio.Etos
 {
     /// <summary>Owner of the project's <see cref="EtosAgentGateway"/>.</summary>
     [FilePath("Library/GameCoreStudio/etos-session.asset", FilePathAttribute.Location.ProjectFolder)]
-    public sealed class EtosStudioSession : ScriptableSingleton<EtosStudioSession>
+    public sealed class EtosStudioSession : ScriptableSingleton<EtosStudioSession>, IMediaGenerationGatewayProvider
     {
         public const string CursorFileName = "etos-events.cursor";
 
@@ -35,6 +36,18 @@ namespace GameCore.Studio.Etos
 
         [NonSerialized]
         private EtosAgentGateway? _gateway;
+
+        [NonSerialized]
+        private EtosMediaGenerator? _mediaGateway;
+
+        [NonSerialized]
+        private EtosAgentGateway? _mediaGatewaySource;
+
+        [NonSerialized]
+        private string? _mediaProjectId;
+
+        [NonSerialized]
+        private string? _mediaAppName;
 
         [NonSerialized]
         private StudioRuntime? _runtime;
@@ -53,6 +66,33 @@ namespace GameCore.Studio.Etos
 
         /// <summary>Times a gateway was started in this project (survives reloads).</summary>
         public int Starts => starts;
+
+        /// <summary>The cached adapter for this session binding, or null while unpaired/stopped.
+        /// Gameplay lookup only inspects existing sessions; it never starts one or reads credentials.</summary>
+        public IMediaGenerationGateway? MediaGateway
+        {
+            get
+            {
+                EtosAgentGateway? gateway = _gateway;
+                if (gateway == null)
+                {
+                    ClearMediaGateway();
+                    return null;
+                }
+
+                EtosClientOptions options = gateway.Client.Options;
+                if (_mediaGateway == null || !ReferenceEquals(_mediaGatewaySource, gateway)
+                    || _mediaProjectId != options.ProjectId || _mediaAppName != options.AppName)
+                {
+                    _mediaGateway = new EtosMediaGenerator(gateway, gateway.Runtime, gateway.Queue);
+                    _mediaGatewaySource = gateway;
+                    _mediaProjectId = options.ProjectId;
+                    _mediaAppName = options.AppName;
+                }
+
+                return _mediaGateway;
+            }
+        }
 
         /// <summary>Starts (or restarts) the session over the project's runtime; false with <see cref="Problem"/> set when it cannot.</summary>
         public static bool Start()
@@ -155,6 +195,7 @@ namespace GameCore.Studio.Etos
 
         private void StopCore()
         {
+            ClearMediaGateway();
             if (_gateway != null)
             {
                 if (_runtime != null && ReferenceEquals(_runtime.Services.AgentGateway, _gateway))
@@ -167,6 +208,14 @@ namespace GameCore.Studio.Etos
                 _gateway.Client.Dispose();
                 _gateway = null;
             }
+        }
+
+        private void ClearMediaGateway()
+        {
+            _mediaGateway = null;
+            _mediaGatewaySource = null;
+            _mediaProjectId = null;
+            _mediaAppName = null;
         }
 
         private void Hook()
