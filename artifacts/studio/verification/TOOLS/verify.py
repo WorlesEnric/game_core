@@ -54,21 +54,21 @@ def finish(folder, record):
     for path in folder.rglob('*'):
         if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json'):
             data = path.read_text(errors='replace')
-            path.write_text(scrub(data))
+            path.write_text(('\n'.join(line.rstrip() for line in scrub(data).splitlines()).rstrip() + '\n') if data else '')
     (folder / 'result.json').write_text(scrub(json.dumps(record, indent=2)) + '\n')
     (folder / 'README.md').write_text(scrub(
-        f"# {record['label']}\n\nVerdict: **{record['status']}**. {record.get('note', '')}\n\n"
+        f"# {record['label']}\n\nVerdict: **{record['status']}**." + (' ' + record['note'] if record.get('note') else '') + '\n\n' +
         f"Source revision: `{record['revision']}`; host: `{record['host']}`.\n"
         f"Started: {record['started']}; ended: {record['ended']}; duration: {record['seconds']:.3f} s.\n\n"
         f"Command (from repository root unless cwd specified):\n\n```sh\n{record['command']}\n```\n\n"
         "Text evidence redacts credentials and substitutes `~` for absolute home paths. "
-        "XML dispositions are unchanged. Hashes describe these retained sanitized bytes.\n"))
+        "XML dispositions are unchanged; trailing log whitespace is normalized. Hashes describe these retained sanitized bytes.\n"))
     paths = sorted(p for p in folder.rglob('*') if p.is_file() and p.name != 'SHA256SUMS')
     (folder / 'SHA256SUMS').write_text(''.join(
         f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(folder)}\n' for p in paths))
 
 
-def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None):
+def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, expected_http=None):
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     folder = OUT / row / f'{label}-{stamp}'
     folder.mkdir(parents=True)
@@ -90,6 +90,11 @@ def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None):
         except OSError as exc:
             log.write(scrub(str(exc)) + '\n'); rc = 127
     record.update(exitCode=rc, status='PASS' if rc == 0 else 'FAIL', ended=utc(), seconds=time.monotonic()-start)
+    if expected_http is not None:
+        observed = re.findall(r'^HTTP (\d+)$', (folder / 'command.log').read_text(), re.M)
+        record['httpStatus'] = int(observed[-1]) if observed else None
+        record['status'] = 'PASS' if rc == 0 and record['httpStatus'] == expected_http else 'FAIL'
+        record['note'] = 'Unauthenticated proxy probe: expected HTTP ' + str(expected_http) + '. This exercises the node boundary, not an independently authenticated companion app-header check.'
     if results:
         paths = list(folder.glob(results))
         record['suites'] = {}
@@ -162,6 +167,78 @@ def perf():
     for n in (1, 2):
         unity_run('hollowmere', 'PlayMode', 'perf-probe-' + str(n),
                   'Hollowmere\\.P1_1\\..*|Hollowmere\\.P1_3\\..*|Hollowmere\\.P1_7a\\..*')
+    if list((OUT / 'W-GAME-08').glob('*/memory-cycles.json')):
+        print('Memory series already retained; not repeating ten cycles.', flush=True)
+        return
+    report = ROOT / 'artifacts/studio/evidence/P3.1/memory-cycles.json'
+    previous = report.read_bytes() if report.exists() else None
+    try:
+        result = unity_run('hollowmere', 'EditMode', 'memory-ten-cycles',
+                           'Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles')
+        if report.exists() and report.read_bytes() != previous:
+            data = json.loads(report.read_text())
+            folder = OUT / 'W-GAME-08' / ('memory-' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ'))
+            folder.mkdir(parents=True)
+            (folder / 'memory-cycles.json').write_text(json.dumps(data, indent=2) + '\n')
+            # Existing test asserts 25%; acceptance never relaxes 07's 15% budget.
+            growth = data['allocatedGrowthPctCycle10']
+            record = dict(result, label='B-MEMORY-15-percent', status='FAIL' if growth > 15 else 'BLOCKED',
+                          note=f'Allocated growth {growth}%; budget 15%. Existing test uses 25%; its pass alone is insufficient. Full Memory Profiler snapshots are absent.')
+            finish(folder, record)
+    finally:
+        if previous is not None: report.write_bytes(previous)
+        elif report.exists(): report.unlink()
+
+
+def recovery():
+    for mode in ('rollback', 'resume'):
+        stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+        state = OUT / 'W-REC-01' / (mode + '-state-' + stamp)
+        state.mkdir(parents=True)
+        common = ['bash', 'studio/tools/unity-batch.sh', '--project', ROOT / 'games/hollowmere',
+                  '--log-dir', '{out}/logs']
+        crash = run('W-REC-01', mode + '-killed-editor', [*common, '--label', 'recovery-crash', '--',
+            '-executeMethod', 'Hollowmere.P4_2.ProcessRecovery.Crash', '-p42State', state,
+            '-p42Recovery', mode], env={'GAMECORE_ETOS_AUTOSTART': '0'})
+        if not (state / 'crash.json').exists():
+            print('No crash marker: recovery not claimed.', flush=True)
+            continue
+        recovered = run('W-REC-01', mode + '-reopened-editor', [*common, '--label', 'recovery-reopen', '--',
+            '-executeMethod', 'Hollowmere.P4_2.ProcessRecovery.Recover', '-p42State', state],
+            env={'GAMECORE_ETOS_AUTOSTART': '0'})
+        passed = False
+        if (state / 'recovery-result.json').exists():
+            result = json.loads((state / 'recovery-result.json').read_text())
+            passed = recovered['status'] == 'PASS' and result['ok'] and result['originalPid'] != result['recoveryPid']
+        record = dict(recovered, label='R2-03-R2-38-' + mode,
+                      status='PASS' if passed else 'FAIL',
+                      note='A real SIGKILL at the engine fault hook; the killed-editor attempt is an expected nonzero exit, retained separately. Recovery is checked in a different Editor process.')
+        finish(state, record)
+
+
+def graphical_tests():
+    # Interactive Editor is necessary for the tests skipped by -nographics. Same allocator as unity-batch.
+    display = os.environ.get('EVIDENCE_DISPLAY', ':1')
+    wrapper = '''set -euo pipefail
+unity_tools_dir="$PWD/studio/tools"
+source "$unity_tools_dir/unity-slot.sh"
+unity_slot_acquire
+trap unity_slot_release EXIT
+python3 studio/stage/run-redacted.py --log "$1/editor.log" --timeout 1500 --silence 600 -- \
+  "$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity" -projectPath "$PWD/games/hollowmere" \
+  -logFile - -runTests -testPlatform EditMode -testFilter "$2" -testResults "$1/results.xml"
+'''
+    test_filter = ('R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|'
+                   'D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|'
+                   'Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless')
+    run('GRAPHICAL', 'graphics-required-tests', ['bash', '-c', wrapper, 'p42-graphical', '{out}', test_filter],
+        results='results.xml', env={'DISPLAY': display, 'GAMECORE_ETOS_AUTOSTART': '0'})
+
+
+def graphical_views():
+    run('W-VIEW-01', 'views-capture', ['bash', 'studio/tools/evidence-p2.3.sh', ROOT.name, 'games/hollowmere'],
+        env={'EVIDENCE_DEST': str(OUT / 'W-VIEW-01' / ('captures-' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ'))),
+             'GAMECORE_ETOS_AUTOSTART': '0'})
 
 
 def security_scan():
@@ -213,7 +290,7 @@ def security():
     run('W-ETOS-01', 'security-scan', ['python3', __file__, 'security-scan'])
     for label, extra in [('proxy-missing-app', []), ('proxy-wrong-token', ['-H', 'X-Etos-App: gamecore-unity', '-H', 'X-Etos-Proxy-Token: invalid-p42-probe'])]:
         run('W-ETOS-01', label, ['curl', '--silent', '--show-error', '--noproxy', '*', '--max-time', '10',
-             '--write-out', '\nHTTP %{http_code}\n', *extra, 'http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http/v1/hello'])
+             '--write-out', '\nHTTP %{http_code}\n', *extra, 'http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http/v1/hello'], expected_http=401)
 
 
 def summary():
@@ -227,7 +304,7 @@ def summary():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', nargs='?', choices=('all', 'static', 'bake', 'unity', 'perf', 'clean', 'security', 'security-scan', 'summary'), default='all')
+    parser.add_argument('mode', nargs='?', choices=('all', 'static', 'bake', 'unity', 'recovery', 'graphical-tests', 'graphical-views', 'perf', 'clean', 'security', 'security-scan', 'summary'), default='all')
     args = parser.parse_args()
     if platform.system() != 'Linux':
         parser.error('Qualification must run on the Linux build host.')
@@ -237,6 +314,9 @@ def main():
     if args.mode in ('all', 'static'): static()
     if args.mode in ('all', 'bake'): bake()
     if args.mode in ('all', 'unity'): unity()
+    if args.mode == 'recovery': recovery()
+    if args.mode == 'graphical-tests': graphical_tests()
+    if args.mode == 'graphical-views': graphical_views()
     if args.mode in ('all', 'perf'): perf()
     if args.mode in ('all', 'clean'): clean()
     if args.mode in ('all', 'security'): security()
