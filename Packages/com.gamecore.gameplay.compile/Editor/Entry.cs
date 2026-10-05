@@ -423,6 +423,7 @@ namespace GameCore.Gameplay.Compile
                     arrivalBY = portal.ArrivalB.Y,
                     arrivalBZ = portal.ArrivalB.Z,
                     arrivalBYaw = portal.ArrivalB.Yaw,
+                    conditionRef = portal.ConditionRef,
                 });
             }
 

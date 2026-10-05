@@ -47,6 +47,14 @@ namespace GameCore.Rules.Gameplay.Tests.Local
         }
 
         [Test]
+        public void WorldRefusalCodes_AreFoldedIntoTheGameplayDiagnosticCodes()
+        {
+            List<string> runtime = Constants(typeof(GameCore.Rules.Gameplay.World.WorldRefusalCodes)).Select(c => c.Value).ToList();
+            Assert.That(runtime, Is.Not.Empty);
+            Assert.That(GameplayDiagnosticCodes.All, Is.SupersetOf(runtime), "every world refusal code is a listed gameplay diagnostic code");
+        }
+
+        [Test]
         public void HardeningCodes_AreWellFormedUniqueAndListed()
         {
             List<string> declared = Constants(typeof(AuthoringHardeningCodes)).Select(c => c.Value).ToList();

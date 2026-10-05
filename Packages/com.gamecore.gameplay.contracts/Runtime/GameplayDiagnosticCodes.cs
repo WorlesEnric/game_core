@@ -42,6 +42,20 @@ namespace GameCore.Gameplay.Contracts
         public const string ResidencyIllegalTransition = "GP-WLD-020";
         public const string ResidencyNotHost = "GP-WLD-021";
 
+        // World runtime refusals and streaming (P1.7a's GameCore.Rules.Gameplay.World.WorldRefusalCodes, folded in by P1.7b;
+        // the values are identical and a dotnet test keeps them so)
+        public const string TravelConditionFailed = "GP-WLD-013";
+        public const string TravelConditionUnknown = "GP-WLD-014";
+        public const string TravelStaleTraveller = "GP-WLD-015";
+        public const string TravelMissingPortal = "GP-WLD-016";
+        public const string TravelAlreadyApplied = "GP-WLD-017";
+        public const string PlaceNotAllowed = "GP-WLD-022";
+        public const string PlaceStaleTarget = "GP-WLD-023";
+        public const string SceneLoadFailed = "GP-WLD-030";
+        public const string SceneNotInBuild = "GP-WLD-031";
+        public const string SceneLoadLatched = "GP-WLD-032";
+        public const string WorldMalformedCommand = "GP-WLD-040";
+
         // Compile
         public const string BakeStale = "GP-CMP-001";
         public const string BakeVerifyMismatch = "GP-CMP-002";
@@ -58,6 +72,8 @@ namespace GameCore.Gameplay.Contracts
             RegionMissingScene, RegionMissingBounds, PortalUnconnected, PortalTargetsOwnRegion, WorldMissingStartRegion,
             WorldUnknownRegion, RegionMultipleInScene, TravelNoPortal, TravelSameRegion, TravelUnknownRegion,
             ResidencyIllegalTransition, ResidencyNotHost,
+            TravelConditionFailed, TravelConditionUnknown, TravelStaleTraveller, TravelMissingPortal, TravelAlreadyApplied,
+            PlaceNotAllowed, PlaceStaleTarget, SceneLoadFailed, SceneNotInBuild, SceneLoadLatched, WorldMalformedCommand,
             BakeStale, BakeVerifyMismatch, BakeSceneUnreadable, CatalogStale,
         });
     }

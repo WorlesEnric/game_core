@@ -311,7 +311,28 @@ namespace GameCore.Gameplay.Quest
             }
 
             ConditionSetModel? fail = conversion.ConditionSet(quest.FailConditions);
-            return new QuestModel(key, quest.DefinitionName, stages, objectives, rewards, fail, quest.BranchNames);
+
+            // P1.7b -> P1.7a: prerequisite quest keys (each prerequisite is converted too); the kernel derives the
+            // dependents a failure closes from every quest's prerequisites (QuestRules.DependentsOf).
+            var prerequisites = new List<int>();
+            for (int p = 0; p < quest.Prerequisites.Count; p++)
+            {
+                QuestDefinition? prerequisite = quest.Prerequisites[p];
+                int prerequisiteKey = NarrativeRefs.KeyOf(prerequisite);
+                if (prerequisite == null || prerequisiteKey == 0 || prerequisite == quest)
+                {
+                    conversion.Problem(quest, AuthoringHardeningCodes.QuestPrerequisiteCycle + ": prerequisite " + p + " of quest " + quest.name + " is empty or the quest itself");
+                    continue;
+                }
+
+                conversion.Convert(prerequisite);
+                if (!prerequisites.Contains(prerequisiteKey))
+                {
+                    prerequisites.Add(prerequisiteKey);
+                }
+            }
+
+            return new QuestModel(key, quest.DefinitionName, stages, objectives, rewards, fail, quest.BranchNames, prerequisites, null);
         }
     }
 
