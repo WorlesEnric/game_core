@@ -59,7 +59,8 @@ namespace Hollowmere.P3_2.Workflows
                 case "smoke": return Smoke();
                 case "text": return Text();
                 case "text2": return Text2();
-                case "robe": return Robe();
+                case "robe": return Robe(false);
+                case "robe2": return Robe(true);
                 case "narrative": return Narrative();
                 case "reopen": return Reopen();
                 case "voice": return Voice();
@@ -182,6 +183,7 @@ namespace Hollowmere.P3_2.Workflows
             {
                 S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
+                S.IndexProbe("text2", new[] { MarenNpc, PipNpc, OddNpc, MarenEntity }, new[] { "Maren", "Pip", "Odd", "Village Well" }),
 
                 S.Select("Maren", "Pip", "Odd"),
                 S.AddAsset(MarenNpc, PipNpc, OddNpc),
@@ -240,7 +242,13 @@ namespace Hollowmere.P3_2.Workflows
 
         // -------------------------------------------------------------------------------------------------- robe
 
-        private static IReadOnlyList<Step> Robe()
+        /// <summary>
+        /// W-AI-01 and the media path. <paramref name="retry"/> is the one retry: the first attempt's candidate used an
+        /// 8-digit tint (#5C9964FF) that entity.applyOverride refuses at apply time (#rrggbb only), so the retry states
+        /// the colour format in the prompt; it also generates the robe texture the row asks for (there is no catalog tool
+        /// that puts a texture on a material, so the texture is generated and imported, and the material step is a gap).
+        /// </summary>
+        private static IReadOnlyList<Step> Robe(bool retry)
         {
             return new[]
             {
@@ -252,7 +260,7 @@ namespace Hollowmere.P3_2.Workflows
                 S.Do("hashes before robe", () => HashStep("robe", "before", MarenBehaviour, MarenNpc, MarenEntity)),
                 S.Note("roster before robe", () => Roster("robe", "before")),
                 S.Note("viewport before robe", () => ViewportPng("robe", "before")),
-                S.Send("robe", "Give her a green robe."),
+                S.Send("robe", retry ? "Give her a green robe. If you use a tint, give the colour as #rrggbb (six hex digits)." : "Give her a green robe."),
                 S.Await("robe", q => "She is Maren, the village healer. Give her robe a green look: a generated green cloth texture if the catalog can apply one, " +
                                      "otherwise a green tint of her view. Do not change her behaviour, dialogue or position.", 1200),
                 S.Do("preview robe", () => Guard("robe", () => S.Preview("robe").Run())),
@@ -274,17 +282,21 @@ namespace Hollowmere.P3_2.Workflows
 
                 // Asset generation through the Studio media path (asset.generate -> generate.image with a ceiling),
                 // verified import (asset.import, journaled with prompt + digest), assigned with `assign`.
+                S.Do("robe texture", () => retry
+                    ? GenerateImage("robe-texture", "A seamless tileable texture of soft green woven wool cloth for a village healer's robe, flat even lighting, no seams, no text.", Generated + "/maren_robe_green.png", 0.25)
+                    : true),
+                S.Do("undo robe texture", () => Journaled("robe-texture", () => S.Undo("robe-texture").Run())),
                 S.SelectAsset(LanternItem),
                 S.Do("generate lantern icon", () => GenerateImage("icon", "A small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background.", Generated + "/lantern_icon.png", 0.25)),
-                S.Do("assign lantern icon", () => AssignIcon("icon", LanternItem, Generated + "/lantern_icon.png")),
-                S.Do("undo assign", () => Guard("icon-assign", () => S.Undo("icon-assign").Run())),
-                S.Do("undo import", () => Guard("icon", () => S.Undo("icon").Run())),
+                S.Do("bind lantern icon", () => AssignIcon("icon", LanternItem, Generated + "/lantern_icon_sprite.png")),
+                S.Do("undo assign", () => Journaled("icon-assign", () => S.Undo("icon-assign").Run())),
+                S.Do("undo import", () => Journaled("icon", () => S.Undo("icon").Run())),
 
                 // Voice line: dialogue.generateVoice first (the tool the catalog offers), then the media gateway (tts).
                 S.SelectAsset(MarenGraph),
                 S.Do("dialogue.generateVoice probe", () => ProbeGenerateVoice("voice-line", MarenGraph)),
                 S.Do("tts voice line", () => GenerateSpeech("voice-line", Generated + "/maren_line.wav")),
-                S.Do("undo voice import", () => Guard("voice-line", () => S.Undo("voice-line").Run())),
+                S.Do("undo voice import", () => Journaled("voice-line", () => S.Undo("voice-line").Run())),
                 S.Note("stop recording", () => WorkflowRunner.Recording(false)),
             };
         }
@@ -861,7 +873,7 @@ namespace Hollowmere.P3_2.Workflows
                 // A media op with a 0.001 USD ceiling (expected: budget refusal).
                 S.Do("image with max_cost 0.001", () => GenerateImage("budget", "A tiny test swatch, flat green square.", Generated + "/budget_probe.png", 0.001)),
                 S.Do("describe generated image", () => DescribeLast("budget")),
-                S.Do("undo budget import", () => Guard("budget", () => AppliedOr("budget", () => S.Undo("budget").Run()))),
+                S.Do("undo budget import", () => Journaled("budget", () => S.Undo("budget").Run())),
                 S.Note("stop", () => WorkflowRunner.Recording(false)),
             };
         }
@@ -1425,6 +1437,11 @@ namespace Hollowmere.P3_2.Workflows
                 {
                     St.Set("lastImageSha", import.Result.Sha256);
                 }
+
+                if (import.Artifact?.Sha256 != null)
+                {
+                    St.Set("artifact." + tag, import.Artifact.Sha256);
+                }
             }
 
             WorkflowRunner.Json(tag + "/generate.json", data);
@@ -1433,33 +1450,66 @@ namespace Hollowmere.P3_2.Workflows
             return true;
         }
 
-        private static bool AssignIcon(string tag, string itemPath, string texturePath)
+        /// <summary>
+        /// Assigns the generated image to the Lantern item's icon (an [AuthorRef] Sprite) with the catalog's `bind` tool:
+        /// the retained artifact is imported again (verified by sha256) as a Sprite and assigned, one journal entry.
+        /// </summary>
+        private static bool AssignIcon(string tag, string itemPath, string spritePath)
         {
             StudioUiContext context = S.Context;
-            if (!File.Exists(Path.Combine(WorkflowRunner.ProjectRoot, texturePath)))
+            string digest = St.Str("artifact." + tag);
+            if (digest.Length == 0)
             {
-                WorkflowRunner.Log(tag + "-assign-skipped", "no imported texture at " + texturePath, null);
+                WorkflowRunner.Log(tag + "-assign-skipped", "no retained artifact for " + tag + " (the generation did not succeed)", null);
                 return true;
             }
 
             UnityEngine.Object item = AssetDatabase.LoadMainAssetAtPath(itemPath);
             AuthoringRef target = context.Runtime.Resolver.BuildRef(item, null, true) ?? throw new InvalidOperationException("no ref for " + itemPath);
-            Sprite? sprite = AssetDatabase.LoadAllAssetsAtPath(texturePath).OfType<Sprite>().FirstOrDefault();
-            JObject data = new JObject { ["texture"] = texturePath, ["importedAsSprite"] = sprite != null, ["textureType"] = (AssetImporter.GetAtPath(texturePath) as TextureImporter)?.textureType.ToString() };
-            Operation assign = new Operation("op1", "assign", target, new JObject { ["field"] = "icon", ["value"] = texturePath });
-            ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Assign the generated lantern icon to the Lantern item", IntentOrigin.Manual), new[] { assign });
+            string artifact = digest.StartsWith("sha256:", StringComparison.Ordinal) ? digest : "sha256:" + digest;
+            Operation bind = new Operation("op1", "bind", target, new JObject
+            {
+                ["field"] = "icon",
+                ["artifact"] = new JObject { ["artifact"] = artifact },
+                ["path"] = spritePath,
+                ["importer"] = new JObject { ["textureType"] = "Sprite" },
+            });
+            ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Bind the generated lantern icon to the Lantern item", IntentOrigin.Manual), new[] { bind });
             ApplyReport report = context.Runtime.Engine.Apply(changeSet);
-            data["state"] = report.State.ToString();
-            data["outcomes"] = new JArray(report.Outcomes.Select(o => StudioJson.ToToken(o)).ToArray());
-            data["diagnostics"] = new JArray(report.Diagnostics.Select(d => StudioJson.ToToken(d)).ToArray());
-            data["applyMs"] = Math.Round(report.Milliseconds, 1);
+            Sprite? sprite = AssetDatabase.LoadAllAssetsAtPath(spritePath).OfType<Sprite>().FirstOrDefault();
+            JObject data = new JObject
+            {
+                ["tool"] = "bind",
+                ["artifact"] = artifact,
+                ["path"] = spritePath,
+                ["state"] = report.State.ToString(),
+                ["outcomes"] = new JArray(report.Outcomes.Select(o => StudioJson.ToToken(o)).ToArray()),
+                ["diagnostics"] = new JArray(report.Diagnostics.Select(d => StudioJson.ToToken(d)).ToArray()),
+                ["applyMs"] = Math.Round(report.Milliseconds, 1),
+                ["sprite"] = sprite != null ? sprite.name : null,
+                ["fileSha256"] = File.Exists(Path.Combine(WorkflowRunner.ProjectRoot, spritePath)) ? S.Sha256Of(spritePath) : null,
+            };
             St.SetReq(tag + "-assign", new JObject { ["ids"] = new JArray(changeSet.Id), ["id"] = changeSet.Id });
             WorkflowRunner.Json(tag + "/assign.json", data);
             S.CopyJournal(tag, changeSet.Id, "assign");
             StudioHistoryWindow.Open();
             EditorWindow.GetWindow<StudioHistoryWindow>().View?.Select(changeSet.Id);
-            WorkflowRunner.Shot(tag + "-assigned", "`assign` Lantern.icon = " + texturePath + ": " + report.State + " (sprite import: " + (sprite != null) + ").", data);
+            WorkflowRunner.Shot(tag + "-assigned", "`bind` Lantern.icon <- " + artifact.Substring(0, Math.Min(19, artifact.Length)) + "... imported as Sprite at " + spritePath + ": " + report.State + ".", data);
             return true;
+        }
+
+        /// <summary>Runs <paramref name="run"/> only when the tag's journal entry is Applied (media imports, manual edits).</summary>
+        private static bool Journaled(string tag, Func<bool> run)
+        {
+            string id = S.IdOf(tag);
+            ChangeSetState? state = id.Length == 0 ? null : S.Context.Runtime.Journal.Read(id)?.EffectiveState;
+            if (state != ChangeSetState.Applied)
+            {
+                WorkflowRunner.Log(tag + "-skipped", WorkflowRunner.CurrentName + " skipped: journal state " + (state?.ToString() ?? "none"), null);
+                return true;
+            }
+
+            return run();
         }
 
         private static bool ProbeGenerateVoice(string tag, string graphPath)
