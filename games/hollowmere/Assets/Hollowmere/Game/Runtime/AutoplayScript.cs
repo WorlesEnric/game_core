@@ -6,7 +6,8 @@
 //   wait <seconds>                         real time
 //   waitframes <n>                         rendered frames
 //   ui <command>                           a UI command (newgame, resume, save.1, load.1, restart, open.journal ...)
-//   walk <x> <z> [run] [timeout <s>]       steer the player to world (x, z) metres until within 1 m (default 60 s)
+//   walk <x> <z> [run] [timeout <s>]       steer the player to world (x, z) metres until within 1 m (default 60 s), or
+//                                          until a portal moves it (more than 8 m in one frame)
 //   approach <entity> [within <m>] [run] [timeout <s>]
 //                                          steer toward a placed entity's committed position, re-targeted every frame
 //                                          (patrolling NPCs), until within <m> metres (default 1.6), then face it

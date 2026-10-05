@@ -53,6 +53,9 @@ namespace Hollowmere.Game
         public const float ArriveDistance = 1.0f;
         public const float StuckDistance = 0.2f;
         public const float StuckSeconds = 6f;
+
+        /// <summary>A walk ends when the player moves more than this in one frame (a portal moved it).</summary>
+        public const float PortalJumpDistance = 8f;
         public const int FailureExitCode = 3;
 
         private AutoplayScript? script;
@@ -65,6 +68,7 @@ namespace Hollowmere.Game
         private int commandStartFrame;
         private Vector3 progressAnchor;
         private float progressSince;
+        private Vector3 lastPosition;
         private string lastCheck = string.Empty;
 
         public bool Running => script != null && !Finished && !Failed;
@@ -157,6 +161,7 @@ namespace Hollowmere.Game
             commandStart = Time.realtimeSinceStartup;
             commandStartFrame = Time.frameCount;
             progressAnchor = host!.PlayerPosition;
+            lastPosition = progressAnchor;
             progressSince = commandStart;
             lastCheck = string.Empty;
             Executed++;
@@ -244,6 +249,17 @@ namespace Hollowmere.Game
             Vector3 position = game.PlayerPosition;
             Vector3 delta = new Vector3(command.X - position.x, 0f, command.Z - position.z);
             float distance = delta.magnitude;
+            Vector3 jump = position - lastPosition;
+            lastPosition = position;
+            if (jump.magnitude > PortalJumpDistance)
+            {
+                // A portal (a region crossing) moved the player: the walk toward the crossing is done.
+                game.SetMove(Vector3.zero, false);
+                game.Log("[autoplay] " + command.Line.ToString(CultureInfo.InvariantCulture) + " crossed a portal to (" + F(position.x) + ", " + F(position.z) + ") after "
+                    + elapsed.ToString("F2", CultureInfo.InvariantCulture) + " s");
+                return true;
+            }
+
             if (distance <= ArriveDistance)
             {
                 game.SetMove(Vector3.zero, false);
