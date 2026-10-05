@@ -70,7 +70,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             {
                 ToolEntry tool = catalog.Tools.Single(t => t.Id == id);
                 Assert.That(tool.Tier, Is.EqualTo(GameCore.Studio.Model.ToolTier.Compose), id);
-                Assert.That(tool.Prerequisites, Has.Some.Matches<Prerequisite>(p => p.Requires == "agent.media"), id);
+                Assert.That(tool.Prerequisites?.Any(p => p.Requires == "agent.media") ?? false, Is.False, id);
             }
 
             Assert.That(catalog.Tools.Any(t => t.Id == "dialogue.graphView" || t.Id == "world.flowView"), Is.False, "graph and flow views are P2.3 views, not tools");
