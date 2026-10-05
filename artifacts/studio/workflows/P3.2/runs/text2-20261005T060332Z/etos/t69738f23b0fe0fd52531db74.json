@@ -1,0 +1,55 @@
+{"show":
+{
+  "task": {
+    "id": "t69738f23b0fe0fd52531db74",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45ap5ec54rtgm9s357mvs5y",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45AP5EC54RTGM9S357MVS5Y (attempt 0): Make one of them patrol around the well.\nAnswer to \"Where is the well in ThornwickVillage (scene object or world-space coordinates) so I can route one of the selected NPCs around it?\": Maren (npc.definition Maren). Centre a loop of four points on the Village Well, about 3 m from it (+Z north, +X eas\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "cancelled",
+    "container": null,
+    "hostless": false,
+    "result": null,
+    "error": "cancelled by the owner",
+    "created_at": 1791180346877,
+    "started_at": 1791180346879,
+    "ended_at": 1791180417304
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t69738f23b0fe0fd52531db74",
+    "limits": {},
+    "used": {
+      "input_tokens": 63033,
+      "micro_usd": 0,
+      "output_tokens": 487,
+      "tokens": 63520
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 2304103,
+      "micro_usd": 0,
+      "output_tokens": 27246,
+      "tokens": 2331349
+    }
+  }
+}
+}

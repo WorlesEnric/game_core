@@ -24,6 +24,7 @@ if [[ -z "${only}" || "${only}" == "narrative" ]]; then
   bash "${here}/workflow-p3.2-lib.sh" narrative "${args[@]+"${args[@]}"}" || rc=$?
 fi
 if [[ -z "${only}" || "${only}" == "reopen" ]]; then
-  bash "${here}/workflow-p3.2-lib.sh" reopen "${args[@]+"${args[@]}"}" || rc=$?
+  # The reopen session keeps the index cache the narrative session saved (a real close and reopen).
+  WORKFLOW_KEEP_INDEX_CACHE=1 bash "${here}/workflow-p3.2-lib.sh" reopen "${args[@]+"${args[@]}"}" || rc=$?
 fi
 exit "${rc}"

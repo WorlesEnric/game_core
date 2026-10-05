@@ -73,7 +73,7 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" && "$(uname -s)" != "Linux" ]]; then
   (( voice )) && forwarded+=(--voice)
   for kv in "${extra_env[@]+"${extra_env[@]}"}"; do forwarded+=(--env "${kv}"); done
   remote_env="GC_STUDIO_ON_HOST=1 GC_STUDIO_REMOTE_BASE=$(printf '%q' "${remote_base}")"
-  for name in GC_STUDIO_UNITY_SLOTS UNITY WORKFLOW_DISPLAY WORKFLOW_TIMEOUT WORKFLOW_SILENCE_TIMEOUT GAMECORE_ETOS_KEY_FILE; do
+  for name in GC_STUDIO_UNITY_SLOTS UNITY WORKFLOW_DISPLAY WORKFLOW_TIMEOUT WORKFLOW_SILENCE_TIMEOUT WORKFLOW_KEEP_INDEX_CACHE GAMECORE_ETOS_KEY_FILE; do
     [[ -n "${!name:-}" ]] && remote_env+=" ${name}=$(printf '%q' "${!name}")"
   done
   rc=0
@@ -168,6 +168,19 @@ if [[ -f "${project_dir}/Temp/UnityLockfile" ]]; then
   done
   rm -f "${project_dir}/Temp/UnityLockfile"
   echo "-- removed a stale Temp/UnityLockfile" >&2
+fi
+
+# The Studio restores its semantic index from Library/GameCoreStudio/index.sources.json without checking that the cache
+# covers the current assets (SemanticIndexService.LoadCache); a cache written by an earlier, narrower run leaves NPC,
+# dialogue, quest and item definitions out of the index (P3.2 defect D-INDEX-CACHE). Every workflow run starts from a
+# full rebuild; set WORKFLOW_KEEP_INDEX_CACHE=1 to reproduce the defect.
+if [[ "${WORKFLOW_KEEP_INDEX_CACHE:-0}" != "1" ]]; then
+  for cache in index.sources.json index.json; do
+    if [[ -f "${project_dir}/Library/GameCoreStudio/${cache}" ]]; then
+      rm -f "${project_dir}/Library/GameCoreStudio/${cache}"
+      echo "-- removed the Studio index cache Library/GameCoreStudio/${cache} (full rebuild at start-up)" >&2
+    fi
+  done
 fi
 
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
