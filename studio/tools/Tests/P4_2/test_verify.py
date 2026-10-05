@@ -6,6 +6,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+from collections import namedtuple
 
 ROOT = Path(__file__).resolve().parents[4]
 spec = importlib.util.spec_from_file_location('verify', ROOT / 'artifacts/studio/verification/TOOLS/verify.py')
@@ -53,6 +55,21 @@ class EvidenceTests(unittest.TestCase):
         self.invoke('<test-run><test-case result="Passed"/></test-run>')
         rows = [json.loads(p.read_text()) for p in verify.OUT.glob('TEST/*/result.json')]
         self.assertEqual(['FAIL', 'PASS'], sorted(r['status'] for r in rows))
+
+    def test_R2_38_enospc_empty_record_does_not_abort_summary(self):
+        folder = verify.OUT / 'ROW' / 'interrupted'
+        folder.mkdir(parents=True)
+        (folder / 'result.json').write_text('')
+        verify.summary()
+        self.assertIn('BLOCKED (incomplete ENOSPC record retained)', (verify.OUT / 'SUMMARY.md').read_text())
+        self.assertEqual('', (folder / 'result.json').read_text())
+
+    def test_R2_38_disk_reserve_stops_before_child_launch(self):
+        usage = namedtuple('usage', 'total used free')(100, 99, 1)
+        with patch.object(verify.shutil, 'disk_usage', return_value=usage), patch.object(verify.subprocess, 'Popen') as spawn:
+            with self.assertRaisesRegex(RuntimeError, '40 GiB'):
+                verify.run('ROW', 'low-disk', ['true'])
+            spawn.assert_not_called()
 
     def test_P42_secret_and_home_redaction(self):
         for prefix in ('et' + 'k_', 'et' + 't_', 'et' + 'p_', 'et' + 'a_', 'sk' + '-', 'Bearer' + ' '):

@@ -69,7 +69,7 @@ def xml_counts(path):
 def finish(folder, record):
     # Unity writes XML/logs itself. Scrub text paths after exit; preserve original XML outcomes.
     for path in folder.rglob('*'):
-        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json', '.md'):
+        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json', '.jsonl', '.csv', '.md'):
             data = path.read_text(errors='replace')
             path.write_text(('\n'.join(line.rstrip() for line in scrub(data).splitlines()).rstrip() + '\n') if data else '')
     (folder / 'result.json').write_text(scrub(json.dumps(record, indent=2)) + '\n')
@@ -285,7 +285,10 @@ def security_scan():
     home = re.compile(rb'/(?:home|Users)/[^/\s<>"\']+')
     tracked = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
     paths = set(ROOT / p for p in tracked if p)
-    paths.update(p for p in OUT.rglob('*') if p.is_file())
+    paths.update(p for p in (ROOT / 'artifacts').rglob('*') if p.is_file())
+    for game in ('hollowmere', 'cleanproof'):
+        library = ROOT / 'games' / game / 'Library'
+        paths.update(p for p in library.rglob('*') if p.is_file() and p.suffix.lower() in ('.json', '.log', '.txt', '.xml', '.yaml', '.asset', '.cs'))
     matches = []
     excluded = []
     for path in sorted(paths):
@@ -318,7 +321,7 @@ def security_scan():
             except ValueError:
                 record['invalidJson'] = True
         settings.append(record)
-    print(json.dumps({'scope': 'tracked repository plus all P4.2 artifacts; raw matches are NEVER printed',
+    print(json.dumps({'scope': 'tracked repository, all artifacts and both Library text caches; raw matches are NEVER printed; prefix matches require review (test fixtures and prose are not credentials)',
                       'filesScanned': len(paths), 'matches': matches, 'excludedSensitivePaths': excluded,
                       'settings': settings}, indent=2))
     return int(any(s.get('credentialPrefixPresent') or s.get('unexpectedCredentialFields') or s.get('invalidJson') for s in settings))
@@ -334,6 +337,13 @@ def security():
 def summary():
     lines = ['# P4.2 verification summary', '', 'Matrix rows are accepted only by their row README; suite passes alone do not close workflows.', '',
              '| Evidence | Verdict | Revision |', '|---|---|---|']
+    row_file = OUT / 'ROWS.json'
+    if row_file.exists():
+        rows = json.loads(row_file.read_text())
+        header = ['# P4.2 verification summary', '', 'Matrix row totals: ' + ', '.join(f'{k} {n}' for k, n in rows['counts'].items()) + '.', '', '| Row | Verdict | Evidence / exact limitation |', '|---|---|---|']
+        for r in rows['rows']:
+            header.append(f"| {r['row']} | {r['status']} | [Evidence]({r['row']}/README.md): {r['note']} |")
+        lines = header + ['', '## Retained attempts (including superseded and expected failures)', ''] + lines[4:]
     for p in sorted(OUT.glob('*/*/result.json')):
         try:
             r = json.loads(p.read_text())

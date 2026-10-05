@@ -53,7 +53,7 @@ stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 echo "-- evidence for ${packet}/${project} at ${sha} on ${host}"
 set +e
 remote_out="$(host_exec "${host}" \
-  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' GCS_FLIP='${GCS_FLIP:-0}' bash -s" <<'HOST'
+  "PACKET='${packet}' PROJECT='${project}' REMOTE_BASE='${remote_base}' STAMP='${stamp}' SLOTS='${GC_STUDIO_UNITY_SLOTS:-3}' UNITY_BIN='${UNITY:-}' EVIDENCE_DISPLAY='${EVIDENCE_DISPLAY:-:1}' EVIDENCE_TIMEOUT='${EVIDENCE_TIMEOUT:-1800}' EVIDENCE_ENTRY='${EVIDENCE_ENTRY:-Hollowmere.P2_1.Evidence.StudioUiEvidence.Run}' GCS_FLIP='${GCS_FLIP:-0}' bash -s" <<'HOST'
 set -euo pipefail
 unity="${UNITY_BIN:-${HOME}/Unity/Hub/Editor/6000.0.75f1/Editor/Unity}"
 base="${HOME}/${REMOTE_BASE}/${PACKET}"
@@ -98,8 +98,8 @@ for attempt in 1 2; do
     done
   fi
   log="${out}/editor-a${attempt}.log"
-  DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout "$EVIDENCE_TIMEOUT" --silence "${EVIDENCE_SILENCE_TIMEOUT:-600}" -- "${unity}" -projectPath "${project_dir}" \
-    -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile - >/dev/null 2>&1 &
+  DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" python3 "${base}/studio/stage/run-redacted.py" --log "$log" --timeout "$EVIDENCE_TIMEOUT" --silence "${EVIDENCE_SILENCE_TIMEOUT:-600}" -- env GAMECORE_ETOS_KEY_FILE="${HOME}/.config/gamecore-studio/app-key.json" "${unity}" -projectPath "${project_dir}" \
+    -executeMethod "${EVIDENCE_ENTRY:-Hollowmere.P2_1.Evidence.StudioUiEvidence.Run}" -logFile - >/dev/null 2>&1 &
   pid=$!
   echo "-- attempt ${attempt}/2: interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY} (${screen}); output ${out}" >&2
   start=$(date +%s)

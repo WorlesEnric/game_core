@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[4]
 
 
 def main():
+    if shutil.disk_usage(ROOT).free < 40 * 1024**3:
+        raise SystemExit("Disk reserve below 40 GiB; refusing another Unity gate step.")
     args = sys.argv[1:]
     named = {}
     extra = []

@@ -48,7 +48,7 @@ python3 studio/stage/run-redacted.py --log "$out/editor.log" --timeout 1500 --si
 
 def ui():
     return v.run('W-UI-01','ui-capture',['bash','studio/tools/evidence-p2.1.sh',v.ROOT.name,'games/hollowmere'],
-       env={'EVIDENCE_DEST':'{out}/captures','GAMECORE_ETOS_AUTOSTART':'1'},editor=True)
+       env={'EVIDENCE_DEST':'{out}/captures','GAMECORE_ETOS_AUTOSTART':'1','EVIDENCE_ENTRY':'Hollowmere.P4_2.EvidenceEntry.RunUi'},editor=True)
 
 
 def stage():

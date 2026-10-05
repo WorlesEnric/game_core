@@ -4,13 +4,21 @@
   "references": [
     "GameCore.Studio.Model",
     "GameCore.Studio.Authoring",
-    "GameCore.Studio.Core.Editor"
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "Hollowmere.P2_1.Evidence",
+    "GameCore.Studio.UI.Editor"
   ],
-  "includePlatforms": ["Editor"],
+  "includePlatforms": [
+    "Editor"
+  ],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": true,
-  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ],
   "autoReferenced": false,
   "defineConstraints": [],
   "versionDefines": [],
