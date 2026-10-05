@@ -14,7 +14,8 @@ namespace GameCore.Studio.Edit
     {
         static AdmissionResumer()
         {
-            EditorApplication.delayCall += Resume;
+            // A few idle seconds after the reload: the Editor imports the new package's assets right after it.
+            StageAdmission.UnityDefer(3, Resume);
         }
 
         internal static string StateRoot => Path.Combine(StudioPaths.ForCurrentProject().LibraryRoot, "stage");

@@ -131,7 +131,7 @@ namespace GameCore.Studio.Edit
             string summary = Read<string>(result, "Summary") ?? string.Empty;
             if (fingerprint.Length != 64)
             {
-                problem = "the world does not bake: " + summary + Problems(result);
+                problem = "the world does not bake: " + summary + Problems(result) + " [" + DescribeWorld() + "]";
                 return null;
             }
 
@@ -211,6 +211,50 @@ namespace GameCore.Studio.Edit
             }
 
             return lines.Count == 0 ? string.Empty : ": " + string.Join("; ", lines);
+        }
+
+        /// <summary>What the project's WorldDefinition references right now (diagnostics for a refused re-bake).</summary>
+        private static string DescribeWorld()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:WorldDefinition");
+            if (guids.Length != 1)
+            {
+                return guids.Length + " WorldDefinition asset(s)";
+            }
+
+            string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            UnityEngine.Object? world = AssetDatabase.LoadMainAssetAtPath(path);
+            if (world == null)
+            {
+                return path + " does not load";
+            }
+
+            List<string> regions = new List<string>();
+            if (Read<System.Collections.IEnumerable>(world, "Regions") is System.Collections.IEnumerable regionList)
+            {
+                foreach (object? region in regionList)
+                {
+                    regions.Add(region is UnityEngine.Object loaded && loaded != null ? loaded.name + "/" + Read<string>(loaded, "AuthoringId") : "null");
+                }
+            }
+
+            List<string> portals = new List<string>();
+            if (Read<System.Collections.IEnumerable>(world, "Portals") is System.Collections.IEnumerable portalList)
+            {
+                foreach (object? portal in portalList)
+                {
+                    UnityEngine.Object? a = Read<UnityEngine.Object>(portal, "RegionA");
+                    UnityEngine.Object? b = Read<UnityEngine.Object>(portal, "RegionB");
+                    portals.Add((a == null ? "null" : a.name + "/" + Read<string>(a, "AuthoringId")) + " - " + (b == null ? "null" : b.name + "/" + Read<string>(b, "AuthoringId")));
+                    if (portals.Count == 3)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return path + ": regions (" + string.Join(", ", regions) + "); portals (" + string.Join(", ", portals)
+                + "); updating=" + EditorApplication.isUpdating + " compiling=" + EditorApplication.isCompiling;
         }
 
         internal static Type? FindType(string fullName)

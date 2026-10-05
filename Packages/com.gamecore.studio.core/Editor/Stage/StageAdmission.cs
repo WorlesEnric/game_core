@@ -119,6 +119,12 @@ namespace GameCore.Studio.Edit
 
         /// <summary>Called at each <see cref="AdmissionFaultPoint"/>; throwing fails the admission (and rolls it back).</summary>
         public Action<AdmissionFaultPoint, string>? FaultHook { get; set; }
+
+        /// <summary>Re-bake attempts after a refused world bake before the admission rolls back (default 3).</summary>
+        public int RebakeRetries { get; set; } = 3;
+
+        /// <summary>Runs an action after a delay in seconds once the Editor is idle; default: <see cref="StageAdmission.UnityDefer"/>.</summary>
+        public Action<double, Action>? Defer { get; set; }
     }
 
     /// <summary>How an admission step ended.</summary>
@@ -797,6 +803,17 @@ namespace GameCore.Studio.Edit
             string? world = Catalog.WorldFingerprint(out string? worldProblem);
             if (world == null)
             {
+                // Right after the domain reload the Editor may still be importing; retry before rolling back.
+                int tries = (int?)pending["rebakeTries"] ?? 0;
+                if (tries < Options.RebakeRetries)
+                {
+                    pending["rebakeTries"] = tries + 1;
+                    WritePending(changeSetId, pending);
+                    _runtime.Log.Write(StudioLogLevel.Warning, "stage", "re-bake refused (attempt " + (tries + 1) + "), retrying in " + RebakeRetrySeconds + " s: " + worldProblem);
+                    (Options.Defer ?? UnityDefer)(RebakeRetrySeconds, () => Finalize(changeSetId));
+                    return new AdmissionResult(changeSetId, AdmissionOutcome.Pending, "The world re-bake was refused; retrying (attempt " + (tries + 1) + " of " + Options.RebakeRetries + ").");
+                }
+
                 return Rollback(changeSetId, "rebake_failed", "The world re-bake failed: " + worldProblem);
             }
 
@@ -1021,6 +1038,26 @@ namespace GameCore.Studio.Edit
             }
 
             return CatalogSet.Combine(world, mechanisms);
+        }
+
+        private const double RebakeRetrySeconds = 10;
+
+        /// <summary>Runs <paramref name="action"/> once <paramref name="seconds"/> have passed and the Editor neither compiles nor imports.</summary>
+        public static void UnityDefer(double seconds, Action action)
+        {
+            double due = UnityEditor.EditorApplication.timeSinceStartup + seconds;
+            UnityEditor.EditorApplication.CallbackFunction? tick = null;
+            tick = () =>
+            {
+                if (UnityEditor.EditorApplication.timeSinceStartup < due || UnityEditor.EditorApplication.isCompiling || UnityEditor.EditorApplication.isUpdating)
+                {
+                    return;
+                }
+
+                UnityEditor.EditorApplication.update -= tick;
+                action();
+            };
+            UnityEditor.EditorApplication.update += tick;
         }
 
         private AdmissionResult Refuse(string changeSetId, string reason, string detail)
