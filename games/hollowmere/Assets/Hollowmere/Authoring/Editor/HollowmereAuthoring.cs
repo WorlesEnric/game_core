@@ -135,6 +135,9 @@ namespace Hollowmere.Authoring
             var watch = System.Diagnostics.Stopwatch.StartNew();
             StudioRuntime runtime = StudioServices.Runtime;
             OpenScenes();
+            // The index persisted under Library/ misses assets that changed while no Editor ran (a fresh checkout, a
+            // sync to the host clone); tool prerequisites read it, so project every source again first.
+            runtime.Index.Rebuild();
             var author = new StudioAuthor(runtime);
             author.CheckNarrativeTypes(
                 typeof(GameCore.Gameplay.Inventory.InventoryDefinition), typeof(GameCore.Gameplay.Inventory.WorldItemDefinition),
