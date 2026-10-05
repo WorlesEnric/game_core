@@ -1,0 +1,25 @@
+{
+  "tool": "bind",
+  "artifact": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08",
+  "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon_sprite.png",
+  "state": "Rejected",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Refused",
+      "code": "CandidateInvalid",
+      "detail": "Operation 'op1' uses artifact sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08, which the change set does not carry."
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "CandidateInvalid",
+      "message": "Operation 'op1' uses artifact sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08, which the change set does not carry.",
+      "hint": "List every referenced artifact under 'artifacts' with its digest, size and media type.",
+      "where": "op1"
+    }
+  ],
+  "applyMs": 1.0,
+  "sprite": null,
+  "fileSha256": null
+}

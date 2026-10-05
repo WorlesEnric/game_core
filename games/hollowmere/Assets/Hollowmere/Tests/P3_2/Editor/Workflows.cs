@@ -1467,6 +1467,8 @@ namespace Hollowmere.P3_2.Workflows
                 if (import.Artifact?.Sha256 != null)
                 {
                     St.Set("artifact." + tag, import.Artifact.Sha256);
+                    St.Set("artifactType." + tag, import.Artifact.MediaType);
+                    St.Set("artifactBytes." + tag, import.Artifact.Bytes);
                 }
             }
 
@@ -1500,7 +1502,9 @@ namespace Hollowmere.P3_2.Workflows
                 ["path"] = spritePath,
                 ["importer"] = new JObject { ["textureType"] = "Sprite" },
             });
-            ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Bind the generated lantern icon to the Lantern item", IntentOrigin.Manual), new[] { bind });
+            string hex = artifact.Substring("sha256:".Length);
+            ArtifactRef carried = new ArtifactRef(hex, St.Str("artifactType." + tag).Length > 0 ? St.Str("artifactType." + tag) : "image/png", (long)St.Num("artifactBytes." + tag), Path.GetFileName(spritePath), null, "source");
+            ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Bind the generated lantern icon to the Lantern item", IntentOrigin.Manual), new[] { bind }, artifacts: new[] { carried });
             ApplyReport report = context.Runtime.Engine.Apply(changeSet);
             Sprite? sprite = AssetDatabase.LoadAllAssetsAtPath(spritePath).OfType<Sprite>().FirstOrDefault();
             JObject data = new JObject
