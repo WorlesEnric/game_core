@@ -2,8 +2,8 @@
 //
 // One plugin type, one owner (gameplay.player.owner) and one authoritative domain (gameplay.player.domain.player, v1)
 // holding eight int32 slots on the player's entity target. One stage (gameplay.player.stage.command) runs one managed
-// system that drains three command routes - player.move, player.interact and player.setFocus - each with its own
-// bounded ingress lane. The shapes copy EntityDeclarations; the catalog names below are contributed to the generated
+// system that drains four command routes - player.move, player.interact, player.setFocus and (declared by P1.7b,
+// handled by P1.7a) player.restoreStamina - each with its own bounded ingress lane. The shapes copy EntityDeclarations; the catalog names below are contributed to the generated
 // catalog by the Editor's PlayerCatalogContributor.
 #nullable enable
 using System.Collections.Generic;
@@ -15,6 +15,19 @@ using GameCore.Unity.Runtime;
 
 namespace GameCore.Gameplay.Player
 {
+    /// <summary>player.restoreStamina payload layout: one int32, the stamina units to restore (&gt; 0).</summary>
+    public readonly struct RestoreStaminaPayload
+    {
+        public const int Length = 4;
+
+        public RestoreStaminaPayload(int amount)
+        {
+            Amount = amount;
+        }
+
+        public int Amount { get; }
+    }
+
     /// <summary>Identities and declarations of the player plugin.</summary>
     public static class PlayerDeclarations
     {
@@ -62,6 +75,22 @@ namespace GameCore.Gameplay.Player
         public static readonly FactoryKey MoveOrder = GameplayIds.Key("player.order.move");
         public static readonly FactoryKey InteractOrder = GameplayIds.Key("player.order.interact");
         public static readonly FactoryKey SetFocusOrder = GameplayIds.Key("player.order.set-focus");
+
+        /// <summary>The tool/action id of the stamina restore command (ActionKind.RestoreStamina runs it).</summary>
+        public const string RestoreStaminaCommandId = "player.restoreStamina";
+
+        /// <summary>
+        /// player.restoreStamina: payload <see cref="RestoreStaminaPayload"/> (one int32 <c>amount</c>, stamina units, &gt; 0),
+        /// targeted at the player's entity. The player clamps the result to PlayerDefinition.staminaMax. Declared by P1.7b;
+        /// the handler in the player command system is P1.7a's (until then the system rejects it as Ineligible).
+        /// </summary>
+        public static readonly RouteId RestoreStaminaRoute = GameplayIds.Route("player.route.restore-stamina");
+
+        public static readonly SchemaRef RestoreStaminaCommand = GameplayIds.Schema("player.command.restore-stamina", 1U);
+
+        public static readonly BufferId RestoreStaminaBuffer = GameplayIds.Buffer("player.buffer.restore-stamina");
+
+        public static readonly FactoryKey RestoreStaminaOrder = GameplayIds.Key("player.order.restore-stamina");
 
         /// <summary>The schemas this package contributes to the generated catalog (one UInt32 field each).</summary>
         public static IReadOnlyList<GameplayCatalogNames.SchemaName> CatalogSchemas { get; } = System.Array.AsReadOnly(new[]
@@ -149,6 +178,7 @@ namespace GameCore.Gameplay.Player
                 Buffer(MoveBuffer, PlayerSlots.MoveCommand, MoveOrder),
                 Buffer(InteractBuffer, PlayerSlots.InteractCommand, InteractOrder),
                 Buffer(SetFocusBuffer, PlayerSlots.SetFocusCommand, SetFocusOrder),
+                Buffer(RestoreStaminaBuffer, RestoreStaminaCommand, RestoreStaminaOrder),
             };
         }
 
@@ -159,6 +189,7 @@ namespace GameCore.Gameplay.Player
                 new CommandRoute(PlayerSlots.MoveRoute, Owner, PlayerSlots.MoveCommand, Stage, Stage, MoveBuffer, IngressProducer, LaneCapacity, false),
                 new CommandRoute(PlayerSlots.InteractRoute, Owner, PlayerSlots.InteractCommand, Stage, Stage, InteractBuffer, IngressProducer, LaneCapacity, false),
                 new CommandRoute(PlayerSlots.SetFocusRoute, Owner, PlayerSlots.SetFocusCommand, Stage, Stage, SetFocusBuffer, IngressProducer, LaneCapacity, false),
+                new CommandRoute(RestoreStaminaRoute, Owner, RestoreStaminaCommand, Stage, Stage, RestoreStaminaBuffer, IngressProducer, LaneCapacity, false),
             };
         }
 
@@ -169,11 +200,48 @@ namespace GameCore.Gameplay.Player
                 Lane(MoveBuffer, PlayerSlots.MoveCommand, MoveOrder),
                 Lane(InteractBuffer, PlayerSlots.InteractCommand, InteractOrder),
                 Lane(SetFocusBuffer, PlayerSlots.SetFocusCommand, SetFocusOrder),
+                Lane(RestoreStaminaBuffer, RestoreStaminaCommand, RestoreStaminaOrder),
             };
         }
 
         public static SystemRegistration CommandSystemRegistration() =>
             new ManagedSystemRegistration<PlayerCommandSystem>(CommandSystem, Stage, "GameplayPlayerCommandSystem");
+
+        /// <summary>Encodes a player.restoreStamina payload (refuses a non-positive amount).</summary>
+        public static FrozenPayload EncodeRestoreStamina(int amount)
+        {
+            if (amount <= 0)
+            {
+                throw new System.ArgumentOutOfRangeException(nameof(amount), AuthoringHardeningCodes.RestoreStaminaInvalid + ": stamina amounts are positive");
+            }
+
+            return new GameplayPayloadWriter().Int32(amount).Freeze();
+        }
+
+        /// <summary>Decodes a player.restoreStamina payload; false when it is not exactly one positive int32.</summary>
+        public static bool TryDecodeRestoreStamina(IReadOnlyList<byte> payload, out RestoreStaminaPayload value)
+        {
+            value = default(RestoreStaminaPayload);
+            if (payload == null)
+            {
+                return false;
+            }
+
+            var reader = new GameplayPayloadReader(payload);
+            if (!reader.HasLength(RestoreStaminaPayload.Length))
+            {
+                return false;
+            }
+
+            int amount = reader.Int32();
+            if (amount <= 0)
+            {
+                return false;
+            }
+
+            value = new RestoreStaminaPayload(amount);
+            return true;
+        }
 
         private static StateSlotSpec Slot(SlotId slot, string field)
         {

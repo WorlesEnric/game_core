@@ -16,7 +16,7 @@ namespace GameCore.Gameplay.Entities
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "asset.prefab", Doc = "The view prefab instantiated for every placed entity.")]
+        [AuthorRef(Category = "asset.prefab", Structural = true, Doc = "The view prefab instantiated for every placed entity.")]
         [SerializeField] private GameObject? prefab;
 
         [AuthorField(Unit = GameplayUnits.MilliUnit, Min = 1, Max = 100000, Doc = "Uniform scale in thousandths.")]
@@ -28,16 +28,16 @@ namespace GameCore.Gameplay.Entities
         [AuthorField(Doc = "Whether a placed entity starts alive (spawned).")]
         [SerializeField] private bool startsAlive = true;
 
-        [AuthorRef(Category = "entity.variant", Required = false, Doc = "Variants 1..n; variant 0 is the definition itself.")]
+        [AuthorRef(Category = "entity.variant", Required = false, Structural = true, Doc = "Variants 1..n; variant 0 is the definition itself.")]
         [SerializeField] private List<VariantDefinition> variants = new List<VariantDefinition>();
 
-        [AuthorField(Doc = "Fields a placed entity may override: scaleMilli, visible, alive, tint.")]
+        [AuthorField(Structural = true, Doc = "Fields a placed entity may override: scaleMilli, visible, alive, tint.")]
         [SerializeField] private List<string> overridableFields = new List<string> { OverrideSet.ScaleMilli, OverrideSet.Visible, OverrideSet.Tint };
 
         [AuthorField(Doc = "Animator integer parameters driven from entity slots.")]
         [SerializeField] private List<AnimatorSlotBinding> animatorBindings = new List<AnimatorSlotBinding>();
 
-        [AuthorField(Doc = "Interaction kind exposed to interaction systems (empty = not interactable).")]
+        [AuthorField(Structural = true, Doc = "Interaction kind exposed to interaction systems (empty = not interactable).")]
         [SerializeField] private string interactionKind = string.Empty;
 
         [SerializeField] private string contentStamp = string.Empty;

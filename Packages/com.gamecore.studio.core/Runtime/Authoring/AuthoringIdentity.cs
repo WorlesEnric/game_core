@@ -516,7 +516,7 @@ namespace GameCore.Studio.Authoring
                 bool collection = memberType != typeof(string) && (memberType.IsArray || (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(List<>)));
                 Type element = collection ? (memberType.IsArray ? memberType.GetElementType()! : memberType.GetGenericArguments()[0]) : memberType;
                 string? category = reference.Category ?? AuthoringMetadata.Authorable(element)?.ObjectTypeId;
-                spec = new FieldSpec(member.Name, collection ? ValueTypes.Ref + ValueTypes.ArraySuffix : ValueTypes.Ref, reference.Required, category: category, doc: reference.Doc);
+                spec = new FieldSpec(member.Name, collection ? ValueTypes.Ref + ValueTypes.ArraySuffix : ValueTypes.Ref, reference.Required, category: category, doc: reference.Doc, structural: reference.Structural);
             }
             else
             {
@@ -542,7 +542,8 @@ namespace GameCore.Studio.Authoring
                     ToolCatalogBuilder.Number(value.Step),
                     inferredCategory,
                     value.Doc,
-                    enumValues);
+                    enumValues,
+                    value.Structural);
             }
 
             return new AuthorMemberInfo(member, memberType, serialized, field, reference, spec);

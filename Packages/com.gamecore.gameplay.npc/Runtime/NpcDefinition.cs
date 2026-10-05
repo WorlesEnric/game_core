@@ -16,13 +16,13 @@ namespace GameCore.Gameplay.Npc
 {
     /// <summary>An NPC: which entity definition it is, how it moves and talks, its behaviour and schedule.</summary>
     [Authorable("npc.definition", DisplayName = "NPC", Scope = AuthorScope.Definition, RuntimeApplicability = RuntimeApply.Rebuild,
-        Doc = "An NPC kind: the entity definition (prefab) it is placed as, its display name, speed, voice, dialogue graph, behaviour and schedule.")]
+        Doc = "An NPC kind: the entity definition (prefab) it is placed as, its appearance variant, display name, speed, voice, dialogue graph, behaviour and schedule.")]
     [CreateAssetMenu(menuName = "GameCore/Gameplay/NPC Definition", fileName = "Npc")]
     public sealed class NpcDefinition : ScriptableObject, IDefinitionAsset
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "entity.definition", Doc = "The entity definition placed for this NPC (its prefab).")]
+        [AuthorRef(Category = "entity.definition", Structural = true, Doc = "The entity definition placed for this NPC (its prefab).")]
         [SerializeField] private EntityDefinition? entity;
 
         [AuthorField(Doc = "Name shown in the bubble and the talk prompt.")]
@@ -37,11 +37,18 @@ namespace GameCore.Gameplay.Npc
         [AuthorField(Unit = "m", Min = 0.01, Max = 2, Doc = "Arrival radius.")]
         [SerializeField] private float arriveRadius = 0.05f;
 
-        [AuthorField(Doc = "Voice id (audio, P1.5).")]
+        [AuthorRef(Category = AuthorRefCategories.AudioClip, Required = false, Doc = "Voice: a clip id of the project's audio bank (presentation only).")]
         [SerializeField] private string voiceId = string.Empty;
 
-        [AuthorRef(Category = "dialogue.graph", Required = false, Doc = "Dialogue graph reference (a string id resolved by P1.4).")]
-        [SerializeField] private string dialogueGraph = string.Empty;
+        [AuthorRef(Category = "dialogue.graph", Required = false, Doc = "The dialogue graph a talk starts (a DialogueGraphDefinition).")]
+        [SerializeField] private ScriptableObject? dialogue;
+
+        // Legacy (P1.3): the graph as a string id resolved by P1.4 (a graph's npcGraphRef alias, an authoring id or a
+        // name). Read only when `dialogue` is empty; authoring.migrateRefs moves it into `dialogue` and clears it.
+        [SerializeField, HideInInspector] private string dialogueGraph = string.Empty;
+
+        [AuthorRef(Category = "entity.variant", Required = false, Doc = "Appearance: one of the entity definition's variants (empty: the definition itself).")]
+        [SerializeField] private VariantDefinition? appearance;
 
         [AuthorRef(Category = "npc.behaviour", Required = false, Doc = "Standing behaviour (idle when none).")]
         [SerializeField] private BehaviourDefinition? behaviour;
@@ -74,7 +81,45 @@ namespace GameCore.Gameplay.Npc
 
         public string VoiceId => voiceId;
 
-        public string DialogueGraph => dialogueGraph;
+        /// <summary>
+        /// The graph reference handed to the conversation starter: the graph's authoring id when <see cref="Dialogue"/>
+        /// is set, else the legacy string id (empty: no conversation).
+        /// </summary>
+        public string DialogueGraph => dialogue is IAuthoredObject graph && graph.AuthoringId.Length > 0 ? graph.AuthoringId : dialogueGraph;
+
+        public ScriptableObject? Dialogue => dialogue;
+
+        /// <summary>The legacy string graph id (P1.3) still stored; empty after authoring.migrateRefs.</summary>
+        public string LegacyDialogueGraph => dialogueGraph;
+
+        public VariantDefinition? Appearance => appearance;
+
+        /// <summary>The variant index of <see cref="Appearance"/> in the entity definition (0: the definition itself, -1: not one of its variants).</summary>
+        public int AppearanceVariant
+        {
+            get
+            {
+                if (appearance == null)
+                {
+                    return 0;
+                }
+
+                if (entity == null)
+                {
+                    return -1;
+                }
+
+                for (int i = 0; i < entity.Variants.Count; i++)
+                {
+                    if (entity.Variants[i] == appearance)
+                    {
+                        return i + 1;
+                    }
+                }
+
+                return -1;
+            }
+        }
 
         public BehaviourDefinition? Behaviour => behaviour;
 
@@ -111,6 +156,18 @@ namespace GameCore.Gameplay.Npc
         }
 
         public void SetBehaviour(BehaviourDefinition? value) => behaviour = value;
+
+        /// <summary>npc.setDialogue: the graph object (clears the legacy string id).</summary>
+        public void SetDialogue(ScriptableObject? graph)
+        {
+            dialogue = graph;
+            dialogueGraph = string.Empty;
+        }
+
+        /// <summary>npc.setAppearance: one of the entity definition's variants, or null for the definition itself.</summary>
+        public void SetAppearance(VariantDefinition? variant) => appearance = variant;
+
+        public void SetVoice(string clipId) => voiceId = clipId ?? string.Empty;
 
         public void SetSchedule(ScheduleDefinition? value) => schedule = value;
 

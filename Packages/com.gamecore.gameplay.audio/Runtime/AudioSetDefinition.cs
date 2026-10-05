@@ -24,7 +24,7 @@ namespace GameCore.Gameplay.Audio
         [AuthorRef(Category = "audio.musicState", Doc = "Every music state.")]
         [SerializeField] private List<MusicStateDefinition> musicStates = new List<MusicStateDefinition>();
 
-        [AuthorField(Doc = "The music state a new world starts in (empty = silence).")]
+        [AuthorRef(Category = AuthorRefCategories.MusicState, Required = false, Doc = "The music state a new world starts in, by state id (empty = silence).")]
         [SerializeField] private string startMusicState = string.Empty;
 
         [AuthorRef(Category = "audio.ambience", Doc = "Every region ambience.")]

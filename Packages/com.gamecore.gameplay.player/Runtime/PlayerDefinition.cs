@@ -23,13 +23,13 @@ namespace GameCore.Gameplay.Player
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "entity.definition", Doc = "The entity definition of the placed player entity (its view prefab).")]
+        [AuthorRef(Category = "entity.definition", Structural = true, Doc = "The entity definition of the placed player entity (its view prefab).")]
         [SerializeField] private EntityDefinition? entity;
 
         [AuthorRef(Category = "player.inputProfile", Required = false, Doc = "Input actions and sensitivities.")]
         [SerializeField] private InputProfile? input;
 
-        [AuthorRef(Category = "asset.prefab", Required = false, Doc = "Player rig prefab: the CharacterController PlayerLocomotion resolves movement with.")]
+        [AuthorRef(Category = "asset.prefab", Required = false, Structural = true, Doc = "Player rig prefab: the CharacterController PlayerLocomotion resolves movement with.")]
         [SerializeField] private GameObject? rig;
 
         [AuthorField(Unit = "m/s", Min = 0.1, Max = 20, Doc = "Walking speed.")]

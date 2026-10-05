@@ -62,6 +62,12 @@ namespace GameCore.Rules.Gameplay.Logic
 
         /// <summary>inv.pickup: Ref = world item authoring id (empty = the subject).</summary>
         Pickup = 16,
+
+        /// <summary>player.restoreStamina: Value = stamina units restored to the player (P1.7b declaration; P1.7a port).</summary>
+        RestoreStamina = 17,
+
+        /// <summary>inv.buy for the actor: Key = item key, Key2 = vendor key, Value = count (P1.7b declaration; P1.7a port).</summary>
+        Buy = 18,
     }
 
     /// <summary>One action.</summary>
@@ -123,6 +129,8 @@ namespace GameCore.Rules.Gameplay.Logic
                 case ActionKind.StartDialogue: return "start dialogue " + what;
                 case ActionKind.RunActionSet: return "run " + what;
                 case ActionKind.Pickup: return "pick up " + (Ref.Length > 0 ? what : "subject");
+                case ActionKind.RestoreStamina: return "restore " + value + " stamina";
+                case ActionKind.Buy: return "buy " + value + " x " + what;
                 default: return Kind.ToString();
             }
         }

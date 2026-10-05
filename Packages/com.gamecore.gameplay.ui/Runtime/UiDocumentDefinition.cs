@@ -24,7 +24,7 @@ namespace GameCore.Gameplay.Ui
         [AuthorField(Doc = "Draw order; larger is drawn above.", Min = 0, Max = 100)]
         [SerializeField] private int layer;
 
-        [AuthorRef(Category = "asset.uxml", Doc = "The document's UXML.")]
+        [AuthorRef(Category = "asset.uxml", Structural = true, Doc = "The document's UXML (its element layout).")]
         [SerializeField] private VisualTreeAsset? uxml;
 
         [AuthorRef(Category = "asset.uss", Required = false, Doc = "Extra style sheets of this document.")]

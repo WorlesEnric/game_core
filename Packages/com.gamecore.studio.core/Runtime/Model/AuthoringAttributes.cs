@@ -49,6 +49,13 @@ namespace GameCore.Studio.Model
 
         /// <summary>The field must be set (non-null). Value-type fields are always set.</summary>
         public bool Required { get; set; }
+
+        /// <summary>
+        /// The field shapes what the runtime builds (prefab, slot layout, variant set, kind): a change needs a new
+        /// recipe revision. Tuning fields (speeds, texts, numbers read at runtime) stay false; the recipe revision is
+        /// derived from structural fields only.
+        /// </summary>
+        public bool Structural { get; set; }
     }
 
     /// <summary>A reference field of an authorable type (to another authored thing or asset).</summary>
@@ -62,6 +69,9 @@ namespace GameCore.Studio.Model
         public bool Required { get; set; } = true;
 
         public string? Doc { get; set; }
+
+        /// <summary>The reference shapes what the runtime builds (see <see cref="AuthorFieldAttribute.Structural"/>).</summary>
+        public bool Structural { get; set; }
     }
 
     /// <summary>Marks a method as a tool. Parameters: the first <c>[Authorable]</c>-typed parameter without

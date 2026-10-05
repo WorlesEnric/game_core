@@ -56,14 +56,14 @@ namespace GameCore.Gameplay.Npc
 
         public static readonly RouteId StepRoute = GameplayIds.Route("npc.route.step");
 
-        private static readonly (RouteId Route, SchemaRef Schema, string Name)[] Commands =
+        private static readonly IReadOnlyList<(RouteId Route, SchemaRef Schema, string Name)> Commands = System.Array.AsReadOnly(new (RouteId Route, SchemaRef Schema, string Name)[]
         {
             (NpcSlots.SetBehaviourRoute, NpcSlots.SetBehaviourCommand, "set-behaviour"),
             (NpcSlots.GoToRoute, NpcSlots.GoToCommand, "go-to"),
             (NpcSlots.FaceRoute, NpcSlots.FaceCommand, "face"),
             (NpcSlots.SetMoodRoute, NpcSlots.SetMoodCommand, "set-mood"),
             (NpcSlots.ConverseRoute, NpcSlots.ConverseCommand, "converse"),
-        };
+        });
 
         public static IReadOnlyList<GameplayCatalogNames.SchemaName> CatalogSchemas { get; } = System.Array.AsReadOnly(new[]
         {
@@ -147,7 +147,7 @@ namespace GameCore.Gameplay.Npc
         public static IReadOnlyList<BufferSpec> Buffers()
         {
             var buffers = new List<BufferSpec>();
-            for (int i = 0; i < Commands.Length; i++)
+            for (int i = 0; i < Commands.Count; i++)
             {
                 buffers.Add(new BufferSpec(
                     BufferOf(i),
@@ -168,7 +168,7 @@ namespace GameCore.Gameplay.Npc
         public static IReadOnlyList<CommandRoute> Routes()
         {
             var routes = new List<CommandRoute>();
-            for (int i = 0; i < Commands.Length; i++)
+            for (int i = 0; i < Commands.Count; i++)
             {
                 routes.Add(new CommandRoute(Commands[i].Route, Owner, Commands[i].Schema, Stage, Stage, BufferOf(i), IngressProducer, LaneCapacity, false));
             }
@@ -179,7 +179,7 @@ namespace GameCore.Gameplay.Npc
         public static IReadOnlyList<MessageBufferDescriptor> Lanes()
         {
             var lanes = new List<MessageBufferDescriptor>();
-            for (int i = 0; i < Commands.Length; i++)
+            for (int i = 0; i < Commands.Count; i++)
             {
                 lanes.Add(new MessageBufferDescriptor(
                     BufferOf(i),

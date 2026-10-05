@@ -17,7 +17,7 @@ namespace GameCore.Gameplay.Logic
     [CreateAssetMenu(menuName = "GameCore/Narrative/Content Set", fileName = "ContentSet")]
     public sealed class GameplayContentSet : ScriptableObject
     {
-        [AuthorRef(Category = "world.world", Doc = "The world this content belongs to.")]
+        [AuthorRef(Category = "world.definition", Doc = "The world this content belongs to.")]
         [SerializeField] private WorldDefinition? world;
 
         [AuthorRef(Category = "narrative.definition", Doc = "Every narrative definition of the world.")]

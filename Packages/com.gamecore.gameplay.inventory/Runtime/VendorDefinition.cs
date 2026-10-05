@@ -27,10 +27,10 @@ namespace GameCore.Gameplay.Inventory
         [AuthorRef(Category = NarrativeKinds.Item, Required = false, Doc = "Payment item (empty = currency).")]
         [SerializeField] private ItemDefinition? paymentItem;
 
-        [AuthorField(Min = 1, Max = 64, Doc = "Stock slots.")]
+        [AuthorField(Min = 1, Max = 64, Structural = true, Doc = "Stock slots (the vendor's slot layout).")]
         [SerializeField] private int stockSlots = 8;
 
-        [AuthorField(Type = "authoringId", Doc = "Vendor entity authoring id (optional).")]
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Vendor entity, by authoring id (optional).")]
         [SerializeField] private string vendorEntityId = string.Empty;
 
         public override string NarrativeKind => NarrativeKinds.Vendor;
@@ -51,6 +51,21 @@ namespace GameCore.Gameplay.Inventory
             paymentItem = payment;
             stockSlots = Math.Max(1, slots);
             vendorEntityId = entityId ?? string.Empty;
+        }
+
+        /// <summary>inventory.setPrice on a vendor: the buy price of an existing stock line; false when the vendor does not stock the item.</summary>
+        public bool SetBuyPrice(ItemDefinition item, int buy)
+        {
+            for (int i = 0; i < stock.Count; i++)
+            {
+                if (stock[i].item == item)
+                {
+                    stock[i].buyPrice = buy;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>Sets (replaces) the stock line of an item.</summary>
