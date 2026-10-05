@@ -183,7 +183,7 @@ namespace Hollowmere.P1_3.PlayMode.Tests
             foreach (RegionPortal candidate in Object.FindObjectsByType<RegionPortal>(FindObjectsSortMode.None))
             {
                 if (candidate.Portal != null && candidate.gameObject.scene.path.Contains("ThornwickVillage")
-                    && (Is(candidate.Portal.RegionA, marsh.AuthoringId) || Is(candidate.Portal.RegionB, marsh.AuthoringId)))
+                    && (Connects(candidate.Portal.RegionA, marsh.AuthoringId) || Connects(candidate.Portal.RegionB, marsh.AuthoringId)))
                 {
                     portal = candidate;
                 }
@@ -324,7 +324,7 @@ namespace Hollowmere.P1_3.PlayMode.Tests
 #endif
         }
 
-        private static bool Is(RegionDefinition? region, string authoringId) => region != null && region.AuthoringId == authoringId;
+        private static bool Connects(RegionDefinition? region, string authoringId) => region != null && region.AuthoringId == authoringId;
 
         private static string PlayerTrace(GameplayWorld world, TargetId player) =>
             Slot(world, player, PlayerSlots.PosX) + "," + Slot(world, player, PlayerSlots.PosY) + "," + Slot(world, player, PlayerSlots.PosZ) + ","
