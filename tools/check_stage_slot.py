@@ -38,6 +38,9 @@ ROOT = Path(__file__).resolve().parents[1]
 STAGE = ROOT / "studio" / "stage"
 TEMPLATE_PROJECT = STAGE / "template" / "project"
 ALLOWLIST = STAGE / "allowlist.json"
+sys.path.insert(0, str(STAGE))
+from path_policy import relative, contained, data_path, validate_meta, FORBIDDEN_DIRS
+from redact import redact
 SLOT_SCHEMA = "gamecore.studio.stage-slot/1"
 ROOT_ENTRIES = {"Assets", "Packages", "ProjectSettings", "StageHarness.json", "Library", "Temp", "Logs",
                 "UserSettings", "obj", "MemoryCaptures"}
@@ -126,6 +129,8 @@ def check_packages_dir(project: Path, record: dict, allow: dict, problems: list[
     for rel in sorted(set(declared) - set(present)):
         problems.append(f"Packages/{candidate}/{rel}: a declared output is missing")
     for rel in sorted(set(declared) & set(present)):
+        if Path(rel).suffix.lower() in {".dll", ".exe", ".so", ".dylib", ".a", ".rsp", ".asmref"}:
+            problems.append(f"Packages/{candidate}/{rel}: precompiled executable or compiler hook is forbidden")
         if sha256_file(present[rel]) != declared[rel]:
             problems.append(f"Packages/{candidate}/{rel}: changed since it was staged (sha256 differs)")
 
@@ -140,7 +145,12 @@ def check_assets(project: Path, record: dict, problems: list[str]) -> None:
     if not assets.is_dir():
         problems.append("project/Assets is missing")
         return
-    allowed = template_assets()
+    trusted = load_json(STAGE / "template-manifest.json")
+    allowed = {p[len("project/"):] for p in trusted if p.startswith("project/Assets/")}
+    for rel in allowed:
+        path = contained(project, rel)
+        if not path.is_file() or sha256_file(path) != trusted.get("project/" + rel):
+            problems.append(f"{rel}: trusted template digest differs")
     inputs = {f["path"]: f["sha256"] for f in record.get("inputFiles", [])}
     ancestors = set()
     for rel in list(inputs) + list(record.get("stageInputs", [])):
@@ -151,13 +161,23 @@ def check_assets(project: Path, record: dict, problems: list[str]) -> None:
         rel = path.relative_to(project).as_posix()
         if rel in allowed:
             continue
-        if rel.startswith("Assets/Settings/") or rel == "Assets/Settings.meta":
-            continue
         if rel in inputs:
+            try:
+                if path.suffix == ".meta":
+                    validate_meta(path)
+                    if not path.with_suffix("").is_dir():
+                        data_path(rel[:-5], settings=True)
+                else:
+                    data_path(rel, settings=True)
+                    if path.suffix == ".asset" and not path.read_bytes().startswith(b"%YAML"):
+                        raise ValueError("stage_settings_invalid")
+            except ValueError as error:
+                problems.append(f"{rel}: {error}")
             if sha256_file(path) != inputs[rel]:
                 problems.append(f"{rel}: a stage input changed in the slot")
             continue
         if rel in ancestors:
+            validate_meta(path)
             continue
         problems.append(f"{rel}: neither the harness, the render settings nor a declared stage input")
 
@@ -172,6 +192,9 @@ def check_slot(slot: Path) -> list[str]:
     record_path = slot / "stage.json"
     if not record_path.is_file():
         raise FileNotFoundError(f"{record_path} does not exist")
+    # Reject links before any hashing or manifest reads, including linked directories.
+    if slot.is_symlink() or any(p.is_symlink() for p in slot.rglob("*")):
+        return ["stage_path_link: slot contains a symbolic link"]
     record = load_json(record_path)
     problems: list[str] = []
     if record.get("schema") != SLOT_SCHEMA:
@@ -181,6 +204,18 @@ def check_slot(slot: Path) -> list[str]:
             problems.append(f"stage.json: {key} is missing")
     if problems:
         return problems
+    try:
+        name = relative(record["package"]["name"])
+        if "/" in name:
+            raise ValueError("stage_package_invalid")
+        for row in record.get("files", []) + record.get("inputFiles", []):
+            relative(row["path"])
+        for rel in record.get("stageInputs", []):
+            relative(rel)
+            if not rel.startswith("Assets/") or any(p.lower() in FORBIDDEN_DIRS for p in rel.split("/")):
+                raise ValueError("stage_input_invalid")
+    except ValueError as error:
+        return [str(error)]
     allow = load_json(ALLOWLIST)
     project = slot / "project"
     check_manifest(project, record, allow, problems)
@@ -223,16 +258,16 @@ def self_test() -> int:
             (project / "ProjectSettings").mkdir()
             shutil.copytree(TEMPLATE_PROJECT / "Assets", project / "Assets")
             (project / "Assets" / "World").mkdir()
-            (project / "Assets" / "World" / "W.asset").write_text("w")
+            (project / "Assets" / "World" / "W.json").write_text("w")
             (project / "Packages" / "manifest.json").write_text(json.dumps({
                 "dependencies": {"com.gamecore.contracts": "file:" + kernel.as_posix(), "com.unity.burst": "1.8.28"},
                 "testables": ["com.example.plate"]}))
             record = {"schema": SLOT_SCHEMA, "slotId": slot_name, "changeSetId": "cs_01JAPP0000000000000000PXAT",
                       "package": {"name": "com.example.plate"},
                       "files": [{"path": "package.json", "sha256": sha256_file(pkg / "package.json")}],
-                      "stageInputs": ["Assets/World/W.asset"],
-                      "inputFiles": [{"path": "Assets/World/W.asset",
-                                      "sha256": sha256_file(project / "Assets" / "World" / "W.asset")}],
+                      "stageInputs": ["Assets/World/W.json"],
+                      "inputFiles": [{"path": "Assets/World/W.json",
+                                      "sha256": sha256_file(project / "Assets" / "World" / "W.json")}],
                       "source": {"project": source.as_posix(), "repo": repo.as_posix()}}
             (slot / "stage.json").write_text(json.dumps(record))
             return slot
@@ -288,7 +323,7 @@ def self_test() -> int:
         expect("a live asset that is not a stage input is a problem", any("Secret.asset" in p for p in check_slot(slot)))
 
         slot = make("changed-input")
-        target = slot / "project" / "Assets" / "World" / "W.asset"
+        target = slot / "project" / "Assets" / "World" / "W.json"
         target.write_text("changed")
         expect("a changed stage input is a problem", any("stage input changed" in p for p in check_slot(slot)))
 
@@ -305,6 +340,41 @@ def self_test() -> int:
         doc["testables"] = ["com.example.plate", "com.gamecore.contracts"]
         (slot / "project" / "Packages" / "manifest.json").write_text(json.dumps(doc))
         expect("testables beyond the candidate are a problem", any("testables" in p for p in check_slot(slot)))
+
+        for label, rel in [("R2_12_SettingsExecutable", "Assets/Settings/Hook.cs"),
+                           ("R2_12_EditorInput", "Assets/Editor/Hook.cs"),
+                           ("R2_12_AssemblyInput", "Assets/plugin.dll")]:
+            slot = make(label)
+            target = slot / "project" / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("executable")
+            doc = load_json(slot / "stage.json")
+            doc["inputFiles"].append({"path": rel, "sha256": sha256_file(target)})
+            (slot / "stage.json").write_text(json.dumps(doc))
+            expect(label, bool(check_slot(slot)))
+        slot = make("R2_12_TemplateTamper")
+        next((slot / "project/Assets").rglob("*.cs")).write_text("tampered")
+        expect("R2_12_TemplateTamper", bool(check_slot(slot)))
+        slot = make("R2_12_Link")
+        (slot / "project/Assets/linked").symlink_to(source, target_is_directory=True)
+        expect("R2_12_Link", bool(check_slot(slot)))
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("make_slot", STAGE / "make-slot.py")
+        maker = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(maker)
+        for label, action in [
+            ("R2_08_ArtifactTraversal", lambda: maker.find_artifact(source, {"sha256": "a" * 64, "name": "../outside"})),
+            ("R2_13_RulesTraversal", lambda: maker.write_dotnet(Path(tmp), source, {"rules": {"directory": "../outside"}})),
+            ("R2_13_XmlInjection", lambda: maker.write_dotnet(Path(tmp), source, {"rules": {"tests": 'x"/>'}})),
+            ("R2_12_ExplicitEditor", lambda: maker.copy_inputs(source, Path(tmp), ["Assets/Editor"])),
+            ("R2_12_Absolute", lambda: maker.copy_inputs(source, Path(tmp), ["/tmp/file"])),
+            ("R2_12_Normalized", lambda: maker.copy_inputs(source, Path(tmp), ["Assets//file"]))]:
+            refused = False
+            try:
+                action()
+            except (ValueError, maker.SlotError):
+                refused = True
+            expect(label, refused)
 
     if failures:
         print(f"check_stage_slot.py --self-test FAILED ({failures} of {cases} case(s))")
@@ -328,7 +398,7 @@ def main(argv: list[str]) -> int:
     if len(args) != 1:
         print(__doc__, file=sys.stderr)
         return 2
-    slot = Path(args[0]).expanduser().resolve()
+    slot = Path(args[0]).expanduser().absolute()
     try:
         problems = check_slot(slot)
     except (FileNotFoundError, KeyError, ValueError) as error:
@@ -341,7 +411,7 @@ def main(argv: list[str]) -> int:
     if problems:
         print(f"check_stage_slot.py: {len(problems)} problem(s) in {slot}:")
         for problem in problems:
-            print(f"  - {problem}")
+            print(redact(f"  - {problem}").strip())
         return 1
     print(f"check_stage_slot.py: slot {slot.name} is clean (manifest allowlisted, candidate = declared outputs).")
     return 0
