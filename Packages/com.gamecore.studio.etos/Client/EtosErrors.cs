@@ -59,13 +59,14 @@ namespace GameCore.Studio.Etos.Client
     /// <summary>One etos-shaped error.</summary>
     public sealed class EtosError
     {
-        public EtosError(int status, string code, string message, string? hint = null, JArray? diagnostics = null)
+        public EtosError(int status, string code, string message, string? hint = null, JArray? diagnostics = null, JObject? data = null)
         {
             Status = status;
-            Code = string.IsNullOrEmpty(code) ? EtosCodes.Protocol : code;
+            Code = string.IsNullOrEmpty(code) ? EtosCodes.Protocol : EtosRedaction.Redact(code);
             Message = EtosRedaction.Redact(message ?? string.Empty);
             Hint = hint == null ? null : EtosRedaction.Redact(hint);
-            Diagnostics = diagnostics;
+            Diagnostics = diagnostics == null ? null : (JArray)EtosRedaction.RedactJson(diagnostics);
+            Data = data == null ? null : (JObject)EtosRedaction.RedactJson(data);
         }
 
         /// <summary>HTTP status (0 when no HTTP answer was received).</summary>
@@ -79,8 +80,10 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Redacted hint.</summary>
         public string? Hint { get; }
 
-        /// <summary>03 s9 diagnostics the companion itemised (contract-check findings), verbatim.</summary>
+        /// <summary>03 s9 diagnostics the companion itemised, recursively sanitized before retention.</summary>
         public JArray? Diagnostics { get; }
+
+        public JObject? Data { get; }
 
         /// <summary>Reads an error body; anything that is not one becomes a code derived from the status.</summary>
         public static EtosError FromBody(int status, string? body)
@@ -96,7 +99,7 @@ namespace GameCore.Studio.Etos.Client
                         string? code = Json.Str(inner, "code");
                         if (!string.IsNullOrEmpty(code))
                         {
-                            return new EtosError(status, code!, Json.Str(inner, "message") ?? string.Empty, Json.Str(inner, "hint"), inner["diagnostics"] as JArray);
+                            return new EtosError(status, code!, Json.Str(inner, "message") ?? string.Empty, Json.Str(inner, "hint"), inner["diagnostics"] as JArray, inner["data"] as JObject);
                         }
                     }
                 }
@@ -151,7 +154,7 @@ namespace GameCore.Studio.Etos.Client
     public sealed class EtosException : Exception
     {
         public EtosException(EtosError error, Exception? inner = null)
-            : base(error.ToString(), inner)
+            : base(error.ToString())
         {
             Error = error;
         }

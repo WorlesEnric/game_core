@@ -94,7 +94,7 @@ namespace GameCore.Studio.Etos
     }
 
     /// <summary>The etos gateway.</summary>
-    public sealed class EtosAgentGateway : ToolGateway, AgentGateway, IDisposable
+    public sealed class EtosAgentGateway : ToolGateway, AgentGateway, ICandidateStageGateway, IDisposable
     {
         private readonly MainThreadQueue _queue;
         private readonly EtosGatewayOptions _options;
@@ -118,8 +118,28 @@ namespace GameCore.Studio.Etos
             _log = new RedactingStudioLog(log ?? runtime.Log);
             _own = _options.OwnRequests ?? new HashSet<string>(StringComparer.Ordinal);
             Events = new EventStream(client, cursors ?? throw new ArgumentNullException(nameof(cursors)), _options.Backoff);
-            Events.Received += frame => _queue.Post(() => OnEvent(frame));
+            Events.HandleAsync = (frame, token) => _queue.Run(() => OnEvent(frame), token);
             Events.StateChanged += (state, error) => _queue.Post(() => OnStreamState(state, error));
+        }
+
+        public async Task<JObject> StageCandidateAsync(StageCandidateRequest request, CancellationToken cancellationToken)
+        {
+            var options = StageAdmission.Of(Runtime).Options;
+            if (request.ProjectId != options.ProjectId || request.SourceRevision != options.SourceRevision?.Invoke()
+                || request.CatalogRevision != options.CatalogRevision?.Invoke())
+                throw new EtosException(new EtosError(0, EtosCodes.StaleContext, "stage_context_changed"));
+            StageJobInfo job = await Client.StageAsync(request.ChangeSetId, request.ProjectId,
+                request.SourceRevision, request.CatalogRevision, cancellationToken).ConfigureAwait(false);
+            return job.Raw;
+        }
+
+        public async Task<JObject> FetchTrustedVerdictAsync(string jobId, CancellationToken cancellationToken)
+        {
+            JObject record = await Client.FetchTrustedVerdictAsync(jobId, cancellationToken).ConfigureAwait(false);
+            if (!await Client.VerifyVerdictAsync(jobId, record, cancellationToken).ConfigureAwait(false)
+                || (string?)record["jobId"] != jobId || (string?)record["projectId"] != Client.Options.ProjectId)
+                throw EtosException.Protocol("stage_verdict_untrusted");
+            return record;
         }
 
         public CompanionClient Client { get; }
@@ -525,7 +545,7 @@ namespace GameCore.Studio.Etos
                 _staged.Remove(requestId);
             }
 
-            Diagnostic why = new Diagnostic(DiagnosticCodes.Refused, "Rejected by the user: " + reason);
+            Diagnostic why = new Diagnostic(DiagnosticCodes.Refused, EtosRedaction.Redact("Rejected by the user: " + reason));
             SetLocal(requestId, "rejected", new[] { why });
             _log.Write(StudioLogLevel.Info, "etos", "candidate " + requestId + " rejected: " + reason);
         }
@@ -614,7 +634,7 @@ namespace GameCore.Studio.Etos
                 return;
             }
 
-            tracked.Info = info;
+            tracked.Info = new RequestInfo((JObject)EtosRedaction.RedactJson(info.Raw));
             RequestChanged?.Invoke(tracked.View());
             if (info.State == RequestStates.Candidate && info.HasCandidate)
             {
@@ -648,7 +668,7 @@ namespace GameCore.Studio.Etos
             }
             catch (ArtifactStoreException error)
             {
-                return Failed(requestId, new Diagnostic(DiagnosticCodes.CandidateInvalid, "artifact_retention: " + error.Message), watch);
+                return Failed(requestId, new Diagnostic(DiagnosticCodes.CandidateInvalid, EtosRedaction.Redact("artifact_retention: " + error.Message)), watch);
             }
 
             Tracked tracked = TrackedFor(requestId);
@@ -732,7 +752,7 @@ namespace GameCore.Studio.Etos
         private Tracked Track(string id, string? intent, string? parent, string? catalogRevision)
         {
             Tracked tracked = TrackedFor(id);
-            tracked.Intent = intent ?? tracked.Intent;
+            tracked.Intent = intent == null ? tracked.Intent : EtosRedaction.Redact(intent);
             tracked.Parent = parent ?? tracked.Parent;
             tracked.CatalogRevision = catalogRevision ?? tracked.CatalogRevision;
             return tracked;
@@ -753,7 +773,7 @@ namespace GameCore.Studio.Etos
         private void SetProgress(string id, string progress)
         {
             Tracked tracked = TrackedFor(id);
-            tracked.Progress = progress;
+            tracked.Progress = EtosRedaction.Redact(progress);
             RequestChanged?.Invoke(tracked.View());
         }
 
@@ -767,7 +787,7 @@ namespace GameCore.Studio.Etos
 
             if (diagnostics != null)
             {
-                tracked.Diagnostics = diagnostics.ToList();
+                tracked.Diagnostics = diagnostics.Select(RedactingStudioLog.Redact).ToList();
             }
 
             RequestChanged?.Invoke(tracked.View());
@@ -805,7 +825,8 @@ namespace GameCore.Studio.Etos
         /// <summary>An etos error as a 03 s9 diagnostic with the etos code preserved.</summary>
         public static Diagnostic DiagnosticOf(EtosError error)
         {
-            JObject? data = error.Status == 0 ? null : new JObject { ["status"] = error.Status };
+            JObject? data = error.Data == null ? null : (JObject)error.Data.DeepClone();
+            if (error.Status != 0) { data ??= new JObject(); data["status"] = error.Status; }
             if (error.Diagnostics != null && error.Diagnostics.Count > 0)
             {
                 data ??= new JObject();
@@ -861,7 +882,7 @@ namespace GameCore.Studio.Etos
             string code = (error == null ? null : Json.Str(error, "code")) ?? (IsFinal(state) ? "op_" + state : "op_pending");
             string message = (error == null ? null : Json.Str(error, "message")) ?? ("The " + result.Op + " job is " + state + " and returned no artifact.");
             JObject data = new JObject { ["state"] = result.State?.DeepClone() };
-            return new Diagnostic(code, EtosRedaction.Redact(message), state == "unknown" ? "etos reports the outcome unknown: it is unresolved, not a success." : null, null, data);
+            return RedactingStudioLog.Redact(new Diagnostic(code, message, state == "unknown" ? "etos reports the outcome unknown: it is unresolved, not a success." : null, null, data));
         }
 
         /// <summary>The etos op for an asset.generate kind, or null.</summary>
@@ -935,7 +956,7 @@ namespace GameCore.Studio.Etos
             {
                 if (item is JObject obj)
                 {
-                    list.Add(new Diagnostic(Json.Str(obj, "code") ?? DiagnosticCodes.CandidateInvalid, EtosRedaction.Redact(Json.Str(obj, "message") ?? string.Empty), Json.Str(obj, "hint")));
+                    list.Add(DiagnosticOf(new EtosError(0, Json.Str(obj, "code") ?? DiagnosticCodes.CandidateInvalid, Json.Str(obj, "message") ?? string.Empty, Json.Str(obj, "hint"), data: obj["data"] as JObject)));
                 }
             }
 

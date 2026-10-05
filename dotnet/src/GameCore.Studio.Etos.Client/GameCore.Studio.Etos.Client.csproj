@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Compile the actual core policy; this console bridge only replaces Unity's log sink. -->
+    <Compile Include="../../../Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs" Link="Core/StudioLog.cs" />
+    <Compile Include="ConsoleLogBridge.cs" />
+    <ProjectReference Include="../GameCore.Studio.Model/GameCore.Studio.Model.csproj" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
