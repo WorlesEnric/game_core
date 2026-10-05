@@ -2,6 +2,7 @@
   "name": "Hollowmere.P1_4.EditMode.Tests",
   "rootNamespace": "Hollowmere.P1_4.EditMode.Tests",
   "references": [
+    "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Gameplay.Compile.Core",
     "GameCore.Gameplay.Compile.Editor",
@@ -21,6 +22,8 @@
     "GameCore.Unity.Runtime",
     "Hollowmere.Narrative",
     "Hollowmere.Narrative.Editor",
+    "Unity.Collections",
+    "Unity.Entities",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],

@@ -2,6 +2,7 @@
   "name": "Hollowmere.P1_4.PlayMode.Tests",
   "rootNamespace": "Hollowmere.P1_4.PlayMode.Tests",
   "references": [
+    "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Gameplay.Contracts",
     "GameCore.Gameplay.Dialogue",
@@ -15,6 +16,8 @@
     "GameCore.Unity.App",
     "GameCore.Unity.Runtime",
     "Hollowmere.Narrative",
+    "Unity.Collections",
+    "Unity.Entities",
     "UnityEngine.TestRunner"
   ],
   "includePlatforms": [],

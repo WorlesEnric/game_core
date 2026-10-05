@@ -2,6 +2,7 @@
   "name": "Hollowmere.Narrative",
   "rootNamespace": "Hollowmere.Narrative",
   "references": [
+    "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Gameplay.Contracts",
     "GameCore.Gameplay.Dialogue",
@@ -11,7 +12,9 @@
     "GameCore.Gameplay.World",
     "GameCore.Rules.Gameplay",
     "GameCore.Unity.App",
-    "GameCore.Unity.Runtime"
+    "GameCore.Unity.Runtime",
+    "Unity.Collections",
+    "Unity.Entities"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

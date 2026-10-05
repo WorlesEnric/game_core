@@ -40,7 +40,7 @@ using Hollowmere.Narrative;
 using UnityEditor;
 using UnityEngine;
 
-namespace Hollowmere.NarrativeAuthoring
+namespace Hollowmere.NarrativeEditor
 {
     /// <summary>Creates (when missing) the Drowned Bell content and re-bakes the Hollowmere world.</summary>
     public static class HollowmereNarrativeAuthoring

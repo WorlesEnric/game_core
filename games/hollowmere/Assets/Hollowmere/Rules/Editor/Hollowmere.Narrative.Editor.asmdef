@@ -1,6 +1,6 @@
 {
   "name": "Hollowmere.Narrative.Editor",
-  "rootNamespace": "Hollowmere.NarrativeAuthoring",
+  "rootNamespace": "Hollowmere.NarrativeEditor",
   "references": [
     "GameCore.Contracts",
     "GameCore.Gameplay.Compile.Core",
@@ -16,7 +16,9 @@
     "GameCore.Gameplay.Quest.Editor",
     "GameCore.Gameplay.World",
     "GameCore.Rules.Gameplay",
-    "Hollowmere.Narrative"
+    "Hollowmere.Narrative",
+    "Unity.Collections",
+    "Unity.Entities"
   ],
   "includePlatforms": [
     "Editor"

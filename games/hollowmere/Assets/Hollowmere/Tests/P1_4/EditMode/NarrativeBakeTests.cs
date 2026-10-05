@@ -25,7 +25,7 @@ using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Quest;
 using Hollowmere.Narrative;
-using Hollowmere.NarrativeAuthoring;
+using Hollowmere.NarrativeEditor;
 using NUnit.Framework;
 using UnityEditor;
 using Debug = UnityEngine.Debug;
