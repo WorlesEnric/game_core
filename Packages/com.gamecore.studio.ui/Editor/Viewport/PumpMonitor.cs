@@ -33,7 +33,7 @@ namespace GameCore.Studio.UI
         /// <summary>Frames in the sliding window.</summary>
         public const int Window = 120;
 
-        private readonly Queue<Sample> _samples = new Queue<Sample>();
+        private readonly Queue<FrameSample> _samples = new Queue<FrameSample>();
         private GameApplicationRoot? _root;
         private int _lastFrame = -1;
         private int _lastSanctioned;
@@ -131,7 +131,7 @@ namespace GameCore.Studio.UI
                 FramesOffByOne += Math.Abs(frames - pumps);
             }
 
-            Push(new Sample(frames, pumps, delta));
+            Push(new FrameSample(frames, pumps, delta));
             MaxFrameMs = Math.Max(MaxFrameMs, delta);
             Health = newViolation || _windowPumps != _windowFrames ? PumpHealth.Violation : PumpHealth.Ok;
         }
@@ -190,7 +190,7 @@ namespace GameCore.Studio.UI
             LastViolation = string.Empty;
         }
 
-        private void Push(Sample sample)
+        private void Push(FrameSample sample)
         {
             _samples.Enqueue(sample);
             _windowFrames += sample.Frames;
@@ -198,16 +198,16 @@ namespace GameCore.Studio.UI
             _windowFrameMs += sample.FrameMs * sample.Frames;
             while (_windowFrames > Window && _samples.Count > 1)
             {
-                Sample old = _samples.Dequeue();
+                FrameSample old = _samples.Dequeue();
                 _windowFrames -= old.Frames;
                 _windowPumps -= old.Pumps;
                 _windowFrameMs -= old.FrameMs * old.Frames;
             }
         }
 
-        private readonly struct Sample
+        private readonly struct FrameSample
         {
-            public Sample(int frames, int pumps, double frameMs)
+            public FrameSample(int frames, int pumps, double frameMs)
             {
                 Frames = frames;
                 Pumps = pumps;

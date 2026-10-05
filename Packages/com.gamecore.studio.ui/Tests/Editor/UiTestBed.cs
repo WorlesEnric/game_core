@@ -15,6 +15,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI.Tests
 {

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI
 {

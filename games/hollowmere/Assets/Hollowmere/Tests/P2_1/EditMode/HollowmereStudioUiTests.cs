@@ -15,6 +15,7 @@ using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace Hollowmere.P2_1.Tests
 {

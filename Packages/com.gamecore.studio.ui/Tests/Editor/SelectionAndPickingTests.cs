@@ -10,6 +10,7 @@ using GameCore.Studio.Model;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI.Tests
 {

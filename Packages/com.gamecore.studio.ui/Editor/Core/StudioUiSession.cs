@@ -7,6 +7,7 @@ using System;
 using GameCore.Studio.Edit;
 using UnityEditor;
 using UnityEngine;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI
 {

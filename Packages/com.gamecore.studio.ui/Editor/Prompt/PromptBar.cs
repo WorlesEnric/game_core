@@ -12,6 +12,7 @@ using GameCore.Studio.Model;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI
 {
