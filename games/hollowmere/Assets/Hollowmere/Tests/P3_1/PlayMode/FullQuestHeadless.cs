@@ -224,6 +224,7 @@ namespace Hollowmere.P3_1.PlayMode.Tests
         {
             yield return Interact("Old Punt", () => Fact("punt_repaired") == 1, "the punt sealed with pitch");
             Assert.That(Item("OilFlask"), Is.EqualTo(0), "the pitch used the oil flask");
+            yield return new WaitForSecondsRealtime(1f); // the punt's 0.5 s use cooldown (interaction.cooling-down)
             yield return Interact("Old Punt", () => Region() == AuthoringIds.StableKey(BelfryId), "the punt crosses to the belfry");
         }
 
@@ -360,7 +361,15 @@ namespace Hollowmere.P3_1.PlayMode.Tests
         private string State() =>
             "region " + Region().ToString(CultureInfo.InvariantCulture) + ", stage " + game.Director!.QuestStage().ToString(CultureInfo.InvariantCulture)
             + ", status " + game.Director.QuestStatus().ToString(CultureInfo.InvariantCulture) + ", outcome " + game.Director.Outcome.ToString(CultureInfo.InvariantCulture)
-            + ", lantern " + Item("Lantern").ToString(CultureInfo.InvariantCulture) + ", problem " + game.Director.LastProblem;
+            + ", lantern " + Item("Lantern").ToString(CultureInfo.InvariantCulture) + ", coins " + Item("OldCoin").ToString(CultureInfo.InvariantCulture)
+            + ", oil " + Item("OilFlask").ToString(CultureInfo.InvariantCulture) + ", clapper " + Item("BellClapper").ToString(CultureInfo.InvariantCulture)
+            + ", interact ok/refused " + game.GetComponent<GameBoot>().InteractionExtension!.Module!.Successes.ToString(CultureInfo.InvariantCulture)
+            + "/" + game.GetComponent<GameBoot>().InteractionExtension!.Module!.Refusals.ToString(CultureInfo.InvariantCulture)
+            + " last " + game.Interactions!.Dispatcher.LastRefusalCode
+            + ", pickups " + game.GetComponent<GameBoot>().Modules!.Inventory.Pickups.ToString(CultureInfo.InvariantCulture)
+            + " refused " + game.GetComponent<GameBoot>().Modules!.Inventory.Refused.ToString(CultureInfo.InvariantCulture)
+            + ", delivery dropped " + game.Narrative!.Delivery.Dropped.ToString(CultureInfo.InvariantCulture) + " " + game.Narrative.Delivery.LastDropDetail
+            + ", problem " + game.Director.LastProblem;
 
         private void Timing(string phase)
         {

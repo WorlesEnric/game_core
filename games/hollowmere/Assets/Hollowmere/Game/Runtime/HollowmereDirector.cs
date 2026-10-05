@@ -175,7 +175,18 @@ namespace Hollowmere.Game
         public int ItemCount(string name)
         {
             NarrativeWorld? world = narrative;
-            return world != null && itemKeys.TryGetValue(name ?? string.Empty, out int key) ? world.Runtime.State.ItemCount(0, key, world.Runtime.ActorKey) : 0;
+            if (world == null || string.IsNullOrEmpty(name))
+            {
+                return 0;
+            }
+
+            // Items are keyed by their display name; the asset name (OldCoin, OilFlask, ...) is an alias of the same key.
+            if (!itemKeys.TryGetValue(name, out int key) && !world.Runtime.Models.TryResolve(name, out key))
+            {
+                return 0;
+            }
+
+            return world.Runtime.State.ItemCount(0, key, world.Runtime.ActorKey);
         }
 
         /// <summary>The director quest's committed status (QuestIds.Inactive..Failed).</summary>
