@@ -1034,7 +1034,8 @@ mod tests {
     fn the_repository_allowlist_loads_and_bad_entries_are_refused() {
         let repo = Path::new(env!("CARGO_MANIFEST_DIR")).join("../stage/allowlist.json");
         let list = load_exemptions(&repo).unwrap();
-        assert!(!list.is_empty());
+        // R2-G removed generated-array exemptions; the trusted manifest now permits none.
+        assert!(list.is_empty());
         assert!(
             list.iter()
                 .all(|x| RULES.contains(&x.rule.as_str()) && !x.reason.is_empty())
