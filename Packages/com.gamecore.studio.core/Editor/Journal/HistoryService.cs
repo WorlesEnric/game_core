@@ -70,7 +70,11 @@ namespace GameCore.Studio.Edit
 
         private readonly Dictionary<HistoryEntryKind, IHistoryEntryHandler> _handlers = new Dictionary<HistoryEntryKind, IHistoryEntryHandler>();
 
-        public void RegisterHandler(IHistoryEntryHandler handler) => _handlers[handler.Kind] = handler ?? throw new ArgumentNullException(nameof(handler));
+        public void RegisterHandler(IHistoryEntryHandler handler)
+        {
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            _handlers[handler.Kind] = handler;
+        }
 
         public static HistoryEntryKind KindOf(ChangeSet entry)
         {
@@ -92,6 +96,7 @@ namespace GameCore.Studio.Edit
         private ApplyReport Transition(ChangeSet entry, ChangeSet work, string action, IReadOnlyDictionary<string, JObject>? replay, bool skip)
         {
             JObject record = new JObject { ["original"] = StudioJson.ToToken(entry), ["action"] = action, ["work"] = StudioJson.ToToken(work.WithState(ChangeSetState.Interrupted)) };
+            if (replay != null) record["replay"] = JObject.FromObject(replay);
             void Save(ChangeSet progress)
             {
                 record["work"] = StudioJson.ToToken(progress);
@@ -343,7 +348,7 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Resumes an interrupted entry: the ops without an outcome are applied and the entry is finalized.</summary>
-        public HistoryResult ResumeInterrupted(string changeSetId)
+        public HistoryResult ResumeInterrupted(string changeSetId, IReadOnlyDictionary<string, JObject>? replay = null)
         {
             ChangeSet? entry = _runtime.Journal.Read(changeSetId);
             if (entry == null || entry.EffectiveState != ChangeSetState.Interrupted)
@@ -373,6 +378,24 @@ namespace GameCore.Studio.Edit
                 }
             }
 
+            bool changed = true;
+            while (changed)
+            {
+                changed = false;
+                foreach (Operation operation in entry.Operations)
+                {
+                    if (done.ContainsKey(operation.OpId)) continue;
+                    foreach (string dependency in operation.DependsOn ?? Array.Empty<string>())
+                    {
+                        if (done.TryGetValue(dependency, out OperationOutcome? prior) && prior.Status != OutcomeStatus.Applied)
+                        {
+                            done[operation.OpId] = new OperationOutcome(operation.OpId, OutcomeStatus.Skipped, null, "Dependency did not apply.");
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+            }
             List<Operation> remaining = new List<Operation>();
             foreach (Operation operation in entry.Operations)
             {
@@ -394,7 +417,7 @@ namespace GameCore.Studio.Edit
             if (remaining.Count > 0)
             {
                 ChangeSet resumed = InternalChangeSet(entry, entry.Intent.Text, remaining);
-                report = _runtime.Engine.ApplyForHistory(new ChangeSet(resumed.Id, resumed.Schema, resumed.Intent, resumed.Operations, links: resumed.Links, policy: entry.EffectivePolicy), null, false, progress =>
+                report = _runtime.Engine.ApplyForHistory(new ChangeSet(resumed.Id, resumed.Schema, resumed.Intent, resumed.Operations, links: resumed.Links, policy: entry.EffectivePolicy), replay, false, progress =>
                 {
                     Dictionary<string, OperationOutcome> saved = new Dictionary<string, OperationOutcome>(done);
                     foreach (OperationOutcome next in progress.Outcomes ?? Array.Empty<OperationOutcome>()) saved[next.OpId] = next;
@@ -442,7 +465,8 @@ namespace GameCore.Studio.Edit
             if (work.EffectiveState == ChangeSetState.Failed || work.EffectiveState == ChangeSetState.Rejected)
                 work = work.WithOutcomes(null);
             _runtime.Journal.Write(work.WithState(ChangeSetState.Interrupted));
-            HistoryResult recovered = resume ? ResumeInterrupted(work.Id) : RollbackInterrupted(work.Id);
+            IReadOnlyDictionary<string, JObject>? replay = record["replay"] is JObject savedReplay ? savedReplay.ToObject<Dictionary<string, JObject>>() : null;
+            HistoryResult recovered = resume ? ResumeInterrupted(work.Id, replay) : RollbackInterrupted(work.Id);
             ChangeSet progress = _runtime.Journal.Read(work.Id)!;
             record["work"] = StudioJson.ToToken(progress);
             StudioPaths.WriteAllTextAtomic(TransitionPath(original.Id), record.ToString(Formatting.None));

@@ -193,12 +193,14 @@ namespace GameCore.Studio.Edit.Tests
         {
             FixtureItemDefinition item = _bed.CreateItem("Dependency");
             ChangeSet change = StudioTestBed.NewChangeSet("dependencies", ApplyPolicy.BestEffort,
+                StudioTestBed.Op("op3", "set", _bed.Ref(item), new JObject { ["field"] = "weight", ["value"] = 10 }, "op2"),
                 StudioTestBed.Set("op1", _bed.Ref(item), "weight", 3),
                 StudioTestBed.Op("op2", "set", _bed.Ref(item), new JObject { ["field"] = "weight", ["value"] = 8 }, "op1"));
             _bed.Runtime.Journal.Write(change.WithState(ChangeSetState.Interrupted).WithOutcomes(new[] { new OperationOutcome("op1", OutcomeStatus.Refused, DiagnosticCodes.Refused, "refused") }));
             _bed.Runtime.History.ResumeInterrupted(change.Id);
             Assert.That(item.weight, Is.EqualTo(1));
             Assert.That(_bed.Runtime.Journal.Read(change.Id)!.Outcomes!.Single(o => o.OpId == "op2").Status, Is.EqualTo(OutcomeStatus.Skipped));
+            Assert.That(_bed.Runtime.Journal.Read(change.Id)!.Outcomes!.Single(o => o.OpId == "op3").Status, Is.EqualTo(OutcomeStatus.Skipped));
         }
 
         [Test]
@@ -217,13 +219,31 @@ namespace GameCore.Studio.Edit.Tests
         }
 
         [Test]
+        public void R2_03_RedoResumeRetainsOriginalCreationIdentity()
+        {
+            string firstPath = _bed.Folder + "/FirstCreated.asset";
+            string secondPath = _bed.Folder + "/SecondCreated.asset";
+            ChangeSet change = StudioTestBed.NewChangeSet("create twice", null,
+                StudioTestBed.Op("op1", "create", null, new JObject { ["type"] = "fixture.item", ["path"] = firstPath }),
+                StudioTestBed.Op("op2", "create", null, new JObject { ["type"] = "fixture.item", ["path"] = secondPath }));
+            Assert.That(_bed.Runtime.Engine.Apply(change).Ok, Is.True);
+            string identity = AssetDatabase.LoadAssetAtPath<FixtureItemDefinition>(secondPath).AuthoringId;
+            Assert.That(_bed.Runtime.History.Undo(change.Id).Ok, Is.True);
+            _bed.Runtime.Engine.Options.FaultHook = (point, opId) => { if (point == EngineFaultPoint.BeforeOperation && opId == "op2") throw new SimulatedCrashException("redo crash"); };
+            Assert.Throws<SimulatedCrashException>(() => _bed.Runtime.History.Redo(change.Id));
+            StudioRuntime reloaded = _bed.Reload();
+            Assert.That(reloaded.History.ResumeInterrupted(change.Id).Ok, Is.True);
+            Assert.That(AssetDatabase.LoadAssetAtPath<FixtureItemDefinition>(secondPath).AuthoringId, Is.EqualTo(identity));
+        }
+
+        [Test]
         public void R2_04_ResumeFailureRollsBackEarlierAtomicSuccess()
         {
             FixtureItemDefinition item = _bed.CreateItem("AtomicResume");
             FixtureNpcDefinition npc = _bed.CreateNpc("Refuse");
             ChangeSet change = StudioTestBed.NewChangeSet("atomic resume", null,
                 StudioTestBed.Set("op1", _bed.Ref(item), "weight", 6),
-                StudioTestBed.Op("op2", "fixture.fail", _bed.Ref(npc)));
+                StudioTestBed.Op("op2", "fixture.fail", _bed.Ref(npc), new JObject { ["message"] = "refuse" }));
             _bed.Runtime.Engine.Options.FaultHook = (point, opId) => { if (point == EngineFaultPoint.AfterOperation && opId == "op1") throw new SimulatedCrashException("crash"); };
             Assert.Throws<SimulatedCrashException>(() => _bed.Runtime.Engine.Apply(change));
             Assert.That(item.weight, Is.EqualTo(6));
