@@ -90,6 +90,9 @@ namespace GameCore.Gameplay.Compile
         public bool HasEndA { get; set; }
 
         public bool HasEndB { get; set; }
+
+        /// <summary>Authoring id of the condition set travel through this portal needs (empty: always open; P1.7b).</summary>
+        public string ConditionRef { get; set; } = string.Empty;
     }
 
     /// <summary>An integer pose: position in mm, yaw in mrad.</summary>

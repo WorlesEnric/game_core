@@ -18,7 +18,7 @@ namespace GameCore.Gameplay.Entities
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "entity.definition", Doc = "The definition this entity instantiates.")]
+        [AuthorRef(Category = "entity.definition", Structural = true, Doc = "The definition this entity instantiates.")]
         [SerializeField] private EntityDefinition? definition;
 
         [AuthorField(Min = 0, Doc = "Variant index: 0 is the definition itself, 1..n its variants.")]

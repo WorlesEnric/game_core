@@ -55,6 +55,12 @@ namespace GameCore.Gameplay.Inventory
 
         public Sprite? Icon => icon;
 
+        /// <summary>inventory.setPrice: the base price.</summary>
+        public void SetPrice(int basePrice) => price = Math.Max(0, basePrice);
+
+        /// <summary>inventory.bindUse: the actions using the item runs (null: the item cannot be used).</summary>
+        public void SetUseActions(ActionSetDefinition? use) => useActions = use;
+
         public void Configure(string shownName, int stack, int grams, int basePrice, IEnumerable<string>? itemTags, ActionSetDefinition? use)
         {
             displayName = shownName ?? string.Empty;

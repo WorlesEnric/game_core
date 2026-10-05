@@ -608,6 +608,7 @@ namespace GameCore.Studio.Edit
             int group = Undo.GetCurrentGroup();
             Dictionary<string, OperationOutcome> outcomeById = new Dictionary<string, OperationOutcome>(StringComparer.Ordinal);
             List<OperationResult> applied = new List<OperationResult>();
+            List<KeyValuePair<Operation, OperationResult>> appliedOps = new List<KeyValuePair<Operation, OperationResult>>();
             HashSet<string> notApplied = new HashSet<string>(StringComparer.Ordinal);
             List<string> gameCoreOps = new List<string>();
             bool failed = false;
@@ -674,6 +675,7 @@ namespace GameCore.Studio.Edit
                         if (result.Status == OutcomeStatus.Applied || result.Inverse.Count > 0) applied.Add(result);
                         if (result.Status == OutcomeStatus.Applied)
                         {
+                            appliedOps.Add(new KeyValuePair<Operation, OperationResult>(operation.Operation, result));
                             gameCoreOps.AddRange(result.GameCoreOps);
                         }
                         else
@@ -706,6 +708,11 @@ namespace GameCore.Studio.Edit
                     _assetEditingDepth--;
                     AssetDatabase.StopAssetEditing();
                 }
+            }
+
+            if (assetEditing && !(failed && policy == ApplyPolicy.AllOrNothing))
+            {
+                Rewitness(appliedOps, outcomeById);
             }
 
             Fault(EngineFaultPoint.BeforeFinalize, null);
@@ -826,6 +833,41 @@ namespace GameCore.Studio.Edit
             {
                 _runtime.Log.Write(StudioLogLevel.Error, "engine", "apply of " + operation.OpId + " (" + operation.Tool + ") threw: " + error);
                 return OperationResult.Failed(DiagnosticCodes.Refused, new SecretRedactor().Redact(operation.Tool + " threw " + error.GetType().Name + ": " + error.Message));
+            }
+        }
+
+        /// <summary>
+        /// Recomputes the after-stamps once asset editing has stopped. Inside StartAssetEditing an asset created by the
+        /// change set is not imported yet, so a reference to it (a new portal in the world's portal list) serializes
+        /// without its GUID and the stamp taken then never matches again: the undo would report a false conflict. An
+        /// object a later operation of the same change set also touched keeps its in-loop stamp (that operation's undo
+        /// runs first and restores it).
+        /// </summary>
+        private void Rewitness(List<KeyValuePair<Operation, OperationResult>> appliedOps, Dictionary<string, OperationOutcome> outcomeById)
+        {
+            HashSet<UnityEngine.Object> later = new HashSet<UnityEngine.Object>();
+            for (int i = appliedOps.Count - 1; i >= 0; i--)
+            {
+                Operation operation = appliedOps[i].Key;
+                OperationResult result = appliedOps[i].Value;
+                bool stable = true;
+                foreach (UnityEngine.Object touched in result.Touched)
+                {
+                    stable &= touched == null || !later.Contains(touched);
+                }
+
+                if (stable)
+                {
+                    outcomeById[operation.OpId] = ToOutcome(operation, result);
+                }
+
+                foreach (UnityEngine.Object touched in result.Touched)
+                {
+                    if (touched != null)
+                    {
+                        later.Add(touched);
+                    }
+                }
             }
         }
 

@@ -2,7 +2,7 @@
   "name": "com.gamecore.gameplay.save",
   "version": "1.0.0",
   "displayName": "GameCore Gameplay Save",
-  "description": "Plugin catalog row 12 (SADR-012): the authorable save schema (slot schemas with their current versions, the forward migration ids a save may need, compatible catalog fingerprints), the typed save.capture / save.restore / save.delete commands handled at host level by the application root's SaveService, the SaveWritten / SaveRestored / SaveRefused{code,hint} events, the ISaveSlotCatalog a save menu reads, and the save.inspect and save.testRoundTrip Studio operations. It holds no component state and no save UI; every refusal is one of the SaveService's typed codes.",
+  "description": "Plugin catalog row 12 (SADR-012): the authorable save schema (slot schemas with their current versions, the forward migration ids a save may need, compatible catalog fingerprints), the typed save.capture / save.restore / save.delete commands handled at host level by the application root's SaveService, the SaveWritten / SaveRestored / SaveRefused{code,hint} events, the ISaveSlotCatalog a save menu reads, and the save.inspect and save.testRoundTrip Studio operations (Editor assembly). It depends on no Studio package: its authoring attributes are the GameCore.Gameplay.Contracts mirrors. It holds no component state and no save UI; every refusal is one of the SaveService's typed codes.",
   "unity": "6000.0",
   "keywords": [
     "gamecore",
@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "com.gamecore.contracts": "1.0.0",
-    "com.gamecore.studio.core": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
     "com.gamecore.unity.app": "1.0.0",
     "com.gamecore.unity.runtime": "1.0.0"
   }
