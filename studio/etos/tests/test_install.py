@@ -3,6 +3,8 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
+import shutil
 from pathlib import Path
 import subprocess
 import tempfile
@@ -120,10 +122,26 @@ if sys.argv[1:] == ["--json","agent","list"]:
         self.assertEqual(config["stage"]["projects"]["c" * 64], "/kept/project")
         self.assertFalse((self.root / "calls").exists())
 
+    def placeholder_template(self):
+        # R4-C permits the shipping template to carry an approved operator tariff.
+        # Construct unconfigured input explicitly, independent of that declaration.
+        blocks = mod.provider_blocks((HERE / "ops.toml.tmpl").read_text())
+        image = next(b for b in blocks if tomllib.loads(b)["providers"][0]["family"] == "image")
+        placeholder = re.sub(r'(?m)^per_unit = .*$', 'per_unit = "SET_BY_OPERATOR"', image)
+        placeholder = re.sub(r'(?m)^# @studio note = .*$',
+                             '# @studio note = "SET_BY_OPERATOR: declare a total per-image estimate and its basis"',
+                             placeholder)
+        return (HERE / "ops.toml.tmpl").read_text().replace(image, placeholder)
+
     def test_r4_placeholder_refuses_before_any_write(self):
         for name in ["models", "ops"]:
             (self.root / f"{name}.toml").write_text("# untouched\n")
-        result = subprocess.run(["bash", str(HERE / "install.sh"), "--apply-prices"],
+        fixture = self.root / "installer"
+        fixture.mkdir()
+        for name in ("install.sh", "install-state.py", "models.toml.tmpl"):
+            shutil.copyfile(HERE / name, fixture / name)
+        (fixture / "ops.toml.tmpl").write_text(self.placeholder_template())
+        result = subprocess.run(["bash", str(fixture / "install.sh"), "--apply-prices"],
             env={**os.environ, "ETOS_STUDIO_ROOT": str(self.root)}, capture_output=True, text=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("tariff_placeholder", result.stderr)
@@ -132,7 +150,7 @@ if sys.argv[1:] == ["--json","agent","list"]:
         self.assertFalse((self.root / "agents").exists())
 
     def test_r4_operator_declaration_and_provider_binding(self):
-        template = (HERE / "ops.toml.tmpl").read_text()
+        template = self.placeholder_template()
         template = template.replace('per_unit = "SET_BY_OPERATOR"', 'per_unit = 0.02')
         with self.assertRaisesRegex(ValueError, "tariff_placeholder"):
             mod.tariffs(template)
