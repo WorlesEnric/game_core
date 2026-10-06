@@ -1,17 +1,20 @@
 # W-ETOS-06: Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly
 
-Verdict: **BLOCKED**. Socket reconnect/cursor replay passes; killing/restarting etosd is expressly forbidden, so the complete companion-death/node-death attribution scenario cannot run.
+Verdict: **BLOCKED**. P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: P0.5 documented supervisor restart and ledger replay. Companion supervisor restart is documented but guarded; etosd kill remains forbidden and is not replaced by socket reconnect.
 
-Report timestamp: 2026-10-05T21:03:25.252494+00:00 UTC.
+Report timestamp: 2026-10-06T04:56:25.168326+00:00 UTC.
 
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh reconnect
+studio/tools/verify-all.sh live-preflight
+studio/tools/verify-all.sh final-live
 ```
 
 ## Retained evidence
 
-- [W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md](../W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md)
+- [W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md](../W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md)
+
+Historical references: P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.

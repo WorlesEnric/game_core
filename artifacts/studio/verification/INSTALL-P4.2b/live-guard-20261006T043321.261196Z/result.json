@@ -1,0 +1,17 @@
+{
+  "label": "live-guard",
+  "revision": "8d1574e4326aaf3c26244cd0581e4b06854dc608",
+  "host": "worlesenric",
+  "started": "2026-10-06T04:33:21.264154+00:00",
+  "command": "python3 artifacts/studio/verification/TOOLS/preflight-p42b.py ~/wkspace/gc-studio/p4.2b/artifacts/studio/verification/INSTALL-P4.2b/live-guard-20261006T043321.261196Z/preflight.json",
+  "cwd": "~/wkspace/gc-studio/p4.2b",
+  "evidencePath": "artifacts/studio/verification/INSTALL-P4.2b/live-guard-20261006T043321.261196Z",
+  "queuedAtRevision": "8d1574e4326aaf3c26244cd0581e4b06854dc608",
+  "executionStarted": "2026-10-06T04:33:21.269300+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 2,
+  "status": "BLOCKED",
+  "ended": "2026-10-06T04:33:21.691932+00:00",
+  "seconds": 0.43058646912686527,
+  "note": "The documented live-run guard detected an active P3 process. No install, configuration apply, companion restart or paid operation was attempted."
+}

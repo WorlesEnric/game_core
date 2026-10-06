@@ -1,0 +1,40 @@
+{
+  "label": "p42b-dataset-1",
+  "revision": "8d1574e4326aaf3c26244cd0581e4b06854dc608",
+  "host": "worlesenric",
+  "started": "2026-10-06T04:30:35.334648+00:00",
+  "command": "bash artifacts/studio/verification/TOOLS/timing-p42b.sh ~/wkspace/gc-studio/p4.2b/artifacts/studio/verification/B-EDIT/p42b-dataset-1-20261006T043035.329811Z 1",
+  "cwd": "~/wkspace/gc-studio/p4.2b",
+  "evidencePath": "artifacts/studio/verification/B-EDIT/p42b-dataset-1-20261006T043035.329811Z",
+  "queuedAtRevision": "8d1574e4326aaf3c26244cd0581e4b06854dc608",
+  "executionStarted": "2026-10-06T04:30:35.338057+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T04:33:13.272279+00:00",
+  "seconds": 157.94053859310225,
+  "suites": {
+    "results.xml": {
+      "total": 4,
+      "counts": {
+        "Passed": 3,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2b/.evidence/p42b-timing/games/hollowmere/Library/ScriptAssemblies/P42b.Acceptance.Tests.dll",
+        "P42b",
+        "P42b.Acceptance",
+        "P42b.Acceptance.TimingTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
+          "result": "Failed",
+          "detail": "Expected: greater than or equal to 1\n  But was:  0\n \n                 at P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee () [0x001b8] in ~/wkspace/gc-studio/p4.2b/.evidence/p42b-timing/games/hollowmere/Assets/P42bHarness/TimingTests.cs:71\n \n               \n               Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

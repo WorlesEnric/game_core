@@ -1,0 +1,36 @@
+{
+  "metrics": {
+    "picks": {
+      "runP95Ms": [
+        3.245,
+        3.7098
+      ],
+      "medianP95Ms": 3.4774000000000003,
+      "counts": [
+        100,
+        100
+      ],
+      "budgetMs": 16.0,
+      "pass": true
+    },
+    "marquee": {
+      "runP95Ms": [
+        330.90360000000004,
+        621.8599
+      ],
+      "medianP95Ms": 476.38175,
+      "counts": [
+        100,
+        100
+      ],
+      "budgetMs": 50.0,
+      "pass": false
+    }
+  },
+  "attempts": [
+    "B-SELECT/p42b-selection-1-20261006T043401.486764Z",
+    "B-SELECT/p42b-selection-2-20261006T043603.655328Z"
+  ],
+  "sourceRevision": "1752ca8a5309b1df8cb1be983ccd6fc04d7dd6ba",
+  "currentReproducerSha256": "47ec9585af91e1b590902fc5ca89cc5315241f032d919d979aac2b504210ac85"
+}

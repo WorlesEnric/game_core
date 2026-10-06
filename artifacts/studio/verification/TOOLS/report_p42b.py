@@ -84,7 +84,7 @@ def main():
         if not supplemental.exists(): supplemental.write_text((v.OUT/rid/'README.md').read_text())
         decisions[rid]={'status':'PASS','baseline':'1752ca8a','note':
           'Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.',
-          'patterns':['UNITY-HOLLOWMERE/p42b-final-views-*/results.xml','W-VIEW-01/views-capture-20261005T191314.272300Z/README.md','W-VIEW-01/captures-20261005T191314Z/capture.json',rid+'/p42-supplemental.md'],
+          'patterns':['UNITY-HOLLOWMERE/p42b-final-views-*/results.xml','W-VIEW-01/views-capture-20261005T191314.272300Z/README.md','W-VIEW-01/captures-20261005T191314Z/capture.json',rid+'/p42-supplemental.md',rid+'/p42-supplemental/README.md'],
           'command':'studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views',
           'historical':'P2.3 defines '+name+' at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.'}
         extra.append(f'| {rid} | {name}: {scenario} | P2.3 view definition | planned | Pending report |')

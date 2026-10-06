@@ -1,0 +1,49 @@
+{
+  "metrics": {
+    "single": {
+      "runP95Ms": [
+        55.8581,
+        63.073600000000006
+      ],
+      "medianP95Ms": 59.46585,
+      "counts": [
+        20,
+        20
+      ],
+      "budgetMs": 200.0,
+      "pass": true
+    },
+    "region": {
+      "runP95Ms": [
+        157.6064,
+        79.8135
+      ],
+      "medianP95Ms": 118.70995,
+      "counts": [
+        20,
+        20
+      ],
+      "budgetMs": 1000.0,
+      "pass": true
+    },
+    "prepare": {
+      "runP95Ms": [
+        4.3048,
+        10.177200000000001
+      ],
+      "medianP95Ms": 7.2410000000000005,
+      "counts": [
+        20,
+        20
+      ],
+      "budgetMs": 300.0,
+      "pass": true
+    }
+  },
+  "attempts": [
+    "B-EDIT/p42b-dataset-1-20261006T043035.329811Z",
+    "B-EDIT/p42b-dataset-2-20261006T043313.388120Z"
+  ],
+  "sourceRevision": "1752ca8a5309b1df8cb1be983ccd6fc04d7dd6ba",
+  "currentReproducerSha256": "47ec9585af91e1b590902fc5ca89cc5315241f032d919d979aac2b504210ac85"
+}

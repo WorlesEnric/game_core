@@ -1,0 +1,11 @@
+{
+  "label": "B-SELECT two-run summary",
+  "status": "FAIL",
+  "note": "picks: p95 [3.245, 3.7098] ms, median 3.4774 ms, budget 16.0 ms; marquee: p95 [330.90360000000004, 621.8599] ms, median 476.3818 ms, budget 50.0 ms",
+  "revision": "1752ca8a5309b1df8cb1be983ccd6fc04d7dd6ba",
+  "host": "worlesenric",
+  "started": "2026-10-06T04:56:25.151616+00:00",
+  "ended": "2026-10-06T04:56:25.151622+00:00",
+  "seconds": 0,
+  "command": "studio/tools/verify-all.sh final-timing\nstudio/tools/verify-all.sh final-selection"
+}

@@ -14,6 +14,7 @@ row folder; skipped/missing XML is never promoted to a workflow pass.
 | `final-timing` | Two 20-apply single/Marsh datasets and 20 kernel prepares, plus selection setup. Uses a scratch clone and packet-owned harness. |
 | `final-selection` | Only the two complete 100-pick/500-candidate marquee datasets after correcting the initial unsaved-scene harness. Do not repeat the completed apply/compose datasets. |
 | `final-guides` | Literal pressure-plate regeneration/check/stage commands from 09 in a fresh final-main clone. |
+| `guide-stage` | Supply the already-built final-main binary and retry 09's stage command with a private stage root; retain the cache prerequisite refusal. |
 | `guide-open` | 08's Boot scene and Open Studio menu on a private Xvfb display; one allocated Editor, no live gateway. Text/image Send remains prerequisite blocked. Library is seeded from this packet's own tested tree; no authoring data/settings are copied. |
 | `node-equivalence` | Non-destructive network-namespace prerequisite only; never stops etosd. |
 | `final-checks` | Required metadata/C# checks and existing installer/runner suites. Two installer tests assume a placeholder shipping template and remain owner-requested failures. |

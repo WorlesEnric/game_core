@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. Logical-object selection is captured; the lantern subpart/prefab/scope chooser sequence is not demonstrated by this driver.
 
-Report timestamp: 2026-10-05T21:03:25.244382+00:00 UTC.
+Report timestamp: 2026-10-06T04:56:25.154270+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

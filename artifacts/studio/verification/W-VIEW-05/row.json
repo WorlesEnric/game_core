@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "baseline": "1752ca8a",
+  "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+  "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+  "historical": "P2.3 defines Tables at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+  "row": "W-VIEW-05",
+  "scenario": "Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV",
+  "requirement": "P2.3 view definition",
+  "reportedAt": "2026-10-06T04:56:25.159272+00:00",
+  "evidence": [
+    "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+    "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+    "W-VIEW-01/captures-20261005T191314Z/capture.json",
+    "W-VIEW-05/p42-supplemental.md",
+    "W-VIEW-05/p42-supplemental/README.md"
+  ]
+}

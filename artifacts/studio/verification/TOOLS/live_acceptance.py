@@ -48,5 +48,9 @@ if __name__ == '__main__':
         v.run('STATIC', 'p42b-packet-regressions', ['python3', '-m', 'unittest', 'discover', '-s', 'artifacts/studio/verification/TOOLS/tests', '-v'])
         v.run('STATIC', 'p42b-runner-final', ['python3', '-m', 'unittest', 'discover', '-s', 'studio/tools/Tests/P4_2', '-v'])
         v.run('STATIC', 'p42b-shell-syntax', ['bash', '-n', 'studio/tools/verify-all.sh', 'artifacts/studio/verification/TOOLS/build-companion-p42b.sh', 'artifacts/studio/verification/TOOLS/install-p42b.sh', 'artifacts/studio/verification/TOOLS/timing-p42b.sh', 'artifacts/studio/verification/TOOLS/guide-open-p42b.sh'])
+    elif sys.argv[1] == 'evidence-check':
+        v.run('STATIC', 'p42b-evidence-check', ['python3', 'artifacts/studio/verification/TOOLS/check_p42b.py'])
+    elif sys.argv[1] == 'guide-stage':
+        v.run('W-DOC-02', 'p42b-plugin-guide-built-prerequisite', ['bash', 'artifacts/studio/verification/TOOLS/guide-stage-p42b.sh', '{out}'], editor=True)
     v.summary()
     sys.exit(int(any(r['status'] != 'PASS' for r in v.RESULTS)))

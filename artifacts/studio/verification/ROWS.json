@@ -1,7 +1,7 @@
 {
   "counts": {
-    "PASS": 20,
-    "BLOCKED": 38,
+    "PASS": 27,
+    "BLOCKED": 37,
     "FAIL": 4
   },
   "rows": [
@@ -12,7 +12,7 @@
       "row": "W-UI-01",
       "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
       "requirement": "SR-1.1",
-      "reportedAt": "2026-10-05T21:03:25.242070+00:00",
+      "reportedAt": "2026-10-06T04:56:25.153017+00:00",
       "evidence": [
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
         "W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md",
@@ -26,7 +26,7 @@
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
       "requirement": "SR-1.2",
-      "reportedAt": "2026-10-05T21:03:25.243548+00:00",
+      "reportedAt": "2026-10-06T04:56:25.153957+00:00",
       "evidence": [
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
       ]
@@ -38,7 +38,7 @@
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
       "requirement": "SR-1.3",
-      "reportedAt": "2026-10-05T21:03:25.244382+00:00",
+      "reportedAt": "2026-10-06T04:56:25.154270+00:00",
       "evidence": [
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
       ]
@@ -50,7 +50,7 @@
       "row": "W-UI-04",
       "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
       "requirement": "SR-8.2",
-      "reportedAt": "2026-10-05T21:03:25.244642+00:00",
+      "reportedAt": "2026-10-06T04:56:25.154555+00:00",
       "evidence": [
         "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md",
         "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/memory-and-pumps.json",
@@ -58,15 +58,125 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Recorded small-sample click p95 exceeds 16 ms, but the mandatory 100-pick p95 and 500-candidate marquee dataset is absent. Neither a qualified pass nor a full-workload timing verdict is inferred.",
-      "command": "studio/tools/verify-all.sh ui",
+      "status": "FAIL",
+      "baseline": "1752ca8a",
+      "note": "picks: p95 [3.245, 3.7098] ms, median 3.4774 ms, budget 16.0 ms; marquee: p95 [330.90360000000004, 621.8599] ms, median 476.3818 ms, budget 50.0 ms",
+      "command": "studio/tools/verify-all.sh final-timing\nstudio/tools/verify-all.sh final-selection",
       "row": "W-UI-05",
       "scenario": "Selection/hover and marquee timings",
       "requirement": "B-SELECT",
-      "reportedAt": "2026-10-05T21:03:25.245336+00:00",
+      "reportedAt": "2026-10-06T04:56:25.155324+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
+        "B-SELECT/p42b-dataset-summary/README.md",
+        "B-SELECT/p42b-dataset-summary/dataset.json"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines Relationships at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-01",
+      "scenario": "Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.155821+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-01/p42-supplemental.md",
+        "W-VIEW-01/p42-supplemental/README.md"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines Dialogue at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-02",
+      "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.156981+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-02/p42-supplemental.md",
+        "W-VIEW-02/p42-supplemental/README.md"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines Quests at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-03",
+      "scenario": "Quests: Stage/objective graph, branches, reward/rule links, simulation and live state",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.157735+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-03/p42-supplemental.md",
+        "W-VIEW-03/p42-supplemental/README.md"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines World at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-04",
+      "scenario": "World: Regions, portals, residency, spawn points and journaled world tools",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.158462+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-04/p42-supplemental.md",
+        "W-VIEW-04/p42-supplemental/README.md"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines Tables at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-05",
+      "scenario": "Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.159272+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-05/p42-supplemental.md",
+        "W-VIEW-05/p42-supplemental/README.md"
+      ]
+    },
+    {
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
+      "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
+      "historical": "P2.3 defines Changes at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+      "row": "W-VIEW-06",
+      "scenario": "Changes: Pending operations, diagnostics, dependencies and journal inspection",
+      "requirement": "P2.3 view definition",
+      "reportedAt": "2026-10-06T04:56:25.160000+00:00",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
+        "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
+        "W-VIEW-01/captures-20261005T191314Z/capture.json",
+        "W-VIEW-06/p42-supplemental.md",
+        "W-VIEW-06/p42-supplemental/README.md"
       ]
     },
     {
@@ -79,7 +189,7 @@
       "row": "W-MODEL-02",
       "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
       "requirement": "SR-2.2",
-      "reportedAt": "2026-10-05T21:03:25.245592+00:00",
+      "reportedAt": "2026-10-06T04:56:25.160690+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -94,7 +204,7 @@
       "row": "W-TOOL-01",
       "scenario": "Tool catalog of the clean project lists only installed plugins' tools",
       "requirement": "SR-2.3",
-      "reportedAt": "2026-10-05T21:03:25.245995+00:00",
+      "reportedAt": "2026-10-06T04:56:25.161074+00:00",
       "evidence": [
         "UNITY-CLEANPROOF/editmode-20261005T190038.583676Z/README.md",
         "W-TOOL-01/20261005T2021267101990Z/tool-catalog.json",
@@ -108,7 +218,7 @@
       "row": "W-TOOL-02",
       "scenario": "`check_package_metadata.py` passes with all new packages",
       "requirement": "SR-11.1",
-      "reportedAt": "2026-10-05T21:03:25.246790+00:00",
+      "reportedAt": "2026-10-06T04:56:25.161870+00:00",
       "evidence": [
         "W-TOOL-02/final-metadata-20261005T205459.094614Z/README.md"
       ]
@@ -120,7 +230,7 @@
       "row": "W-EDIT-01",
       "scenario": "Change set in History shows etos task id and GameCore operation ids",
       "requirement": "SR-3.1",
-      "reportedAt": "2026-10-05T21:03:25.247194+00:00",
+      "reportedAt": "2026-10-06T04:56:25.162266+00:00",
       "evidence": [
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
       ]
@@ -136,7 +246,7 @@
       "row": "W-EDIT-02",
       "scenario": "5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report",
       "requirement": "SR-3.2",
-      "reportedAt": "2026-10-05T21:03:25.247534+00:00",
+      "reportedAt": "2026-10-06T04:56:25.162556+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -148,7 +258,7 @@
       "row": "W-EDIT-03",
       "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
       "requirement": "SR-3.3",
-      "reportedAt": "2026-10-05T21:03:25.247826+00:00",
+      "reportedAt": "2026-10-06T04:56:25.162846+00:00",
       "evidence": [
         "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
         "W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md"
@@ -161,7 +271,7 @@
       "row": "W-EDIT-04",
       "scenario": "Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget`",
       "requirement": "SR-1.4",
-      "reportedAt": "2026-10-05T21:03:25.248355+00:00",
+      "reportedAt": "2026-10-06T04:56:25.163419+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -177,7 +287,7 @@
       "row": "W-EDIT-05",
       "scenario": "Gizmo drag and typed value produce identical History entries",
       "requirement": "SR-1.6, SR-3.4",
-      "reportedAt": "2026-10-05T21:03:25.248612+00:00",
+      "reportedAt": "2026-10-06T04:56:25.163700+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -192,7 +302,7 @@
       "row": "W-EDIT-06",
       "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
       "requirement": "SR-1.8",
-      "reportedAt": "2026-10-05T21:03:25.248859+00:00",
+      "reportedAt": "2026-10-06T04:56:25.163981+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -208,7 +318,7 @@
       "row": "W-EDIT-07",
       "scenario": "Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works",
       "requirement": "SR-3.5",
-      "reportedAt": "2026-10-05T21:03:25.249106+00:00",
+      "reportedAt": "2026-10-06T04:56:25.164270+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/README.md",
@@ -216,15 +326,17 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Existing timings are isolated operations; there is no completed 20-apply single-target/Marsh p95 and 1.5k-target compose dataset. The fixed budgets are not inferred from smaller probes.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "baseline": "1752ca8a",
+      "note": "single: p95 [55.8581, 63.073600000000006] ms, median 59.4659 ms, budget 200.0 ms; region: p95 [157.6064, 79.8135] ms, median 118.7100 ms, budget 1000.0 ms; prepare: p95 [4.3048, 10.177200000000001] ms, median 7.2410 ms, budget 300.0 ms",
+      "command": "studio/tools/verify-all.sh final-timing\nstudio/tools/verify-all.sh final-selection",
       "row": "W-EDIT-08",
       "scenario": "Apply timings (single and region-wide)",
       "requirement": "B-APPLY, B-COMPOSE",
-      "reportedAt": "2026-10-05T21:03:25.249694+00:00",
+      "reportedAt": "2026-10-06T04:56:25.164929+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "B-EDIT/p42b-dataset-summary/README.md",
+        "B-EDIT/p42b-dataset-summary/dataset.json"
       ]
     },
     {
@@ -234,7 +346,7 @@
       "row": "W-HOST-01",
       "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
       "requirement": "SR-11.2",
-      "reportedAt": "2026-10-05T21:03:25.249942+00:00",
+      "reportedAt": "2026-10-06T04:56:25.165304+00:00",
       "evidence": [
         "W-HOST-01/immutable-install-20261005T185516.633891Z/README.md",
         "W-HOST-01/installed-hello-authority-20261005T185555.694549Z/README.md",
@@ -248,7 +360,7 @@
       "row": "W-ETOS-01",
       "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
       "requirement": "SR-4.1",
-      "reportedAt": "2026-10-05T21:03:25.250696+00:00",
+      "reportedAt": "2026-10-06T04:56:25.166219+00:00",
       "evidence": [
         "W-ETOS-01/security-scan-20261005T203045.679270Z/README.md",
         "W-ETOS-01/proxy-missing-app-20261005T203050.874560Z/README.md",
@@ -263,7 +375,7 @@
       "row": "W-ETOS-02",
       "scenario": "Unity key against another agent: `forbidden`; shown in Studio log",
       "requirement": "SR-4.2",
-      "reportedAt": "2026-10-05T21:03:25.251558+00:00",
+      "reportedAt": "2026-10-06T04:56:25.167229+00:00",
       "evidence": [
         "W-HOST-01/installed-hello-authority-20261005T185555.694549Z/live/dotnet-w-etos-02-authority.json"
       ]
@@ -275,7 +387,7 @@
       "row": "W-ETOS-04",
       "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
       "requirement": "SR-2.4, SR-4.3",
-      "reportedAt": "2026-10-05T21:03:25.251923+00:00",
+      "reportedAt": "2026-10-06T04:56:25.167635+00:00",
       "evidence": [
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
       ]
@@ -287,21 +399,23 @@
       "row": "W-ETOS-05",
       "scenario": "Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task",
       "requirement": "SR-4.4",
-      "reportedAt": "2026-10-05T21:03:25.252159+00:00",
+      "reportedAt": "2026-10-06T04:56:25.167911+00:00",
       "evidence": [
         "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "Socket reconnect/cursor replay passes; killing/restarting etosd is expressly forbidden, so the complete companion-death/node-death attribution scenario cannot run.",
-      "command": "studio/tools/verify-all.sh reconnect",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: P0.5 documented supervisor restart and ledger replay. Companion supervisor restart is documented but guarded; etosd kill remains forbidden and is not replaced by socket reconnect.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-ETOS-06",
       "scenario": "Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly",
       "requirement": "SR-4.5, SR-9.2",
-      "reportedAt": "2026-10-05T21:03:25.252494+00:00",
+      "reportedAt": "2026-10-06T04:56:25.168326+00:00",
       "evidence": [
-        "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md"
+        "W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md"
       ]
     },
     {
@@ -311,7 +425,7 @@
       "row": "W-ETOS-07",
       "scenario": "Generated texture arrives with matching sha256; tampered file refused",
       "requirement": "SR-4.6",
-      "reportedAt": "2026-10-05T21:03:25.252731+00:00",
+      "reportedAt": "2026-10-06T04:56:25.168689+00:00",
       "evidence": [
         "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
         "W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md",
@@ -327,7 +441,7 @@
       "row": "W-ETOS-08",
       "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
       "requirement": "SR-4.9",
-      "reportedAt": "2026-10-05T21:03:25.253537+00:00",
+      "reportedAt": "2026-10-06T04:56:25.169552+00:00",
       "evidence": [
         "W-HOST-01/immutable-install-20261005T185516.633891Z/README.md"
       ]
@@ -339,124 +453,122 @@
       "row": "W-ETOS-09",
       "scenario": "Domain reload during a task: tray shows the same task afterwards",
       "requirement": "SR-8.3",
-      "reportedAt": "2026-10-05T21:03:25.253799+00:00",
+      "reportedAt": "2026-10-06T04:56:25.169831+00:00",
       "evidence": [
         "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md",
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
     },
     {
-      "status": "FAIL",
-      "note": "Real PipeWire speech reached the microphone (44 frames, peak 0.199); the final transcript was \u201cTo lead every N P C in the village\u201d with no partial revisions. Requests/journal/tray stayed unchanged.",
-      "command": "studio/tools/verify-all.sh voice",
+      "status": "BLOCKED",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A voice readiness and final-only transcription.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: FAIL. Old component evidence does not establish a final-main live workflow.",
       "row": "W-VOICE-01",
       "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial revisions visible",
       "requirement": "SR-4.8",
-      "reportedAt": "2026-10-05T21:03:25.254136+00:00",
+      "reportedAt": "2026-10-06T04:56:25.170212+00:00",
       "evidence": [
-        "W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/README.md",
-        "W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/voice-result.json"
+        "W-VOICE-01/p42b-live-prerequisite-20261006T044157.715808Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "The image tariff remains unverified and manual media request ownership is broken; no current generated robe/material/undo workflow completed. R3 texture-binding regression passes only as component evidence.",
-      "command": "studio/tools/verify-all.sh unity",
-      "tests": [
-        "D9_ImportedTextureTypedChangeSetUndoRedoAndBakeImpact"
-      ],
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-A texture/Sprite binding, R3-F tint, R4-A direct media, R4-C operator tariffs.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-01",
       "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.254654+00:00",
+      "reportedAt": "2026-10-06T04:56:25.170544+00:00",
       "evidence": [
-        "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "The packet\u2019s one bounded text task produced a rejected well move. Ferryman dialogue/patrol/NavMesh behaviour in Play remains historical/partial P3.2 evidence, not a current end-to-end run.",
-      "command": "studio/tools/verify-all.sh unity",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C indexed scope inference and R3 worker context.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-02",
       "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.254994+00:00",
+      "reportedAt": "2026-10-06T04:56:25.170904+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "R3-F fact handoff regressions pass, but no current real-worker conditional Odd line was produced and played; the bounded live task failed earlier on target scope.",
-      "command": "studio/tools/verify-all.sh unity",
-      "tests": [
-        "D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine"
-      ],
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F conditional dialogue/fact handoff.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.255314+00:00",
+      "reportedAt": "2026-10-06T04:56:25.171239+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
+        "W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "The stage-title binding exists and its tests pass; no current live-worker HUD edit and creator apply is retained.",
-      "command": "studio/tools/verify-all.sh unity",
-      "tests": [
-        "D10b_StageTitleTracksFirstActiveQuestAndClearsOnCompletion"
-      ],
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F HUD stage-title binding.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-04",
       "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.255634+00:00",
+      "reportedAt": "2026-10-06T04:56:25.171558+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "Quest scope inference has regression coverage, but the requested live two-oil-flask edit and consequences in Play are not completed.",
-      "command": "studio/tools/verify-all.sh unity",
-      "tests": [
-        "D5_ProductionQuestSingletonInfersButRobeRemainsAmbiguous"
-      ],
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F quest scope and tool validation.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-05",
       "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.255876+00:00",
+      "reportedAt": "2026-10-06T04:56:25.171880+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "The live edit was rejected before apply, so there is no current six-workflow undo/redo/close/reopen sequence to verify. Local journal/process recovery is reported separately.",
-      "command": "studio/tools/verify-all.sh unity",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R2 durable history and R3 retained-artifact redo.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-05T21:03:25.256112+00:00",
+      "reportedAt": "2026-10-06T04:56:25.172211+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-AI-06/p42b-live-prerequisite-20261006T044156.738894Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "Hello honestly reports 3D not_configured and no 3D provider is called. The actual refusal is 409 budget_unpriced, failing the specified not_configured/blocked-code test; provider absence and tariff absence are conflated.",
-      "command": "GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L05_",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C provider-before-budget refusal precedence.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
       "row": "W-AI-07",
       "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
       "requirement": "SADR-020",
-      "reportedAt": "2026-10-05T21:03:25.256406+00:00",
+      "reportedAt": "2026-10-06T04:56:25.172533+00:00",
       "evidence": [
-        "W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/README.md",
-        "W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/live/dotnet-f-i-refusals.json"
+        "W-AI-07/p42b-live-prerequisite-20261006T044157.606085Z/README.md"
       ]
     },
     {
@@ -469,7 +581,7 @@
       "row": "W-PLUG-01",
       "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
       "requirement": "SR-6.1, B-REGION",
-      "reportedAt": "2026-10-05T21:03:25.256734+00:00",
+      "reportedAt": "2026-10-06T04:56:25.172890+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
         "B-REGION/README.md"
@@ -485,7 +597,7 @@
       "row": "W-PLUG-02",
       "scenario": "Despawn/respawn keeps override; Animator bound",
       "requirement": "SR-6.2",
-      "reportedAt": "2026-10-05T21:03:25.257176+00:00",
+      "reportedAt": "2026-10-06T04:56:25.173413+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -500,7 +612,7 @@
       "row": "W-PLUG-03",
       "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
       "requirement": "SR-6.3",
-      "reportedAt": "2026-10-05T21:03:25.257408+00:00",
+      "reportedAt": "2026-10-06T04:56:25.173687+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -516,7 +628,7 @@
       "row": "W-PLUG-04",
       "scenario": "Patrol index across unload/reload and save/load",
       "requirement": "SR-6.4",
-      "reportedAt": "2026-10-05T21:03:25.257636+00:00",
+      "reportedAt": "2026-10-06T04:56:25.173958+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
@@ -534,7 +646,7 @@
       "row": "W-PLUG-05",
       "scenario": "Locked door with key; explain refusal",
       "requirement": "SR-6.5",
-      "reportedAt": "2026-10-05T21:03:25.257976+00:00",
+      "reportedAt": "2026-10-06T04:56:25.174334+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
@@ -551,7 +663,7 @@
       "row": "W-PLUG-06",
       "scenario": "Conditional choice and persisted fact",
       "requirement": "SR-6.6",
-      "reportedAt": "2026-10-05T21:03:25.258289+00:00",
+      "reportedAt": "2026-10-06T04:56:25.174697+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
@@ -568,7 +680,7 @@
       "row": "W-PLUG-07",
       "scenario": "Quest branches; failure closes dependents",
       "requirement": "SR-6.7",
-      "reportedAt": "2026-10-05T21:03:25.258599+00:00",
+      "reportedAt": "2026-10-06T04:56:25.175084+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
@@ -584,7 +696,7 @@
       "row": "W-PLUG-08",
       "scenario": "Take spam + reload: exactly one lantern",
       "requirement": "SR-6.8",
-      "reportedAt": "2026-10-05T21:03:25.258921+00:00",
+      "reportedAt": "2026-10-06T04:56:25.175441+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -599,7 +711,7 @@
       "row": "W-PLUG-09",
       "scenario": "\"Why didn't the gate open\" trace",
       "requirement": "SR-6.9",
-      "reportedAt": "2026-10-05T21:03:25.259153+00:00",
+      "reportedAt": "2026-10-06T04:56:25.175692+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -611,7 +723,7 @@
       "row": "W-PLUG-10",
       "scenario": "Definition validator parity (inspector, validator, agent)",
       "requirement": "SR-5.2",
-      "reportedAt": "2026-10-05T21:03:25.259373+00:00",
+      "reportedAt": "2026-10-06T04:56:25.175945+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
       ]
@@ -623,7 +735,7 @@
       "row": "W-PLUG-11",
       "scenario": "Ambience crossfade, voice line, clip release",
       "requirement": "SR-6.11",
-      "reportedAt": "2026-10-05T21:03:25.259659+00:00",
+      "reportedAt": "2026-10-06T04:56:25.176201+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
         "W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md"
@@ -640,7 +752,7 @@
       "row": "W-PLUG-12",
       "scenario": "Bake byte-identity; one line change \u2192 one revision change",
       "requirement": "SR-5.3",
-      "reportedAt": "2026-10-05T21:03:25.260001+00:00",
+      "reportedAt": "2026-10-06T04:56:25.176552+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "W-PLUG-12/bake-hollowmere-20261005T185517.764081Z/README.md",
@@ -657,7 +769,7 @@
       "row": "W-KERNEL-01",
       "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
       "requirement": "SR-7.1",
-      "reportedAt": "2026-10-05T21:03:25.260624+00:00",
+      "reportedAt": "2026-10-06T04:56:25.177244+00:00",
       "evidence": [
         "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/unity/editmode-results.xml"
       ]
@@ -673,7 +785,7 @@
       "row": "W-PERSIST-01",
       "scenario": "Save in the Ruin with items; load: all restored; region re-entered",
       "requirement": "SR-6.12",
-      "reportedAt": "2026-10-05T21:03:25.261108+00:00",
+      "reportedAt": "2026-10-06T04:56:25.177755+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -688,7 +800,7 @@
       "row": "W-PERSIST-02",
       "scenario": "Rename prefab, re-run: NPC keeps state in a save",
       "requirement": "SR-2.1",
-      "reportedAt": "2026-10-05T21:03:25.261368+00:00",
+      "reportedAt": "2026-10-06T04:56:25.178166+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -704,7 +816,7 @@
       "row": "W-PERSIST-03",
       "scenario": "Schema version bump with migration: restored; without: actionable refusal",
       "requirement": "SR-6.12",
-      "reportedAt": "2026-10-05T21:03:25.261623+00:00",
+      "reportedAt": "2026-10-06T04:56:25.178488+00:00",
       "evidence": [
         "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/unity/editmode-results.xml"
       ]
@@ -720,7 +832,7 @@
       "row": "W-REC-01",
       "scenario": "Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback",
       "requirement": "SR-3.3",
-      "reportedAt": "2026-10-05T21:03:25.261906+00:00",
+      "reportedAt": "2026-10-06T04:56:25.178826+00:00",
       "evidence": [
         "W-REC-01/rollback-state-20261005T202208.950937Z/README.md",
         "W-REC-01/resume-state-20261005T202307.744000Z/README.md"
@@ -733,27 +845,24 @@
       "row": "W-REC-03",
       "scenario": "Cancel region load mid-way; cancel staging job",
       "requirement": "SR-9.1",
-      "reportedAt": "2026-10-05T21:03:25.262426+00:00",
+      "reportedAt": "2026-10-06T04:56:25.179496+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md"
       ]
     },
     {
-      "status": "FAIL",
-      "note": "Installed paired UI Stage returns 404 no owned resource for the app-origin pressure-plate and semantic-negative samples; no signed verdict, coldCache, cold/warm stage duration, Admit or undo exists. No host fallback.",
-      "command": "studio/tools/verify-all.sh stage",
-      "tests": [
-        "R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake"
-      ],
+      "status": "BLOCKED",
+      "baseline": "1752ca8a",
+      "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A app-origin signed intake, R3-C verdict authority, R2 semantic sandbox and tri-state admission smoke.",
+      "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+      "historical": "P4.2 disposition retained in git history: FAIL. Old component evidence does not establish a final-main live workflow.",
       "row": "W-MECH-01",
       "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
       "requirement": "SR-3.6, SR-9.3, B-STAGE",
-      "reportedAt": "2026-10-05T21:03:25.262881+00:00",
+      "reportedAt": "2026-10-06T04:56:25.180030+00:00",
       "evidence": [
-        "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
-        "W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z/README.md",
-        "W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z/README.md"
+        "W-MECH-01/p42b-live-prerequisite-20261006T044157.689794Z/README.md"
       ]
     },
     {
@@ -764,7 +873,7 @@
       "row": "W-GAME-01",
       "scenario": "10-minute graphical playthrough recording with frame log",
       "requirement": "SR-8.1, B-FRAME",
-      "reportedAt": "2026-10-05T21:03:25.263439+00:00",
+      "reportedAt": "2026-10-06T04:56:25.180315+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -783,7 +892,7 @@
       "row": "W-GAME-05",
       "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
       "requirement": "SR-6.10",
-      "reportedAt": "2026-10-05T21:03:25.263704+00:00",
+      "reportedAt": "2026-10-06T04:56:25.180617+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
       ]
@@ -795,7 +904,7 @@
       "row": "W-GAME-06",
       "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
       "requirement": "SR-11.3",
-      "reportedAt": "2026-10-05T21:03:25.263974+00:00",
+      "reportedAt": "2026-10-06T04:56:25.180926+00:00",
       "evidence": [
         "W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md",
         "W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/binary.json",
@@ -807,15 +916,15 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Stopping etosd is forbidden by the packet; network-namespace isolation is unavailable on this host. Historical no-socket observation does not prove this exact final-tree stopped-node scenario.",
-      "command": "No service-stop command is authorized for this packet.",
-      "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
+      "baseline": "1752ca8a",
+      "note": "etosd stop/kill is expressly forbidden. The non-destructive network-namespace prerequisite fails with Operation not permitted; companion supervisor restart cannot prove stopped-node player operation.",
+      "command": "studio/tools/verify-all.sh node-equivalence",
       "row": "W-GAME-07",
       "scenario": "Player runs with etosd stopped and no network",
       "requirement": "SR-4.10",
-      "reportedAt": "2026-10-05T21:03:25.264969+00:00",
+      "reportedAt": "2026-10-06T04:56:25.182035+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+        "W-GAME-07/p42b-network-namespace-prerequisite-20261006T044240.056723Z/README.md"
       ]
     },
     {
@@ -825,7 +934,7 @@
       "row": "W-GAME-08",
       "scenario": "Memory after 10 Play/Edit cycles",
       "requirement": "B-MEMORY",
-      "reportedAt": "2026-10-05T21:03:25.265224+00:00",
+      "reportedAt": "2026-10-06T04:56:25.182414+00:00",
       "evidence": [
         "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md",
         "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/memory-and-pumps.json",
@@ -839,7 +948,7 @@
       "row": "W-CLEAN-01",
       "scenario": "Clean project: install, author, run, build",
       "requirement": "SR-7.2",
-      "reportedAt": "2026-10-05T21:03:25.265630+00:00",
+      "reportedAt": "2026-10-06T04:56:25.182889+00:00",
       "evidence": [
         "W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md",
         "UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z/README.md",
@@ -856,33 +965,39 @@
       "row": "W-CLEAN-02",
       "scenario": "Kernel diff empty after the clean exercise",
       "requirement": "SR-7.3",
-      "reportedAt": "2026-10-05T21:03:25.267282+00:00",
+      "reportedAt": "2026-10-06T04:56:25.184026+00:00",
       "evidence": [
         "W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md"
       ]
     },
     {
       "status": "BLOCKED",
-      "note": "No independent new-creator exercise of the draft guide is available; authoring automation cannot stand in for a novice following the document.",
-      "command": "Follow docs/studio/08-creator-guide.md in the clean project; independent creator evidence is required.",
+      "baseline": "1752ca8a",
+      "note": "Fresh final-main guide: Boot scene and Open Studio menu pass (1/1, PNG on private :99/llvmpipe). Text-edit and image-generate/bind steps cannot start before the guarded R4 companion activation. No novice NPC/dialogue completion is claimed.",
+      "command": "studio/tools/verify-all.sh guide-open\nstudio/tools/verify-all.sh final-live",
       "row": "W-DOC-01",
       "scenario": "New user adds an NPC with dialogue from the creator guide",
       "requirement": "SR-12.1",
-      "reportedAt": "2026-10-05T21:03:25.267646+00:00",
+      "reportedAt": "2026-10-06T04:56:25.184385+00:00",
       "evidence": [
-        "W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md"
+        "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/README.md",
+        "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/walkthrough.json",
+        "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/open-studio.png"
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "No developer-only-guide lever-plugin walkthrough is retained. The pressure-plate sample and existing unit tests do not establish that documentation acceptance.",
-      "command": "Follow docs/studio/09-plugin-developer-guide.md to author the lever; independent walkthrough evidence is required.",
+      "status": "FAIL",
+      "baseline": "1752ca8a",
+      "note": "Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed.",
+      "command": "studio/tools/verify-all.sh final-guides\nstudio/tools/verify-all.sh guide-stage",
       "row": "W-DOC-02",
       "scenario": "Developer adds a lever interactable from the plugin guide",
       "requirement": "SR-12.2",
-      "reportedAt": "2026-10-05T21:03:25.267905+00:00",
+      "reportedAt": "2026-10-06T04:56:25.185041+00:00",
       "evidence": [
-        "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md"
+        "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md",
+        "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/walkthrough.json",
+        "W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md"
       ]
     },
     {
@@ -892,7 +1007,7 @@
       "row": "W-E2E-01",
       "scenario": "All rows resolved on one revision; completion report",
       "requirement": "SR-12.3",
-      "reportedAt": "2026-10-05T21:03:25.268149+00:00",
+      "reportedAt": "2026-10-06T04:56:25.185669+00:00",
       "evidence": [
         "STATIC/final-evidence-regressions-20261005T205458.709656Z/README.md"
       ]
