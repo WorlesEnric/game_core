@@ -18,8 +18,9 @@ def export(source: Path, destination: Path, change_set: str, revision: str) -> d
     document = json.loads(data)
     if document.get('descriptionFormat') != 'gamecore.catalog-description/1':
         raise ValueError('source_world_invalid: expected a baked catalog description')
+    contained(destination.parent, destination.name)
     destination.mkdir(parents=True, exist_ok=True)
-    target = destination / 'catalog.json'
+    target = contained(destination, 'catalog.json')
     if target.exists():
         target.chmod(0o644)
     target.write_bytes(data)

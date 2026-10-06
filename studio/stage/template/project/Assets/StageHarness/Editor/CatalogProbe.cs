@@ -2,8 +2,8 @@
 // GameCore Studio staging harness, EditMode (P2.4): the catalog delta of the staged mechanism.
 //
 // Writes <out>/catalog-delta.json:
-//   world        the catalog fingerprint the slot's world re-bake produces (GameCore.Gameplay.Compile.Entry.Verify,
-//                in memory, nothing written), present only when the stage inputs carry a WorldDefinition;
+//   world        the fingerprint reconstructed by the trusted content compiler from the read-only,
+//                hash-bound source-world catalog description (no live project mount or candidate world constant);
 //   mechanisms   the candidate's own catalog: the generated `CatalogFingerprint` constant of the type its proposal
 //                names, checked against the fingerprint of the catalog its `BuildCatalog()` really builds;
 //   predicted    the catalog-set hash of world + mechanism (CatalogSetHash.Combine), the hash the live world must
@@ -84,6 +84,28 @@ namespace GameCore.Stage.Harness
                 "public const string CatalogFingerprint = \"([0-9a-f]{64})\"");
             Assert.That(match.Success, Is.True, "source_world_invalid");
             return match.Groups[1].Value;
+        }
+
+        [Test]
+        public void R6_A_01_MissingSourceWorldRefuses()
+        {
+            Assert.Throws<AssertionException>(() => ReadSourceWorld(new HarnessConfig()));
+        }
+
+        [Test]
+        public void R6_A_01_ChangedSourceWorldRefuses()
+        {
+            HarnessConfig config = HarnessFiles.Load();
+            config.worldSnapshotSha256 = new string('0', 64);
+            Assert.Throws<AssertionException>(() => ReadSourceWorld(config));
+        }
+
+        [Test]
+        public void R6_A_01_TrustedSourceWorldRecompilesDeterministically()
+        {
+            HarnessConfig config = HarnessFiles.Load();
+            string first = ReadSourceWorld(config);
+            Assert.That(ReadSourceWorld(config), Is.EqualTo(first));
         }
 
         private static T? Read<T>(object owner, string property)

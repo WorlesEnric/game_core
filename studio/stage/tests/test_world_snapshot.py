@@ -49,3 +49,17 @@ class WorldSnapshotTests(unittest.TestCase):
             subprocess.run(['git', '-C', str(root), 'add', 'Assets'], check=True)
             with self.assertRaisesRegex(ValueError, 'stage_path_link'):
                 world_snapshot.export(root, root / 'snapshot', 'cs', 'rev')
+
+    def test_R6_A_01_reused_destination_link_refused(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            source = root / 'Assets/World/world.catalog.json'
+            source.parent.mkdir(parents=True)
+            source.write_text(json.dumps({'descriptionFormat': 'gamecore.catalog-description/1'}))
+            subprocess.run(['git', '-C', str(root), 'add', 'Assets'], check=True)
+            (root / 'outside').mkdir()
+            (root / 'snapshot').symlink_to(root / 'outside')
+            with self.assertRaisesRegex(ValueError, 'stage_path_link'):
+                world_snapshot.export(root, root / 'snapshot', 'cs', 'rev')
+            self.assertFalse((root / 'outside/catalog.json').exists())
