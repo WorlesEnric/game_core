@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. The P3.1 recording is reused, as requested. It predates P3.1b and failed B-FRAME; P3.1b’s later 640×480 llvmpipe measurements cannot qualify final-tree RTX/1080p performance.
 
-Report timestamp: 2026-10-06T04:56:25.180315+00:00 UTC.
+Report timestamp: 2026-10-06T09:08:50.186650+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

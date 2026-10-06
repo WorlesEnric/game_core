@@ -1,0 +1,39 @@
+{
+  "label": "p42c-image-recovered",
+  "revision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "host": "worlesenric",
+  "started": "2026-10-06T08:43:02.393027+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2c/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/logs --label p42c-image-recovered --timeout 1800 --results ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/results.xml -- -runTests -testPlatform EditMode -testFilter R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest",
+  "cwd": "~/wkspace/gc-studio/p4.2c/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-DOC-01/p42c-image-recovered-20261006T084302.391519Z",
+  "queuedAtRevision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "executionStarted": "2026-10-06T08:43:02.394294+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T08:44:30.940364+00:00",
+  "seconds": 88.54879038082436,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42c.Live.Tests.dll",
+        "P42c",
+        "P42c.Live",
+        "P42c.Live.GuideTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "P42c.Live.GuideTests.R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest",
+          "result": "Failed",
+          "detail": "System.InvalidOperationException : Candidate cs_01M485F79CQ3FSRA1TBZZEF9VJ is Invalid; it cannot be staged or applied. \n                   at GameCore.Studio.UI.CandidateCoordinator.RequireOpen (GameCore.Studio.UI.CandidateEntry entry) [0x0005f] in ~/wkspace/gc-studio/p4.2c/.evidence/live/Packages/com.gamecore.studio.ui/Editor/Candidates/CandidateCoordinator.cs:667 \n  at GameCore.Studio.UI.CandidateCoordinator.Preview (GameCore.Studio.UI.CandidateEntry entry) [0x00000] in ~/wkspace/gc-studio/p4.2c/.evidence/live/Packages/com.gamecore.studio.ui/Editor/Candidates/CandidateCoordinator.cs:305 \n  at P42c.Live.GuideTests+<R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest>d__3.MoveNext () [0x001a6] in ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Assets/P42cLive/GuideTests.cs:106 \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44  \n               \n               [GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50\n[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live\n[GameCore.Studio/etos] candidate cs_01M485F79CQ3FSRA1TBZZEF9VJ refused at staging in 418 ms (1 artifact(s) verified) (MediaImporterInvalid: media_importer_invalid: invalid enum textureType @ op op1)\nSaving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

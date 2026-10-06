@@ -1,0 +1,56 @@
+PipeWire 'pipewire-0' [1.0.5, worlesenric@worlesenric, cookie:991150164]
+ └─ Clients:
+        32. pipewire                            [1.0.5, worlesenric@worlesenric, pid:1717]
+        34. WirePlumber                         [1.0.5, worlesenric@worlesenric, pid:1715]
+        35. WirePlumber [export]                [1.0.5, worlesenric@worlesenric, pid:1715]
+        51. update-manager                      [1.0.5, worlesenric@worlesenric, pid:2253835]
+        52. update-notifier                     [1.0.5, worlesenric@worlesenric, pid:22168]
+        54. pw-loopback                         [1.0.5, worlesenric@worlesenric, pid:1386214]
+        55. check-new-release-gtk               [1.0.5, worlesenric@worlesenric, pid:3407571]
+        56. GNOME Volume Control Media Keys     [1.0.5, worlesenric@worlesenric, pid:15032]
+        58. wpctl                               [1.0.5, worlesenric@worlesenric, pid:1386255]
+        65. xdg-desktop-portal                  [1.0.5, worlesenric@worlesenric, pid:15764]
+        71. system-crash-notification           [1.0.5, worlesenric@worlesenric, pid:2756406]
+        73. check-new-release-gtk               [1.0.5, worlesenric@worlesenric, pid:2446662]
+        76. Terminal                            [1.0.5, worlesenric@worlesenric, pid:260416]
+        83. gnome-session-failed                [1.0.5, worlesenric@worlesenric, pid:2759087]
+        88. GNOME Shell Volume Control          [1.0.5, worlesenric@worlesenric, pid:1774944]
+        92. gnome-shell                         [1.0.5, worlesenric@worlesenric, pid:1774944]
+        97. clash-verge                         [1.0.5, worlesenric@worlesenric, pid:18574]
+
+Audio
+ ├─ Devices:
+ │      46. alsa_card.pci-0000_01_00.1          [alsa]
+ │      47. alsa_card.pci-0000_00_1f.3          [alsa]
+ │
+ ├─ Sinks:
+ │  *   48. alsa_output.pci-0000_00_1f.3.iec958-stereo [vol: 0.40]
+ │      74. gc_p42c_sink                        [vol: 1.00]
+ │
+ ├─ Sink endpoints:
+ │
+ ├─ Sources:
+ │      49. alsa_input.pci-0000_00_1f.3.analog-stereo [vol: 1.00]
+ │  *   81. gc_p42c_mic                         [vol: 1.00]
+ │
+ ├─ Source endpoints:
+ │
+ └─ Streams:
+
+Video
+ ├─ Devices:
+ │
+ ├─ Sinks:
+ │
+ ├─ Sink endpoints:
+ │
+ ├─ Sources:
+ │
+ ├─ Source endpoints:
+ │
+ └─ Streams:
+
+Settings
+ └─ Default Configured Node Names:
+         0. Audio/Sink    alsa_output.pci-0000_00_1f.3.iec958-stereo
+         1. Audio/Source  gc_p42c_mic

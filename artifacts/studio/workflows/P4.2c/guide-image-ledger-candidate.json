@@ -1,0 +1,149 @@
+{
+  "requestId": "cs_01M485F79CQ3FSRA1TBZZEF9VJ",
+  "taskId": "t0449c2228731c1351e48b090",
+  "artifacts": [
+    {
+      "bytes": 1188909,
+      "mediaType": "image/png",
+      "name": "marsh_lantern_icon.png",
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "inventoryIcon",
+      "sha256": "a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea",
+      "url": "/v1/artifacts/a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea"
+    }
+  ],
+  "candidate": {
+    "artifacts": [
+      {
+        "bytes": 1188909,
+        "import": {
+          "type": "Sprite"
+        },
+        "mediaType": "image/png",
+        "name": "marsh_lantern_icon.png",
+        "producer": {
+          "op": "generate.image",
+          "provider": "echo-images"
+        },
+        "role": "inventoryIcon",
+        "sha256": "a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea"
+      }
+    ],
+    "baseVersions": [
+      {
+        "ref": {
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "kind": "Definition",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        },
+        "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+      }
+    ],
+    "id": "cs_01M485F79CQ3FSRA1TBZZEF9VJ",
+    "intent": {
+      "origin": "agent",
+      "text": "Generate exactly one small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background. Maximum image cost USD 0.25. Import the image and bind it to this item's icon. Do not generate additional variants."
+    },
+    "operations": [
+      {
+        "applyRequirement": "Live",
+        "args": {
+          "artifact": {
+            "artifact": "sha256:a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea"
+          },
+          "importer": {
+            "textureType": "Sprite (2D and UI)"
+          },
+          "path": "Assets/Hollowmere/Items/Icons/MarshLantern.png"
+        },
+        "dependsOn": [],
+        "opId": "op1",
+        "preconditions": "stamp",
+        "tool": "asset.import"
+      },
+      {
+        "applyRequirement": "Rebuild",
+        "args": {
+          "field": "icon",
+          "value": "Assets/Hollowmere/Items/Icons/MarshLantern.png"
+        },
+        "dependsOn": [
+          "op1"
+        ],
+        "opId": "op2",
+        "preconditions": "stamp",
+        "target": {
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "kind": "Definition",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "scope": "Definition",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        },
+        "tool": "set"
+      }
+    ],
+    "requirements": {
+      "build": false,
+      "compile": false,
+      "max": "Rebuild",
+      "worldRebuild": true
+    },
+    "schema": "gamecore.studio.changeset/1",
+    "selection": {
+      "frame": {
+        "camera": {
+          "aspect": 1.7777777777777777,
+          "fov": 60.0,
+          "position": [
+            0.0,
+            0.0,
+            -14.364101409912108
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "image": "sha256:74e61544a1e7167c80a1ef0a8964c0281a8d8a8d5c6fe73359ca94eda795301c",
+        "viewport": [
+          640,
+          369
+        ]
+      },
+      "id": "sel_01M485F78MV786P7YYAQJZ295M",
+      "indexRevision": 52,
+      "mode": "Edit",
+      "targets": [
+        {
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "kind": "Definition",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        }
+      ]
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "ScopeInferred",
+      "data": {
+        "inferred": true,
+        "scope": "Definition"
+      },
+      "message": "Target scope inferred as Definition from the tool/type intersection.",
+      "where": "op2"
+    }
+  ]
+}

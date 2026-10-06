@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope.
 
-Report timestamp: 2026-10-06T04:56:25.166219+00:00 UTC.
+Report timestamp: 2026-10-06T09:08:50.163467+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

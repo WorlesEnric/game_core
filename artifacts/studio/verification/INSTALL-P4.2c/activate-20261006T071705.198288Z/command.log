@@ -1,0 +1,197 @@
+--- ~/.local/share/etos-studio/ops.toml
++++ ~/.local/share/etos-studio/ops.toml
+@@ -2,8 +2,9 @@
+ # <root>/ops.toml by studio/etos/install.sh (no substitutions). Keys are credential references
+ # resolved by etosd from its environment; none is written here.
+ #
+-# List prices checked 2026-10-05. Companion caps fail closed if no matching ops_prices
+-# entry exists. Image per_unit is an output-only estimate, not a total fixed tariff.
++# Published TTS list price checked 2026-10-06. Companion caps fail closed without a
++# declared tariff. # @studio annotations are parsed by install-state.py, never sent
++# to providers. Echo requires an operator-declared total estimate before full apply.
+
+ # Voice input: transcript-only realtime sessions (the companion never sends response_create).
+ [[realtime]]
+@@ -27,15 +28,13 @@
+ [providers.limits]
+ timeout = "300s"
+ max_outputs = 4
+-# Source: https://developers.openai.com/api/docs/guides/image-generation
+-# GPT Image 2 low 1024x1024: $0.006 output-only estimate per image.
+-# Source: https://developers.openai.com/api/docs/models/gpt-image-2
+-# Text input $2.50/M; image output $15/M. Input images cost $4/M, so reference edits
+-# need a separately priced provider. Echo markup is unverified; see R3 Left open.
++# No published Echo reseller list price is verified. This is NOT an OpenAI list price.
++# Owner declared a total estimate on 2026-10-06; this is not a reseller invoice.
++# @studio source = "operator"
++# @studio note = "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff"
++# @studio unit = "image"
+ [providers.cost]
+-per_unit = 0.006
+-per_1m_input_tokens = 2.5
+-per_1m_output_tokens = 15.0
++per_unit = 0.20
+
+ # Image description: a vision chat model of models.toml.
+ [[providers]]
+@@ -59,6 +58,9 @@
+ options = { voice = "Cherry", language_type = "English" }
+ [providers.limits]
+ timeout = "120s"
++# @studio source = "published"
++# @studio url = "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
++# @studio unit = "bailian_character"
+ # Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
+ # Qwen3-TTS-Flash, Chinese mainland: $0.114682 / 10,000 input characters.
+ [providers.cost]
+
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -2,17 +2,6 @@
+
+ # Capped image/describe calls remain budget_unpriced: the node's image tariff is
+ # output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
+-[[ops_prices]]
+-op = "tts"
+-provider = "bailian-tts"
+-unit = "bailian_character"
+-# Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
+-# Mainland Qwen3-TTS-Flash: $0.114682 / 10,000 characters, checked 2026-10-05.
+-per_unit = 0.0000114682
+-
+-# Copy the required keys into the companion state directory's config.toml.
+-# This is an example only; no installed service configuration is changed by R2-F.
+-
+ [stage]
+ "command" = "~/wkspace/gc-studio/companion/studio/stage/stage.sh"
+
+@@ -20,3 +9,21 @@
+ "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
+ "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
+
++[[ops_prices]]
++source = "operator"
++note = "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff"
++unit = "image"
++op = "image"
++provider = "echo-images"
++model = "gpt-image-2"
++per_unit = 0.2
++
++
++[[ops_prices]]
++source = "published"
++url = "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
++unit = "bailian_character"
++op = "tts"
++provider = "bailian-tts"
++model = "qwen3-tts-flash"
++per_unit = 1.14682e-05
+
+Price templates applied. R4 companion reloads tariffs on next call; older binaries require integrator restart. No services restarted.
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -7,6 +7,7 @@
+
+ [stage.projects]
+ "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
++"b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere"
+ "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
+
+ [[ops_prices]]
+
+registered b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912 -> ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -6,6 +6,7 @@
+ "command" = "~/wkspace/gc-studio/companion/studio/stage/stage.sh"
+
+ [stage.projects]
++"1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof"
+ "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
+ "b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere"
+ "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
+
+registered 1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d -> ~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof
+restarted gamecore-studio
+healthy: 0.1.0-426b3ead95f21815; previous release retained: 0.1.0-74096dc59ab3fd21
+unchanged: release 0.1.0-426b3ead95f21815 (checksums verified)
+agent.toml: OK
+bin/gamecore-studio: OK
+workers/gc-designer.md: OK
+workers/gc-mechanic.md: OK
+[
+  {
+    "agent": "gamecore-studio",
+    "version": "0.1.0",
+    "label": "GameCore Studio companion",
+    "source": "~/wkspace/gc-studio/main/studio/etos/agent",
+    "linked": true,
+    "state": "ready",
+    "pid": 1292419,
+    "restarts": 0,
+    "last_error": null,
+    "started_at": 1791271025901,
+    "connection": {
+      "connected": true,
+      "ready": true,
+      "sdk": "etos-sdk/rust/1.0.0",
+      "since": 1791271025974,
+      "endpoint": "http://127.0.0.1:39601",
+      "pending": 0
+    },
+    "grants": [
+      "logger",
+      "query",
+      "changes",
+      "tasks",
+      "files",
+      "topics",
+      "ops",
+      "providers",
+      "realtime",
+      "proxy",
+      "services"
+    ],
+    "workers": [
+      "gc-designer",
+      "gc-mechanic"
+    ],
+    "entrances": [],
+    "installed_at": 1791142156232,
+    "updated_at": 1791190286245
+  }
+]
+{
+  "release": "0.1.0-426b3ead95f21815",
+  "sourceRevision": "f787829289ea7402c08917a78553ff6c3838bda8",
+  "stage": {
+    "command": "~/wkspace/gc-studio/companion/studio/stage/stage.sh",
+    "projects": {
+      "1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d": "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof",
+      "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f": "~/wkspace/gc-studio/p4.2/games/cleanproof",
+      "b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912": "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere",
+      "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8": "~/wkspace/gc-studio/p4.2/games/hollowmere"
+    }
+  },
+  "ops_prices": [
+    {
+      "source": "operator",
+      "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+      "unit": "image",
+      "op": "image",
+      "provider": "echo-images",
+      "model": "gpt-image-2",
+      "per_unit": 0.2
+    },
+    {
+      "source": "published",
+      "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+      "unit": "bailian_character",
+      "op": "tts",
+      "provider": "bailian-tts",
+      "model": "qwen3-tts-flash",
+      "per_unit": 1.14682e-05
+    }
+  ]
+}

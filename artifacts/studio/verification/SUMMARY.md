@@ -1,6 +1,6 @@
-# P4.2 + P4.2b verification summary
+# P4.2 + P4.2b + P4.2c verification summary
 
-Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
+Matrix row totals: PASS 29, BLOCKED 32, FAIL 7.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
@@ -31,18 +31,18 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | W-ETOS-02 | BLOCKED | [Evidence](W-ETOS-02/README.md): Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established. |
 | W-ETOS-04 | BLOCKED | [Evidence](W-ETOS-04/README.md): The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task. |
 | W-ETOS-05 | BLOCKED | [Evidence](W-ETOS-05/README.md): Live client cancellation completes in 556 ms with one task/no candidate, but the creator tray-button portion is not exercised. |
-| W-ETOS-06 | BLOCKED | [Evidence](W-ETOS-06/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: P0.5 documented supervisor restart and ledger replay. Companion supervisor restart is documented but guarded; etosd kill remains forbidden and is not replaced by socket reconnect. |
-| W-ETOS-07 | FAIL | [Evidence](W-ETOS-07/README.md): Legacy Unity media calls fail 404 for an unregistered local request ID. Direct TTS generation/download/import/undo and tamper refusal pass, but a new texture/import is not achieved. |
+| W-ETOS-06 | BLOCKED | [Evidence](W-ETOS-06/README.md): Companion portion PASS: actual etos agent restart, same task, one cancellation outcome and exact four-event cursor replay; reconnect 143.1 ms, cancel ack 188.0 ms. Node-death portion remains BLOCKED: etosd stop/restart is forbidden, and a companion restart cannot prove delayed attribution after node death. |
+| W-ETOS-07 | BLOCKED | [Evidence](W-ETOS-07/README.md): Installed R4 operator-priced image and published-priced TTS calls return verified imports; Sprite binding passes and 3D refuses honestly. The full media row remains partial: describe has no binding tariff in authenticated hello and is not called. No provider invoice is inferred from local ceiling charges. |
 | W-ETOS-08 | BLOCKED | [Evidence](W-ETOS-08/README.md): Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run. |
 | W-ETOS-09 | BLOCKED | [Evidence](W-ETOS-09/README.md): Client cursor replay is real; a source recompile/domain reload while an in-flight task returns to the tray was not completed. Simulated reload tests remain component evidence. |
-| W-VOICE-01 | BLOCKED | [Evidence](W-VOICE-01/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A voice readiness and final-only transcription. |
-| W-AI-01 | BLOCKED | [Evidence](W-AI-01/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-A texture/Sprite binding, R3-F tint, R4-A direct media, R4-C operator tariffs. |
-| W-AI-02 | BLOCKED | [Evidence](W-AI-02/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C indexed scope inference and R3 worker context. |
-| W-AI-03 | BLOCKED | [Evidence](W-AI-03/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F conditional dialogue/fact handoff. |
-| W-AI-04 | BLOCKED | [Evidence](W-AI-04/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F HUD stage-title binding. |
-| W-AI-05 | BLOCKED | [Evidence](W-AI-05/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F quest scope and tool validation. |
-| W-AI-06 | BLOCKED | [Evidence](W-AI-06/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R2 durable history and R3 retained-artifact redo. |
-| W-AI-07 | BLOCKED | [Evidence](W-AI-07/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C provider-before-budget refusal precedence. |
+| W-VOICE-01 | FAIL | [Evidence](W-VOICE-01/README.md): R4-A microphone path delivers the move final and its explicit Send/apply/undo. Destructive speech yields no transcript in the reused session and a fresh ready-gated session (560 chunks, peak 0.15248). Request/tray/journal counts stay unchanged. Dedicated XML: 0 passed, 1 failed; listening/final status labels are not partial speech revisions. |
+| W-AI-01 | BLOCKED | [Evidence](W-AI-01/README.md): PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised. |
+| W-AI-02 | BLOCKED | [Evidence](W-AI-02/README.md): PARTIAL: the installed R4-C validator accepts the scoped move/patrol and ferryman candidates; both apply. The P3.2 driver has no in-Play NPC/nav assertion and tries to select Odd in Village. Ferryman Undo reports Undone but leaves the created NPC (roster 20→21→21); owner request retained. |
+| W-AI-03 | BLOCKED | [Evidence](W-AI-03/README.md): PARTIAL: the live candidate applies; R3-D conditional-dialogue preview hides the new line when unlit and shows it for shrine_lit=1. The existing fact is reused, so R3-F same-candidate fact creation is not exercised. This driver does not run dialogue in Play. |
+| W-AI-04 | PASS | [Evidence](W-AI-04/README.md): The installed-companion candidate applies ui.bind: objective-line.text → vm:hud.QuestStageTitle (R3-D/D10b). The resulting authored binding is retained; separate-Editor reopen preserves it and its undo/redo/final undo succeeds. |
+| W-AI-05 | BLOCKED | [Evidence](W-AI-05/README.md): PARTIAL: the live scoped quest.addObjective candidate applies a Collect requirement of 2 against the real OilFlask definition, exercising R3-F/R4-C validation. The legacy simulator uses oil_flask and refuses GP-QST-004; no in-Play consequence is established. |
+| W-AI-06 | FAIL | [Evidence](W-AI-06/README.md): Saved asset hashes and all three Applied journals survive a real Editor close/reopen. HUD and quest undo/redo/final undo pass; Odd undo refuses Conflict against the first operation’s intermediate after-stamp although the second operation’s final stamp matches. Final backToBefore=false; no forced undo or candidate edit. |
+| W-AI-07 | PASS | [Evidence](W-AI-07/README.md): Installed R4-C provider-before-budget 3D refusal: not_configured surfaced, no generation. |
 | W-PLUG-01 | BLOCKED | [Evidence](W-PLUG-01/README.md): Real three-region travel/pose/residency tests pass. Region texture/audio release and the required peak-relative Memory Profiler delta remain unmeasured. |
 | W-PLUG-02 | BLOCKED | [Evidence](W-PLUG-02/README.md): Despawn/respawn variant and scale override preservation passes; the required real Animator-binding part is not asserted by this suite. |
 | W-PLUG-03 | BLOCKED | [Evidence](W-PLUG-03/README.md): Real walking, focus/interact and travel pass; the deterministic script includes Jump but does not assert clearing a ledge and landing, so that required observation stays open. |
@@ -61,17 +61,17 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | W-PERSIST-03 | PASS | [Evidence](W-PERSIST-03/README.md): Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged. |
 | W-REC-01 | PASS | [Evidence](W-REC-01/README.md): Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained. |
 | W-REC-03 | BLOCKED | [Evidence](W-REC-03/README.md): Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation. |
-| W-MECH-01 | BLOCKED | [Evidence](W-MECH-01/README.md): P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A app-origin signed intake, R3-C verdict authority, R2 semantic sandbox and tri-state admission smoke. |
+| W-MECH-01 | FAIL | [Evidence](W-MECH-01/README.md): Installed R4-A/R3-C app-origin stage verifies through the authenticated service and enables Admit; the visible badge still says not staged. Docker cold 142.260 s / warm 62.905 s; each XML has 33 EditMode + 2 PlayMode passes. Actual Play Admit refuses catalog_missing because Entry.Verify opens Editor scenes during Play. No capture/restore/smoke/undo follows. Negative fixture is refused with Admit disabled (14 lexical hits). |
 | W-GAME-01 | BLOCKED | [Evidence](W-GAME-01/README.md): The P3.1 recording is reused, as requested. It predates P3.1b and failed B-FRAME; P3.1b’s later 640×480 llvmpipe measurements cannot qualify final-tree RTX/1080p performance. |
 | W-GAME-05 | BLOCKED | [Evidence](W-GAME-05/README.md): Editor full-quest endings and save/load pass; a current standalone menu→save→load→ending→restart playthrough is not re-recorded under the explicit recording-reuse instruction. |
 | W-GAME-06 | PASS | [Evidence](W-GAME-06/README.md): Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget. |
-| W-GAME-07 | BLOCKED | [Evidence](W-GAME-07/README.md): etosd stop/kill is expressly forbidden. The non-destructive network-namespace prerequisite fails with Operation not permitted; companion supervisor restart cannot prove stopped-node player operation. |
+| W-GAME-07 | BLOCKED | [Evidence](W-GAME-07/README.md): The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence. |
 | W-GAME-08 | PASS | [Evidence](W-GAME-08/README.md): Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes. |
 | W-CLEAN-01 | PASS | [Evidence](W-CLEAN-01/README.md): Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01. |
 | W-CLEAN-02 | PASS | [Evidence](W-CLEAN-02/README.md): After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/. |
-| W-DOC-01 | BLOCKED | [Evidence](W-DOC-01/README.md): Fresh final-main guide: Boot scene and Open Studio menu pass (1/1, PNG on private :99/llvmpipe). Text-edit and image-generate/bind steps cannot start before the guarded R4 companion activation. No novice NPC/dialogue completion is claimed. |
+| W-DOC-01 | FAIL | [Evidence](W-DOC-01/README.md): Text Send passed. Image Send was accepted and produced a PNG; after the initial 180-second harness timeout, the same request was recovered without resubmission. Unity refuses its candidate: MediaImporterInvalid for textureType "Sprite (2D and UI)". The two deferred Send actions are recorded, but image import/assignment and the full novice NPC/dialogue walkthrough do not pass. |
 | W-DOC-02 | FAIL | [Evidence](W-DOC-02/README.md): Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed. |
-| W-E2E-01 | BLOCKED | [Evidence](W-E2E-01/README.md): The integrated tree has real live-scope, app-origin stage, media-ownership and graphical/voice failures plus explicitly unqualified budgets; all rows are disposed, not all accepted. |
+| W-E2E-01 | BLOCKED | [Evidence](W-E2E-01/README.md): P4.2c ran the installed final-tree companion and disposed the requested rows, but live admission, history and destructive voice have retained failures; several workflow assertions and node-death scenarios remain unqualified. Inherited rows keep their original revision-specific evidence; this is not all-row product acceptance. |
 
 ## Retained attempts (including superseded and expected failures)
 
@@ -92,6 +92,14 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [INSTALL-P4.2b/live-guard-20261006T045515.048905Z](INSTALL-P4.2b/live-guard-20261006T045515.048905Z/README.md) | BLOCKED | 53525c74d62c |
 | [INSTALL-P4.2b/owner-tariff-after-20261006T043138.998730Z](INSTALL-P4.2b/owner-tariff-after-20261006T043138.998730Z/README.md) | PASS | 8d1574e4326a |
 | [INSTALL-P4.2b/owner-tariff-before-20261006T043138.809640Z](INSTALL-P4.2b/owner-tariff-before-20261006T043138.809640Z/README.md) | FAIL | 8d1574e4326a |
+| [INSTALL-P4.2c/activate-20261006T071705.198288Z](INSTALL-P4.2c/activate-20261006T071705.198288Z/README.md) | PASS | 65666ac27168 |
+| [INSTALL-P4.2c/align-stage-package-root-20261006T075909.903727Z](INSTALL-P4.2c/align-stage-package-root-20261006T075909.903727Z/README.md) | PASS | 9d8ab6b11d43 |
+| [INSTALL-P4.2c/final-main-build-20261006T071249.676074Z](INSTALL-P4.2c/final-main-build-20261006T071249.676074Z/README.md) | PASS | f787829289ea |
+| [INSTALL-P4.2c/harness-compile-20261006T072530.060614Z](INSTALL-P4.2c/harness-compile-20261006T072530.060614Z/README.md) | FAIL | 65666ac27168 |
+| [INSTALL-P4.2c/harness-compile-fixed-20261006T072709.074883Z](INSTALL-P4.2c/harness-compile-fixed-20261006T072709.074883Z/README.md) | PASS | 65666ac27168 |
+| [INSTALL-P4.2c/hello-20261006T071707.149737Z](INSTALL-P4.2c/hello-20261006T071707.149737Z/README.md) | PASS | 65666ac27168 |
+| [INSTALL-P4.2c/priced-tts-20261006T071733.006098Z](INSTALL-P4.2c/priced-tts-20261006T071733.006098Z/README.md) | PASS | 65666ac27168 |
+| [INSTALL-P4.2c/unity-fresh-compile-20261006T071423.613958Z](INSTALL-P4.2c/unity-fresh-compile-20261006T071423.613958Z/README.md) | PASS | f787829289ea |
 | [STATIC/allocator-isolated-20261005T173202.610714Z](STATIC/allocator-isolated-20261005T173202.610714Z/README.md) | PASS | 20e34d1e6a68 |
 | [STATIC/cargo-clippy-20261005T170026.580378Z](STATIC/cargo-clippy-20261005T170026.580378Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/cargo-clippy-20261005T185349.726636Z](STATIC/cargo-clippy-20261005T185349.726636Z/README.md) | PASS | 4214d67b2289 |
@@ -131,6 +139,17 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [STATIC/p42b-runner-20261006T043009.111809Z](STATIC/p42b-runner-20261006T043009.111809Z/README.md) | PASS | 8d1574e4326a |
 | [STATIC/p42b-runner-final-20261006T044852.507551Z](STATIC/p42b-runner-final-20261006T044852.507551Z/README.md) | PASS | 8d1574e4326a |
 | [STATIC/p42b-shell-syntax-20261006T044853.671171Z](STATIC/p42b-shell-syntax-20261006T044853.671171Z/README.md) | PASS | 8d1574e4326a |
+| [STATIC/p42c-cap-baseline-after-20261006T073726.789415Z](STATIC/p42c-cap-baseline-after-20261006T073726.789415Z/README.md) | PASS | dbedd2fb6c83 |
+| [STATIC/p42c-cap-baseline-before-20261006T073717.555131Z](STATIC/p42c-cap-baseline-before-20261006T073717.555131Z/README.md) | FAIL | dbedd2fb6c83 |
+| [STATIC/p42c-csharp-20261006T072434.908537Z](STATIC/p42c-csharp-20261006T072434.908537Z/README.md) | PASS | 65666ac27168 |
+| [STATIC/p42c-existing-runner-tests-20261006T072434.219937Z](STATIC/p42c-existing-runner-tests-20261006T072434.219937Z/README.md) | PASS | 65666ac27168 |
+| [STATIC/p42c-final-csharp-20261006T091304.938309Z](STATIC/p42c-final-csharp-20261006T091304.938309Z/README.md) | PASS | 9d8ab6b11d43 |
+| [STATIC/p42c-final-evidence-20261006T091327.148640Z](STATIC/p42c-final-evidence-20261006T091327.148640Z/README.md) | PASS | 9d8ab6b11d43 |
+| [STATIC/p42c-final-metadata-20261006T091304.273400Z](STATIC/p42c-final-metadata-20261006T091304.273400Z/README.md) | PASS | 9d8ab6b11d43 |
+| [STATIC/p42c-final-runner-20261006T091303.468484Z](STATIC/p42c-final-runner-20261006T091303.468484Z/README.md) | PASS | 9d8ab6b11d43 |
+| [STATIC/p42c-final-tools-20261006T091303.245301Z](STATIC/p42c-final-tools-20261006T091303.245301Z/README.md) | PASS | 9d8ab6b11d43 |
+| [STATIC/p42c-metadata-20261006T072434.538983Z](STATIC/p42c-metadata-20261006T072434.538983Z/README.md) | PASS | 65666ac27168 |
+| [STATIC/p42c-runner-tests-20261006T072434.120384Z](STATIC/p42c-runner-tests-20261006T072434.120384Z/README.md) | PASS | 65666ac27168 |
 | [STATIC/python-test-dependencies-20261005T194810.055434Z](STATIC/python-test-dependencies-20261005T194810.055434Z/README.md) | PASS | c532b77edd93 |
 | [STATIC/python-test-environment-20261005T194808.117890Z](STATIC/python-test-environment-20261005T194808.117890Z/README.md) | PASS | c532b77edd93 |
 | [STATIC/reproducer-python-dependencies-20261005T194814.041644Z](STATIC/reproducer-python-dependencies-20261005T194814.041644Z/README.md) | PASS | c532b77edd93 |
@@ -165,11 +184,15 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [UNITY-HOLLOWMERE/playmode-20261005T185951.720751Z](UNITY-HOLLOWMERE/playmode-20261005T185951.720751Z/README.md) | PASS | 38baed3d6484 |
 | [UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z](UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md) | PASS | 74005cef3447 |
 | [W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z](W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-AI-01/p42c-robe2-20261006T072832.434641Z](W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md) | PASS | 65666ac27168 |
 | [W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z](W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-AI-02/p42c-text2-20261006T071746.894107Z](W-AI-02/p42c-text2-20261006T071746.894107Z/README.md) | FAIL | 65666ac27168 |
 | [W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z](W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-AI-03/p42c-narrative-20261006T073303.291662Z](W-AI-03/p42c-narrative-20261006T073303.291662Z/README.md) | FAIL | dbedd2fb6c83 |
 | [W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z](W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z](W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-06/p42b-live-prerequisite-20261006T044156.738894Z](W-AI-06/p42b-live-prerequisite-20261006T044156.738894Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-AI-06/p42c-reopen-20261006T073813.299352Z](W-AI-06/p42c-reopen-20261006T073813.299352Z/README.md) | FAIL | dbedd2fb6c83 |
 | [W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z](W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/README.md) | FAIL | d26494a498d4 |
 | [W-AI-07/p42b-live-prerequisite-20261006T044157.606085Z](W-AI-07/p42b-live-prerequisite-20261006T044157.606085Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-CLEAN-01/cleanproof-fresh-build-cache-20261005T195625.655687Z](W-CLEAN-01/cleanproof-fresh-build-cache-20261005T195625.655687Z/README.md) | PASS | c532b77edd93 |
@@ -179,6 +202,9 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [W-CLEAN-02/package-diff-20261005T182204.124598Z](W-CLEAN-02/package-diff-20261005T182204.124598Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-CLEAN-02/package-diff-20261005T202208.742343Z](W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md) | PASS | c532b77edd93 |
 | [W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z](W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/README.md) | PASS | 8d1574e4326a |
+| [W-DOC-01/p42c-guides-20261006T082946.366496Z](W-DOC-01/p42c-guides-20261006T082946.366496Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-DOC-01/p42c-image-recovered-20261006T084302.391519Z](W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-DOC-01/p42c-image-recovered-20261006T084832.481069Z](W-DOC-01/p42c-image-recovered-20261006T084832.481069Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z](W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md) | FAIL | 8d1574e4326a |
 | [W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z](W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md) | FAIL | 53525c74d62c |
 | [W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z](W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/README.md) | PASS | c532b77edd93 |
@@ -197,6 +223,7 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [W-ETOS-01/security-scan-20261005T203045.679270Z](W-ETOS-01/security-scan-20261005T203045.679270Z/README.md) | PASS | c532b77edd93 |
 | [W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z](W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md) | PASS | 38baed3d6484 |
 | [W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z](W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z](W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/README.md) | PASS | 9d8ab6b11d43 |
 | [W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z](W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md) | PASS | c532b77edd93 |
 | [W-ETOS-07/direct-tts-import-20261005T194103.515551Z](W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md) | PASS | d26494a498d4 |
 | [W-ETOS-07/installed-media-20261005T192218.561813Z](W-ETOS-07/installed-media-20261005T192218.561813Z/README.md) | FAIL | 12d7e5c7abab |
@@ -222,6 +249,19 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z](W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/negative-semantic-installed-ui-20261005T193242.839824Z](W-MECH-01/negative-semantic-installed-ui-20261005T193242.839824Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/p42b-live-prerequisite-20261006T044157.689794Z](W-MECH-01/p42b-live-prerequisite-20261006T044157.689794Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-MECH-01/p42c-cache-provision-20261006T071748.065567Z](W-MECH-01/p42c-cache-provision-20261006T071748.065567Z/README.md) | PASS | 65666ac27168 |
+| [W-MECH-01/p42c-owner-cache-20261006T072924.288955Z](W-MECH-01/p42c-owner-cache-20261006T072924.288955Z/README.md) | PASS | 65666ac27168 |
+| [W-MECH-01/p42c-owner-cache-verify-20261006T072926.021736Z](W-MECH-01/p42c-owner-cache-verify-20261006T072926.021736Z/README.md) | PASS | 65666ac27168 |
+| [W-MECH-01/p42c-play-catalog-diagnostic-20261006T081636.630932Z](W-MECH-01/p42c-play-catalog-diagnostic-20261006T081636.630932Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-signed-receipts-20261006T090137.253975Z](W-MECH-01/p42c-signed-receipts-20261006T090137.253975Z/README.md) | PASS | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-review-20261006T075609.509348Z](W-MECH-01/p42c-stage-review-20261006T075609.509348Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-review-20261006T080916.723688Z](W-MECH-01/p42c-stage-review-20261006T080916.723688Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-review-20261006T081247.078280Z](W-MECH-01/p42c-stage-review-20261006T081247.078280Z/README.md) | FAIL | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-review-negative-20261006T082331.934190Z](W-MECH-01/p42c-stage-review-negative-20261006T082331.934190Z/README.md) | PASS | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-submit-20261006T075219.891518Z](W-MECH-01/p42c-stage-submit-20261006T075219.891518Z/README.md) | PASS | dbedd2fb6c83 |
+| [W-MECH-01/p42c-stage-submit-20261006T075911.180322Z](W-MECH-01/p42c-stage-submit-20261006T075911.180322Z/README.md) | PASS | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-submit-20261006T080546.723368Z](W-MECH-01/p42c-stage-submit-20261006T080546.723368Z/README.md) | PASS | 9d8ab6b11d43 |
+| [W-MECH-01/p42c-stage-submit-negative-20261006T082005.064618Z](W-MECH-01/p42c-stage-submit-negative-20261006T082005.064618Z/README.md) | PASS | 9d8ab6b11d43 |
 | [W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z](W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z](W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z](W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z/README.md) | PASS | d26494a498d4 |
@@ -253,5 +293,7 @@ Matrix row totals: PASS 27, BLOCKED 37, FAIL 4.
 | [W-VIEW-01/views-capture-20261005T191314.272300Z](W-VIEW-01/views-capture-20261005T191314.272300Z/README.md) | PASS | 12d7e5c7abab |
 | [W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z](W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/README.md) | FAIL | d26494a498d4 |
 | [W-VOICE-01/p42b-live-prerequisite-20261006T044157.715808Z](W-VOICE-01/p42b-live-prerequisite-20261006T044157.715808Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z](W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z/README.md) | FAIL | dbedd2fb6c83 |
+| [W-VOICE-01/p42c-voice2-20261006T074412.994071Z](W-VOICE-01/p42c-voice2-20261006T074412.994071Z/README.md) | FAIL | dbedd2fb6c83 |
 | [W-VOICE-01/recorded-wav-pipewire-20261005T193238.270894Z](W-VOICE-01/recorded-wav-pipewire-20261005T193238.270894Z/README.md) | FAIL | d26494a498d4 |
 | [W-VOICE-01/recorded-wav-pipewire-20261005T193646.251324Z](W-VOICE-01/recorded-wav-pipewire-20261005T193646.251324Z/README.md) | FAIL | d26494a498d4 |

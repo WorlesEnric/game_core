@@ -1,0 +1,18 @@
+test_R2_38_P42c_baseline_cannot_reset_spend (test_p42c.Caps.test_R2_38_P42c_baseline_cannot_reset_spend) ... FAIL
+test_R2_38_P42c_ledger_ten_dollars_stops_without_reservation (test_p42c.Caps.test_R2_38_P42c_ledger_ten_dollars_stops_without_reservation) ... ok
+test_R2_38_P42c_missing_ledger_refuses (test_p42c.Caps.test_R2_38_P42c_missing_ledger_refuses) ... ok
+test_R2_38_P42c_no_automatic_paid_replay (test_p42c.Caps.test_R2_38_P42c_no_automatic_paid_replay) ... ok
+test_R2_38_P42c_reserves_all_paid_caps_before_launch (test_p42c.Caps.test_R2_38_P42c_reserves_all_paid_caps_before_launch) ... ok
+
+======================================================================
+FAIL: test_R2_38_P42c_baseline_cannot_reset_spend (test_p42c.Caps.test_R2_38_P42c_baseline_cannot_reset_spend)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/TOOLS/tests/test_p42c.py", line 39, in test_R2_38_P42c_baseline_cannot_reset_spend
+    with self.assertRaisesRegex(RuntimeError,'baseline already exists'):m.main()
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+FAILED (failures=1)

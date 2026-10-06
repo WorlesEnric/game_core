@@ -1,12 +1,13 @@
 {
   "status": "BLOCKED",
-  "baseline": "1752ca8a",
-  "note": "etosd stop/kill is expressly forbidden. The non-destructive network-namespace prerequisite fails with Operation not permitted; companion supervisor restart cannot prove stopped-node player operation.",
+  "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+  "note": "The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence.",
   "command": "studio/tools/verify-all.sh node-equivalence",
+  "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
   "row": "W-GAME-07",
   "scenario": "Player runs with etosd stopped and no network",
   "requirement": "SR-4.10",
-  "reportedAt": "2026-10-06T04:56:25.182035+00:00",
+  "reportedAt": "2026-10-06T09:08:50.188412+00:00",
   "evidence": [
     "W-GAME-07/p42b-network-namespace-prerequisite-20261006T044240.056723Z/README.md"
   ]

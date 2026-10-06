@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.
 
-Report timestamp: 2026-10-06T04:56:25.182414+00:00 UTC.
+Report timestamp: 2026-10-06T09:08:50.188882+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

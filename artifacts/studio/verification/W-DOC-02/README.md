@@ -2,7 +2,7 @@
 
 Verdict: **FAIL**. Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed.
 
-Report timestamp: 2026-10-06T04:56:25.185041+00:00 UTC.
+Report timestamp: 2026-10-06T09:08:50.191978+00:00 UTC.
 
 Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

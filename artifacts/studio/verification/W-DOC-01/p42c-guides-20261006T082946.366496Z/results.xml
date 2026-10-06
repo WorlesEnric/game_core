@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="291.000405">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="491" result="Failed" site="Child" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="291.000405" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1720" name="P42c.Live.Tests.dll" fullname="~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42c.Live.Tests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="290.978772" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1505369" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1721" name="P42c" fullname="P42c" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="290.977122" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1722" name="Live" fullname="P42c.Live" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="290.975059" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1716" name="GuideTests" fullname="P42c.Live.GuideTests" classname="P42c.Live.GuideTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:35:18Z" duration="290.971908" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1717" name="R2_38_CreatorGuide_TextSend" fullname="P42c.Live.GuideTests.R2_38_CreatorGuide_TextSend" methodname="R2_38_CreatorGuide_TextSend" classname="P42c.Live.GuideTests" runstate="Runnable" seed="1910210008" result="Passed" start-time="2026-10-06 08:30:27Z" end-time="2026-10-06 08:32:18Z" duration="110.904680" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Order" value="0" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+[GameCore.Studio/etos] candidate cs_01M485BYC10PP9N65CAV4KP2F3 staged in 53 ms (0 artifact(s) verified)
+[GameCore.Studio/etos] candidate cs_01M485BYC10PP9N65CAV4KP2F3 rejected: Guide walkthrough: reviewed candidate, explicit reject after Send.
+]]></output>
+            </test-case>
+            <test-case id="1718" name="R2_38_CreatorGuide_ImageSend" fullname="P42c.Live.GuideTests.R2_38_CreatorGuide_ImageSend" methodname="R2_38_CreatorGuide_ImageSend" classname="P42c.Live.GuideTests" runstate="Runnable" seed="1526299635" result="Failed" start-time="2026-10-06 08:32:18Z" end-time="2026-10-06 08:35:18Z" duration="180.002989" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Order" value="1" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Timeout value of 180000 ms was exceeded. If this is intended, increase the timeout value using a TimeoutAttribute.]]></message>
+                <stack-trace><![CDATA[]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+]]></output>
+            </test-case>
+            <test-case id="1719" name="P42_OPS_01_Installed3dRefusesUnconfigured" fullname="P42c.Live.GuideTests.P42_OPS_01_Installed3dRefusesUnconfigured" methodname="P42_OPS_01_Installed3dRefusesUnconfigured" classname="P42c.Live.GuideTests" runstate="Runnable" seed="1751050589" result="Passed" start-time="2026-10-06 08:35:18Z" end-time="2026-10-06 08:35:18Z" duration="0.046908" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Order" value="2" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

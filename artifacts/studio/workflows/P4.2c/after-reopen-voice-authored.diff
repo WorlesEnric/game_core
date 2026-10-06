@@ -1,0 +1,37 @@
+diff --git a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+index f009ec1e..2e98d967 100644
+--- a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
++++ b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+@@ -99,6 +99,15 @@ MonoBehaviour:
+     condition: {fileID: 0}
+     actions: {fileID: 0}
+     options: []
++  - kind: 0
++    speaker: 
++    speakerEntityId: 
++    text: The shrine has its light back. Even the black water seems less lonely tonight.
++    voiceClip: {fileID: 0}
++    portrait: {fileID: 0}
++    condition: {fileID: 0}
++    actions: {fileID: 0}
++    options: []
+   edges:
+   - from: 0
+     port: 1
+@@ -115,7 +124,7 @@ MonoBehaviour:
+   - from: 3
+     port: 0
+     option: 0
+-    to: 4
++    to: 8
+   - from: 4
+     port: 0
+     option: 0
+@@ -132,3 +141,7 @@ MonoBehaviour:
+     port: 2
+     option: 1
+     to: 7
++  - from: 8
++    port: 0
++    option: 0
++    to: 4
