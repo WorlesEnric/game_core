@@ -1,0 +1,112 @@
+{
+  "row": "W-MODEL-02",
+  "passed": true,
+  "dialogueLine": "Here is the oil flask.",
+  "objective": "Collect the oil flask",
+  "preview": [
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "d3d39003-5a74-4e6c-af6c-17d12c0d011f",
+        "global": "GlobalObjectId_V1-3-9151abfc4d2a88771a4ce0affb0218ec-11400000-0",
+        "assetGuid": "9151abfc4d2a88771a4ce0affb0218ec",
+        "path": "Assets/R7BImpact_abd4e188b09e4283bccf8e7b22ad109d/HasOil.asset",
+        "scope": "Definition",
+        "stamp": "sha256:c0f7948c24e72cf13b47d6577473eaa47a7a346af85bdfdfcd18ef70e4e955db"
+      },
+      "relation": "references",
+      "depth": 1,
+      "field": "conditions[0].item"
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "d81f4711-ceac-4430-bbbb-5662e3684cb0",
+        "global": "GlobalObjectId_V1-3-ce0a355a78c5c19f6b6f28b72a0172a0-11400000-0",
+        "assetGuid": "ce0a355a78c5c19f6b6f28b72a0172a0",
+        "path": "Assets/R7BImpact_abd4e188b09e4283bccf8e7b22ad109d/Lantern.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e1b83bf11d40df2f721bc5fe1cb4445877de8b6df87ceaa06a6c06e9d4a2e46f"
+      },
+      "relation": "references",
+      "depth": 1,
+      "field": "objectives[0].item"
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "8dee147a-a0d7-4914-8ad8-54ab130fd05b",
+        "global": "GlobalObjectId_V1-3-970c00814ab6bb574b82924734fba7b3-11400000-0",
+        "assetGuid": "970c00814ab6bb574b82924734fba7b3",
+        "path": "Assets/R7BImpact_abd4e188b09e4283bccf8e7b22ad109d/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a3e96b38c8c8282d59db74c6a4ee96c3e1c4ddea39538611b36ce16be318e6b2"
+      },
+      "relation": "references",
+      "depth": 2,
+      "field": "nodes[0].options[0].condition"
+    }
+  ],
+  "deletion": {
+    "id": "cs_01M49H0CPS77M1RSVHQMB5P58A",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Delete oil after reviewing impact",
+      "origin": "manual"
+    },
+    "operations": [
+      {
+        "opId": "delete",
+        "tool": "delete",
+        "target": {
+          "kind": "Definition",
+          "authoringId": "f0ed4b22-5d6e-4b07-846d-fff017279ac0",
+          "global": "GlobalObjectId_V1-3-bc0dcde2fa4462d80aad9f202d439cf0-11400000-0",
+          "assetGuid": "bc0dcde2fa4462d80aad9f202d439cf0",
+          "path": "Assets/R7BImpact_abd4e188b09e4283bccf8e7b22ad109d/Oil.asset",
+          "scope": "Definition",
+          "stamp": "sha256:2e316b8763da93d900a829465b0141ea890236b626958c34c0d780c4b14c2b52"
+        }
+      }
+    ],
+    "requirements": {
+      "max": "Rebuild",
+      "worldRebuild": true,
+      "compile": false,
+      "build": false
+    },
+    "state": "Applied",
+    "outcomes": [
+      {
+        "opId": "delete",
+        "status": "Applied",
+        "undo": {
+          "inverse": {
+            "operations": [
+              {
+                "opId": "inverse",
+                "tool": "history.restoreAsset",
+                "args": {
+                  "path": "Assets/R7BImpact_abd4e188b09e4283bccf8e7b22ad109d/Oil.asset",
+                  "artifact": {
+                    "artifact": "sha256:3f88b140ffb34c45efde0e4bd58fa68a5647198733b85bdb50c1c4a539e1d126"
+                  },
+                  "meta": {
+                    "artifact": "sha256:3ef9e1113cb9bad8a0cd4ea415b695560e80334e1a64d66000d297420e18513b"
+                  }
+                },
+                "preconditions": "none"
+              }
+            ],
+            "assetLevel": true
+          }
+        }
+      }
+    ],
+    "timestamps": {
+      "requested": "2026-10-06T21:13:11.173Z",
+      "applied": "2026-10-06T21:13:11.239Z"
+    }
+  },
+  "undoRestoredItem": true
+}

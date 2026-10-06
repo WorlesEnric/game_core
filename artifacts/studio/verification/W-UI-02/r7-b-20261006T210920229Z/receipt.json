@@ -1,0 +1,15 @@
+{
+  "row": "W-UI-02",
+  "verdict": "BLOCKED",
+  "utc": "2026-10-06T21:09:22.7938760Z",
+  "batchMode": true,
+  "graphicsDevice": "Null",
+  "blockers": [
+    "capture_unavailable: the batch Editor has no graphics device (-nographics). Real offscreen viewport and GUIView captures require a graphics-enabled batch Editor, not display :1.",
+    "marquee_choices_missing: StudioViewportWindow.MarqueeSelect(Rect, SelectionOp, bool?) selects targets but does not present the resulting overlap choices. A later point-click list is not evidence of the requested marquee chooser."
+  ],
+  "error": null,
+  "observations": "observations.json",
+  "fixture": "Isolated saved scene, real Hollowmere definitions and prefab instances; fixture deleted after run",
+  "paidOperations": 0
+}

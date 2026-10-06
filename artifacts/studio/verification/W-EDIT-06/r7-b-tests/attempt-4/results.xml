@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.9952105">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="573" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.995211" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1854" name="Hollowmere.R7_B.Promotion.dll" fullname="<repo>/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_B.Promotion.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.935513" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4012835" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1855" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.935059" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1856" name="R7_B" fullname="Hollowmere.R7_B" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.934813" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1857" name="Promotion" fullname="Hollowmere.R7_B.Promotion" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.934589" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1852" name="RuntimeMoveAcceptance" fullname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" classname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:04:20Z" end-time="2026-10-06 21:04:24Z" duration="3.933646" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1853" name="W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" fullname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance.W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" methodname="W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" classname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" runstate="Runnable" seed="587827358" result="Passed" start-time="2026-10-06 21:04:15Z" end-time="2026-10-06 21:04:24Z" duration="8.136748" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[GameCore.Studio/engine] applied cs_01M49GG7827WMCKCRRR8C12ZXC -> Applied (1 op(s), 63.9 ms)
+[GameCore.Studio/engine] applied cs_01M49GG7YXQ377P8DYP8HC881F -> Applied (1 op(s), 31.0 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] history apply cs_01M49GG9N7PVKP19P7QC37KFKP -> Applied (1 op(s), 32.2 ms)
+[GameCore.Studio/history] undid cs_01M49GG7YXQ377P8DYP8HC881F (1 inverse op(s))
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

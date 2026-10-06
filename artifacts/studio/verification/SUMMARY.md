@@ -1,12 +1,12 @@
-# P4.2g verification summary
+# P4.2 + P4.2b + P4.2c verification summary
 
-Matrix row totals: PASS 35, BLOCKED 30, FAIL 3.
+Matrix row totals: PASS 39, BLOCKED 26, FAIL 3.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
 | W-UI-01 | FAIL | [Evidence](W-UI-01/README.md): Graphical walking/picking captured and 1280×720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path. |
-| W-UI-02 | BLOCKED | [Evidence](W-UI-02/README.md): The capture includes marquee/overlap UI, but not the required three NPCs behind a fence with the resulting overlap choices. |
-| W-UI-03 | BLOCKED | [Evidence](W-UI-03/README.md): Logical-object selection is captured; the lantern subpart/prefab/scope chooser sequence is not demonstrated by this driver. |
+| W-UI-02 | BLOCKED | [Evidence](W-UI-02/README.md): R7-B real three-NPC/fence marquee and occluded controller choices succeed; the creator marquee-result overlap chooser is absent in R7-A-owned studio.ui. Exact request retained; no graphical pass inferred. |
+| W-UI-03 | BLOCKED | [Evidence](W-UI-03/README.md): R7-B real lantern Body/logical choices succeed and prefab/scope refs resolve; the creator prefab/scope choices are absent in R7-A-owned studio.ui. Exact request retained; no synthetic chooser or capture. |
 | W-UI-04 | PASS | [Evidence](W-UI-04/README.md): Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes. |
 | W-UI-05 | PASS | [Evidence](W-UI-05/README.md): CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3. |
 | W-VIEW-01 | PASS | [Evidence](W-VIEW-01/README.md): Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed. |
@@ -15,15 +15,15 @@ Matrix row totals: PASS 35, BLOCKED 30, FAIL 3.
 | W-VIEW-04 | PASS | [Evidence](W-VIEW-04/README.md): Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed. |
 | W-VIEW-05 | PASS | [Evidence](W-VIEW-05/README.md): Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed. |
 | W-VIEW-06 | PASS | [Evidence](W-VIEW-06/README.md): Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed. |
-| W-MODEL-02 | BLOCKED | [Evidence](W-MODEL-02/README.md): Current index/impact tests cover typed references and lantern reward/stock; the exact deleted-item dialogue-line/objective witness is not exercised. |
+| W-MODEL-02 | PASS | [Evidence](W-MODEL-02/README.md): R7-B actual delete preview identifies the dialogue choice line through its item condition and the collect objective by nested field paths; engine deletion and ordinary History undo succeed. Exact case passes in final 8/8 XML. |
 | W-TOOL-01 | PASS | [Evidence](W-TOOL-01/README.md): Saltmarsh exports only installed production tools; fixture, Hollowmere and internal admission tools are absent. Catalog and installed-package manifest retained. |
 | W-TOOL-02 | PASS | [Evidence](W-TOOL-02/README.md): Package metadata and exact asmdef-derived dependencies pass on the final harness tree. |
 | W-EDIT-01 | BLOCKED | [Evidence](W-EDIT-01/README.md): Real task/candidate IDs are recorded, but the worker move is rejected for missing scope, so no applied joined task/GameCore-operation History entry exists. |
 | W-EDIT-02 | PASS | [Evidence](W-EDIT-02/README.md): Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes. |
 | W-EDIT-03 | BLOCKED | [Evidence](W-EDIT-03/README.md): No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence. |
-| W-EDIT-04 | BLOCKED | [Evidence](W-EDIT-04/README.md): Stale-target pieces pass, but the exact live NPC → exit Play → apply → delete → apply sequence is not retained as a combined acceptance run. |
+| W-EDIT-04 | PASS | [Evidence](W-EDIT-04/README.md): R7-B combined real Bram NPC command/staged edit, Play exit, authored apply, engine deletion and second apply produces a journaled Refused/StaleTarget without resurrection. Normal History undo restores original costume and scene bytes. |
 | W-EDIT-05 | PASS | [Evidence](W-EDIT-05/README.md): Core and viewport gizmo tests compare the resulting journal entries with typed moves. |
-| W-EDIT-06 | BLOCKED | [Evidence](W-EDIT-06/README.md): No durable Apply-to-authored workflow for runtime-only moves is exposed by the current engine/UI seam; runtime-only refusal tests are not this persistence workflow. |
+| W-EDIT-06 | PASS | [Evidence](W-EDIT-06/README.md): R7-B real committed world.place leaves authored proxy unchanged; Changes creator command persists a distinct authored candidate. Play exit, ordinary move/save/reopen and History inverse/reopen pass. Runtime action remains non-undoable; final XML 8/8 includes refusal boundaries. |
 | W-EDIT-07 | PASS | [Evidence](W-EDIT-07/README.md): Per-operation conflict/rebase tests pass; the retained real worker candidate also refuses with StaleContext after an actual registry revision change. |
 | W-EDIT-08 | PASS | [Evidence](W-EDIT-08/README.md): single: p95 [55.8581, 63.073600000000006] ms, median 59.4659 ms, budget 200.0 ms; region: p95 [157.6064, 79.8135] ms, median 118.7100 ms, budget 1000.0 ms; prepare: p95 [4.3048, 10.177200000000001] ms, median 7.2410 ms, budget 300.0 ms |
 | W-HOST-01 | BLOCKED | [Evidence](W-HOST-01/README.md): P4.2e activates and checksum-verifies immutable main-built release 0.1.0-cac2f82c59be070b; the repeat installer is a no-op and authenticated hello reports the owner describe tariff. A full fresh node install remains unrun under the no-etosd-restart rule. Initial host inventory is idle, but the monitor later sees a brief second Unity PID during NPC asset import; its exited process cannot be classified retrospectively, so strict host exclusivity is not claimed. |
@@ -57,7 +57,7 @@ Matrix row totals: PASS 35, BLOCKED 30, FAIL 3.
 | W-PLUG-12 | PASS | [Evidence](W-PLUG-12/README.md): Both final-tree rebakes/Entry.Verify pass without output changes; byte identity and single-definition revision tests pass. Structural recipe revisions did not change, preserving existing save compatibility. |
 | W-KERNEL-01 | PASS | [Evidence](W-KERNEL-01/README.md): Production GameApplication boot with a corrupted catalog returns CatalogFingerprintMismatch and creates no world. |
 | W-PERSIST-01 | PASS | [Evidence](W-PERSIST-01/README.md): Belfry save/fresh-boot restore preserves canonical slots, items/facts, resident region and in-flight work exactly once; real game mid-quest restore continues to ending C. |
-| W-PERSIST-02 | BLOCKED | [Evidence](W-PERSIST-02/README.md): Cosmetic-content save compatibility passes, but the literal prefab rename/reopen case is not exercised; no claim is inferred from stable GUID design alone. |
+| W-PERSIST-02 | PASS | [Evidence](W-PERSIST-02/README.md): R7-B literally renames the referenced NPC prefab after real checkpoint capture; a separate Editor PID reopens and restores identical canonical slot hash, eight NPC fields and costume content. Original prefab/meta path and bytes restored exactly. |
 | W-PERSIST-03 | PASS | [Evidence](W-PERSIST-03/README.md): Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged. |
 | W-REC-01 | PASS | [Evidence](W-REC-01/README.md): Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained. |
 | W-REC-03 | BLOCKED | [Evidence](W-REC-03/README.md): Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation. |
