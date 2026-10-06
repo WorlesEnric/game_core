@@ -110,7 +110,10 @@ passing both is rejected as a reserved argument (initial setup rejection, no Edi
 The Python environment is isolated under `/tmp`, with pytest/jsonschema installed.
 Rust sources are unchanged; no Rust build or installed-binary operation is needed.
 XML/TRX case counts and hashes are reproducible with `python3 .../r6-b/summarize.py`
-and retained in `results.json`. Final restored-source `verified.xml`: **59 passed / 0 failed / 0 skipped**:
+and retained in `results.json`. Exact original XML/TRX/log bytes are additionally
+archived in `raw-receipts.tar.gz`, with hashes in `raw-receipts-sha256.json`; readable
+copies strip trailing line whitespace only so repository whitespace checks pass.
+No fields, outcomes, stack frames or log lines are removed. Final restored-source `verified.xml`: **59 passed / 0 failed / 0 skipped**:
 P3_2 dry **16**, P1_4 EditMode **7**, R6_B **20**, existing ETOS gateway **15**,
 existing R5_B voice **1**. Dotnet: model **113**, gameplay rules (including dialogue)
 **309**, R6_B dialogue **7**, client **69 passed / 6 live tests skipped**; aggregate
@@ -196,4 +199,3 @@ tests** have a latest passing result (88 core + 59 packet/client).
   a real failure. No gameplay/history/bake assets outside exclusive paths are changed.
 - Describe live tariff/call: model is Echo and no operator amount/basis was supplied.
   The required operator placeholder remains fail-closed; packet explicitly forbids live apply.
-

@@ -61,10 +61,10 @@
               </properties>
               <failure>
                 <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
-                <stack-trace><![CDATA[  at UnityEditor.EditorWindow.Close () [0x0006c] in /home/bokken/build/output/unity/unity/Editor/Mono/EditorWindow.cs:1098 
-  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.<>m__Finally4 () [0x00077] in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:191 
-  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.System.IDisposable.Dispose () [0x0003d] in <24790273a1904af5a9064138eaccb114>:0 
-  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.MoveNext () [0x0047c] in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:195 
+                <stack-trace><![CDATA[  at UnityEditor.EditorWindow.Close () [0x0006c] in /home/bokken/build/output/unity/unity/Editor/Mono/EditorWindow.cs:1098
+  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.<>m__Finally4 () [0x00077] in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:191
+  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.System.IDisposable.Dispose () [0x0003d] in <24790273a1904af5a9064138eaccb114>:0
+  at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.MoveNext () [0x0047c] in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:195
   at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
               </failure>
               <output><![CDATA[[P3.2 workflow] {"shot":"keyframes/001-voice-r6-dry-pressed.png","captureProblem":"capture: DirectoryNotFoundException: Could not find a part of the path \"/home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Temp/P3.2-workflows/keyframes/001-voice-r6-dry-pressed.png\".","utc":"2026-10-06T13:35:38.958Z","step":0,"stepName":"","name":"voice-r6-dry-pressed","caption":"Mic pressed (push-to-talk); the voice session opens on the default microphone."}
