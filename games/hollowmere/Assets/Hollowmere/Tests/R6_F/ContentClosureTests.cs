@@ -123,6 +123,18 @@ namespace Hollowmere.R6_F
                 Assert.That(diagnostics.Any(d => d.Message.Contains("npc_dialogue_not_enrolled", StringComparison.Ordinal)), Is.True,
                     string.Join("; ", diagnostics.Select(d => d.Message)));
                 Assert.That(AssetDatabase.LoadAssetAtPath<GameplayContentSet>(ContentPath).Definitions, Has.No.Member(graph));
+                var change = StudioJson.Deserialize<ChangeSet>(value.ToString());
+                var staged = runtime.Engine.Stage(change, new StageOptions
+                {
+                    Mode = ValidationMode.Candidate, ToolCatalogRevision = runtime.Registry.Catalog.Revision,
+                });
+                Assert.That(staged.Ok, Is.False);
+                Assert.That(staged.AllDiagnostics.Any(d => d.Message.Contains("npc_dialogue_not_enrolled", StringComparison.Ordinal)), Is.True,
+                    string.Join("; ", staged.AllDiagnostics.Select(d => d.Message)));
+                var applied = runtime.Engine.Apply(staged);
+                Assert.That(applied.State, Is.EqualTo(ChangeSetState.Rejected));
+                Assert.That(UnityEngine.Object.FindObjectsByType<AuthoredEntity>(FindObjectsSortMode.None).Length, Is.EqualTo(20));
+                Assert.That(AssetDatabase.LoadAssetAtPath<GameplayContentSet>(ContentPath).Definitions, Has.No.Member(graph));
             }
         }
 
