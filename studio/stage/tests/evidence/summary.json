@@ -1,0 +1,113 @@
+{
+  "packet": "R5-C",
+  "base": "c9866292",
+  "host": "myubuntu",
+  "date": "2026-10-06",
+  "python": {
+    "passed": 22,
+    "failed": 0
+  },
+  "rust": {
+    "passed": 142,
+    "failed": 0,
+    "ignored": 11,
+    "rootCases": 5
+  },
+  "unity": {
+    "r5-driver-closure-diagnostic.xml": {
+      "result": "Failed(Child)",
+      "total": "16",
+      "passed": "15",
+      "failed": "1",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "03f90a1e05e808e198f0e0708aaec76ab49ad8b5fa57a104f58aaec9aacf9895"
+    },
+    "r5-driver-first-fix.xml": {
+      "result": "Failed(Child)",
+      "total": "15",
+      "passed": "13",
+      "failed": "2",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "d054ea253232e34b8785233eb42ef3106907ae691e907448ce5abbad498a6e8c"
+    },
+    "r5-driver-green.xml": {
+      "result": "Passed",
+      "total": "16",
+      "passed": "16",
+      "failed": "0",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "daaed6bdece20bf6faf4b7dcaec157399db8c62d05fb02368714d7a7b82792ac"
+    },
+    "r5-driver-owner-diagnostic.xml": {
+      "result": "Failed(Child)",
+      "total": "15",
+      "passed": "14",
+      "failed": "1",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "a3765de51bee240d718ae1879ffaba35efb459af88306ab8d78735ce83cb6334"
+    },
+    "r5-driver-red.xml": {
+      "result": "Failed(Child)",
+      "total": "15",
+      "passed": "8",
+      "failed": "7",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "0acc6488fec0abf7b75b14d4a506d03637b8eb5d91b9b8512c198e864de0ce6b"
+    },
+    "r5-driver-reload-wait.xml": {
+      "result": "Failed(Child)",
+      "total": "15",
+      "passed": "14",
+      "failed": "1",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "f3fa6d63b752eb9c1c68447ab77db976e793f40506799947dc9a01e24e326237"
+    },
+    "r5-driver-replay-diagnostic.xml": {
+      "result": "Failed(Child)",
+      "total": "16",
+      "passed": "15",
+      "failed": "1",
+      "skipped": "0",
+      "inconclusive": "0",
+      "sha256": "67944ad867fa78ad3ffc649b9aec0a1c206589dfbb0f045930a03aad2d917596"
+    }
+  },
+  "metadata": "pass: 42 packages, 91 assemblies",
+  "csharp": "pass: 1209 files",
+  "paidOps": 0,
+  "witnessCandidates": {
+    "artifacts/studio/verification/W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/odd-line/candidate.json": "6ca5be3f219e944eb19c95a0b1eba31ed42398903fa0f28fe6516987f2c720d3",
+    "artifacts/studio/verification/W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/quest/candidate.json": "30777802ebf7a7b4e8eaebd7994742e85c1b2e6f3130da345b190f66dc620887"
+  },
+  "restoredAssets": {
+    "games/hollowmere/Assets/Hollowmere/Quests/DrownedBell.asset": "b303fe35251f597c510611ad5f3ac034e76186f42d529e8e8faf0e9200ac3af1",
+    "games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset": "4bfdb0cfa74c7614b92509e4e9079a4c102da013fae9ba006970953126032c00"
+  },
+  "testedSourceSha256": {
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs": "2e72b46e5b51589983adf3bcac6839c5bdc7673af54173c7a473f5eea6e2fc1b",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/HeadlessWorkflowTests.cs": "10af2b08e3c45cb3251956faa180e230c878b4652a8bf97632a9bbca0d347e8a",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/Hollowmere.P3_2.Headless.Tests.asmdef": "e78c8032f02f33779af2f2aadb38ed2c13051b2b07b279ae582c8c6192cb0725",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/Editor/Hollowmere.P3_2.Workflows.asmdef": "ef27b714e01d08dd84036aa03397776be2a215ba1a7e15c4945e74246019931f",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/Editor/WorkflowPlayChecks.cs": "4dfe3ee6c8fe54d7dd63478b0e4653f928424c3dea00b5f5a374baeb515c8f28",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/Editor/WorkflowRunner.cs": "ee93fedfd2362ee573c4d89afc7a0259a2241b1602f8c4bb8c030c278328998f",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/Editor/WorkflowSteps.cs": "5412651e5399469821c30b58c9b782cf04c51bb89b535d14ac928f0e9577bc2a",
+    "games/hollowmere/Assets/Hollowmere/Tests/P3_2/Editor/Workflows.cs": "fae495055d14b5992b0bf92182dffb93b45463f22289ac0d901f9332fe2536b4",
+    "studio/agent/src/stage.rs": "35cebfeed016ebc26cbe29ca810a268c96578c8a6bdccbad31190d5cbceb7e72",
+    "studio/agent/src/stage/pipeline.rs": "f1699c1dfdce52bcbd71ec51e66f18fac2983abc78aa88d65c2b1dfac03beb96",
+    "studio/agent/tests/stage_project_root.rs": "971784399224c818d6300f6bb6f74e48dc0f405192b9197e0e1920201ba990c7",
+    "studio/stage/make-slot.py": "374399c049b3ab6fe9d842b03491d145a473a5be90b7d12fcdfe91286ef933d4",
+    "studio/stage/tests/package-root-cases.json": "995b87b228eca4db82b03744fbed6dcc08ce503af47f88280b043f8aa0f80040",
+    "studio/stage/tests/test_package_root.py": "1fc79fd83dd550be18c9bc8abd155a37a0152b53c777fcd04f8abcd16a2e9af6"
+  },
+  "leftOpen": [
+    "Graphical W-AI-02 navigation is intentionally refused in mandated -nographics dry mode.",
+    "No new paid creator workflow or acceptance-matrix qualification.",
+    "Intermittent pre-dispatch Unity startup delay remains unexplained."
+  ]
+}
