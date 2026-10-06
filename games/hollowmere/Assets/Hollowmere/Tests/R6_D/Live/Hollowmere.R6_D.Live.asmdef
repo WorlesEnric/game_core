@@ -1,0 +1,30 @@
+{
+  "name": "Hollowmere.R6_D.Live",
+  "rootNamespace": "Hollowmere.R6_D",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Npc",
+    "GameCore.Gameplay.Npc.Editor",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "GameCore.Studio.Model",
+    "GameCore.Unity.App",
+    "Hollowmere.Authoring.Editor",
+    "Hollowmere.Boot",
+    "Hollowmere.Game",
+    "Hollowmere.Narrative",
+    "GameCore.Gameplay.Inventory"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
