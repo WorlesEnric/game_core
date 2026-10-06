@@ -68,6 +68,209 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(diagnostics[0].Message, Does.Contain("dialogue closure validator is unavailable"));
         }
 
+        [Test]
+        public void R7E_MissingPrefabCandidatePreservesCanonicalDiagnosticWithoutMutation()
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            AuthoringRef reference = runtime.Resolver.BuildRef(definition)!;
+            string before = EditorJsonUtility.ToJson(definition);
+            bool dirty = EditorUtility.IsDirty(definition);
+            int objects = Resources.FindObjectsOfTypeAll(definition.GetType()).Length;
+            var expected = DefinitionDiagnostic(definition, "GP-ENT-006");
+            ChangeSet change = StudioTestBed.NewChangeSet("invalid definition", null,
+                StudioTestBed.Set("edit", reference, "defaultScaleMilli", 1200));
+
+            StagedChangeSet staged = runtime.Engine.Stage(change, new StageOptions
+            {
+                Mode = ValidationMode.Candidate,
+                ToolCatalogRevision = runtime.Registry.Catalog.Revision ?? runtime.Registry.Catalog.ComputeRevision(),
+                Previews = false,
+            });
+
+            Assert.That(staged.Ok, Is.False);
+            Assert.That(staged.AllDiagnostics, Has.Some.Matches<Diagnostic>(diagnostic =>
+                diagnostic.Code == expected.Code && diagnostic.Message == expected.Message
+                && diagnostic.Where?.Ref?.IdentityKey == SemanticIndexService.EdgeRef(reference).IdentityKey
+                && (string?)diagnostic.Data?["subject"] == expected.Subject));
+            Assert.That(runtime.Journal.Exists(change.Id), Is.False, "Invalid candidates cannot enter the journal.");
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(before));
+            Assert.That(EditorUtility.IsDirty(definition), Is.EqualTo(dirty));
+            Assert.That(Resources.FindObjectsOfTypeAll(definition.GetType()).Length, Is.EqualTo(objects), "Projection copies must be released.");
+        }
+
+        [TestCase("set")]
+        [TestCase("assign")]
+        public void R7E_ProposedPrefabRepairStagesWithoutWritingAsset(string tool)
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            string prefabPath = DefinitionPrefab();
+            string before = EditorJsonUtility.ToJson(definition);
+            bool dirty = EditorUtility.IsDirty(definition);
+            byte[] asset = File.ReadAllBytes(AssetDatabase.GetAssetPath(definition));
+            ChangeSet change = StudioTestBed.NewChangeSet("repair", null,
+                StudioTestBed.Op("repair", tool, runtime.Resolver.BuildRef(definition),
+                    new JObject { ["field"] = "prefab", ["value"] = prefabPath }));
+
+            StagedChangeSet staged = runtime.Engine.Stage(change);
+
+            Assert.That(staged.Ok, Is.True, string.Join("; ", staged.AllDiagnostics));
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(before));
+            Assert.That(EditorUtility.IsDirty(definition), Is.EqualTo(dirty));
+            Assert.That(File.ReadAllBytes(AssetDatabase.GetAssetPath(definition)), Is.EqualTo(asset));
+        }
+
+        [Test]
+        public void R7E_ProposedInvalidStateBlocksEveryContributorUnderBestEffort()
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            SetDefinitionPrefab(definition, DefinitionPrefab());
+            AuthoringRef reference = runtime.Resolver.BuildRef(definition)!;
+            string before = EditorJsonUtility.ToJson(definition);
+            var expectedCopy = UnityEngine.Object.Instantiate(definition);
+            expectedCopy.name = definition.name;
+            (string Code, string Message, string Subject) expected;
+            try
+            {
+                using var serialized = new SerializedObject(expectedCopy);
+                serialized.FindProperty("prefab").objectReferenceValue = null;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                expected = DefinitionDiagnostic(expectedCopy, "GP-ENT-006");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(expectedCopy); }
+            ChangeSet change = StudioTestBed.NewChangeSet("invalid proposal", ApplyPolicy.BestEffort,
+                StudioTestBed.Set("scale", reference, "defaultScaleMilli", 1500),
+                StudioTestBed.Set("clear", reference, "prefab", JValue.CreateNull()));
+
+            StagedChangeSet staged = runtime.Engine.Stage(change);
+
+            Assert.That(staged.Ok, Is.False);
+            Assert.That(staged.AllDiagnostics, Has.Some.Matches<Diagnostic>(diagnostic =>
+                diagnostic.Code == expected.Code && diagnostic.Message == expected.Message
+                && diagnostic.Where?.Ref?.IdentityKey == SemanticIndexService.EdgeRef(reference).IdentityKey
+                && (string?)diagnostic.Data?["subject"] == expected.Subject));
+            ApplyReport refused = runtime.Engine.Apply(staged);
+            Assert.That(refused.State, Is.EqualTo(ChangeSetState.Rejected));
+            Assert.That(refused.Entry.Outcomes, Has.All.Matches<OperationOutcome>(outcome => outcome.Status == OutcomeStatus.Refused));
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(before));
+        }
+
+        [Test]
+        public void R7E_MultipleOperationsValidateFinalDependencyOrderedState()
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            string prefabPath = DefinitionPrefab();
+            SetDefinitionPrefab(definition, prefabPath);
+            AuthoringRef reference = runtime.Resolver.BuildRef(definition)!;
+            string before = EditorJsonUtility.ToJson(definition);
+            ChangeSet change = StudioTestBed.NewChangeSet("replace prefab", null,
+                StudioTestBed.Op("repair", "assign", reference,
+                    new JObject { ["field"] = "prefab", ["value"] = prefabPath }, "clear"),
+                StudioTestBed.Set("clear", reference, "prefab", JValue.CreateNull()));
+
+            StagedChangeSet staged = runtime.Engine.Stage(change);
+
+            Assert.That(staged.Ok, Is.True, string.Join("; ", staged.AllDiagnostics));
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(before));
+        }
+
+        [Test]
+        public void R7E_AssignCollectionValidatesAppendAndSubsequentIndexRepair()
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            SetDefinitionPrefab(definition, DefinitionPrefab());
+            System.Type? variantType = System.Type.GetType("GameCore.Gameplay.Entities.VariantDefinition, GameCore.Gameplay.Entities");
+            Assert.That(variantType, Is.Not.Null);
+            ScriptableObject variant = ScriptableObject.CreateInstance(variantType!);
+            StudioTestBed.MintId(variant);
+            string variantPath = _bed.Folder + "/Variant.asset";
+            AssetDatabase.CreateAsset(variant, variantPath);
+            AuthoringRef reference = runtime.Resolver.BuildRef(definition)!;
+            string before = EditorJsonUtility.ToJson(definition);
+            Operation append = StudioTestBed.Op("append", "assign", reference,
+                new JObject { ["field"] = "variants", ["append"] = true });
+
+            StagedChangeSet invalid = runtime.Engine.Stage(StudioTestBed.NewChangeSet("invalid variant", null, append));
+            Assert.That(invalid.AllDiagnostics, Has.Some.Matches<Diagnostic>(diagnostic => diagnostic.Code == "GP-ID-001"));
+            StagedChangeSet repaired = runtime.Engine.Stage(StudioTestBed.NewChangeSet("repair variant", null,
+                StudioTestBed.Op("repair", "assign", reference,
+                    new JObject { ["field"] = "variants", ["index"] = 0, ["value"] = variantPath }, "append"), append));
+
+            Assert.That(repaired.Ok, Is.True, string.Join("; ", repaired.AllDiagnostics));
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(before));
+        }
+
+        [Test]
+        public void R7E_HistoryCanUndoARepairBackToInvalidDefinition()
+        {
+            using StudioRuntime runtime = DefinitionRuntime(out ScriptableObject definition);
+            ChangeSet repair = StudioTestBed.NewChangeSet("repair before undo", null,
+                StudioTestBed.Op("repair", "assign", runtime.Resolver.BuildRef(definition),
+                    new JObject { ["field"] = "prefab", ["value"] = DefinitionPrefab() }));
+            ApplyReport applied = runtime.Engine.Apply(repair);
+            Assert.That(applied.State, Is.EqualTo(ChangeSetState.Applied), string.Join("; ", applied.Diagnostics));
+            Assert.That(new SerializedObject(definition).FindProperty("prefab").objectReferenceValue, Is.Not.Null);
+
+            HistoryResult undone = runtime.History.Undo();
+
+            Assert.That(undone.Ok, Is.True, string.Join("; ", undone.Diagnostics));
+            Assert.That(new SerializedObject(definition).FindProperty("prefab").objectReferenceValue, Is.Null,
+                "History inverses bypass forward definition validation.");
+        }
+
+        private StudioRuntime DefinitionRuntime(out ScriptableObject definition)
+        {
+            System.Type? type = System.Type.GetType("GameCore.Gameplay.Entities.EntityDefinition, GameCore.Gameplay.Entities");
+            Assert.That(type, Is.Not.Null, "The real gameplay definition is required by this regression.");
+            definition = ScriptableObject.CreateInstance(type!);
+            definition.name = "Definition";
+            StudioTestBed.MintId(definition);
+            AssetDatabase.CreateAsset(definition, _bed.Folder + "/Definition.asset");
+            AssetDatabase.SaveAssets();
+            StudioRuntime runtime = StudioRuntime.Create(new StudioRuntimeOptions
+            {
+                Paths = new StudioPaths(StudioTestBed.ProjectRoot, _bed.StateRoot, "definition-validation"),
+                Log = _bed.Log,
+                TypeSource = () => new[] { type! },
+                ToolMethodSource = () => System.Array.Empty<System.Reflection.MethodInfo>(),
+                SearchFolders = new[] { _bed.Folder },
+                LoadIndexCache = false,
+            });
+            runtime.Index.Rebuild();
+            return runtime;
+        }
+
+        private string DefinitionPrefab()
+        {
+            string path = _bed.Folder + "/View.prefab";
+            GameObject view = new GameObject("View");
+            try { PrefabUtility.SaveAsPrefabAsset(view, path); }
+            finally { UnityEngine.Object.DestroyImmediate(view); }
+            return path;
+        }
+
+        private static void SetDefinitionPrefab(ScriptableObject definition, string path)
+        {
+            using var serialized = new SerializedObject(definition);
+            serialized.FindProperty("prefab").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            AssetDatabase.SaveAssets();
+        }
+
+        private static (string Code, string Message, string Subject) DefinitionDiagnostic(ScriptableObject definition, string code)
+        {
+            System.Type? validator = System.Type.GetType("GameCore.Gameplay.Entities.Editor.EntityValidator, GameCore.Gameplay.Entities.Editor");
+            Assert.That(validator, Is.Not.Null);
+            var method = validator!.GetMethod("Validate", new[] { definition.GetType() })!;
+            foreach (object diagnostic in (System.Collections.IEnumerable)method.Invoke(null, new object[] { definition })!)
+            {
+                System.Type type = diagnostic.GetType();
+                if ((string)type.GetProperty("Code")!.GetValue(diagnostic)! == code)
+                    return (code, (string)type.GetProperty("Message")!.GetValue(diagnostic)!, (string)type.GetProperty("SubjectId")!.GetValue(diagnostic)!);
+            }
+            Assert.Fail("Expected canonical diagnostic " + code);
+            return default;
+        }
+
         private sealed class FakeWorld
         {
             public FixtureItemDefinition Lantern = null!;

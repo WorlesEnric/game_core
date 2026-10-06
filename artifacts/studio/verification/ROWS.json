@@ -1,8 +1,8 @@
 {
   "counts": {
-    "PASS": 39,
-    "BLOCKED": 26,
-    "FAIL": 3
+    "PASS": 50,
+    "BLOCKED": 17,
+    "FAIL": 1
   },
   "rows": [
     {
@@ -900,15 +900,18 @@
       ]
     },
     {
-      "status": "FAIL",
-      "note": "R7-C actual inspector/validator/live-gateway fake-transport parity case fails: inspector drops location; candidate staging accepts the same missing-prefab definition with diagnostics=[]. Exact Studio core/UI seam requests are outside R7-C ownership.",
-      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'DefinitionDiagnosticParityTests' -force-glcore",
+      "status": "PASS",
+      "note": "R7-E real context inspector, validator console and live ETOS gateway with fake transport report identical GP-ENT-006 code/message/canonical subject for one missing-prefab definition; candidate refuses without writes. Full EditMode XML 181/181, Rules 309/309; generated voice bank enrollment and History inverses pass.",
+      "command": "DISPLAY=:1 bash artifacts/studio/verification/W-PLUG-10/run-r7-e.sh r7-e-final",
       "row": "W-PLUG-10",
       "scenario": "Definition validator parity (inspector, validator, agent)",
       "requirement": "SR-5.2",
-      "reportedAt": "2026-10-06T21:25:19.174906+00:00",
+      "reportedAt": "2026-10-07",
       "evidence": [
-        "W-PLUG-10/r7-baseline/results.xml"
+        "W-PLUG-10/r7-baseline/results.xml",
+        "W-PLUG-10/r7-e-final/results.xml",
+        "W-PLUG-10/r7-e-result.json",
+        "W-PLUG-10/r7-e-rules/r7-e-rules.trx"
       ]
     },
     {

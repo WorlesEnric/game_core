@@ -185,7 +185,7 @@ namespace GameCore.Studio.UI
         public int MethodCount => _methods?.Count ?? 0;
 
         /// <summary>Runs every matching validator on <paramref name="target"/>.</summary>
-        public IReadOnlyList<Diagnostic> For(UnityEngine.Object target)
+        public IReadOnlyList<Diagnostic> For(UnityEngine.Object target, StudioRuntime runtime)
         {
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             if (target == null)
@@ -233,7 +233,17 @@ namespace GameCore.Studio.UI
 
                     string code = item.GetType().GetProperty("Code")?.GetValue(item) as string ?? DiagnosticCodes.ValidationFailed;
                     string message = item.GetType().GetProperty("Message")?.GetValue(item) as string ?? item.ToString() ?? string.Empty;
-                    diagnostics.Add(new Diagnostic(code, message));
+                    string subjectId = item.GetType().GetProperty("SubjectId")?.GetValue(item) as string ?? string.Empty;
+                    AuthoringRef? subject = runtime.Resolver.BuildRef(target, includeStamp: false);
+                    if (subjectId.Length > 0 && subject?.AuthoringId != subjectId)
+                    {
+                        subject = ((IAuthoringLookup)runtime.Index).FindByAuthoringId(subjectId)
+                            ?? new AuthoringRef(AuthoringKind.Definition, authoringId: subjectId);
+                    }
+
+                    diagnostics.Add(new Diagnostic(code, message, null,
+                        subject == null ? null : DiagnosticWhere.At(SemanticIndexService.EdgeRef(subject)),
+                        subjectId.Length > 0 ? new JObject { ["subject"] = subjectId } : null));
                 }
             }
 
@@ -423,14 +433,14 @@ namespace GameCore.Studio.UI
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             if (resolved != null)
             {
-                diagnostics.AddRange(_validators.For(resolved));
+                diagnostics.AddRange(_validators.For(resolved, _context.Runtime));
                 if (resolved is Component component && !(resolved is Transform))
                 {
                     foreach (MonoBehaviour behaviour in component.GetComponents<MonoBehaviour>())
                     {
                         if (behaviour != null && behaviour != resolved)
                         {
-                            diagnostics.AddRange(_validators.For(behaviour));
+                            diagnostics.AddRange(_validators.For(behaviour, _context.Runtime));
                         }
                     }
                 }

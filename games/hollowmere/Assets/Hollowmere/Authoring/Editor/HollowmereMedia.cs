@@ -427,21 +427,42 @@ namespace Hollowmere.Authoring
                 });
             }
 
-            int voiced = 0;
+            var voices = new List<AudioClip>();
             foreach (var member in Cast)
             {
                 foreach (var line in HollowmereDialogues.Build(member.Graph, false).Lines)
                 {
-                    if (AssetDatabase.LoadAssetAtPath<AudioClip>(GraphBuilder.VoicePath(member.Graph, line.Key)) != null)
+                    AudioClip? clip = AssetDatabase.LoadAssetAtPath<AudioClip>(GraphBuilder.VoicePath(member.Graph, line.Key));
+                    if (clip != null)
                     {
-                        voiced++;
+                        voices.Add(clip);
                     }
                 }
             }
 
-            if (voiced > 0 && a.NarrativeBlocked == null)
+            if (voices.Count > 0 && a.NarrativeBlocked == null)
             {
-                HollowmereWorldContent.Graphs(a, true, voiced);
+                HollowmereWorldContent.Graphs(a, true, voices.Count);
+                a.Step("media.voices-bank-" + voices.Count, "Enroll the generated dialogue voices in the Hollowmere audio bank", () =>
+                {
+                    AuthoringRef bank = a.Ref(AudioBank);
+                    var ops = new List<Operation>();
+                    for (int i = 0; i < voices.Count; i++)
+                    {
+                        AudioClip clip = voices[i];
+                        ops.Add(StudioAuthor.Call("v" + i, "audio.assignClip", bank, new JObject
+                        {
+                            ["clipId"] = clip.name,
+                            ["clip"] = AssetDatabase.GetAssetPath(clip),
+                            ["group"] = AudioGroup.Voice.ToString(),
+                            ["volume"] = 1f,
+                            ["loop"] = false,
+                            ["spatial"] = false,
+                        }));
+                    }
+
+                    return ops;
+                });
             }
         }
     }

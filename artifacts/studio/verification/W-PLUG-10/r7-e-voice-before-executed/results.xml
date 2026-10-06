@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.742632">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="597" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.742632" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1910" name="Hollowmere.R7_E.Media.Tests.dll" fullname="~/wkspace/gc-studio/r7-e/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_E.Media.Tests.dll" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.723137" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="93000" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1911" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.722649" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1912" name="R7_E" fullname="Hollowmere.R7_E" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.722384" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1906" name="GeneratedVoiceEnrollmentTests" fullname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests" classname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.721660" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="ParameterizedMethod" id="1909" name="AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage" fullname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage" classname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:58Z" duration="9.717372" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Category" value="R7_E" />
+              </properties>
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1907" name="AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage(False)" fullname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage(False)" methodname="AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage" classname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests" runstate="Runnable" seed="1042809020" result="Failed" label="Error" start-time="2026-10-06 22:28:48Z" end-time="2026-10-06 22:28:54Z" duration="6.467293" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  A dialogue clip name must resolve through the playback bank, not only the graph.
+  Expected: True
+  But was:  False
+
+TearDown : System.ArgumentException : Invalid SceneManagerSetup:
+ No loaded scene found.
+ One active scene is required. Number of active scenes: 0]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage (System.Boolean existingEntry) [0x00235] in ~/wkspace/gc-studio/r7-e/games/hollowmere/Assets/Hollowmere/Tests/R7_E/GeneratedVoiceEnrollmentTests.cs:113
+
+--TearDown
+  at (wrapper managed-to-native) UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(UnityEditor.SceneManagement.SceneSetup[])
+  at Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.TearDown () [0x000b6] in ~/wkspace/gc-studio/r7-e/games/hollowmere/Assets/Hollowmere/Tests/R7_E/GeneratedVoiceEnrollmentTests.cs:64 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <297b518d2c9f4ee5bb6b049e9ead4f70>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1908" name="AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage(True)" fullname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage(True)" methodname="AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage" classname="Hollowmere.R7_E.GeneratedVoiceEnrollmentTests" runstate="Runnable" seed="495569575" result="Failed" start-time="2026-10-06 22:28:54Z" end-time="2026-10-06 22:28:58Z" duration="3.240605" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: same as <Maren_greet (UnityEngine.AudioClip)>
+  But was:  <sfx_footstep (UnityEngine.AudioClip)>
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R7_E.GeneratedVoiceEnrollmentTests.AttachGenerated_EnrollsVoiceForDialogue_AndHistoryUndoRestoresBankPreimage (System.Boolean existingEntry) [0x0025c] in ~/wkspace/gc-studio/r7-e/games/hollowmere/Assets/Hollowmere/Tests/R7_E/GeneratedVoiceEnrollmentTests.cs:115
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

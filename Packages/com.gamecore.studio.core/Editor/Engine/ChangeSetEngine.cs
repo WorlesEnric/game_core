@@ -9,9 +9,11 @@
 //         Skip drops operations. A gone target is StaleTarget. Applies are single-writer (ApplyQueue serializes).
 #nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using GameCore.Composition;
 using GameCore.Studio.Authoring;
@@ -472,6 +474,8 @@ namespace GameCore.Studio.Edit
                 _runtime.Staging.EndOwner();
             }
 
+            if (validate) ValidateProposedDefinitions(operations, envelope);
+
             CheckBaseVersions(changeSet, operations, envelope);
             bool hasRuntime = operations.Exists(op => op.Live);
             if (hasRuntime && changeSet.EffectivePolicy == ApplyPolicy.AllOrNothing && operations.Count > 1)
@@ -479,6 +483,196 @@ namespace GameCore.Studio.Edit
 
             return new StagedChangeSet(changeSet, options, operations, envelope, _runtime.Index.Revision, catalogRevision, liveRevision, allowInternal)
                 { Inferences = scopeNormalizer.Inferences };
+        }
+
+        // Mirror-attribute discovery is the same late-binding boundary used by the validator console:
+        // core never references a gameplay assembly. Only detached definition copies are written here.
+        private readonly Lazy<List<MethodInfo>> DefinitionValidators = new Lazy<List<MethodInfo>>(() =>
+        {
+            HashSet<Type> types = new HashSet<Type>(TypeCache.GetTypesWithAttribute<AuthorValidatorAttribute>());
+            foreach (Type attribute in TypeCache.GetTypesDerivedFrom<Attribute>())
+                if (AuthoringMetadata.IsMirror(attribute, AuthoringMetadata.AuthorValidatorName))
+                    foreach (Type type in TypeCache.GetTypesWithAttribute(attribute)) types.Add(type);
+            List<MethodInfo> methods = new List<MethodInfo>();
+            foreach (Type type in types)
+                foreach (MethodInfo method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                {
+                    ParameterInfo[] parameters = method.GetParameters();
+                    if (method.Name == "Validate" && !method.ContainsGenericParameters && parameters.Length == 1
+                        && typeof(UnityEngine.Object).IsAssignableFrom(parameters[0].ParameterType)
+                        && typeof(IEnumerable).IsAssignableFrom(method.ReturnType)) methods.Add(method);
+                }
+            methods.Sort((left, right) => string.CompareOrdinal(left.DeclaringType?.FullName + "." + left,
+                right.DeclaringType?.FullName + "." + right));
+            return methods;
+        });
+
+        private void ValidateProposedDefinitions(IReadOnlyList<StagedOperation> operations, List<Diagnostic> diagnostics)
+        {
+            bool hasDefinitionEdit = false;
+            foreach (StagedOperation operation in operations)
+            {
+                if (operation.Target is ScriptableObject && operation.Operation.Target?.Kind == AuthoringKind.Definition
+                    && (operation.Tool is SetTool || operation.Tool is AssignTool))
+                {
+                    hasDefinitionEdit = true;
+                    break;
+                }
+            }
+            if (!hasDefinitionEdit) return;
+
+            Dictionary<UnityEngine.Object, ScriptableObject> copies = new Dictionary<UnityEngine.Object, ScriptableObject>();
+            Dictionary<UnityEngine.Object, List<StagedOperation>> affected = new Dictionary<UnityEngine.Object, List<StagedOperation>>();
+            HashSet<string> unavailable = new HashSet<string>(StringComparer.Ordinal);
+            try
+            {
+                foreach (StagedOperation staged in Order(operations))
+                {
+                    bool blocked = staged.Blocked || staged.Deferred || staged.DeferredFactArgument;
+                    foreach (string dependency in staged.Operation.DependsOn ?? Array.Empty<string>())
+                        blocked |= unavailable.Contains(dependency);
+                    if (blocked)
+                    {
+                        unavailable.Add(staged.OpId);
+                        continue;
+                    }
+                    if (!(staged.Target is ScriptableObject original)
+                        || staged.Operation.Target?.Kind != AuthoringKind.Definition
+                        || !(staged.Tool is SetTool || staged.Tool is AssignTool)
+                        || !DefinitionValidators.Value.Exists(method => method.GetParameters()[0].ParameterType.IsInstanceOfType(original))) continue;
+                    if (!copies.TryGetValue(original, out ScriptableObject? copy))
+                    {
+                        copy = UnityEngine.Object.Instantiate(original);
+                        copies.Add(original, copy);
+                        copy.name = original.name;
+                        copy.hideFlags = HideFlags.HideAndDontSave;
+                        affected.Add(original, new List<StagedOperation>());
+                    }
+                    affected[original].Add(staged);
+                    try
+                    {
+                        ProjectDefinition(staged, copy);
+                    }
+                    catch (Exception error) when (!(error is ExitGUIException))
+                    {
+                        staged.Add(StudioDiagnostics.Op(DiagnosticCodes.StageFailed, staged.OpId,
+                            "Projecting definition changes failed: " + error.GetBaseException().Message));
+                        unavailable.Add(staged.OpId);
+                    }
+                }
+
+                // A validator traversing another affected definition must see its final proposed state too.
+                foreach (ScriptableObject copy in copies.Values)
+                {
+                    using SerializedObject serialized = new SerializedObject(copy);
+                    SerializedProperty property = serialized.GetIterator();
+                    while (property.Next(true))
+                        if (property.propertyType == SerializedPropertyType.ObjectReference
+                            && property.objectReferenceValue != null
+                            && copies.TryGetValue(property.objectReferenceValue, out ScriptableObject? referenced))
+                            property.objectReferenceValue = referenced;
+                    serialized.ApplyModifiedPropertiesWithoutUndo();
+                }
+
+                foreach (KeyValuePair<UnityEngine.Object, ScriptableObject> pair in copies)
+                {
+                    List<StagedOperation> owners = affected[pair.Key];
+                    StagedOperation? failed = owners.Find(operation => operation.Blocked);
+                    if (failed != null)
+                    {
+                        foreach (StagedOperation owner in owners)
+                            if (!owner.Blocked) owner.AddRange(failed.Diagnostics);
+                        continue;
+                    }
+                    foreach (MethodInfo method in DefinitionValidators.Value)
+                    {
+                        if (!method.GetParameters()[0].ParameterType.IsInstanceOfType(pair.Value)) continue;
+                        try
+                        {
+                            if (!(method.Invoke(null, new object[] { pair.Value }) is IEnumerable results))
+                                throw new InvalidOperationException("The definition validator returned no result.");
+                            foreach (object? item in results)
+                            {
+                                if (item == null) continue;
+                                Diagnostic diagnostic;
+                                if (item is Diagnostic studio) diagnostic = studio;
+                                else
+                                {
+                                    Type type = item.GetType();
+                                    string code = type.GetProperty("Code")?.GetValue(item) as string ?? "Diagnostic";
+                                    string message = type.GetProperty("Message")?.GetValue(item) as string ?? item.ToString() ?? string.Empty;
+                                    string subjectId = type.GetProperty("SubjectId")?.GetValue(item) as string ?? string.Empty;
+                                    AuthoringRef? subject = _runtime.Resolver.BuildRef(pair.Key, includeStamp: false);
+                                    if (subjectId.Length > 0 && subject?.AuthoringId != subjectId)
+                                        subject = ((IAuthoringLookup)_runtime.Index).FindByAuthoringId(subjectId)
+                                            ?? new AuthoringRef(AuthoringKind.Definition, authoringId: subjectId);
+                                    diagnostic = new Diagnostic(code, message, null,
+                                        subject == null ? null : DiagnosticWhere.At(SemanticIndexService.EdgeRef(subject)),
+                                        subjectId.Length > 0 ? new JObject { ["subject"] = subjectId } : null);
+                                }
+                                // These findings describe the final proposal, not an individual tool call.
+                                // Keep plugin codes intact: StagedOperation.Add normalizes unknown codes.
+                                // A partially applied invalid definition is unsafe even under BestEffort.
+                                diagnostics.Add(diagnostic);
+                            }
+                        }
+                        catch (Exception error) when (!(error is ExitGUIException))
+                        {
+                            foreach (StagedOperation owner in owners)
+                                owner.Add(StudioDiagnostics.Op(DiagnosticCodes.StageFailed, owner.OpId,
+                                    "Definition validator " + method.DeclaringType?.Name + "." + method.Name
+                                    + " failed: " + error.GetBaseException().Message));
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                foreach (ScriptableObject copy in copies.Values) UnityEngine.Object.DestroyImmediate(copy);
+            }
+        }
+
+        private void ProjectDefinition(StagedOperation staged, ScriptableObject copy)
+        {
+            AuthoringTypeInfo info = _runtime.Identity.Describe(copy)!;
+            using SerializedObject serialized = new SerializedObject(copy);
+            if (staged.Tool is SetTool)
+            {
+                // Consume the built-in's checked assignments, not a second interpretation of set's arguments.
+                foreach (JProperty field in ((JObject)staged.Preview!["fields"]!).Properties())
+                    Write(info.FindMember(field.Name)!, field.Value["after"]!);
+            }
+            else
+            {
+                AuthorMemberInfo member = info.FindMember((string)staged.Preview!["field"]!)!;
+                JToken value = staged.Preview["after"]!;
+                if (member.IsCollection)
+                {
+                    JArray items = (JArray)_runtime.Resolver.Codec.ReadMember(copy, member, serialized);
+                    JObject args = staged.Operation.Args!;
+                    if ((bool?)args["append"] == true) items.Add(value.DeepClone());
+                    else if (args["index"] is JToken index && ValueCodec.IsInteger(index))
+                    {
+                        int at = index.Value<int>();
+                        if (at < 0 || at >= items.Count) throw new InvalidOperationException("Index " + at + " is outside '" + member.Name + "'.");
+                        items[at] = value.DeepClone();
+                    }
+                    else
+                    {
+                        items.Clear();
+                        if (value.Type != JTokenType.Null) items.Add(value.DeepClone());
+                    }
+                    value = items;
+                }
+                Write(member, value);
+            }
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+
+            void Write(AuthorMemberInfo member, JToken value)
+            {
+                if (!_runtime.Resolver.Codec.WriteMember(copy, member, value, serialized, out string? problem))
+                    throw new InvalidOperationException("'" + member.Name + "': " + problem);
+            }
         }
 
         private static IReadOnlyList<Diagnostic> ValidateDialogueClosure(StudioRuntime runtime, ChangeSet changeSet, Type? adapter)
