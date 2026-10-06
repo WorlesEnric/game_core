@@ -695,7 +695,7 @@ namespace Hollowmere.P3_2.Workflows
         private static readonly Dictionary<string, Task<object>> Pending = new Dictionary<string, Task<object>>();
 
         /// <summary>
-        /// Push-to-talk: presses the mic (voice session starts on the default microphone = the driver's virtual source),
+        /// Push-to-talk: starts the gateway session on the default microphone (the driver's virtual source),
         /// asks the driver to play <paramref name="wav"/> into it, records every transcript revision shown in the prompt bar,
         /// and explicitly stops after playback, then waits for the final transcript drain.
         /// </summary>

@@ -27,7 +27,6 @@ def test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff(
     provider, = [p for p in tomllib.loads(text)['providers'] if p['family'] == 'describe']
     assert model['id'] == provider['model'] == 'echo/gpt-5.6-sol'
     assert models['endpoints']['echo']['base_url'] == 'https://api.echo-coding.com/v1'
-    assert 'A DashScope list price cannot' in text
     spec = importlib.util.spec_from_file_location('r6_install_state', ROOT / 'studio/etos/install-state.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

@@ -1,0 +1,19 @@
+...F.                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_R6_Request6_worker_retains_original_and_requires_relink_or_clarification _
+
+    def test_R6_Request6_worker_retains_original_and_requires_relink_or_clarification():
+        original = ROOT / 'artifacts/studio/verification/W-AI-02/p42d-text2-20261006T113349.342620Z/workflow/ferryman2/candidate.json'
+        retained = WORKERS / 'tests/fixtures/request6-original.json'
+        assert retained.read_bytes() == original.read_bytes()
+        operations = json.loads(retained.read_text())['operations']
+        assert operations[2]['args'] == {'field': 'entry', 'value': 8}
+        instruction = (WORKERS / 'gc-designer.md').read_text()
+        for clause in ['GP-DLG-005', '"unreachable"', 'Re-link', 'needs-clarification', 'Never change entry']:
+>           assert clause in instruction
+E           assert 'GP-DLG-005' in "# gc-designer — GameCore Studio change-set designer\n\nYou turn a creator's request about a Unity game built on GameC...ndidate is retained unchanged in\n`tests/fixtures/request8-original.json`; it is a negative example, not a template.\n"
+
+studio/etos/agent/workers/tests/test_r6_b.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED studio/etos/agent/workers/tests/test_r6_b.py::test_R6_Request6_worker_retains_original_and_requires_relink_or_clarification
+1 failed, 4 passed in 0.05s
