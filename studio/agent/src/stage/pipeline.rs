@@ -1401,6 +1401,12 @@ fn cold_budget(cache: &Path, warm: Duration) -> Result<(bool, Duration), String>
 /// cannot be staged); every step outcome, timeouts included, is a verdict.
 pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     let mut effective = opts.clone();
+    // The CLI also permits relative/dotted source paths; compare the same canonical
+    // identity that the trusted Python preflight records for registered projects.
+    effective.source_project = effective
+        .source_project
+        .canonicalize()
+        .map_err(|e| format!("stage_package_root_mismatch: source project unavailable: {e}"))?;
     effective.sandbox.slot = effective.slot_dir();
     effective.sandbox.cache = effective
         .root

@@ -12,15 +12,16 @@ Branch `codex/r5-c`, base `c9866292`. This report is inside the exclusive stage
   `r5_04_registered_project_pins_and_mount_share_root`,
   `r5_04_revision_refuses_before_rebinding_mount`,
   `r5_04_mount_mismatch_refuses_before_slot_creation`,
-  `r5_04_existing_slot_cannot_reuse_another_project_binding`.
+  `r5_04_existing_slot_cannot_reuse_another_project_binding`,
+  `r5_04_real_candidate_accepts_canonical_equivalent_source_path`.
 - P4.2c #7: driver implementation and Unity verification are in progress.
 
 ## Verification
 
 - Python regression before change: 2 tests, 4 assertion failures.
 - Stage Python after change: 22 passed.
-- Final ordinary Rust: **141 passed, 0 failed, 11 explicitly ignored** prerequisite/live tests.
-  Root suite: **4 passed**. Full output retained locally at `/tmp/r5-c-cargo-final.log`.
+- Final ordinary Rust: **142 passed, 0 failed, 11 explicitly ignored** prerequisite/live tests.
+  Root suite: **5 passed**. Full output retained locally at `/tmp/r5-c-cargo-final.log`.
 - Cargo fmt/check and clippy `--all-targets -- -D warnings` passed.
 - Unity dry regression is running via `unity-batch.sh`, no live-node gate.
 

@@ -143,3 +143,39 @@ fn r5_04_existing_slot_cannot_reuse_another_project_binding() {
     assert!(error.contains("stage.projects"), "{error}");
     assert!(!opts.slot_dir().join("sandbox.json").exists());
 }
+
+#[test]
+fn r5_04_real_candidate_accepts_canonical_equivalent_source_path() {
+    use gamecore_studio::stage::{pipeline::run_stage, sandbox::Confinement};
+    use std::collections::BTreeSet;
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .to_path_buf();
+    let temp = tempfile::tempdir().unwrap();
+    let mut opts = StageOptions::from_env(
+        &repo,
+        "canonical",
+        SlotSource::Candidate(repo.join("samples/mechanisms/pressure-plate/candidate")),
+    );
+    opts.root = temp.path().join("slots");
+    opts.source_project = repo.join("games/../games/hollowmere");
+    // Only the lexical scan runs; no candidate compiler or Unity process is launched.
+    opts.steps = Some(BTreeSet::from(["scan".to_string()]));
+    opts.sandbox.mode = Confinement::Host;
+    let verdict = run_stage(&opts).unwrap();
+    assert!(verdict.partial);
+    assert!(!verdict.pass);
+    let record: Value =
+        serde_json::from_slice(&fs::read(opts.slot_dir().join("stage.json")).unwrap()).unwrap();
+    assert_eq!(
+        record["source"]["project"],
+        repo.join("games/hollowmere").to_str().unwrap()
+    );
+    assert_eq!(
+        record["source"]["packageRoot"],
+        opts.sandbox.packages.to_str().unwrap()
+    );
+}
