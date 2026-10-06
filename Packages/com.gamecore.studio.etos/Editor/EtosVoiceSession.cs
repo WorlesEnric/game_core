@@ -114,7 +114,9 @@ namespace GameCore.Studio.Etos
                         _sending = Task.CompletedTask;
                         return true;
                     }).ConfigureAwait(false);
+                    Trace(channel, "setup phase=awaiting_companion_ready capture=false frames=0");
                     _lastReady = await channel.ConnectAsync(_life.Token).ConfigureAwait(false);
+                    Trace(channel, "setup phase=companion_ready capture=false");
                     await _queue.Run(() =>
                     {
                         if (_disposed) throw new ObjectDisposedException(nameof(EtosVoiceSession));
@@ -141,6 +143,8 @@ namespace GameCore.Studio.Etos
                 }
                 catch (Exception error)
                 {
+                    Trace(channel, "setup failed phase=" + (_lastReady == null ? "awaiting_companion_ready" : "awaiting_source_samples")
+                        + " frames=" + channel.FramesSent + " code=" + (error is EtosException setup ? setup.Error.Code : error.GetType().Name));
                     await _queue.Run(() =>
                     {
                         _capturing = false;

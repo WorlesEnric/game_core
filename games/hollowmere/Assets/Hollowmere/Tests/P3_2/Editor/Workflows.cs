@@ -525,13 +525,25 @@ namespace Hollowmere.P3_2.Workflows
                 EditorSceneManager.SaveOpenScenes();
                 JObject saved = (JObject)St.Get("saved")!;
                 JObject now = S.Hashes(ReopenPaths());
-                JObject result = new JObject { ["before"] = saved["before"]?.DeepClone(), ["now"] = now, ["backToBefore"] = JToken.DeepEquals(saved["before"], now) };
+                JObject result = new JObject { ["before"] = saved["before"]?.DeepClone(), ["now"] = now, ["backToBefore"] = ByteConsistent(saved["before"], now) };
+                result["contract"] = "sha256 of exact asset bytes; no bake/contentStamp normalization";
                 WorkflowRunner.Json("reopen/final.json", result);
                 WorkflowRunner.Shot("reopen-final", "After undo -> redo -> undo of every narrative edit: assets back to the pre-edit hashes: " + result["backToBefore"] + ".", result);
+                RequireByteConsistency(saved["before"], now);
                 return true;
             }));
             return steps;
         }
+
+        public static void RequireByteConsistency(JToken? before, JObject now)
+        {
+            if (!ByteConsistent(before, now))
+                throw new InvalidOperationException("W-AI-06 backToBefore=false: exact asset bytes differ or a baseline asset is missing; no fields are normalized.");
+        }
+
+        private static bool ByteConsistent(JToken? before, JObject now) => before is JObject expected
+            && expected.HasValues && JToken.DeepEquals(expected, now)
+            && now.Properties().All(p => Regex.IsMatch((string?)p.Value ?? string.Empty, "^[0-9a-f]{64}$"));
 
         /// <summary>The tags of the saved session (Library/P3_2/narrative.json), in apply order; undo walks them backwards.</summary>
         private static string[] SavedTags()
@@ -685,69 +697,68 @@ namespace Hollowmere.P3_2.Workflows
         /// <summary>
         /// Push-to-talk: presses the mic (voice session starts on the default microphone = the driver's virtual source),
         /// asks the driver to play <paramref name="wav"/> into it, records every transcript revision shown in the prompt bar,
-        /// and releases once the final transcript is in the field (or after 60 s).
+        /// and explicitly stops after playback, then waits for the final transcript drain.
         /// </summary>
         private static bool VoiceTake(string label, string wav)
         {
             PromptBar prompt = S.Prompt;
             string key = "voice." + label;
             JObject v = St.Get(key) as JObject ?? new JObject();
-            string phase = (string?)v["phase"] ?? "start";
             string dir = Path.Combine(WorkflowRunner.OutputDir, "voice");
             Directory.CreateDirectory(dir);
-            switch (phase)
+            if (St.VoiceTake == null)
             {
-                case "start":
-                    prompt.Text = string.Empty;
-                    prompt.ToggleVoice();
-                    v["phase"] = "listening";
-                    v["pressedMs"] = WorkflowRunner.NowMs;
-                    v["pressedEditor"] = EditorApplication.timeSinceStartup;
-                    St.Set(key, v);
-                    StartWatch(label);
-                    WorkflowRunner.Recording(true);
-                    WorkflowRunner.Shot("voice-" + label + "-pressed", "Mic pressed (push-to-talk); the voice session opens on the default microphone.", null);
-                    return false;
-                case "listening":
-                    if (EditorApplication.timeSinceStartup - (double)v["pressedEditor"]! < 3)
-                    {
-                        return false;
-                    }
-
-                    File.WriteAllText(Path.Combine(dir, "play-" + label), wav + "\n");
-                    v["phase"] = "playing";
-                    v["playRequestedMs"] = WorkflowRunner.NowMs;
-                    St.Set(key, v);
-                    return false;
-                case "playing":
-                    bool played = File.Exists(Path.Combine(dir, "played-" + label));
-                    bool final = prompt.Text.Trim().Length > 0;
-                    double waited = EditorApplication.timeSinceStartup - (double)v["pressedEditor"]!;
-                    if (!(played && final) && waited < 75)
-                    {
-                        return false;
-                    }
-
-                    prompt.ToggleVoice();
-                    v["phase"] = "done";
-                    v["releasedMs"] = WorkflowRunner.NowMs;
-                    v["final"] = prompt.Text;
-                    v["played"] = played;
-                    St.Set(key, v);
-                    StopWatch(label);
-                    JObject revisions = St.Get("watch." + label) as JObject ?? new JObject();
-                    JObject result = new JObject { ["label"] = label, ["wav"] = wav, ["final"] = prompt.Text, ["played"] = played, ["pressedMs"] = v["pressedMs"], ["releasedMs"] = v["releasedMs"], ["revisions"] = revisions["revisions"]?.DeepClone() ?? new JArray(), ["voiceActiveAfterRelease"] = prompt.VoiceActive };
-                    WorkflowRunner.Json("voice/" + label + "-transcript.json", result);
-                    WorkflowRunner.Shot("voice-" + label + "-final", "Mic released: final transcript \"" + prompt.Text + "\" placed in the field (" + ((JArray)result["revisions"]!).Count + " partial revision(s) were shown while listening); nothing is sent until Send.", result);
-                    if (prompt.Text.Trim().Length == 0)
-                    {
-                        WorkflowRunner.MarkFailed("voice " + label + ": no final transcript");
-                    }
-
-                    return true;
-                default:
-                    return true;
+                if (v["phase"] != null)
+                    throw new InvalidOperationException("Voice take interrupted by reload; no automatic retry: " + label);
+                prompt.Text = string.Empty;
+                // Use the same gateway/session and final-transcript handler as PromptBar. Its ToggleVoice API
+                // exposes neither readiness nor Stop completion; the workflow must retain those tasks itself.
+                var session = S.Context.Gateway.CreateVoiceSession();
+                if (!(session is EtosVoiceSession etos))
+                    throw new InvalidOperationException("Voice workflow requires capture/provider readiness diagnostics");
+                St.VoiceTake = new VoiceTakeDriver(session,
+                    () => etos.Ready != null && etos.IsCapturing && etos.LastError == null,
+                    prompt.OnTranscript);
+                File.Delete(Path.Combine(dir, "play-" + label));
+                File.Delete(Path.Combine(dir, "played-" + label));
+                v["pressedMs"] = WorkflowRunner.NowMs;
+                StartWatch(label);
+                WorkflowRunner.Recording(true);
             }
+
+            VoiceTakeDriver take = St.VoiceTake;
+            bool done = take.Tick(EditorApplication.timeSinceStartup, File.Exists(Path.Combine(dir, "played-" + label)), () =>
+            {
+                File.WriteAllText(Path.Combine(dir, "play-" + label), wav + "\n");
+                v["playRequestedMs"] = WorkflowRunner.NowMs;
+                WorkflowRunner.Shot("voice-" + label + "-ready", "Provider and microphone capture ready; fixture playback requested.", null);
+            });
+            v["phase"] = take.Phase;
+            St.Set(key, v);
+            if (!done) return false;
+
+            StopWatch(label);
+            JObject revisions = St.Get("watch." + label) as JObject ?? new JObject();
+            JObject result = new JObject
+            {
+                ["label"] = label, ["wav"] = wav, ["final"] = prompt.Text, ["played"] = take.Played,
+                ["playbackRequested"] = take.PlaybackRequested, ["pressedMs"] = v["pressedMs"],
+                ["playRequestedMs"] = v["playRequestedMs"], ["drainedMs"] = WorkflowRunner.NowMs,
+                ["revisions"] = revisions["revisions"]?.DeepClone() ?? new JArray(),
+                ["error"] = take.Error, ["phase"] = take.Phase, ["drainCompleted"] = take.Drained,
+            };
+            string? error = take.Error;
+            v["ok"] = error == null && take.Played && prompt.Text.Trim().Length > 0;
+            St.Set(key, v);
+            take.Dispose();
+            St.VoiceTake = null;
+            WorkflowRunner.Json("voice/" + label + "-transcript.json", result);
+            WorkflowRunner.Shot("voice-" + label + "-final", error == null
+                ? "Stop/drain finished; transcript retained for explicit Send. No request submitted by the take."
+                : "Voice take failed: " + error + ". No request submitted by the take.", result);
+            if (error != null || prompt.Text.Trim().Length == 0)
+                WorkflowRunner.MarkFailed("voice " + label + ": " + (error ?? "no final transcript"));
+            return true;
         }
 
         private static Action? _watch;
@@ -792,6 +803,8 @@ namespace Hollowmere.P3_2.Workflows
         /// <summary>Presses Send on what is in the prompt field (the confirmed voice transcript).</summary>
         private static bool SendCurrent(string tag)
         {
+            if ((bool?)St.Get("voice.move")?["ok"] != true)
+                throw new InvalidOperationException("The voice take did not complete successfully; no request sent.");
             string text = S.Prompt.Text.Trim();
             if (text.Length == 0)
             {
