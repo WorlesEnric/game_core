@@ -1,15 +1,16 @@
 {
-  "status": "BLOCKED",
-  "note": "Despawn/respawn variant and scale override preservation passes; the required real Animator-binding part is not asserted by this suite.",
-  "command": "studio/tools/verify-all.sh unity",
+  "status": "PASS",
+  "note": "R7-C production binders drive real Animator transitions and animated poses; despawn destroys the old Animator and respawn retains variant prefab, 1.2 scale and committed bindings. Named XML passes in graphics-enabled batch Editor.",
+  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'AnimatorRespawnTests' -force-glcore",
   "tests": [
-    "WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides"
+    "AnimatorRespawnTests"
   ],
   "row": "W-PLUG-02",
   "scenario": "Despawn/respawn keeps override; Animator bound",
   "requirement": "SR-6.2",
-  "reportedAt": "2026-10-06T15:29:44.410069+00:00",
+  "reportedAt": "2026-10-06T21:25:19.093842+00:00",
   "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+    "W-PLUG-02/r7-baseline/results.xml",
+    "W-PLUG-01/r7-region-repeat/results.xml"
   ]
 }

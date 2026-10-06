@@ -14,6 +14,7 @@
 //   near <x> <z> [radius]         the player is within radius (default 1.5 m) of (x, z)
 //   restored                      a save was restored into this game
 //   slot <name|n>                 the save slot exists (n: the manual slot slot-n)
+//   lifecycle <stage>             graphical standalone lifecycle assertion; records evidence in the isolated save dir
 #nullable enable
 using System;
 using System.Globalization;
@@ -42,6 +43,8 @@ namespace Hollowmere.Game
             string verb = words[0].ToLowerInvariant();
             switch (verb)
             {
+                case "lifecycle":
+                    return HollowmereLifecycleAudit.Check(game, words.Length == 2 ? words[1] : string.Empty, out detail);
                 case "ready":
                     detail = game.World != null ? game.World.Root.State.ToString() : "no world";
                     return game.World != null && game.Rig != null && game.World.Root.State == GameApplicationState.Running;

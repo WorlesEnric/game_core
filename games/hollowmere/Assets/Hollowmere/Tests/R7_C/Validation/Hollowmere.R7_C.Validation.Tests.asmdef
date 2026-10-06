@@ -1,0 +1,36 @@
+{
+    "name": "Hollowmere.R7_C.Validation.Tests",
+    "rootNamespace": "Hollowmere.R7_C.Validation",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.UI.Editor",
+        "GameCore.Studio.Views.Editor",
+        "GameCore.Studio.Etos",
+        "GameCore.Studio.Etos.Client",
+        "GameCore.Studio.Etos.Testing",
+        "GameCore.Studio.Hollowmere.P2_2.Tests",
+        "GameCore.Gameplay.Contracts",
+        "GameCore.Gameplay.Entities",
+        "GameCore.Gameplay.Entities.Editor",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

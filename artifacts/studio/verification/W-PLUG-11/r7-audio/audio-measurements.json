@@ -1,0 +1,37 @@
+{
+  "source": "../../W-GAME-05/r7-lifecycle/playthrough.mp4",
+  "sourceSha256": "a4250f38a8fa2eec31462ec148bdd8ed9972d8fd05e142f4b0630095ea3293af",
+  "windows": [
+    {
+      "window": "maren-voice",
+      "startSeconds": 38,
+      "durationSeconds": 7,
+      "meanDbFS": -27.6,
+      "peakDbFS": -16.3
+    },
+    {
+      "window": "village-ambience",
+      "startSeconds": 120,
+      "durationSeconds": 5,
+      "meanDbFS": -27.7,
+      "peakDbFS": -16.2
+    },
+    {
+      "window": "ambience-crossfade",
+      "startSeconds": 130,
+      "durationSeconds": 6,
+      "meanDbFS": -27.8,
+      "peakDbFS": -16.0
+    },
+    {
+      "window": "marsh-ambience",
+      "startSeconds": 136,
+      "durationSeconds": 4,
+      "meanDbFS": -28.1,
+      "peakDbFS": -16.0
+    }
+  ],
+  "method": "ffmpeg volumedetect on actual PulseAudio-monitor track aligned to frame-log markers; this is measured non-silence, not a claim of human listening.",
+  "status": "PARTIAL",
+  "limitation": "Pre-enrollment capture: non-silence alone did not prove voice identity. The native voice regression subsequently demonstrated a null playback clip. Retained as before evidence, not a voice pass."
+}

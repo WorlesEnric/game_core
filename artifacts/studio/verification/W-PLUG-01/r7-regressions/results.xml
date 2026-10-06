@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="23" result="Passed" total="23" passed="23" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:35:01Z" duration="3.1107662">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="572" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:35:01Z" duration="3.110766" total="23" passed="23" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1330" name="Hollowmere.P1_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.701227" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4113890" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1331" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.700159" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1332" name="P1_1" fullname="Hollowmere.P1_1" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.699585" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1333" name="EditMode" fullname="Hollowmere.P1_1.EditMode" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.699002" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1334" name="Tests" fullname="Hollowmere.P1_1.EditMode.Tests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.698457" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1321" name="GameplayWorldTests" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.695834" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1322" name="Boot_SeedsEveryAuthoredTarget_AndEveryRegionStartsUnloaded" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.Boot_SeedsEveryAuthoredTarget_AndEveryRegionStartsUnloaded" methodname="Boot_SeedsEveryAuthoredTarget_AndEveryRegionStartsUnloaded" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="1111145613" result="Passed" start-time="2026-10-06 21:34:58Z" end-time="2026-10-06 21:34:59Z" duration="1.322729" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1327" name="EntityCommands_DespawnSpawnAndSetVariant_FollowTheRules" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.EntityCommands_DespawnSpawnAndSetVariant_FollowTheRules" methodname="EntityCommands_DespawnSpawnAndSetVariant_FollowTheRules" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="373436249" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.114177" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1326" name="SetResidency_FromAGameplayIssuer_IsRefused" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.SetResidency_FromAGameplayIssuer_IsRefused" methodname="SetResidency_FromAGameplayIssuer_IsRefused" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="358713413" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.028662" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1328" name="Spawner_PublishesANewRuntimeTarget_InItsRegionScope" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.Spawner_PublishesANewRuntimeTarget_InItsRegionScope" methodname="Spawner_PublishesANewRuntimeTarget_InItsRegionScope" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="2004265476" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.057546" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1323" name="Streamer_BringsTheStartRegionResident_ThroughTheLegalResidencySteps" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.Streamer_BringsTheStartRegionResident_ThroughTheLegalResidencySteps" methodname="Streamer_BringsTheStartRegionResident_ThroughTheLegalResidencySteps" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="762786840" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.024716" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1329" name="TimeDriver_AdvancesClocksOnCommittedSteps_FeedsWakes_AndFollowsPause" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.TimeDriver_AdvancesClocksOnCommittedSteps_FeedsWakes_AndFollowsPause" methodname="TimeDriver_AdvancesClocksOnCommittedSteps_FeedsWakes_AndFollowsPause" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="1206858412" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.048364" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1324" name="Travel_LoopsVillageMarshBelfryVillage_WithEventsResidencyAndPosePersistence" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.Travel_LoopsVillageMarshBelfryVillage_WithEventsResidencyAndPosePersistence" methodname="Travel_LoopsVillageMarshBelfryVillage_WithEventsResidencyAndPosePersistence" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="1026452356" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.048616" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1325" name="Travel_ToTheSameRegion_OrFromAnUnknownTraveller_IsRefused" fullname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests.Travel_ToTheSameRegion_OrFromAnUnknownTraveller_IsRefused" methodname="Travel_ToTheSameRegion_OrFromAnUnknownTraveller_IsRefused" classname="Hollowmere.P1_1.EditMode.Tests.GameplayWorldTests" runstate="Runnable" seed="1587963755" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:34:59Z" duration="0.022724" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1389" name="Hollowmere.P1_5.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_5.EditMode.Tests.dll" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.677835" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4113890" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1390" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.675249" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1391" name="P1_5" fullname="Hollowmere.P1_5" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.674429" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1392" name="EditMode" fullname="Hollowmere.P1_5.EditMode" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.673750" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1393" name="Tests" fullname="Hollowmere.P1_5.EditMode.Tests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.673142" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1383" name="UiAudioWorldTests" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.672508" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1388" name="AmbienceZoneFollowsRegionEntered" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests.AmbienceZoneFollowsRegionEntered" methodname="AmbienceZoneFollowsRegionEntered" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" seed="1087008715" result="Passed" start-time="2026-10-06 21:34:59Z" end-time="2026-10-06 21:35:00Z" duration="0.305323" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1387" name="AudioKernelFollowsCommandsAndRefusesUnknownStates" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests.AudioKernelFollowsCommandsAndRefusesUnknownStates" methodname="AudioKernelFollowsCommandsAndRefusesUnknownStates" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" seed="1079539132" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.059695" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[P1.5-AUDIO accepted=8 refused=4
+]]></output>
+                </test-case>
+                <test-case id="1386" name="DialogueViewReceivesTheViewModelAndNavigates" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests.DialogueViewReceivesTheViewModelAndNavigates" methodname="DialogueViewReceivesTheViewModelAndNavigates" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" seed="1202861815" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.077760" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1385" name="SaveWithoutAServiceShowsTheUnavailableCode" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests.SaveWithoutAServiceShowsTheUnavailableCode" methodname="SaveWithoutAServiceShowsTheUnavailableCode" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" seed="875791769" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.169609" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1384" name="ScreenFlowRunsThroughCommittedSlots" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests.ScreenFlowRunsThroughCommittedSlots" methodname="ScreenFlowRunsThroughCommittedSlots" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioWorldTests" runstate="Runnable" seed="1518511510" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.056952" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[P1.5-FLOW changes=10 accepted=10 refused=2 hostActions=1
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1462" name="Hollowmere.P1_7c.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_7c.EditMode.Tests.dll" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.691622" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4113890" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1463" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.689573" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1464" name="P1_7c" fullname="Hollowmere.P1_7c" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.689127" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1465" name="EditMode" fullname="Hollowmere.P1_7c.EditMode" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.688890" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1466" name="Tests" fullname="Hollowmere.P1_7c.EditMode.Tests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.688538" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1450" name="RuntimeFollowupTests" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.687360" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="ParameterizedMethod" id="1453" name="P17c_01_QuestTerminalActions_UseOutboxExactlyOnce" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_01_QuestTerminalActions_UseOutboxExactlyOnce" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.314692" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1451" name="P17c_01_QuestTerminalActions_UseOutboxExactlyOnce(False)" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_01_QuestTerminalActions_UseOutboxExactlyOnce(False)" methodname="P17c_01_QuestTerminalActions_UseOutboxExactlyOnce" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="1069344132" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.268488" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1452" name="P17c_01_QuestTerminalActions_UseOutboxExactlyOnce(True)" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_01_QuestTerminalActions_UseOutboxExactlyOnce(True)" methodname="P17c_01_QuestTerminalActions_UseOutboxExactlyOnce" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="439954466" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.044940" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1454" name="P17c_02_NpcAppearanceUsesVariantPrefabAcrossResidency" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_02_NpcAppearanceUsesVariantPrefabAcrossResidency" methodname="P17c_02_NpcAppearanceUsesVariantPrefabAcrossResidency" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="71949664" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.048651" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1455" name="P17c_03_RespawnPreservesHiddenOverride" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_03_RespawnPreservesHiddenOverride" methodname="P17c_03_RespawnPreservesHiddenOverride" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="1184699584" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.001706" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1456" name="P17c_03_RuntimeSpawnUsesDefinitionVisibility" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_03_RuntimeSpawnUsesDefinitionVisibility" methodname="P17c_03_RuntimeSpawnUsesDefinitionVisibility" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="767478127" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:00Z" duration="0.047744" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1457" name="P17c_04_QuestQueryRegisteredAndReadsCommittedCopy" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_04_QuestQueryRegisteredAndReadsCommittedCopy" methodname="P17c_04_QuestQueryRegisteredAndReadsCommittedCopy" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="615794546" result="Passed" start-time="2026-10-06 21:35:00Z" end-time="2026-10-06 21:35:01Z" duration="0.039023" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1458" name="P17c_05_RuleLiveConfigPreservesCountersAndChangesLimit" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_05_RuleLiveConfigPreservesCountersAndChangesLimit" methodname="P17c_05_RuleLiveConfigPreservesCountersAndChangesLimit" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="1089186792" result="Passed" start-time="2026-10-06 21:35:01Z" end-time="2026-10-06 21:35:01Z" duration="0.080993" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1459" name="P17c_07_TwoSignalsInOneStepBothCount" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_07_TwoSignalsInOneStepBothCount" methodname="P17c_07_TwoSignalsInOneStepBothCount" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="259085133" result="Passed" start-time="2026-10-06 21:35:01Z" end-time="2026-10-06 21:35:01Z" duration="0.053984" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1460" name="P17c_08_ExactCapacity_All256ObligationsFit_NoDrops" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_08_ExactCapacity_All256ObligationsFit_NoDrops" methodname="P17c_08_ExactCapacity_All256ObligationsFit_NoDrops" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="1327457680" result="Passed" start-time="2026-10-06 21:35:01Z" end-time="2026-10-06 21:35:01Z" duration="0.043664" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1461" name="P17c_08_ManifestFanoutRefusesBeforeQuestMutation" fullname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests.P17c_08_ManifestFanoutRefusesBeforeQuestMutation" methodname="P17c_08_ManifestFanoutRefusesBeforeQuestMutation" classname="Hollowmere.P1_7c.EditMode.Tests.RuntimeFollowupTests" runstate="Runnable" seed="836111290" result="Passed" start-time="2026-10-06 21:35:01Z" end-time="2026-10-06 21:35:01Z" duration="0.052172" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

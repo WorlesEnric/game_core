@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="20" result="Passed" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:45Z" duration="52.9717593">
+  <test-suite type="TestSuite" id="1078" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:45Z" duration="52.971759" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1003" name="Hollowmere.P1_1.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_1.PlayMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.411382" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1004" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.409823" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1005" name="P1_1" fullname="Hollowmere.P1_1" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.408962" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1006" name="PlayMode" fullname="Hollowmere.P1_1.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.408149" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1007" name="Tests" fullname="Hollowmere.P1_1.PlayMode.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.407016" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="ThreeRegionLoop" fullname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" classname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.404010" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1002" name="TravelsVillageMarshBelfryVillage" fullname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop.TravelsVillageMarshBelfryVillage" methodname="TravelsVillageMarshBelfryVillage" classname="Hollowmere.P1_1.PlayMode.Tests.ThreeRegionLoop" runstate="Runnable" seed="1583680260" result="Passed" start-time="2026-10-06 21:36:52Z" end-time="2026-10-06 21:37:09Z" duration="17.375825" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[B-REGION] boot: 16763 ms, 14 frames
+[B-REGION] Thornwick Village -> Blackmere Marsh: 153 ms, 21 frames
+[B-REGION] Blackmere Marsh -> Drowned Belfry: 147 ms, 16 frames
+[B-REGION] Drowned Belfry -> Thornwick Village: 150 ms, 32 frames
+[B-REGION] loop frames=69 sanctionedPumps=69 pumpCounter{sanctioned=85;duplicate=0;bypass=0}
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1010" name="Hollowmere.P1_3.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_3.PlayMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.513948" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1011" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.512513" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1012" name="P1_3" fullname="Hollowmere.P1_3" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.511671" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1013" name="PlayMode" fullname="Hollowmere.P1_3.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.510835" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1014" name="Tests" fullname="Hollowmere.P1_3.PlayMode.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.510039" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1008" name="PlayerWalkAndInteract" fullname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" classname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.509004" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1009" name="WalksInteractsTalksPastNpcsAndTravels" fullname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels" methodname="WalksInteractsTalksPastNpcsAndTravels" classname="Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract" runstate="Runnable" seed="1002530843" result="Passed" start-time="2026-10-06 21:37:09Z" end-time="2026-10-06 21:37:12Z" duration="2.507403" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[B-FRAME] boot ms=735 frames=15 msPerFrame=49.00
+[B-FRAME] scripted-90 ms=359 frames=90 msPerFrame=3.99
+[B-FRAME] boot ms=684 frames=8 msPerFrame=85.50
+[B-FRAME] scripted-90 ms=282 frames=90 msPerFrame=3.13
+[B-FRAME] walk-to-well ms=9 frames=2 msPerFrame=4.50
+[B-FRAME] run-to-portal-and-travel ms=228 frames=65 msPerFrame=3.51
+[B-FRAME] P1.3 loop frames=89 sanctionedPumps=89 resolutions=169 ungrounded=11 pumpCounter{sanctioned=188;duplicate=0;bypass=0}
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1026" name="Hollowmere.P1_5.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_5.PlayMode.Tests.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="1.269244" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1027" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="1.268471" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1028" name="P1_5" fullname="Hollowmere.P1_5" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="1.267872" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1029" name="PlayMode" fullname="Hollowmere.P1_5.PlayMode" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="1.267456" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1030" name="Tests" fullname="Hollowmere.P1_5.PlayMode.Tests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="1.267037" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1022" name="BootWiring" fullname="Hollowmere.P1_5.PlayMode.Tests.BootWiring" classname="Hollowmere.P1_5.PlayMode.Tests.BootWiring" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:12Z" duration="0.682908" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1023" name="BootSceneWiresUiAndAudioIntoTheP13AndP14Sessions" fullname="Hollowmere.P1_5.PlayMode.Tests.BootWiring.BootSceneWiresUiAndAudioIntoTheP13AndP14Sessions" methodname="BootSceneWiresUiAndAudioIntoTheP13AndP14Sessions" classname="Hollowmere.P1_5.PlayMode.Tests.BootWiring" runstate="Runnable" seed="1963770330" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:12Z" duration="0.680125" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[P1.5-BOOT seams=9 extensions=player,npc,interaction,ui,audio screen=Hud firstLine="Traveller, you look half drowned yourself. Sit a moment. I am Maren, the healer here." dialoguePushes=3 ms=667
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1024" name="UiFlowHeadless" fullname="Hollowmere.P1_5.PlayMode.Tests.UiFlowHeadless" classname="Hollowmere.P1_5.PlayMode.Tests.UiFlowHeadless" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="0.583313" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1025" name="MenuNewGamePauseSaveLoadDialogueAmbience" fullname="Hollowmere.P1_5.PlayMode.Tests.UiFlowHeadless.MenuNewGamePauseSaveLoadDialogueAmbience" methodname="MenuNewGamePauseSaveLoadDialogueAmbience" classname="Hollowmere.P1_5.PlayMode.Tests.UiFlowHeadless" runstate="Runnable" seed="608256647" result="Passed" start-time="2026-10-06 21:37:12Z" end-time="2026-10-06 21:37:13Z" duration="0.581335" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.5-UIFLOW] boot: 37 ms, 0 frames
+[P1.5-UIFLOW] menu -> hud: 9 ms, 1 frames
+[P1.5-UIFLOW] travel -> marsh ambience: 3 ms, 2 frames
+[P1.5-UIFLOW] save slot-1: 183 ms, 2 frames
+[P1.5-UIFLOW] load slot-1 -> hud: 227 ms, 2 frames
+[P1.5-UIFLOW] total=564 ms screenChanges=10 hostActions=2 presents=75 audioPresents=75 zoneRequests=1 pumps=30/30 headless=True
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1039" name="Hollowmere.P1_7a.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_7a.PlayMode.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:21Z" duration="7.684668" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1040" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:21Z" duration="7.683554" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1041" name="P1_7a" fullname="Hollowmere.P1_7a" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:21Z" duration="7.682889" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1042" name="PlayMode" fullname="Hollowmere.P1_7a.PlayMode" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:21Z" duration="7.682378" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1043" name="Tests" fullname="Hollowmere.P1_7a.PlayMode.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:21Z" duration="7.681772" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1031" name="HollowmereSaveRestore" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:18Z" duration="5.375128" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1036" name="APortalCondition_RefusesTravelWithAStableCode_UntilItHolds" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.APortalCondition_RefusesTravelWithAStableCode_UntilItHolds" methodname="APortalCondition_RefusesTravelWithAStableCode_UntilItHolds" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" seed="1083354759" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:13Z" duration="0.240604" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a] portal condition frames=6 refusal=world.travel skipped (GP-WLD-013: portal 68bf5935-dbc0-4c24-b344-35782ef929bf condition 'narrative.fact.heard_rumour' is false)
+]]></output>
+                </test-case>
+                <test-case id="1033" name="CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch" methodname="CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" seed="707361474" result="Passed" start-time="2026-10-06 21:37:13Z" end-time="2026-10-06 21:37:14Z" duration="0.907508" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a] W-PERSIST-02/03 total=899ms refusal=save.catalog-mismatch Build: RecipeRevisionMismatch: recipe DefinitionId(d62bb982efc5561437a6c8b124d13845) was captured at revision 4328504880704349240 and this build registers revision 12398955412952278072 (target TargetId(d687891309b3783d95fcf567283b1bd9)); a recipe is restored at exactly its captured revision (P-024).
+]]></output>
+                </test-case>
+                <test-case id="1032" name="FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce" methodname="FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" seed="1852850988" result="Passed" start-time="2026-10-06 21:37:14Z" end-time="2026-10-06 21:37:16Z" duration="1.805062" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a] W-PERSIST-01 total=1788ms obligations=0 settled=2 claims=3 claimRefusals=0 | play to the clapper 80ms/11f | belfry and capture (2 open) 169ms/6f | fresh boot restore and in-flight delivery 890ms/34f | pickup capture, restore and replay 451ms/50f
+]]></output>
+                </test-case>
+                <test-case id="1035" name="SameFrameIndexedCommands_GiveIdenticalSlots_AcrossTwoBoots" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.SameFrameIndexedCommands_GiveIdenticalSlots_AcrossTwoBoots" methodname="SameFrameIndexedCommands_GiveIdenticalSlots_AcrossTwoBoots" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" seed="1231772202" result="Passed" start-time="2026-10-06 21:37:16Z" end-time="2026-10-06 21:37:18Z" duration="1.739402" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a] determinism hash=05ed61fb9c3f1d6c5fc785ab72789813e64a0754adb481802ff38150fdf4e213 steps=15/15 total=1734ms
+]]></output>
+                </test-case>
+                <test-case id="1034" name="TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply" fullname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply" methodname="TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply" classname="Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore" runstate="Runnable" seed="488843221" result="Passed" start-time="2026-10-06 21:37:18Z" end-time="2026-10-06 21:37:18Z" duration="0.678191" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a] W-PLUG-08 frames=36 total=665ms
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1037" name="PlayerWalkSpeed" fullname="Hollowmere.P1_7a.PlayMode.Tests.PlayerWalkSpeed" classname="Hollowmere.P1_7a.PlayMode.Tests.PlayerWalkSpeed" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:18Z" end-time="2026-10-06 21:37:21Z" duration="2.305776" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1038" name="HoldingW_OnTheHud_WalksAtTheAuthoredSpeed" fullname="Hollowmere.P1_7a.PlayMode.Tests.PlayerWalkSpeed.HoldingW_OnTheHud_WalksAtTheAuthoredSpeed" methodname="HoldingW_OnTheHud_WalksAtTheAuthoredSpeed" classname="Hollowmere.P1_7a.PlayMode.Tests.PlayerWalkSpeed" runstate="Runnable" seed="2035776089" result="Passed" start-time="2026-10-06 21:37:18Z" end-time="2026-10-06 21:37:21Z" duration="2.303036" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.7a-walk] A menu: W via Input System 60 frames -> 0.000 m (inner source move (0.00, 0.00), gated move (0.00, 0.00), moves submitted 61, paused True)
+[P1.7a-walk] B hud: W via Input System 60 frames -> 0.000 m (expected 0.581 m if the keyboard reaches the action; sampled move (0.00, 0.00), focused False)
+[P1.7a-walk] C hud: scripted W 150 steps of 0.020 s, CharacterController -> 7.550 m of 7.500 m (resolutions 151, ungrounded 0, refused 0)
+[P1.7a-walk] D hud: scripted W 150 steps, kinematic -> 7.550 m of 7.500 m
+[P1.7a-walk] E hud: scripted W 14 frames of 182 ms, kinematic -> 3.750 m (clamped contract 3.500 m, wall-clock speed would be 6.370 m)
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1063" name="Hollowmere.P3_1.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.PlayMode.Tests.dll" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.380216" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1064" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.379360" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1065" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.378687" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1066" name="PlayMode" fullname="Hollowmere.P3_1.PlayMode" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.377070" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1067" name="Tests" fullname="Hollowmere.P3_1.PlayMode.Tests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.376194" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1053" name="FullQuestHeadless" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:43Z" duration="22.375469" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1056" name="EndingA_Silence" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence" methodname="EndingA_Silence" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="74198404" result="Passed" start-time="2026-10-06 21:37:21Z" end-time="2026-10-06 21:37:23Z" duration="2.041350" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending A: boot 657ms/1f | Maren's rumour 86ms/5f | the barn lantern 32ms/4f | Hale opens the gate 93ms/3f | the oil flask 42ms/4f | the punt sealed with pitch 24ms/4f | the punt crosses to the belfry 1025ms/3f | the Echo, left to sleep 68ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1055" name="EndingB_Toll" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll" methodname="EndingB_Toll" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="732992223" result="Passed" start-time="2026-10-06 21:37:23Z" end-time="2026-10-06 21:37:25Z" duration="1.834005" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending B: boot 463ms/1f | Maren's rumour 39ms/5f | the square's coins (2 + 3) 13ms/4f | Bram's lantern 19ms/4f | Hale opens the gate 26ms/3f | the clapper 15ms/4f | the oil flask 11ms/4f | the punt sealed with pitch 68ms/4f | the punt crosses to the belfry 1027ms/3f | the bell rings 117ms/5f
+]]></output>
+                </test-case>
+                <test-case id="1054" name="EndingC_FreedEcho" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho" methodname="EndingC_FreedEcho" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="599501246" result="Passed" start-time="2026-10-06 21:37:25Z" end-time="2026-10-06 21:37:26Z" duration="1.261138" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending C: boot 642ms/5f | Maren's rumour 63ms/5f | the barn lantern 53ms/4f | Hale opens the gate 62ms/3f | the west shrine lantern 83ms/4f | the middle shrine lantern 20ms/4f | the shrine alight 28ms/6f | the clapper 37ms/4f | Odd ferries to the belfry 95ms/3f | ferry 0ms/0f | the bell rings 147ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1057" name="Failure_LanternLost" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost" methodname="Failure_LanternLost" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="2131571055" result="Passed" start-time="2026-10-06 21:37:26Z" end-time="2026-10-06 21:37:27Z" duration="0.949318" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] failure: boot 669ms/5f | Maren's rumour 52ms/5f | the barn lantern 31ms/4f | Hale opens the gate 74ms/3f | the sinkhole takes the lantern 102ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1062" name="P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" methodname="P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="1907012240" result="Passed" start-time="2026-10-06 21:37:27Z" end-time="2026-10-06 21:37:28Z" duration="1.420370" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1060" name="P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" methodname="P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="896357989" result="Passed" start-time="2026-10-06 21:37:28Z" end-time="2026-10-06 21:37:31Z" duration="2.482021" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1b] save capture slot-1 mainThreadMs=110.631
+]]></output>
+                </test-case>
+                <test-case id="1061" name="P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" methodname="P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="612566743" result="Passed" start-time="2026-10-06 21:37:31Z" end-time="2026-10-06 21:37:37Z" duration="6.030259" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1059" name="R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" methodname="R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="707425103" result="Passed" start-time="2026-10-06 21:37:37Z" end-time="2026-10-06 21:37:41Z" duration="4.001848" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[R7-C lantern] interaction outcomes: succeeded=1, refused=7
+[R7-C lantern] interaction outcomes: succeeded=1, refused=7
+[R7-C lantern] interaction outcomes: succeeded=0, refused=8
+[R7-C lantern] interaction outcomes: succeeded=0, refused=8
+[P3.1] R7-C W-PLUG-08: 32 real barn uses, exactly one lantern across save/reload: boot 639ms/878f
+]]></output>
+                </test-case>
+                <test-case id="1058" name="SaveRestoreMidQuest" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest" methodname="SaveRestoreMidQuest" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="337199335" result="Passed" start-time="2026-10-06 21:37:41Z" end-time="2026-10-06 21:37:43Z" duration="2.349104" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] round trip: slots 08cc3ae7ebcf86a0fb70629cf42d76253150175c13cb0ad44be43a4abec6c7cb -> 08cc3ae7ebcf86a0fb70629cf42d76253150175c13cb0ad44be43a4abec6c7cb, step 40 -> 40
+[P3.1] capture slot hash 08cc3ae7ebcf86a0fb70629cf42d76253150175c13cb0ad44be43a4abec6c7cb, restore slot hash 08cc3ae7ebcf86a0fb70629cf42d76253150175c13cb0ad44be43a4abec6c7cb
+[P3.1] save/restore: boot 669ms/16f | Maren's rumour 64ms/5f | the barn lantern 29ms/4f | Hale opens the gate 69ms/3f | the west shrine lantern 21ms/4f | the middle shrine lantern (after restore) 1404ms/4f | the shrine alight (after restore) 11ms/6f | the clapper (after restore) 9ms/4f | Odd ferries to the belfry 13ms/3f | ferry 0ms/0f | the bell rings 26ms/4f
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1070" name="Hollowmere.R7_C.Interaction.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Interaction.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.689092" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4123187" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1071" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.688576" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1072" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.688125" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1073" name="Interaction" fullname="Hollowmere.R7_C.Interaction" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.687721" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1074" name="Tests" fullname="Hollowmere.R7_C.Interaction.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.687290" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1068" name="LedgeJumpLanding" fullname="Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding" classname="Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.686935" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1069" name="WPLUG03_DeterministicJumpClearsSolidLedgeAndLands" fullname="Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding.WPLUG03_DeterministicJumpClearsSolidLedgeAndLands" methodname="WPLUG03_DeterministicJumpClearsSolidLedgeAndLands" classname="Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding" runstate="Runnable" seed="1488112950" result="Passed" start-time="2026-10-06 21:37:43Z" end-time="2026-10-06 21:37:45Z" duration="1.685806" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[R7-C] W-PLUG-03: walk blocked by 0.8m ledge; Jump crosses its lip airborne and lands grounded on top; two identical 110-frame traces
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

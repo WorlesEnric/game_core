@@ -1,0 +1,21 @@
+{
+  "revision": "fc3245ea4143220629a1a562081a2d097da39759",
+  "workingTreeAddition": "Explicit annotation on native audio-only test",
+  "commands": [
+    {
+      "command": "python3 tools/check_game_core_csharp.py",
+      "exit": 0,
+      "checkedCSharpFiles": 1240
+    },
+    {
+      "command": "python3 tools/check_package_metadata.py",
+      "exit": 0,
+      "packages": 42,
+      "packageAssemblies": 91,
+      "enginePins": 4,
+      "additionalGamePins": 6,
+      "lockSources": 3
+    }
+  ],
+  "earlierAttempt": "C# checker timed out at 120 seconds during IL2CPP build; final combined invocation completed in 66.39 seconds."
+}

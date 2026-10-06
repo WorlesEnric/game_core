@@ -1,16 +1,17 @@
 {
-  "status": "BLOCKED",
-  "note": "Real three-region travel/pose/residency tests pass. Region texture/audio release and the required peak-relative Memory Profiler delta remain unmeasured.",
-  "command": "studio/tools/verify-all.sh unity",
+  "status": "PASS",
+  "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825\u20130.15878% of peak; both passing runs meet load \u22642 s/unload \u22641 s. Reloadable 702-byte clip descriptors remain included in the residual.",
+  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'NativeMediaAcceptance' -force-glcore",
   "tests": [
-    "TravelsVillageMarshBelfryVillage"
+    "NativeMediaAcceptance"
   ],
   "row": "W-PLUG-01",
   "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
   "requirement": "SR-6.1, B-REGION",
-  "reportedAt": "2026-10-06T15:29:44.409021+00:00",
+  "reportedAt": "2026-10-06T21:25:18.936154+00:00",
   "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
-    "B-REGION/README.md"
+    "W-PLUG-01/r7-region-repeat/results.xml",
+    "W-PLUG-01/r7-region-repeat/external-snapshots.json",
+    "W-PLUG-01/r7-native-final/results.xml"
   ]
 }
