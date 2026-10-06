@@ -142,26 +142,51 @@ python3 samples/mechanisms/pressure-plate/make-candidate.py --check
 
 ### Build and provision before staging
 
-The CLI requires a locally built binary. P4.2b's literal command first failed exit 127, then `cache_invalid`; both prerequisites are explicit here. The trusted cache must contain pinned NuGet packages, UPM metadata/archives and a resolved Unity 6000.0.75f1 Library from this same checkout. ([P4.2b §Requests to other packets](packets/P4.2b-live-acceptance.md#requests-to-other-packets), [cache.py](../../studio/stage/cache.py), [CLI](../../studio/agent/src/stage/cli.rs))
+The CLI requires a locally built binary **and a separately provisioned versioned cache**. P4.2b supplied the binary but launched straight into a fresh root; neither the host NuGet cache nor an old `_warm/Library` is automatically that root's cache. The runtime consequently refused `cache_invalid`. `stage-cache` below asks the built binary for the exact `_warm/<sha256>` path, provisions that path and checks all three offline inputs before a stage can consume cold grace. The identity binds the source project's `ProjectVersion.txt`, trusted package manifests and compiled-in NuGet/Unity-metadata/UPM lock bytes; do not substitute `cache-key.sh`'s historical version-only key. ([P4.2b receipt](../../artifacts/studio/verification/W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/command.log), [cache.py](../../studio/stage/cache.py), [cache_version](../../studio/agent/src/stage/pipeline.rs))
+
+Prerequisites on the Linux host:
+
+- Python 3.11+, Rust and .NET 8; a companion built from this checkout, not an installed immutable release or a sibling's build.
+- Unity **6000.0.75f1** at the [stage launcher's fixed installation path](../../studio/agent/src/stage/sandbox.rs), the pre-provisioned `gamecore-stage:6000.0.75f1-v1` Docker image, working no-network Unity licensing and no concurrent Editor for this packet. No installed companion or etosd restart is needed.
+- The pinned NuGet closure in `$HOME/.nuget/packages`, public UPM payloads in `$HOME/.cache/Unity/upm`, and a trusted resolved Library containing the exact [Unity metadata lock](../../studio/stage/cache/unity-metadata-lock.json) plus `PackageCache`. For a fresh checkout, first resolve/import it with `studio/tools/unity-compile.sh plugin-guide games/hollowmere`, then use `games/hollowmere/Library`. An operator's existing trusted Library is also an acceptable **seed only if every pinned digest matches**. Missing or changed bytes are a prerequisite failure: never change locks, skip checks or copy a complete cache root to hide it. ([Pinned NuGet closure](../../studio/stage/cache/cache-lock.json), [public UPM lock](../../studio/stage/cache/upm-lock.json))
 
 ```sh
 export PATH="$HOME/.dotnet:$HOME/.cargo/bin:$PATH"
 cargo build --release --manifest-path studio/agent/Cargo.toml
-export GAMECORE_STAGE_ROOT="$PWD/.evidence/stage-guide"
-stage_cache="$(studio/agent/target/release/gamecore-studio stage cache-path \
-  --repo "$PWD" --source-project "$PWD/games/hollowmere" --root "$GAMECORE_STAGE_ROOT")"
-bash studio/stage/provision-cache.sh "$stage_cache" \
+guide_work="$(mktemp -d "${TMPDIR:-/tmp}/gc-stage-guide.XXXXXX")"
+export GAMECORE_STAGE_ROOT="$guide_work/stage"
+python3 studio/etos/install-state.py stage-cache \
+  --stage-root "$GAMECORE_STAGE_ROOT" --repo "$PWD" \
+  --source-project "$PWD/games/hollowmere" \
   --offline-from "$HOME/.nuget/packages" \
   --unity-library "$PWD/games/hollowmere/Library" \
   --upm-from "$HOME/.cache/Unity/upm"
-bash studio/stage/provision-cache.sh "$stage_cache" --verify
+python3 studio/etos/install-state.py stage-cache \
+  --stage-root "$GAMECORE_STAGE_ROOT" --repo "$PWD" \
+  --source-project "$PWD/games/hollowmere" --verify
 studio/agent/target/release/gamecore-studio stage run plate-example \
-  --repo "$PWD" --root "$GAMECORE_STAGE_ROOT" \
+  --repo "$PWD" --root "$GAMECORE_STAGE_ROOT" --budget-s 360 \
   --candidate "$PWD/samples/mechanisms/pressure-plate/candidate" \
-  --source-project "$PWD/games/hollowmere" --verdict-out /tmp/plate-verdict.json
+  --source-project "$PWD/games/hollowmere" \
+  --verdict-out "$GAMECORE_STAGE_ROOT/plate-verdict.json"
 ```
 
-This private-root CLI is diagnostic only. For service staging, provision the exact **owner/version** cache returned for the registered `(app, project)` namespace; use the derivation in [provision-p42d.sh](../../artifacts/studio/verification/TOOLS/provision-p42d.sh). Its source project and trusted package root must be the registration's exact checkout. Never reset cold-grace markers, widen budgets or mount the live project into the sandbox. ([P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission))
+The node-independent installer action does not read credentials, register projects, install binaries or restart services; do not pass its node `--root` option. Its stage-tool equivalent is `bash studio/stage/provision-cache.sh --stage-root "$GAMECORE_STAGE_ROOT" --repo "$PWD" --source-project "$PWD/games/hollowmere"` with the same three seed arguments. `--verify` in this root-derived mode requires NuGet **and** pinned analysis metadata **and** public UPM **and** the offline Unity PackageCache. Low-level exact-directory provisioning remains available for dependency-only sandbox probes; it is not the complete guide prerequisite. If NuGet is not already populated, omit `--offline-from` for an explicit host-only locked restore; candidate execution stays `--network none`.
+
+For a repeatable diagnostic walkthrough after the build, [guide-flow.sh](../../studio/stage/guide-flow.sh) runs all four sample regeneration/check commands above, the two installer commands and the complete Docker stage. Its first argument must **not already exist**. To use a locally built debug binary, set `GAMECORE_STAGE_BINARY="$PWD/studio/agent/target/debug/gamecore-studio"`; otherwise it uses the release build. Example:
+
+```sh
+guide_work="$(mktemp -d "${TMPDIR:-/tmp}/gc-stage-guide.XXXXXX")"
+bash studio/stage/guide-flow.sh "$guide_work/stage" "$PWD/games/hollowmere/Library"
+```
+
+The public UPM cache is mutable: a newly resolved Library does not guarantee it still contains every pinned historical registry record. R7-A's default `$HOME/.cache/Unity/upm` lacked one pinned record and correctly refused before staging. On this host, the operator's verified `stage/_warm/<version>/upm` retained the complete public closure. Supply that directory as the fourth `guide-flow.sh` argument (third is the NuGet source), or as `--upm-from` above. Provisioning copies only the pinned public records into the new private root and verifies every digest; it does not copy the warm root, candidate assemblies or cold-grace markers. The exact exercised invocation and full Docker XML are retained in [R7-A W-DOC-02](../../artifacts/studio/verification/W-DOC-02/r7-a/README.md).
+
+Retain `stage/plate-verdict.json`, `stage/plate-example/out` and the command output. A diagnostic stage success requires all seven verdict steps passing, zero forbidden hits and `confinement: docker`, with the actual EditMode/PlayMode XML retained. Provisioning seeds only pinned metadata and public package inputs, never a warm `ArtifactDB`; the first cold stage retains the existing once-only 1800 s grace, then the 360 s warm budget. Never remove `.cold-grace-used`, widen deadlines or retry by disguising an existing cache as fresh. A cache preflight pass is not a stage pass; an unsigned CLI stage pass is not authenticated admission or the new lever exercise.
+
+This private-root CLI is diagnostic only. For service staging, provision the exact **owner/version** cache returned for the registered `(app, project)` namespace; use the derivation in [provision-p42d.sh](../../artifacts/studio/verification/TOOLS/provision-p42d.sh), with complete verification (`provision-cache.sh "$stage_cache" --verify --complete`). Its source project and trusted package root must be the registration's exact checkout. Never mount the live project into the sandbox. ([P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission))
+
+The historical `studio/tools/verify-all.sh final-guides` / `guide-stage` routes invoke the frozen P4.2b drivers, including a `1752ca8a` source assertion and paths under `.evidence/p42b-*`; they intentionally retain the original failing receipts and do not run this updated guide. Use `guide-flow.sh` above for new diagnostic evidence. Close W-DOC-02 only after the actual lever extension and the authenticated Stage → Admit → restored-world/undo flow below are also evidenced; cache provisioning alone does not change the row's acceptance criteria.
 
 ### Authenticated Stage to Admit
 

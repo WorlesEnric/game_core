@@ -5,6 +5,7 @@ import base64
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -23,7 +24,27 @@ def regular(path):
     return path.read_bytes()
 
 
-def verify(cache, expected=None):
+def no_links(path):
+    if any(parent.is_symlink() for parent in (path, *path.parents)):
+        raise ValueError('cache_invalid: linked cache path')
+
+
+def versioned_cache(root, repo, source_project, binary):
+    """Ask the staging binary for its identity; never duplicate its compiled-in lock hash."""
+    root = root.absolute()
+    no_links(root)
+    value = subprocess.check_output([
+        str(binary.resolve()), 'stage', 'cache-path', '--repo', str(repo.resolve()),
+        '--source-project', str(source_project.resolve()), '--root', str(root),
+    ], text=True).strip()
+    cache = Path(value)
+    if cache.parent != root / '_warm' or not re.fullmatch(r'[a-f0-9]{64}', cache.name):
+        raise ValueError('cache_invalid: binary returned an unexpected versioned cache path')
+    no_links(cache)
+    return cache
+
+
+def verify(cache, expected=None, complete=False):
     expected = expected or json.loads((HERE / 'cache/cache-lock.json').read_text())
     if json.loads(regular(cache / 'cache-manifest.json')) != expected:
         raise ValueError('cache_invalid: manifest differs from pinned closure')
@@ -63,14 +84,25 @@ def verify(cache, expected=None):
                 allowed.add((relative / name).as_posix())
     if actual != allowed:
         raise ValueError('cache_invalid: unexpected or missing package files')
-    if (cache / 'analysis-context').exists():
+    if complete or (cache / 'analysis-context').exists():
         for relative, digest in analysis_context.pinned().items():
             analysis_context.checked(cache / 'analysis-context', relative, digest)
-    if (cache / 'upm').exists():
+    if complete or (cache / 'upm').exists():
         upm_cache.verify(cache / 'upm')
 
 
+def verify_complete(cache):
+    """A NuGet-only cache is not a usable offline stage prerequisite."""
+    no_links(cache)
+    verify(cache, complete=True)
+    packages = cache / 'Library/PackageCache'
+    no_links(packages)
+    if not packages.is_dir():
+        raise ValueError('cache_invalid: offline Unity PackageCache missing')
+
+
 def provision(cache, offline):
+    no_links(cache)
     cache.mkdir(parents=True, exist_ok=True)
     if cache.is_symlink() or (cache / 'nuget').exists():
         verify(cache)
@@ -124,22 +156,42 @@ def seed_unity(cache, source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('cache', type=Path, help='exact versioned cache directory (from stage cache-path)')
+    parser.add_argument('cache', type=Path, nargs='?', help='exact versioned cache directory (from stage cache-path)')
+    parser.add_argument('--stage-root', type=Path, help='derive the exact versioned cache below this private or owner-scoped root')
+    parser.add_argument('--repo', type=Path, default=HERE.parents[1])
+    parser.add_argument('--source-project', type=Path)
+    parser.add_argument('--binary', type=Path, help='companion built from this checkout; defaults to studio/agent/target/release/gamecore-studio')
     parser.add_argument('--verify', action='store_true')
+    parser.add_argument('--complete', action='store_true', help='also require pinned analysis metadata and public UPM inputs when verifying')
     parser.add_argument('--offline-from', type=Path, help='copy the pinned closure from an existing host NuGet cache')
     parser.add_argument('--unity-library', type=Path, help='trusted host Unity 6000.0.75f1 Library with offline UPM and pinned analysis metadata')
     parser.add_argument('--upm-from', type=Path, help='host public Unity UPM cache; only committed public metadata/archive records are copied')
     args = parser.parse_args()
+    if bool(args.cache) == bool(args.stage_root):
+        parser.error('supply either an exact cache directory or --stage-root, not both')
+    if args.stage_root and not args.source_project:
+        parser.error('--stage-root requires --source-project')
+    if not args.verify and (args.stage_root or args.complete) and (not args.unity_library or not args.upm_from):
+        parser.error('complete provisioning requires --unity-library and --upm-from')
     try:
+        cache = (versioned_cache(args.stage_root, args.repo, args.source_project,
+                                 args.binary or args.repo / 'studio/agent/target/release/gamecore-studio')
+                 if args.stage_root else args.cache)
         if args.verify:
-            verify(args.cache)
+            if args.complete or args.stage_root:
+                verify_complete(cache)
+            else:
+                verify(cache)
         else:
-            provision(args.cache, args.offline_from)
+            provision(cache, args.offline_from)
             if args.upm_from:
-                upm_cache.provision(args.cache / 'upm', args.upm_from)
+                upm_cache.provision(cache / 'upm', args.upm_from)
             if args.unity_library:
-                seed_unity(args.cache, args.unity_library)
-        print('stage cache: verified pinned analyzer/Rules closures and expanded payloads')
+                seed_unity(cache, args.unity_library)
+            if args.stage_root or args.complete:
+                verify_complete(cache)
+        scope = 'NuGet, Unity metadata and UPM' if args.stage_root or args.complete else 'supplied dependency'
+        print(f'stage cache: verified pinned {scope} payloads at {cache}')
     except (OSError, ValueError, KeyError, zipfile.BadZipFile, subprocess.CalledProcessError):
         raise SystemExit('cache_invalid: provisioning or integrity verification failed')
 

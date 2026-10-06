@@ -552,7 +552,12 @@ namespace Hollowmere.P3_2.Workflows
 
                     JObject saved = JObject.Parse(File.ReadAllText(file));
                     St.Set("saved", saved);
+                    int editorPid = System.Diagnostics.Process.GetCurrentProcess().Id;
+                    if (saved["preparationPid"] != null && (int)saved["preparationPid"]! == editorPid)
+                        throw new InvalidOperationException("W-AI-06 requires a separate Editor process after preparation.");
                     JObject check = new JObject { ["session"] = saved["session"]?.DeepClone() ?? "narrative", ["hashesNow"] = S.Hashes(ReopenPaths()), ["journal"] = new JObject() };
+                    check["editorPid"] = editorPid;
+                    if (saved["preparationPid"] != null) check["preparationPid"] = saved["preparationPid"]!.DeepClone();
                     foreach (string tag in tags)
                     {
                         string id = (string?)saved["applied"]?[tag]?["changeSetId"] ?? string.Empty;
@@ -589,6 +594,24 @@ namespace Hollowmere.P3_2.Workflows
             {
                 steps.Add(S.Do("final undo " + tag, () => JournalState(tag) == ChangeSetState.Applied ? S.Undo(tag).Run() : Skip(tag, "final undo")));
             }
+
+            steps.Add(S.Do("bake restored content", () =>
+            {
+                // History restores authored fields; contentStamp is the last successful bake's derived metadata.
+                // Run the same production bake used before Play, not a hash filter or a saved-byte restoration.
+                const string worldPath = "Assets/Hollowmere/World/Hollowmere.asset";
+                var world = AssetDatabase.LoadAssetAtPath<GameCore.Gameplay.World.WorldDefinition>(worldPath);
+                var bake = GameCore.Gameplay.Compile.Entry.Bake(world, GameCore.Gameplay.Compile.BakePaths.ConventionFor(worldPath), false);
+                WorkflowRunner.Json("reopen/restored-bake.json", new JObject
+                {
+                    ["succeeded"] = bake.Succeeded,
+                    ["changedFiles"] = new JArray(bake.ChangedFiles),
+                    ["detail"] = bake.ToString(),
+                });
+                if (!bake.Succeeded)
+                    throw new InvalidOperationException("W-AI-06 cannot persist restored content: " + bake);
+                return true;
+            }));
 
             steps.Add(S.Do("final consistency", () =>
             {

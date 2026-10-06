@@ -224,6 +224,24 @@ namespace GameCore.Studio.UI.Tests
         }
 
         [Test]
+        public void R7_A_RuntimeNpcTagOverridesAuthoredBootstrapAncestor()
+        {
+            FixtureNpcDefinition maren = _bed.CreateNpc("Maren", "Morning");
+            FixtureAuthoredEntity bootstrap = _bed.SpawnEntity("GameBoot", new Vector3(20f, 0f, 0f));
+            _bed.Runtime.Index.Rebuild();
+            GameObject view = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            view.name = "NpcView(Maren)";
+            view.transform.SetParent(bootstrap.transform, true);
+            view.AddComponent<EntityViewTag>().AuthoringId = maren.AuthoringId;
+            PickingService service = new PickingService(_camera, Viewport, _bed.Runtime.Resolver, _bed.Runtime.Identity, null, new PickOptions { GroundHeight = -5f });
+            RuntimeViewMapper mapper = new RuntimeViewMapper(_bed.Runtime);
+            ViewportPicker picker = new ViewportPicker(_bed.Context.Selection, () => service, _timings, () => 4, mapper);
+            picker.Click(Center, SelectionOp.Replace);
+            AssertTargets(maren);
+            Assert.That(picker.Hover(Center)!.Ref.SameTarget(_bed.Ref(maren)), Is.True);
+        }
+
+        [Test]
         public void Badges_ReportStaleTargets()
         {
             FixtureAuthoredEntity doomed = _bed.SpawnEntity("Doomed", Vector3.zero);

@@ -1,13 +1,14 @@
 {
   "status": "FAIL",
-  "baseline": "1752ca8a",
-  "note": "Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed.",
-  "command": "studio/tools/verify-all.sh final-guides\nstudio/tools/verify-all.sh guide-stage",
+  "baseline": "1a462f88",
+  "note": "Fresh-root cache_invalid is fixed: exact versioned provisioning and all seven default-Docker guide sample steps pass in 169.481 s, with 36 EditMode and 2 PlayMode passes. The literal new-lever and authenticated Stage/creator Admit/restored-world/undo exercise remains unproven; an unsigned pressure-plate CLI pass does not close this unchanged row.",
+  "command": "GAMECORE_STAGE_BINARY=\"$PWD/studio/agent/target/debug/gamecore-studio\" bash studio/stage/guide-flow.sh NEW_PRIVATE_ROOT TRUSTED_UNITY_LIBRARY NUGET_SOURCE PINNED_PUBLIC_UPM_SOURCE",
   "row": "W-DOC-02",
   "scenario": "Developer adds a lever interactable from the plugin guide",
   "requirement": "SR-12.2",
-  "reportedAt": "2026-10-06T15:29:44.439223+00:00",
+  "reportedAt": "2026-10-06T21:13:46.408711+00:00",
   "evidence": [
+    "W-DOC-02/r7-a/README.md",
     "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md",
     "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/walkthrough.json",
     "W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md"

@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import sys
 import time
 import tomllib
 
@@ -256,9 +257,23 @@ def release(root, binary, manifest_dir, etos, attempts=30):
             raise
 
 
+def stage_cache(stage_root, repo, source_project, binary, offline_from, unity_library, upm_from, verify=False):
+    """Provision only the caller-selected stage root; never inspect or mutate a node."""
+    command = [sys.executable, str(HERE.parent / "stage/cache.py"),
+               "--stage-root", str(stage_root), "--repo", str(repo),
+               "--source-project", str(source_project)]
+    for flag, value in (("--binary", binary), ("--offline-from", offline_from),
+                        ("--unity-library", unity_library), ("--upm-from", upm_from)):
+        if value is not None:
+            command.extend((flag, str(value)))
+    if verify:
+        command.append("--verify")
+    subprocess.run(command, check=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument("--root", type=Path, help="node state root; required except for the node-independent stage-cache action")
     sub = parser.add_subparsers(dest="action", required=True)
     price_parser = sub.add_parser("prices")
     price_parser.add_argument("--only", choices=["tts", "describe"])
@@ -269,7 +284,24 @@ def main():
     rel = sub.add_parser("release")
     rel.add_argument("binary", type=Path)
     rel.add_argument("--etos", default="etos")
+    cache = sub.add_parser("stage-cache", help="provision the exact versioned cache without installing or restarting services")
+    cache.add_argument("--stage-root", type=Path, required=True)
+    cache.add_argument("--repo", type=Path, default=HERE.parents[1])
+    cache.add_argument("--source-project", type=Path, required=True)
+    cache.add_argument("--binary", type=Path)
+    cache.add_argument("--offline-from", type=Path)
+    cache.add_argument("--unity-library", type=Path)
+    cache.add_argument("--upm-from", type=Path)
+    cache.add_argument("--verify", action="store_true")
     args = parser.parse_args()
+    if args.action == "stage-cache":
+        if args.root is not None:
+            parser.error("stage-cache uses --stage-root, not the node --root")
+        stage_cache(args.stage_root, args.repo, args.source_project, args.binary,
+                    args.offline_from, args.unity_library, args.upm_from, args.verify)
+        return
+    if args.root is None:
+        parser.error("--root is required for node state actions")
     if args.action == "prices":
         apply_prices(args.root, args.only)
     elif args.action == "validate-prices":

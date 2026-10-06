@@ -1,23 +1,31 @@
 {
   "counts": {
+<<<<<<< HEAD
     "PASS": 39,
     "BLOCKED": 26,
     "FAIL": 3
+=======
+    "PASS": 37,
+    "BLOCKED": 30,
+    "FAIL": 1
+>>>>>>> host/omp/r7-a
   },
   "rows": [
     {
-      "status": "FAIL",
-      "note": "Graphical walking/picking captured and 1280\u00d7720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path.",
-      "command": "studio/tools/verify-all.sh ui\nstudio/tools/verify-all.sh graphics",
+      "status": "PASS",
+      "note": "Ordinary graphical Open Studio connects automatically without pairing; HUD walking moves committed world.posX/posZ 7.636 m in 3.040 s. Runtime NPC view tags now override the authored GameBoot ancestor; Select shows Maren and MarenEntity in the actual definition card. Graphical R2-29 key delivery and focus-reset regressions pass.",
+      "command": "bash artifacts/studio/verification/W-UI-01/r7-a/run.sh",
       "row": "W-UI-01",
       "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
       "requirement": "SR-1.1",
-      "reportedAt": "2026-10-06T15:29:44.361181+00:00",
+      "reportedAt": "2026-10-06T21:13:46.405116+00:00",
       "evidence": [
+        "W-UI-01/r7-a/README.md",
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
         "W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md",
         "GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md"
-      ]
+      ],
+      "baseline": "1a462f88"
     },
     {
       "status": "BLOCKED",
@@ -706,20 +714,21 @@
       ]
     },
     {
-      "status": "FAIL",
-      "note": "Fresh R6-B narrative session saves three Applied entries; a separate Editor reopens with all saved hashes equal, and all undo/redo/final undo calls succeed. Exact final byte consistency fails: backToBefore=false, and the driver now exits 1. Odd and DrownedBell differ only in contentStamp; HUD and Lantern are byte-identical. No bake or stamp fields are normalized. Before/after bytes and diffs are retained.",
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
+      "status": "PASS",
+      "note": "Unchanged retained narrative candidates save in Editor 4005226 and reopen in separate Editor 4007734 with all saved hashes equal. Normal undo/redo/final undo plus the production deterministic bake restores all four complete asset files exactly, including contentStamp: backToBefore=true. No fields or candidate stamps are normalized; no new paid generation.",
+      "command": "bash artifacts/studio/verification/W-AI-06/r7-a/run.sh /absolute/fresh/evidence-directory",
       "tests": [
-        "R6_Request5_RetainedReopenMismatchFailsExactByteContract",
-        "R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse"
+        "R7_A_ReopenBakeRestoresAllBytesAfterRetainedNarrativeUndoRedoUndo",
+        "separate-Editor WorkflowRunner reopen: hashesMatchSaved/backToBefore"
       ],
-      "baseline": "d140f748",
+      "baseline": "1a462f88",
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-06T15:29:44.406256+00:00",
+      "reportedAt": "2026-10-06T21:13:46.407929+00:00",
       "evidence": [
+        "W-AI-06/r7-a/README.md",
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/narrative/saved.json",
         "W-AI-06/p42e-reopen-20261006T152055.608370Z/result.json",
         "W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/final.json",
@@ -1383,14 +1392,15 @@
     },
     {
       "status": "FAIL",
-      "baseline": "1752ca8a",
-      "note": "Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed.",
-      "command": "studio/tools/verify-all.sh final-guides\nstudio/tools/verify-all.sh guide-stage",
+      "baseline": "1a462f88",
+      "note": "Fresh-root cache_invalid is fixed: exact versioned provisioning and all seven default-Docker guide sample steps pass in 169.481 s, with 36 EditMode and 2 PlayMode passes. The literal new-lever and authenticated Stage/creator Admit/restored-world/undo exercise remains unproven; an unsigned pressure-plate CLI pass does not close this unchanged row.",
+      "command": "GAMECORE_STAGE_BINARY=\"$PWD/studio/agent/target/debug/gamecore-studio\" bash studio/stage/guide-flow.sh NEW_PRIVATE_ROOT TRUSTED_UNITY_LIBRARY NUGET_SOURCE PINNED_PUBLIC_UPM_SOURCE",
       "row": "W-DOC-02",
       "scenario": "Developer adds a lever interactable from the plugin guide",
       "requirement": "SR-12.2",
-      "reportedAt": "2026-10-06T15:29:44.439223+00:00",
+      "reportedAt": "2026-10-06T21:13:46.408711+00:00",
       "evidence": [
+        "W-DOC-02/r7-a/README.md",
         "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md",
         "W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/walkthrough.json",
         "W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md"

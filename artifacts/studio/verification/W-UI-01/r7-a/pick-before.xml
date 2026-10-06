@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.7655318">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="568" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.765532" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1232" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="~/wkspace/gc-studio/r7-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="63" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.749292" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3973684" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1233" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="63" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.747933" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1234" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="63" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.747133" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1235" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="63" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.746431" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1236" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="63" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.745738" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1218" name="SelectionAndPickingTests" fullname="GameCore.Studio.UI.Tests.SelectionAndPickingTests" classname="GameCore.Studio.UI.Tests.SelectionAndPickingTests" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.743576" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1226" name="R7_A_RuntimeNpcTagOverridesAuthoredBootstrapAncestor" fullname="GameCore.Studio.UI.Tests.SelectionAndPickingTests.R7_A_RuntimeNpcTagOverridesAuthoredBootstrapAncestor" methodname="R7_A_RuntimeNpcTagOverridesAuthoredBootstrapAncestor" classname="GameCore.Studio.UI.Tests.SelectionAndPickingTests" runstate="Runnable" seed="783534610" result="Failed" start-time="2026-10-06 20:55:44Z" end-time="2026-10-06 20:55:44Z" duration="0.725792" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Maren should be selected
+  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.SelectionAndPickingTests.AssertTargets (UnityEngine.Object[] expected) [0x000a0] in ~/wkspace/gc-studio/r7-a/Packages/com.gamecore.studio.ui/Tests/Editor/SelectionAndPickingTests.cs:290
+at GameCore.Studio.UI.Tests.SelectionAndPickingTests.R7_A_RuntimeNpcTagOverridesAuthoredBootstrapAncestor () [0x00139] in ~/wkspace/gc-studio/r7-a/Packages/com.gamecore.studio.ui/Tests/Editor/SelectionAndPickingTests.cs:240
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[P2.1] B-SELECT click n=1 p50=15.43 p95=15.43 max=15.43 ms
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

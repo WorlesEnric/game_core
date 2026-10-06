@@ -1,18 +1,19 @@
 {
-  "status": "FAIL",
-  "note": "Fresh R6-B narrative session saves three Applied entries; a separate Editor reopens with all saved hashes equal, and all undo/redo/final undo calls succeed. Exact final byte consistency fails: backToBefore=false, and the driver now exits 1. Odd and DrownedBell differ only in contentStamp; HUD and Lantern are byte-identical. No bake or stamp fields are normalized. Before/after bytes and diffs are retained.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
+  "status": "PASS",
+  "note": "Unchanged retained narrative candidates save in Editor 4005226 and reopen in separate Editor 4007734 with all saved hashes equal. Normal undo/redo/final undo plus the production deterministic bake restores all four complete asset files exactly, including contentStamp: backToBefore=true. No fields or candidate stamps are normalized; no new paid generation.",
+  "command": "bash artifacts/studio/verification/W-AI-06/r7-a/run.sh /absolute/fresh/evidence-directory",
   "tests": [
-    "R6_Request5_RetainedReopenMismatchFailsExactByteContract",
-    "R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse"
+    "R7_A_ReopenBakeRestoresAllBytesAfterRetainedNarrativeUndoRedoUndo",
+    "separate-Editor WorkflowRunner reopen: hashesMatchSaved/backToBefore"
   ],
-  "baseline": "d140f748",
+  "baseline": "1a462f88",
   "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-AI-06",
   "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T15:29:44.406256+00:00",
+  "reportedAt": "2026-10-06T21:13:46.407929+00:00",
   "evidence": [
+    "W-AI-06/r7-a/README.md",
     "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/narrative/saved.json",
     "W-AI-06/p42e-reopen-20261006T152055.608370Z/result.json",
     "W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/final.json",

@@ -362,6 +362,12 @@ namespace GameCore.Studio.UI.Tests
                     ["confinement"] = Confinement, ["coldCache"] = true, ["pass"] = true, ["partial"] = false,
                     ["durationMs"] = 400000, ["budgetMs"] = 360000, ["steps"] = steps,
                     ["forbiddenHits"] = Defect == "forbidden" ? new JArray("hook") : new JArray(),
+                    ["catalogDelta"] = new JObject
+                    {
+                        ["world"] = new string('c', 64),
+                        ["mechanisms"] = new JArray(new JObject { ["package"] = "com.example.ui-fixture", ["catalogType"] = "Example.UiFixture.Catalog", ["fingerprint"] = new string('d', 64) }),
+                        ["predicted"] = CatalogSet.Combine(new string('c', 64), new[] { new string('d', 64) }),
+                    },
                     ["artifacts"] = new JArray(new JObject { ["role"] = "package", ["sha256"] = Request.PackageDigest }, new JObject { ["role"] = "proposal", ["sha256"] = Request.ProposalDigest }),
                 };
                 return Task.FromResult(new SignedVerdict(jobId, "companion-signature", verdict));

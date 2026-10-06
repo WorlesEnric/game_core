@@ -1,20 +1,18 @@
 # W-DOC-02: Developer adds a lever interactable from the plugin guide
 
-Verdict: **FAIL**. Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed.
+Verdict: **FAIL**. Fresh-root cache_invalid is fixed: exact versioned provisioning and all seven default-Docker guide sample steps pass in 169.481 s, with 36 EditMode and 2 PlayMode passes. The literal new-lever and authenticated Stage/creator Admit/restored-world/undo exercise remains unproven; an unsigned pressure-plate CLI pass does not close this unchanged row.
 
-Report timestamp: 2026-10-06T15:29:44.439223+00:00 UTC.
-
-Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Source: `1a462f88`. [R7-A proof and exact limitations](r7-a/README.md).
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh final-guides
-studio/tools/verify-all.sh guide-stage
+GAMECORE_STAGE_BINARY="$PWD/studio/agent/target/debug/gamecore-studio" bash studio/stage/guide-flow.sh NEW_PRIVATE_ROOT TRUSTED_UNITY_LIBRARY NUGET_SOURCE PINNED_PUBLIC_UPM_SOURCE
 ```
 
 ## Retained evidence
 
+- [W-DOC-02/r7-a/README.md](../W-DOC-02/r7-a/README.md)
 - [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md](../W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md)
 - [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/walkthrough.json](../W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/walkthrough.json)
 - [W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md](../W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md)

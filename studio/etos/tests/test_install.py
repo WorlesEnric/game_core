@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 import tomllib
 import unittest
+import sys
 
 HERE = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("install_state", HERE / "install-state.py")
@@ -383,6 +384,46 @@ elif args != ["agent", "restart", "gamecore-studio"]:
         }]
         self.assertEqual(tomllib.loads(config_path.read_text()), expected_config)
         self.assertFalse((self.root / "calls").exists())
+
+
+    def test_r7_a_cache_action_refuses_node_root_without_mutation(self):
+        before = {path.relative_to(self.root): path.read_bytes()
+                  for path in self.root.rglob('*') if path.is_file()}
+        result = subprocess.run([
+            sys.executable, str(HERE / 'install-state.py'), '--root', str(self.root),
+            'stage-cache', '--stage-root', str(self.root / 'stage'),
+            '--source-project', str(self.project), '--verify',
+        ], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2)
+        self.assertFalse((self.root / 'stage').exists())
+        self.assertEqual({path.relative_to(self.root): path.read_bytes()
+                          for path in self.root.rglob('*') if path.is_file()}, before)
+
+    def test_r7_a_cache_action_requires_complete_seeds_before_any_write(self):
+        result = subprocess.run([
+            sys.executable, str(HERE / 'install-state.py'), 'stage-cache',
+            '--stage-root', str(self.root / 'stage'), '--source-project', str(self.project),
+            '--binary', str(self.binary), '--offline-from', str(self.root / 'nuget'),
+        ], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.root / 'stage').exists())
+        self.assertFalse((self.root / 'agents').exists())
+        self.assertFalse((self.root / 'calls').exists())
+
+    def test_r7_a_cache_action_refuses_foreign_binary_cache_path(self):
+        foreign = self.root / 'foreign' / '_warm' / ('a' * 64)
+        self.binary.write_text('#!/usr/bin/python3\nprint(' + repr(str(foreign)) + ')\n')
+        self.binary.chmod(0o755)
+        result = subprocess.run([
+            sys.executable, str(HERE / 'install-state.py'), 'stage-cache',
+            '--stage-root', str(self.root / 'stage'), '--source-project', str(self.project),
+            '--binary', str(self.binary), '--verify',
+        ], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse(foreign.exists())
+        self.assertFalse((self.root / 'stage').exists())
+        self.assertFalse((self.root / 'agents').exists())
+        self.assertFalse((self.root / 'calls').exists())
 
 
 if __name__ == "__main__":
