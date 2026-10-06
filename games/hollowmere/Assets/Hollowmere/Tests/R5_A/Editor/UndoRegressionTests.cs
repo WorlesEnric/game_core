@@ -321,6 +321,34 @@ namespace Hollowmere.R5_A
         }
 
         [Test]
+        public void R5_02_DependencyOrderDeterminesFinalWitnessAndInverseOrder()
+        {
+            string path = folder + "/OrderNpc.asset";
+            Assert.That(AssetDatabase.CopyAsset("Assets/Hollowmere/Npcs/Definitions/Odd.asset", path), Is.True);
+            NpcDefinition npc = AssetDatabase.LoadAssetAtPath<NpcDefinition>(path);
+            var serialized = new SerializedObject(npc);
+            serialized.FindProperty("authoringId").stringValue = Guid.NewGuid().ToString("D");
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            AssetDatabase.SaveAssets();
+            runtime.Index.Rebuild();
+            float before = npc.Speed;
+            AuthoringRef target = runtime.Resolver.BuildRef(npc, AuthorScope.Definition)!;
+            var early = new Operation("early", "set", target, new JObject { ["field"] = "speed", ["value"] = 1.2f });
+            var late = new Operation("late", "set", target, new JObject { ["field"] = "speed", ["value"] = 2.5f }, new[] { "early" });
+            var candidate = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId,
+                new Intent("R5 dependency order", IntentOrigin.Manual), new[] { late, early });
+            ApplyReport applied = runtime.Engine.Apply(candidate);
+            Assert.That(applied.Ok, Is.True, string.Join(" | ", applied.Diagnostics));
+            Assert.That(npc.Speed, Is.EqualTo(2.5f));
+            Assert.That(runtime.History.Undo(candidate.Id).Ok, Is.True);
+            Assert.That(npc.Speed, Is.EqualTo(before), "undo must reverse execution order, not declaration order");
+            Assert.That(runtime.History.Redo(candidate.Id).Ok, Is.True);
+            Assert.That(npc.Speed, Is.EqualTo(2.5f));
+            Assert.That(runtime.History.Undo(candidate.Id).Ok, Is.True);
+            Assert.That(npc.Speed, Is.EqualTo(before));
+        }
+
+        [Test]
         public void R5_02_FinalPostimageStillRefusesLaterExternalEdit()
         {
             ChangeSet candidate = Witness("W-AI-03", "p42c-narrative-20261006T073303.291662Z", "odd-line");

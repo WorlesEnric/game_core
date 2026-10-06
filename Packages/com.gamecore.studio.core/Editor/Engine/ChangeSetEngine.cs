@@ -1149,27 +1149,31 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Stable topological order: listed order, each op after its dependencies (cycles keep listed order).</summary>
-        private static List<StagedOperation> Order(IReadOnlyList<StagedOperation> operations)
+        private static List<StagedOperation> Order(IReadOnlyList<StagedOperation> operations) =>
+            OrderByDependencies(operations, operation => operation.OpId, operation => operation.Operation.DependsOn);
+
+        internal static List<T> OrderByDependencies<T>(IReadOnlyList<T> operations,
+            Func<T, string> idOf, Func<T, IReadOnlyList<string>?> dependenciesOf)
         {
-            List<StagedOperation> ordered = new List<StagedOperation>();
+            List<T> ordered = new List<T>();
             HashSet<string> placed = new HashSet<string>(StringComparer.Ordinal);
             HashSet<string> known = new HashSet<string>(StringComparer.Ordinal);
-            foreach (StagedOperation operation in operations)
+            foreach (T operation in operations)
             {
-                known.Add(operation.OpId);
+                known.Add(idOf(operation));
             }
 
-            List<StagedOperation> remaining = new List<StagedOperation>(operations);
+            List<T> remaining = new List<T>(operations);
             while (remaining.Count > 0)
             {
                 int index = remaining.FindIndex(operation =>
                 {
-                    if (operation.Operation.DependsOn == null)
+                    if (dependenciesOf(operation) == null)
                     {
                         return true;
                     }
 
-                    foreach (string dependency in operation.Operation.DependsOn)
+                    foreach (string dependency in dependenciesOf(operation)!)
                     {
                         if (known.Contains(dependency) && !placed.Contains(dependency))
                         {
@@ -1184,10 +1188,10 @@ namespace GameCore.Studio.Edit
                     index = 0;
                 }
 
-                StagedOperation next = remaining[index];
+                T next = remaining[index];
                 remaining.RemoveAt(index);
                 ordered.Add(next);
-                placed.Add(next.OpId);
+                placed.Add(idOf(next));
             }
 
             return ordered;

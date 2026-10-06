@@ -178,7 +178,7 @@ namespace GameCore.Studio.Edit
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             List<Operation> inverses = new List<Operation>();
             var checkedTargets = new List<AuthoringRef>();
-            IReadOnlyList<OperationOutcome> outcomes = entry.Outcomes ?? Array.Empty<OperationOutcome>();
+            IReadOnlyList<OperationOutcome> outcomes = ExecutionOutcomes(entry);
             for (int i = outcomes.Count - 1; i >= 0; i--)
             {
                 OperationOutcome outcome = outcomes[i];
@@ -328,7 +328,7 @@ namespace GameCore.Studio.Edit
             HistoryResult? dispatched = Dispatch(entry, HistoryAction.Rollback);
             if (dispatched != null) return dispatched;
             if (File.Exists(TransitionPath(changeSetId))) return RecoverTransition(entry, false);
-            List<OperationOutcome> outcomes = new List<OperationOutcome>(entry.Outcomes ?? Array.Empty<OperationOutcome>());
+            List<OperationOutcome> outcomes = ExecutionOutcomes(entry);
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             ApplyReport? report = null;
             for (int i = outcomes.Count - 1; i >= 0; i--)
@@ -528,6 +528,15 @@ namespace GameCore.Studio.Edit
 
             Redo_.Clear();
             SaveRedo();
+        }
+
+        private static List<OperationOutcome> ExecutionOutcomes(ChangeSet entry)
+        {
+            var dependencies = new Dictionary<string, IReadOnlyList<string>?>(StringComparer.Ordinal);
+            foreach (Operation operation in entry.Operations) dependencies[operation.OpId] = operation.DependsOn;
+            return ChangeSetEngine.OrderByDependencies(entry.Outcomes ?? Array.Empty<OperationOutcome>(),
+                outcome => outcome.OpId,
+                outcome => dependencies.TryGetValue(outcome.OpId, out IReadOnlyList<string>? found) ? found : null);
         }
 
         private void CheckAfter(UndoPayload payload, List<Diagnostic> diagnostics, List<AuthoringRef> checkedTargets)
