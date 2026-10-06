@@ -506,6 +506,9 @@ def make_slot(args) -> dict:
     inputs = copy_inputs(source_project, project, cand["stageInputs"])
     inputs += settings_inputs
 
+    import world_snapshot
+    snapshot = world_snapshot.export(source_project, slot / "world-snapshot", cand["changeSetId"], git_head(repo))
+
     smoke = (proposal or {}).get("smokeTest")
     if isinstance(smoke, str):
         smoke = None
@@ -519,6 +522,8 @@ def make_slot(args) -> dict:
         "smokeMethod": (smoke or {}).get("method", "Begin"),
         "smokeSteps": int((smoke or {}).get("steps", 120)),
         "outDir": out_dir.as_posix(),
+        "worldSnapshotPath": snapshot.get("path", ""),
+        "worldSnapshotSha256": snapshot.get("sha256", ""),
     }
     write_json(project / "StageHarness.json", harness)
 
@@ -555,6 +560,7 @@ def make_slot(args) -> dict:
         "inputFiles": inputs,
         "manifest": pins,
         "harness": harness,
+        "worldSnapshot": snapshot,
         "dotnet": dotnet,
         "allowUnsafe": None,
         "blobs": (proposal or {}).get("blobs") or [],

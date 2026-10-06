@@ -289,6 +289,17 @@ impl Sandbox {
                 cmd.arg("--mount")
                     .arg(format!("type=bind,src={},dst=/w/p", project.display()));
             }
+            let snapshot = self.slot.join("world-snapshot");
+            if snapshot.exists() {
+                licensing::no_links(&snapshot)?;
+                for target in [snapshot.clone(), PathBuf::from("/w/s/world-snapshot")] {
+                    cmd.arg("--mount").arg(format!(
+                        "type=bind,src={},dst={},readonly",
+                        snapshot.display(),
+                        target.display()
+                    ));
+                }
+            }
             licensing::mount_path(private_home)?;
             licensing::mount_path(&self.home)?;
             cmd.arg("--mount").arg(format!(

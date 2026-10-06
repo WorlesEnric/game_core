@@ -528,6 +528,18 @@ pub fn integrity_problems(package_dir: &Path, declared: &[PackageFile]) -> Vec<S
     problems
 }
 
+/// Bind the immutable source export to this request and revision, including on slot reuse.
+fn valid_world_snapshot(record: &Value, slot: &Path) -> bool {
+    let snapshot = &record["worldSnapshot"];
+    let path = slot.join("world-snapshot/catalog.json");
+    snapshot["changeSetId"] == record["changeSetId"]
+        && snapshot["sourceRevision"] == record["source"]["commit"]
+        && snapshot["path"].as_str().map(Path::new) == Some(path.as_path())
+        && std::fs::symlink_metadata(&path).is_ok_and(|m| m.is_file())
+        && std::fs::read(path)
+            .is_ok_and(|bytes| snapshot["sha256"].as_str() == Some(sha256_hex(&bytes).as_str()))
+}
+
 struct StepLog {
     text: String,
 }
@@ -1021,9 +1033,14 @@ impl Run<'_> {
         if let (Some(o), Some(tt)) = (facts.as_object_mut(), &totals) {
             o.insert("tests".into(), json!({"total": tt.total, "passed": tt.passed, "failed": tt.failed, "skipped": tt.skipped, "failures": tt.failures}));
         }
-        let wants_catalog = self.record["harness"]["catalogType"]
-            .as_str()
-            .is_some_and(|c| !c.is_empty());
+        let snapshot_valid = valid_world_snapshot(&self.record, &self.opts.slot_dir())
+            && std::fs::read(self.out_dir().join("catalog-delta.json"))
+                .ok()
+                .and_then(|b| serde_json::from_slice::<Value>(&b).ok())
+                .is_some_and(|d| {
+                    d["worldSnapshotSha256"] == self.record["worldSnapshot"]["sha256"]
+                });
+        facts["worldSnapshot"] = self.record["worldSnapshot"].clone();
         let (status, detail) = if out.timed_out || out.code == Some(124) {
             (StepStatus::Fail, "the Unity Editor timed out".to_string())
         } else if !errors.is_empty() {
@@ -1052,11 +1069,11 @@ impl Run<'_> {
                 ),
                 Some(tt) if tt.total == 0 => (StepStatus::Fail, "no EditMode test ran".to_string()),
                 Some(_)
-                    if wants_catalog && delta.as_ref().is_none_or(|d| d.mechanisms.is_empty()) =>
+                    if !snapshot_valid || delta.as_ref().is_none_or(|d| !d.admission_ready()) =>
                 {
                     (
                         StepStatus::Fail,
-                        "the catalog probe wrote no mechanism catalog".to_string(),
+                        "source_world_missing_or_changed: no complete bound world/predicted catalog delta".to_string(),
                     )
                 }
                 Some(tt) if out.ok() => (
@@ -1592,6 +1609,12 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
             });
         }
     }
+    if let Some(sha) = run.record["worldSnapshot"]["sha256"].as_str() {
+        artifacts.push(CoveredArtifact {
+            role: "source-world".into(),
+            sha256: sha.into(),
+        });
+    }
     let mut verdict = StageVerdict {
         confinement: opts.sandbox.mode.name().into(),
         cold_cache,
@@ -1631,6 +1654,25 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn r6_a_01_snapshot_is_bound_to_request_revision_and_bytes() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("world-snapshot/catalog.json");
+        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        std::fs::write(&path, b"trusted world").unwrap();
+        let record = json!({"changeSetId":"cs_request", "source":{"commit":"revision"},
+            "worldSnapshot":{"changeSetId":"cs_request", "sourceRevision":"revision",
+                "path":path, "sha256":sha256_hex(b"trusted world")}});
+        assert!(valid_world_snapshot(&record, dir.path()));
+        for key in ["changeSetId", "sourceRevision", "sha256", "path"] {
+            let mut changed = record.clone();
+            changed["worldSnapshot"][key] = json!("candidate");
+            assert!(!valid_world_snapshot(&changed, dir.path()), "{key}");
+        }
+        std::fs::write(path, b"candidate world").unwrap();
+        assert!(!valid_world_snapshot(&record, dir.path()));
+    }
 
     #[test]
     fn r2_11_cache_versions_and_one_cold_budget() {
