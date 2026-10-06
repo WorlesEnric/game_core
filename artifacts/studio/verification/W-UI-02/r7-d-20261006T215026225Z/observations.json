@@ -1,0 +1,743 @@
+[
+  {
+    "npcs": [
+      {
+        "kind": "Entity",
+        "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+        "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+        "assetGuid": "915e43d4b07d835349739f5877e39caf",
+        "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+        "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+        "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+        "assetGuid": "915e43d4b07d835349739f5877e39caf",
+        "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+        "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+        "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+        "assetGuid": "915e43d4b07d835349739f5877e39caf",
+        "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+        "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+      }
+    ],
+    "fenceRail": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-634508811-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence rail",
+      "stamp": "sha256:4b1f9c1561220081c77c95f78d0aa8ca214fcea9275c031053164e594108526f"
+    },
+    "geometry": "NPC z=1; opaque fence rails/posts z=-1; camera z=-14 looking +Z",
+    "step": "fixture",
+    "utc": "2026-10-06T21:50:29.6573690Z"
+  },
+  {
+    "name": "01-three-npcs-behind-fence",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 48,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "01-three-npcs-behind-fence-viewport.png",
+    "ui": "01-three-npcs-behind-fence-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:29.9443010Z"
+  },
+  {
+    "result": [
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-629853932-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 2",
+          "stamp": "sha256:4f9a56137b251bcf981cfb4ff1151a1e3af27b63074f58ffb0f4872e5755625d"
+        },
+        "distance": 13.0061522,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-384673589-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 3",
+          "stamp": "sha256:de97504f8869620ec0d894c8c4580c118bf6f9319f48242f6e93a5905c4aacd7"
+        },
+        "distance": 13.1301184,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1402277228-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 1",
+          "stamp": "sha256:860d10dc32de06be0b936af0b3564c4b8eef757507bbb33e3d08b5814f3bc15e"
+        },
+        "distance": 13.1301184,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        },
+        "distance": 15.0029993,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        },
+        "distance": 15.1634426,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        },
+        "distance": 15.1634426,
+        "occluded": false,
+        "part": null,
+        "source": "Marquee",
+        "overlapGroup": 0
+      }
+    ],
+    "selection": {
+      "id": "sel_01M49K4Q33Q8AYJEJBF4GJBYVF",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-629853932-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 2",
+          "stamp": "sha256:4f9a56137b251bcf981cfb4ff1151a1e3af27b63074f58ffb0f4872e5755625d"
+        },
+        {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-384673589-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 3",
+          "stamp": "sha256:de97504f8869620ec0d894c8c4580c118bf6f9319f48242f6e93a5905c4aacd7"
+        },
+        {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1402277228-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 1",
+          "stamp": "sha256:860d10dc32de06be0b936af0b3564c4b8eef757507bbb33e3d08b5814f3bc15e"
+        },
+        {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        },
+        {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        },
+        {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        }
+      ],
+      "regionRect": {
+        "screen": [
+          428.65786743164063,
+          196.16703796386719,
+          851.3421630859375,
+          403.65789794921875
+        ]
+      },
+      "indexRevision": 1
+    },
+    "resultingOverlapVisible": true,
+    "step": "marquee",
+    "utc": "2026-10-06T21:50:29.9930890Z"
+  },
+  {
+    "name": "02-marquee-chooser",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 51,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "02-marquee-chooser-viewport.png",
+    "ui": "02-marquee-chooser-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:30.2804690Z"
+  },
+  {
+    "ref": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-629853932-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 2",
+      "stamp": "sha256:4f9a56137b251bcf981cfb4ff1151a1e3af27b63074f58ffb0f4872e5755625d"
+    },
+    "control": "overlap-include-0",
+    "included": false,
+    "creatorInteraction": true,
+    "input": "NavigationSubmitEvent sent to attached real Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2840960Z"
+  },
+  {
+    "ref": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-384673589-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 3",
+      "stamp": "sha256:de97504f8869620ec0d894c8c4580c118bf6f9319f48242f6e93a5905c4aacd7"
+    },
+    "control": "overlap-include-1",
+    "included": false,
+    "creatorInteraction": true,
+    "input": "NavigationSubmitEvent sent to attached real Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2848970Z"
+  },
+  {
+    "ref": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1402277228-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 1",
+      "stamp": "sha256:860d10dc32de06be0b936af0b3564c4b8eef757507bbb33e3d08b5814f3bc15e"
+    },
+    "control": "overlap-include-2",
+    "included": false,
+    "creatorInteraction": true,
+    "input": "NavigationSubmitEvent sent to attached real Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2855420Z"
+  },
+  {
+    "ref": {
+      "kind": "Entity",
+      "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+      "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+    },
+    "control": "overlap-include-3",
+    "included": true,
+    "creatorInteraction": true,
+    "input": "Initially checked attached Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2860410Z"
+  },
+  {
+    "ref": {
+      "kind": "Entity",
+      "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+      "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+    },
+    "control": "overlap-include-4",
+    "included": true,
+    "creatorInteraction": true,
+    "input": "Initially checked attached Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2866350Z"
+  },
+  {
+    "ref": {
+      "kind": "Entity",
+      "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+      "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+    },
+    "control": "overlap-include-5",
+    "included": true,
+    "creatorInteraction": true,
+    "input": "Initially checked attached Toggle",
+    "step": "marquee-choice",
+    "utc": "2026-10-06T21:50:30.2870580Z"
+  },
+  {
+    "name": "03-marquee-npc-choices",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 78,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "03-marquee-npc-choices-viewport.png",
+    "ui": "03-marquee-npc-choices-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:30.5715160Z"
+  },
+  {
+    "creatorInteraction": true,
+    "control": "overlap-apply",
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "selection": {
+      "id": "sel_01M49K4QNH6JR0DKW8WHNBVVEN",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        },
+        {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        },
+        {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        }
+      ],
+      "regionRect": {
+        "screen": [
+          428.65786743164063,
+          196.16703796386719,
+          851.3421630859375,
+          403.65789794921875
+        ]
+      },
+      "indexRevision": 1
+    },
+    "originalRegionRect": {
+      "screen": [
+        428.65786743164063,
+        196.16703796386719,
+        851.3421630859375,
+        403.65789794921875
+      ]
+    },
+    "step": "marquee-applied",
+    "utc": "2026-10-06T21:50:30.5776120Z"
+  },
+  {
+    "name": "04-marquee-three-npcs-result",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 195,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "04-marquee-three-npcs-result-viewport.png",
+    "ui": "04-marquee-three-npcs-result-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:30.8928200Z"
+  },
+  {
+    "candidates": [
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-634508811-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence rail",
+          "stamp": "sha256:4b1f9c1561220081c77c95f78d0aa8ca214fcea9275c031053164e594108526f"
+        },
+        "distance": 12.8000011,
+        "occluded": false,
+        "part": null,
+        "source": "Physics",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        },
+        "distance": 14.4999971,
+        "occluded": true,
+        "part": "Mesh:Body",
+        "source": "Physics",
+        "overlapGroup": 1
+      }
+    ],
+    "step": "point-overlap-Maren",
+    "utc": "2026-10-06T21:50:30.9031260Z"
+  },
+  {
+    "name": "05-overlap-Maren",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 128,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "05-overlap-Maren-viewport.png",
+    "ui": "05-overlap-Maren-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:31.1732340Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "2. Maren · Entity · 14.5 m · occluded",
+    "control": "overlap-1",
+    "choice": "Logical",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+      "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+    },
+    "selection": {
+      "id": "sel_01M49K4R86ZVTJDXFSFQEMMNS5",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:50:31.1749410Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49K4R87AVYXDF516Y7NQS94",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "c16a54da-e0ab-48e2-ae84-8a3cd3d22b88",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-945411617-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Maren",
+          "stamp": "sha256:71bc81dd1f8268156f15db0b56d1a37bb1e448a95ceb0e1ea273215eece3e432"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "chosen-Maren",
+    "utc": "2026-10-06T21:50:31.1758300Z"
+  },
+  {
+    "name": "06-chosen-Maren",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 203,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "06-chosen-Maren-viewport.png",
+    "ui": "06-chosen-Maren-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:31.4628110Z"
+  },
+  {
+    "candidates": [
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-629853932-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence post 2",
+          "stamp": "sha256:4f9a56137b251bcf981cfb4ff1151a1e3af27b63074f58ffb0f4872e5755625d"
+        },
+        "distance": 12.7750015,
+        "occluded": false,
+        "part": null,
+        "source": "Physics",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-634508811-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence rail",
+          "stamp": "sha256:4b1f9c1561220081c77c95f78d0aa8ca214fcea9275c031053164e594108526f"
+        },
+        "distance": 12.8000011,
+        "occluded": false,
+        "part": null,
+        "source": "Physics",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        },
+        "distance": 14.4999971,
+        "occluded": true,
+        "part": "Mesh:Body",
+        "source": "Physics",
+        "overlapGroup": 1
+      }
+    ],
+    "step": "point-overlap-Odd",
+    "utc": "2026-10-06T21:50:31.4701120Z"
+  },
+  {
+    "name": "05-overlap-Odd",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 143,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "05-overlap-Odd-viewport.png",
+    "ui": "05-overlap-Odd-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:31.7410500Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "3. Odd · Entity · 14.5 m · occluded",
+    "control": "overlap-2",
+    "choice": "Logical",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+      "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+    },
+    "selection": {
+      "id": "sel_01M49K4RSXAXGSA0D001085E4V",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:50:31.7419820Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49K4RSZ7DA76VFYY611D9CJ",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "57f12ae4-2c3d-4cc6-92cf-33b62933ad00",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-1550706493-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Odd",
+          "stamp": "sha256:f5eb37102ce7b04551481263bae17e760426235405a9c5921098d155760d7100"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "chosen-Odd",
+    "utc": "2026-10-06T21:50:31.7431530Z"
+  },
+  {
+    "name": "06-chosen-Odd",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 193,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "06-chosen-Odd-viewport.png",
+    "ui": "06-chosen-Odd-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:32.0243540Z"
+  },
+  {
+    "candidates": [
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-634508811-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Fence rail",
+          "stamp": "sha256:4b1f9c1561220081c77c95f78d0aa8ca214fcea9275c031053164e594108526f"
+        },
+        "distance": 12.8000011,
+        "occluded": false,
+        "part": null,
+        "source": "Physics",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        },
+        "distance": 14.4999971,
+        "occluded": true,
+        "part": "Mesh:Body",
+        "source": "Physics",
+        "overlapGroup": 1
+      }
+    ],
+    "step": "point-overlap-Pip",
+    "utc": "2026-10-06T21:50:32.0304390Z"
+  },
+  {
+    "name": "05-overlap-Pip",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 174,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "05-overlap-Pip-viewport.png",
+    "ui": "05-overlap-Pip-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:32.3092520Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "2. Pip · Entity · 14.5 m · occluded",
+    "control": "overlap-1",
+    "choice": "Logical",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+      "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+      "assetGuid": "915e43d4b07d835349739f5877e39caf",
+      "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+      "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+    },
+    "selection": {
+      "id": "sel_01M49K4SBPZ4RBQ41M4QA8NMW2",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:50:32.3102040Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49K4SBQHC9R4QMG5XK36FHF",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "2cc45af5-71e8-4939-9cbc-a35054dc67f7",
+          "global": "GlobalObjectId_V1-2-915e43d4b07d835349739f5877e39caf-2112311059-0",
+          "assetGuid": "915e43d4b07d835349739f5877e39caf",
+          "path": "Assets/R7Picking-a5ffb84410b845918a9a18d9a5b896d1/Picking.unity#/Pip",
+          "stamp": "sha256:1558ae1792943346d58326ea5a0061d4c612c4650c8c939968593d3c5a4bc220"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "chosen-Pip",
+    "utc": "2026-10-06T21:50:32.3114860Z"
+  },
+  {
+    "name": "06-chosen-Pip",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 230,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "06-chosen-Pip-viewport.png",
+    "ui": "06-chosen-Pip-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:50:32.5857280Z"
+  }
+]

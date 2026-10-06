@@ -1,0 +1,523 @@
+[
+  {
+    "logical": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "prefab": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-1-8704ebf489331acbe907a3964d6f987a-1645236004773279362-0",
+      "assetGuid": "8704ebf489331acbe907a3964d6f987a",
+      "path": "Assets/Hollowmere/World/Prefabs/Lantern.prefab#/Lantern",
+      "scope": "Prefab",
+      "stamp": "sha256:eeff3d427a7f799c68a1412bfcfb356355c484a9261c02132c0c6d96375f391f"
+    },
+    "instanceScope": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "scope": "Instance",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "part": "Mesh:Body",
+    "step": "fixture",
+    "utc": "2026-10-06T21:44:29.9228130Z"
+  },
+  {
+    "name": "01-lantern",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 6,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "01-lantern-viewport.png",
+    "ui": "01-lantern-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:30.5035440Z"
+  },
+  {
+    "candidates": [
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        },
+        "distance": 13.6999989,
+        "occluded": false,
+        "part": "Mesh:Body",
+        "source": "Physics",
+        "overlapGroup": 0
+      },
+      {
+        "ref": {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-917593286-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Wall behind lantern",
+          "stamp": "sha256:1e13b99c8e0b9f027186f4429509a9c82f7c2a2344243901492c8fa1f554a064"
+        },
+        "distance": 15.8000011,
+        "occluded": true,
+        "part": null,
+        "source": "Physics",
+        "overlapGroup": 1
+      }
+    ],
+    "step": "lantern-overlap",
+    "utc": "2026-10-06T21:44:30.5637270Z"
+  },
+  {
+    "name": "02-lantern-chooser",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 16,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "02-lantern-chooser-viewport.png",
+    "ui": "02-lantern-chooser-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:31.5623130Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "part Mesh:Body",
+    "control": "overlap-part-0",
+    "choice": "Part",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "selection": {
+      "id": "sel_01M49JSS3BPC0FMC4PWA5TCZ2W",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "parts": [
+        {
+          "owner": {
+            "kind": "Entity",
+            "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+            "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+            "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+            "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+            "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+          },
+          "part": "Mesh:Body"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:44:31.6010510Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49JSSD4H9JXSZWW5SVVNJP0",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "parts": [
+        {
+          "owner": {
+            "kind": "Entity",
+            "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+            "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+            "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+            "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+            "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+          },
+          "part": "Mesh:Body"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "subpart",
+    "utc": "2026-10-06T21:44:31.9082010Z"
+  },
+  {
+    "name": "03-lantern-subpart",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 27,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "03-lantern-subpart-viewport.png",
+    "ui": "03-lantern-subpart-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:32.4555090Z"
+  },
+  {
+    "name": "04-lantern-logical-chooser",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 63,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "04-lantern-logical-chooser-viewport.png",
+    "ui": "04-lantern-logical-chooser-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:33.0690710Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "1. Lantern · Entity · 13.7 m",
+    "control": "overlap-0",
+    "choice": "Logical",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "selection": {
+      "id": "sel_01M49JSTXV0PWD3R0SF97X79MN",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:44:33.4675500Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49JSVVKQKKMXT34WDX54YRK",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "logical",
+    "utc": "2026-10-06T21:44:34.4191920Z"
+  },
+  {
+    "name": "05-lantern-logical",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 6,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "05-lantern-logical-viewport.png",
+    "ui": "05-lantern-logical-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:39.3306940Z"
+  },
+  {
+    "name": "06-lantern-prefab-chooser",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 22,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "06-lantern-prefab-chooser-viewport.png",
+    "ui": "06-lantern-prefab-chooser-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:39.8033650Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "Prefab",
+    "control": "overlap-prefab-0",
+    "choice": "Prefab",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "selection": {
+      "id": "sel_01M49JT15DHME40D2CK9TBJNAB",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-1-8704ebf489331acbe907a3964d6f987a-1645236004773279362-0",
+          "assetGuid": "8704ebf489331acbe907a3964d6f987a",
+          "path": "Assets/Hollowmere/World/Prefabs/Lantern.prefab#/Lantern",
+          "scope": "Prefab",
+          "stamp": "sha256:eeff3d427a7f799c68a1412bfcfb356355c484a9261c02132c0c6d96375f391f"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:44:39.8540060Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49JT1E9RP1P8V6XP1PBNDME",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "SceneObject",
+          "global": "GlobalObjectId_V1-1-8704ebf489331acbe907a3964d6f987a-1645236004773279362-0",
+          "assetGuid": "8704ebf489331acbe907a3964d6f987a",
+          "path": "Assets/Hollowmere/World/Prefabs/Lantern.prefab#/Lantern",
+          "scope": "Prefab",
+          "stamp": "sha256:eeff3d427a7f799c68a1412bfcfb356355c484a9261c02132c0c6d96375f391f"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "expectedPrefab": {
+      "kind": "SceneObject",
+      "global": "GlobalObjectId_V1-1-8704ebf489331acbe907a3964d6f987a-1645236004773279362-0",
+      "assetGuid": "8704ebf489331acbe907a3964d6f987a",
+      "path": "Assets/Hollowmere/World/Prefabs/Lantern.prefab#/Lantern",
+      "scope": "Prefab",
+      "stamp": "sha256:eeff3d427a7f799c68a1412bfcfb356355c484a9261c02132c0c6d96375f391f"
+    },
+    "step": "prefab",
+    "utc": "2026-10-06T21:44:40.1372890Z"
+  },
+  {
+    "name": "07-lantern-prefab",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 55,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "07-lantern-prefab-viewport.png",
+    "ui": "07-lantern-prefab-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:40.7403010Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "part Mesh:Body",
+    "control": "overlap-part-0",
+    "choice": "Part",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "selection": {
+      "id": "sel_01M49JT293QQPEQEDKBZ0FG5RK",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "parts": [
+        {
+          "owner": {
+            "kind": "Entity",
+            "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+            "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+            "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+            "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+            "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+          },
+          "part": "Mesh:Body"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:44:40.9951500Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49JT2HPW5NMK6TF8F0VZNNS",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "parts": [
+        {
+          "owner": {
+            "kind": "Entity",
+            "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+            "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+            "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+            "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+            "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+          },
+          "part": "Mesh:Body"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "step": "subpart-before-instance-scope",
+    "utc": "2026-10-06T21:44:41.2701530Z"
+  },
+  {
+    "name": "08-lantern-subpart-before-scope",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 58,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "08-lantern-subpart-before-scope-viewport.png",
+    "ui": "08-lantern-subpart-before-scope-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:42.8501990Z"
+  },
+  {
+    "name": "09-lantern-instance-scope-chooser",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 40,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "09-lantern-instance-scope-chooser-viewport.png",
+    "ui": "09-lantern-instance-scope-chooser-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:43.4690940Z"
+  },
+  {
+    "creatorInteraction": true,
+    "text": "Scope: Instance",
+    "control": "overlap-scope-0",
+    "choice": "InstanceScope",
+    "candidate": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "selection": {
+      "id": "sel_01M49JT57JJ5GJTW3CAPHS5VJ1",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "scope": "Instance",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "input": "NavigationSubmitEvent sent to attached real Button",
+    "step": "creator-button",
+    "utc": "2026-10-06T21:44:44.0190220Z"
+  },
+  {
+    "selection": {
+      "id": "sel_01M49JT5HDH3KXWQTS4GACF1JD",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+          "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+          "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+          "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+          "scope": "Instance",
+          "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+        }
+      ],
+      "indexRevision": 1
+    },
+    "expectedInstanceScope": {
+      "kind": "Entity",
+      "authoringId": "967d4a78-4559-4acd-8145-306e631ac558",
+      "global": "GlobalObjectId_V1-2-997da5d2c72a9dea8946efabfd4d6100-371766298-0",
+      "assetGuid": "997da5d2c72a9dea8946efabfd4d6100",
+      "path": "Assets/R7Picking-efc43a1ba30a43c299bc83aaada50a38/Picking.unity#/Lantern",
+      "scope": "Instance",
+      "stamp": "sha256:a5b4f10805e073bbf0f4249b4817bb36ee721a17810ec82a2a4737014652ef0d"
+    },
+    "step": "instance-scope",
+    "utc": "2026-10-06T21:44:44.3340560Z"
+  },
+  {
+    "name": "10-lantern-instance-scope",
+    "source": "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+    "batchMode": false,
+    "display": ":1",
+    "repaintFrames": 46,
+    "graphicsDevice": "OpenGLCore",
+    "captured": true,
+    "viewport": "10-lantern-instance-scope-viewport.png",
+    "ui": "10-lantern-instance-scope-ui.png",
+    "step": "capture",
+    "utc": "2026-10-06T21:44:45.2535660Z"
+  }
+]

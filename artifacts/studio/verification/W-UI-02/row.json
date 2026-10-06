@@ -1,12 +1,19 @@
 {
-  "status": "BLOCKED",
-  "note": "The capture includes marquee/overlap UI, but not the required three NPCs behind a fence with the resulting overlap choices.",
-  "command": "studio/tools/verify-all.sh ui",
+  "status": "PASS",
+  "note": "R7-D graphical 1280\u00d7720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
+  "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
   "row": "W-UI-02",
   "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
   "requirement": "SR-1.2",
-  "reportedAt": "2026-10-06T15:29:44.363294+00:00",
+  "reportedAt": "2026-10-06T21:54:21.756282+00:00",
   "evidence": [
-    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-  ]
+    "W-UI-02/r7-d-20261006T215026225Z/receipt.json",
+    "W-UI-02/r7-d-20261006T215026225Z/observations.json",
+    "W-UI-02/README.md",
+    "W-UI-02/r7-d/results.xml"
+  ],
+  "tests": [
+    "ScenariosR7Picking.RunFence"
+  ],
+  "baseline": "b2717d03"
 }
