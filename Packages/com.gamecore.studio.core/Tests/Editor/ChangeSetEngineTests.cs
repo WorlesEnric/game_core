@@ -23,6 +23,51 @@ namespace GameCore.Studio.Edit.Tests
         [TearDown]
         public void TearDown() => _bed.Dispose();
 
+        [Test]
+        public void R6_G_Request1_GenericDialogueUsesTrustedPreparation()
+        {
+            var operation = StudioTestBed.Op("graph", "create", null,
+                new JObject { ["type"] = "dialogue.graph", ["name"] = "Graph", ["path"] = _bed.Folder + "/Graph.asset" });
+            var change = StudioTestBed.NewChangeSet("dialogue", null, operation);
+            var context = (EditContext)System.Activator.CreateInstance(typeof(EditContext),
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null,
+                new object?[] { _bed.Runtime, change, operation, null, true, null }, null)!;
+            var plan = (PreparedCreation?)typeof(PreparedCreation).GetMethod("Plan",
+                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!.Invoke(null, new object[] { context });
+            Assert.That(plan, Is.Not.Null, "Generic creation must not bypass gameplay preparation.");
+            var result = plan!.Apply!(context);
+            Assert.That(result.Status, Is.EqualTo(OutcomeStatus.Refused), "No owning gameplay world exists in this engine fixture.");
+            Assert.That(File.Exists(_bed.Folder + "/Graph.asset"), Is.False);
+        }
+
+        [Test]
+        public void R6_G_Request1_AbsentCreationAdapterRefusesPrecisely()
+        {
+            var plan = (PreparedCreation)typeof(PreparedCreation).GetMethod("PrepareGameplay",
+                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
+                .Invoke(null, new object?[] { null, new JObject(), null })!;
+            var result = plan.Apply!(null!);
+            Assert.That(result.Status, Is.EqualTo(OutcomeStatus.Refused));
+            Assert.That(result.Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
+            Assert.That(result.Detail, Does.Contain("gameplay creation adapter is unavailable"));
+            Assert.That(plan.Inverse, Is.Empty);
+        }
+
+        [Test]
+        public void R6_G_Request2_AbsentClosureAdapterRefusesDeferredNpc()
+        {
+            var change = StudioTestBed.NewChangeSet("deferred NPC", null,
+                StudioTestBed.Op("graph", "create", null, new JObject { ["type"] = "dialogue.graph" }),
+                StudioTestBed.Op("npc", "create", null, new JObject { ["type"] = "npc.definition",
+                    ["fields"] = new JObject { ["dialogue"] = "Assets/Graph.asset" } }, "graph"));
+            var diagnostics = (System.Collections.Generic.IReadOnlyList<Diagnostic>)typeof(ChangeSetEngine)
+                .GetMethod("ValidateDialogueClosure", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
+                .Invoke(null, new object?[] { _bed.Runtime, change, null })!;
+            Assert.That(diagnostics, Has.Count.EqualTo(1));
+            Assert.That(diagnostics[0].Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
+            Assert.That(diagnostics[0].Message, Does.Contain("dialogue closure validator is unavailable"));
+        }
+
         private sealed class FakeWorld
         {
             public FixtureItemDefinition Lantern = null!;

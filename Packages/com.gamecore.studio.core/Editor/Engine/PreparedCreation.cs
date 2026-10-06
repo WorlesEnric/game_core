@@ -51,6 +51,16 @@ namespace GameCore.Studio.Edit
             return plan;
         }
 
+        private static PreparedCreation? PrepareGameplay(EditContext context, JObject replay, Type? adapter)
+        {
+            if (adapter == null || !typeof(IPreparedCreationAdapter).IsAssignableFrom(adapter))
+                return new PreparedCreation(replay, Array.Empty<Operation>(), false,
+                    _ => OperationResult.Refused(DiagnosticCodes.NotConfigured, "The trusted Studio gameplay creation adapter is unavailable."));
+            return ((IPreparedCreationAdapter)Activator.CreateInstance(adapter)!).Prepare(context)
+                ?? new PreparedCreation(replay, Array.Empty<Operation>(), false,
+                    _ => OperationResult.Refused(DiagnosticCodes.NotConfigured, "The trusted Studio gameplay creation adapter did not prepare this operation."));
+        }
+
         private static PreparedCreation Refuse(JObject replay, string detail) =>
             new PreparedCreation(replay, Array.Empty<Operation>(), false, _ => OperationResult.Refused(DiagnosticCodes.InvalidArgs, detail));
 
@@ -58,13 +68,12 @@ namespace GameCore.Studio.Edit
         {
             string tool = context.Operation.Tool;
             JObject replay = context.Replay != null ? (JObject)context.Replay.DeepClone() : new JObject();
-            if (tool == "npc.addAt" || tool == "npc.setPatrol")
+            if (tool == "npc.addAt" || tool == "npc.setPatrol"
+                || (tool == "create" && context.StringArg("type") == "dialogue.graph"))
             {
                 // Fixed first-party assembly boundary; never discover candidate implementations.
                 Type? adapter = Type.GetType("GameCore.Studio.Gameplay.NpcCreationAdapter, GameCore.Studio.Gameplay.Editor");
-                if (adapter == null) return new PreparedCreation(replay, Array.Empty<Operation>(), false,
-                    _ => OperationResult.Refused(DiagnosticCodes.NotConfigured, "The trusted Studio gameplay creation adapter is unavailable."));
-                return ((IPreparedCreationAdapter)Activator.CreateInstance(adapter)!).Prepare(context);
+                return PrepareGameplay(context, replay, adapter);
             }
             if (tool == "create" || tool == "addComponent")
             {

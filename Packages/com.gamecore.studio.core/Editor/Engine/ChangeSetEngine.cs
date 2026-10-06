@@ -379,6 +379,8 @@ namespace GameCore.Studio.Edit
                     IndexIsSlice = options.IndexIsSlice,
                 });
                 factDiagnostics.AddRange(validator.Validate(changeSet));
+                factDiagnostics.AddRange(ValidateDialogueClosure(_runtime, changeSet,
+                    Type.GetType("GameCore.Studio.Gameplay.DialogueClosureTools, GameCore.Studio.Gameplay.Editor")));
                 foreach (Diagnostic diagnostic in factDiagnostics)
                 {
                     string? opId = OperationOf(changeSet, diagnostic);
@@ -473,6 +475,42 @@ namespace GameCore.Studio.Edit
 
             return new StagedChangeSet(changeSet, options, operations, envelope, _runtime.Index.Revision, catalogRevision, liveRevision, allowInternal)
                 { Inferences = scopeNormalizer.Inferences };
+        }
+
+        private static IReadOnlyList<Diagnostic> ValidateDialogueClosure(StudioRuntime runtime, ChangeSet changeSet, Type? adapter)
+        {
+            bool relevant = false;
+            List<Operation>? projected = null;
+            for (int i = 0; i < changeSet.Operations.Count; i++)
+            {
+                Operation operation = changeSet.Operations[i];
+                bool graph = operation.Tool == "create" && (string?)operation.Args?["type"] == "dialogue.graph";
+                UnityEngine.Object? target = operation.Target == null ? null : runtime.Resolver.Find(operation.Target);
+                relevant |= graph || operation.Tool.StartsWith("npc.", StringComparison.Ordinal)
+                    || operation.Tool == "dialogue.createGraph"
+                    || (operation.Tool == "create" && (string?)operation.Args?["type"] == "npc.definition")
+                    || (target != null && runtime.Identity.Describe(target)?.TypeId == "npc.definition");
+                if (!graph) continue;
+                // Validation-only view of the fixed creation dispatch; the candidate and journal remain unchanged.
+                projected ??= new List<Operation>(changeSet.Operations);
+                projected[i] = new Operation(operation.OpId, "dialogue.createGraph", operation.Target, operation.Args,
+                    operation.DependsOn, operation.Preconditions, operation.ApplyRequirement);
+            }
+            if (!relevant) return Array.Empty<Diagnostic>();
+            var method = adapter?.GetMethod("ValidateCandidate", new[] { typeof(StudioRuntime), typeof(ChangeSet) });
+            if (method == null || !method.IsStatic || !typeof(IReadOnlyList<Diagnostic>).IsAssignableFrom(method.ReturnType))
+                return new[] { StudioDiagnostics.General(DiagnosticCodes.NotConfigured,
+                    "The trusted Studio gameplay dialogue closure validator is unavailable.") };
+            try
+            {
+                return (IReadOnlyList<Diagnostic>?)method.Invoke(null, new object[] { runtime, projected == null ? changeSet : With(changeSet, projected) })
+                    ?? new[] { StudioDiagnostics.General(DiagnosticCodes.StageFailed, "The trusted Studio gameplay dialogue closure validator returned no result.") };
+            }
+            catch (Exception error) when (!(error is ExitGUIException))
+            {
+                return new[] { StudioDiagnostics.General(DiagnosticCodes.StageFailed,
+                    "The trusted Studio gameplay dialogue closure validator failed: " + error.GetBaseException().Message) };
+            }
         }
 
         private ToolStageResult StageWithoutPreview(IStudioTool tool, EditContext context)
