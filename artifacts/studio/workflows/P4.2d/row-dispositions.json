@@ -1,0 +1,49 @@
+{
+  "W-UI-05": {
+    "status": "PASS",
+    "note": "CORE-PICK on main 40fb91fa: 100 picks and 100 marquees over 500 distinct candidates pass; p95 1.2553 ms / 0.341 ms against unchanged 16/50 ms budgets. The 21-update timing regression also passes (2/2 XML).",
+    "patterns": [
+      "W-UI-05/p42d-selection-*/results.xml",
+      "W-UI-05/p42d-selection-*/selection.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d selection",
+    "tests": [
+      "R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
+      "R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms"
+    ]
+  },
+  "W-AI-02": {
+    "status": "FAIL",
+    "note": "Creation/undo portion passes: exact roster identity set returns 20\u219221\u219220. The untouched live ferryman candidate also edits Odd\u2019s graph entry, leaving nodes 0\u20137 unreachable. The corrected driver fails its Play gate at bake with GP-DLG-005; NPC navigation/dialogue in Play is not established.",
+    "patterns": [
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/play-effect.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/roster-undone.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/undo-result.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/candidate.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d text2"
+  },
+  "W-VOICE-01": {
+    "status": "FAIL",
+    "note": "R5-B ready-gated self-test passes both real speech fixtures with no submission. The later unchanged driver fails both takes after a provider session.updated acknowledgement error: playback falls outside capture and two late sessions deliver 70/144 all-zero frames, with zero transcripts. Destructive tray/request/journal counts remain unchanged. No transcript loss occurs on the companion\u2192client hop in the passing self-test.",
+    "patterns": [
+      "W-VOICE-01/p42d-voice-self-compile-retry-*/results.xml",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/move-transcript.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-transcript.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-check.json"
+    ],
+    "command": "bash artifacts/studio/verification/TOOLS/voice-self-p42d.sh\nstudio/tools/verify-all.sh p42d voice2",
+    "tests": [
+      "Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe"
+    ]
+  },
+  "W-ETOS-07": {
+    "status": "BLOCKED",
+    "note": "P4.2d authenticated hello exposes image operator and TTS published tariffs; two TTS calls succeed. Describe is live but has no tariff; R5-B\u2019s template explicitly remains SET_BY_OPERATOR/0.0, so no describe call is made. Prior image-import evidence remains revision-specific; no invented per-call tariff or provider invoice.",
+    "patterns": [
+      "INSTALL-P4.2d/hello-*/live/dotnet-a-hello.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/spoken-prompts.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d hello\nstudio/tools/verify-all.sh p42d voice2"
+  }
+}

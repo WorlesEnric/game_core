@@ -14,7 +14,7 @@ class Acceptance(unittest.TestCase):
     def test_P42B_TARIFF_owner_declared_image_estimate(self):
         template = (subprocess.check_output(['git', 'show', 'origin/main:studio/etos/ops.toml.tmpl'], cwd=ROOT, text=True)
                     if os.environ.get('P42B_BEFORE') else (ROOT / 'studio/etos/ops.toml.tmpl').read_text())
-        prices = installer.tariffs(template)
+        prices = installer.tariffs(template, "image") + installer.tariffs(template, "tts")
         image = next(p for p in prices if p['op'] == 'image')
         self.assertEqual(image['per_unit'], .20)
         self.assertEqual(image['source'], 'operator')
@@ -24,7 +24,12 @@ class Acceptance(unittest.TestCase):
     def test_P42B_TARIFF_placeholder_still_refuses(self):
         template = (ROOT / 'studio/etos/ops.toml.tmpl').read_text().replace('per_unit = 0.20', 'per_unit = "SET_BY_OPERATOR"')
         with self.assertRaisesRegex(ValueError, 'tariff_placeholder'):
-            installer.tariffs(template)
+            installer.tariffs(template, "image")
+
+    def test_R5_B_describe_placeholder_refuses_independently(self):
+        template = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+        with self.assertRaisesRegex(ValueError, "tariff_placeholder"):
+            installer.tariffs(template, "describe")
 
 class DatasetReceipts(unittest.TestCase):
     def setUp(self):

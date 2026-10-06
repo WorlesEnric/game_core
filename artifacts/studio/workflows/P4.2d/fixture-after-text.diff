@@ -1,0 +1,126 @@
+diff --git a/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity b/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
+index c0c4f0bb..7c0aac03 100644
+--- a/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
++++ b/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
+@@ -6604,6 +6604,88 @@ Light:
+   m_LightUnit: 1
+   m_LuxAtDistance: 1
+   m_EnableSpotReflector: 1
++--- !u!1001 &1997517701
++PrefabInstance:
++  m_ObjectHideFlags: 0
++  serializedVersion: 2
++  m_Modification:
++    serializedVersion: 3
++    m_TransformParent: {fileID: 0}
++    m_Modifications:
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalPosition.x
++      value: 4
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalPosition.y
++      value: 0.083
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalPosition.z
++      value: 1.1
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalRotation.w
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalRotation.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalRotation.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalRotation.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalEulerAnglesHint.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalEulerAnglesHint.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 514177762046774666, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_LocalEulerAnglesHint.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 6480318929854239657, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      propertyPath: m_Name
++      value: Odd, ferryman
++      objectReference: {fileID: 0}
++    m_RemovedComponents: []
++    m_RemovedGameObjects: []
++    m_AddedGameObjects: []
++    m_AddedComponents:
++    - targetCorrespondingSourceObject: {fileID: 6480318929854239657, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++      insertIndex: -1
++      addedObject: {fileID: 1997517703}
++  m_SourcePrefab: {fileID: 100100000, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++--- !u!1 &1997517702 stripped
++GameObject:
++  m_CorrespondingSourceObject: {fileID: 6480318929854239657, guid: 596458344de352360aa8f29ac9a49551, type: 3}
++  m_PrefabInstance: {fileID: 1997517701}
++  m_PrefabAsset: {fileID: 0}
++--- !u!114 &1997517703
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1997517702}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: cd2472fec3314fecb00d0cbb9610bce2, type: 3}
++  m_Name: 
++  m_EditorClassIdentifier: 
++  authoringId: 18234c75-0ba0-4a86-acb3-c0bc00ae1625
++  definition: {fileID: 11400000, guid: c85061092bd3b67cc84cae5e7bd3a3bb, type: 2}
++  variant: 0
++  overrides:
++    entries: []
+ --- !u!1 &1998474743
+ GameObject:
+   m_ObjectHideFlags: 0
+@@ -6746,3 +6828,4 @@ SceneRoots:
+   - {fileID: 742764982}
+   - {fileID: 1801231040}
+   - {fileID: 1273892466}
++  - {fileID: 1997517701}
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1

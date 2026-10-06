@@ -1,0 +1,234 @@
+[
+  {
+    "taskId": "t16d23efbb77974332e97272f",
+    "task": {
+      "task": {
+        "id": "t16d23efbb77974332e97272f",
+        "worker": "gc-designer",
+        "parent": null,
+        "key": null,
+        "origin": {
+          "topic": "#agent/gamecore-studio/cs-01m48g1wzr0yt1hyzj6wxvdjhj",
+          "position": 1,
+          "requester": "agent:gamecore-studio"
+        },
+        "text": "GameCore Studio change set cs_01M48G1WZR0YT1HYZJ6WXVDJHJ (attempt 0): Move Maren two metres north and make her patrol around the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+        "repo": null,
+        "mounts": [],
+        "env": {},
+        "image": null,
+        "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+        "post_create": [],
+        "status": "done",
+        "container": null,
+        "hostless": false,
+        "result": {
+          "text": "Wrote a change set proposing to move Maren two metres north and give her a four-point patrol around the village well. Verified the JSON parses; the proposal has not been applied.",
+          "refs": []
+        },
+        "error": null,
+        "created_at": 1791286637658,
+        "started_at": 1791286637660,
+        "ended_at": 1791286691336
+      },
+      "agent": "gc-designer@studio",
+      "turns": 1
+    },
+    "budget": {
+      "task": {
+        "scope": "task:t16d23efbb77974332e97272f",
+        "limits": {},
+        "used": {
+          "input_tokens": 113598,
+          "micro_usd": 0,
+          "output_tokens": 1369,
+          "tokens": 114967
+        }
+      },
+      "worker": {
+        "scope": "worker:gc-designer",
+        "limits": {},
+        "used": {
+          "input_tokens": 7308161,
+          "micro_usd": 0,
+          "output_tokens": 79854,
+          "tokens": 7388015
+        }
+      }
+    }
+  },
+  {
+    "taskId": "t4718cefbebede6b645f6cee1",
+    "task": {
+      "task": {
+        "id": "t4718cefbebede6b645f6cee1",
+        "worker": "gc-designer",
+        "parent": null,
+        "key": null,
+        "origin": {
+          "topic": "#agent/gamecore-studio/cs-01m48g40g60nm77mggvkh714hv",
+          "position": 1,
+          "requester": "agent:gamecore-studio"
+        },
+        "text": "GameCore Studio change set cs_01M48G40G60NM77MGGVKH714HV (attempt 0): Add a ferryman NPC here who talks about the bell.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+        "repo": null,
+        "mounts": [],
+        "env": {},
+        "image": null,
+        "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+        "post_create": [],
+        "status": "done",
+        "container": null,
+        "hostless": false,
+        "result": {
+          "text": "Wrote `/outputs/changeset.json` proposing to place Odd, the existing ferryman NPC, at the selected location and add a line about the bell to his dialogue. I verified the JSON, selection, operation ordering, and catalog tools and arguments.",
+          "refs": []
+        },
+        "error": null,
+        "created_at": 1791286706799,
+        "started_at": 1791286706801,
+        "ended_at": 1791286797608
+      },
+      "agent": "gc-designer@studio",
+      "turns": 1
+    },
+    "budget": {
+      "task": {
+        "scope": "task:t4718cefbebede6b645f6cee1",
+        "limits": {},
+        "used": {
+          "input_tokens": 234368,
+          "micro_usd": 0,
+          "output_tokens": 2836,
+          "tokens": 237204
+        }
+      },
+      "worker": {
+        "scope": "worker:gc-designer",
+        "limits": {},
+        "used": {
+          "input_tokens": 7308161,
+          "micro_usd": 0,
+          "output_tokens": 79854,
+          "tokens": 7388015
+        }
+      }
+    }
+  },
+  {
+    "taskId": "tb69c715c74f81e898ceeac34",
+    "task": {
+      "task": {
+        "id": "tb69c715c74f81e898ceeac34",
+        "worker": "gc-designer",
+        "parent": null,
+        "key": null,
+        "origin": {
+          "topic": "#agent/gamecore-studio/cs-01m48fxq1k5k81taddgdmb1sfc",
+          "position": 1,
+          "requester": "agent:gamecore-studio"
+        },
+        "text": "GameCore Studio change set cs_01M48FXQ1K5K81TADDGDMB1SFC (attempt 0): Make one of them patrol around the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+        "repo": null,
+        "mounts": [],
+        "env": {},
+        "image": null,
+        "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+        "post_create": [],
+        "status": "done",
+        "container": null,
+        "hostless": false,
+        "result": {
+          "text": "I need the Village Well\u2019s world-space coordinates to propose a patrol route around it. I\u2019ve submitted that clarification question; no change set was created.",
+          "refs": []
+        },
+        "error": null,
+        "created_at": 1791286500552,
+        "started_at": 1791286500553,
+        "ended_at": 1791286583825
+      },
+      "agent": "gc-designer@studio",
+      "turns": 1
+    },
+    "budget": {
+      "task": {
+        "scope": "task:tb69c715c74f81e898ceeac34",
+        "limits": {},
+        "used": {
+          "input_tokens": 265673,
+          "micro_usd": 0,
+          "output_tokens": 1618,
+          "tokens": 267291
+        }
+      },
+      "worker": {
+        "scope": "worker:gc-designer",
+        "limits": {},
+        "used": {
+          "input_tokens": 7308161,
+          "micro_usd": 0,
+          "output_tokens": 79854,
+          "tokens": 7388015
+        }
+      }
+    }
+  },
+  {
+    "taskId": "tec026d8cd674f84138eda754",
+    "task": {
+      "task": {
+        "id": "tec026d8cd674f84138eda754",
+        "worker": "gc-designer",
+        "parent": null,
+        "key": null,
+        "origin": {
+          "topic": "#agent/gamecore-studio/cs-01m48g091ft7z1e6pr56ndj413",
+          "position": 1,
+          "requester": "agent:gamecore-studio"
+        },
+        "text": "GameCore Studio change set cs_01M48G091FT7Z1E6PR56NDJ413 (attempt 0): Make one of them patrol around the well.\nAnswer to \"What are the Village Well\u2019s world-space coordinates (x, y, z) so I can route one selected NPC around it?\": Maren (npc.definition Maren). Centre a loop of four points on the Village Well, about 3 m from it (+Z north, +X east, metres).\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+        "repo": null,
+        "mounts": [],
+        "env": {},
+        "image": null,
+        "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+        "post_create": [],
+        "status": "done",
+        "container": null,
+        "hostless": false,
+        "result": {
+          "text": "Proposed a four-point patrol loop for Maren, centred on the Village Well at (0, 0, \u22121.9), with each point 3 m away. The change-set JSON was verified.",
+          "refs": []
+        },
+        "error": null,
+        "created_at": 1791286584441,
+        "started_at": 1791286584443,
+        "ended_at": 1791286629299
+      },
+      "agent": "gc-designer@studio",
+      "turns": 1
+    },
+    "budget": {
+      "task": {
+        "scope": "task:tec026d8cd674f84138eda754",
+        "limits": {},
+        "used": {
+          "input_tokens": 98644,
+          "micro_usd": 0,
+          "output_tokens": 1253,
+          "tokens": 99897
+        }
+      },
+      "worker": {
+        "scope": "worker:gc-designer",
+        "limits": {},
+        "used": {
+          "input_tokens": 7308161,
+          "micro_usd": 0,
+          "output_tokens": 79854,
+          "tokens": 7388015
+        }
+      }
+    }
+  }
+]
