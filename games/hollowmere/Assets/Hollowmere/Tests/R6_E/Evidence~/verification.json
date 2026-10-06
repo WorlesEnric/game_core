@@ -1,0 +1,55 @@
+{
+  "sourceRevision": "891ebc85",
+  "baselineRegression": {
+    "passed": 0,
+    "failed": 1,
+    "reason": "stage_service_unavailable"
+  },
+  "editMode": {
+    "passed": 181,
+    "failed": 0,
+    "skipped": 0
+  },
+  "playMode": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0
+  },
+  "dotnetEtos": {
+    "passed": 69,
+    "failed": 0,
+    "skipped": 6
+  },
+  "rust": {
+    "passed": 145,
+    "failed": 0,
+    "ignored": 12
+  },
+  "graphical": {
+    "passed": 1,
+    "admissionWallMs": 45073,
+    "undoWallMs": 15937,
+    "providerCalls": 0,
+    "workerTasks": 0
+  },
+  "stageRuns": [
+    {
+      "path": "context-edit",
+      "durationMs": 171731,
+      "editPassed": 36,
+      "playPassed": 2
+    },
+    {
+      "path": "real-02",
+      "durationMs": 203234,
+      "editPassed": 36,
+      "playPassed": 2
+    }
+  ],
+  "policies": {
+    "packages": 42,
+    "assemblies": 91,
+    "csharpFiles": 1230,
+    "passed": true
+  }
+}

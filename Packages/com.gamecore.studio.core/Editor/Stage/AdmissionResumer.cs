@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEditor;
 
 namespace GameCore.Studio.Edit
@@ -42,7 +43,7 @@ namespace GameCore.Studio.Edit
                 StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
                 StageCommandLine.Attach(admission);
                 admission.ResumeSmokePolling();
-                try { await admission.RefreshPendingVerdicts(); }
+                try { await RefreshPendingVerdicts(admission); }
                 catch (Exception)
                 {
                     // Additions wait for authenticated client rebinding; owned removals can still recover.
@@ -62,6 +63,12 @@ namespace GameCore.Studio.Edit
                 AdmissionSession.instance.Resuming = false;
                 if (waiting) Wake();
             }
+        }
+
+        internal static Task<int> RefreshPendingVerdicts(StageAdmission admission)
+        {
+            UnityAdmissionServices.EnsureStageService(admission.Runtime);
+            return admission.RefreshPendingVerdicts();
         }
     }
 }

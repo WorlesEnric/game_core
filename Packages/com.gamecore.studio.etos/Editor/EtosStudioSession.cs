@@ -73,7 +73,21 @@ namespace GameCore.Studio.Etos
         }
 
         /// <summary>Idempotent entry seam for OpenStudio and domain reload.</summary>
-        public static bool EnsureStarted() => instance._gateway != null || Start();
+        public static bool EnsureStarted() => EnsureStarted(StudioServices.Runtime);
+
+        /// <summary>Binds the authenticated service before durable admission recovery, including in batch mode.</summary>
+        public static bool EnsureStarted(StudioRuntime runtime)
+        {
+            if (runtime == null) throw new ArgumentNullException(nameof(runtime));
+            EtosStudioSession session = instance;
+            session._automatic = true;
+            if (session._gateway == null || !ReferenceEquals(session._runtime, runtime))
+                return session.StartCore(runtime);
+            // Admission options can be recreated independently of the gateway in this domain.
+            if (StageAdmission.Of(runtime).Options.StageService == null)
+                EtosProjectContext.Bind(runtime, session._gateway.Client);
+            return true;
+        }
 
         /// <summary>The running gateway, or null (not configured, or not started).</summary>
         public static EtosAgentGateway? Gateway => instance._gateway;
@@ -168,7 +182,6 @@ namespace GameCore.Studio.Etos
                 runtime.Services.AgentGateway = _gateway;
                 EtosProjectContext.Bind(runtime, client);
                 _problem = null;
-                _ = RefreshVerdicts(runtime);
                 _gateway.Start();
                 starts++;
                 Save(true);
@@ -185,12 +198,6 @@ namespace GameCore.Studio.Etos
             return _gateway != null;
         }
 
-        private async Task RefreshVerdicts(StudioRuntime runtime)
-        {
-            try { await StageAdmission.Of(runtime).RefreshPendingVerdicts(); }
-            catch (Exception error) { _problem = new Diagnostic(EtosCodes.StageFailed, EtosRedaction.Redact(error.Message)); }
-            return;
-        }
 
         private void RememberOwn(string requestId)
         {
