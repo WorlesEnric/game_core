@@ -1,0 +1,16 @@
+E
+======================================================================
+ERROR: test_R2_38_P42e_owner_describe_estimate (test_p42e.Tariff.test_R2_38_P42e_owner_describe_estimate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/tests/test_p42e.py", line 12, in test_R2_38_P42e_owner_describe_estimate
+    price, = installer.tariffs((ROOT / 'studio/etos/ops.toml.tmpl').read_text(), 'describe')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2e/studio/etos/install-state.py", line 101, in tariffs
+    raise ValueError("tariff_placeholder: set a positive operator per_unit before applying templates")
+ValueError: tariff_placeholder: set a positive operator per_unit before applying templates
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)

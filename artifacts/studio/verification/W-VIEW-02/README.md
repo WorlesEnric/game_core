@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.
 
-Report timestamp: 2026-10-06T12:40:21.154765+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.369532+00:00 UTC.
 
 Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

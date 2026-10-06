@@ -1,0 +1,28 @@
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1

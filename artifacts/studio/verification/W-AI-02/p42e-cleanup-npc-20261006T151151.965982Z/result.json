@@ -1,0 +1,28 @@
+{
+  "label": "p42e-cleanup-npc",
+  "revision": "c047978f73829fa0b763b50047531a1886ac7800",
+  "host": "worlesenric",
+  "started": "2026-10-06T15:11:51.967346+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2e/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/logs --label p42e-cleanup-npc --timeout 1800 --results ~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/results.xml -- -runTests -testPlatform EditMode -testFilter R2_38_P42e_NormalJournalUndoAfterNpcPlayReload",
+  "cwd": "~/wkspace/gc-studio/p4.2e/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z",
+  "queuedAtRevision": "c047978f73829fa0b763b50047531a1886ac7800",
+  "executionStarted": "2026-10-06T15:11:51.968774+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T15:12:44.990810+00:00",
+  "seconds": 53.02476364397444,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "productRevision": "d140f7487092a40cbead927c5546127e0cb6fe14",
+  "installedRelease": "0.1.0-cac2f82c59be070b"
+}

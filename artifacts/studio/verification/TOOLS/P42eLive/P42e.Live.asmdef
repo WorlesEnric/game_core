@@ -1,0 +1,46 @@
+{
+  "name": "P42e.Live.Tests",
+  "rootNamespace": "P42e.Live",
+  "references": [
+    "GameCore.Studio.Model",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.UI.Editor",
+    "GameCore.Unity.App",
+    "GameCore.Contracts",
+    "GameCore.Gameplay.World",
+    "Hollowmere.Game",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "Hollowmere.P2_1.Evidence",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "GameCore.Composition",
+    "GameCore.Unity.Runtime",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Npc",
+    "Hollowmere.Authoring.Editor",
+    "GameCore.Gameplay.World.Editor",
+    "Hollowmere.Boot",
+    "Hollowmere.Narrative",
+    "GameCore.Gameplay.Inventory",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Rules.Gameplay"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

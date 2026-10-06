@@ -1,21 +1,22 @@
 # W-AI-05: Change the lantern quest to require two oil flasks; verify consequences in Play
 
-Verdict: **PASS**. The live two-operation candidate applies against the real indexed OilFlask identity. The simulator no longer refuses GP-QST-004, and the actual Play observer confirms stage 1 after one flask and stage 2 after two; the driver records pass.
+Verdict: **PASS**. The fresh installed-worker candidate uses the indexed OilFlask identity. Actual Play holds quest stage 1 after one flask and advances to stage 2 after two; the driver records pass.
 
-Report timestamp: 2026-10-06T12:40:21.173851+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.404795+00:00 UTC.
 
-Acceptance baseline: merged main `40fb91fa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42d narrative
+python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen
 ```
 
 ## Retained evidence
 
-- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/play-effect.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/play-effect.json)
-- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/candidate.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/candidate.json)
-- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/apply-report.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/apply-report.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/candidate.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/candidate.json)
+- [W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json](../W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/play-effect.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/play-effect.json)
 
-Historical references: P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.
+Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.

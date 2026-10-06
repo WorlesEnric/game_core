@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised.
 
-Report timestamp: 2026-10-06T12:40:21.170413+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.397410+00:00 UTC.
 
 Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

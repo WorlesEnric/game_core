@@ -1,22 +1,21 @@
 # W-AI-04: Edit the HUD objective label and rebind it to the quest stage name
 
-Verdict: **PASS**. The installed-companion candidate applies ui.bind: objective-line.text → vm:hud.QuestStageTitle (R3-D/D10b). The resulting authored binding is retained; separate-Editor reopen preserves it and its undo/redo/final undo succeeds.
+Verdict: **PASS**. The fresh installed-worker HUD candidate applies and saves; a separate Editor reopens with matching saved hashes, and normal undo/redo/final undo succeeds. HUD bytes return exactly to baseline.
 
-Report timestamp: 2026-10-06T12:40:21.172977+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.403575+00:00 UTC.
 
-Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42c narrative
-studio/tools/verify-all.sh p42c reopen
+python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen
 ```
 
 ## Retained evidence
 
-- [W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/hud/candidate.json](../W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/hud/candidate.json)
-- [W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/hud/describe-applied.json](../W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/hud/describe-applied.json)
-- [W-AI-06/p42c-reopen-20261006T073813.299352Z/workflow/hud/redo-result.json](../W-AI-06/p42c-reopen-20261006T073813.299352Z/workflow/hud/redo-result.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/hud/candidate.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/hud/candidate.json)
+- [W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json](../W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json)
 
-Historical references: Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.
+Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.

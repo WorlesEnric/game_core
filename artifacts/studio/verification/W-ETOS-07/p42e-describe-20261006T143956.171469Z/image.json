@@ -1,0 +1,58 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1321897,
+      "mediaType": "image/png",
+      "name": "out.png",
+      "producer": {
+        "charge": {
+          "costUsd": 0.2,
+          "quantity": 1.0,
+          "tariff": {
+            "kind": "operator",
+            "model": "gpt-image-2",
+            "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+            "perUnitUsd": 0.2,
+            "provider": "echo-images",
+            "unit": "image",
+            "url": ""
+          }
+        },
+        "etosRef": "ref_01m48th760scz0t6v5ja0wtxpj",
+        "key": "gc-c4ae9992437b7eb5788bf6f45bc4205ac15e3f44",
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "sha256": "b0a20482574eb1a629c64fe6e2bf047b596de5ca301797db9e7c11d41683f6d3",
+      "url": "/v1/artifacts/b0a20482574eb1a629c64fe6e2bf047b596de5ca301797db9e7c11d41683f6d3"
+    }
+  ],
+  "charge": {
+    "costUsd": 0.2,
+    "quantity": 1.0,
+    "tariff": {
+      "kind": "operator",
+      "model": "gpt-image-2",
+      "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+      "perUnitUsd": 0.2,
+      "provider": "echo-images",
+      "unit": "image",
+      "url": ""
+    }
+  },
+  "etosOp": "generate.image",
+  "key": "gc-c4ae9992437b7eb5788bf6f45bc4205ac15e3f44",
+  "maxCostUsd": 0.2,
+  "op": "image",
+  "provider": "echo-images",
+  "state": {
+    "state": "succeeded",
+    "usage": {
+      "cost_usd": 0.0,
+      "input_tokens": 19,
+      "output_tokens": 515,
+      "quantity": 1.0,
+      "unit": "image"
+    }
+  }
+}

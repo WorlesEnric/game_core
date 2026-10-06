@@ -27,7 +27,7 @@ class Acceptance(unittest.TestCase):
             installer.tariffs(template, "image")
 
     def test_R5_B_describe_placeholder_refuses_independently(self):
-        template = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+        template = (ROOT / "studio/etos/ops.toml.tmpl").read_text().replace("per_unit = 0.01", "per_unit = 0.0 # SET_BY_OPERATOR")
         with self.assertRaisesRegex(ValueError, "tariff_placeholder"):
             installer.tariffs(template, "describe")
 

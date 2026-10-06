@@ -1,0 +1,151 @@
+diff --git a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Maren.asset b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Maren.asset
+index 1a2ab6e5..1412e949 100644
+--- a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Maren.asset
++++ b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Maren.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: Maren
+   m_EditorClassIdentifier:
+   authoringId: 8e52f233-3797-4396-89c4-24f00fceef8a
+-  contentStamp: cbd569b82d44b12af047436c45871472c96d46dd5530db91bb480be835bcb57c
++  contentStamp: 078d66b0b111d54ed701e10de81ece5e395bb2772523cea61edf9f4fcc8b7768
+   speaker: Maren
+   speakerEntityId: da525107-c2c1-4626-ac08-5058a1e01c06
+   npcGraphRef: dialogue.maren
+diff --git a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+index f009ec1e..7e7f0b08 100644
+--- a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
++++ b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: Odd
+   m_EditorClassIdentifier:
+   authoringId: aa779457-076d-496c-84b5-72019a826681
+-  contentStamp: d20c8b03888a8e598deeef72d32fcc461188f81744f7a3b3f165227309292335
++  contentStamp: 6f941420185b2bb7a1b737bcb170f7ba78f222f90c5eeef1de46a5a49b311d4f
+   speaker: Odd
+   speakerEntityId: a8255407-3f1c-4aa5-b7e7-e6141e6d5534
+   npcGraphRef: dialogue.odd
+diff --git a/games/hollowmere/Assets/Hollowmere/Quests/DrownedBell.asset b/games/hollowmere/Assets/Hollowmere/Quests/DrownedBell.asset
+index b0ea6027..e3f9f470 100644
+--- a/games/hollowmere/Assets/Hollowmere/Quests/DrownedBell.asset
++++ b/games/hollowmere/Assets/Hollowmere/Quests/DrownedBell.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: DrownedBell
+   m_EditorClassIdentifier:
+   authoringId: 0db698bb-d2d3-45b7-94cb-1bd81e90e6c2
+-  contentStamp: dd9cb8b954ff4a3b58138393ecbbca8a4f323125d4bf500779a3fba529787e32
++  contentStamp: f6f5d314e43090469d66046d210b2a8ba1807f36179a5f90b911640580080141
+   title: The Drowned Bell
+   stages:
+   - title: Rumour
+diff --git a/games/hollowmere/Assets/Hollowmere/Rules/Actions/MarenIntro.asset b/games/hollowmere/Assets/Hollowmere/Rules/Actions/MarenIntro.asset
+index 9e6528d8..a8833692 100644
+--- a/games/hollowmere/Assets/Hollowmere/Rules/Actions/MarenIntro.asset
++++ b/games/hollowmere/Assets/Hollowmere/Rules/Actions/MarenIntro.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: MarenIntro
+   m_EditorClassIdentifier:
+   authoringId: 266d333d-2e6d-47e6-8e71-8004cf7f4aca
+-  contentStamp: ddd292c91d33e89966c4c265ca520a2261269acd3c7f2381a8ecc4ff6ed6188d
++  contentStamp: 6794f0f70491f63bb296fa292c5968f6930e70ec69520dbc773e5eda0830cc89
+   actions:
+   - kind: 0
+     fact: {fileID: 11400000, guid: c0058a7ebedf01ab3996bdb19fb6b8a5, type: 2}
+diff --git a/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset b/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
+index 56a72658..d7757016 100644
+--- a/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
++++ b/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
+@@ -14,7 +14,7 @@ MonoBehaviour:
+   m_EditorClassIdentifier:
+   formatId: gamecore.gameplay-content/1
+   worldId: a2e71200-b7bb-4d4a-8aec-26370b7da0f3
+-  contentHash: 8fa8e836c0c48ada99bac95bc158709163e1667c2637df1ac830d18aeaec6d4a
++  contentHash: c353003646d42791c195dbca4de1658ac0247046e3a8a130e4345ae0bc5135f7
+   entries:
+   - kind: logic.actionSet
+     authoringId: 01c49243-c734-4250-8b0f-c01eeac4b827
+@@ -56,7 +56,7 @@ MonoBehaviour:
+     authoringId: 0db698bb-d2d3-45b7-94cb-1bd81e90e6c2
+     name: DrownedBell
+     key: 424028396
+-    contentStamp: dd9cb8b954ff4a3b58138393ecbbca8a4f323125d4bf500779a3fba529787e32
++    contentStamp: f6f5d314e43090469d66046d210b2a8ba1807f36179a5f90b911640580080141
+     asset: {fileID: 11400000, guid: c0b53079e6e09fd8e94d904622330c55, type: 2}
+   - kind: narrative.fact
+     authoringId: 0f06b03c-98f7-4b7a-b4c7-70950667b31a
+@@ -128,7 +128,7 @@ MonoBehaviour:
+     authoringId: 266d333d-2e6d-47e6-8e71-8004cf7f4aca
+     name: MarenIntro
+     key: 534818769
+-    contentStamp: ddd292c91d33e89966c4c265ca520a2261269acd3c7f2381a8ecc4ff6ed6188d
++    contentStamp: 6794f0f70491f63bb296fa292c5968f6930e70ec69520dbc773e5eda0830cc89
+     asset: {fileID: 11400000, guid: 88ad7492e109d8e92b568b9d4ce3a92d, type: 2}
+   - kind: logic.conditionSet
+     authoringId: 28e34721-a716-4890-a863-fb0cfba9df30
+@@ -332,7 +332,7 @@ MonoBehaviour:
+     authoringId: 78bdc449-3fc2-4935-8847-8c732163dd22
+     name: ReturnToMaren
+     key: 1243082529
+-    contentStamp: de5cb72976b723c344f530b922addca719f032fa3958a563249c905b0a41d484
++    contentStamp: f9ae98e6f63f7e3b514083fdea62416b446615e623091e50dbbeb4c0e07368f2
+     asset: {fileID: 11400000, guid: e828e769813cc299199b3923378a957a, type: 2}
+   - kind: logic.conditionSet
+     authoringId: 78eeeedd-9917-460a-8d0e-71d128dc7246
+@@ -386,7 +386,7 @@ MonoBehaviour:
+     authoringId: 8e52f233-3797-4396-89c4-24f00fceef8a
+     name: Maren
+     key: 1086615526
+-    contentStamp: cbd569b82d44b12af047436c45871472c96d46dd5530db91bb480be835bcb57c
++    contentStamp: 078d66b0b111d54ed701e10de81ece5e395bb2772523cea61edf9f4fcc8b7768
+     asset: {fileID: 11400000, guid: b12e0fe862718ab97bdba909d90007c1, type: 2}
+   - kind: narrative.fact
+     authoringId: 91d867aa-ac86-4935-b1e9-d8c2a622f546
+@@ -434,7 +434,7 @@ MonoBehaviour:
+     authoringId: aa779457-076d-496c-84b5-72019a826681
+     name: Odd
+     key: 943731399
+-    contentStamp: d20c8b03888a8e598deeef72d32fcc461188f81744f7a3b3f165227309292335
++    contentStamp: 6f941420185b2bb7a1b737bcb170f7ba78f222f90c5eeef1de46a5a49b311d4f
+     asset: {fileID: 11400000, guid: b2bacaee2c3034819a57dae4f343b3ee, type: 2}
+   - kind: narrative.fact
+     authoringId: b381de76-7931-4dc9-828c-eaa7b242f852
+diff --git a/games/hollowmere/Assets/Hollowmere/Rules/ReturnToMaren.asset b/games/hollowmere/Assets/Hollowmere/Rules/ReturnToMaren.asset
+index 2b885e2b..4edf9559 100644
+--- a/games/hollowmere/Assets/Hollowmere/Rules/ReturnToMaren.asset
++++ b/games/hollowmere/Assets/Hollowmere/Rules/ReturnToMaren.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: ReturnToMaren
+   m_EditorClassIdentifier:
+   authoringId: 78bdc449-3fc2-4935-8847-8c732163dd22
+-  contentStamp: de5cb72976b723c344f530b922addca719f032fa3958a563249c905b0a41d484
++  contentStamp: f9ae98e6f63f7e3b514083fdea62416b446615e623091e50dbbeb4c0e07368f2
+   trigger: 7
+   triggerFact: {fileID: 0}
+   triggerItem: {fileID: 0}
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1

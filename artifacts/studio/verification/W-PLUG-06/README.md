@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Conditional dialogue differs by fact; fresh-boot restoration preserves heard_rumour/gate_open and reattaches conversations.
 
-Report timestamp: 2026-10-06T12:40:21.177664+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.412768+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

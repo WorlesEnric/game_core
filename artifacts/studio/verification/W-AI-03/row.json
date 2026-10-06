@@ -1,16 +1,17 @@
 {
   "status": "PASS",
-  "note": "The newly received live candidate applies unchanged. R5-C\u2019s actual Hollowmere Play observer confirms the added line is absent unlit and displayed when shrine_lit=1; the driver records pass.",
-  "command": "studio/tools/verify-all.sh p42d narrative",
-  "baseline": "40fb91fa",
-  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "note": "The fresh installed-worker candidate applies unchanged; actual Hollowmere Play hides its added line while shrine_lit is false and displays it when lit. The corrected driver records pass.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
+  "baseline": "d140f748",
+  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-AI-03",
   "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T12:40:21.172274+00:00",
+  "reportedAt": "2026-10-06T15:29:44.401563+00:00",
   "evidence": [
-    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/play-effect.json",
-    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/candidate.json",
-    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/apply-report.json"
+    "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
+    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/odd-line/candidate.json",
+    "W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json",
+    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/odd-line/play-effect.json"
   ]
 }

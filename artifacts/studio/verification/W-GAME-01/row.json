@@ -1,12 +1,12 @@
 {
   "status": "BLOCKED",
-  "note": "The P3.1 recording is reused, as requested. It predates P3.1b and failed B-FRAME; P3.1b\u2019s later 640\u00d7480 llvmpipe measurements cannot qualify final-tree RTX/1080p performance.",
+  "note": "reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open.",
   "command": "Read the linked retained P3.1/P3.1b recording and frame manifests; do not make another ten-minute recording.",
   "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
   "row": "W-GAME-01",
   "scenario": "10-minute graphical playthrough recording with frame log",
   "requirement": "SR-8.1, B-FRAME",
-  "reportedAt": "2026-10-06T12:40:21.185720+00:00",
+  "reportedAt": "2026-10-06T15:29:44.428661+00:00",
   "evidence": [
     "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
   ]

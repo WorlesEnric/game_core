@@ -1,0 +1,6 @@
+{"matrixRows": 68, "counts": {"PASS": 33, "BLOCKED": 30, "FAIL": 5}, "hashesChecked": 2906, "textFilesScanned": 533, "scope": "PASS", "matrixCells": "PASS", "references": "PASS", "credentialShapes": "none", "accountedUsd": 0.21077983760000002}
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/check_p42e.py", line 58, in <module>
+    assert json.loads((v.ROOT/'artifacts/studio/workflows/P4.2e/editor-monitor.json').read_text())['maximum']<=1, 'Host exclusivity unproven: raw maximum 2; see editor-exclusivity-open.json'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Host exclusivity unproven: raw maximum 2; see editor-exclusivity-open.json
