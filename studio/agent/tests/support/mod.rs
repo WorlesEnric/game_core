@@ -82,7 +82,11 @@ pub struct Inner {
     pub rt_actions: Vec<String>,
     /// Decoded size of each audio chunk.
     pub rt_chunks: Vec<usize>,
+    /// Audio payload digests for byte-preservation assertions.
+    pub rt_audio_digests: Vec<String>,
     pub rt_errors: Vec<String>,
+    /// Model VAD that emits no transcript until explicit input commit.
+    pub rt_needs_commit: bool,
     /// Task request ids `POST /tasks` refuses (403 `request_rejected`).
     pub refuse_ids: Vec<String>,
     /// Operations whose produced file is reported with a wrong digest.
@@ -700,7 +704,8 @@ async fn realtime_session(n: FakeNode, socket: WebSocket, provider: String) {
                 }
                 next_audio += 1;
                 n.lock().rt_chunks.push(bytes.len());
-                if seq == 0 {
+                n.lock().rt_audio_digests.push(sha(&bytes));
+                if seq == 0 && !n.lock().rt_needs_commit {
                     tx.send(Message::Text(
                         frame(json!({"type": "speech_started", "item_id": "it1"})).into(),
                     ))
@@ -717,7 +722,11 @@ async fn realtime_session(n: FakeNode, socket: WebSocket, provider: String) {
                     .unwrap();
                 }
             }
-            "close" => {
+            "close" if n.lock().rt_needs_commit => {
+                let _ = tx.close().await;
+                return;
+            }
+            "close" | "input_commit" => {
                 for ev in [
                     json!({"type": "speech_ended", "item_id": "it1"}),
                     json!({"type": "transcript", "role": "assistant", "item_id": "it2", "response_id": null,
