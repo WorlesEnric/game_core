@@ -9,7 +9,7 @@ Use the shipped entities and interaction packages as the gameplay package patter
 | `package.json` | `com.gamecore.*` packages use version `1.0.0`, Unity `6000.0`, accurate name/displayName/description and the exact asmdef-derived dependency set. Do not copy dependencies blindly. | [Package contract §1, §6, §9](../operator/packages.md), [entities manifest](../../Packages/com.gamecore.gameplay.entities/package.json) |
 | `Runtime/` | Definitions, declarations, command systems, per-world modules and presentation. Reference contracts, rules, runtime and the exact Unity assemblies used. No runtime dependency on Studio. | [entities Runtime asmdef](../../Packages/com.gamecore.gameplay.entities/Runtime/GameCore.Gameplay.Entities.asmdef), [P1.1 mirror decision](packets/P1.1-entities-world-compile.md#authoring-identity-by-convention-for-studio-discovery-without-a-type-dependency) |
 | `Editor/` | Authoring tools, validators and catalog contributors; asmdef `includePlatforms: ["Editor"]`. Gameplay mirror metadata does not require a Studio reference. | [entities Editor asmdef](../../Packages/com.gamecore.gameplay.entities/Editor/GameCore.Gameplay.Entities.Editor.asmdef), [interaction tools](../../Packages/com.gamecore.gameplay.interaction/Editor/InteractionTools.cs) |
-| Pure rules | Reusable groups currently live at `com.gamecore.rules.gameplay/Runtime/<Group>/` under one `GameCore.Rules.Gameplay` asmdef, `noEngineReferences: true`. This differs from 02's original one-asmdef-per-group sketch. | [P1.1 §What was built](packets/P1.1-entities-world-compile.md#what-was-built), [rules asmdef](../../Packages/com.gamecore.rules.gameplay/Runtime/GameCore.Rules.Gameplay.asmdef), [02 layout](02-architecture.md#3-repository-layout-new-and-changed-paths) |
+| Pure rules | Reusable groups currently live at `com.gamecore.rules.gameplay/Runtime/<Group>/` under one `GameCore.Rules.Gameplay` asmdef, `noEngineReferences: true`. 02 now records this layout. | [P1.1 §What was built](packets/P1.1-entities-world-compile.md#what-was-built), [rules asmdef](../../Packages/com.gamecore.rules.gameplay/Runtime/GameCore.Rules.Gameplay.asmdef), [02 layout](02-architecture.md#3-repository-layout-new-and-changed-paths) |
 | Dotnet mirror | Compile the same pure sources into netstandard2.1, test under net8.0 with C# 9, nullable enabled and warnings as errors. Add group test sources to the test project. | [rules csproj](../../dotnet/src/GameCore.Rules.Gameplay/GameCore.Rules.Gameplay.csproj), [test csproj](../../dotnet/tests/GameCore.Rules.Gameplay.Tests/GameCore.Rules.Gameplay.Tests.csproj), [build prerequisites](../operator/build-and-run.md#1-prerequisites) |
 | Unity tests | Package Editor tests and game integration tests use explicit test asmdefs; the project lists package tests in `testables`. Tests needing Play Mode belong in the game's PlayMode assembly. | [P1.6 §Built](packets/P1.6-studio-core-unity.md#built), [P1.3 §Delivered](packets/P1.3-player-npc-interaction.md#delivered) |
 | `.meta` | Preserve existing GUIDs and commit metas for new Unity files/folders. `make_unity_metas.py` creates missing GUID-only metas; Unity adds importer data on import. | [Package contract §9](../operator/packages.md#9-studio-gameplay-and-games-projects-sadr-014), [meta generator](../../tools/make_unity_metas.py) |
@@ -49,9 +49,9 @@ public static AuthoredEntity AddDoor(
     [AuthorArg(Required = false, Doc = "Object name.")] string name = "")
 ```
 
-Identity uses a serialized `authoringId`, public `AuthoringId`, and `IAuthoredObject`. Definitions also implement `IDefinitionAsset` with `DefinitionName` and `ContentStamp`. IDs are lowercase, nonzero D-format GUIDs. Use `AuthoringIds.TargetIdFor(id)`, which calls `StableNameKeyDerivation.Derive("auth." + id)`. Never persist Unity instance ids, Entity indexes or session handles as authoring identity. Prefab assets carry no entity authoring id; placed instances receive one. Unity Ctrl+D can copy a serialized id, so the Studio duplicate tool is the currently documented safe duplication path; duplicate-id validation remains open. ([P1.1 §API](packets/P1.1-entities-world-compile.md#api), [P1.6 §Left open](packets/P1.6-studio-core-unity.md#left-open))
+Identity uses a serialized `authoringId`, public `AuthoringId`, and `IAuthoredObject`. Definitions also implement `IDefinitionAsset` with `DefinitionName` and `ContentStamp`. IDs are lowercase, nonzero D-format GUIDs. Use `AuthoringIds.TargetIdFor(id)`, which calls `StableNameKeyDerivation.Derive("auth." + id)`. Never persist Unity instance ids, Entity indexes or session handles as authoring identity. Prefab assets carry no entity authoring id; placed instances receive one. Unity Ctrl+D can copy a serialized id, so the Studio duplicate tool is the currently documented safe duplication path; EntityValidator.ValidateScene reports duplicate IDs (GP-ID); use entity.duplicate for a fresh identity. ([EntityValidator](../../Packages/com.gamecore.gameplay.entities/Editor/EntityValidator.cs#L137)) ([P1.1 §API](packets/P1.1-entities-world-compile.md#api), [P1.6 §Left open](packets/P1.6-studio-core-unity.md#left-open))
 
-**Current blocker:** gameplay uses `[AuthorField(Type = "authoringId")]` in narrative definitions, but Studio's value-type reader rejects that type. P2.3 used an uncommitted host alias for some evidence. Do not copy that type override into a new Studio-facing field and claim it works; resolution belongs to the integration owner. Nested-list `set` inverses also block dialogue undo. ([P2.3 open items 1–2](packets/P2.3-studio-views.md#left-open-for-the-integrator-and-owners))
+The authoringId value type and nested-list inverse are implemented; typed refs and ReadOnly flags come from P1.7b. ([P1.6 follow-up](packets/P1.6-studio-core-unity.md), [P1.7b §1](packets/P1.7b-gameplay-hardening-metadata.md#1-what-was-built))
 
 ## Slots, routes, events and systems
 
@@ -74,7 +74,7 @@ Presentation implements `IPresentationBinder.BinderName`, `IsActive` and `Presen
 
 Choose **GameCore/Gameplay/Bake World**, then **GameCore/Gameplay/Verify World Bake**. `Entry.Bake` emits catalog description, generated catalog/coverage, bake report, region manifest and definition stamps. Saving only stale-marks a bake by default; opt-in auto-bake is scheduled only if the last bake took at most 1000 ms. A second bake must reproduce bytes. ([P1.1 §Compile and Decisions](packets/P1.1-entities-world-compile.md), [catalog byte-identity procedure](../operator/catalog-generation.md#4-proving-byte-identity))
 
-Definition hashes cover canonical authorable fields, type id and recursively referenced definitions; asset references contribute GUID/fileId. Recipe revision is the first eight digest bytes. A referenced variant edit can therefore change its parent definition revision. Package-content hash, definition stamp, recipe revision and overall catalog fingerprint have different roles; retain all the generated outputs from a content change. ([P1.1 decision 8 and Verification](packets/P1.1-entities-world-compile.md), [InteractionDeclarations.PackageContentHash](../../Packages/com.gamecore.gameplay.interaction/Runtime/InteractionDeclarations.cs))
+Definition hashes cover canonical authorable fields, type id and recursively referenced definitions; asset references contribute GUID/fileId. Recipe revision derives from the structural stamp; the content stamp still covers all fields (P1.7a A8). A referenced variant edit can therefore change its parent definition revision. Package-content hash, definition stamp, recipe revision and overall catalog fingerprint have different roles; retain all the generated outputs from a content change. ([P1.1 decision 8 and Verification](packets/P1.1-entities-world-compile.md), [InteractionDeclarations.PackageContentHash](../../Packages/com.gamecore.gameplay.interaction/Runtime/InteractionDeclarations.cs))
 
 | Change | Save consequence / obligation | Source |
 |---|---|---|
@@ -84,21 +84,21 @@ Definition hashes cover canonical authorable fields, type id and recursively ref
 | Catalog fingerprint | Must be identical or explicitly compatible; recipe/schema checks still apply. | [P1.2 §1.2](packets/P1.2-save-restore.md) |
 | Clock schema / component state | No executable clock/recipe migration or arbitrary component-state capture is supplied. | [P1.2 §5](packets/P1.2-save-restore.md#5-open-items) |
 | Restore success | New WorldId/root. Dispose old bindings, use ActiveRoot/RootChanged, reattach with `seedSlots:false`, recreate presentation, resume issuer sequences and reconstruct derived caches. | [P1.1 root replacement](packets/P1.1-entities-world-compile.md#runtime), [P1.2 §3 and §5](packets/P1.2-save-restore.md) |
-| Pending cross-plugin effects | Persist/reinstate the outbox and stable receiver request ids. Narrative uses `RequestIdOf(outboxId)` and a bounded request ring; its save-composer registration remains open. | [P1.4 outbox decision and Open](packets/P1.4-dialogue-quest-logic-inventory.md) |
+| Pending cross-plugin effects | Persist/reinstate the outbox and stable receiver request ids. Narrative uses `RequestIdOf(outboxId)` and a bounded request ring; P1.7a registers it with the single delivery owner. | [P1.4 outbox decision and Open](packets/P1.4-dialogue-quest-logic-inventory.md) |
 
-Provide game checkpoint codecs through `SaveServiceOptions.Codecs`; no shared game codec catalog exists in these packets. Rebind narrative modules, player/NPC/interaction sessions and loaded scenes, including runtime-spawned targets. P1.2's headless restore proof and P1.5's test-codec UI proof do not demonstrate this full game integration. `GameApplication.Current` is not updated to the restored root; code using it needs explicit review. ([P1.1 §Runtime and Open](packets/P1.1-entities-world-compile.md), [P1.2 §5](packets/P1.2-save-restore.md#5-open-items), [P1.5 §Open](packets/P1.5-ui-audio.md#open))
+Provide game checkpoint codecs through `SaveServiceOptions.Codecs`; no shared game codec catalog exists in these packets. Rebind narrative modules, player/NPC/interaction sessions and loaded scenes, including runtime-spawned targets. P1.7a/P1.7c and P3.1 provide production Hollowmere integration; P4.2d acceptance remains row-specific. APP-1 updates `GameApplication.Current` before stopping the old root; consumers still rebind their sessions through RootChanged. ([P1.1 §Runtime and Open](packets/P1.1-entities-world-compile.md), [P1.2 §5](packets/P1.2-save-restore.md#5-open-items), [P1.5 §Open](packets/P1.5-ui-audio.md#open))
 
 ## Tools, validation and diagnostics
 
-The catalog has **Configure**, **Compose**, **Mechanism** tiers. Configure changes existing fields/references; Compose changes structure/content; Mechanism proposes a package for staging. There is no Agent tier. Current dialogue/audio media tools use inconsistent tiers, documented by P1.4/P1.5, so a new tier requires a contract decision rather than a local enum addition. ([Authoring §5](03-authoring-contracts.md#5-tools-owner-studiocore-edit-registry-populated-by-plugins), [P1.4 decisions](packets/P1.4-dialogue-quest-logic-inventory.md#decisions-where-05-was-silent), [P1.5 decision 10](packets/P1.5-ui-audio.md#decisions-where-05-was-silent))
+The catalog has **Configure**, **Compose**, **Mechanism** tiers. Configure changes existing fields/references; Compose changes structure/content; Mechanism proposes a package for staging. There is no Agent tier. Dialogue/audio media tools use Compose after P1.7b; service availability comes from the registered gateway after R2-G. ([Authoring §5](03-authoring-contracts.md#5-tools-owner-studiocore-edit-registry-populated-by-plugins), [P1.4 decisions](packets/P1.4-dialogue-quest-logic-inventory.md#decisions-where-05-was-silent), [P1.5 decision 10](packets/P1.5-ui-audio.md#decisions-where-05-was-silent))
 
 Studio discovers metadata, builds ToolEntry records and exports `Library/GameCoreStudio/tool-catalog.json`. Context lists applicable entries and generates arguments/fields; the same tools drive manual and agent changes. Implement `IStudioTool` for a custom engine tool or use reflected `[AuthorOperation]` methods; `ILiveOpTranslator` is the separate runtime-translation seam. `set` supports `{field,value}` or `{fields}` and validates dynamic values with FieldValueChecker. Query/direct tools use `ToolRegistry.Invoke`; mutation goes through ChangeSetEngine. ([P1.6 §API and Decisions](packets/P1.6-studio-core-unity.md), [ContextPanelView.cs](../../Packages/com.gamecore.studio.ui/Editor/Context/ContextPanelView.cs))
 
 Validators must report code, message and, when useful, hint, target/op and structured data. `Conflict` includes expected/actual; `StaleTarget` means missing/unloaded. Keep optional JSON members absent, never null. Worker candidates may not claim Applied state, outcomes, applied timestamps or GameCore operation links. Catalog revision checking happens where request and candidate meet. ([Authoring §9](03-authoring-contracts.md#9-diagnostics), [P0.3 validator rules](packets/P0.3-studio-model.md), [P1.6 decisions](packets/P1.6-studio-core-unity.md#decisions))
 
-Registered Studio diagnostic codes are `StaleTarget`, `Conflict`, `UnknownTool`, `InvalidArgs`, `MissingPrerequisite`, `ScopeNotAllowed`, `ValidationFailed`, `Refused`, `CandidateInvalid`, `StaleContext`, `StageFailed`, `LedgerConflict`, `NotConfigured`, `OutcomeUnknown` and `Blocked`. Transport/companion codes keep their snake_case spellings; see the [creator troubleshooting table](08-creator-guide.md#troubleshooting). Gameplay validators use their package's stable GP/refusal codes. ([P0.3 API summary](packets/P0.3-studio-model.md#api-summary-namespace-gamecorestudiomodel-assembly-gamecorestudiomodel-editor-only), [ETOS §2](04-etos-integration.md#2-unity--companion-protocol-through-etos), [P1.3 interaction refusals](packets/P1.3-player-npc-interaction.md#interaction-comgamecoregameplayinteraction))
+Core baseline diagnostic codes are `StaleTarget`, `Conflict`, `UnknownTool`, `InvalidArgs`, `MissingPrerequisite`, `ScopeNotAllowed`, `ValidationFailed`, `Refused`, `CandidateInvalid`, `StaleContext`, `StageFailed`, `LedgerConflict`, `NotConfigured`, `OutcomeUnknown`, `Blocked`, `MediaTypeForbidden`, `MediaPathForbidden`, `MediaImporterInvalid` and `ArtifactSourceForbidden`. Transport/companion codes keep their snake_case spellings; see the [creator troubleshooting table](08-creator-guide.md#troubleshooting). Gameplay validators use their package's stable GP/refusal codes. ([P0.3 API summary](packets/P0.3-studio-model.md#api-summary-namespace-gamecorestudiomodel-assembly-gamecorestudiomodel-editor-only), [ETOS §2](04-etos-integration.md#2-unity--companion-protocol-through-etos), [P1.3 interaction refusals](packets/P1.3-player-npc-interaction.md#interaction-comgamecoregameplayinteraction))
 
-Current integration traps: extra world references lack AuthorArg bindings; pure preview/simulate/explain tools are not marked ReadOnly; nested references are contributed by Views rather than core; testable fixture tools leak into the project catalog. A clean-project catalog assertion must account for these instead of claiming all discovered tools are shipping tools. ([P2.3 open items 3–6](packets/P2.3-studio-views.md#left-open-for-the-integrator-and-owners), [P1.6 §Left open](packets/P1.6-studio-core-unity.md#left-open))
+World reference arguments and pure-tool ReadOnly dispatch are fixed by P1.7b/R2-E. Nested references are core-owned; production discovery excludes fixture assemblies. Runtime commands belong to the Editor-only studio.gameplay adapter. ([R2-A](packets/R2-A-core-edit-recovery.md), [R2-E](packets/R2-E-views.md), [ADAPT-SPLIT](packets/ADAPT-SPLIT.md))
 
 ## Host verification
 
@@ -131,16 +131,61 @@ Use `python3 tools/make_unity_metas.py` when authoring missing metas, then inspe
 4. Follow `make-catalog.py` and `make-candidate.py`. The candidate carries change-set.json, a retained package archive, proposal and digests; regenerate candidates after any package file changes. The proposal names rules tests, catalog and smoke entry. ([Sample Regenerating](../../samples/mechanisms/pressure-plate/README.md#regenerating), [P2.4 API](packets/P2.4-staging-lane.md))
 5. Run the full lane in a scratch clone with the built companion binary. A steps subset cannot yield an admission pass. The clean candidate must pass all seven checks; the forbidden overlay fails scan before execution and the failing-test overlay fails EditMode. ([Stage steps and verdict](../../studio/stage/README.md), [P2.4 Verified](packets/P2.4-staging-lane.md#verified-host-myubuntu-unity-6000075f1-net-8-rust-1971))
 
-The following uses the binary path from the companion install and the CLI options from P2.4. It is for an operator running verification, not a command executed by this docs packet. ([P0.5 §5](packets/P0.5-companion.md#5-expectations-for-p01-install), [P2.4 CLI](packets/P2.4-staging-lane.md))
+The four sample regeneration/check commands exercised by P4.2b are below. Regeneration writes only the maintained sample in a dedicated developer clone; do not modify a received worker candidate to make acceptance pass. ([sample §Regenerating](../../samples/mechanisms/pressure-plate/README.md#regenerating), [P4.2b §Requests](packets/P4.2b-live-acceptance.md#requests-to-other-packets))
 
 ```sh
-studio/agent/target/release/gamecore-studio stage run plate-example \
-  --candidate samples/mechanisms/pressure-plate/candidate \
-  --source-project games/hollowmere --verdict-out /tmp/plate-verdict.json
+python3 samples/mechanisms/pressure-plate/make-catalog.py
+python3 samples/mechanisms/pressure-plate/make-catalog.py --check
+python3 samples/mechanisms/pressure-plate/make-candidate.py
+python3 samples/mechanisms/pressure-plate/make-candidate.py --check
 ```
 
-6. In the candidate panel, record the verdict and **Admit** while Play is stopped. The verdict covers change-set id, proposal/package digests and every file. Admission recompiles, checks and verifies the predicted live catalog set, or rolls back. Undo must use `StageAdmission.Undo`; History routes it there. ([P2.4 §Decisions](packets/P2.4-staging-lane.md#decisions), [P2.1 §Decisions](packets/P2.1-studio-ui.md#decisions))
-7. Inspect the [P2.4 evidence](../../artifacts/studio/evidence/P2.4/README.md): the plate pressed/released in Thornwick Village and undo restored the catalog hash. This proves stage/admit/game-smoke/undo, not full production checkpoint resumption. The six-minute stage budget was measured with warm caches; a game must register its own capture hook. Fixed sample ids apply once per project; `w-mech-01.sh --reset-journal` is scratch-only. ([P2.4 Verified and Open items](packets/P2.4-staging-lane.md))
+### Build and provision before staging
+
+The CLI requires a locally built binary. P4.2b's literal command first failed exit 127, then `cache_invalid`; both prerequisites are explicit here. The trusted cache must contain pinned NuGet packages, UPM metadata/archives and a resolved Unity 6000.0.75f1 Library from this same checkout. ([P4.2b §Requests to other packets](packets/P4.2b-live-acceptance.md#requests-to-other-packets), [cache.py](../../studio/stage/cache.py), [CLI](../../studio/agent/src/stage/cli.rs))
+
+```sh
+export PATH="$HOME/.dotnet:$HOME/.cargo/bin:$PATH"
+cargo build --release --manifest-path studio/agent/Cargo.toml
+export GAMECORE_STAGE_ROOT="$PWD/.evidence/stage-guide"
+stage_cache="$(studio/agent/target/release/gamecore-studio stage cache-path \
+  --repo "$PWD" --source-project "$PWD/games/hollowmere" --root "$GAMECORE_STAGE_ROOT")"
+bash studio/stage/provision-cache.sh "$stage_cache" \
+  --offline-from "$HOME/.nuget/packages" \
+  --unity-library "$PWD/games/hollowmere/Library" \
+  --upm-from "$HOME/.cache/Unity/upm"
+bash studio/stage/provision-cache.sh "$stage_cache" --verify
+studio/agent/target/release/gamecore-studio stage run plate-example \
+  --repo "$PWD" --root "$GAMECORE_STAGE_ROOT" \
+  --candidate "$PWD/samples/mechanisms/pressure-plate/candidate" \
+  --source-project "$PWD/games/hollowmere" --verdict-out /tmp/plate-verdict.json
+```
+
+This private-root CLI is diagnostic only. For service staging, provision the exact **owner/version** cache returned for the registered `(app, project)` namespace; use the derivation in [provision-p42d.sh](../../artifacts/studio/verification/TOOLS/provision-p42d.sh). Its source project and trusted package root must be the registration's exact checkout. Never reset cold-grace markers, widen budgets or mount the live project into the sandbox. ([P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission))
+
+### Authenticated Stage to Admit
+
+1. Register the paired project from its actual source checkout using [10](10-install-build-run.md). Submit the local candidate with `CompanionClient.StageAppCandidateAsync` through the authenticated app-origin route; worker candidates retained by the companion use `StageAsync`. The candidate panel's **Stage** follows these paths. Fixed sample IDs are project-scoped; do not reuse another project's request ID or delete a creator's journal.
+2. Retain the job ID; poll job state. Fetch `/v1/stage/{job}/verdict` and verify that exact signed record through `/verify`. Only a complete trusted pass enables **Admit**. An unsigned CLI verdict or **Record verdict** file is insufficient.
+3. Explicit creator **Admit** starts capture/stop/compile/restore/smoke. Use History for pending recovery and admission undo; no public `mechanism.admit` tool may substitute.
+4. Observe the actual live world, restoration, smoke and undo. As of P4.2d, the real sample rolls back with `catalog_mismatch` after a compile stall. The new lever exercise remains W-DOC-02 FAIL; reading the pressure-plate sample and correcting this guide do not establish a new lever or successful admission.
+
+([04 §6](04-etos-integration.md#6-staging-code-admission), [P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission), [W-DOC-02](../../artifacts/studio/verification/W-DOC-02/README.md))
+
+### GameBoot admission binding
+
+Keep the hook in the game's trusted Editor assembly. Hollowmere's `HollowmereStudioAdmission` rebinds on Editor/session startup and `GameBoot.SavesInstalled`; `GameBoot.AdmissionReady(service)` checks the current restored-capable world. The binding is:
+
+```csharp
+StudioAdmissionServices.BindAdmission(
+    runtime,
+    () => service,
+    () => boot != null && boot.AdmissionReady(service),
+    verdict => StudioAdmissionServices.RunSmokeTest(runtime, verdict,
+        (type, method, steps) => smoke.RunAdmittedSmokeEntry(verdict, type, method, steps)));
+```
+
+The tri-state smoke callback returns Pending/Succeeded/Failed and advances on game frames. Hollowmere allows up to 120 proposal steps with a 240-poll allowance; it checks a trusted registered entry and exact admitted assembly/package identity. It does not invoke arbitrary candidate-named callbacks. Persist progress or fail safely after recovery; mark Applied only after smoke succeeds. ([HollowmereStudioAdmission.cs](../../games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereStudioAdmission.cs), [P3.1 §3](packets/P3.1-hollowmere-complete.md#3-studio-admission-in-the-real-game-r2-g-request-4-as-superseded-by-r2-g2), [R2-B2](packets/R2-B-admission.md#r2-b2--asynchronous-admission-smoke-packetmd))
 
 ## Delivery checklist
 
