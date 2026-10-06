@@ -63,7 +63,7 @@ namespace GameCore.Studio.Edit.Tests
             var diagnostics = (System.Collections.Generic.IReadOnlyList<Diagnostic>)typeof(ChangeSetEngine)
                 .GetMethod("ValidateDialogueClosure", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
                 .Invoke(null, new object?[] { _bed.Runtime, change, null })!;
-            Assert.That(diagnostics, Has.Count.EqualTo(1));
+            Assert.That(diagnostics.Count, Is.EqualTo(1));
             Assert.That(diagnostics[0].Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
             Assert.That(diagnostics[0].Message, Does.Contain("dialogue closure validator is unavailable"));
         }
