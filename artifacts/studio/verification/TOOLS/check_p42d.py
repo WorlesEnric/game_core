@@ -14,7 +14,7 @@ for row in rows['rows']:
     for reference in row['evidence']:assert (v.OUT/reference).is_file(),(row['row'],reference)
 checked_hashes=0
 for sums in v.OUT.glob('*/*/SHA256SUMS'):
-    if 'p42d' not in str(sums).lower() and 'p4.2c' not in str(sums).lower():continue
+    if 'p42d' not in str(sums).lower() and 'p4.2d' not in str(sums).lower():continue
     for line in sums.read_text().splitlines():
         digest,name=line.split('  ',1);p=sums.parent/name
         assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==digest,str(p)
@@ -33,7 +33,7 @@ for root in [v.OUT,v.ROOT/'artifacts/studio/workflows/P4.2d']:
         if not p.is_file() or p.suffix not in ('.json','.jsonl','.xml','.trx','.log','.md','.txt','.csv','.diff'):continue
         if any(part in ('bin','obj','__pycache__') for part in p.parts):continue
         rel=str(p.relative_to(v.ROOT))
-        if rel not in changed and not ('p42d' in rel.lower() or 'p4.2c' in rel.lower()):continue
+        if rel not in changed and not ('p42d' in rel.lower() or 'p4.2d' in rel.lower()):continue
         assert p.name not in ('auth.json','providers.env','GameCoreStudio.json')
         assert not credential.search(p.read_text(errors='replace')),'credential-shaped bytes: '+rel
         texts+=1

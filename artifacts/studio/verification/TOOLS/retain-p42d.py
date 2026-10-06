@@ -20,6 +20,13 @@ with sqlite3.connect('file:'+str(base/'state/ledger.db')+'?mode=ro',uri=True) as
 before=json.loads((STATE/'ledger-before.json').read_text());ids={x['id'] for x in before['charges']}
 new=[x for x in charges if x['id'] not in ids]
 paid={'charges':new,'companionLedgerUsd':sum(x['costUsd'] for x in new),'accountedUsd':sum(x['costUsd'] for x in new),'operationCounts':{op:sum(x['quantity'] for x in new if x['tariff']['unit']==unit) if op=='image' else sum(x['tariff']['unit']==unit for x in new) for op,unit in [('image','image'),('tts','bailian_character'),('describe','call')]},'voiceAccounting':'voice_sessions has no USD column; no provider invoice inferred'}
+tasks={}
+for receipt in v.OUT.glob('*/p42d-*/workflow/usage.json'):
+    for task in json.loads(receipt.read_text()): tasks[task['taskId']]=task
+paid['workerMicroUsd']=sum(t.get('budget',{}).get('task',{}).get('used',{}).get('micro_usd',0) for t in tasks.values())
+paid['accountedUsd']+=paid['workerMicroUsd']/1000000
+paid['workerTaskCount']=len(tasks)
+(STATE/'task-ledger.json').write_text(json.dumps(list(tasks.values()),indent=2)+'\n')
 (STATE/'paid-ledger.json').write_text(json.dumps(paid,indent=2)+'\n')
 (STATE/'ledger-final.json').write_text(json.dumps({'charges':charges,'costUsd':sum(x['costUsd'] for x in charges)},indent=2)+'\n')
 # Retain only sessions opened since the packet guard; timestamps in the ledger are UTC milliseconds.

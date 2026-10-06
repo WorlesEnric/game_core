@@ -44,7 +44,7 @@ namespace P42d.Live
             var add = ContextTools.For(runtime, npcRef).Single(t => t.Entry.Id == "npc.addAt");
             var well = UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None).Single(g => g.name == "Village Well");
             Vector3 p = well.transform.position + new Vector3(4, 0, 3);
-            var placed = panel.RunDirect(add, npcRef, new JObject { ["location"] = new JObject { ["x"] = p.x, ["y"] = p.y, ["z"] = p.z }, ["name"] = "Guide NPC" }, npc.name);
+            var placed = panel.RunDirect(add, npcRef, new JObject { ["location"] = new JArray(p.x, p.y, p.z), ["name"] = "Guide NPC" }, npc.name);
             receipt["placement"] = StudioJson.ToToken(placed.Entry);
             Assert.That(placed.State, Is.EqualTo(ChangeSetState.Applied), string.Join(";", placed.Diagnostics));
             Assert.That(UnityEngine.Object.FindObjectsByType<AuthoredEntity>(FindObjectsSortMode.None).Length, Is.EqualTo(baseline + 1));

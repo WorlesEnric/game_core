@@ -96,5 +96,13 @@
   ],
   "driverDisposition": "FAIL: move and destructive fixture playback occurs outside active capture; no transcript reaches the prompt. Self-test separately passed both real provider recognitions.",
   "lossHop": "fixture playback -> active Unity microphone capture (all delivered driver PCM is zero); initial provider setup also refused session.updated acknowledgement. No missing transcript was observed between companion and client.",
-  "driverSubmission": "no move or destructive worker request; destructive counts unchanged"
+  "driverSubmission": "no move or destructive worker request; destructive counts unchanged",
+  "driverTimelineUtc": {
+    "movePlaybackCompleted": "2026-10-06T11:30:10Z",
+    "firstCaptureSessionOpened": "2026-10-06T11:31:18.739230Z",
+    "firstCaptureStop": "2026-10-06T11:31:26.034677Z",
+    "destructivePlaybackCompleted": "2026-10-06T11:31:33Z",
+    "secondCaptureSessionOpened": "2026-10-06T11:32:41.682157Z",
+    "secondClosed": "2026-10-06T11:33:02.297246Z"
+  }
 }

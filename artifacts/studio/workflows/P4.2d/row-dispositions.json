@@ -45,5 +45,39 @@
       "W-VOICE-01/p42d-voice2-*/workflow/voice/spoken-prompts.json"
     ],
     "command": "studio/tools/verify-all.sh p42d hello\nstudio/tools/verify-all.sh p42d voice2"
+  },
+  "W-AI-03": {
+    "status": "PASS",
+    "note": "The newly received live candidate applies unchanged. R5-C\u2019s actual Hollowmere Play observer confirms the added line is absent unlit and displayed when shrine_lit=1; the driver records pass.",
+    "patterns": [
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/play-effect.json",
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/candidate.json",
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/apply-report.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d narrative"
+  },
+  "W-AI-05": {
+    "status": "PASS",
+    "note": "The live two-operation candidate applies against the real indexed OilFlask identity. The simulator no longer refuses GP-QST-004, and the actual Play observer confirms stage 1 after one flask and stage 2 after two; the driver records pass.",
+    "patterns": [
+      "W-AI-03/p42d-narrative-*/workflow/quest/play-effect.json",
+      "W-AI-03/p42d-narrative-*/workflow/quest/candidate.json",
+      "W-AI-03/p42d-narrative-*/workflow/quest/apply-report.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d narrative"
+  },
+  "W-AI-06": {
+    "status": "FAIL",
+    "note": "All three live entries survive close/reopen with matching saved hashes; undo/redo/final undo succeeds. The separate retained two-operation Odd witness also passes in a different Editor with Play/Edit domain reload (1/1 XML), closing R5-A\u2019s final-postimage conflict. Full byte consistency still fails: backToBefore=false, with only contentStamp differences in Odd and DrownedBell among the four compared assets. Driver exit 0 is not treated as a full-row pass.",
+    "patterns": [
+      "W-AI-06/p42d-reopen-*/workflow/reopen/after-reopen.json",
+      "W-AI-06/p42d-reopen-*/workflow/reopen/final.json",
+      "W-AI-06/p42d-history-reopen-*/results.xml",
+      "W-AI-06/p42d-reopen-*/workflow/odd-line/undo-result.json"
+    ],
+    "command": "studio/tools/verify-all.sh p42d reopen\nstudio/tools/verify-all.sh p42d history-prepare\nstudio/tools/verify-all.sh p42d history-reopen",
+    "tests": [
+      "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload"
+    ]
   }
 }
