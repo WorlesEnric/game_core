@@ -19,6 +19,19 @@ using UnityEditor.Compilation;
 
 namespace GameCore.Studio.Edit
 {
+    internal static class UnityAdmissionServices
+    {
+        internal static void EnsureStageService(StudioRuntime runtime)
+        {
+            if (StageAdmission.Of(runtime).Options.StageService != null) return;
+            // ETOS is optional and depends on Core. Resolve the session entry point without
+            // reversing that dependency or relying on InitializeOnLoad/update ordering.
+            Type? session = Type.GetType("GameCore.Studio.Etos.EtosStudioSession, GameCore.Studio.Etos");
+            session?.GetMethod("EnsureStarted", BindingFlags.Public | BindingFlags.Static,
+                null, new[] { typeof(StudioRuntime) }, null)?.Invoke(null, new object[] { runtime });
+        }
+    }
+
     /// <summary>
     /// Recompiles the open project after an admission wrote or removed a package: the Package Manager re-resolves first
     /// (so versionDefines and the assembly set follow the new package list), then the scripts compile. Compile errors are
