@@ -1,0 +1,21 @@
+{
+  "rawMaximum": 2,
+  "unclassifiedPid": 2797836,
+  "samples": [
+    {
+      "utcEpoch": 1791299248.909242,
+      "editorPids": [
+        2783484,
+        2797836
+      ]
+    },
+    {
+      "utcEpoch": 1791299253.9304943,
+      "editorPids": [
+        2783484,
+        2797836
+      ]
+    }
+  ],
+  "reason": "The monitor retained PIDs but not ancestry/arguments. PID 2797836 exited before investigation. Text2 logs show AssetImportWorker launches in this period, but they do not bind that PID to a worker. Cannot retrospectively prove whether it was an import child or a second Editor. Own wrapper launches were serialized; no claim of observed maximum one is made."
+}

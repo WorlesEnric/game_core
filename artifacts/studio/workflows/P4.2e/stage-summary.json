@@ -1,0 +1,191 @@
+[
+  {
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42e-stage-submit-20261006T144109.661452Z",
+    "jobId": "stg_1a111aa260b24c9b227111d",
+    "pass": true,
+    "durationMs": 157145,
+    "coldCache": true,
+    "catalogDelta": {
+      "mechanisms": [
+        {
+          "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+          "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+          "package": "com.hollowmere.mechanism.pressureplate"
+        }
+      ],
+      "predicted": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+      "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18"
+    },
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "durationMs": 3
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "durationMs": 401
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "durationMs": 20311
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "durationMs": 96591
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "durationMs": 21228
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "durationMs": 0
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "durationMs": 0
+      }
+    ],
+    "xml": {
+      "editmode.xml": {
+        "result": "Passed",
+        "passed": "36",
+        "failed": "0",
+        "skipped": "0"
+      },
+      "playmode.xml": {
+        "result": "Passed",
+        "passed": "2",
+        "failed": "0",
+        "skipped": "0"
+      }
+    },
+    "forbiddenHits": 0
+  },
+  {
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42e-stage-submit-20261006T145038.813597Z",
+    "jobId": "stg_1a111b2b46c027722b4005a",
+    "pass": true,
+    "durationMs": 75479,
+    "coldCache": false,
+    "catalogDelta": {
+      "mechanisms": [
+        {
+          "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+          "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+          "package": "com.hollowmere.mechanism.pressureplate"
+        }
+      ],
+      "predicted": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+      "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18"
+    },
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "durationMs": 2
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "durationMs": 301
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "durationMs": 19241
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "durationMs": 16255
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "durationMs": 20127
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "durationMs": 0
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "durationMs": 0
+      }
+    ],
+    "xml": {
+      "editmode.xml": {
+        "result": "Passed",
+        "passed": "36",
+        "failed": "0",
+        "skipped": "0"
+      },
+      "playmode.xml": {
+        "result": "Passed",
+        "passed": "2",
+        "failed": "0",
+        "skipped": "0"
+      }
+    },
+    "forbiddenHits": 0
+  },
+  {
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z",
+    "jobId": "stg_1a111ba2ed4e95932cba397",
+    "pass": false,
+    "durationMs": 21510,
+    "coldCache": false,
+    "catalogDelta": {
+      "mechanisms": []
+    },
+    "steps": [
+      {
+        "id": "scan",
+        "status": "fail",
+        "durationMs": 14
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "durationMs": 403
+      },
+      {
+        "id": "dotnet",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "id": "unity-editmode",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "id": "determinism",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "durationMs": 0
+      }
+    ],
+    "xml": {},
+    "forbiddenHits": 14
+  }
+]

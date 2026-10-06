@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take (test_p42e_voice.VoicePlayback.test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/tests/test_p42e_voice.py", line 28, in test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 9 != 0 :
+
+----------------------------------------------------------------------
+Ran 1 test in 10.033s
+
+FAILED (failures=1)

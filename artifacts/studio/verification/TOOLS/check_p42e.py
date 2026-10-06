@@ -55,5 +55,5 @@ for name in allowed_files:
         original=subprocess.check_output(['git','show','origin/main:'+name],cwd=v.ROOT,text=True)
         assert (v.ROOT/name).read_text().startswith(original), name+': edit only appended packet section'
 assert not (v.ROOT/'.evidence/live/games/hollowmere/Packages/com.hollowmere.mechanism.pressureplate').exists()
-assert json.loads((v.ROOT/'artifacts/studio/workflows/P4.2e/editor-monitor.json').read_text())['maximum']<=1
+assert json.loads((v.ROOT/'artifacts/studio/workflows/P4.2e/editor-monitor.json').read_text())['maximum']<=1, 'Host exclusivity unproven: raw maximum 2; see editor-exclusivity-open.json'
 print('PASS: completion report scope, shared-note append-only sections, no installed sample, at most one Editor')

@@ -1,29 +1,27 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **FAIL**. Installed app-origin stage passes all seven gates in 158.122 s (33 EditMode + 2 PlayMode XML passes). Authenticated fetch/verify enables Admit and the visible badge says verdict pass. Explicit Play Admit captures/stops and passes the real catalog checkpoint, but compilation stalls; the owned wrapper is stopped at 817 s. Recovery finishes rollback with catalog_mismatch because the signed delta has no world/predicted hashes. Package and pending record are absent afterward. No live restoration, tri-state smoke or successful admission undo is claimed. The semantic-negative fixture is refused with 14 lexical hits, no issued passing verdict and Admit disabled; Roslyn/Unity are skipped for that refusal.
+Verdict: **FAIL**. R6-A installed stages pass in 157.145 s cold and 75.479 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted catalog hashes. Both graphical Play Admit attempts terminate in production rollback with compile_timeout after Unity Package Manager stalls at Installing packages (76/76). The second attempt retains the same compile_timeout; package and pending record are removed by rollback. No live restore, tri-state smoke or successful admission undo is inferred from isolated stage smoke. Negative candidate: 14 lexical hits, no issued passing verdict, Admit disabled. A separate real Docker Roslyn scan refuses the exact negative-semantic sources with 21 findings across SG001–SG010.
 
-Report timestamp: 2026-10-06T12:40:21.183430+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.424602+00:00 UTC.
 
-Acceptance baseline: merged main `40fb91fa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-See artifacts/studio/verification/TOOLS/README-P4.2d.md: fresh identity, cache provision, stage-submit, watch-stage-p42c.py, stage-review, stage-recover.
+See TOOLS/README-P4.2e.md: stage-submit, watcher, receipt-stage, stage-review.
 ```
 
 ## Retained evidence
 
-- [W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/job.json](../W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/job.json)
-- [W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/editmode.xml](../W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/editmode.xml)
-- [W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/playmode.xml](../W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/playmode.xml)
-- [W-MECH-01/p42d-stage-review-negative-20261006T123317.023858Z/panel-verdict.json](../W-MECH-01/p42d-stage-review-negative-20261006T123317.023858Z/panel-verdict.json)
-- [W-MECH-01/p42d-stage-review-20261006T120733.384847Z/play-verification.json](../W-MECH-01/p42d-stage-review-20261006T120733.384847Z/play-verification.json)
-- [W-MECH-01/p42d-stage-recover-20261006T122131.388873Z/admission.json](../W-MECH-01/p42d-stage-recover-20261006T122131.388873Z/admission.json)
-- [W-MECH-01/p42d-stage-recover-20261006T122131.388873Z/outcome.json](../W-MECH-01/p42d-stage-recover-20261006T122131.388873Z/outcome.json)
-- [W-MECH-01/p42d-signed-verdict-20261006T123351.066322Z/verified.json](../W-MECH-01/p42d-signed-verdict-20261006T123351.066322Z/verified.json)
-- [W-MECH-01/p42d-signed-verdict-20261006T123351.066322Z/signed-record.json](../W-MECH-01/p42d-signed-verdict-20261006T123351.066322Z/signed-record.json)
-- [W-MECH-01/p42d-stage-review-negative-20261006T123317.023858Z/panel-verdict.json](../W-MECH-01/p42d-stage-review-negative-20261006T123317.023858Z/panel-verdict.json)
-- [W-MECH-01/p42d-stage-submit-negative-20261006T123038.941727Z/service/job.json](../W-MECH-01/p42d-stage-submit-negative-20261006T123038.941727Z/service/job.json)
+- [W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/service/job.json](../W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/service/job.json)
+- [W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/service/job.json](../W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/service/job.json)
+- [W-MECH-01/p42e-receipt-stage-20261006T145345.507609Z/result.json](../W-MECH-01/p42e-receipt-stage-20261006T145345.507609Z/result.json)
+- [W-MECH-01/p42e-stage-review-20261006T144510.582506Z/result.json](../W-MECH-01/p42e-stage-review-20261006T144510.582506Z/result.json)
+- [W-MECH-01/p42e-stage-review-20261006T145348.148583Z/result.json](../W-MECH-01/p42e-stage-review-20261006T145348.148583Z/result.json)
+- [W-MECH-01/p42e-stage-review-negative-20261006T150052.077560Z/outcome.json](../W-MECH-01/p42e-stage-review-negative-20261006T150052.077560Z/outcome.json)
+- [W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z/service/job.json](../W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z/service/job.json)
 
-Historical references: P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.
+Exact acceptance/component cases: `R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted`, `P42e.Live.StageUi.Review`. Component cases do not close any missing external workflow.
+
+Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.

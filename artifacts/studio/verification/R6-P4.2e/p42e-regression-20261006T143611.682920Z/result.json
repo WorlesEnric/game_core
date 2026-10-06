@@ -1,0 +1,43 @@
+{
+  "label": "p42e-regression",
+  "revision": "26c971a61ab0ca8534929da455fd3766ffeaa383",
+  "host": "worlesenric",
+  "started": "2026-10-06T14:36:11.686369+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2e/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z/logs --label p42e-regression --timeout 1800 --results ~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'Hollowmere.R6_A.AdmissionLifecycleTests|Hollowmere.R6_B|Hollowmere.P3_2.Headless.DriverDryTests'",
+  "cwd": "~/wkspace/gc-studio/p4.2e/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z",
+  "queuedAtRevision": "26c971a61ab0ca8534929da455fd3766ffeaa383",
+  "executionStarted": "2026-10-06T14:36:11.689984+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T14:38:43.748402+00:00",
+  "seconds": 152.0651977600064,
+  "suites": {
+    "results.xml": {
+      "total": 40,
+      "counts": {
+        "Passed": 39,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P3_2",
+        "Hollowmere.P3_2.Headless",
+        "Hollowmere.P3_2.Headless.DriverDryTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P3_2.Headless.DriverDryTests.R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest",
+          "result": "Failed",
+          "detail": "Expected: <System.InvalidOperationException> and property Message containing \"requires graphical Play\"\n  But was:  no exception thrown\n \n                   at Hollowmere.P3_2.Headless.DriverDryTests.Refuses (System.Collections.IEnumerator probe, System.String detail) [0x0000c] in ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:172\nat Hollowmere.P3_2.Headless.DriverDryTests+<R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest>d__8.MoveNext () [0x001b6] in ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:113\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json.",
+  "productRevision": "d140f7487092a40cbead927c5546127e0cb6fe14",
+  "installedRelease": "0.1.0-cac2f82c59be070b"
+}

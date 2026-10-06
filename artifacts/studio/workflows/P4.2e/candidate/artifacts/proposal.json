@@ -1,0 +1,43 @@
+{
+  "adds": {
+    "definitions": [
+      "pressureplate.definition"
+    ],
+    "events": [
+      "PlatePressed",
+      "PlateReleased",
+      "PlateWeightChanged"
+    ],
+    "routes": [
+      "plate.press"
+    ],
+    "slots": [
+      "plate.pressed",
+      "plate.weight"
+    ],
+    "tools": [
+      "mechanism.pressurePlate.add"
+    ]
+  },
+  "catalog": {
+    "type": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog"
+  },
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "rules": {
+    "assembly": "Hollowmere.Mechanism.PressurePlate.Rules",
+    "directory": "Rules",
+    "tests": "Tests/Rules"
+  },
+  "schema": "gamecore.studio.proposal/1",
+  "smokeTest": {
+    "method": "Begin",
+    "steps": 120,
+    "type": "Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke"
+  },
+  "tests": {
+    "command": "dotnet test Rules.Tests",
+    "failed": 0,
+    "passed": 15
+  },
+  "version": "0.1.0"
+}

@@ -1,0 +1,229 @@
+{
+  "productRevision": "d140f748",
+  "installedRelease": "0.1.0-cac2f82c59be070b",
+  "matrixCounts": {
+    "PASS": 33,
+    "BLOCKED": 30,
+    "FAIL": 5
+  },
+  "rerunRows": {
+    "W-MECH-01": {
+      "status": "FAIL",
+      "note": "R6-A installed stages pass in 157.145 s cold and 75.479 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted catalog hashes. Both graphical Play Admit attempts terminate in production rollback with compile_timeout after Unity Package Manager stalls at Installing packages (76/76). The second attempt retains the same compile_timeout; package and pending record are removed by rollback. No live restore, tri-state smoke or successful admission undo is inferred from isolated stage smoke. Negative candidate: 14 lexical hits, no issued passing verdict, Admit disabled. A separate real Docker Roslyn scan refuses the exact negative-semantic sources with 21 findings across SG001\u2013SG010.",
+      "patterns": [
+        "W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/service/job.json",
+        "W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/service/job.json",
+        "W-MECH-01/p42e-receipt-stage-*/result.json",
+        "W-MECH-01/p42e-stage-review-20261006T144510.582506Z/result.json",
+        "W-MECH-01/p42e-stage-review-20261006T145348.148583Z/result.json",
+        "W-MECH-01/p42e-stage-review-negative-*/outcome.json",
+        "W-MECH-01/p42e-stage-submit-negative-*/service/job.json"
+      ],
+      "command": "See TOOLS/README-P4.2e.md: stage-submit, watcher, receipt-stage, stage-review.",
+      "tests": [
+        "R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted",
+        "P42e.Live.StageUi.Review"
+      ]
+    },
+    "W-ETOS-07": {
+      "status": "BLOCKED",
+      "note": "P4.2e authenticated hello and one describe call pass with the owner-declared operator estimate USD 0.01/call. One new image is generated and downloaded with digest verification at USD 0.20; describe consumes that owned artifact and records its binding charge. Current client tests cover tamper refusal, but this run does not perform the full live generated-texture import/tamper workflow; prior image-import evidence remains revision-specific.",
+      "patterns": [
+        "W-ETOS-07/p42e-describe-*/result.json",
+        "W-ETOS-07/p42e-describe-*/describe.json",
+        "INSTALL-P4.2e/p42e-receipt-hello-*/result.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py receipt-hello; python3 artifacts/studio/verification/TOOLS/live-p42e.py describe",
+      "tests": [
+        "R2_38_P42e_OnePricedImageThenOneDescribe"
+      ]
+    },
+    "W-AI-07": {
+      "status": "PASS",
+      "note": "Installed R6-main companion refuses 3D with not_configured before a zero budget; no generation. The authenticated P4.2e receipt passes in TRX. FBX-only mesh import and predictions provider credentials remain an explicit owner decision.",
+      "patterns": [
+        "INSTALL-P4.2e/p42e-receipt-hello-*/result.json",
+        "INSTALL-P4.2e/p42e-receipt-hello-*/3d-refusal.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py receipt-hello",
+      "tests": [
+        "R2_38_P42e_HelloOwnerDescribeAnd3dRefusal"
+      ]
+    },
+    "W-AI-02": {
+      "status": "FAIL",
+      "note": "R6-B rejects the unchanged retained unreachable-entry witness before writes (GP-DLG-005, nodes 0\u20137). The fresh installed-worker ferryman candidate instead preserves reachability and applies two operations, creating the 21st entity, but actual Play fails: applied NPC needs patrol and dialogue. After Play reload the candidate UI is Invalid, so the unchanged driver skips undo and records a 21-entity final roster. A separate fresh-Editor normal History.Undo passes (1/1 XML), restores 21\u219220 and journals Undone; no candidate bytes were repaired.",
+      "patterns": [
+        "W-AI-02/p42e-text2-*/result.json",
+        "W-AI-02/p42e-text2-*/workflow/ferryman2/play-effect.json",
+        "W-AI-02/p42e-text2-*/workflow/ferryman2/candidate.json",
+        "R6-P4.2e/p42e-regression-20261006T143939.136591Z/result.json",
+        "W-AI-02/p42e-cleanup-npc-*/result.json",
+        "W-AI-02/p42e-cleanup-npc-*/normal-undo.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py text2",
+      "tests": [
+        "R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite",
+        "WorkflowPlayChecks.Effect(\"W-AI-02\", \"ferryman2\")",
+        "R2_38_P42e_NormalJournalUndoAfterNpcPlayReload"
+      ]
+    },
+    "W-AI-06": {
+      "status": "FAIL",
+      "note": "Fresh R6-B narrative session saves three Applied entries; a separate Editor reopens with all saved hashes equal, and all undo/redo/final undo calls succeed. Exact final byte consistency fails: backToBefore=false, and the driver now exits 1. Odd and DrownedBell differ only in contentStamp; HUD and Lantern are byte-identical. No bake or stamp fields are normalized. Before/after bytes and diffs are retained.",
+      "patterns": [
+        "W-AI-03/p42e-narrative-*/workflow/narrative/saved.json",
+        "W-AI-06/p42e-reopen-*/result.json",
+        "W-AI-06/p42e-reopen-*/workflow/reopen/final.json",
+        "../workflows/P4.2e/reopen-diff-analysis.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
+      "tests": [
+        "R6_Request5_RetainedReopenMismatchFailsExactByteContract",
+        "R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse"
+      ]
+    },
+    "W-AI-03": {
+      "status": "PASS",
+      "note": "The fresh installed-worker candidate applies unchanged; actual Hollowmere Play hides its added line while shrine_lit is false and displays it when lit. The corrected driver records pass.",
+      "patterns": [
+        "W-AI-03/p42e-narrative-*/result.json",
+        "W-AI-03/p42e-narrative-*/workflow/odd-line/candidate.json",
+        "W-AI-06/p42e-reopen-*/workflow/reopen/after-reopen.json",
+        "W-AI-03/p42e-narrative-*/workflow/odd-line/play-effect.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen"
+    },
+    "W-AI-04": {
+      "status": "PASS",
+      "note": "The fresh installed-worker HUD candidate applies and saves; a separate Editor reopens with matching saved hashes, and normal undo/redo/final undo succeeds. HUD bytes return exactly to baseline.",
+      "patterns": [
+        "W-AI-03/p42e-narrative-*/result.json",
+        "W-AI-03/p42e-narrative-*/workflow/hud/candidate.json",
+        "W-AI-06/p42e-reopen-*/workflow/reopen/after-reopen.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen"
+    },
+    "W-AI-05": {
+      "status": "PASS",
+      "note": "The fresh installed-worker candidate uses the indexed OilFlask identity. Actual Play holds quest stage 1 after one flask and advances to stage 2 after two; the driver records pass.",
+      "patterns": [
+        "W-AI-03/p42e-narrative-*/result.json",
+        "W-AI-03/p42e-narrative-*/workflow/quest/candidate.json",
+        "W-AI-06/p42e-reopen-*/workflow/reopen/after-reopen.json",
+        "W-AI-03/p42e-narrative-*/workflow/quest/play-effect.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen"
+    },
+    "W-HOST-01": {
+      "status": "BLOCKED",
+      "note": "P4.2e activates and checksum-verifies immutable main-built release 0.1.0-cac2f82c59be070b; the repeat installer is a no-op and authenticated hello reports the owner describe tariff. A full fresh node install remains unrun under the no-etosd-restart rule. Initial host inventory is idle, but the monitor later sees a brief second Unity PID during NPC asset import; its exited process cannot be classified retrospectively, so strict host exclusivity is not claimed.",
+      "patterns": [
+        "INSTALL-P4.2e/p42e-receipt-hello-*/result.json",
+        "../workflows/P4.2e/install.log",
+        "../workflows/P4.2e/installed-runtime.json",
+        "../workflows/P4.2e/editor-exclusivity-open.json"
+      ],
+      "command": "See TOOLS/README-P4.2e.md for immutable installation and receipt-hello."
+    },
+    "W-VOICE-01": {
+      "status": "BLOCKED",
+      "note": "The unchanged R6-B driver now passes both readiness-gated real takes: move and destructive final transcripts arrive after proper Stop/drain. Destructive tray/request/journal counts remain exactly 8/11/122, and the field holds the destructive text without Send. Both provider traces contain only revision 1 with final=true; no partial speech revision is observed. Full-row partial-revision visibility remains unqualified despite the passing driver.",
+      "patterns": [
+        "W-VOICE-01/p42e-voice2-*/result.json",
+        "W-VOICE-01/p42e-voice2-*/workflow/voice/move-transcript.json",
+        "W-VOICE-01/p42e-voice2-*/workflow/voice/destructive-transcript.json",
+        "W-VOICE-01/p42e-voice2-*/workflow/voice/destructive-check.json",
+        "../workflows/P4.2e/companion-voice.log"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py voice2",
+      "tests": [
+        "R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains",
+        "test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take"
+      ]
+    },
+    "W-E2E-01": {
+      "status": "BLOCKED",
+      "note": "P4.2e qualifies the requested R6 targets on main d140f748 with its matching immutable release. Signed world/predicted stage verdicts, priced describe, candidate-time entry refusal, narrative Play effects and voice final/no-submission pass their named checks. Graphical admission still times out, the fresh ferryman fails its NPC Play prerequisites, exact reopen bytes differ, and voice partial revisions are absent. Host exclusivity has one unclassified transient Unity PID. Untouched rows retain their original revision-specific evidence; no all-row acceptance is claimed.",
+      "patterns": [
+        "../workflows/P4.2e/outcomes.json",
+        "../workflows/P4.2e/paid-ledger.json",
+        "../workflows/P4.2e/editor-exclusivity-open.json"
+      ],
+      "command": "See TOOLS/README-P4.2e.md; report_p42e.py and check_p42e.py regenerate and audit the report."
+    }
+  },
+  "ledger": {
+    "charges": [
+      {
+        "id": "describe_1a111a8bc26dbc8a4332a1e",
+        "tariff": {
+          "kind": "operator",
+          "model": "echo/gpt-5.6-sol",
+          "note": "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models",
+          "perUnitUsd": 0.01,
+          "provider": "echo-describe",
+          "unit": "call",
+          "url": ""
+        },
+        "quantity": 1.0,
+        "costUsd": 0.01
+      },
+      {
+        "id": "gc-67d43c610f7793d396a9bfd831ea08a0b9f84ff1",
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "quantity": 32.0,
+        "costUsd": 0.0003669824
+      },
+      {
+        "id": "gc-c4ae9992437b7eb5788bf6f45bc4205ac15e3f44",
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        },
+        "quantity": 1.0,
+        "costUsd": 0.2
+      },
+      {
+        "id": "gc-f9a9f57e8a258a9793fc8533cfcafe2d9b0e7ee3",
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        },
+        "quantity": 36.0,
+        "costUsd": 0.0004128552
+      }
+    ],
+    "companionLedgerUsd": 0.21077983760000002,
+    "accountedUsd": 0.21077983760000002,
+    "operationCounts": {
+      "image": 1.0,
+      "tts": 2,
+      "describe": 1,
+      "3dPaid": 0,
+      "3dRefusals": 1
+    },
+    "voiceAccounting": "voice_sessions has no USD column; no provider invoice inferred",
+    "workerMicroUsd": 0,
+    "workerTaskCount": 8,
+    "voiceSessionCount": 2
+  }
+}

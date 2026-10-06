@@ -1,0 +1,57 @@
+--- ~/.local/share/etos-studio/ops.toml
++++ ~/.local/share/etos-studio/ops.toml
+@@ -38,17 +38,6 @@
+
+ # Image description: a vision chat model of models.toml.
+ [[providers]]
+-name = "echo-describe"
+-family = "describe"
+-kind = "chat"
+-model = "echo/gpt-5.6-sol"
+-# Source: https://developers.openai.com/api/docs/models/gpt-5.6-sol
+-[providers.cost]
+-per_1m_input_tokens = 4.0
+-per_1m_output_tokens = 20.0
+-
+-# Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
+-[[providers]]
+ name = "bailian-tts"
+ family = "tts"
+ kind = "bailian-tts"
+@@ -77,3 +66,18 @@
+ # credential = "env:REPLICATE_API_TOKEN"
+ # model = "<owner>/<model>"
+ # input = { prompt = "{{prompt}}", image = "{{reference}}" }
++
++[[providers]]
++name = "echo-describe"
++family = "describe"
++kind = "chat"
++model = "echo/gpt-5.6-sol"
++# Owner-declared total estimate on 2026-10-06. This is an operator estimate,
++# not a verified Echo reseller tariff or provider invoice.
++# @studio source = "operator"
++# @studio note = "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models"
++# @studio unit = "call"
++[providers.cost]
++per_unit = 0.01
++
++# Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
+
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -31,3 +31,12 @@
+ provider = "bailian-tts"
+ model = "qwen3-tts-flash"
+ per_unit = 1.14682e-05
++
++[[ops_prices]]
++source = "operator"
++note = "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models"
++unit = "call"
++op = "describe"
++provider = "echo-describe"
++model = "echo/gpt-5.6-sol"
++per_unit = 0.01
+
+Price templates applied. R4 companion reloads tariffs on next call; older binaries require integrator restart. No services restarted.

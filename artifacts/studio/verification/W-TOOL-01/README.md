@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Saltmarsh exports only installed production tools; fixture, Hollowmere and internal admission tools are absent. Catalog and installed-package manifest retained.
 
-Report timestamp: 2026-10-06T12:40:21.159358+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.376872+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

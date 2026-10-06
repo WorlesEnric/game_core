@@ -1,0 +1,17 @@
+  Determining projects to restore...
+  Restored ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Contracts/GameCore.Contracts.csproj (in 256 ms).
+  Restored ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Studio.Model/GameCore.Studio.Model.csproj (in 2.59 sec).
+  Restored ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Studio.Etos.Client/GameCore.Studio.Etos.Client.csproj (in 2.59 sec).
+  Restored ~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/P42eReceipt/P42eReceipt.csproj (in 2.89 sec).
+  GameCore.Contracts -> ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Contracts/bin/Debug/netstandard2.1/GameCore.Contracts.dll
+  GameCore.Studio.Model -> ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Studio.Model/bin/Debug/netstandard2.1/GameCore.Studio.Model.dll
+  GameCore.Studio.Etos.Client -> ~/wkspace/gc-studio/p4.2e/dotnet/src/GameCore.Studio.Etos.Client/bin/Debug/netstandard2.1/GameCore.Studio.Etos.Client.dll
+~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs(42,38): error CS1061: 'CompanionClient' does not contain a definition for 'FetchArtifactAsync' and no accessible extension method 'FetchArtifactAsync' accepting a first argument of type 'CompanionClient' could be found (are you missing a using directive or an assembly reference?) [~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/P42eReceipt/P42eReceipt.csproj]
+
+Build FAILED.
+
+~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs(42,38): error CS1061: 'CompanionClient' does not contain a definition for 'FetchArtifactAsync' and no accessible extension method 'FetchArtifactAsync' accepting a first argument of type 'CompanionClient' could be found (are you missing a using directive or an assembly reference?) [~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/TOOLS/P42eReceipt/P42eReceipt.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:13.46

@@ -1,0 +1,121 @@
+diff --git a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+index f009ec1e..20522bbe 100644
+--- a/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
++++ b/games/hollowmere/Assets/Hollowmere/Dialogue/Graphs/Odd.asset
+@@ -13,7 +13,7 @@ MonoBehaviour:
+   m_Name: Odd
+   m_EditorClassIdentifier:
+   authoringId: aa779457-076d-496c-84b5-72019a826681
+-  contentStamp: d20c8b03888a8e598deeef72d32fcc461188f81744f7a3b3f165227309292335
++  contentStamp: 0119563226cf8b71d07ed4ce76f7741bd4518b4d8324d55c1eeb505302f22a49
+   speaker: Odd
+   speakerEntityId: a8255407-3f1c-4aa5-b7e7-e6141e6d5534
+   npcGraphRef: dialogue.odd
+diff --git a/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset b/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
+index 56a72658..84364b9b 100644
+--- a/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
++++ b/games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset
+@@ -14,7 +14,7 @@ MonoBehaviour:
+   m_EditorClassIdentifier:
+   formatId: gamecore.gameplay-content/1
+   worldId: a2e71200-b7bb-4d4a-8aec-26370b7da0f3
+-  contentHash: 8fa8e836c0c48ada99bac95bc158709163e1667c2637df1ac830d18aeaec6d4a
++  contentHash: 33f9a0738551879d8c9abc07d126eca8e86bce3a88ab9331a05c79ec2f75c7ff
+   entries:
+   - kind: logic.actionSet
+     authoringId: 01c49243-c734-4250-8b0f-c01eeac4b827
+@@ -434,7 +434,7 @@ MonoBehaviour:
+     authoringId: aa779457-076d-496c-84b5-72019a826681
+     name: Odd
+     key: 943731399
+-    contentStamp: d20c8b03888a8e598deeef72d32fcc461188f81744f7a3b3f165227309292335
++    contentStamp: 0119563226cf8b71d07ed4ce76f7741bd4518b4d8324d55c1eeb505302f22a49
+     asset: {fileID: 11400000, guid: b2bacaee2c3034819a57dae4f343b3ee, type: 2}
+   - kind: narrative.fact
+     authoringId: b381de76-7931-4dc9-828c-eaa7b242f852
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json b/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
+index 29ec903c..211291e3 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
++++ b/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
+@@ -762,6 +762,20 @@
+       "overrides": [
+       ]
+     },
++    {
++      "id": "fbaad797-cb4b-403d-814e-e378047a876b",
++      "name": "Odd the Ferryman",
++      "target": "029a31237639f9353e2e5be7b349f03b",
++      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
++      "definition": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
++      "pose": "4000,83,1100@0",
++      "variant": 0,
++      "scaleMilli": 1000,
++      "visible": true,
++      "alive": true,
++      "overrides": [
++      ]
++    },
+     {
+       "id": "5a17c7fd-d5ee-4f4d-8393-ef97267b8136",
+       "name": "Belfry Lantern",
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset b/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
+index b5c031d9..a109ec88 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
++++ b/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
+@@ -20,7 +20,7 @@ MonoBehaviour:
+   preloadNeighbours: 0
+   catalogFingerprint: d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18
+   catalogTypeName: Hollowmere.Generated.HollowmereCatalog
+-  bakeReportHash: b27a50b97cc1517350bec8e523208cd71af3ceb23796ee3087fcdb85e0cab154
++  bakeReportHash: 287fe858d506acc97ba933a83ec00dcda4e999cee99fb7f0bc29522cb1e8947b
+   regions:
+   - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+     name: Thornwick Village
+@@ -529,6 +529,19 @@ MonoBehaviour:
+     visible: 1
+     alive: 1
+     overrides: []
++  - authoringId: fbaad797-cb4b-403d-814e-e378047a876b
++    name: Odd the Ferryman
++    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
++    definitionId: b30c7c02-4a11-4a92-9bf9-b15f89b7acaf
++    x: 4000
++    y: 83
++    z: 1100
++    yaw: 0
++    variant: 0
++    scaleMilli: 1000
++    visible: 1
++    alive: 1
++    overrides: []
+   - authoringId: 5a17c7fd-d5ee-4f4d-8393-ef97267b8136
+     name: Belfry Lantern
+     regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1

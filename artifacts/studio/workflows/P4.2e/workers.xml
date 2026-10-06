@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="5" time="0.148" timestamp="2026-10-06T22:43:41.552023+08:00" hostname="worlesenric"><testcase classname="studio.etos.agent.workers.tests.test_r5_b" name="test_request8_retained_candidate_refuses_inspector_label" time="0.002" /><testcase classname="studio.etos.agent.workers.tests.test_r5_b" name="test_request8_installed_prompts_embed_common_contract" time="0.000" /><testcase classname="studio.etos.agent.workers.tests.test_r5_b" name="test_describe_tariff_placeholder_refuses_before_apply" time="0.004"><failure message="Failed: DID NOT RAISE ValueError">def test_describe_tariff_placeholder_refuses_before_apply():
+        spec = importlib.util.spec_from_file_location("install_state", ROOT / "studio/etos/install-state.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        text = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+&gt;       with pytest.raises(ValueError, match="tariff_placeholder"):
+E       Failed: DID NOT RAISE ValueError
+
+studio/etos/agent/workers/tests/test_r5_b.py:35: Failed</failure></testcase><testcase classname="studio.etos.agent.workers.tests.test_r6_b" name="test_R6_Request6_worker_retains_original_and_requires_relink_or_clarification" time="0.004" /><testcase classname="studio.etos.agent.workers.tests.test_r6_b" name="test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff" time="0.003"><failure message="Failed: DID NOT RAISE ValueError">def test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff():
+        models = tomllib.loads((ROOT / 'studio/etos/models.toml.tmpl').read_text())
+        model, = [m for m in models['models'] if 'describe' in m.get('aliases', [])]
+        text = (ROOT / 'studio/etos/ops.toml.tmpl').read_text()
+        provider, = [p for p in tomllib.loads(text)['providers'] if p['family'] == 'describe']
+        assert model['id'] == provider['model'] == 'echo/gpt-5.6-sol'
+        assert models['endpoints']['echo']['base_url'] == 'https://api.echo-coding.com/v1'
+        spec = importlib.util.spec_from_file_location('r6_install_state', ROOT / 'studio/etos/install-state.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+&gt;       with pytest.raises(ValueError, match='tariff_placeholder'):
+E       Failed: DID NOT RAISE ValueError
+
+studio/etos/agent/workers/tests/test_r6_b.py:33: Failed</failure></testcase></testsuite></testsuites>

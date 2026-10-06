@@ -1,0 +1,33 @@
+..F.F                                                                    [100%]
+=================================== FAILURES ===================================
+____________ test_describe_tariff_placeholder_refuses_before_apply _____________
+
+    def test_describe_tariff_placeholder_refuses_before_apply():
+        spec = importlib.util.spec_from_file_location("install_state", ROOT / "studio/etos/install-state.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        text = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+>       with pytest.raises(ValueError, match="tariff_placeholder"):
+E       Failed: DID NOT RAISE ValueError
+
+studio/etos/agent/workers/tests/test_r5_b.py:35: Failed
+_ test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff __
+
+    def test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff():
+        models = tomllib.loads((ROOT / 'studio/etos/models.toml.tmpl').read_text())
+        model, = [m for m in models['models'] if 'describe' in m.get('aliases', [])]
+        text = (ROOT / 'studio/etos/ops.toml.tmpl').read_text()
+        provider, = [p for p in tomllib.loads(text)['providers'] if p['family'] == 'describe']
+        assert model['id'] == provider['model'] == 'echo/gpt-5.6-sol'
+        assert models['endpoints']['echo']['base_url'] == 'https://api.echo-coding.com/v1'
+        spec = importlib.util.spec_from_file_location('r6_install_state', ROOT / 'studio/etos/install-state.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       with pytest.raises(ValueError, match='tariff_placeholder'):
+E       Failed: DID NOT RAISE ValueError
+
+studio/etos/agent/workers/tests/test_r6_b.py:33: Failed
+=========================== short test summary info ============================
+FAILED studio/etos/agent/workers/tests/test_r5_b.py::test_describe_tariff_placeholder_refuses_before_apply
+FAILED studio/etos/agent/workers/tests/test_r6_b.py::test_R6_Request7_describe_alias_is_echo_and_cannot_inherit_dashscope_tariff
+2 failed, 3 passed in 0.15s

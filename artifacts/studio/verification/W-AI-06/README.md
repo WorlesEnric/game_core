@@ -1,26 +1,24 @@
 # W-AI-06: Undo/redo the above, close and reopen the project, verify consistency
 
-Verdict: **FAIL**. All three live entries survive close/reopen with matching saved hashes; undo/redo/final undo succeeds. The separate retained two-operation Odd witness also passes in a different Editor with Play/Edit domain reload (1/1 XML), closing R5-A’s final-postimage conflict. Full byte consistency still fails: backToBefore=false, with only contentStamp differences in Odd and DrownedBell among the four compared assets. Driver exit 0 is not treated as a full-row pass.
+Verdict: **FAIL**. Fresh R6-B narrative session saves three Applied entries; a separate Editor reopens with all saved hashes equal, and all undo/redo/final undo calls succeed. Exact final byte consistency fails: backToBefore=false, and the driver now exits 1. Odd and DrownedBell differ only in contentStamp; HUD and Lantern are byte-identical. No bake or stamp fields are normalized. Before/after bytes and diffs are retained.
 
-Report timestamp: 2026-10-06T12:40:21.174475+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.406256+00:00 UTC.
 
-Acceptance baseline: merged main `40fb91fa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42d reopen
-studio/tools/verify-all.sh p42d history-prepare
-studio/tools/verify-all.sh p42d history-reopen
+python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen
 ```
 
 ## Retained evidence
 
-- [W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/after-reopen.json](../W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/after-reopen.json)
-- [W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/final.json](../W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/final.json)
-- [W-AI-06/p42d-history-reopen-20261006T115409.820866Z/results.xml](../W-AI-06/p42d-history-reopen-20261006T115409.820866Z/results.xml)
-- [W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/odd-line/undo-result.json](../W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/odd-line/undo-result.json)
+- [W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/narrative/saved.json](../W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/narrative/saved.json)
+- [W-AI-06/p42e-reopen-20261006T152055.608370Z/result.json](../W-AI-06/p42e-reopen-20261006T152055.608370Z/result.json)
+- [W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/final.json](../W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/final.json)
+- [../workflows/P4.2e/reopen-diff-analysis.json](../../workflows/P4.2e/reopen-diff-analysis.json)
 
-Exact acceptance/component cases: `Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload`. Component cases do not close any missing external workflow.
+Exact acceptance/component cases: `R6_Request5_RetainedReopenMismatchFailsExactByteContract`, `R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse`. Component cases do not close any missing external workflow.
 
-Historical references: P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.
+Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.

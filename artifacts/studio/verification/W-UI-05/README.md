@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3.
 
-Report timestamp: 2026-10-06T12:40:21.152854+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.365842+00:00 UTC.
 
 Acceptance baseline: merged main `40fb91fa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

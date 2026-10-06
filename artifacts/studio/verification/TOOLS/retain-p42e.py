@@ -23,7 +23,7 @@ paid={'charges':new,'companionLedgerUsd':sum(x['costUsd'] for x in new),'account
 tasks={}
 for receipt in v.OUT.glob('*/p42e-*/workflow/usage.json'):
     for task in json.loads(receipt.read_text()): tasks[task['taskId']]=task
-paid['workerMicroUsd']=sum(t.get('budget',{}).get('task',{}).get('used',{}).get('micro_usd',0) for t in tasks.values())
+paid['workerMicroUsd']=sum(t['budget']['task']['used']['micro_usd'] for t in tasks.values())
 paid['accountedUsd']+=paid['workerMicroUsd']/1000000
 paid['workerTaskCount']=len(tasks)
 (STATE/'task-ledger.json').write_text(json.dumps(list(tasks.values()),indent=2)+'\n')

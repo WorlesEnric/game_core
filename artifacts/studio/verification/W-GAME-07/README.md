@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence.
 
-Report timestamp: 2026-10-06T12:40:21.187448+00:00 UTC.
+Report timestamp: 2026-10-06T15:29:44.432355+00:00 UTC.
 
 Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

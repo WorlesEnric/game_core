@@ -1,0 +1,45 @@
+test_r3_d14_templates_prices_and_apply_diff (test_install.Installer.test_r3_d14_templates_prices_and_apply_diff) ... ok
+test_r3_d15_copy_is_immutable_atomic_switch_and_rollback (test_install.Installer.test_r3_d15_copy_is_immutable_atomic_switch_and_rollback) ... ok
+test_r3_d24_register_preserves_config_and_matches_client_identity (test_install.Installer.test_r3_d24_register_preserves_config_and_matches_client_identity) ... ok
+test_r4_operator_declaration_and_provider_binding (test_install.Installer.test_r4_operator_declaration_and_provider_binding) ... ok
+test_r4_placeholder_refuses_before_any_write (test_install.Installer.test_r4_placeholder_refuses_before_any_write) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.617s
+
+OK
+healthy: 0.1.0-76a8506da7c0f87b; previous release retained: /tmp/tmp6j2t80mh/build-clone
+healthy: 0.1.0-e0713018d882e7d3; previous release retained: 0.1.0-76a8506da7c0f87b
+unchanged: release 0.1.0-e0713018d882e7d3 (checksums verified)
+healthy: 0.1.0-e0713018d882e7d3; previous release retained: 0.1.0-e0713018d882e7d3
+--- /tmp/tmpa1mxof7f/agents/gamecore-studio/state/config.toml
++++ /tmp/tmpa1mxof7f/agents/gamecore-studio/state/config.toml
+@@ -15,10 +15,10 @@
+ # Copy the required keys into the companion state directory's config.toml.
+ # This example does not itself alter the installed service configuration.
+ [stage]
+-confinement = "docker"
+-docker_image = "gamecore-stage:6000.0.75f1-v1"
+-# Degraded environments can explicitly choose confinement = "host".
+-# There is no automatic fallback. Admission UI must warn for host verdicts.
++"command" = "~/wkspace/gc-studio/p4.2e/studio/stage/stage.sh"
++"confinement" = "docker"
++"docker_image" = "gamecore-stage:6000.0.75f1-v1"
+
+ [stage.projects]
+-# "<stable SHA-256 project id>" = "/absolute/path/to/Unity/project"
++"91092b3124bfe8d6f179c007d2f208764ec58cf39a8f088e9523f99326f2fc46" = "/tmp/tmpa1mxof7f/project space"
++
+
+registered 91092b3124bfe8d6f179c007d2f208764ec58cf39a8f088e9523f99326f2fc46 -> /tmp/tmpa1mxof7f/project space
+registered 91092b3124bfe8d6f179c007d2f208764ec58cf39a8f088e9523f99326f2fc46 -> /tmp/tmpa1mxof7f/project space
+--- /tmp/tmpa1mxof7f/agents/gamecore-studio/state/config.toml
++++ /tmp/tmpa1mxof7f/agents/gamecore-studio/state/config.toml
+@@ -21,4 +21,5 @@
+
+ [stage.projects]
+ "91092b3124bfe8d6f179c007d2f208764ec58cf39a8f088e9523f99326f2fc46" = "/tmp/tmpa1mxof7f/project space"
++"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" = "/tmp/tmpa1mxof7f/second"
+
+
+registered bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -> /tmp/tmpa1mxof7f/second

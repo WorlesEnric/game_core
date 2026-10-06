@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="40" result="Failed(Child)" total="40" passed="39" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:40Z" duration="3.4420654">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="566" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:40Z" duration="3.442065" total="40" passed="39" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1571" name="Hollowmere.P2_4.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P2_4.EditMode.Tests.dll" runstate="Runnable" testcasecount="83" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.356869" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2688442" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1572" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="83" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.352828" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1573" name="R6_A" fullname="Hollowmere.R6_A" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.350491" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1472" name="AdmissionLifecycleTests" fullname="Hollowmere.R6_A.AdmissionLifecycleTests" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.348420" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1475" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.116637" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1473" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;world&quot;)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;world&quot;)" methodname="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="233836309" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.099678" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1474" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;predicted&quot;)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;predicted&quot;)" methodname="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="482472078" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.006944" asserts="0">
+                <properties />
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1478" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.227139" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1476" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(False)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(False)" methodname="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="445326481" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.157004" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1477" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(True)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(True)" methodname="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="1993608663" result="Passed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:17Z" duration="0.065285" asserts="0">
+                <properties />
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1627" name="Hollowmere.P3_2.Headless.Tests.dll" fullname="~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:38Z" duration="1.372054" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2688442" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <output><![CDATA[[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Live, 3d NotConfigured, describe Live
+]]></output>
+      <test-suite type="TestSuite" id="1628" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:38Z" duration="1.341707" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1629" name="P3_2" fullname="Hollowmere.P3_2" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:38Z" duration="1.317915" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1630" name="Headless" fullname="Hollowmere.P3_2.Headless" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:38Z" duration="1.304807" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1603" name="DriverDryTests" fullname="Hollowmere.P3_2.Headless.DriverDryTests" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-10-06 14:38:37Z" end-time="2026-10-06 14:38:38Z" duration="1.268530" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1621" name="R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" methodname="R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1772524678" result="Failed" start-time="2026-10-06 14:38:17Z" end-time="2026-10-06 14:38:28Z" duration="10.668161" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: <System.InvalidOperationException> and property Message containing "requires graphical Play"
+  But was:  no exception thrown
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.P3_2.Headless.DriverDryTests.Refuses (System.Collections.IEnumerator probe, System.String detail) [0x0000c] in ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:172
+at Hollowmere.P3_2.Headless.DriverDryTests+<R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest>d__8.MoveNext () [0x001b6] in ~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:113
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1620" name="R5_07_EditTimeChecksCannotPassAsPlay" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.136501" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1617" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;npc&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;npc&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1974046808" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.041412" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1618" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;dialogue&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;dialogue&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1204260423" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.042526" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1619" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;quest&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;quest&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1429064520" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.046412" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1616" name="R5_07_ExceptionsCannotPass" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_ExceptionsCannotPass" methodname="R5_07_ExceptionsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="873226449" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.041072" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1605" name="R5_07_NarrativeOpensMarshBeforeSelectingOdd" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_NarrativeOpensMarshBeforeSelectingOdd" methodname="R5_07_NarrativeOpensMarshBeforeSelectingOdd" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="79966336" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.045404" asserts="0">
+                <properties />
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1609" name="R5_07_PlayEffectIsRequiredBeforeAcceptance" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.135944" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1606" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;text2&quot;,&quot;W-AI-02&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;text2&quot;,&quot;W-AI-02&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="120981356" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.041669" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1607" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-03&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-03&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1549291073" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.040793" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1608" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-05&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-05&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="182291753" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.044006" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1610" name="R5_07_QuestSimulationUsesIndexedOilFlask" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_QuestSimulationUsesIndexedOilFlask" methodname="R5_07_QuestSimulationUsesIndexedOilFlask" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1092782683" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:28Z" duration="0.431466" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1611" name="R5_07_RealIndexResolvesMarshOddAndOilIdentity" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RealIndexResolvesMarshOddAndOilIdentity" methodname="R5_07_RealIndexResolvesMarshOddAndOilIdentity" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="2105704861" result="Passed" start-time="2026-10-06 14:38:28Z" end-time="2026-10-06 14:38:29Z" duration="0.583315" asserts="0">
+                <properties />
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1615" name="R5_07_RefusalsCannotPass" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:29Z" duration="0.144015" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1612" name="R5_07_RefusalsCannotPass(&quot;GP-QST-004: nothing named oil_flask&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;GP-QST-004: nothing named oil_flask&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1640454690" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:29Z" duration="0.041373" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1613" name="R5_07_RefusalsCannotPass(&quot;refused: unknown item&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;refused: unknown item&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1633956510" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:29Z" duration="0.047233" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1614" name="R5_07_RefusalsCannotPass(&quot;error: simulator exception&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;error: simulator exception&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1993553601" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:29Z" duration="0.044679" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1604" name="R5_07_TextSelectionDoesNotLookForOddInVillage" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_TextSelectionDoesNotLookForOddInVillage" methodname="R5_07_TextSelectionDoesNotLookForOddInVillage" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1817180265" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:29Z" duration="0.040952" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1622" name="R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" methodname="R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1484237281" result="Passed" start-time="2026-10-06 14:38:29Z" end-time="2026-10-06 14:38:38Z" duration="9.177643" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4824HH3CTY0YB3FBPB7KM58 -> Applied (2 op(s), 64.3 ms)
+[GameCore.Studio/engine] applied cs_01M4829Z345JASP339YYAVB9N6 -> Applied (1 op(s), 29.1 ms)
+{
+  "unlitLines": [
+    "The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask."
+  ],
+  "litLines": [
+    "You lit the old shrine. My mother tended it. I owe you a crossing.",
+    "The shrine has its light back. Even the black water seems less lonely tonight.",
+    "The black water is calm tonight.",
+    "I will be here. The water is patient."
+  ],
+  "oilId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+  "stageAfterOne": 1,
+  "stageAfterTwo": 2
+}
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1819" name="Hollowmere.R6_B.Tests.dll" fullname="~/wkspace/gc-studio/p4.2e/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_B.Tests.dll" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:40Z" duration="1.775741" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2688442" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1820" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:40Z" duration="1.772673" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1821" name="R6_B" fullname="Hollowmere.R6_B" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:40Z" duration="1.771230" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1794" name="DialogueCandidateTests" fullname="Hollowmere.R6_B.DialogueCandidateTests" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.055869" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1799" name="R6_Request6_DuplicatePortCannotInventAReachablePath" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_DuplicatePortCannotInventAReachablePath" methodname="R6_Request6_DuplicatePortCannotInventAReachablePath" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="1762189018" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.039286" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1798" name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_EntryWithExplicitRelinkPreservesEveryNode" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.006095" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1796" name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(False)" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(False)" methodname="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="1976670030" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.002802" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1797" name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(True)" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(True)" methodname="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="1082776638" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001827" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1801" name="R6_Request6_FieldsEntryCannotBypassReachability" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_FieldsEntryCannotBypassReachability" methodname="R6_Request6_FieldsEntryCannotBypassReachability" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="2024570648" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001637" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1800" name="R6_Request6_IncompleteGraphCannotApproveEntryChange" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_IncompleteGraphCannotApproveEntryChange" methodname="R6_Request6_IncompleteGraphCannotApproveEntryChange" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="2012527718" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001524" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1802" name="R6_Request6_OutOfRangeEntryRefusesBeforeBake" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_OutOfRangeEntryRefusesBeforeBake" methodname="R6_Request6_OutOfRangeEntryRefusesBeforeBake" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="1125705494" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001436" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1795" name="R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" fullname="Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" methodname="R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" classname="Hollowmere.R6_B.DialogueCandidateTests" runstate="Runnable" seed="1392275026" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.003617" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1803" name="DriverTests" fullname="Hollowmere.R6_B.DriverTests" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:39Z" duration="0.177934" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1804" name="R6_Request3_DryReadinessThenExplicitStopDrainsFinalBeforeCompletion" fullname="Hollowmere.R6_B.DriverTests.R6_Request3_DryReadinessThenExplicitStopDrainsFinalBeforeCompletion" methodname="R6_Request3_DryReadinessThenExplicitStopDrainsFinalBeforeCompletion" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="621818326" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.007153" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1805" name="R6_Request3_FailedStartNeverPlaysOrTogglesIntoAnotherStart" fullname="Hollowmere.R6_B.DriverTests.R6_Request3_FailedStartNeverPlaysOrTogglesIntoAnotherStart" methodname="R6_Request3_FailedStartNeverPlaysOrTogglesIntoAnotherStart" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="409495933" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.002613" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1812" name="R6_Request5_MissingFilesCannotPassAsEqual" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_MissingFilesCannotPassAsEqual" methodname="R6_Request5_MissingFilesCannotPassAsEqual" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1009914150" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001104" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1811" name="R6_Request5_NoBakeOrAuthoredFieldIsDropped" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_NoBakeOrAuthoredFieldIsDropped" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.059739" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1808" name="R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;contentStamp&quot;)" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;contentStamp&quot;)" methodname="R6_Request5_NoBakeOrAuthoredFieldIsDropped" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1842862381" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.022354" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1809" name="R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;contentHash&quot;)" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;contentHash&quot;)" methodname="R6_Request5_NoBakeOrAuthoredFieldIsDropped" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1013998243" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.033614" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1810" name="R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;text&quot;)" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_NoBakeOrAuthoredFieldIsDropped(&quot;text&quot;)" methodname="R6_Request5_NoBakeOrAuthoredFieldIsDropped" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1549432789" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:38Z" duration="0.001339" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1807" name="R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse" methodname="R6_Request5_RealReopenFinalStepFailsRatherThanOnlyRecordingFalse" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1761245724" result="Passed" start-time="2026-10-06 14:38:38Z" end-time="2026-10-06 14:38:39Z" duration="0.103793" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[P3.2 workflow] {"before":{"missing-baseline":"0000000000000000000000000000000000000000000000000000000000000000"},"now":{"Assets/Hollowmere/Dialogue/Graphs/Odd.asset":"4bfdb0cfa74c7614b92509e4e9079a4c102da013fae9ba006970953126032c00","Assets/Hollowmere/UI/Definitions/Doc_Hud.asset":"9449dfdb07367237128b91d3481a60df969d016103994ee4d7c0bf3355db21b7","Assets/Hollowmere/Quests/DrownedBell.asset":"b303fe35251f597c510611ad5f3ac034e76186f42d529e8e8faf0e9200ac3af1","Assets/Hollowmere/Items/Lantern.asset":"ef3934c84a26fee10eaf93d440bfb0a107ac73cd8e33401b2d3463ae0a0b94e5"},"backToBefore":false,"contract":"sha256 of exact asset bytes; no bake/contentStamp normalization","shot":"keyframes/001-reopen-final.png","captureProblem":"capture: DirectoryNotFoundException: Could not find a part of the path \"~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z/workflow/keyframes/001-reopen-final.png\".","utc":"2026-10-06T14:38:39.045Z","step":0,"stepName":"","name":"reopen-final","caption":"After undo -> redo -> undo of every narrative edit: assets back to the pre-edit hashes: False."}
+]]></output>
+            </test-case>
+            <test-case id="1806" name="R6_Request5_RetainedReopenMismatchFailsExactByteContract" fullname="Hollowmere.R6_B.DriverTests.R6_Request5_RetainedReopenMismatchFailsExactByteContract" methodname="R6_Request5_RetainedReopenMismatchFailsExactByteContract" classname="Hollowmere.R6_B.DriverTests" runstate="Runnable" seed="1612400006" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:39Z" duration="0.001240" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1813" name="RealPathTests" fullname="Hollowmere.R6_B.RealPathTests" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:40Z" duration="1.535882" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1818" name="R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" fullname="Hollowmere.R6_B.RealPathTests.R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" methodname="R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="1563596641" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:39Z" duration="0.468344" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[P3.2 workflow] {"shot":"keyframes/001-voice-r6-dry-ready.png","captureProblem":"capture: DirectoryNotFoundException: Could not find a part of the path \"~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z/workflow/keyframes/001-voice-r6-dry-ready.png\".","utc":"2026-10-06T14:38:39.273Z","step":0,"stepName":"","name":"voice-r6-dry-ready","caption":"Provider and microphone capture ready; fixture playback requested."}
+[P3.2 workflow] {"label":"r6-dry","wav":"fixture.wav","final":"Delete all NPCs in this region.","played":true,"playbackRequested":true,"pressedMs":1791297519112,"playRequestedMs":1791297519179,"drainedMs":1791297519440,"revisions":[],"error":null,"phase":"done","drainCompleted":true,"shot":"keyframes/002-voice-r6-dry-final.png","captureProblem":"capture: DirectoryNotFoundException: Could not find a part of the path \"~/wkspace/gc-studio/p4.2e/artifacts/studio/verification/R6-P4.2e/p42e-regression-20261006T143611.682920Z/workflow/keyframes/002-voice-r6-dry-final.png\".","utc":"2026-10-06T14:38:39.535Z","step":0,"stepName":"","name":"voice-r6-dry-final","caption":"Stop/drain finished; transcript retained for explicit Send. No request submitted by the take."}
+]]></output>
+            </test-case>
+            <test-case id="1816" name="R6_Request3_RealSessionDryTransportWaitsForSamplesAndStopFinalNeverSubmits" fullname="Hollowmere.R6_B.RealPathTests.R6_Request3_RealSessionDryTransportWaitsForSamplesAndStopFinalNeverSubmits" methodname="R6_Request3_RealSessionDryTransportWaitsForSamplesAndStopFinalNeverSubmits" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="2116905511" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:39Z" duration="0.171962" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1817" name="R6_Request4_RefusedAcknowledgmentIsBeforeCaptureAndNeverRetried" fullname="Hollowmere.R6_B.RealPathTests.R6_Request4_RefusedAcknowledgmentIsBeforeCaptureAndNeverRetried" methodname="R6_Request4_RefusedAcknowledgmentIsBeforeCaptureAndNeverRetried" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="651762774" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:39Z" duration="0.026020" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1815" name="R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting" fullname="Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting" methodname="R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="1627978281" result="Passed" start-time="2026-10-06 14:38:39Z" end-time="2026-10-06 14:38:40Z" duration="0.473299" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1814" name="R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite" fullname="Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite" methodname="R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="1281947060" result="Passed" start-time="2026-10-06 14:38:40Z" end-time="2026-10-06 14:38:40Z" duration="0.360242" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

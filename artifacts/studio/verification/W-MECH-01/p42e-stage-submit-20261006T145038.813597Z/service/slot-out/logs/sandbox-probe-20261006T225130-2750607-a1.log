@@ -1,0 +1,233 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Channel LicenseClient-ubuntu doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 29)
+
+COMMAND LINE ARGUMENTS:
+/u/Unity
+-job-worker-count
+4
+-diag-debug-shader-compiler
+-batchmode
+-nographics
+-projectPath
+/w/p
+-quit
+-logFile
+-
+Successfully changed project path to: /w/p
+
+(process:1): Gtk-CRITICAL **: 14:51:32.790: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+/w/p
+(process:1): Gtk-CRITICAL **: 14:51:32.799: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+GetLocalIP: Error during connect: Network is unreachable
+Player connection [131148745921856]  Target information:
+
+Player connection [131148745921856] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [131148745921856] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 4
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-1" after 0.2 seconds.
+Library Redirect Path: Library/
+Rebuilding Library because the asset database could not be found!
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directoryFMOD failed to initialize the output device.: "Error initializing output device. " (60)
+
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5731:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2721:(snd_pcm_open_noupdate) Unknown PCM default
+Forced to initialize FMOD to to the device driver's system output rate 48000, this may impact performance and/or give inconsistent experiences compared to selected sample rate 48000
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+FMOD failed to initialize the output device.: "Error initializing output device. " (60)
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5731:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2721:(snd_pcm_open_noupdate) Unknown PCM default
+FMOD initialized on nosound output
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unable to load player prefs
+Refreshing native plugins compatible for Editor in 0.00 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /u/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /w/p/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '/u/Data/Managed'
+Mono path[1] = '/u/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '/u/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56001
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu" at "2026-10-06T14:51:33.164826Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              2046394277394ce38294db410cd35235
+  Correlation Id:          a1b932eb8b00923fc247c889588bf394
+  External correlation Id: 5221322787986667536
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ubuntu" (connect: 0.38s, validation: 0.06s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu-notifications" at "2026-10-06T14:51:33.220679Z"
+[Licensing::Module] Connected to LicensingClient (PId: 29, launch time: 0.00, total connection time: 0.43s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.02
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.48s
+Registering precompiled unity dll's ...
+Register platform support module: /u/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /u/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001516 seconds.
+- Loaded All Assemblies, in  0.303 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.039 seconds
+Domain Reload Profiling: 2342ms
+	BeginReloadAssembly (77ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (40ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (58ms)
+	LoadAllAssembliesAndSetupDomain (119ms)
+		LoadAssemblies (77ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (117ms)
+			TypeCache.Refresh (116ms)
+				TypeCache.ScanAssembly (106ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (2039ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2010ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (1767ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (59ms)
+			ProcessInitializeOnLoadAttributes (128ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Done resolving packages in 0.10 seconds
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 3 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /w/p/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /w/p/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /w/p/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+[ScriptCompilation] Requested script compilation because: Assembly Definition File(s) changed
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-4c4cd63753560d4e4d5cb33db31459be
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /w/p/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 37.5889ms
+Starting: /u/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /w/p
+ExitCode: 4 Duration: 0s17ms
+[] Require frontend run.  Library/Bee/2400b0aE.dag couldn't be loaded
+DisplayProgressbar: Compiling Scripts
+Starting: /u/Data/Tools/netcorerun/netcorerun "/u/Data/Tools/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/2400b0aE.dag.json" "Library/Bee/2400b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /w/p
+ExitCode: 0 Duration: 0s322ms
+Starting: /u/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/2400b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: /w/p
+ExitCode: 0 Duration: 3s966ms
+Finished compiling graph: 155 nodes, 718 flattened edges (696 ToBuild, 6 ToUse), maximum node priority 37
+[incomplete structured log omitted]
