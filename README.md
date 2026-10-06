@@ -109,3 +109,7 @@ outstanding items [`artifacts/release-readiness/outstanding-defects.md`](artifac
 [`docs/game-core/00-core-protocols.md`](docs/game-core/00-core-protocols.md) is the sole normative source:
 P-001…P-060 requirements and the O-01…O-26 operation catalogue. The other documents in `docs/game-core/` map
 those semantics; they cannot change them. Where a mapping and 00 disagree, 00 wins.
+
+## GameCore Studio
+
+Studio adds a Unity Editor authoring surface, twelve gameplay plugin groups, an installed ETOS companion, Hollowmere and the independent Saltmarsh example. As of P4.2d (2026-10-06), acceptance is **33 PASS / 29 BLOCKED / 6 FAIL**; this does not expand the kernel's qualified profile above. See the [completion report](docs/studio/12-completion-report.md), [documentation index](docs/studio/README.md), and [Linux install/build/run guide](docs/studio/10-install-build-run.md). ([Verification summary](artifacts/studio/verification/SUMMARY.md))

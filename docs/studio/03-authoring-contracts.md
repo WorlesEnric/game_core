@@ -1,7 +1,7 @@
 # GameCore Studio: authoring, selection, edit and tool contracts
 
-**Status:** contract for implementation (2026-10-04). These shapes are shared by the Studio packages, the companion
-agent and the workers; one owner per shape (named in each section). Changing a shape means changing it here first.
+**Status:** final contract reference as of P4.2d (2026-10-06). These shapes are shared by the Studio packages, the companion
+agent and the workers; one owner per shape (named in each section). Generated schemas and source define exact members; update prose with their owning implementation.
 JSON is the interchange form; C# shapes live in `com.gamecore.studio.core/Runtime/Model` (Unity-free,
 `GameCore.Studio.Model.asmdef`, netstandard2.1, C# 9, `#nullable enable`) and are mirrored by `serde` types in
 `studio/agent/src/model.rs`. The JSON Schemas are generated from the C# shapes by
@@ -9,86 +9,74 @@ JSON is the interchange form; C# shapes live in `com.gamecore.studio.core/Runtim
 
 ## 1. Authoring identity (owner: `com.gamecore.gameplay.entities`, shape in studio.core)
 
-```jsonc
-// AuthoringRef — a pointer to an authored thing, stable across sessions
-{
-  "kind": "Entity | Definition | Region | SceneObject | Asset | UiElement | Scope | Location",
-  "authoringId": "7f1c…",             // GUID stored on the object/asset; absent for Location and Asset
-  "global": "GlobalObjectId_V1-2-…",   // Unity GlobalObjectId (asset GUID + local id + prefab instance id); absent for Location
-  "assetGuid": "…", "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
-  "definition": "npc.ferryman@3",      // DefinitionRef name@revision when the thing has a definition
-  "scope": "Instance | Prefab | Definition | Scope",   // what the user chose to edit
-  "stamp": "sha256:…",                 // content stamp at selection time (asset hash or scene-object serialized hash)
-  "location": { "region": "marsh", "position": [12.5, 0.0, -3.25], "normal": [0,1,0] } // kind=Location only
-}
-```
+| JSON member | Presence |
+|---|---|
+| `assetGuid` | optional |
+| `authoringId` | optional |
+| `definition` | optional |
+| `global` | optional |
+| `kind` | required |
+| `location` | optional |
+| `path` | optional |
+| `scope` | optional |
+| `stamp` | optional |
+
+Exact nested types/constraints: [authoring-ref.schema.json](schemas/authoring-ref.schema.json).
 
 Rules:
-- `authoringId` is minted once by `AuthoredEntity`/`AuthoredDefinition` importers and never regenerated on copy
-  unless the copy is a *new* object (prefab instances keep the prefab's id plus an instance id).
-- `TargetId = StableNameKeyDerivation.Derive("auth." + authoringId)` (the kernel helper refuses `:`); prefab-variant instances derive from the instance id.
-- `stamp` is the precondition value; the edit engine refuses an op whose target stamp changed (`StaleTarget`) unless
+
+- `authoringId` is minted once by the authored-object pipeline and never regenerated on copy
+  unless the copy is a *new* object. Prefab assets carry no entity id; placed instances receive one.
+- `TargetId = StableNameKeyDerivation.Derive("auth." + authoringId)` (the kernel helper refuses `:`); placed instances derive from their own authoring id.
+- `stamp` is the precondition value; the edit engine refuses an op whose target stamp changed (`Conflict`) unless
   the op declares `preconditions: "none"`.
 - Unity instance IDs, `Entity` indices and `TargetHandle`s never appear in a change set.
 
 ## 2. Selection (owner: `com.gamecore.studio.core` Picking + `com.gamecore.studio.ui`)
 
-```jsonc
-// SelectionSnapshot — captured when a prompt is sent
-{
-  "id": "sel_…",
-  "mode": "Edit | Play",
-  "targets": [ AuthoringRef, … ],       // logical objects (subparts resolved to their logical owner unless the user picked "this part")
-  "parts":   [ { "owner": AuthoringRef, "part": "Mesh:Lantern_Glass" } ],
-  "regionRect": { "screen": [x0,y0,x1,y1] },           // for box selections
-  "frame": { "camera": { "position": [...], "rotation": [...], "fov": 60, "aspect": 1.78 },
-             "viewport": [w,h], "image": "sha256:…" },  // image stored in Studio/Artifacts, never inline
-  "worldSession": "WorldId",            // Play only; optional fields are omitted when absent, never null
-  "indexRevision": 1234                 // semantic index revision the snapshot was taken against
-}
-```
+| JSON member | Presence |
+|---|---|
+| `frame` | optional |
+| `id` | required |
+| `indexRevision` | required |
+| `mode` | required |
+| `parts` | optional |
+| `regionRect` | optional |
+| `targets` | required |
+| `worldSession` | optional |
 
-Picking contract (`IPickingService`, Unity side):
-- `Pick(screenPoint) → Candidate[]` ordered by depth: physics hits (colliders), renderer-bounds hits (no collider),
+Exact nested types/constraints: [selection-snapshot.schema.json](schemas/selection-snapshot.schema.json).
+
+Picking contract ([IPickingService](../../Packages/com.gamecore.studio.core/Runtime/Authoring/Picking/IPickingService.cs), Unity side):
+- `Pick(Vector2 screenPoint) → PickResult` ordered by depth: physics hits (colliders), renderer-bounds hits (no collider),
   UI Toolkit `panel.Pick`, then ground plane. Each candidate: `AuthoringRef`, `distance`, `occluded: bool`,
   `part`. Overlapping candidates (within 0.5 % of depth or occluded chains) are shown as a list; the first is default.
-- `Marquee(rect) → Candidate[]` by frustum test on renderer bounds, optionally requiring full containment.
-- `PointAt(screenPoint) → Location` samples the ground (NavMesh if present) and the owning region.
+- `Marquee(Rect screenRect, bool requireFullContainment = false) → PickResult` by frustum test on renderer bounds, optionally requiring full containment.
+- `PointAt(Vector2 screenPoint) → LocationPick` samples the ground (NavMesh if present) and the owning region.
 - Stale check: `Validate(SelectionSnapshot) → StaleReport` recomputes stamps, detects destroyed objects, unloaded
   regions (`RegionResidency.Unloaded`) and changed assets before any apply.
 
 ## 3. Semantic index (owner: `com.gamecore.studio.core` Authoring)
 
-The index is a projection, rebuilt incrementally from `AssetPostprocessor`/scene events, serialized to
-`Library/GameCoreStudio/index.json` (cache) and exported in slices.
+The index is a projection, rebuilt incrementally from `AssetPostprocessor`/scene events, cached under
+`Library/GameCoreStudio` and exported in slices.
 
-```jsonc
-{ "revision": 1234, "project": "hollowmere",
-  "nodes": [ { "ref": AuthoringRef, "type": "npc.definition", "name": "Ferryman",   // the [Authorable] type id
-               "fields": { "speed": { "value": 1.8, "unit": "m/s", "range": [0.5, 6], "type": "float" } },
-               "refs": [ { "field": "dialogue", "to": AuthoringRef } ],
-               "capabilities": ["dialogue.speaker", "quest.giver"],
-               "provenance": { "asset": "Assets/…/Ferryman.asset", "line": 0 } } ],
-  "edges": [ { "from": AuthoringRef, "to": AuthoringRef, "kind": "references | contains | spawns | bindsUi | triggers" } ],
-  "scopes": [ { "scope": "world/marsh", "region": AuthoringRef, "installs": ["npc.behaviour@1", …] } ] }
-```
+| JSON member | Presence |
+|---|---|
+| `edges` | optional |
+| `nodes` | required |
+| `project` | required |
+| `revision` | required |
+| `scopes` | optional |
+
+Exact nested types/constraints: [semantic-index.schema.json](schemas/semantic-index.schema.json).
 
 Slices for agents are bounded: the selection closure (depth 2), plus definitions by type on request, plus the tool
 catalog; the companion enforces a 2 MiB cap and reports truncation explicitly.
 
 ## 4. Authoring metadata (owner: studio.core; used by every plugin)
 
-```csharp
-[Authorable("npc.definition", DisplayName = "NPC", Scope = AuthorScope.Definition | AuthorScope.Instance,
-            RuntimeApplicability = RuntimeApply.Live)]            // Live | Rebuild | Compile
-public sealed class NpcDefinition : AuthoredDefinition {
-  [AuthorField(Unit = "m/s", Min = 0.5f, Max = 6f, Doc = "Walking speed")] public float speed = 1.8f;
-  [AuthorRef(Category = "dialogue.graph", Required = false)]   public DialogueGraph dialogue;
-  [AuthorRef(Category = "prefab.character")]                   public GameObject prefab;
-}
-[AuthorOperation("npc.setPatrol", Doc = "Replace the patrol route", Validator = typeof(PatrolValidator))]
-public static OperationResult SetPatrol(EditContext ctx, NpcDefinition npc, [AuthorArg] Vector3[] points) { … }
-```
+Use gameplay mirror attributes for runtime types and Studio metadata for Editor-only types. Exact declarations are in [AuthoringMetadata.cs](../../Packages/com.gamecore.gameplay.contracts/Runtime/AuthoringMetadata.cs); a compiling tool signature is in [09 §Metadata and identity](09-plugin-developer-guide.md#metadata-and-identity). `ReadOnly`, `RuntimeOnly` and field `Structural` are explicit flags, default false. ([P1.7b §1](packets/P1.7b-gameplay-hardening-metadata.md#1-what-was-built))
 
 Exported per plugin as `ToolCatalog` entries (schema `tool-catalog.schema.json`): supported objects and operations,
 field types/units/constraints/reference categories, prerequisites (`Requires = "world.region"`), allowed scope,
@@ -112,33 +100,24 @@ from traces), `query.references`, `query.impact`, `preview.stage`, `preview.comp
 
 ## 6. Change set (owner: studio.core Edit)
 
-```jsonc
-{
-  "id": "cs_01J…", "schema": "gamecore.studio.changeset/1",
-  "intent": { "text": "Give the ferryman a lantern and make him mention it", "voiceTranscriptId": "tr_…"   // optional: omitted when absent, never null,
-              "origin": "agent | manual | voice | replay" },
-  "selection": SelectionSnapshot,
-  "baseVersions": [ { "ref": AuthoringRef, "stamp": "sha256:…" } ],   // read dependencies
-  "operations": [
-    { "opId": "op1", "tool": "inventory.grantStarting", "target": AuthoringRef,
-      "args": { "item": "item.lantern@2", "count": 1 }, "dependsOn": [], "preconditions": "stamp",
-      "applyRequirement": "Live | Rebuild | Compile | Build" },
-    { "opId": "op2", "tool": "dialogue.addNode", "target": AuthoringRef, "args": { … "voice": { "artifact": "sha256:…" } },
-      "dependsOn": ["op1"] }
-  ],
-  "artifacts": [ { "sha256": "…", "name": "ferryman_line_07.wav", "mediaType": "audio/wav", "bytes": 48213,
-                   "producer": { "etosTask": "t_…", "op": "tts", "provider": "dashscope", "model": "qwen3-tts-flash" },
-                   "role": "voiceLine", "import": { "type": "AudioClip", "settings": {} } } ],
-  "validation": [ { "scenario": "dialogue.reachable", "status": "pending | pass | fail", "detail": "" } ],
-  "requirements": { "max": "Live", "worldRebuild": false, "compile": false, "build": false },
-  "links": { "etosTasks": ["t_…"], "parent": "cs_…", "gameCoreOps": [] },   // filled as they happen; parent omitted when absent
-  "state": "Requested | Running | Candidate | Staged | Applied | Rejected | Failed | Undone | Interrupted",
-  "outcomes": [ { "opId": "op1", "status": "Applied | Skipped | Refused | Failed", "code": "", "detail": "",
-                  "gameCoreOps": ["w:…/i:…/s:42"], "undo": { "inverse": { … } } } ],
-  "policy": "AllOrNothing | BestEffort",
-  "timestamps": { "requested": "…", "candidate": "…", "applied": "…" }
-}
-```
+| JSON member | Presence |
+|---|---|
+| `artifacts` | optional |
+| `baseVersions` | optional |
+| `id` | required |
+| `intent` | required |
+| `links` | optional |
+| `operations` | required |
+| `outcomes` | optional |
+| `policy` | optional |
+| `requirements` | optional |
+| `schema` | required |
+| `selection` | optional |
+| `state` | optional |
+| `timestamps` | optional |
+| `validation` | optional |
+
+Exact nested types/constraints: [change-set.schema.json](schemas/change-set.schema.json).
 
 Engine pipeline per change set: `Resolve → Precheck (stamps, existence, residency, scope) → Stage (temp objects,
 dry-run validators, preview) → Validate (tool validators + scenarios) → Apply (single-writer queue, one
@@ -158,13 +137,11 @@ Journal location: `<project>/Studio/History/YYYY/MM/<id>.json` (tracked) and `St
 
 ## 8. Staging and admission of code (owner: `studio/stage` + studio.core)
 
-- `mechanism.propose` → worker output `package/` (UPM package with `Rules/` noEngineReferences asmdef, `Runtime/`
-  asmdef, `Editor/` optional, `Tests/`), plus `proposal.json` (what it adds to the tool catalog).
-- Companion `stage(jobId)`: export to slot, `dotnet test` on Rules, batchmode Unity compile + EditMode tests, a
-  10-minute watchdog, a verdict `{ok, compile, tests, forbidden: [...]}`. Forbidden: Editor code in `Runtime/`,
-  native plugins, `allowUnsafeCode`, reflection emit, network, file IO outside `Application.persistentDataPath`.
-- `admit(changeSetId)`: checkpoint the live world (if Play), copy the package, one `AssetDatabase.Refresh`, reload,
-  re-enter Play and restore (SADR-012), run the proposal's smoke test, record `Admitted` or revert.
+`mechanism.propose` carries exact package/proposal artifacts. The trusted companion creates a minimal Docker slot, runs scan, checkers, dotnet with mandatory Roslyn analysis, Unity EditMode, PlayMode smoke, determinism and budget. Warm budget is 360 s with recorded once-only cold grace. Unavailable confinement issues no verdict. The semantic scan refuses `InitializeOnLoad`/`InitializeOnLoadMethod`, `AssetPostprocessor`, `AssetModificationProcessor`, `[MenuItem]` side-effect entry points, `DidReloadScripts`, reflection emit, `Process`, networking and file IO outside the package's own `Assets/<pkg>` or `Application.persistentDataPath`. Candidate Editor extensions are restricted to attribute-declared `[AuthorOperation]`/`[AuthorValidator]` methods and catalog contributors; string prefixes and candidate `allowUnsafe` reasons do not grant authority. ([Stage lane §Lane contract and Semantic analyzer](../../studio/stage/README.md), [R2-B](packets/R2-B-admission.md))
+
+The companion signs job/app/project/source/catalog/package/proposal/steps and confinement. Unity obtains the signed record from authenticated `GET /v1/stage/{job}/verdict` and asks `POST /v1/stage/{job}/verify`; `VerdictCheck` enforces every mandatory successful step. A file import or CAS digest alone is not authority. `mechanism.admit` and `mechanism.remove` are internal, absent from worker discovery. Only explicit creator Admit starts durable capture/stop/copy/compile/reload/restore/smoke. Failed or pending transitions keep recovery evidence; admission history uses its registered handler. ([R2-B §Contracts and R5](packets/R2-B-admission.md), [04 §6](04-etos-integration.md#6-staging-code-admission))
+
+As of P4.2d, isolated stages pass but real live admission rolls back with `catalog_mismatch` after a compile stall. No successful live restoration or 90 s acceptance is claimed. ([P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission))
 
 ## 9. Diagnostics
 
@@ -181,3 +158,22 @@ anything else. **Catalog revision:** `ToolCatalog.revision` is the sha256 of the
 the `revision` member, minted by the tool registry; requests carry it as `toolCatalogRevision` and a candidate
 built against another revision is `StaleContext`. Codes are registered in
 `GameCore.Studio.Model.DiagnosticCodes` and listed in [09-plugin-developer-guide.md](09-plugin-developer-guide.md).
+
+## 10. Exact schema and execution amendments
+
+The ETOS baseline is **etos main ≥ e4067fd (contains 278ef9c)**, merged and pushed 2026-10-06 as supplied by the owner; retained binaries/vendor hashes still identify the original build. ([P4.3-final §Baseline](packets/P4.3-final-docs.md#baseline))
+
+| Shape | Generated contract |
+|---|---|
+| authoring-ref | [schema](schemas/authoring-ref.schema.json): `assetGuid`, `authoringId`, `definition`, `global`, `kind`, `location`, `path`, `scope`, `stamp` |
+| selection-snapshot | [schema](schemas/selection-snapshot.schema.json): `frame`, `id`, `indexRevision`, `mode`, `parts`, `regionRect`, `targets`, `worldSession` |
+| semantic-index | [schema](schemas/semantic-index.schema.json): `edges`, `nodes`, `project`, `revision`, `scopes` |
+| tool-catalog | [schema](schemas/tool-catalog.schema.json): `objectTypes`, `plugin`, `revision`, `schema`, `tools` |
+| change-set | [schema](schemas/change-set.schema.json): `artifacts`, `baseVersions`, `id`, `intent`, `links`, `operations`, `outcomes`, `policy`, `requirements`, `schema`, `selection`, `state`, `timestamps`, `validation` |
+| diagnostic | [schema](schemas/diagnostic.schema.json): `code`, `data`, `hint`, `message`, `where` |
+
+Member tables above come from generated schemas; nested fields and required/type constraints remain defined there. Never hand-edit the schemas. Run `python3 tools/studio/emit_studio_schemas.py --check` on Linux. ([P0.3 §Built](packets/P0.3-studio-model.md#built))
+
+Apply rechecks every base-version dependency and catalog revision. A missing scope is inferred only from a singleton intersection and the inference is retained visibly. Prepared inverses precede side effects; failed recovery stays Interrupted. RuntimeOnly Live actions do not mutate authored data, cannot undo, and cannot claim multi-op AllOrNothing without an atomic world gateway. ([R2-A §R2 fixes and R3](packets/R2-A-core-edit-recovery.md))
+
+`asset.import` and `bind` accept delivered artifact handles only. The built-in importer accepts PNG/JPEG, WAV/OGG/MP3, JSON/TXT/CSV and FBX; WebP/GLB/glTF currently refuse. Settings use enum literals such as `textureType: Sprite`, `spriteImportMode: Single`, with finite `spritePixelsPerUnit` in `(0,16384]`. Raw prefab/controller/material bytes, executable inputs, Editor/Plugins paths and custom importer hooks refuse with `MediaTypeForbidden`, `MediaPathForbidden` or `MediaImporterInvalid`; host source paths refuse `ArtifactSourceForbidden`. ([R2-A §R2 fixes and R3](packets/R2-A-core-edit-recovery.md), [P4.2c §Guide outcome](packets/P4.2c-live-rows.md#guide-outcome))

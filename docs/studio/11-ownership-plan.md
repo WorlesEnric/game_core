@@ -1,6 +1,6 @@
 # GameCore Studio ownership plan
 
-This is a proposed maintenance map for the committed P0–P2 implementation. Owner names are roles, not new assignments to individuals. Boundaries follow architecture A–E and the integrator's exclusive-path policy; packet columns distinguish original delivery from later extensions. Baseline V1 components have no P0–P2 creator packet. Their creation commits are recorded where a more precise packet cannot be established. ([Architecture §2](02-architecture.md#2-ownership-boundaries), [Plan §1–§2](06-implementation-plan.md))
+This is a final maintenance map as of P4.2d (2026-10-06). Owner names are roles, not new assignments to individuals. Boundaries follow architecture A–E and the integrator's exclusive-path policy; packet columns distinguish original delivery from later extensions. Baseline V1 components have no P0–P2 creator packet. Their creation commits are recorded where a more precise packet cannot be established. ([Architecture §2](02-architecture.md#2-ownership-boundaries), [Plan §1–§2](06-implementation-plan.md))
 
 ## Dependency direction and change policy
 
@@ -198,7 +198,7 @@ Every tracked `.sh`/`.py` under `tools/`, `studio/` (excluding vendored SDK inte
 
 ## Document inventory
 
-This inventory covers every Markdown document under `docs/`, the six generated Studio schemas, and the new draft set. Package/tool READMEs are owned with their directory in the inventories above; artifact READMEs belong to their producing packet and retain that historical revision. Document rows assign review responsibility and a validation lane, not ownership of facts outside the cited source. ([Plan shared-file rule](06-implementation-plan.md), [evidence convention](07-verification-matrix.md#1-evidence-conventions))
+This inventory covers every Markdown document under `docs/`, the six generated Studio schemas, and the final numbered set. Package/tool READMEs are owned with their directory in the inventories above; artifact READMEs belong to their producing packet and retain that historical revision. Document rows assign review responsibility and a validation lane, not ownership of facts outside the cited source. ([Plan shared-file rule](06-implementation-plan.md), [evidence convention](07-verification-matrix.md#1-evidence-conventions))
 
 | Document / source | Owner role | Delivery / public contract | Check / policy |
 |---|---|---|---|
@@ -234,11 +234,11 @@ This inventory covers every Markdown document under `docs/`, the six generated S
 | [docs/studio/05-plugin-catalog.md](../../docs/studio/05-plugin-catalog.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
 | [docs/studio/06-implementation-plan.md](../../docs/studio/06-implementation-plan.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
 | [docs/studio/07-verification-matrix.md](../../docs/studio/07-verification-matrix.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
-| [docs/studio/08-creator-guide.md](../../docs/studio/08-creator-guide.md) | studio | P4.3-draft; source-linked implementation guide | Source/link review; D |
-| [docs/studio/09-plugin-developer-guide.md](../../docs/studio/09-plugin-developer-guide.md) | studio | P4.3-draft; source-linked implementation guide | Source/link review; D |
-| [docs/studio/10-install-build-run.md](../../docs/studio/10-install-build-run.md) | studio | P4.3-draft; source-linked implementation guide | Source/link review; D |
-| [docs/studio/11-ownership-plan.md](../../docs/studio/11-ownership-plan.md) | studio | P4.3-draft; source-linked implementation guide | Source/link review; D |
-| [docs/studio/12-completion-status-draft.md](../../docs/studio/12-completion-status-draft.md) | studio | P4.3-draft; source-linked implementation guide | Source/link review; D |
+| [docs/studio/08-creator-guide.md](../../docs/studio/08-creator-guide.md) | studio | P4.3-final; source-linked final guide | Source/link review; D |
+| [docs/studio/09-plugin-developer-guide.md](../../docs/studio/09-plugin-developer-guide.md) | studio | P4.3-final; source-linked final guide | Source/link review; D |
+| [docs/studio/10-install-build-run.md](../../docs/studio/10-install-build-run.md) | studio | P4.3-final; source-linked final guide | Source/link review; D |
+| [docs/studio/11-ownership-plan.md](../../docs/studio/11-ownership-plan.md) | studio | P4.3-final; source-linked final guide | Source/link review; D |
+| [docs/studio/12-completion-report.md](../../docs/studio/12-completion-report.md) | studio | P4.3-final; source-linked final guide | Source/link review; D |
 | [docs/studio/README.md](../../docs/studio/README.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
 | [docs/studio/archive/2026-09-28-README.md](../../docs/studio/archive/2026-09-28-README.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
 | [docs/studio/archive/2026-09-28-open-problems.md](../../docs/studio/archive/2026-09-28-open-problems.md) | studio | Integrator design / archive; creation `7a9c409a` | Source/link review; D |
@@ -283,9 +283,9 @@ This inventory covers every Markdown document under `docs/`, the six generated S
 | Narrative definitions, quests/items/rules and content manifest | game | [P1.4 API / Verification](packets/P1.4-dialogue-quest-logic-inventory.md) | Narrative rules, authoring and story tests; A/G. Capture outbox before claiming production save continuity. |
 | Boot, UI/audio rig, definitions/UXML/theme/mixer/clips | game | [P1.5 GameBoot / API](packets/P1.5-ui-audio.md) | BootWiring/UI flow/audio tests; A. Add game codecs and reattach every restored session. |
 | Generated image/WAV evidence assets | game | [P2.2 Built / Verified](packets/P2.2-studio-etos-client.md), [generated assets](../../games/hollowmere/Assets/Hollowmere/Generated/P2_2/) | Digest/import/live evidence; A/S. Preserve producer/digest provenance. |
-| Graphical Linux player/build/run/capture lane | game | Pending [P3.1](06-implementation-plan.md#wave-3-reference-game-and-ai-workflows) | W-GAME rows, V1 integrated gate; A/I. No delivered player qualification asserted. |
+| Graphical Linux player/build/run/capture lane | game | [P3.1](packets/P3.1-hollowmere-complete.md) and [P4.2d](packets/P4.2d-live-rerun.md) | W-GAME rows, V1 integrated gate; A/I. See the row-specific player qualification and VSync decision in 07. |
 | cleanproof / new-project installer | game | Pending [P4.1](06-implementation-plan.md#wave-4-proof-verification-docs) | W-CLEAN-01/02 and W-DOC exercises; A/I. No hidden game setup or kernel edits. |
-| Studio evidence / final report | studio | Producing packets; final owner [P4.2/P4.3](06-implementation-plan.md#wave-4-proof-verification-docs) | Row/revision evidence audit; D. First-draft coverage is [12](12-completion-status-draft.md). |
+| Studio evidence / final report | studio | Producing packets; final owner [P4.2/P4.3](06-implementation-plan.md#wave-4-proof-verification-docs) | Row/revision evidence audit; D. Final coverage is [12](12-completion-report.md). |
 
 ## Exclusive paths template for future packets
 
@@ -302,4 +302,19 @@ The integrator's rule is one owner per shared mutation boundary. Each packet has
 | Shared-file handoff | Tell integrator exactly which manifests/locks/catalogs/shared docs need changes and re-bake. | [P1.5 out-of-path list](packets/P1.5-ui-audio.md#files-outside-my-exclusive-paths-integrator) |
 | Completion | Commit/push branch, PACKET.md with results and every unresolved item; integrated acceptance stays with integrator. | [Plan §1](06-implementation-plan.md#1-working-method), [codex-packet.sh](../../studio/tools/codex-packet.sh) |
 
-For this draft the five numbered guides/status files are new; existing README and 01–07 remain integrator-owned. `PACKET.md` records the open reconciliation work, including original packet attribution for baseline scripts and remaining P1.7a/b handoffs, instead of inventing historical ownership. ([This packet report](../../PACKET.md), [Plan shared-file rule](06-implementation-plan.md))
+The final documentation packet owns this reconciliation; historical attribution gaps remain explicit in [P4.3-final](packets/P4.3-final-docs.md). Operational commands are centralized in [10](10-install-build-run.md).
+
+## Final handover additions
+
+Roles remain maintenance responsibilities, not invented individual appointments. The original inventory is a baseline provenance ledger; additions below carry later packages and tools. All operational instructions now live in [10](10-install-build-run.md). ([06 §Merged packet provenance](06-implementation-plan.md#5-merged-packet-provenance))
+
+| Surface | Owner role | Delivery / verification responsibility |
+|---|---|---|
+| com.gamecore.studio.gameplay | studio + gameplay | [ADAPT-SPLIT](packets/ADAPT-SPLIT.md); adapter closure, live commands and admission binding tests |
+| games/hollowmere | game | [P3.1](packets/P3.1-hollowmere-complete.md), [P1.7c](packets/P1.7c-gameplay-runtime-followups.md); production bootstrap/save/admission and player |
+| games/cleanproof, new-project.sh | game + infra | [P4.1](packets/P4.1-clean-proof.md); scaffold preservation, independent bake/build/quest/save and empty package diff |
+| stage sandbox, analyzer, cache and license tooling | infra + studio | [P2.4 follow-ups](packets/P2.4-staging-lane.md); signed stage, semantic scan, offline confinement, no raw child logs |
+| immutable companion release and project registration | infra | [P0.5 follow-ups](packets/P0.5-companion.md); checksum/hello, ownership and priced operation contracts |
+| verify-all.sh and retained acceptance tools | verification | [P4.2](packets/P4.2-verification.md), [P4.2b](packets/P4.2b-live-acceptance.md), [P4.2c](packets/P4.2c-live-rows.md), [P4.2d](packets/P4.2d-live-rerun.md); immutable attempts, XML dispositions, paid reservations |
+| 01–12, index, operator links | documentation + architect | [P4.3-final](packets/P4.3-final-docs.md); 57-item closure and source checks; architect decides VSync and service/actor form |
+| R6 outcome addendum | integrator | Append actual result to [12](12-completion-report.md#addendum); preserve the P4.2d snapshot |

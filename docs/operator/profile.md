@@ -86,3 +86,7 @@ portability, and do not round "unqualified" up to "supported".
 the **player's** version string, which is a different thing from a Game Core package version (all packages
 are `1.0.0`; see [packages.md](packages.md)). Nothing asserts the bundle version, and GC-029 deliberately
 does not change it: it is not package metadata, and it is not referenced by any check or gate.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

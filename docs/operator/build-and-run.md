@@ -286,3 +286,7 @@ The kernel-side mechanics (which type marks the ledger entry, which resolver rul
 no bindings, and the fixtures that pin both halves) live in the composition package:
 `ActivationLedger.FailActive`, `InstallationStateMachine` (`Active -> Failed` is the one edge P-012 adds to
 the 06 §1 diagram), `CompositionEditApplier`, and `Packages/com.gamecore.composition/Tests/…/ProviderFailureTests.cs`.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

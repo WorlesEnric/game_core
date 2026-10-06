@@ -155,3 +155,7 @@ so later runs add crash evidence without overwriting run 1.
   presentation and pending control-plane operations may still run.
 - A paused world retains simulation debt and adds none for the paused duration; on resume the host-time
   sample origin resets so paused elapsed time does not become a catch-up burst.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

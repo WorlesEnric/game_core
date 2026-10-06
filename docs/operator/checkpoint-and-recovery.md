@@ -227,3 +227,7 @@ A restore does the following:
 `SaveService.TestRoundTrip()` captures, restores into a scratch world, captures again and compares the
 canonical slot hashes and steps, then stops the scratch world. Studio exposes both as `save.inspect` and
 `save.testRoundTrip`.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

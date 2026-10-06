@@ -122,3 +122,7 @@ claiming support without a built and executed player.
   scope decision, recorded.
 - A performance number in 08 is a **provisional engineering target** on a named machine, not a shipping
   requirement — but a protocol quota is a correctness bound and stays mandatory.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.
