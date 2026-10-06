@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="23" result="Failed(Child)" total="23" passed="19" failed="1" inconclusive="0" skipped="3" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 18:31:14Z" end-time="2026-10-06 18:31:16Z" duration="1.9295737">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="562" result="Failed" site="Child" start-time="2026-10-06 18:31:14Z" end-time="2026-10-06 18:31:16Z" duration="1.929574" total="23" passed="19" failed="1" inconclusive="0" skipped="3" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1628" name="Hollowmere.P3_2.Headless.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r6-f/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll" runstate="Runnable" testcasecount="20" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:46Z" end-time="2026-10-06 18:30:47Z" duration="1.017479" total="20" passed="17" failed="0" inconclusive="0" skipped="3" asserts="0">
+      <properties>
+        <property name="_PID" value="3473636" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <reason>
+        <message><![CDATA[One or more child tests were ignored]]></message>
+      </reason>
+      <test-suite type="TestSuite" id="1629" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="20" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:46Z" end-time="2026-10-06 18:30:47Z" duration="1.014876" total="20" passed="17" failed="0" inconclusive="0" skipped="3" asserts="0">
+        <properties />
+        <reason>
+          <message><![CDATA[One or more child tests were ignored]]></message>
+        </reason>
+        <test-suite type="TestSuite" id="1630" name="P3_2" fullname="Hollowmere.P3_2" runstate="Runnable" testcasecount="20" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:46Z" end-time="2026-10-06 18:30:47Z" duration="1.013652" total="20" passed="17" failed="0" inconclusive="0" skipped="3" asserts="0">
+          <properties />
+          <reason>
+            <message><![CDATA[One or more child tests were ignored]]></message>
+          </reason>
+          <test-suite type="TestSuite" id="1631" name="Headless" fullname="Hollowmere.P3_2.Headless" runstate="Runnable" testcasecount="20" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:46Z" end-time="2026-10-06 18:30:47Z" duration="1.012412" total="20" passed="17" failed="0" inconclusive="0" skipped="3" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-suite type="TestFixture" id="1603" name="DriverDryTests" fullname="Hollowmere.P3_2.Headless.DriverDryTests" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-06 18:30:46Z" end-time="2026-10-06 18:30:47Z" duration="1.000610" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1622" name="R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" methodname="R5_07_DryBootObservesLogicAndRefusesHeadlessNavAndUnchangedQuest" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1088210703" result="Passed" start-time="2026-10-06 18:30:33Z" end-time="2026-10-06 18:30:39Z" duration="6.125145" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1621" name="R5_07_EditTimeChecksCannotPassAsPlay" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.037676" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1618" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;npc&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;npc&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1429653139" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.012784" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1619" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;dialogue&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;dialogue&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="590439024" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.010983" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1620" name="R5_07_EditTimeChecksCannotPassAsPlay(&quot;quest&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_EditTimeChecksCannotPassAsPlay(&quot;quest&quot;)" methodname="R5_07_EditTimeChecksCannotPassAsPlay" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1791883098" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.011449" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1617" name="R5_07_ExceptionsCannotPass" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_ExceptionsCannotPass" methodname="R5_07_ExceptionsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="786188893" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.011798" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1606" name="R5_07_NarrativeOpensMarshBeforeSelectingOdd" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_NarrativeOpensMarshBeforeSelectingOdd" methodname="R5_07_NarrativeOpensMarshBeforeSelectingOdd" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="583445323" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.017611" asserts="0">
+                <properties />
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1610" name="R5_07_PlayEffectIsRequiredBeforeAcceptance" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.038283" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1607" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;text2&quot;,&quot;W-AI-02&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;text2&quot;,&quot;W-AI-02&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="837693254" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.012037" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1608" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-03&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-03&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="744566682" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.010591" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1609" name="R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-05&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_PlayEffectIsRequiredBeforeAcceptance(&quot;narrative&quot;,&quot;W-AI-05&quot;)" methodname="R5_07_PlayEffectIsRequiredBeforeAcceptance" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1414820603" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.014202" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1611" name="R5_07_QuestSimulationUsesIndexedOilFlask" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_QuestSimulationUsesIndexedOilFlask" methodname="R5_07_QuestSimulationUsesIndexedOilFlask" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="800528631" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:39Z" duration="0.395953" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1612" name="R5_07_RealIndexResolvesMarshOddAndOilIdentity" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RealIndexResolvesMarshOddAndOilIdentity" methodname="R5_07_RealIndexResolvesMarshOddAndOilIdentity" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="138587683" result="Passed" start-time="2026-10-06 18:30:39Z" end-time="2026-10-06 18:30:40Z" duration="0.544879" asserts="0">
+                <properties />
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1616" name="R5_07_RefusalsCannotPass" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:40Z" duration="0.034614" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1613" name="R5_07_RefusalsCannotPass(&quot;GP-QST-004: nothing named oil_flask&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;GP-QST-004: nothing named oil_flask&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1569188567" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:40Z" duration="0.010968" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1614" name="R5_07_RefusalsCannotPass(&quot;refused: unknown item&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;refused: unknown item&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="232176579" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:40Z" duration="0.010637" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1615" name="R5_07_RefusalsCannotPass(&quot;error: simulator exception&quot;)" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_RefusalsCannotPass(&quot;error: simulator exception&quot;)" methodname="R5_07_RefusalsCannotPass" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="580172938" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:40Z" duration="0.011035" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-case id="1605" name="R5_07_TextSelectionDoesNotLookForOddInVillage" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_TextSelectionDoesNotLookForOddInVillage" methodname="R5_07_TextSelectionDoesNotLookForOddInVillage" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="513639251" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:40Z" duration="0.012748" asserts="0">
+                <properties />
+              </test-case>
+              <test-case id="1623" name="R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" methodname="R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="699853049" result="Passed" start-time="2026-10-06 18:30:40Z" end-time="2026-10-06 18:30:47Z" duration="7.135145" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                </properties>
+                <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4824HH3CTY0YB3FBPB7KM58 -> Applied (2 op(s), 65.7 ms)
+[GameCore.Studio/engine] applied cs_01M4829Z345JASP339YYAVB9N6 -> Applied (1 op(s), 26.6 ms)
+{
+  "unlitLines": [
+    "The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask."
+  ],
+  "litLines": [
+    "You lit the old shrine. My mother tended it. I owe you a crossing.",
+    "The shrine has its light back. Even the black water seems less lonely tonight.",
+    "The black water is calm tonight.",
+    "I will be here. The water is patient."
+  ],
+  "oilId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+  "stageAfterOne": 1,
+  "stageAfterTwo": 2
+}
+]]></output>
+              </test-case>
+              <test-case id="1604" name="R6_C_AppliedJournalWithInvalidUiStillAttemptsHistoryUndo" fullname="Hollowmere.P3_2.Headless.DriverDryTests.R6_C_AppliedJournalWithInvalidUiStillAttemptsHistoryUndo" methodname="R6_C_AppliedJournalWithInvalidUiStillAttemptsHistoryUndo" classname="Hollowmere.P3_2.Headless.DriverDryTests" runstate="Runnable" seed="1628394936" result="Passed" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:47Z" duration="0.058332" asserts="0">
+                <properties />
+                <output><![CDATA[[GameCore.Studio/history] undid cs_01M497Q1C4NVG198KWZ0MQ48JX (0 inverse op(s))
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1624" name="HeadlessWorkflowTests" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" testcasecount="3" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:47Z" duration="0.009425" total="3" passed="0" failed="0" inconclusive="0" skipped="3" asserts="0">
+              <properties>
+                <property name="Category" value="Live" />
+              </properties>
+              <reason>
+                <message><![CDATA[One or more child tests were ignored]]></message>
+              </reason>
+              <test-case id="1625" name="H1_TypedEdit_OnASelection" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection" methodname="H1_TypedEdit_OnASelection" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="1172937523" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:47Z" duration="0.006786" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="1500000" />
+                </properties>
+                <reason>
+                  <message><![CDATA[SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)]]></message>
+                </reason>
+              </test-case>
+              <test-case id="1626" name="H2_Media_GenerateImportAssign" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign" methodname="H2_Media_GenerateImportAssign" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="1842126995" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:47Z" duration="0.000436" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="1200000" />
+                </properties>
+                <reason>
+                  <message><![CDATA[SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)]]></message>
+                </reason>
+              </test-case>
+              <test-case id="1627" name="H3_Cancel_WhileRunning" fullname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning" methodname="H3_Cancel_WhileRunning" classname="Hollowmere.P3_2.Headless.HeadlessWorkflowTests" runstate="Runnable" seed="886974684" result="Skipped" label="Ignored" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:47Z" duration="0.000334" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="900000" />
+                </properties>
+                <reason>
+                  <message><![CDATA[SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)]]></message>
+                </reason>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1827" name="Hollowmere.R6_F.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r6-f/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_F.Tests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 18:31:15Z" end-time="2026-10-06 18:31:16Z" duration="1.618567" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3473636" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1828" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 18:31:15Z" end-time="2026-10-06 18:31:16Z" duration="1.618230" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1829" name="R6_F" fullname="Hollowmere.R6_F" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 18:31:15Z" end-time="2026-10-06 18:31:16Z" duration="1.618041" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1823" name="ContentClosureTests" fullname="Hollowmere.R6_F.ContentClosureTests" classname="Hollowmere.R6_F.ContentClosureTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-06 18:31:15Z" end-time="2026-10-06 18:31:16Z" duration="1.617348" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1824" name="R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure" fullname="Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure" methodname="R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure" classname="Hollowmere.R6_F.ContentClosureTests" runstate="Runnable" seed="1557580518" result="Passed" start-time="2026-10-06 18:30:47Z" end-time="2026-10-06 18:30:55Z" duration="8.400696" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M497Q21XS7A8JMEW5TYQAW6T -> Applied (1 op(s), 147.0 ms)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+DialogueRunner.Start: True; reason=
+Bell line presented; conversation ended; retainedCandidate=False
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] history apply cs_01M497Q8TG64S66GD5T98DW7JH -> Applied (2 op(s), 184.9 ms)
+[GameCore.Studio/history] undid cs_01M497Q21XS7A8JMEW5TYQAW6T (2 inverse op(s))
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+            </test-case>
+            <test-case id="1826" name="R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20" fullname="Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20" methodname="R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20" classname="Hollowmere.R6_F.ContentClosureTests" runstate="Runnable" seed="657209935" result="Failed" start-time="2026-10-06 18:30:55Z" end-time="2026-10-06 18:31:15Z" duration="19.254626" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  GP-DLG-014: no baked dialogue graph '12fbfb0c-52af-45d3-813b-93411f302790' (NPC 5e919058-1e8e-4fd4-8c40-18b397a6ac40)
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R6_F.ContentClosureTests+<R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20>d__14.MoveNext () [0x0040b] in /home/worlesenric/wkspace/gc-studio/r6-f/games/hollowmere/Assets/Hollowmere/Tests/R6_F/ContentClosureTests.cs:174
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M49500E9KFTHBKGBCXWW3VZC -> Applied (6 op(s), 197.6 ms)
+Retained candidate enrolled=False
+DialogueRunner.Start: False; reason=GP-DLG-014: no baked dialogue graph '12fbfb0c-52af-45d3-813b-93411f302790' (NPC 5e919058-1e8e-4fd4-8c40-18b397a6ac40)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u2)
+[GameCore.Studio/engine] history apply cs_01M497QP796WCWZ57BMTRW561A -> Applied (6 op(s), 441.0 ms)
+[GameCore.Studio/history] undid cs_01M49500E9KFTHBKGBCXWW3VZC (6 inverse op(s))
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+            </test-case>
+            <test-case id="1825" name="R6_F_Request2_ValidatorRejectsExistingUnenrolledGraph" fullname="Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_ValidatorRejectsExistingUnenrolledGraph" methodname="R6_F_Request2_ValidatorRejectsExistingUnenrolledGraph" classname="Hollowmere.R6_F.ContentClosureTests" runstate="Runnable" seed="628129985" result="Passed" start-time="2026-10-06 18:31:15Z" end-time="2026-10-06 18:31:16Z" duration="1.594965" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

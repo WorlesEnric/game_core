@@ -16,6 +16,8 @@ namespace GameCore.Studio.Gameplay
     {
         public PreparedCreation? Prepare(EditContext context)
         {
+            if ((context.Operation.Tool == "create" && context.StringArg("type") == "dialogue.graph")
+                || context.Operation.Tool == "dialogue.createGraph") return DialogueClosureTools.Prepare(context);
             if (context.Target == null || context.Identity.Describe(context.Target)?.TypeId != "npc.definition") return null;
             UnityEngine.Object npc = context.Target;
             Type tools = Type.GetType("GameCore.Gameplay.Npc.Editor.NpcTools, GameCore.Gameplay.Npc.Editor", true)!;
