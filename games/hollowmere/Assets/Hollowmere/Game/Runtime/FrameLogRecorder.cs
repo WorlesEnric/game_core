@@ -4,7 +4,7 @@
 // Time.unscaledDeltaTime in milliseconds (three decimals); region is the focus region the game last reported
 // (SetRegion); marker joins every label queued with Mark since the previous row with '|'. The game marks region
 // transitions as "region:<from>-><to>", which record_playthrough.sh uses to separate transition hitches from steady
-// frames. Rows are buffered and flushed every 120 frames, on quit and on destroy. Invariant culture, no quoting:
+// frames. Rows are buffered in immutable blocks every 120 frames; explicit flush, quit and destroy write them. Invariant culture, no quoting:
 // commas in a region or marker become ';'.
 #nullable enable
 using System;
@@ -12,11 +12,38 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Hollowmere.Game
 {
+    /// <summary>Single-producer recording buffer. Only explicit Drain performs IO; write failures remain observable.</summary>
+    public sealed class FrameLogWriter
+    {
+        private readonly Action<string> append;
+        private Task pending = Task.CompletedTask;
+        private readonly List<string> blocks = new List<string>();
+        public FrameLogWriter(Action<string> append) => this.append = append ?? throw new ArgumentNullException(nameof(append));
+        public void Append(string text) => blocks.Add(text);
+        public void Drain()
+        {
+            if (blocks.Count > 0)
+            {
+                string[] batch = blocks.ToArray();
+                blocks.Clear();
+                Task before = pending;
+                pending = Task.Run(async () =>
+                {
+                    await before.ConfigureAwait(false);
+                    append(string.Concat(batch));
+                });
+            }
+            pending.GetAwaiter().GetResult();
+        }
+    }
+
     /// <summary>Writes one CSV row per rendered frame (added by the game when -frameLog is given).</summary>
+    [DefaultExecutionOrder(1000)]
     [DisallowMultipleComponent]
     public sealed class FrameLogRecorder : MonoBehaviour
     {
@@ -26,6 +53,7 @@ namespace Hollowmere.Game
         private readonly StringBuilder buffer = new StringBuilder(16 * 1024);
         private readonly List<string> markers = new List<string>();
         private string? path;
+        private FrameLogWriter? writer;
         private string region = string.Empty;
         private int pending;
 
@@ -38,7 +66,7 @@ namespace Hollowmere.Game
         public bool Recording => path != null;
 
         /// <summary>Starts the log at <paramref name="logPath"/> (truncates it) and writes the header lines.</summary>
-        public void Begin(string logPath, string revision)
+        public void Begin(string logPath, string revision, FrameLogWriter? output = null)
         {
             if (string.IsNullOrEmpty(logPath))
             {
@@ -51,6 +79,9 @@ namespace Hollowmere.Game
                 Directory.CreateDirectory(directory);
             }
 
+            writer?.Drain();
+            var encoding = new UTF8Encoding(false);
+            writer = output ?? new FrameLogWriter(text => File.AppendAllText(logPath, text, encoding));
             path = logPath;
             Rows = 0;
             markers.Clear();
@@ -83,12 +114,18 @@ namespace Hollowmere.Game
         /// <summary>Writes the buffered rows to the file.</summary>
         public void Flush()
         {
+            QueueRows();
+            writer?.Drain();
+        }
+
+        private void QueueRows()
+        {
             if (path == null || buffer.Length == 0)
             {
                 return;
             }
 
-            File.AppendAllText(path, buffer.ToString(), new UTF8Encoding(false));
+            writer!.Append(buffer.ToString());
             buffer.Clear();
             pending = 0;
         }
@@ -119,7 +156,7 @@ namespace Hollowmere.Game
             Rows++;
             if (++pending >= FlushEveryFrames)
             {
-                Flush();
+                QueueRows();
             }
         }
 

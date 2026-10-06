@@ -1,0 +1,20 @@
+{
+  "source": "P3.1c, c79a3832, real GPU/1080p/VSync",
+  "expected": "both regressions FAIL before",
+  "runs": [
+    {
+      "run": 1,
+      "p95": 18.122,
+      "over100": 2,
+      "P31d_PACING_UnchangedBudget": false,
+      "P31d_BOOT_NoPostReadyStalls": false
+    },
+    {
+      "run": 2,
+      "p95": 17.912,
+      "over100": 2,
+      "P31d_PACING_UnchangedBudget": false,
+      "P31d_BOOT_NoPostReadyStalls": false
+    }
+  ]
+}

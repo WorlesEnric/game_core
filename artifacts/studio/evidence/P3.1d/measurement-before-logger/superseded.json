@@ -1,0 +1,6 @@
+{
+  "source": "703e5509",
+  "reason": "All run1 post-ready >100 ms stalls align with synchronous 120-frame log flushes. Retain both completed uncapped runs, stop before VSync runs, fix logger and qualify a new source revision.",
+  "intentionalStopAfter": "vsync0/run2",
+  "notABudgetPass": true
+}

@@ -31,6 +31,9 @@ namespace Hollowmere.UiAudio
         private SaveService? saves;
         private BindingHost? gameBindings;
         private VisualElement? boundLayer;
+        private MenuPresentationWarmup? menuWarmup;
+        public bool PresentationReady => menuWarmup == null || menuWarmup.Ready;
+        public bool CanLoadFirstRegion => menuWarmup == null || (menuWarmup.Ready && Time.frameCount > menuWarmup.PresentedFrame + 1);
         public Task<SaveResult>? PendingSave { get; private set; }
 
         public UiRuntime Ui => ui ?? throw new InvalidOperationException("the rig is not built");
@@ -91,6 +94,7 @@ namespace Hollowmere.UiAudio
         /// <summary>The game's UI command entry: manual saves finish asynchronously at a committed boundary.</summary>
         public UiDispatchResult Dispatch(string command, float value = 0)
         {
+            if (!PresentationReady) return new UiDispatchResult(false, "menu presentation is warming");
             int dot = command.IndexOf('.');
             string verb = dot < 0 ? command : command.Substring(0, dot);
             if (PendingSave != null && !PendingSave.IsCompleted
@@ -193,6 +197,11 @@ namespace Hollowmere.UiAudio
             if (flow != null)
             {
                 Root = UiRoot.Create(transform, ui, flow);
+                if (!Application.isBatchMode && Root != null && Root.Document != null && options.StartScreen == UiScreen.Menu)
+                {
+                    menuWarmup = gameObject.AddComponent<MenuPresentationWarmup>();
+                    menuWarmup.Begin(Root);
+                }
             }
         }
     }

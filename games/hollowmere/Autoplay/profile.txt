@@ -1,0 +1,11 @@
+# Short diagnostic route only. Qualification always uses the unchanged playthrough.txt.
+waituntil ready timeout 120
+mark menu
+wait 3
+ui newgame
+waituntil ready timeout 120
+wait 3
+walk -2 -6
+mark steady-village
+wait 15
+quit 0

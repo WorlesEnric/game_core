@@ -1,0 +1,47 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 121,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 121,
+  "steadySeconds": 0.399,
+  "dtMs": {
+    "p50": 1.713,
+    "p95": 2.913,
+    "p99": 206.759,
+    "max": 2695.474,
+    "mean": 26.363
+  },
+  "fpsMean": 303.26,
+  "framesOver16_7ms": 3,
+  "framesOver100msOutsideTransitions": [
+    {
+      "frame": 1,
+      "time_s": 2.7915,
+      "dt_ms": 2695.474,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 2,
+      "time_s": 2.9484,
+      "dt_ms": 251.62,
+      "region": "Thornwick Village"
+    }
+  ],
+  "framesOver100msOutsideTransitionsCount": 2,
+  "transitions": [],
+  "perRegion": {
+    "Thornwick Village": {
+      "frames": 121,
+      "p95": 2.913,
+      "max": 2695.474
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": true,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": false
+  },
+  "verdict": "fail"
+}

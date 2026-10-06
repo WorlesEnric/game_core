@@ -1,0 +1,67 @@
+{
+  "sourceCapture": "measurement/vsync0/run2/capture.raw",
+  "frameLogDelta": 706.662,
+  "profileFrame": 10680,
+  "samples": [
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "Main Thread",
+      "total_ms": "706.665649"
+    },
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "PlayerLoop",
+      "total_ms": "706.654724"
+    },
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "GC.Alloc",
+      "total_ms": "0.088340"
+    },
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "PreLateUpdate.ScriptRunBehaviourLateUpdate",
+      "total_ms": "704.777893"
+    },
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "LateBehaviourUpdate",
+      "total_ms": "704.777222"
+    },
+    {
+      "frame": "10680",
+      "thread": "Main Thread",
+      "marker": "Hollowmere.Game.dll!Hollowmere.Game::FrameLogRecorder.LateUpdate() [Invoke]",
+      "total_ms": "704.594727"
+    },
+    {
+      "frame": "10680",
+      "thread": "Render Thread",
+      "marker": "(unnamed)",
+      "total_ms": "706.624573"
+    },
+    {
+      "frame": "10680",
+      "thread": "Render Thread",
+      "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+      "total_ms": "705.762880"
+    },
+    {
+      "frame": "10680",
+      "thread": "Render Thread",
+      "marker": "Semaphore.WaitForSignal",
+      "total_ms": "705.760626"
+    },
+    {
+      "frame": "10681",
+      "thread": "Main Thread",
+      "marker": "GC.Alloc",
+      "total_ms": "0.070866"
+    }
+  ]
+}

@@ -27,6 +27,7 @@ namespace Hollowmere.Game
         private int frames;
         private int quitAfterFrames;
         private bool quitting;
+        private bool markedReady;
 
         public FrameLogRecorder? FrameLog { get; private set; }
 
@@ -60,6 +61,7 @@ namespace Hollowmere.Game
 
         private void Begin(HollowmereCommandLine commandLine)
         {
+            FrameProfile.Configure(gameObject);
             for (int i = 0; i < commandLine.Problems.Count; i++)
             {
                 Debug.LogWarning("[Hollowmere] command line: " + commandLine.Problems[i]);
@@ -107,11 +109,17 @@ namespace Hollowmere.Game
         {
             game = attached;
             Attaches++;
-            Mark(Attaches == 1 ? "ready" : "reload");
+            if (Attaches == 1) Mark("boot-warmup");
+            else Mark("reload");
         }
 
         private void LateUpdate()
         {
+            if (!markedReady && Ready)
+            {
+                markedReady = true;
+                Mark("ready");
+            }
             HollowmereGame? current = game;
             if (current != null && current.World != null)
             {
@@ -153,7 +161,7 @@ namespace Hollowmere.Game
             get
             {
                 HollowmereGame? current = game;
-                return current != null && current.World != null && current.World.Root.State == GameApplicationState.Running && current.Rig != null;
+                return current != null && current.World != null && current.World.Root.State == GameApplicationState.Running && current.Rig != null && current.Rig.PresentationReady;
             }
         }
 
