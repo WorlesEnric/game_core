@@ -370,6 +370,7 @@ namespace Hollowmere.P3_2.Workflows
 
         [NonSerialized] public VoiceTakeDriver? VoiceTake;
         [NonSerialized] public ProbeExecution? PlayProbe;
+        [NonSerialized] public JObject? PlayReceipt;
         [NonSerialized] public string PlayError = string.Empty;
 
         public void ObservePlayLog(string message, string stack, LogType type)

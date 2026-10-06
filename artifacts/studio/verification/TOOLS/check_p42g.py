@@ -111,6 +111,22 @@ def check_host():
     print('PASS: host exclusivity, observed import workers and zombies classified separately')
 
 
+def R2_38_P42g_FreshNpcEffectHasClosureDialogueAndDurableUndo(run):
+    folder = run / 'workflow/ferryman2'
+    effect = json.loads((folder / 'play-effect.json').read_text())
+    assert effect['status'] == 'pass'
+    assert all(effect[name] is True for name in ('graphEnrolled', 'dialogueStartSucceeded', 'conversationEnded', 'motionObserved', 'onNavMesh', 'committedMotionObserved'))
+    assert any('bell' in line.lower() for line in effect['dialogueLines'])
+    assert [json.loads((folder / ('roster-' + phase + '.json')).read_text())['count'] for phase in ('before', 'applied', 'undone')] == [20, 21, 20]
+    applied = json.loads((folder / 'journal-apply.json').read_text())
+    undone = json.loads((folder / 'journal-undo.json').read_text())
+    candidate = json.loads((folder / 'candidate.json').read_text())
+    assert applied['state'] == 'Applied' and undone['state'] == 'Undone'
+    assert applied['id'] == undone['id'] == candidate['id'] == effect['changeSetId']
+    assert json.loads((folder / 'undo-result.json').read_text())['ok'] is True
+    assert json.loads((folder / 'apply-report.json').read_text())['ok'] is True
+
+
 def main():
     rows = json.loads((v.OUT / 'ROWS.json').read_text())
     assert len(rows['rows']) == 68
@@ -127,6 +143,10 @@ def main():
         for ref in refs:
             confined(ref, v.OUT)
         check_evidence(rid, observation, refs)
+    if observations['W-AI-02']['status'] == 'PASS':
+        runs = sorted((v.OUT / 'W-AI-02').glob('p42g-npc-evidence-*'))
+        assert runs, 'Missing fresh complete-observation NPC evidence'
+        R2_38_P42g_FreshNpcEffectHasClosureDialogueAndDurableUndo(runs[-1])
     ledger = json.loads((STATE / 'paid-ledger.json').read_text())
     assert 0 <= ledger['accountedUsd'] <= 0.50
     assert all(ledger['operationCounts'][op] == 0 for op in ('image', 'tts', 'describe', '3dPaid'))

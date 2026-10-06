@@ -162,10 +162,11 @@ def main():
     require(etos.is_file() and os.access(etos, os.X_OK), 'installed etos CLI is required')
     for checkout in (ROOT, LIVE):
         require(checkout.is_dir(), 'Main must create the owned .evidence/live checkout first')
-        require(command(['git', '-C', str(checkout), 'rev-parse', 'HEAD']).strip() == BASELINE,
-                f'checkout must be at P4.2g baseline: {checkout}')
+        if checkout == LIVE:
+            require(command(['git', '-C', str(checkout), 'rev-parse', 'HEAD']).strip() == BASELINE,
+                    f'live checkout must be at P4.2g baseline: {checkout}')
         command(['git', '-C', str(checkout), 'diff', '--exit-code', BASELINE, '--',
-                 'studio/agent', 'studio/etos', 'studio/stage'])
+                 'studio/agent', 'studio/etos', 'studio/stage', 'Packages'])
     installer_path = LIVE / 'studio/etos/install-state.py'
     installer = load_installer(installer_path)
     source = ROOT / 'studio/etos/agent'

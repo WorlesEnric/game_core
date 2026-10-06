@@ -84,7 +84,7 @@ namespace Hollowmere.P3_2.Workflows
         private static bool Tick(string row, string tag)
         {
             string key = "play-effect." + tag;
-            var receipt = State.Get(key) as JObject;
+            var receipt = State.PlayReceipt ?? State.Get(key) as JObject;
             if (receipt == null)
             {
                 receipt = new JObject { ["row"] = row, ["status"] = "pending", ["scene"] = SceneManager.GetActiveScene().path,
@@ -151,10 +151,15 @@ namespace Hollowmere.P3_2.Workflows
                     if (State.PlayProbe == null)
                     {
                         State.PlayProbe = new ProbeExecution(Observe(row, receipt));
+                        State.PlayReceipt = receipt;
                         Application.logMessageReceived += State.ObservePlayLog;
                     }
                     Require(string.IsNullOrEmpty(State.PlayError), "Play exception: " + State.PlayError);
-                    if (State.PlayProbe.MoveNext()) return false;
+                    if (State.PlayProbe.MoveNext())
+                    {
+                        State.Set(key, receipt);
+                        return false;
+                    }
                     receipt["status"] = "pass";
                     receipt["phase"] = "exit";
                 }
@@ -167,6 +172,7 @@ namespace Hollowmere.P3_2.Workflows
             }
             Application.logMessageReceived -= State.ObservePlayLog;
             State.PlayProbe = null;
+            State.PlayReceipt = null;
             State.Set(key, receipt);
             WorkflowRunner.Json(tag + "/play-effect.json", receipt);
             if ((string?)receipt["status"] != "pass") WorkflowRunner.MarkFailed(row + ": " + receipt["detail"]);

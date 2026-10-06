@@ -10,10 +10,10 @@ e = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(e)
 e.live.STATE = v.ROOT / 'artifacts/studio/workflows/P4.2g'
 e.live.STATE.mkdir(parents=True, exist_ok=True)
-allowed = {'baseline', 'receipt-hello', 'receipt-stage', 'regression', 'regression-final', 'stage-submit', 'stage-review', 'cleanup-npc', 'npc'}
+allowed = {'baseline', 'receipt-hello', 'receipt-stage', 'regression', 'regression-final', 'stage-submit', 'stage-review', 'cleanup-npc', 'npc', 'npc-view', 'npc-confirmed', 'npc-creation', 'npc-evidence', 'npc-evidence-final'}
 if sys.argv[1] not in allowed:
     raise SystemExit('lane not authorized by P4.2g adapter')
-if sys.argv[1] == 'npc':
+if sys.argv[1] in ('npc', 'npc-confirmed', 'npc-creation', 'npc-evidence', 'npc-evidence-final'):
     import json
     import subprocess
     activation = json.loads((e.live.STATE / 'worker-activation.json').read_text())
@@ -37,9 +37,20 @@ def unity(row, label, extra, **kwargs):
         environment['UNITY'] = str(e.live.TOOLS / 'unity-interactive-p42f.py')
     return original_unity(row, label, extra, environment=environment, **kwargs)
 e.live.unity = unity
-if sys.argv[1] == 'npc':
-    e.reserve('npc', {})
-    unity('W-AI-02', 'p42g-npc', ['-executeMethod', 'Hollowmere.P4_2.EvidenceEntry.RunStage'], workflow='p42f-npc')
+if sys.argv[1] in ('npc', 'npc-confirmed', 'npc-creation', 'npc-evidence', 'npc-evidence-final'):
+    lane = sys.argv[1]
+    environment = {}
+    if lane != 'npc':
+        evidence = Path(os.environ['GAMECORE_P42G_NPC_VIEW']).resolve()
+        receipt = json.loads(evidence.read_text())
+        assert receipt['status'] == 'PASS' and all(receipt[k] for k in ('isPlaying', 'viewActive', 'agentEnabled', 'onNavMesh'))
+        environment['GAMECORE_P42G_NPC_VIEW'] = str(evidence)
+    if lane in ('npc-creation', 'npc-evidence', 'npc-evidence-final'):
+        environment['GAMECORE_P42G_NPC_CREATION'] = '1'
+    e.reserve(lane, {})
+    unity('W-AI-02', 'p42g-' + lane, ['-executeMethod', 'Hollowmere.P4_2.EvidenceEntry.RunStage'], workflow='p42f-npc', environment=environment)
+elif sys.argv[1] == 'npc-view':
+    unity('W-AI-02', 'p42g-npc-view', ['-executeMethod', 'P42g.Live.NpcPrerequisiteProbe.Run'])
 elif sys.argv[1] == 'regression-final':
     unity('W-AI-02', 'p42g-regression-final', ['-runTests', '-testPlatform', 'EditMode', '-testFilter', 'Hollowmere.R6_A.AdmissionLifecycleTests|Hollowmere.R6_B|Hollowmere.R6_E.Tests|Hollowmere.R6_F|Hollowmere.P3_2.Headless.DriverDryTests'], results='results.xml', environment={'GAMECORE_ETOS_AUTOSTART': '0', 'UNITY': str(Path.home() / 'Unity/Hub/Editor/6000.0.75f1/Editor/Unity')})
 else:

@@ -67,7 +67,10 @@ namespace Hollowmere.R6_B
             }
             finally
             {
-                UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(scenes);
+                if (scenes.Any(scene => scene.isLoaded && scene.isActive && !string.IsNullOrEmpty(scene.path)))
+                    UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(scenes);
+                else
+                    UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.EmptyScene, UnityEditor.SceneManagement.NewSceneMode.Single);
             }
         }
 
