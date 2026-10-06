@@ -1,0 +1,152 @@
+{
+  "utc": "2026-10-06T08:49:24.308184+00:00",
+  "operationCounts": {
+    "image": 3,
+    "tts": 5,
+    "describe": 0,
+    "3dPaid": 0,
+    "3dRefusals": 1
+  },
+  "companionLedgerUsd": 0.40285558180000003,
+  "workerImageOperatorEstimateUsd": 0.2,
+  "accountedUsd": 0.6028555818,
+  "charges": [
+    {
+      "id": "gc-5fa581e41366b06065211f13f0ed24f513cc6a23",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 93.0,
+      "costUsd": 0.0010665426,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-653c7c4e7f95ec0500d7597c460f06a2051b0c85",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 3.0,
+      "costUsd": 3.44046e-05,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-656f0ce79fa43c1928b9cd2da1a0b5696f78e277",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-7cb38460bb2dd122b36b52fb5b371823290d843a",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 36.0,
+      "costUsd": 0.0004128552,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-e2e5ed41fa1f6e7ed7f2029e523aee51bd74cfd0",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-f21f771030aff5f78c1ea961ebcb9f4ff73694b7",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 32.0,
+      "costUsd": 0.0003669824,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "gc-fd91702cfec153cd115604db73cac2c74b7bd8bd",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 85.0,
+      "costUsd": 0.000974797,
+      "accountingSource": "companion media_charges"
+    },
+    {
+      "id": "task:t0449c2228731c1351e48b090:artifact:a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea",
+      "quantity": 1,
+      "costUsd": 0.2,
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "accountingSource": "packet operator estimate for a worker-delivered image; not a companion charge or provider invoice",
+      "requestId": "cs_01M485F79CQ3FSRA1TBZZEF9VJ",
+      "sha256": "a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea",
+      "nodeChargeUsd": null,
+      "requestedMaxUsd": 0.25,
+      "note": "Worker artifact metadata reports generate.image / echo-images; model is not reported. Apply the owner total per-image estimate conservatively. Node task budget reports micro_usd=0; no authoritative worker-op tariff/charge receipt is available."
+    }
+  ],
+  "limits": {
+    "image": 6,
+    "tts": 6,
+    "describe": 2,
+    "usd": 10
+  },
+  "capReached": false,
+  "limitations": [
+    "Companion charges are local ceiling accounting, not provider invoices.",
+    "Worker image is separately estimated at the owner-declared USD 0.20; it has no companion tariff/charge record, and its model is not reported.",
+    "Task budgets report zero micro_usd; voice ledger has no USD column. Provider billing and unreported worker provider attempts cannot be independently reconstructed from those ledgers."
+  ]
+}

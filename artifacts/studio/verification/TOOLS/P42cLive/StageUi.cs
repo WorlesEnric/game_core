@@ -132,6 +132,7 @@ namespace P42c.Live
             {
                 HollowmereGame? game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>();
                 if (game?.Director?.ItemCount("OldCoin") != SessionState.GetInt(Prefix + "coins", -1)) return;
+                if (!Context.Gateway.Status.AgentReady || !Context.Candidates.CanRequestStage) return;
                 // Rebuild the panel after Play's real domain reload; re-fetch and verify through the service.
                 Phase = 5;
                 RestoreEntry(); pending = Context.Candidates.RefreshStage(entry!); return;
@@ -139,9 +140,23 @@ namespace P42c.Live
             if (Phase == 5)
             {
                 if (pending == null || !pending.IsCompleted) return;
-                if (pending.GetAwaiter().GetResult() != null || !Context.Candidates.CanAdmit(entry!)) throw new InvalidOperationException("Play verdict verification failed");
+                Diagnostic? problem = pending.GetAwaiter().GetResult();
+                bool canAdmit = Context.Candidates.CanAdmit(entry!);
+                Write("play-verification", new JObject { ["problem"] = problem == null ? "" : problem.Code + ": " + problem.Message,
+                    ["canAdmit"] = canAdmit, ["verified"] = entry!.VerifiedVerdict != null,
+                    ["entryStage"] = entry.Stage.ToString(), ["staging"] = entry.Staging,
+                    ["expected"] = JObject.FromObject(entry.StageRequest!),
+                    ["current"] = JObject.FromObject(StageAdmission.Of(Context.Runtime).BuildStageRequest(entry.ChangeSet, Context.Runtime.Paths.ProjectRoot)) });
+                if (problem != null || !canAdmit) throw new InvalidOperationException("Play verdict verification failed: " + (problem?.Message ?? "CanAdmit false"));
+                string? liveHash = StageAdmission.Of(Context.Runtime).LiveHash(null, out string? catalogProblem);
+                Write("catalog-preflight", new JObject { ["liveHash"] = liveHash ?? "", ["problem"] = catalogProblem ?? "", ["isPlaying"] = EditorApplication.isPlaying });
+                if (Environment.GetEnvironmentVariable("GAMECORE_P42C_CATALOG_PROBE") == "1") { Stop(liveHash != null, catalogProblem ?? "catalog available"); return; }
                 SessionState.SetString(Prefix + "admitStart", DateTime.UtcNow.ToString("o")); Phase = 6;
-                Write("admit", Context.Candidates.Admit(entry!, true).ToJson()); return;
+                AdmissionResult requested = Context.Candidates.Admit(entry!, true);
+                Write("admit", requested.ToJson());
+                if (requested.Outcome != AdmissionOutcome.Pending && requested.Outcome != AdmissionOutcome.Admitted)
+                    Stop(false, requested.Reason + ": " + requested.Detail);
+                return;
             }
             StageAdmission a = StageAdmission.Of(Context.Runtime);
             if (Phase == 6 || Phase == 9)

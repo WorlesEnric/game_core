@@ -20,6 +20,7 @@ Product baseline: final main `f7878292`. Run on myubuntu from this packet's clon
 - `restart`: a copy of the existing L03 stream test replaces ForceDisconnect with
   the actual documented `etos agent restart gamecore-studio`; checks same task,
   one final outcome and exact cursor replay. Node death is still not exercised.
+- `guide-recover`: fetch the already-submitted image request after the initial test timeout; never Send again. Retain the Invalid state and importer diagnostic before any Preview attempt.
 - `guides`: literal text Send and image Send with retained prompts/results, plus
   an unconfigured 3D refusal. This is an observed guide walkthrough, not a claim
   of novice end-to-end NPC/dialogue completion.
@@ -36,3 +37,7 @@ P3.2 frames at their actual two-second cadence; keyframes remain. It never opens
 key files. Copy `P42cLive/` only into the disposable project's Assets directory.
 This trusted acceptance harness is not candidate code. No unsigned verdict import,
 `allowUnsafe` exception, host sandbox fallback, etosd restart or product edit occurs.
+
+Observed deployment correction: `align-stage-p42c.sh` re-registers from the exact final-main live clone so source package pins and the stage command’s read-only package root agree. Retain that clone; no budget marker is reset. The initial path-mismatch attempt remains evidence.
+
+`p42c-report` regenerates ROWS/SUMMARY/07 from retained receipts. `check_p42c.py` checks scopes, unchanged scenario/requirement cells, references, hashes, redaction shapes and accounting. The image recovery case extends the harness wait only; no product timing or paid cap is changed.

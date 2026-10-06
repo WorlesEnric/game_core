@@ -68,6 +68,24 @@ namespace GameCore.Studio.Etos.Client.Tests
         }
 
         [Test]
+        public async Task R2_38_RetainedColdWarmVerdictsVerifyThroughAuthenticatedCompanion()
+        {
+            string[] jobs = (Environment.GetEnvironmentVariable("GAMECORE_P42C_STAGE_JOBS") ?? string.Empty).Split(',');
+            Assert.That(jobs.Length, Is.EqualTo(2));
+            foreach (string job in jobs)
+            {
+                JObject record = await Client.FetchTrustedVerdictAsync(job);
+                bool verified = await Client.VerifyVerdictAsync(job, record);
+                Evidence("signed-" + job, record);
+                Evidence("verified-" + job, new JObject { ["jobId"] = job, ["verified"] = verified });
+                Assert.That(verified, Is.True);
+                Assert.That((string?)record["jobId"], Is.EqualTo(job));
+                Assert.That((string?)record["sourceRevision"], Is.EqualTo("f787829289ea7402c08917a78553ff6c3838bda8"));
+                Assert.That((string?)record["projectId"], Is.EqualTo(Environment.GetEnvironmentVariable("GAMECORE_ETOS_PROJECT_ID")));
+            }
+        }
+
+        [Test]
         public async Task L01_HelloThroughTheProxyReportsProviderStates()
         {
             Stopwatch watch = Stopwatch.StartNew();

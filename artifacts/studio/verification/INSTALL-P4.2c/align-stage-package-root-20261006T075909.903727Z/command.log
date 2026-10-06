@@ -1,0 +1,16 @@
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -3,7 +3,7 @@
+ # Capped image/describe calls remain budget_unpriced: the node's image tariff is
+ # output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
+ [stage]
+-"command" = "~/wkspace/gc-studio/companion/studio/stage/stage.sh"
++"command" = "~/wkspace/gc-studio/p4.2c/.evidence/live/studio/stage/stage.sh"
+
+ [stage.projects]
+ "1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof"
+
+registered b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912 -> ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere
+registered 1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d -> ~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof
+restarted gamecore-studio
+healthy: 0.1.0-426b3ead95f21815; previous release retained: 0.1.0-426b3ead95f21815

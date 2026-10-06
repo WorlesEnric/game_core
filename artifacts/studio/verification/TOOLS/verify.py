@@ -358,12 +358,12 @@ def security():
 
 
 def summary():
-    lines = ['# P4.2 + P4.2b verification summary', '', 'Matrix rows are accepted only by their row README; suite passes alone do not close workflows.', '',
+    lines = ['# P4.2 + P4.2b + P4.2c verification summary', '', 'Matrix rows are accepted only by their row README; suite passes alone do not close workflows.', '',
              '| Evidence | Verdict | Revision |', '|---|---|---|']
     row_file = OUT / 'ROWS.json'
     if row_file.exists():
         rows = json.loads(row_file.read_text())
-        header = ['# P4.2 + P4.2b verification summary', '', 'Matrix row totals: ' + ', '.join(f'{k} {n}' for k, n in rows['counts'].items()) + '.', '', '| Row | Verdict | Evidence / exact limitation |', '|---|---|---|']
+        header = ['# P4.2 + P4.2b + P4.2c verification summary', '', 'Matrix row totals: ' + ', '.join(f'{k} {n}' for k, n in rows['counts'].items()) + '.', '', '| Row | Verdict | Evidence / exact limitation |', '|---|---|---|']
         for r in rows['rows']:
             header.append(f"| {r['row']} | {r['status']} | [Evidence]({r['row']}/README.md): {r['note']} |")
         lines = header + ['', '## Retained attempts (including superseded and expected failures)', ''] + lines[4:]

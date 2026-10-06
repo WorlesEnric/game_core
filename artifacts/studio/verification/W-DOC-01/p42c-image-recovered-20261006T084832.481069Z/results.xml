@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.330193">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="492" result="Failed" site="Child" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.330193" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1721" name="P42c.Live.Tests.dll" fullname="~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42c.Live.Tests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.318576" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1558441" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1722" name="P42c" fullname="P42c" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.317680" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1723" name="Live" fullname="P42c.Live" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.316582" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1716" name="GuideTests" fullname="P42c.Live.GuideTests" classname="P42c.Live.GuideTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.314031" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1719" name="R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest" fullname="P42c.Live.GuideTests.R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest" methodname="R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest" classname="P42c.Live.GuideTests" runstate="Runnable" seed="1437080750" result="Failed" start-time="2026-10-06 08:50:05Z" end-time="2026-10-06 08:50:09Z" duration="4.304337" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="900000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  the existing candidate must pass the actual media importer policy
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at P42c.Live.GuideTests+<R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest>d__3.MoveNext () [0x002c5] in ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Assets/P42cLive/GuideTests.cs:112
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+[GameCore.Studio/etos] candidate cs_01M485F79CQ3FSRA1TBZZEF9VJ refused at staging in 317 ms (1 artifact(s) verified) (MediaImporterInvalid: media_importer_invalid: invalid enum textureType @ op op1)
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

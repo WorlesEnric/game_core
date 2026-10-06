@@ -1,0 +1,138 @@
+{
+  "requestId": "cs_01M485F79CQ3FSRA1TBZZEF9VJ",
+  "resubmitted": false,
+  "previewOk": false,
+  "state": "Invalid",
+  "candidate": {
+    "id": "cs_01M485F79CQ3FSRA1TBZZEF9VJ",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Generate exactly one small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background. Maximum image cost USD 0.25. Import the image and bind it to this item's icon. Do not generate additional variants.",
+      "origin": "agent"
+    },
+    "selection": {
+      "id": "sel_01M485F78MV786P7YYAQJZ295M",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Definition",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        }
+      ],
+      "frame": {
+        "camera": {
+          "position": [
+            0.0,
+            0.0,
+            -14.364101409912108
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fov": 60.0,
+          "aspect": 1.7777777777777777
+        },
+        "viewport": [
+          640,
+          369
+        ],
+        "image": "sha256:74e61544a1e7167c80a1ef0a8964c0281a8d8a8d5c6fe73359ca94eda795301c"
+      },
+      "indexRevision": 52
+    },
+    "baseVersions": [
+      {
+        "ref": {
+          "kind": "Definition",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        },
+        "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+      }
+    ],
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "asset.import",
+        "args": {
+          "artifact": {
+            "artifact": "sha256:a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea"
+          },
+          "importer": {
+            "textureType": "Sprite (2D and UI)"
+          },
+          "path": "Assets/Hollowmere/Items/Icons/MarshLantern.png"
+        },
+        "dependsOn": [],
+        "preconditions": "stamp",
+        "applyRequirement": "Live"
+      },
+      {
+        "opId": "op2",
+        "tool": "set",
+        "target": {
+          "kind": "Definition",
+          "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+          "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+          "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+          "path": "Assets/Hollowmere/Items/Lantern.asset",
+          "scope": "Definition",
+          "stamp": "sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e"
+        },
+        "args": {
+          "field": "icon",
+          "value": "Assets/Hollowmere/Items/Icons/MarshLantern.png"
+        },
+        "dependsOn": [
+          "op1"
+        ],
+        "preconditions": "stamp",
+        "applyRequirement": "Rebuild"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "a9388ceb898114bcf7f037bd054643efa18bc520d6297134abd1755ddcb524ea",
+        "name": "marsh_lantern_icon.png",
+        "mediaType": "image/png",
+        "bytes": 1188909,
+        "producer": {
+          "op": "generate.image",
+          "provider": "echo-images"
+        },
+        "role": "inventoryIcon",
+        "import": {
+          "type": "Sprite"
+        }
+      }
+    ],
+    "requirements": {
+      "max": "Rebuild",
+      "worldRebuild": true,
+      "compile": false,
+      "build": false
+    },
+    "links": {
+      "etosTasks": [
+        "t0449c2228731c1351e48b090"
+      ]
+    }
+  },
+  "problems": [
+    {
+      "code": "MediaImporterInvalid",
+      "message": "media_importer_invalid: invalid enum textureType",
+      "where": "op1"
+    }
+  ]
+}

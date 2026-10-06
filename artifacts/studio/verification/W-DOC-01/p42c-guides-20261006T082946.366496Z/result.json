@@ -1,0 +1,40 @@
+{
+  "label": "p42c-guides",
+  "revision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "host": "worlesenric",
+  "started": "2026-10-06T08:29:46.367972+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2c/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-DOC-01/p42c-guides-20261006T082946.366496Z/logs --label p42c-guides --timeout 1800 --results ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-DOC-01/p42c-guides-20261006T082946.366496Z/results.xml -- -runTests -testPlatform EditMode -testFilter P42c.Live.GuideTests",
+  "cwd": "~/wkspace/gc-studio/p4.2c/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-DOC-01/p42c-guides-20261006T082946.366496Z",
+  "queuedAtRevision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "executionStarted": "2026-10-06T08:29:46.369402+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T08:35:24.220158+00:00",
+  "seconds": 337.8536208970472,
+  "suites": {
+    "results.xml": {
+      "total": 3,
+      "counts": {
+        "Passed": 2,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42c.Live.Tests.dll",
+        "P42c",
+        "P42c.Live",
+        "P42c.Live.GuideTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "P42c.Live.GuideTests.R2_38_CreatorGuide_ImageSend",
+          "result": "Failed",
+          "detail": "Timeout value of 180000 ms was exceeded. If this is intended, increase the timeout value using a TimeoutAttribute. \n                 \n               \n               [GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50\n[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

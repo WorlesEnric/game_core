@@ -1,0 +1,75 @@
+{
+  "productRevision": "f787829289ea7402c08917a78553ff6c3838bda8",
+  "installedRelease": "0.1.0-426b3ead95f21815",
+  "workflows": [
+    {
+      "row": "W-AI-01",
+      "outcome": "partial",
+      "detail": "PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised.",
+      "evidence": [
+        "W-AI-01/p42c-robe2-*/README.md",
+        "W-AI-01/p42c-robe2-*/workflow/robe/apply-report.json",
+        "W-AI-01/p42c-robe2-*/workflow/icon/assign.json"
+      ]
+    },
+    {
+      "row": "W-AI-02",
+      "outcome": "partial",
+      "detail": "PARTIAL: the installed R4-C validator accepts the scoped move/patrol and ferryman candidates; both apply. The P3.2 driver has no in-Play NPC/nav assertion and tries to select Odd in Village. Ferryman Undo reports Undone but leaves the created NPC (roster 20\u219221\u219221); owner request retained.",
+      "evidence": [
+        "W-AI-02/p42c-text2-*/README.md",
+        "W-AI-02/p42c-text2-*/workflow/ferryman2/roster-undone.json",
+        "W-AI-02/p42c-text2-*/workflow/ferryman2/undo-result.json"
+      ]
+    },
+    {
+      "row": "W-AI-03",
+      "outcome": "partial",
+      "detail": "PARTIAL: the live candidate applies; R3-D conditional-dialogue preview hides the new line when unlit and shows it for shrine_lit=1. The existing fact is reused, so R3-F same-candidate fact creation is not exercised. This driver does not run dialogue in Play.",
+      "evidence": [
+        "W-AI-03/p42c-narrative-*/README.md",
+        "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-unlit.json",
+        "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-shrine-lit.json"
+      ]
+    },
+    {
+      "row": "W-AI-04",
+      "outcome": "pass",
+      "detail": "The installed-companion candidate applies ui.bind: objective-line.text \u2192 vm:hud.QuestStageTitle (R3-D/D10b). The resulting authored binding is retained; separate-Editor reopen preserves it and its undo/redo/final undo succeeds.",
+      "evidence": [
+        "W-AI-03/p42c-narrative-*/workflow/hud/candidate.json",
+        "W-AI-03/p42c-narrative-*/workflow/hud/describe-applied.json",
+        "W-AI-06/p42c-reopen-*/workflow/hud/redo-result.json"
+      ]
+    },
+    {
+      "row": "W-AI-05",
+      "outcome": "partial",
+      "detail": "PARTIAL: the live scoped quest.addObjective candidate applies a Collect requirement of 2 against the real OilFlask definition, exercising R3-F/R4-C validation. The legacy simulator uses oil_flask and refuses GP-QST-004; no in-Play consequence is established.",
+      "evidence": [
+        "W-AI-03/p42c-narrative-*/workflow/quest/candidate.json",
+        "W-AI-03/p42c-narrative-*/workflow/quest/apply-report.json",
+        "W-AI-03/p42c-narrative-*/workflow/quest/quest-simulate-applied.json"
+      ]
+    },
+    {
+      "row": "W-AI-06",
+      "outcome": "fail",
+      "detail": "Saved asset hashes and all three Applied journals survive a real Editor close/reopen. HUD and quest undo/redo/final undo pass; Odd undo refuses Conflict against the first operation\u2019s intermediate after-stamp although the second operation\u2019s final stamp matches. Final backToBefore=false; no forced undo or candidate edit.",
+      "evidence": [
+        "W-AI-06/p42c-reopen-*/README.md",
+        "W-AI-06/p42c-reopen-*/workflow/reopen/after-reopen.json",
+        "W-AI-06/p42c-reopen-*/workflow/odd-line/undo-result.json",
+        "W-AI-06/p42c-reopen-*/workflow/reopen/final.json"
+      ]
+    }
+  ],
+  "observedMediaCounts": {
+    "image": 3,
+    "tts": 5,
+    "describe": 0
+  },
+  "companionLedgerUsd": 0.40285558180000003,
+  "accountedUsd": 0.6028555818,
+  "guide": "Text Send passed. Image Send was accepted and produced a PNG; after the initial 180-second harness timeout, the same request was recovered without resubmission. Unity refuses its candidate: MediaImporterInvalid for textureType \"Sprite (2D and UI)\". The two deferred Send actions are recorded, but image import/assignment and the full novice NPC/dialogue walkthrough do not pass."
+}

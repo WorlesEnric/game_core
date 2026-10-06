@@ -75,9 +75,14 @@ def main():
         unity('W-VOICE-01','p42c-fresh-destructive',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits'],results='results.xml',
           environment={'GAMECORE_P42C_VOICE_ACCEPTANCE':'1','GAMECORE_P42C_VOICE_FIXTURE':str(fixture)})
         return
+    if a.lane=='guide-recover':
+        original=next(v.OUT.glob('W-DOC-01/p42c-guides-*/image-sent.json'))
+        request=json.loads(original.read_text())['requestId']
+        unity('W-DOC-01','p42c-image-recovered',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest'],results='results.xml',environment={'GAMECORE_P42C_GUIDE_REQUEST':request})
+        return
     if a.lane=='guides':
-        reserve('guides',{'image':1})
-        unity('W-DOC-01','p42c-guides',['-runTests','-testPlatform','EditMode','-testFilter','P42c.Live.GuideTests'],results='results.xml');return
+        reserve('guides',{'image':2})
+        unity('W-DOC-01','p42c-guides',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_CreatorGuide_TextSend|R2_38_CreatorGuide_ImageSend|P42_OPS_01_Installed3dRefusesUnconfigured'],results='results.xml');return
     if a.lane=='restart':
         reserve('restart',{})
         v.run('W-ETOS-06','p42c-companion-restart',['dotnet','test',str(TOOLS/'P42cReconnect/P42cReconnect.csproj'),

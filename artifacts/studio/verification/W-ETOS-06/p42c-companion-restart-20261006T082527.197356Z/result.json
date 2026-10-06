@@ -1,0 +1,26 @@
+{
+  "label": "p42c-companion-restart",
+  "revision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "host": "worlesenric",
+  "started": "2026-10-06T08:25:27.198449+00:00",
+  "command": "dotnet test ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/TOOLS/P42cReconnect/P42cReconnect.csproj --filter 'FullyQualifiedName~R2_38_W_ETOS_06_' --logger trx --results-directory ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2c",
+  "evidencePath": "artifacts/studio/verification/W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z",
+  "queuedAtRevision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "executionStarted": "2026-10-06T08:25:27.199682+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T08:25:39.196519+00:00",
+  "seconds": 11.99911900004372,
+  "suites": {
+    "trx/_worlesenric_2026-10-06_16_25_39.trx": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

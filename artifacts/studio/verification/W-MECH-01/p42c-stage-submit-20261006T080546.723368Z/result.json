@@ -1,0 +1,17 @@
+{
+  "label": "p42c-stage-submit",
+  "revision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "host": "worlesenric",
+  "started": "2026-10-06T08:05:46.725100+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2c/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-MECH-01/p42c-stage-submit-20261006T080546.723368Z/logs --label p42c-stage-submit --timeout 1800 -- -executeMethod P42c.Live.StageUi.Submit",
+  "cwd": "~/wkspace/gc-studio/p4.2c/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/p42c-stage-submit-20261006T080546.723368Z",
+  "queuedAtRevision": "9d8ab6b11d43a22b5b120d5b1e19e23e8d878778",
+  "executionStarted": "2026-10-06T08:05:46.727220+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T08:06:38.598449+00:00",
+  "seconds": 51.87498107901774,
+  "note": "UI submission receipt only. Service verdict, semantic findings and any test XML are under service/; successful submission is not stage/admission acceptance."
+}

@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01.
 
-Report timestamp: 2026-10-06T04:56:25.182889+00:00 UTC.
+Report timestamp: 2026-10-06T09:08:50.189381+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

@@ -20,13 +20,13 @@ namespace P42c.Live
 {
     public sealed class GuideTests
     {
-        [UnityTest]
+        [UnityTest, Order(0)]
         public IEnumerator R2_38_CreatorGuide_TextSend()
         {
             return Send("text", "Move this well one metre to the east.", false);
         }
 
-        [UnityTest]
+        [UnityTest, Order(1), Timeout(900000)]
         public IEnumerator R2_38_CreatorGuide_ImageSend()
         {
             return Send("image", "Generate exactly one small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background. Maximum image cost USD 0.25. Import the image and bind it to this item's icon. Do not generate additional variants.", true);
@@ -86,7 +86,36 @@ namespace P42c.Live
             context.Candidates.Reject(entry, "Guide walkthrough: reviewed candidate, explicit reject after Send.");
         }
 
-        [UnityTest]
+        [UnityTest, Timeout(900000)]
+        public IEnumerator R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest()
+        {
+            string output = Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE")!;
+            string id = Environment.GetEnvironmentVariable("GAMECORE_P42C_GUIDE_REQUEST")!;
+            EtosStudioSession.Start();
+            EditorSceneManager.OpenScene("Assets/Hollowmere/Regions/ThornwickVillage.unity");
+            EditorApplication.ExecuteMenuItem("GameCore/Studio/Open Studio");
+            var context = StudioUiSession.Context;
+            DateTime end = DateTime.UtcNow.AddSeconds(90);
+            while ((!context.Gateway.Status.AgentReady || !context.Candidates.CanRequestStage) && DateTime.UtcNow < end) yield return null;
+            Assert.That(context.Gateway.Status.AgentReady, Is.True);
+            var receive = context.Candidates.Receive(id);
+            while (!receive.IsCompleted) yield return null;
+            CandidateEntry candidate = receive.GetAwaiter().GetResult();
+            StudioCandidatesWindow.Open(candidate.Id);
+            for (int i = 0; i < 20; i++) yield return null;
+            bool previewOk = candidate.IsOpen && context.Candidates.Preview(candidate).Ok;
+            File.WriteAllText(Path.Combine(output, "image-outcome.json"), new JObject { ["requestId"] = id,
+                ["resubmitted"] = false, ["previewOk"] = previewOk, ["state"] = candidate.Stage.ToString(),
+                ["candidate"] = candidate.ChangeSet == null ? new JObject() : StudioJson.ToToken(candidate.ChangeSet),
+                ["problems"] = new JArray(candidate.Problems.Select(StudioJson.ToToken)) }.ToString());
+            UnityWindowCapture.CaptureStudio(Path.Combine(output, "image-result.png"), false);
+            Assert.That(previewOk, Is.True, "the existing candidate must pass the actual media importer policy");
+            Assert.That(candidate.ChangeSet.Artifacts!.Any(a => a.MediaType.StartsWith("image/", StringComparison.Ordinal)), Is.True, "worker delivered an image artifact");
+            Assert.That(candidate.ChangeSet.Operations.Any(o => o.Tool == "bind" || o.Tool == "assign" || (o.Tool == "set" && (string?)o.Args?["field"] == "icon")), Is.True, "candidate contains the requested icon assignment");
+            context.Candidates.Reject(candidate, "Recovered guide image request reviewed; no second Send or generation.");
+        }
+
+        [UnityTest, Order(2)]
         public IEnumerator P42_OPS_01_Installed3dRefusesUnconfigured()
         {
             EtosStudioSession.Start();

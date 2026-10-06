@@ -11,6 +11,7 @@ export PATH="$HOME/.dotnet:$HOME/.cargo/bin:$PATH"
 export GC_STUDIO_UNITY_SLOTS="${GC_STUDIO_UNITY_SLOTS:-3}" PROBE_RUNS=2
 case "${1:-all}" in
   p42c) shift; exec python3 "$root/artifacts/studio/verification/TOOLS/live-p42c.py" "$@" ;;
+  p42c-report) exec python3 "$root/artifacts/studio/verification/TOOLS/report_p42c.py" ;;
   final-report) exec python3 "$root/artifacts/studio/verification/TOOLS/report_p42b.py" ;;
   final-live) exec python3 "$root/artifacts/studio/verification/TOOLS/final_live.py" ;;
   live-install|final-views-tests|final-checks|final-timing|tariff-tests|final-guides|live-preflight|final-selection|release-build|release-binary|node-equivalence|guide-open|harness-checks|evidence-check|guide-stage) exec python3 "$root/artifacts/studio/verification/TOOLS/live_acceptance.py" "$@" ;;

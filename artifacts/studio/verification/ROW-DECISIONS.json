@@ -208,25 +208,30 @@
   },
   "W-ETOS-06": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: P0.5 documented supervisor restart and ledger replay. Companion supervisor restart is documented but guarded; etosd kill remains forbidden and is not replaced by socket reconnect.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Companion portion PASS: actual etos agent restart, same task, one cancellation outcome and exact four-event cursor replay; reconnect 143.1 ms, cancel ack 188.0 ms. Node-death portion remains BLOCKED: etosd stop/restart is forbidden, and a companion restart cannot prove delayed attribution after node death.",
     "patterns": [
-      "W-ETOS-06/p42b-live-prerequisite-*/README.md"
+      "W-ETOS-06/p42c-companion-restart-*/result.json",
+      "W-ETOS-06/p42c-companion-restart-*/live/dotnet-companion-restart.json",
+      "W-ETOS-06/p42c-companion-restart-*/live/dotnet-g-h-events-resume-cancel.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c restart",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "tests": [
+      "GameCore.Studio.Etos.Client.Tests.LiveTests.R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask"
+    ]
   },
   "W-ETOS-07": {
-    "status": "FAIL",
-    "note": "Legacy Unity media calls fail 404 for an unregistered local request ID. Direct TTS generation/download/import/undo and tamper refusal pass, but a new texture/import is not achieved.",
+    "status": "BLOCKED",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Installed R4 operator-priced image and published-priced TTS calls return verified imports; Sprite binding passes and 3D refuses honestly. The full media row remains partial: describe has no binding tariff in authenticated hello and is not called. No provider invoice is inferred from local ceiling charges.",
     "patterns": [
-      "W-ETOS-07/installed-media-*/README.md",
-      "W-ETOS-07/direct-tts-import-*/README.md",
-      "W-ETOS-07/direct-tts-import-*/tts-import.json",
-      "W-AI-07/installed-3d-refusal-tts-tamper-*/live/dotnet-f-i-refusals.json",
-      "W-ETOS-07/direct-image-price-refusal-*/README.md"
+      "INSTALL-P4.2c/hello-*/live/dotnet-a-hello.json",
+      "W-AI-01/p42c-robe2-*/workflow/icon/assign.json",
+      "W-DOC-01/p42c-guides-*/3d-refusal.json"
     ],
-    "command": "studio/tools/verify-all.sh media"
+    "command": "studio/tools/verify-all.sh p42c robe2\nstudio/tools/verify-all.sh p42c guides",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-ETOS-08": {
     "status": "BLOCKED",
@@ -246,84 +251,106 @@
     "command": "studio/tools/verify-all.sh reconnect"
   },
   "W-VOICE-01": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A voice readiness and final-only transcription.",
+    "status": "FAIL",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "R4-A microphone path delivers the move final and its explicit Send/apply/undo. Destructive speech yields no transcript in the reused session and a fresh ready-gated session (560 chunks, peak 0.15248). Request/tray/journal counts stay unchanged. Dedicated XML: 0 passed, 1 failed; listening/final status labels are not partial speech revisions.",
     "patterns": [
-      "W-VOICE-01/p42b-live-prerequisite-*/README.md"
+      "W-VOICE-01/p42c-voice2-*/workflow/voice/destructive-check.json",
+      "W-VOICE-01/p42c-fresh-destructive-*/results.xml",
+      "W-VOICE-01/p42c-fresh-destructive-*/voice-result.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: FAIL. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c voice2\nstudio/tools/verify-all.sh p42c voice-proof",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "tests": [
+      "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits"
+    ]
   },
   "W-AI-01": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-A texture/Sprite binding, R3-F tint, R4-A direct media, R4-C operator tariffs.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised.",
     "patterns": [
-      "W-AI-01/p42b-live-prerequisite-*/README.md"
+      "W-AI-01/p42c-robe2-*/README.md",
+      "W-AI-01/p42c-robe2-*/workflow/robe/apply-report.json",
+      "W-AI-01/p42c-robe2-*/workflow/icon/assign.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c robe2",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-02": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C indexed scope inference and R3 worker context.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "PARTIAL: the installed R4-C validator accepts the scoped move/patrol and ferryman candidates; both apply. The P3.2 driver has no in-Play NPC/nav assertion and tries to select Odd in Village. Ferryman Undo reports Undone but leaves the created NPC (roster 20\u219221\u219221); owner request retained.",
     "patterns": [
-      "W-AI-02/p42b-live-prerequisite-*/README.md"
+      "W-AI-02/p42c-text2-*/README.md",
+      "W-AI-02/p42c-text2-*/workflow/ferryman2/roster-undone.json",
+      "W-AI-02/p42c-text2-*/workflow/ferryman2/undo-result.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c text2",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-03": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F conditional dialogue/fact handoff.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "PARTIAL: the live candidate applies; R3-D conditional-dialogue preview hides the new line when unlit and shows it for shrine_lit=1. The existing fact is reused, so R3-F same-candidate fact creation is not exercised. This driver does not run dialogue in Play.",
     "patterns": [
-      "W-AI-03/p42b-live-prerequisite-*/README.md"
+      "W-AI-03/p42c-narrative-*/README.md",
+      "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-unlit.json",
+      "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-shrine-lit.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c narrative",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-04": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F HUD stage-title binding.",
+    "status": "PASS",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "The installed-companion candidate applies ui.bind: objective-line.text \u2192 vm:hud.QuestStageTitle (R3-D/D10b). The resulting authored binding is retained; separate-Editor reopen preserves it and its undo/redo/final undo succeeds.",
     "patterns": [
-      "W-AI-04/p42b-live-prerequisite-*/README.md"
+      "W-AI-03/p42c-narrative-*/workflow/hud/candidate.json",
+      "W-AI-03/p42c-narrative-*/workflow/hud/describe-applied.json",
+      "W-AI-06/p42c-reopen-*/workflow/hud/redo-result.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c narrative\nstudio/tools/verify-all.sh p42c reopen",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-05": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-F quest scope and tool validation.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "PARTIAL: the live scoped quest.addObjective candidate applies a Collect requirement of 2 against the real OilFlask definition, exercising R3-F/R4-C validation. The legacy simulator uses oil_flask and refuses GP-QST-004; no in-Play consequence is established.",
     "patterns": [
-      "W-AI-05/p42b-live-prerequisite-*/README.md"
+      "W-AI-03/p42c-narrative-*/workflow/quest/candidate.json",
+      "W-AI-03/p42c-narrative-*/workflow/quest/apply-report.json",
+      "W-AI-03/p42c-narrative-*/workflow/quest/quest-simulate-applied.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c narrative",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-06": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R2 durable history and R3 retained-artifact redo.",
+    "status": "FAIL",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Saved asset hashes and all three Applied journals survive a real Editor close/reopen. HUD and quest undo/redo/final undo pass; Odd undo refuses Conflict against the first operation\u2019s intermediate after-stamp although the second operation\u2019s final stamp matches. Final backToBefore=false; no forced undo or candidate edit.",
     "patterns": [
-      "W-AI-06/p42b-live-prerequisite-*/README.md"
+      "W-AI-06/p42c-reopen-*/README.md",
+      "W-AI-06/p42c-reopen-*/workflow/reopen/after-reopen.json",
+      "W-AI-06/p42c-reopen-*/workflow/odd-line/undo-result.json",
+      "W-AI-06/p42c-reopen-*/workflow/reopen/final.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c narrative\nstudio/tools/verify-all.sh p42c reopen",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-07": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C provider-before-budget refusal precedence.",
+    "status": "PASS",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Installed R4-C provider-before-budget 3D refusal: not_configured surfaced, no generation.",
     "patterns": [
-      "W-AI-07/p42b-live-prerequisite-*/README.md"
+      "W-DOC-01/p42c-guides-*/results.xml",
+      "W-DOC-01/p42c-guides-*/3d-refusal.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow."
+    "command": "studio/tools/verify-all.sh p42c guides",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "tests": [
+      "P42c.Live.GuideTests.P42_OPS_01_Installed3dRefusesUnconfigured"
+    ]
   },
   "W-PLUG-01": {
     "status": "BLOCKED",
@@ -534,14 +561,20 @@
     "command": "studio/tools/verify-all.sh stage"
   },
   "W-MECH-01": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-A app-origin signed intake, R3-C verdict authority, R2 semantic sandbox and tri-state admission smoke.",
+    "status": "FAIL",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Installed R4-A/R3-C app-origin stage verifies through the authenticated service and enables Admit; the visible badge still says not staged. Docker cold 142.260 s / warm 62.905 s; each XML has 33 EditMode + 2 PlayMode passes. Actual Play Admit refuses catalog_missing because Entry.Verify opens Editor scenes during Play. No capture/restore/smoke/undo follows. Negative fixture is refused with Admit disabled (14 lexical hits).",
     "patterns": [
-      "W-MECH-01/p42b-live-prerequisite-*/README.md"
+      "W-MECH-01/p42c-signed-receipts-*/result.json",
+      "W-MECH-01/p42c-stage-submit-20261006T075911.180322Z/service/job.json",
+      "W-MECH-01/p42c-stage-submit-20261006T080546.723368Z/service/job.json",
+      "W-MECH-01/p42c-stage-review-20261006T081247.078280Z/play-verification.json",
+      "W-MECH-01/p42c-stage-review-20261006T081247.078280Z/admit.json",
+      "W-MECH-01/p42c-play-catalog-diagnostic-*/catalog-preflight.json",
+      "W-MECH-01/p42c-stage-review-negative-*/panel-verdict.json"
     ],
-    "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
-    "historical": "P4.2 disposition retained in git history: FAIL. Old component evidence does not establish a final-main live workflow."
+    "command": "See artifacts/studio/verification/TOOLS/README-P4.2c.md: stage-submit, watch-stage-p42c.py, stage-review.",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-GAME-01": {
     "status": "BLOCKED",
@@ -582,12 +615,13 @@
   },
   "W-GAME-07": {
     "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "etosd stop/kill is expressly forbidden. The non-destructive network-namespace prerequisite fails with Operation not permitted; companion supervisor restart cannot prove stopped-node player operation.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence.",
     "patterns": [
       "W-GAME-07/p42b-network-namespace-prerequisite-*/README.md"
     ],
-    "command": "studio/tools/verify-all.sh node-equivalence"
+    "command": "studio/tools/verify-all.sh node-equivalence",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-GAME-08": {
     "status": "PASS",
@@ -621,15 +655,24 @@
     "command": "studio/tools/verify-all.sh clean"
   },
   "W-DOC-01": {
-    "status": "BLOCKED",
-    "baseline": "1752ca8a",
-    "note": "Fresh final-main guide: Boot scene and Open Studio menu pass (1/1, PNG on private :99/llvmpipe). Text-edit and image-generate/bind steps cannot start before the guarded R4 companion activation. No novice NPC/dialogue completion is claimed.",
+    "status": "FAIL",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
+    "note": "Text Send passed. Image Send was accepted and produced a PNG; after the initial 180-second harness timeout, the same request was recovered without resubmission. Unity refuses its candidate: MediaImporterInvalid for textureType \"Sprite (2D and UI)\". The two deferred Send actions are recorded, but image import/assignment and the full novice NPC/dialogue walkthrough do not pass.",
     "patterns": [
-      "W-DOC-01/p42b-fresh-guide-open-*/README.md",
-      "W-DOC-01/p42b-fresh-guide-open-*/walkthrough.json",
-      "W-DOC-01/p42b-fresh-guide-open-*/open-studio.png"
+      "W-DOC-01/p42c-guides-*/results.xml",
+      "W-DOC-01/p42c-guides-*/text-sent.json",
+      "W-DOC-01/p42c-guides-*/text-outcome.json",
+      "W-DOC-01/p42c-guides-*/image-sent.json",
+      "W-DOC-01/p42c-image-recovered-*/image-outcome.json",
+      "W-DOC-01/p42c-image-recovered-*/results.xml"
     ],
-    "command": "studio/tools/verify-all.sh guide-open\nstudio/tools/verify-all.sh final-live"
+    "command": "studio/tools/verify-all.sh p42c guides\nstudio/tools/verify-all.sh p42c guide-recover",
+    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "tests": [
+      "P42c.Live.GuideTests.R2_38_CreatorGuide_TextSend",
+      "P42c.Live.GuideTests.R2_38_CreatorGuide_ImageSend",
+      "P42c.Live.GuideTests.R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest"
+    ]
   },
   "W-DOC-02": {
     "status": "FAIL",
@@ -644,11 +687,12 @@
   },
   "W-E2E-01": {
     "status": "BLOCKED",
-    "note": "The integrated tree has real live-scope, app-origin stage, media-ownership and graphical/voice failures plus explicitly unqualified budgets; all rows are disposed, not all accepted.",
+    "note": "P4.2c ran the installed final-tree companion and disposed the requested rows, but live admission, history and destructive voice have retained failures; several workflow assertions and node-death scenarios remain unqualified. Inherited rows keep their original revision-specific evidence; this is not all-row product acceptance.",
     "patterns": [
       "STATIC/final-evidence-regressions-*/README.md"
     ],
-    "command": "studio/tools/verify-all.sh all\n# Display/node jobs are separate documented subcommands."
+    "command": "studio/tools/verify-all.sh all\n# Display/node jobs are separate documented subcommands.",
+    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8"
   },
   "W-VIEW-01": {
     "status": "PASS",
