@@ -15,11 +15,14 @@ while True:
             if (p / 'comm').read_text().strip() != 'Unity':
                 continue
             args = (p / 'cmdline').read_bytes()
-            parent = next(line.split()[1] for line in (p / 'status').read_text().splitlines() if line.startswith('PPid:'))
+            status = (p / 'status').read_text().splitlines()
+            parent = next(line.split()[1] for line in status if line.startswith('PPid:'))
+            process_state = next(line.split()[1] for line in status if line.startswith('State:'))
             rows.append({'pid': int(p.name), 'parentPid': int(parent),
                          'assetImportWorker': b'AssetImportWorker' in args,
                          'thisProject': str(repo / '.evidence/live/games/hollowmere').encode() in args,
-                         'batchMode': b'-batchmode' in args.lower(), 'emptyArguments': not args})
+                         'batchMode': b'-batchmode' in args.lower(), 'emptyArguments': not args,
+                         'processState': process_state})
         except (OSError, StopIteration):
             pass
     with out.open('a') as stream:
