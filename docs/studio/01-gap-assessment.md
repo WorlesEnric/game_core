@@ -5,7 +5,7 @@ Every "current implementation" cell was read in source in this session or by a r
 citations were spot-checked. Nothing here is a plan; the plan is [06-implementation-plan.md](06-implementation-plan.md).
 The requirement IDs (`SR-…`) are stable and are the keys used by the verification matrix
 ([07-verification-matrix.md](07-verification-matrix.md)) and the completion report
-([11-completion-report.md](11-completion-report.md)).
+([12-completion-report.md](12-completion-report.md)).
 
 Status vocabulary (one per row): **absent** · **partial** · **implemented-unverified** · **exercised**.
 "Exercised" means the delivered revision's workflow was run and its evidence is linked in column *Evidence*.
@@ -180,3 +180,79 @@ Budgets are defined before optimization in [07-verification-matrix.md §2](07-ve
 | 3D mesh generation provider (Replicate/Tripo/Meshy style `predictions`) | **No credential available.** | SR-4.7 (3D part only): implemented against the `predictions` family, marked **blocked** until a key is supplied. Not replaced by a fake. |
 | Interactive Unity on the Linux display | Available after restarting the GNOME shell; the licence validates. | none |
 | Owner approval for host changes (service user for etos, systemd units) | Not yet given. Default: run etosd under the existing user in a user systemd unit, state under `~/.local/share/etos`, no new OS users. | SR-11.2 uses the default; hardening with separate users is documented as optional. |
+
+## 15. Status at completion
+
+As of P4.2d (2026-10-06): the original assessment above is historical and unchanged except for its report link. Current platform baseline is **etos main ≥ e4067fd (contains 278ef9c)**; the original 6c2c3f4 references describe the assessment, not the installation requirement. ([P4.3-final §Baseline](packets/P4.3-final-docs.md#baseline))
+
+Closing status is evidence coverage: **done** means all mapped acceptance rows PASS; **partial** means a FAIL or mixed PASS/BLOCKED remains; **blocked** means the mapped acceptance evidence is BLOCKED or absent. This does not claim a same-revision rerun. The sources are [SUMMARY](../../artifacts/studio/verification/SUMMARY.md) and [ROWS](../../artifacts/studio/verification/ROWS.json). Historical aliases W-REC-02 and W-PLUG-08/09 map to W-ETOS-09 and W-PLUG-10/12 respectively; views include all six rows.
+
+| SR row | Status at completion | Acceptance evidence path and verdict |
+|---|---|---|
+| SR-1.1 | partial | [W-UI-01](../../artifacts/studio/verification/W-UI-01/README.md): FAIL |
+| SR-1.2 | blocked | [W-UI-02](../../artifacts/studio/verification/W-UI-02/README.md): BLOCKED |
+| SR-1.3 | blocked | [W-UI-03](../../artifacts/studio/verification/W-UI-03/README.md): BLOCKED |
+| SR-1.4 | blocked | [W-EDIT-04](../../artifacts/studio/verification/W-EDIT-04/README.md): BLOCKED |
+| SR-1.5 | partial | [W-AI-02](../../artifacts/studio/verification/W-AI-02/README.md): FAIL |
+| SR-1.6 | done | [W-EDIT-05](../../artifacts/studio/verification/W-EDIT-05/README.md): PASS |
+| SR-1.7 | done | [W-VIEW-01](../../artifacts/studio/verification/W-VIEW-01/README.md): PASS; [W-VIEW-02](../../artifacts/studio/verification/W-VIEW-02/README.md): PASS; [W-VIEW-03](../../artifacts/studio/verification/W-VIEW-03/README.md): PASS; [W-VIEW-04](../../artifacts/studio/verification/W-VIEW-04/README.md): PASS; [W-VIEW-05](../../artifacts/studio/verification/W-VIEW-05/README.md): PASS; [W-VIEW-06](../../artifacts/studio/verification/W-VIEW-06/README.md): PASS |
+| SR-1.8 | blocked | [W-EDIT-06](../../artifacts/studio/verification/W-EDIT-06/README.md): BLOCKED |
+| SR-2.1 | blocked | [W-PERSIST-02](../../artifacts/studio/verification/W-PERSIST-02/README.md): BLOCKED |
+| SR-2.2 | blocked | [W-MODEL-02](../../artifacts/studio/verification/W-MODEL-02/README.md): BLOCKED |
+| SR-2.3 | done | [W-TOOL-01](../../artifacts/studio/verification/W-TOOL-01/README.md): PASS |
+| SR-2.4 | blocked | [W-ETOS-04](../../artifacts/studio/verification/W-ETOS-04/README.md): BLOCKED |
+| SR-3.1 | blocked | [W-EDIT-01](../../artifacts/studio/verification/W-EDIT-01/README.md): BLOCKED |
+| SR-3.2 | done | [W-EDIT-02](../../artifacts/studio/verification/W-EDIT-02/README.md): PASS |
+| SR-3.3 | partial | [W-EDIT-03](../../artifacts/studio/verification/W-EDIT-03/README.md): BLOCKED; [W-REC-01](../../artifacts/studio/verification/W-REC-01/README.md): PASS |
+| SR-3.4 | done | [W-EDIT-05](../../artifacts/studio/verification/W-EDIT-05/README.md): PASS |
+| SR-3.5 | done | [W-EDIT-07](../../artifacts/studio/verification/W-EDIT-07/README.md): PASS |
+| SR-3.6 | partial | [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md): FAIL |
+| SR-4.1 | blocked | [W-ETOS-01](../../artifacts/studio/verification/W-ETOS-01/README.md): BLOCKED |
+| SR-4.2 | blocked | [W-ETOS-02](../../artifacts/studio/verification/W-ETOS-02/README.md): BLOCKED |
+| SR-4.3 | blocked | [W-ETOS-04](../../artifacts/studio/verification/W-ETOS-04/README.md): BLOCKED |
+| SR-4.4 | blocked | [W-ETOS-05](../../artifacts/studio/verification/W-ETOS-05/README.md): BLOCKED |
+| SR-4.5 | blocked | [W-ETOS-06](../../artifacts/studio/verification/W-ETOS-06/README.md): BLOCKED |
+| SR-4.6 | blocked | [W-ETOS-07](../../artifacts/studio/verification/W-ETOS-07/README.md): BLOCKED |
+| SR-4.7 | partial | [W-AI-01](../../artifacts/studio/verification/W-AI-01/README.md): BLOCKED; [W-AI-02](../../artifacts/studio/verification/W-AI-02/README.md): FAIL; [W-AI-03](../../artifacts/studio/verification/W-AI-03/README.md): PASS; [W-AI-04](../../artifacts/studio/verification/W-AI-04/README.md): PASS; [W-AI-05](../../artifacts/studio/verification/W-AI-05/README.md): PASS; [W-AI-06](../../artifacts/studio/verification/W-AI-06/README.md): FAIL |
+| SR-4.8 | partial | [W-VOICE-01](../../artifacts/studio/verification/W-VOICE-01/README.md): FAIL |
+| SR-4.9 | blocked | [W-ETOS-08](../../artifacts/studio/verification/W-ETOS-08/README.md): BLOCKED |
+| SR-4.10 | blocked | [W-GAME-07](../../artifacts/studio/verification/W-GAME-07/README.md): BLOCKED |
+| SR-5.1 | done | [W-PLUG-12](../../artifacts/studio/verification/W-PLUG-12/README.md): PASS |
+| SR-5.2 | blocked | [W-PLUG-10](../../artifacts/studio/verification/W-PLUG-10/README.md): BLOCKED |
+| SR-5.3 | done | [W-PLUG-12](../../artifacts/studio/verification/W-PLUG-12/README.md): PASS |
+| SR-5.4 | blocked | [W-AI-01](../../artifacts/studio/verification/W-AI-01/README.md): BLOCKED |
+| SR-5.5 | done | [W-AI-04](../../artifacts/studio/verification/W-AI-04/README.md): PASS |
+| SR-6.1 | blocked | [W-PLUG-01](../../artifacts/studio/verification/W-PLUG-01/README.md): BLOCKED |
+| SR-6.2 | blocked | [W-PLUG-02](../../artifacts/studio/verification/W-PLUG-02/README.md): BLOCKED |
+| SR-6.3 | blocked | [W-PLUG-03](../../artifacts/studio/verification/W-PLUG-03/README.md): BLOCKED |
+| SR-6.4 | done | [W-PLUG-04](../../artifacts/studio/verification/W-PLUG-04/README.md): PASS |
+| SR-6.5 | done | [W-PLUG-05](../../artifacts/studio/verification/W-PLUG-05/README.md): PASS |
+| SR-6.6 | done | [W-PLUG-06](../../artifacts/studio/verification/W-PLUG-06/README.md): PASS |
+| SR-6.7 | done | [W-PLUG-07](../../artifacts/studio/verification/W-PLUG-07/README.md): PASS |
+| SR-6.8 | blocked | [W-PLUG-08](../../artifacts/studio/verification/W-PLUG-08/README.md): BLOCKED |
+| SR-6.9 | done | [W-PLUG-09](../../artifacts/studio/verification/W-PLUG-09/README.md): PASS |
+| SR-6.10 | blocked | [W-GAME-05](../../artifacts/studio/verification/W-GAME-05/README.md): BLOCKED |
+| SR-6.11 | blocked | [W-PLUG-11](../../artifacts/studio/verification/W-PLUG-11/README.md): BLOCKED |
+| SR-6.12 | partial | [W-PERSIST-01](../../artifacts/studio/verification/W-PERSIST-01/README.md): PASS; [W-PERSIST-02](../../artifacts/studio/verification/W-PERSIST-02/README.md): BLOCKED; [W-PERSIST-03](../../artifacts/studio/verification/W-PERSIST-03/README.md): PASS |
+| SR-7.1 | done | [W-KERNEL-01](../../artifacts/studio/verification/W-KERNEL-01/README.md): PASS |
+| SR-7.2 | done | [W-CLEAN-01](../../artifacts/studio/verification/W-CLEAN-01/README.md): PASS |
+| SR-7.3 | done | [W-CLEAN-02](../../artifacts/studio/verification/W-CLEAN-02/README.md): PASS |
+| SR-8.1 | blocked | [W-GAME-01](../../artifacts/studio/verification/W-GAME-01/README.md): BLOCKED |
+| SR-8.2 | done | [W-UI-04](../../artifacts/studio/verification/W-UI-04/README.md): PASS |
+| SR-8.3 | blocked | [W-ETOS-09](../../artifacts/studio/verification/W-ETOS-09/README.md): BLOCKED |
+| SR-9.1 | blocked | [W-REC-03](../../artifacts/studio/verification/W-REC-03/README.md): BLOCKED |
+| SR-9.2 | blocked | [W-ETOS-06](../../artifacts/studio/verification/W-ETOS-06/README.md): BLOCKED |
+| SR-9.3 | partial | [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md): FAIL |
+| SR-10.1 | blocked | [W-GAME-01](../../artifacts/studio/verification/W-GAME-01/README.md): BLOCKED |
+| SR-10.2 | done | [W-UI-05](../../artifacts/studio/verification/W-UI-05/README.md): PASS |
+| SR-10.3 | done | [W-EDIT-08](../../artifacts/studio/verification/W-EDIT-08/README.md): PASS |
+| SR-10.4 | blocked | [W-PLUG-01](../../artifacts/studio/verification/W-PLUG-01/README.md): BLOCKED |
+| SR-10.5 | done | [W-GAME-08](../../artifacts/studio/verification/W-GAME-08/README.md): PASS |
+| SR-10.6 | blocked | [W-ETOS-05](../../artifacts/studio/verification/W-ETOS-05/README.md): BLOCKED; [W-ETOS-06](../../artifacts/studio/verification/W-ETOS-06/README.md): BLOCKED |
+| SR-10.7 | done | [W-EDIT-08](../../artifacts/studio/verification/W-EDIT-08/README.md): PASS |
+| SR-11.1 | done | [W-TOOL-02](../../artifacts/studio/verification/W-TOOL-02/README.md): PASS |
+| SR-11.2 | blocked | [W-HOST-01](../../artifacts/studio/verification/W-HOST-01/README.md): BLOCKED |
+| SR-11.3 | done | [W-GAME-06](../../artifacts/studio/verification/W-GAME-06/README.md): PASS |
+| SR-12.1 | done | [W-DOC-01](../../artifacts/studio/verification/W-DOC-01/README.md): PASS |
+| SR-12.2 | partial | [W-DOC-02](../../artifacts/studio/verification/W-DOC-02/README.md): FAIL |
+| SR-12.3 | blocked | [W-E2E-01](../../artifacts/studio/verification/W-E2E-01/README.md): BLOCKED |

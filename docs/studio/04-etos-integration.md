@@ -1,7 +1,6 @@
 # GameCore Studio: ETOS integration contract and operational setup
 
-**Status:** contract for implementation (2026-10-04) against etos `6c2c3f4`. Every route and limit below was read
-in etos source (citations are etos-relative). The companion agent `gamecore-studio` is the only holder of an etos
+**Status:** final reference as of P4.2d (2026-10-06), against **etos main ≥ e4067fd (contains 278ef9c)**. The owner records this upstream merge/push on 2026-10-06; retained build digests remain pinned to their original build. ([P4.3-final §Baseline](packets/P4.3-final-docs.md#baseline)) The companion agent `gamecore-studio` is the only holder of an etos
 *agent* key; Unity holds an *app* key. Nothing here bypasses etos's authority model, and nothing in Unity talks
 to a model provider.
 
@@ -11,14 +10,14 @@ to a model provider.
 |---|---|---|---|
 | `gamecore-studio` | installed agent (Rust process supervised by etosd) | `etos agent install studio/etos/agent` (key issued by etosd, rotated on every install/upgrade; `crates/etnode/src/agents/mod.rs:418-439`, `crates/etapi/src/apps.rs:918-943`) | grants: `logger, query, changes, tasks, files, topics, ops, providers, realtime, proxy, services` |
 | `gamecore-unity` | installed app + paired key | `etos app install studio/etos/app` (declares `uses = ["gamecore-studio"]`, `routes = ["proxy","query","changes","entrances"]`), then `etos app pair gamecore-unity --approve --out ~/.config/gamecore-studio/app-key.json` (`crates/etapi/src/apps.rs:483-598`; `uses` only via install, `crates/etcli/src/apps.rs:173-188`) | proxied HTTP/WebSocket to the companion, read-only `query` of its own tables |
-| Studio workers | etos container workers | `etos worker create gc-designer --image localhost/gc-designer:current --network allowlist:...` before agent install; the agent manifest's `[[worker]]` then only sets model/instructions/tools (`crates/etagents/src/manifest.rs:150-171`; image/network preserved on install, `agents/mod.rs:224-259`) | run tasks opened by the companion |
+| Studio workers | etos container workers | `etos worker create gc-designer --image localhost/gc-designer:current --network offline` before agent install; the agent manifest's `[[worker]]` then only sets model/instructions/tools (`crates/etagents/src/manifest.rs:150-171`; image/network preserved on install, `agents/mod.rs:224-259`) | run tasks opened by the companion |
 
 The agent process inherits etosd's environment (`crates/etnode/src/agents/process.rs:293-296`), including provider
 keys; the companion never logs its environment and never forwards it to Unity.
 
 ## 2. Unity ↔ companion protocol (through etos)
 
-Base: `http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http` with `Authorization: Bearer <app key>`; etos adds
+Base: `http://127.0.0.1:7410/api/v1/agents/gamecore-studio/http` with `Authorization: Bearer <app key>` and `X-GameCore-Project: <stable SHA-256>`; etos adds
 `X-Etos-App` and `X-Etos-Proxy-Token`, strips `Authorization`, and pipes bodies and upgrades
 (`crates/etagents/src/proxy.rs:172-293`). The companion registers its loopback endpoint with
 `PUT /agent/endpoint` on every connect (token and endpoint are in memory and reset on etosd restart,
@@ -27,22 +26,24 @@ ticket: `POST /tickets {path}` → `?etos_ticket=` (single use, 30 s, `crates/et
 
 | Method + path (relative to the base) | Purpose | Notes |
 |---|---|---|
-| `GET /v1/hello` | version, capabilities, provider status (`image`, `tts`, `voice`, `3d` each `live\|not_configured\|blocked`) | polled on Studio open |
-| `POST /v1/requests` | submit an `EditRequest {changeSetId, intent, selection, contextSlice, toolCatalogRevision, worker, attachments[]}` | idempotent on `changeSetId`; returns `{requestId, taskId?, state}` |
+| `GET /v1/hello` | version, capabilities, provider status (`image`, `tts`, `voice`, `3d`, `describe` each `live\|not_configured\|blocked\|unknown`) | polled on Studio open |
+| `POST /v1/requests` | submit an `EditRequest {changeSetId, intent, selection, contextSlice, toolCatalogRevision, toolCatalog?, worker?, attachments[]}` | idempotent on `changeSetId`; returns `{requestId, taskId?, state}` |
 | `GET /v1/requests/{id}` | state, task status, outcome | mirrors etos `TaskInfo.status` verbatim plus companion states |
 | `POST /v1/requests/{id}/cancel` | cancel | calls `POST /tasks/{task}/cancel`; result is the etos status |
-| `GET /v1/requests?after=` | list for recovery after reload | durable ledger |
+| `GET /v1/requests?after=&limit=` | list for recovery after reload | durable ledger |
 | `GET /v1/candidates/{id}` | the validated change set and artifact manifest | artifacts referenced by sha256 |
-| `GET /v1/artifacts/{sha256}` | bytes | served from the content store, digest verified on write |
+| `GET /v1/artifacts/{sha256}` | bytes | served from the content store, digest verified on write and read |
 | `POST /v1/index/delta` | semantic index delta (nodes, edges, removals, revision) | companion logs `gc_*` traces |
-| `POST /v1/ops/generate` | direct media op for a tool (`asset.generate`): `{op: image\|tts\|3d, spec, max_cost_usd, changeSetId}` | runs `POST /ops/generate.image` etc.; returns artifact refs |
+| `POST /v1/ops/generate` | direct media op for a tool (`asset.generate`): `{op: image\|tts\|3d\|describe, spec, max_cost_usd, changeSetId?}` | runs `POST /ops/generate.image` etc.; returns artifact refs |
 | `WS /v1/events?after=` | request/task/candidate/voice events, ordered, with cursor | reconnect with `after` |
 | `WS /v1/voice` | duplex: client → `{type:"audio", seq, pcm16 base64}` (≤ 24 KiB raw = 32 KiB base64 per frame) / `{type:"stop"}`; server → transcript revisions (`role` always `user`; `final` only on `done`), speech boundaries, errors | one session per Studio instance |
-| `POST /v1/stage` / `GET /v1/stage/{job}` | stage a mechanism package; verdict | §6 |
+| `POST /v1/stage` / `GET /v1/stage/{job}` | stage a retained candidate; job state | §6 |
+| `POST /v1/stage/app-candidate` | authenticated app-origin candidate retention and staging | signed envelope; §6 |
+| `GET /v1/stage/{job}/verdict` / `POST /v1/stage/{job}/verify` | fetch signed passing record / verify exact record | §6 |
 
 Error bodies are etos-shaped `{code, message, hint}`; etos refusal codes pass through unchanged
 (`not_configured`, `outcome_unknown`, `request_rejected`, `budget_exhausted`, `too_large`, `agent_starting`,
-`forbidden`, …). The companion adds `candidate_invalid`, `stale_context`, `stage_failed`, `ledger_conflict` and the
+`forbidden`, …). The exact route and state sources are [api.rs](../../studio/agent/src/api.rs) and [model.rs](../../studio/agent/src/model.rs). The companion adds `candidate_invalid`, `stale_context`, `stage_failed`, `ledger_conflict` and the
 transport-level `bad_request`, `not_found`, `internal`, `transport`, `protocol`, `invalid`, `backpressure`
 (the last five are the SDK's own error kinds, passed through by name). Request outcome codes shown in the tray are
 `candidate`, `task_failed`, `waiting`, `needs_clarification`, `cancelled`, `unresolved`. `/v1/hello` reports providers
@@ -68,27 +69,28 @@ UI label for etos `unknown` and `outcome_unknown`, never a success.
 
 | Worker | Image | Network | Model alias | Used for | Inputs (`/inputs`) | Output |
 |---|---|---|---|---|---|---|
-| `gc-designer` | `localhost/gc-designer:current` (python3, jq, imagemagick) | `allowlist:` (none needed; ops run on the node) | `default` → `echo/claude-opus-5-5` | configure/compose change sets: entities, dialogue, quests, rules, UI bindings, placement; asset generation via `etos generate image`, `etos tts` | `request.md`, `selection.json`, `index-slice.json`, `tool-catalog.json`, `frame.png` | `/outputs/changeset.json` (+ artifacts) |
-| `gc-mechanic` | `localhost/gc-mechanic:current` (.NET 8 SDK, prewarmed NuGet, GameCore rules DLLs) | `allowlist:` | `default` | new mechanism packages (`mechanism.propose`) with `dotnet test` run inside the container before output | same + `package-template/`, `kernel-contracts.md` | `/outputs/package/**`, `/outputs/proposal.json` |
+| `gc-designer` | `localhost/gc-designer:current` (python3, jq, imagemagick) | `offline` (ops run on the node) | `echo/gpt-6-sol` | configure/compose change sets: entities, dialogue, quests, rules, UI bindings, placement; asset generation via `etos generate image`, `etos tts` | `request.md`, `selection.json`, `index-slice.json`, `tool-catalog.json`, `frame.png` | `/outputs/changeset.json` (+ artifacts) |
+| `gc-mechanic` | `localhost/gc-mechanic:current` (.NET 8 SDK, prewarmed NuGet, GameCore rules DLLs) | `offline` | `echo/gpt-6-sol` | new mechanism packages (`mechanism.propose`) with `dotnet test` run inside the container before output | same + `package-template/`, `kernel-contracts.md` | `/outputs/package/**`, `/outputs/proposal.json` |
 
 Worker instructions (`studio/etos/agent/workers/*.md`) specify: read the tool catalog first; produce only
 operations in the catalog; never invent object ids; cite the `indexRevision`; stop and return `status: needs-clarification`
 with at most one question when two interpretations differ materially; never claim an asset you did not write to
 `/outputs`. The companion rejects a change set that violates the schema **or the tool catalog** (unknown tool, missing required
-args, disallowed target kind, candidate-mode fields) and sends one re-ask as a new task with `parent`.
+args, disallowed target kind, candidate-mode fields) and may send one schema re-ask as a new task, linked in the companion ledger (etos TaskRequest has no native parent).
 
 ## 5. Media and voice
 
-| Capability | Provider config (`ops.toml`) | etos op | Live status (2026-10-04) |
-|---|---|---|---|
-| Image generation | `family="image" kind="openai-images" base_url="https://api.echo-coding.com/v1" credential="env:ECHO_API_KEY" model="gpt-image-2" options={quality="low"}` | `POST /ops/generate.image` (blocks until done or `max_wait`; `crates/etops/src/service.rs:465-483`) | live (verified by direct call) |
-| Describe (vision) | `family="describe" kind="chat"` on Echo `gpt-5.6-sol` | `POST /ops/describe {input: ref}` | configured, to verify in W0 |
-| TTS (voice lines) | **new kind** `bailian-tts` (`family="tts"`, DashScope `multimodal-generation` with `qwen3-tts-flash`, downloads the returned wav URL) | `POST /ops/tts {text, voice}` | requires the SADR-005 extension; DashScope endpoint verified live |
-| Voice input | `[[realtime]] name="studio-voice" kind="bailian-omni" model="qwen3-omni-flash-realtime" credential="env:BAILIAN_API_KEY" turn_detection="semantic_vad"` | `GET /realtime/connect?provider=studio-voice`, `RealtimeConfig{audio_format:"pcm16", sample_rate_hz:24000}`, never `response_create` (transcript only) | adapter present; verify live in W0 |
-| 3D generation | `family="3d" kind="predictions"` | `POST /ops/generate.3d` | **blocked**: no provider credential; UI shows `not_configured` |
-| File transcription | not used (voice is realtime) | — | — |
+| Capability | Provider | P4.2d qualification |
+|---|---|---|
+| Image | Echo `echo-images`, `gpt-image-2` | Operator tariff USD 0.20/image; prior P4.2c generation/import receipts, full robe texture assignment remains BLOCKED. |
+| Describe | Echo chat describe | Available but unpriced; no P4.2d call. |
+| TTS | `bailian-tts`, `qwen3-tts-flash` | Published tariff USD 0.0000114682/billable character; two P4.2d calls. |
+| Voice | `studio-voice`, Bailian realtime | Ready-gated self-test transcribes both fixtures; later workflow driver FAIL. |
+| 3D | No configured provider | `not_configured`, no generation; W-AI-07 PASS is refusal coverage. |
 
-SDK: `Ops::generate` used to post `generate` instead of `generate.image`; fixed in the pinned etos `278ef9c`
+These are observed states, not provider guarantees. Echo Claude credentials were revoked; workers use `echo/gpt-6-sol`. ([P4.2d §Host, installation and authority / Ledger and caps](packets/P4.2d-live-rerun.md), [agent manifest](../../studio/etos/agent/agent.toml))
+
+SDK: `Ops::generate` used to post `generate` instead of `generate.image`; fixed in the pinned etos **etos main ≥ e4067fd (contains 278ef9c)**
 (`Ops::generate(family, input)` posts `generate.<family>`), and the companion now uses it (P0.5).
 
 Operation timeout: the companion runs each media op on its own client timeout, `ops_timeout_secs` (default 300 s,
@@ -101,7 +103,7 @@ between Unity and the companion must allow a request this long.
 `max_cost_usd` goes only to `generate.image`, `tts` and `generate.3d`. etops' `describe` input has no such field and
 refuses unknown fields, so the companion omits it and refuses `describe` itself when the ceiling is 0 (P0.5).
 
-Partial speech: transcript events carry `revision` and `done`; only `done=true` text is placed in the prompt box.
+Partial speech: upstream SDK events use `done`; companion transcript frames use `revision` and optional `final:true`. Only final user text enters the prompt box. ([voice.rs wire contract](../../studio/agent/src/voice.rs))
 No voice utterance triggers a tool directly.
 
 ### Tariffs and budgets
@@ -125,9 +127,7 @@ or weakening its parser. `install-state.py` parses the annotations as TOML and d
 provider; `echo/gpt-image-2` is not an operation-provider alias. TTS uses `bailian-tts` with model
 `qwen3-tts-flash`. `models.toml` token prices do not establish a total image-generation tariff.
 
-No Echo list price is claimed. The image template contains `per_unit = "SET_BY_OPERATOR"` and an
-operator note placeholder. `install.sh` refuses this template before any installation write. The
-operator must set a positive total per-image estimate (including input) and replace the note. A
+No Echo list price is claimed. The image template has the owner-declared USD 0.20 total estimate; describe still has a zero/SET_BY_OPERATOR placeholder and refuses independently. A
 TTS-only apply, `studio/etos/install.sh --apply-prices --only tts`, leaves other prices untouched.
 The TTS source is [Alibaba's Mainland Qwen3-TTS-Flash list price](https://www.alibabacloud.com/help/en/model-studio/model-pricing),
 $0.114682 per 10,000 billable characters, checked 2026-10-06.
@@ -139,12 +139,7 @@ include `data.tariff`; successful media responses include `charge: {tariff, quan
 The companion retains that binding charge in SQLite `media_charges`, keyed by the operation's
 idempotency key. This is local ceiling accounting, distinct from the provider's eventual invoice.
 
-Older installed binaries and the pinned node have no tariff reload route. Editing files alone does
-not update those processes. Only the integrator may activate a reviewed R4 release and restart the
-companion (`ETOS_ROOT="$HOME/.local/share/etos-studio" "$HOME/.local/opt/etos/bin/etos" agent restart gamecore-studio`),
-and schedule `systemctl --user restart etosd.service` for changed node prices. R4-C does not run either
-restart. The live-run guard must be clear before a live template apply or the single cheap proof in
-`studio/etos/verify-r4-tts.sh`; this probe refuses before spending if R4 tariff provenance is absent.
+P4.2d activated immutable companion `0.1.0-e8a72b2d6eb3aad9` and verified its checksum. File edits do not establish that an older binary or node loaded prices. This documentation packet does not restart either service or call providers; a later operator must verify authenticated hello before a priced call. ([P4.2d §Host, installation and authority](packets/P4.2d-live-rerun.md#host-installation-and-authority))
 
 ## 6. Staging (code admission)
 
@@ -169,6 +164,8 @@ The HMAC binds job/app/project/source/catalog, package/proposal digests, all sev
 `confinement`, `coldCache`, and the evidence reference. The installation key stays in companion
 state with mode 0600. Unity trusts the authenticated transport and verifier, never candidate or
 CAS verdict bytes. Partial, failed, missing-step and unauthenticated records cannot authorize Admit.
+
+App-origin staging uses `CompanionClient.StageAppCandidateAsync`: `POST /v1/stage/app-candidate` carries `{payloadBase64, signature}`, with HMAC over `gamecore.stage.app-candidate/1\n` plus exact UTF-8 payload bytes. The payload contains `app`, `request`, `changeSet`, `toolCatalog`, `files[{bytesBase64}]`; the request contains the four stage identity fields. `X-GameCore-Stage-Key` is transient and authenticated against the node, never logged/persisted. Worker candidates already in the ledger use `StageAsync`. ([app_candidate.rs](../../studio/agent/src/stage/app_candidate.rs), [CompanionClient.cs](../../Packages/com.gamecore.studio.etos/Client/CompanionClient.cs))
 
 Minimal slots run scan, checkers, dotnet (including mandatory Roslyn semantic analysis), Unity
 EditMode, PlayMode smoke, determinism, and budget. The warm budget is 360 seconds; cold cache runs
@@ -206,37 +203,29 @@ Workers read `/etos/rg` (bounded view: 200 per kind, 7 days, `crates/etrg/src/vi
 
 ## 8. Operational setup (host)
 
-All files under `studio/etos/`; `install.sh` is idempotent and prints what it changed.
+Use [10-install-build-run.md](10-install-build-run.md) for the host sequence. The Studio node is `~/.local/share/etos-studio`, API `127.0.0.1:7410`, broker `172.17.0.1:7411`, UI `127.0.0.1:7400`. It runs as the existing user. `bin/gamecore-studio` is the manifest command; current installation copies an immutable release rather than following a mutable build symlink. ([P0.1 §1](packets/P0.1-host-etos.md), [P0.5 §R3-C and follow-ups](packets/P0.5-companion.md), [agent manifest](../../studio/etos/agent/agent.toml))
 
-1. **Build etos** at the pinned commit (`etos.lock`: commit `6c2c3f4` + the SADR-005 patch commit, sha256 of the
-   three binaries): `cargo build --release -p etnode -p etcli`, the static musl `etos` in an Alpine container
-   (`docs/operator.md:19-29`), installed to `~/.local/opt/etos/bin`.
-2. **Init** `~/.local/share/etos` with `etosd init --name studio --owner <user>` and write the templated
-   `etos.toml` (Docker runtime, `[api] listen="127.0.0.1:7410"`, `[broker] listen="172.17.0.1:7411"`,
-   `authority="172.17.0.1:7411"`; Linux needs the explicit authority because `host.docker.internal` is not
-   added, `crates/etnode/src/daemon.rs:283`), `models.toml` (Echo endpoint with `env:ECHO_API_KEY`; models
-   `echo/claude-opus-5-5` alias `default`, `echo/gpt-6-sol` alias `fast`), `ops.toml` (§5).
-3. **Images**: build `localhost/etos-default:latest` from `image/`, then `studio/images/gc-designer` and
-   `gc-mechanic` (Debian base, no etos layer; the node adds it).
-4. **Workers**: `etos worker create gc-designer --image … --network allowlist:` and `gc-mechanic` likewise;
-   `etos grant gc-mechanic credential 172.17.0.1 --source file:… --scheme bearer` only if the staging HTTP
-   endpoint is enabled for workers (not in V1 of this product; staging is companion-local).
-5. **Agent**: `cargo build --release` in `studio/agent`, `etos agent install studio/etos/agent --link` (manifest
-   `[process] command = "../../agent/target/release/gamecore-studio"`), `etos agent list` shows `ready`.
-6. **App**: `etos app install studio/etos/app` then `etos app pair gamecore-unity --approve --out ~/.config/gamecore-studio/app-key.json`.
-7. **Service**: a user systemd unit `etosd.service` (`ExecStart=… etosd run`, `Environment` from
-   `~/.config/gamecore-studio/providers.env`, mode 0600, never in the repo), enabled with `loginctl enable-linger`.
-8. **Verify**: `studio/etos/verify.sh` runs: hello through the proxy with the app key; one `generate.image`;
-   one `tts`; a 3-second realtime session with a synthetic tone (expects `ready` and `speech_*` or a clean
-   close); one designer task that returns a schema-valid empty change set. The transcript is saved to
-   `artifacts/studio/environment/etos-verify-<date>.md`.
+The required upstream line is **etos main ≥ e4067fd (contains 278ef9c)**. `studio/etos/etos.lock` is machine-written build provenance (commit plus binary digests), not editable documentation; its original 278ef9c build must not be relabeled as rebuilt e4067fd. Vendor source follows that recorded build. ([lock](../../studio/etos/etos.lock), [P4.3-final §Baseline](packets/P4.3-final-docs.md#baseline))
 
-Secrets: provider keys are read by etosd from its environment file; the Unity app key file is outside the repo;
-`UserSettings/GameCoreStudio.json` holds only the file path and the base URL. Logs redact `etk_` and `ett_` tokens.
+Provider keys stay in operator-owned environment references; Unity settings store only the key-file path and node URL. Logs/UI/evidence use the shared redaction policy, including token families and recursive secret-key values. No raw credentials are printed. ([R2-A §R2 fixes](packets/R2-A-core-edit-recovery.md#r2-fixes), [R2-D §R2 fixes](packets/R2-D-studio-etos-client.md#r2-fixes))
 
 ## 9. What is not done through etos (and why)
 
 - Picking, previews, undo and local application: editor-local, no model (D2).
-- Staging compile/tests: run by the companion on the host, because they need Unity and the game project; etos
+- Staging compile/tests: scheduled by the host companion inside its Docker sandbox with trusted project inputs; etos
   workers only produce the package.
 - Player builds and launches: Unity build pipeline on the host.
+
+## 10. Timeouts, cursors and protocol sources
+
+| Boundary | Default / contract | Source |
+|---|---|---|
+| Ordinary C# HTTP | 60 s | [EtosClientOptions](../../Packages/com.gamecore.studio.etos/Client/EtosClientOptions.cs) |
+| C# media / artifact | 360 s / 180 s | Same source |
+| Companion task open / media | 180 s / 300 s | [config.rs](../../studio/agent/src/config.rs) |
+| Stage lane | 360 s warm; first cold grace 1,800 s; recorded allowance, never silently widened | [pipeline.rs cold_budget](../../studio/agent/src/stage/pipeline.rs) |
+| Legacy stage process wrapper | 900 s default; distinct from lane budget | [config.rs](../../studio/agent/src/config.rs) |
+| Admission target | 90 s, not met by P4.2d | [P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission) |
+| Events | ack cursor after main-thread handle; replay without resubmission | [R2-D §R2 fixes](packets/R2-D-studio-etos-client.md#r2-fixes) |
+
+The exact companion member definitions are [model.rs](../../studio/agent/src/model.rs); route/method/header enforcement is [api.rs](../../studio/agent/src/api.rs). Hello negotiates minimum client contract 2/revision 4635746 and exposes providers, workers and tariff provenance. JSON schemas under [schemas](schemas/) define the authoring payloads, not every HTTP envelope. Schema drift must be fixed by the generating owner, never by hand-editing those files. ([P4.2d §Host, installation and authority](packets/P4.2d-live-rerun.md#host-installation-and-authority))

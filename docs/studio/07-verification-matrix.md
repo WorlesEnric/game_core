@@ -1,22 +1,20 @@
 # GameCore Studio: verification matrix and budgets
 
-**Status:** budgets fixed before implementation (2026-10-04); rows filled by the verification owner (P4.2) on the
-integrated revision. A row is **exercised** only with linked evidence produced on the delivered revision; historical
-reports never count. Deterministic doubles are allowed for isolated tests and never as the only evidence for an
-external integration. Repeated measurements are capped at two runs (owner rule).
+**Status:** as of P4.2d (2026-10-06): **33 PASS / 29 BLOCKED / 6 FAIL, 68 rows**, all disposed. Untouched rows retain revision-specific evidence; there is no all-row same-revision acceptance. `exercised`, `blocked(prereq)`, `failed` map to PASS, BLOCKED, FAIL in [SUMMARY](../../artifacts/studio/verification/SUMMARY.md) and [ROWS](../../artifacts/studio/verification/ROWS.json). No row status is changed by this documentation pass. The authorized B-FRAME clarification below records both VSync states without choosing the owner's rule.
 
 ## 1. Evidence conventions
 
 `artifacts/studio/<area>/<row-id>/` holds: `README.md` (what was run, revision sha, host, date, result),
 transcripts, screenshots or recordings (`.png`/`.mp4` under 20 MB, otherwise an external path with sha256), and
-machine-readable results where they exist (`result.json`). `tools/studio/check_studio_evidence.py` checks that
-every row marked exercised has a folder with a README naming the revision.
+machine-readable results where they exist (`result.json`). The retained [verification runner](../../artifacts/studio/verification/TOOLS/verify.py) and row receipts preserve source revisions and results; the originally planned `tools/studio/check_studio_evidence.py` was not delivered under that name.
+
+<a id="2-budgets"></a>
 
 ## 2. Budgets (local latency separated from model/network latency)
 
 | ID | Budget | How measured | Pass rule |
 |---|---|---|---|
-| B-FRAME | Graphical Linux player, 1080p, RTX 4060 Ti: p95 frame time ≤ 16.7 ms over a 10-minute playthrough; no frame > 100 ms outside the first second after a region transition; transition hitch ≤ 250 ms | in-game frame logger (`-frameLog`); **PASS (default, VSync off)** — [P3.1d evidence](../../artifacts/studio/evidence/P3.1d/PACKET.md), `f67a6de3`: p95 **2.778 / 2.856 ms**, >100 ms **0 / 0**; **FAIL (VSync on)**: p95 **18.062 / 18.089 ms**, >100 ms **0 / 0**. All four routes, transitions and save windows pass; VSync is unspecified by this row, so both states are retained | both conditions, 1 of 2 runs may be re-run once |
+| B-FRAME | Graphical Linux player, 1080p, RTX 4060 Ti: p95 frame time ≤ 16.7 ms over a 10-minute playthrough; no frame > 100 ms outside the first second after a region transition; transition hitch ≤ 250 ms | in-game frame logger (`-frameLog`); **PASS (default, VSync off)**: [P3.1d evidence](../../artifacts/studio/evidence/P3.1d/PACKET.md), `f67a6de3`: p95 **2.778 / 2.856 ms**, >100 ms **0 / 0**; **FAIL (VSync on)**: p95 **18.062 / 18.089 ms**, >100 ms **0 / 0**. All four routes, transitions and save windows pass; VSync is unspecified by this row, so both states are retained | both conditions, 1 of 2 runs may be re-run once |
 | B-SELECT | Hover/click resolution ≤ 16 ms; marquee over 500 candidates ≤ 50 ms | `Stopwatch` in the picking service, Editor log | p95 over 100 picks and 100 marquee queries, twice; [CORE-PICK evidence](../../Packages/com.gamecore.studio.core/Tests/CORE-PICK/PACKET.md) |
 | B-APPLY | Single-target change set apply ≤ 200 ms; region-wide (all NPCs in Marsh) ≤ 1 s; measured without model time | edit engine timers in the journal (`timings`) | p95 over 20 applies |
 | B-COMPOSE | Kernel prepare for one composition edit in the reference world (≤ 1.5k simulated targets) ≤ 300 ms in the Editor | bridge telemetry | p95 over 20 edits; the 10k-target issue stays open and is reported, not re-budgeted |
@@ -115,7 +113,7 @@ Status: `planned` → `exercised` / `blocked(prereq)` / `failed`. Only the verif
 ### Game, build, clean project, docs (W-GAME, W-CLEAN, W-DOC, W-E2E)
 | Row | Scenario | Requirement | Status | Evidence |
 |---|---|---|---|---|
-| W-GAME-01 | 10-minute graphical playthrough recording with frame log | SR-8.1, B-FRAME | blocked(prereq) | [BLOCKED evidence](../../artifacts/studio/verification/W-GAME-01/README.md): The P3.1 recording is reused, as requested. It predates P3.1b and failed B-FRAME; P3.1b’s later 640×480 llvmpipe measurements cannot qualify final-tree RTX/1080p performance. |
+| W-GAME-01 | 10-minute graphical playthrough recording with frame log | SR-8.1, B-FRAME | blocked(prereq) | [BLOCKED recording evidence](../../artifacts/studio/verification/W-GAME-01/README.md): reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open. |
 | W-GAME-05 | Full flow menu→save→load→ending→restart in the player | SR-6.10 | blocked(prereq) | [BLOCKED evidence](../../artifacts/studio/verification/W-GAME-05/README.md): Editor full-quest endings and save/load pass; a current standalone menu→save→load→ending→restart playthrough is not re-recorded under the explicit recording-reuse instruction. |
 | W-GAME-06 | Build log + sha256 + V1 gate transcript on the same revision | SR-11.3 | exercised | [PASS evidence](../../artifacts/studio/verification/W-GAME-06/README.md): Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget. |
 | W-GAME-07 | Player runs with etosd stopped and no network | SR-4.10 | blocked(prereq) | [BLOCKED evidence](../../artifacts/studio/verification/W-GAME-07/README.md): The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence. |
@@ -133,6 +131,19 @@ Status: `planned` → `exercised` / `blocked(prereq)` / `failed`. Only the verif
 | Unity Editor | 6000.0.75f1, Linux x86_64, interactive on X11 (OpenGL Core) | W-UI-01 |
 | Player | StandaloneLinux64 IL2CPP, URP, graphical (RTX 4060 Ti, driver 595.84) | W-GAME-01 |
 | Convenience build | StandaloneOSX Mono (unqualified) | reported only |
-| etos | `6c2c3f4` + SADR-005 patch, Rust 1.97.1, Docker 29 | W-HOST-01 |
+| etos | etos main ≥ e4067fd (contains 278ef9c), Rust 1.97.1, Docker 29 | W-HOST-01 |
 | Providers | Echo (chat, images), DashScope (realtime, TTS) | W-HOST-01 |
 | .NET | 8.0.425 | W-TOOL-02 |
+
+## 5. B-FRAME and recording clarification
+
+| Evidence profile | Observation | Disposition |
+|---|---|---|
+| P3.1 recording | Predates P3.1b fixes; retains its original failing frame evidence. | W-GAME-01 recording remains BLOCKED for final-tree qualification. |
+| P3.1b `406f00c1`, offscreen llvmpipe | p95 1.284 ms; 0 frames >100 ms; belfry transition 7.4 ms. | Headless improvement, not real-GPU qualification. |
+| P3.1d `f67a6de3`, RTX 4060 Ti 1080p, VSync OFF | Two runs p95 2.778 / 2.856 ms, 0 frames >100 ms. | PASS against literal rule. |
+| Same, VSync ON | Two runs p95 18.062 / 18.089 ms (60 Hz lock interval plus jitter), 0 frames >100 ms. | FAIL against literal 16.7 ms rule. |
+
+([P3.1b note including §P3.1d](packets/P3.1b-frame-time.md), [W-GAME-01](../../artifacts/studio/verification/W-GAME-01/README.md))
+
+P3.1d closes the missing real-GPU measurement; it does not replace the old recording. **OPEN OWNER DECISION:** define B-FRAME measurement with VSync off, or restate the budget as one refresh interval plus tolerance. The existing budget text does not specify VSync, so both results remain visible. There is no W-REC recording row in the matrix: W-REC-01 is crash recovery and W-REC-03 cancellation; the recording maps to W-GAME-01. ([P4.3-final §Left open](packets/P4.3-final-docs.md#left-open))
