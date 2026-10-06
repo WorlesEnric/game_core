@@ -24,9 +24,19 @@ namespace Hollowmere.R7_B.Promotion
         private const string Village = "Assets/Hollowmere/Regions/ThornwickVillage.unity";
         private const string BackupKey = "R7B.Promotion.Backup";
         private const string StateKey = "R7B.Promotion.State";
+        private const string WitnessKey = "R7B.Promotion.Witness";
 
         [UnityTest]
         public IEnumerator W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse()
+        {
+            Prepare();
+            yield return new EnterPlayMode();
+            yield return ExerciseRuntime();
+            yield return new ExitPlayMode();
+            VerifyAuthored();
+        }
+
+        private static void Prepare()
         {
             string project = Directory.GetParent(Application.dataPath)!.FullName;
             string state = Path.Combine(Path.GetTempPath(), "r7b-promotion-" + Guid.NewGuid().ToString("N"));
@@ -36,17 +46,26 @@ namespace Hollowmere.R7_B.Promotion
             File.Copy(Village, backup);
             SessionState.SetString(BackupKey, backup);
             EditorSceneManager.OpenScene(Village, OpenSceneMode.Single);
-            AuthoredEntity original = Entities().Single(e => e.name == "Well");
+            AuthoredEntity original = Entities().Single(e => e.AuthoringId == "e3baad87-1923-4823-82fe-69c3cc399bf4");
             string id = original.AuthoringId;
             Vector3 before = original.transform.position;
             Vector3 destination = before + new Vector3(1, 0, 0);
             Quaternion beforeRotation = original.transform.rotation;
+            SessionState.SetString(WitnessKey, new JObject
+            {
+                ["id"] = id, ["before"] = Vector(before), ["destination"] = Vector(destination),
+                ["rotation"] = new JArray(beforeRotation.x, beforeRotation.y, beforeRotation.z, beforeRotation.w),
+            }.ToString());
             using (StudioRuntime runtime = Runtime(project, state))
             {
                 runtime.Engine.RuntimeMoves.CaptureAuthoredState();
             }
 
-            yield return new EnterPlayMode();
+        }
+
+        private static IEnumerator ExerciseRuntime()
+        {
+            RestoreWitness(out string project, out string state, out string id, out Vector3 before, out Vector3 destination, out _);
             AsyncOperation load = EditorSceneManager.LoadSceneAsyncInPlayMode("Assets/Hollowmere/Boot/Boot.unity", new LoadSceneParameters(LoadSceneMode.Single));
             while (!load.isDone) yield return null;
             yield return WorkflowPlayChecks.StartGame();
@@ -85,12 +104,23 @@ namespace Hollowmere.R7_B.Promotion
                     Assert.That(view.ApplyToAuthored(runtimeId), Is.True);
                     Assert.That(context.Edits.ApplyToAuthored(runtimeId, out ChangeSet? promoted, out _), Is.True);
                     promotedId = promoted!.Id;
+                    JObject witness = JObject.Parse(SessionState.GetString(WitnessKey, "{}"));
+                    witness["runtimeId"] = runtimeId;
+                    witness["promotedId"] = promotedId;
+                    SessionState.SetString(WitnessKey, witness.ToString());
                     Assert.That(promotedId, Is.Not.EqualTo(runtimeId));
                     Assert.That(runtime.Journal.Read(promotedId)!.EffectiveState, Is.EqualTo(ChangeSetState.Candidate));
                     Assert.That(live.transform.position, Is.EqualTo(before));
                 }
             }
-            yield return new ExitPlayMode();
+        }
+
+        private static void VerifyAuthored()
+        {
+            RestoreWitness(out string project, out string state, out string id, out Vector3 before, out Vector3 destination, out Quaternion beforeRotation);
+            JObject saved = JObject.Parse(SessionState.GetString(WitnessKey, "{}"));
+            string runtimeId = (string)saved["runtimeId"]!;
+            string promotedId = (string)saved["promotedId"]!;
             EditorSceneManager.OpenScene(Village, OpenSceneMode.Single);
             using (StudioRuntime runtime = Runtime(project, state))
             {
@@ -124,6 +154,18 @@ namespace Hollowmere.R7_B.Promotion
                 File.WriteAllText(Path.Combine(evidence, "authored-undone.json"), StudioJson.Serialize(runtime.Journal.Read(promotedId)!));
             }
         }
+        private static void RestoreWitness(out string project, out string state, out string id, out Vector3 before,
+            out Vector3 destination, out Quaternion rotation)
+        {
+            project = Directory.GetParent(Application.dataPath)!.FullName;
+            state = SessionState.GetString(StateKey, string.Empty);
+            JObject witness = JObject.Parse(SessionState.GetString(WitnessKey, "{}"));
+            id = (string)witness["id"]!;
+            JArray b = (JArray)witness["before"]!, d = (JArray)witness["destination"]!, r = (JArray)witness["rotation"]!;
+            before = new Vector3((float)b[0], (float)b[1], (float)b[2]);
+            destination = new Vector3((float)d[0], (float)d[1], (float)d[2]);
+            rotation = new Quaternion((float)r[0], (float)r[1], (float)r[2], (float)r[3]);
+        }
         private const string commandName = "Changes / Journal / Apply to authored";
         private static StudioRuntime Runtime(string project, string state) => StudioRuntime.Create(new StudioRuntimeOptions
         {
@@ -147,6 +189,7 @@ namespace Hollowmere.R7_B.Promotion
             if (Directory.Exists(state)) Directory.Delete(state, true);
             SessionState.EraseString(BackupKey);
             SessionState.EraseString(StateKey);
+            SessionState.EraseString(WitnessKey);
         }
     }
 }
