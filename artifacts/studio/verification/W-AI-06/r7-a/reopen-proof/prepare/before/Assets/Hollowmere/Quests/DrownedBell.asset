@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0777d9c87449d79026fe3345e29259, type: 3}
+  m_Name: DrownedBell
+  m_EditorClassIdentifier: 
+  authoringId: 0db698bb-d2d3-45b7-94cb-1bd81e90e6c2
+  contentStamp: dd9cb8b954ff4a3b58138393ecbbca8a4f323125d4bf500779a3fba529787e32
+  title: The Drowned Bell
+  stages:
+  - title: Rumour
+    description: Healer Maren speaks of the Drowned Bell, silent since the flood.
+    next: 1
+  - title: A light for the marsh
+    description: Blackmere is dark. Find a lantern, buy one at the inn, or craft
+      one at the tinker's bench.
+    next: 2
+  - title: The crossing
+    description: 'Get past Warden Hale''s gate, then cross the black water: earn
+      Odd''s favour or mend the old punt.'
+    next: 3
+  - title: The drowned belfry
+    description: Ring the bell with its clapper, or let it sleep.
+    next: -1
+  objectives:
+  - stage: 0
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: c0058a7ebedf01ab3996bdb19fb6b8a5, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Hear Maren out
+    legacyTarget: {fileID: 0}
+  - stage: 1
+    kind: 1
+    graph: {fileID: 0}
+    item: {fileID: 11400000, guid: fffb111048bcd5d6ea31bc57defa7c6d, type: 2}
+    region: {fileID: 0}
+    fact: {fileID: 0}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Get a lantern (find, buy or craft one)
+    legacyTarget: {fileID: 0}
+  - stage: 2
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: 1af0f99dbdb793a73928cf5583252642, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Pass Warden Hale's gate
+    legacyTarget: {fileID: 0}
+  - stage: 2
+    kind: 2
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 11400000, guid: 832904035182b2712b3f6c244c515dea, type: 2}
+    fact: {fileID: 0}
+    targetEntityId: 
+    required: 1
+    branch: 0
+    text: Cross to the Drowned Belfry
+    legacyTarget: {fileID: 0}
+  - stage: 3
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: fc5608aaa89ff5044be68348ead91db5, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 1
+    text: Let the bell sleep
+    legacyTarget: {fileID: 0}
+  - stage: 3
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: 5434300b245f3b8018f9a8e1acdaa8bd, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 2
+    text: Ring the Drowned Bell
+    legacyTarget: {fileID: 0}
+  - stage: 3
+    kind: 4
+    graph: {fileID: 0}
+    item: {fileID: 0}
+    region: {fileID: 0}
+    fact: {fileID: 11400000, guid: 3cd06f4ce798f222b91f9221eb7fb0d7, type: 2}
+    targetEntityId: 
+    required: 1
+    branch: 3
+    text: Ring the bell with the shrine alight
+    legacyTarget: {fileID: 0}
+  rewards:
+  - kind: 2
+    item: {fileID: 0}
+    fact: {fileID: 11400000, guid: d1df5cf368cc4f5198b9f871e51a4f47, type: 2}
+    legacyTarget: {fileID: 0}
+    value: 1
+    branch: 2
+  - kind: 2
+    item: {fileID: 0}
+    fact: {fileID: 11400000, guid: d1df5cf368cc4f5198b9f871e51a4f47, type: 2}
+    legacyTarget: {fileID: 0}
+    value: 1
+    branch: 3
+  failConditions: {fileID: 11400000, guid: 0cd1b102e3608ea06b309455eb3ae89d, type: 2}
+  branchNames:
+  - let it sleep
+  - ring the bell
+  - free the echo
+  prerequisites: []
+  completionActions: {fileID: 0}
+  failActions: {fileID: 0}

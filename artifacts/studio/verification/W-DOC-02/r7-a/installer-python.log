@@ -12,7 +12,7 @@ healthy: 0.1.0-c3227e7967025f28; previous release retained: 0.1.0-c3227e7967025f
 -docker_image = "gamecore-stage:6000.0.75f1-v1"
 -# Degraded environments can explicitly choose confinement = "host".
 -# There is no automatic fallback. Admission UI must warn for host verdicts.
-+"command" = "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/stage.sh"
++"command" = "~/wkspace/gc-studio/r7-a/studio/stage/stage.sh"
 +"confinement" = "docker"
 +"docker_image" = "gamecore-stage:6000.0.75f1-v1"
  

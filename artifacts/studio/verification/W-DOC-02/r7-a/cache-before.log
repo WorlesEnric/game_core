@@ -12,11 +12,11 @@ test_R7_A_RequireBothOfflineUnityInputsBeforeProvisioning (r7_cache_tests.CacheT
 ERROR: test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs (r7_cache_tests.CacheTests.test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 175, in test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 175, in test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs
     self.run_provisioner(args + self.seed_arguments())
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
     cache.main()
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
+  File "~/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
   File "/usr/lib/python3.12/argparse.py", line 1911, in parse_args
     self.error(msg % ' '.join(argv))
   File "/usr/lib/python3.12/argparse.py", line 2677, in error
@@ -29,11 +29,11 @@ SystemExit: 2
 ERROR: test_R7_A_ProvisionExactVersionAndPreserveColdGrace (r7_cache_tests.CacheTests.test_R7_A_ProvisionExactVersionAndPreserveColdGrace)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 128, in test_R7_A_ProvisionExactVersionAndPreserveColdGrace
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 128, in test_R7_A_ProvisionExactVersionAndPreserveColdGrace
     self.run_provisioner(args + self.seed_arguments())
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
     cache.main()
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
+  File "~/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
   File "/usr/lib/python3.12/argparse.py", line 1911, in parse_args
     self.error(msg % ' '.join(argv))
   File "/usr/lib/python3.12/argparse.py", line 2677, in error
@@ -50,7 +50,7 @@ SystemExit: 2
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 198, in test_R7_A_InvalidSeedNeverPassesProvisioning
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 198, in test_R7_A_InvalidSeedNeverPassesProvisioning
     with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
 AssertionError: "cache_invalid" does not match "2"
 
@@ -62,7 +62,7 @@ SystemExit: 2
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
     with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
 AssertionError: "cache_invalid" does not match "2"
 
@@ -74,7 +74,7 @@ SystemExit: 2
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
     with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
 AssertionError: "cache_invalid" does not match "2"
 
@@ -86,7 +86,7 @@ SystemExit: 2
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
     with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
 AssertionError: "cache_invalid" does not match "2"
 
@@ -98,7 +98,7 @@ SystemExit: 2
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 161, in test_R7_A_RejectLinkedVersionedRootBeforeWrites
+  File "~/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 161, in test_R7_A_RejectLinkedVersionedRootBeforeWrites
     with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
 AssertionError: "cache_invalid" does not match "2"
 

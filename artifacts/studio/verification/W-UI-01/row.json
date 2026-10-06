@@ -1,14 +1,16 @@
 {
-  "status": "FAIL",
-  "note": "Graphical walking/picking captured and 1280\u00d7720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path.",
-  "command": "studio/tools/verify-all.sh ui\nstudio/tools/verify-all.sh graphics",
+  "status": "PASS",
+  "note": "Ordinary graphical Open Studio connects automatically without pairing; HUD walking moves committed world.posX/posZ 7.636 m in 3.040 s. Runtime NPC view tags now override the authored GameBoot ancestor; Select shows Maren and MarenEntity in the actual definition card. Graphical R2-29 key delivery and focus-reset regressions pass.",
+  "command": "bash artifacts/studio/verification/W-UI-01/r7-a/run.sh",
   "row": "W-UI-01",
   "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
   "requirement": "SR-1.1",
-  "reportedAt": "2026-10-06T15:29:44.361181+00:00",
+  "reportedAt": "2026-10-06T21:13:46.405116+00:00",
   "evidence": [
+    "W-UI-01/r7-a/README.md",
     "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
     "W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md",
     "GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md"
-  ]
+  ],
+  "baseline": "1a462f88"
 }
