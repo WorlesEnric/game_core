@@ -1,0 +1,33 @@
+{
+    "name": "Hollowmere.R7_B.Model.Tests",
+    "rootNamespace": "Hollowmere.R7_B.Model",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Gameplay.Contracts",
+        "GameCore.Gameplay.Dialogue",
+        "GameCore.Gameplay.Inventory",
+        "GameCore.Gameplay.Logic",
+        "GameCore.Gameplay.Quest",
+        "GameCore.Rules.Gameplay",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
