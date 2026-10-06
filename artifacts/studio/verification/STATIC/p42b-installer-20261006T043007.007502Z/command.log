@@ -1,0 +1,62 @@
+test_r3_d14_templates_prices_and_apply_diff (test_install.Installer.test_r3_d14_templates_prices_and_apply_diff) ... ok
+test_r3_d15_copy_is_immutable_atomic_switch_and_rollback (test_install.Installer.test_r3_d15_copy_is_immutable_atomic_switch_and_rollback) ... ok
+test_r3_d24_register_preserves_config_and_matches_client_identity (test_install.Installer.test_r3_d24_register_preserves_config_and_matches_client_identity) ... ok
+test_r4_operator_declaration_and_provider_binding (test_install.Installer.test_r4_operator_declaration_and_provider_binding) ... FAIL
+test_r4_placeholder_refuses_before_any_write (test_install.Installer.test_r4_placeholder_refuses_before_any_write) ... FAIL
+
+======================================================================
+FAIL: test_r4_operator_declaration_and_provider_binding (test_install.Installer.test_r4_operator_declaration_and_provider_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2b/studio/etos/tests/test_install.py", line 137, in test_r4_operator_declaration_and_provider_binding
+    with self.assertRaisesRegex(ValueError, "tariff_placeholder"):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_r4_placeholder_refuses_before_any_write (test_install.Installer.test_r4_placeholder_refuses_before_any_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2b/studio/etos/tests/test_install.py", line 128, in test_r4_placeholder_refuses_before_any_write
+    self.assertNotEqual(result.returncode, 0)
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.916s
+
+FAILED (failures=2)
+healthy: 0.1.0-b3bb10554403b0c2; previous release retained: /tmp/tmpbs6euzg5/build-clone
+healthy: 0.1.0-ab08e3559633fe5b; previous release retained: 0.1.0-b3bb10554403b0c2
+unchanged: release 0.1.0-ab08e3559633fe5b (checksums verified)
+healthy: 0.1.0-ab08e3559633fe5b; previous release retained: 0.1.0-ab08e3559633fe5b
+--- /tmp/tmp90soffc2/agents/gamecore-studio/state/config.toml
++++ /tmp/tmp90soffc2/agents/gamecore-studio/state/config.toml
+@@ -15,10 +15,10 @@
+ # Copy the required keys into the companion state directory's config.toml.
+ # This example does not itself alter the installed service configuration.
+ [stage]
+-confinement = "docker"
+-docker_image = "gamecore-stage:6000.0.75f1-v1"
+-# Degraded environments can explicitly choose confinement = "host".
+-# There is no automatic fallback. Admission UI must warn for host verdicts.
++"command" = "~/wkspace/gc-studio/p4.2b/studio/stage/stage.sh"
++"confinement" = "docker"
++"docker_image" = "gamecore-stage:6000.0.75f1-v1"
+
+ [stage.projects]
+-# "<stable SHA-256 project id>" = "/absolute/path/to/Unity/project"
++"eafdeccdcf03b5e593aad4d3fbcc97abe976b738c9c10c8fc1d74ca62bafe41b" = "/tmp/tmp90soffc2/project space"
++
+
+registered eafdeccdcf03b5e593aad4d3fbcc97abe976b738c9c10c8fc1d74ca62bafe41b -> /tmp/tmp90soffc2/project space
+registered eafdeccdcf03b5e593aad4d3fbcc97abe976b738c9c10c8fc1d74ca62bafe41b -> /tmp/tmp90soffc2/project space
+--- /tmp/tmp90soffc2/agents/gamecore-studio/state/config.toml
++++ /tmp/tmp90soffc2/agents/gamecore-studio/state/config.toml
+@@ -20,5 +20,6 @@
+ "docker_image" = "gamecore-stage:6000.0.75f1-v1"
+
+ [stage.projects]
++"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" = "/tmp/tmp90soffc2/second"
+ "eafdeccdcf03b5e593aad4d3fbcc97abe976b738c9c10c8fc1d74ca62bafe41b" = "/tmp/tmp90soffc2/project space"
+
+
+registered bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -> /tmp/tmp90soffc2/second

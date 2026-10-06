@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained.
 
-Report timestamp: 2026-10-05T21:03:25.261906+00:00 UTC.
+Report timestamp: 2026-10-06T04:56:25.178826+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

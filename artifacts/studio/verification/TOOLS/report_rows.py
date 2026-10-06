@@ -34,7 +34,7 @@ def write_rows():
         (folder/'row.json').write_text(json.dumps(d,indent=2)+'\n')
         text=f"# {rid}: {scenario}\n\nVerdict: **{d['status']}**. {d['note']}\n\n"
         text+='Report timestamp: '+d['reportedAt']+' UTC.\n\n'
-        text+='Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.\n\n'
+        text+='Acceptance baseline: merged main `' + d.get('baseline', 'e94f27aa') + '`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.\n\n'
         text+='## Reproduce\n\n```sh\n'+d['command']+'\n```\n\n'
         text+='## Retained evidence\n\n'+'\n'.join(f'- [{p}](../{p})' for p in refs)+'\n'
         if d.get('tests'):text+='\nExact acceptance/component cases: '+', '.join('`'+x+'`' for x in d['tests'])+'. Component cases do not close any missing external workflow.\n'

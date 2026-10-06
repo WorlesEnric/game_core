@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Package metadata and exact asmdef-derived dependencies pass on the final harness tree.
 
-Report timestamp: 2026-10-05T21:03:25.246790+00:00 UTC.
+Report timestamp: 2026-10-06T04:56:25.161870+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

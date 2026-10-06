@@ -1,16 +1,14 @@
 {
   "status": "BLOCKED",
-  "note": "The image tariff remains unverified and manual media request ownership is broken; no current generated robe/material/undo workflow completed. R3 texture-binding regression passes only as component evidence.",
-  "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "D9_ImportedTextureTypedChangeSetUndoRedoAndBakeImpact"
-  ],
+  "baseline": "1752ca8a",
+  "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R3-A texture/Sprite binding, R3-F tint, R4-A direct media, R4-C operator tariffs.",
+  "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+  "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
   "row": "W-AI-01",
   "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-05T21:03:25.254654+00:00",
+  "reportedAt": "2026-10-06T04:56:25.170544+00:00",
   "evidence": [
-    "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+    "W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z/README.md"
   ]
 }

@@ -1,0 +1,18 @@
+test_P42B_TARIFF_owner_declared_image_estimate (test_p42b.Acceptance.test_P42B_TARIFF_owner_declared_image_estimate) ... ERROR
+test_P42B_TARIFF_placeholder_still_refuses (test_p42b.Acceptance.test_P42B_TARIFF_placeholder_still_refuses) ... ok
+
+======================================================================
+ERROR: test_P42B_TARIFF_owner_declared_image_estimate (test_p42b.Acceptance.test_P42B_TARIFF_owner_declared_image_estimate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2b/artifacts/studio/verification/TOOLS/tests/test_p42b.py", line 17, in test_P42B_TARIFF_owner_declared_image_estimate
+    prices = installer.tariffs(template)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2b/studio/etos/install-state.py", line 101, in tariffs
+    raise ValueError("tariff_placeholder: set a positive operator per_unit before applying templates")
+ValueError: tariff_placeholder: set a positive operator per_unit before applying templates
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.010s
+
+FAILED (errors=1)

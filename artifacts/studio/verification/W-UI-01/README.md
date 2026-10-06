@@ -2,7 +2,7 @@
 
 Verdict: **FAIL**. Graphical walking/picking captured and 1280×720 fits, but automatic gateway startup and R2-29 keyboard-event delivery fail; explicit pairing does not close the ordinary open-and-play path.
 
-Report timestamp: 2026-10-05T21:03:25.242070+00:00 UTC.
+Report timestamp: 2026-10-06T04:56:25.153017+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

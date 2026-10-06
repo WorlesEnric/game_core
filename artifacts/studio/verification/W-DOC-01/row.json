@@ -1,12 +1,15 @@
 {
   "status": "BLOCKED",
-  "note": "No independent new-creator exercise of the draft guide is available; authoring automation cannot stand in for a novice following the document.",
-  "command": "Follow docs/studio/08-creator-guide.md in the clean project; independent creator evidence is required.",
+  "baseline": "1752ca8a",
+  "note": "Fresh final-main guide: Boot scene and Open Studio menu pass (1/1, PNG on private :99/llvmpipe). Text-edit and image-generate/bind steps cannot start before the guarded R4 companion activation. No novice NPC/dialogue completion is claimed.",
+  "command": "studio/tools/verify-all.sh guide-open\nstudio/tools/verify-all.sh final-live",
   "row": "W-DOC-01",
   "scenario": "New user adds an NPC with dialogue from the creator guide",
   "requirement": "SR-12.1",
-  "reportedAt": "2026-10-05T21:03:25.267646+00:00",
+  "reportedAt": "2026-10-06T04:56:25.184385+00:00",
   "evidence": [
-    "W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md"
+    "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/README.md",
+    "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/walkthrough.json",
+    "W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/open-studio.png"
   ]
 }

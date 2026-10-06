@@ -1,0 +1,63 @@
+{
+  "sourceRevision": "1752ca8a5309b1df8cb1be983ccd6fc04d7dd6ba",
+  "clone": "~/wkspace/gc-studio/p4.2b/.evidence/p42b-guides",
+  "guide": "docs/studio/09-plugin-developer-guide.md:143-165",
+  "steps": [
+    {
+      "step": 1,
+      "command": [
+        "python3",
+        "samples/mechanisms/pressure-plate/make-catalog.py"
+      ],
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "command": [
+        "python3",
+        "samples/mechanisms/pressure-plate/make-catalog.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "command": [
+        "python3",
+        "samples/mechanisms/pressure-plate/make-candidate.py"
+      ],
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "command": [
+        "python3",
+        "samples/mechanisms/pressure-plate/make-candidate.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "step": 5,
+      "command": [
+        "studio/agent/target/release/gamecore-studio",
+        "stage",
+        "run",
+        "plate-example",
+        "--candidate",
+        "samples/mechanisms/pressure-plate/candidate",
+        "--source-project",
+        "games/hollowmere",
+        "--verdict-out",
+        "~/wkspace/gc-studio/p4.2b/artifacts/studio/verification/W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/plate-verdict.json"
+      ],
+      "exitCode": 127,
+      "status": "FAIL"
+    }
+  ],
+  "literalLimitation": "The guide names a build-output binary absent in a fresh clone. It does not give the installed immutable release path or a companion app-origin submission step. No host-confinement or verdict-file workaround was used."
+}

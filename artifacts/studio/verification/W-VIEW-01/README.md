@@ -1,12 +1,24 @@
-# W-VIEW-01: Relationships
+# W-VIEW-01: Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export
 
-Verdict: **PASS** for the retained local view scenarios. This supplemental ID is missing from 07; the packet is authorized to edit only its existing status/evidence cells, so no new matrix scenario is invented.
+Verdict: **PASS**. Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.
 
-The final-tree graphical driver captured every view on display `:1`; the linked full EditMode suite provides the named data/tool/real-Play assertions. This is not a claim of a paid-provider or installed-stage workflow.
+Report timestamp: 2026-10-06T04:56:25.155821+00:00 UTC.
 
-- [Graphical captures](../W-VIEW-01/captures-20261005T191314Z/README.md)
-- [Current suite XML](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/results.xml)
+Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
-Cases: `Maren_ShowsHerDialogueGraphPatrolPointsAndRegion; LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock; R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget`.
+## Reproduce
 
-Reproduce: `studio/tools/verify-all.sh views` and `studio/tools/verify-all.sh unity`. Each run README records its source SHA and measured UTC start/end times.
+```sh
+studio/tools/verify-all.sh final-views-tests
+studio/tools/verify-all.sh views
+```
+
+## Retained evidence
+
+- [UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml](../UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml)
+- [W-VIEW-01/views-capture-20261005T191314.272300Z/README.md](../W-VIEW-01/views-capture-20261005T191314.272300Z/README.md)
+- [W-VIEW-01/captures-20261005T191314Z/capture.json](../W-VIEW-01/captures-20261005T191314Z/capture.json)
+- [W-VIEW-01/p42-supplemental.md](../W-VIEW-01/p42-supplemental.md)
+- [W-VIEW-01/p42-supplemental/README.md](../W-VIEW-01/p42-supplemental/README.md)
+
+Historical references: P2.3 defines Relationships at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.

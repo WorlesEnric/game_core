@@ -1,13 +1,14 @@
 {
   "status": "BLOCKED",
-  "note": "The packet\u2019s one bounded text task produced a rejected well move. Ferryman dialogue/patrol/NavMesh behaviour in Play remains historical/partial P3.2 evidence, not a current end-to-end run.",
-  "command": "studio/tools/verify-all.sh unity",
+  "baseline": "1752ca8a",
+  "note": "P4.2b final-main rerun BLOCKED: active P3.1d live-run guard prevents required R4 immutable companion activation; installed release 0.1.0-74096dc59ab3fd21 has no media_charges ledger. No request sent. Intended coverage: R4-C indexed scope inference and R3 worker context.",
+  "command": "studio/tools/verify-all.sh live-preflight\nstudio/tools/verify-all.sh final-live",
+  "historical": "P4.2 disposition retained in git history: BLOCKED. Old component evidence does not establish a final-main live workflow.",
   "row": "W-AI-02",
   "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-05T21:03:25.254994+00:00",
+  "reportedAt": "2026-10-06T04:56:25.170904+00:00",
   "evidence": [
-    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+    "W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z/README.md"
   ]
 }
