@@ -1,16 +1,116 @@
 {
-  "status": "FAIL",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42f.py text2\npython3 artifacts/studio/verification/TOOLS/live-p42f.py npc",
-  "note": "P4.2f deploys the exact R6-C designer contract with a USD 0.50 worker ceiling. The unchanged text2 run returns needs_clarification for missing confirmed navigation. A fresh NPC-only request receives actual sampled NavMesh points and complete paths as the creator follow-up, then produces an unchanged six-operation candidate: apply succeeds and roster rises 20 to 21. Actual WorkflowPlayChecks.Effect(\"W-AI-02\", ...) enters Play but fails dialogue start refused. R6-C AppliedOr consults the durable Applied journal; normal History undo succeeds, journals Undone and restores 21 to 20 despite post-Play candidate UI invalidity. The retained unreachable-entry witness still refuses before writes in the passing R6 regression XML. No candidate bytes are repaired and no full NPC Play pass is claimed.",
-  "baseline": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
-  "historical": "P4.2f installed current-main qualification. P4.2e failed attempts remain retained; other rows keep revision-specific evidence.",
+  "status": "PASS",
+  "command": "See artifacts/studio/verification/TOOLS/README-P4.2g.md: npc-view, then the separately reserved npc-evidence-final with its exact measured prerequisite receipt; regression-final.",
+  "note": "P4.2g fresh installed-worker six-operation candidate cs_01M49DK7R5Z2YD985AHZG0EWEN applies unchanged after creator-supplied measured navigation, shared-prefab Play evidence and explicit new-NPC intent. Its graph is enrolled in GameplayContentSet. Actual WorkflowPlayChecks.Effect(\"W-AI-02\", ...) proves committed patrol motion, on-NavMesh view, successful DialogueRunner.Start, the presented bell line and conversation end. R6-C AppliedOr reads the durable journal; normal undo journals Undone, restores roster 20-to-21-to-20, and is explicitly saved. Final integrated XML is 45/45 PASS, including the unchanged entry-unreachable refusal. Earlier clarification-only requests, prerequisite-driver errors, the lost-observation receipt and unsaved-fixture bake refusal remain retained.",
+  "checks": [
+    {
+      "kind": "xml",
+      "path": "W-AI-02/p42g-regression-final-20261006T201600.167908Z/results.xml",
+      "total": 45,
+      "counts": {
+        "Passed": 45
+      },
+      "passing": true
+    },
+    {
+      "kind": "json",
+      "path": "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z/workflow/ferryman2/play-effect.json",
+      "assertions": [
+        {
+          "pointer": "/status",
+          "equals": "pass"
+        },
+        {
+          "pointer": "/graphEnrolled",
+          "equals": true
+        },
+        {
+          "pointer": "/dialogueStartSucceeded",
+          "equals": true
+        },
+        {
+          "pointer": "/conversationEnded",
+          "equals": true
+        },
+        {
+          "pointer": "/committedMotionObserved",
+          "equals": true
+        },
+        {
+          "pointer": "/onNavMesh",
+          "equals": true
+        },
+        {
+          "pointer": "/dialogueLines",
+          "equals": [
+            "The bell beneath the water still rings. Listen when the village goes quiet."
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z/workflow/ferryman2/journal-undo.json",
+      "assertions": [
+        {
+          "pointer": "/state",
+          "equals": "Undone"
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z/workflow/ferryman2/roster-before.json",
+      "assertions": [
+        {
+          "pointer": "/count",
+          "equals": 20
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z/workflow/ferryman2/roster-applied.json",
+      "assertions": [
+        {
+          "pointer": "/count",
+          "equals": 21
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z/workflow/ferryman2/roster-undone.json",
+      "assertions": [
+        {
+          "pointer": "/count",
+          "equals": 20
+        }
+      ]
+    }
+  ],
+  "baseline": "55091b74be95eb6e47fe0e33c01ce2d8f2528779",
+  "historical": "P4.2g installed qualification; earlier attempts remain retained as historical evidence. Other rows retain their own revision-specific evidence.",
   "row": "W-AI-02",
   "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T17:53:52.045973+00:00",
+  "reportedAt": "2026-10-06T20:20:42.654114+00:00",
   "evidence": [
     "W-AI-02/p42f-text2-20261006T173140.444632Z",
     "W-AI-02/p42f-npc-20261006T174113.356793Z",
-    "R6-P4.2f/p42f-regression-20261006T175113.703121Z"
+    "R6-P4.2f/p42f-regression-20261006T175113.703121Z",
+    "W-AI-02/p42g-npc-20261006T192937.013650Z",
+    "W-AI-02/p42g-npc-confirmed-20261006T195105.737185Z",
+    "W-AI-02/p42g-npc-creation-20261006T195723.136865Z",
+    "W-AI-02/p42g-npc-evidence-20261006T200512.485799Z",
+    "W-AI-02/p42g-npc-evidence-final-20261006T201140.214123Z",
+    "W-AI-02/p42g-npc-view-20261006T193621.206649Z",
+    "W-AI-02/p42g-npc-view-20261006T193713.622912Z",
+    "W-AI-02/p42g-npc-view-20261006T193908.376967Z",
+    "W-AI-02/p42g-npc-view-20261006T194115.635199Z",
+    "W-AI-02/p42g-npc-view-20261006T194419.372785Z",
+    "W-AI-02/p42g-npc-view-20261006T195015.674865Z",
+    "W-AI-02/p42g-regression-final-20261006T192656.457919Z",
+    "W-AI-02/p42g-regression-final-20261006T201600.167908Z"
   ]
 }

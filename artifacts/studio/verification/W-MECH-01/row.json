@@ -1,13 +1,209 @@
 {
-  "status": "FAIL",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42f.py stage-submit --candidate artifacts/studio/workflows/P4.2f/candidate\n# Follow README-P4.2f for service wait, signed receipt and graphical review.",
-  "note": "P4.2f current-main installed stages pass in 156.122 s cold / 80.801 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted hashes. Both graphical Play admissions and one retry each roll back with compile_timeout. Owned UPM admission resolves take 17.077 / 19.286 / 7.873 / 20.098 s; logs then repeatedly report Awaiting authenticated companion verdict refresh after domain reload. The historical 146 s native resolve is not reproduced. No live restoration, tri-state smoke or successful admission undo is claimed. Negative candidate has no passing verdict and Admit stays disabled; production Docker Roslyn separately refuses 21 findings across SG001\u2013SG010.",
-  "baseline": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
-  "historical": "P4.2f installed current-main qualification. P4.2e failed attempts remain retained; other rows keep revision-specific evidence.",
+  "status": "PASS",
+  "command": "See artifacts/studio/verification/TOOLS/README-P4.2g.md: stage-submit, authenticated receipt-stage, graphical stage-review for the two retained envelopes.",
+  "note": "P4.2g installed main after R6-E/R6-F/R6-G: cold/warm signed Docker stages pass in 158.011/79.598 s, each 36 EditMode + 2 PlayMode XML passes. Explicit graphical Play Admit restores nine coins, completes 120-frame Pending-to-Passed smoke and normal undo twice. Cold durable-UTC admission is 42.869 s; corrected warm timer 47.070 s. Owned UPM admission/undo resolves are 16.622/19.119 s cold and 15.891/19.461 s warm. Both reload traces establish authenticated service through the R6-E resumer with zero refresh waits. No admission timeout or timeout retry occurred. Negative app candidate cannot Admit; separate production Docker Roslyn refuses 21 findings across SG001-SG010. A pre-Admit wrong-filename launch and the old cold harness timezone arithmetic remain retained, not rewritten.",
+  "checks": [
+    {
+      "kind": "xml",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T191228.517592Z/service/slot-out/editmode.xml",
+      "total": 36,
+      "counts": {
+        "Passed": 36
+      },
+      "passing": true
+    },
+    {
+      "kind": "xml",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T191228.517592Z/service/slot-out/playmode.xml",
+      "total": 2,
+      "counts": {
+        "Passed": 2
+      },
+      "passing": true
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T191228.517592Z/service/job.json",
+      "assertions": [
+        {
+          "pointer": "/verdict/pass",
+          "equals": true
+        },
+        {
+          "pointer": "/verdict/coldCache",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "kind": "xml",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T192039.511265Z/service/slot-out/editmode.xml",
+      "total": 36,
+      "counts": {
+        "Passed": 36
+      },
+      "passing": true
+    },
+    {
+      "kind": "xml",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T192039.511265Z/service/slot-out/playmode.xml",
+      "total": 2,
+      "counts": {
+        "Passed": 2
+      },
+      "passing": true
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-submit-20261006T192039.511265Z/service/job.json",
+      "assertions": [
+        {
+          "pointer": "/verdict/pass",
+          "equals": true
+        },
+        {
+          "pointer": "/verdict/coldCache",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T191739.034437Z/outcome.json",
+      "assertions": [
+        {
+          "pointer": "/ok",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T191739.034437Z/restored-world.json",
+      "assertions": [
+        {
+          "pointer": "/coinsExpected",
+          "equals": 9
+        },
+        {
+          "pointer": "/coinsActual",
+          "equals": 9
+        },
+        {
+          "pointer": "/isPlaying",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T191739.034437Z/smoke-witness.json",
+      "assertions": [
+        {
+          "pointer": "/steps",
+          "equals": 120
+        },
+        {
+          "pointer": "/transitions",
+          "equals": [
+            "Pending",
+            "Passed"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T191739.034437Z/undo.json",
+      "assertions": [
+        {
+          "pointer": "/scenario/status",
+          "equals": "pass"
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T192308.082336Z/outcome.json",
+      "assertions": [
+        {
+          "pointer": "/ok",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T192308.082336Z/restored-world.json",
+      "assertions": [
+        {
+          "pointer": "/coinsExpected",
+          "equals": 9
+        },
+        {
+          "pointer": "/coinsActual",
+          "equals": 9
+        },
+        {
+          "pointer": "/isPlaying",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T192308.082336Z/smoke-witness.json",
+      "assertions": [
+        {
+          "pointer": "/steps",
+          "equals": 120
+        },
+        {
+          "pointer": "/transitions",
+          "equals": [
+            "Pending",
+            "Passed"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T192308.082336Z/undo.json",
+      "assertions": [
+        {
+          "pointer": "/scenario/status",
+          "equals": "pass"
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T191739.034437Z/timing-audit.json",
+      "assertions": [
+        {
+          "pointer": "/admitMsFromDurableStart",
+          "equals": 42869.291015625
+        }
+      ]
+    },
+    {
+      "kind": "json",
+      "path": "W-MECH-01/p42g-stage-review-20261006T192308.082336Z/restored-world.json",
+      "assertions": [
+        {
+          "pointer": "/admitMs",
+          "equals": 47070.155
+        }
+      ]
+    }
+  ],
+  "baseline": "55091b74be95eb6e47fe0e33c01ce2d8f2528779",
+  "historical": "P4.2g installed qualification; earlier attempts remain retained as historical evidence. Other rows retain their own revision-specific evidence.",
   "row": "W-MECH-01",
   "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
   "requirement": "SR-3.6, SR-9.3, B-STAGE",
-  "reportedAt": "2026-10-06T17:53:52.042660+00:00",
+  "reportedAt": "2026-10-06T20:20:42.649923+00:00",
   "evidence": [
     "W-MECH-01/p42f-stage-submit-20261006T170309.995129Z",
     "W-MECH-01/p42f-stage-submit-20261006T171632.907547Z",
@@ -16,6 +212,17 @@
     "W-MECH-01/p42f-stage-review-20261006T172116.443048Z",
     "W-MECH-01/p42f-stage-review-20261006T172434.103813Z",
     "W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z",
-    "W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z"
+    "W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z",
+    "W-MECH-01/p42g-receipt-stage-20261006T191613.095454Z",
+    "W-MECH-01/p42g-receipt-stage-20261006T191613.151367Z",
+    "W-MECH-01/p42g-receipt-stage-20261006T192303.876009Z",
+    "W-MECH-01/p42g-semantic-20261006T191238.035251Z",
+    "W-MECH-01/p42g-stage-review-20261006T191631.705512Z",
+    "W-MECH-01/p42g-stage-review-20261006T191739.034437Z",
+    "W-MECH-01/p42g-stage-review-20261006T192308.082336Z",
+    "W-MECH-01/p42g-stage-review-negative-20261006T192617.136441Z",
+    "W-MECH-01/p42g-stage-submit-20261006T191228.517592Z",
+    "W-MECH-01/p42g-stage-submit-20261006T192039.511265Z",
+    "W-MECH-01/p42g-stage-submit-negative-20261006T192510.393381Z"
   ]
 }
