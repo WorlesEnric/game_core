@@ -16,10 +16,10 @@ test_R2_38_P42d_no_paid_replay (test_p42d.Caps.test_R2_38_P42d_no_paid_replay) .
 ERROR: test_P42B_TARIFF_owner_declared_image_estimate (test_p42b.Acceptance.test_P42B_TARIFF_owner_declared_image_estimate)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/worlesenric/wkspace/gc-studio/p4.2d/artifacts/studio/verification/TOOLS/tests/test_p42b.py", line 17, in test_P42B_TARIFF_owner_declared_image_estimate
+  File "~/wkspace/gc-studio/p4.2d/artifacts/studio/verification/TOOLS/tests/test_p42b.py", line 17, in test_P42B_TARIFF_owner_declared_image_estimate
     prices = installer.tariffs(template)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/worlesenric/wkspace/gc-studio/p4.2d/studio/etos/install-state.py", line 101, in tariffs
+  File "~/wkspace/gc-studio/p4.2d/studio/etos/install-state.py", line 101, in tariffs
     raise ValueError("tariff_placeholder: set a positive operator per_unit before applying templates")
 ValueError: tariff_placeholder: set a positive operator per_unit before applying templates
 

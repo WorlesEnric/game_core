@@ -1,0 +1,27 @@
+{
+  "label": "p42d-guide",
+  "revision": "369a0de1eb228b956ceb940ecae10f801967d09a",
+  "host": "worlesenric",
+  "started": "2026-10-06T12:34:49.142550+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2d/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2d/artifacts/studio/verification/W-DOC-01/p42d-guide-20261006T123449.140659Z/logs --label p42d-guide --timeout 1800 --results ~/wkspace/gc-studio/p4.2d/artifacts/studio/verification/W-DOC-01/p42d-guide-20261006T123449.140659Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'P42d.Live.NoviceGuideTests|P42_OPS_01_Installed3dRefusesUnconfigured'",
+  "cwd": "~/wkspace/gc-studio/p4.2d/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-DOC-01/p42d-guide-20261006T123449.140659Z",
+  "queuedAtRevision": "369a0de1eb228b956ceb940ecae10f801967d09a",
+  "executionStarted": "2026-10-06T12:34:49.144623+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T12:36:16.195272+00:00",
+  "seconds": 87.05454417387955,
+  "suites": {
+    "results.xml": {
+      "total": 2,
+      "counts": {
+        "Passed": 2
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "productRevision": "40fb91fa672c292d830afbbdca97bc4a99a2a6b6"
+}

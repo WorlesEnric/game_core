@@ -27,11 +27,15 @@ paid['workerMicroUsd']=sum(t.get('budget',{}).get('task',{}).get('used',{}).get(
 paid['accountedUsd']+=paid['workerMicroUsd']/1000000
 paid['workerTaskCount']=len(tasks)
 (STATE/'task-ledger.json').write_text(json.dumps(list(tasks.values()),indent=2)+'\n')
-(STATE/'paid-ledger.json').write_text(json.dumps(paid,indent=2)+'\n')
+
 (STATE/'ledger-final.json').write_text(json.dumps({'charges':charges,'costUsd':sum(x['costUsd'] for x in charges)},indent=2)+'\n')
 # Retain only sessions opened since the packet guard; timestamps in the ledger are UTC milliseconds.
 import datetime
 stamp=datetime.datetime.fromisoformat(json.loads((STATE/'guard-before.json').read_text())['utc']).timestamp()*1000
 voice=[r for r in voice if r.get('started_at',r.get('opened_at',0))>=stamp]
 (STATE/'voice-ledger.json').write_text(v.scrub(json.dumps(voice,indent=2))+'\n')
+paid['voiceSessionCount']=len(voice)
+paid['operationCounts']['3dPaid']=0
+paid['operationCounts']['3dRefusals']=sum(json.loads(p.read_text()).get('code')=='not_configured' for p in v.OUT.glob('W-DOC-01/p42d-guide-*/3d-refusal.json'))
+(STATE/'paid-ledger.json').write_text(json.dumps(paid,indent=2)+'\n')
 print(json.dumps(paid))

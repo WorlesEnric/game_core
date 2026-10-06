@@ -1,0 +1,23 @@
+# P4.2d live rerun
+
+Product main `40fb91fa`; installed release `0.1.0-e8a72b2d6eb3aad9`.
+
+**33 PASS / 29 BLOCKED / 6 FAIL** across the matrix, with untouched revision-specific evidence retained.
+
+| Row | Result | Observation |
+|---|---|---|
+| W-AI-02 | FAIL | Creation/undo portion passes: exact roster identity set returns 20→21→20. The untouched live ferryman candidate also edits Odd’s graph entry, leaving nodes 0–7 unreachable. The corrected driver fails its Play gate at bake with GP-DLG-005; NPC navigation/dialogue in Play is not established. |
+| W-AI-03 | PASS | The newly received live candidate applies unchanged. R5-C’s actual Hollowmere Play observer confirms the added line is absent unlit and displayed when shrine_lit=1; the driver records pass. |
+| W-AI-05 | PASS | The live two-operation candidate applies against the real indexed OilFlask identity. The simulator no longer refuses GP-QST-004, and the actual Play observer confirms stage 1 after one flask and stage 2 after two; the driver records pass. |
+| W-AI-06 | FAIL | All three live entries survive close/reopen with matching saved hashes; undo/redo/final undo succeeds. The separate retained two-operation Odd witness also passes in a different Editor with Play/Edit domain reload (1/1 XML), closing R5-A’s final-postimage conflict. Full byte consistency still fails: backToBefore=false, with only contentStamp differences in Odd and DrownedBell among the four compared assets. Driver exit 0 is not treated as a full-row pass. |
+| W-AI-07 | PASS | Installed-main provider-before-budget 3D refusal returns not_configured; no generation. The named XML case passes. |
+| W-DOC-01 | PASS | The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition. |
+| W-E2E-01 | BLOCKED | P4.2d requalifies the requested R5/CORE-PICK rows on main 40fb91fa with the matching installed release. Real dialogue/quest Play effects and targeted NPC/history fixes pass, but the ferryman Play bake, full byte consistency, driver voice, and live admission retain failures. Describe remains unpriced. Untouched rows retain their original revision-specific evidence; this is not all-row product acceptance. |
+| W-ETOS-07 | BLOCKED | P4.2d authenticated hello exposes image operator and TTS published tariffs; two TTS calls succeed. Describe is live but has no tariff; R5-B’s template explicitly remains SET_BY_OPERATOR/0.0, so no describe call is made. Prior image-import evidence remains revision-specific; no invented per-call tariff or provider invoice. |
+| W-MECH-01 | FAIL | Installed app-origin stage passes all seven gates in 158.122 s (33 EditMode + 2 PlayMode XML passes). Authenticated fetch/verify enables Admit and the visible badge says verdict pass. Explicit Play Admit captures/stops and passes the real catalog checkpoint, but compilation stalls; the owned wrapper is stopped at 817 s. Recovery finishes rollback with catalog_mismatch because the signed delta has no world/predicted hashes. Package and pending record are absent afterward. No live restoration, tri-state smoke or successful admission undo is claimed. The semantic-negative fixture is refused with 14 lexical hits, no issued passing verdict and Admit disabled; Roslyn/Unity are skipped for that refusal. |
+| W-UI-05 | PASS | CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3. |
+| W-VOICE-01 | FAIL | R5-B ready-gated self-test passes both real speech fixtures with no submission. The later unchanged driver fails both takes after a provider session.updated acknowledgement error: playback falls outside capture and two late sessions deliver 70/144 all-zero frames, with zero transcripts. Destructive tray/request/journal counts remain unchanged. No transcript loss occurs on the companion→client hop in the passing self-test. |
+
+Ledger: **USD 0.0007798376**, 0 images / 2 TTS / 0 describe / no paid 3D; one 3D refusal, four voice sessions. Eight worker tasks report micro_usd=0; provider invoices and voice USD are not available.
+
+[Packet note and owner requests](../../../../docs/studio/packets/P4.2d-live-rerun.md) · [Ledger](paid-ledger.json) · [Reproducer](../../verification/TOOLS/README-P4.2d.md)

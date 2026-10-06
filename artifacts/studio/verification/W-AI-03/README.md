@@ -1,21 +1,21 @@
 # W-AI-03: "Add a line Odd only says after the shrine is lit": conditional dialogue works in Play
 
-Verdict: **BLOCKED**. PARTIAL: the live candidate applies; R3-D conditional-dialogue preview hides the new line when unlit and shows it for shrine_lit=1. The existing fact is reused, so R3-F same-candidate fact creation is not exercised. This driver does not run dialogue in Play.
+Verdict: **PASS**. The newly received live candidate applies unchanged. R5-C’s actual Hollowmere Play observer confirms the added line is absent unlit and displayed when shrine_lit=1; the driver records pass.
 
-Report timestamp: 2026-10-06T09:08:50.173957+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.172274+00:00 UTC.
 
-Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Acceptance baseline: merged main `40fb91fa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42c narrative
+studio/tools/verify-all.sh p42d narrative
 ```
 
 ## Retained evidence
 
-- [W-AI-03/p42c-narrative-20261006T073303.291662Z/README.md](../W-AI-03/p42c-narrative-20261006T073303.291662Z/README.md)
-- [W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/odd-line/dialogue-preview-applied-unlit.json](../W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/odd-line/dialogue-preview-applied-unlit.json)
-- [W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/odd-line/dialogue-preview-applied-shrine-lit.json](../W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/odd-line/dialogue-preview-applied-shrine-lit.json)
+- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/play-effect.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/play-effect.json)
+- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/candidate.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/candidate.json)
+- [W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/apply-report.json](../W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/odd-line/apply-report.json)
 
-Historical references: Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.
+Historical references: P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.

@@ -1,16 +1,15 @@
 {
   "status": "BLOCKED",
-  "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-  "note": "Installed R4 operator-priced image and published-priced TTS calls return verified imports; Sprite binding passes and 3D refuses honestly. The full media row remains partial: describe has no binding tariff in authenticated hello and is not called. No provider invoice is inferred from local ceiling charges.",
-  "command": "studio/tools/verify-all.sh p42c robe2\nstudio/tools/verify-all.sh p42c guides",
-  "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+  "note": "P4.2d authenticated hello exposes image operator and TTS published tariffs; two TTS calls succeed. Describe is live but has no tariff; R5-B\u2019s template explicitly remains SET_BY_OPERATOR/0.0, so no describe call is made. Prior image-import evidence remains revision-specific; no invented per-call tariff or provider invoice.",
+  "command": "studio/tools/verify-all.sh p42d hello\nstudio/tools/verify-all.sh p42d voice2",
+  "baseline": "40fb91fa",
+  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-ETOS-07",
   "scenario": "Generated texture arrives with matching sha256; tampered file refused",
   "requirement": "SR-4.6",
-  "reportedAt": "2026-10-06T09:08:50.167869+00:00",
+  "reportedAt": "2026-10-06T12:40:21.168013+00:00",
   "evidence": [
-    "INSTALL-P4.2c/hello-20261006T071707.149737Z/live/dotnet-a-hello.json",
-    "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json",
-    "W-DOC-01/p42c-guides-20261006T082946.366496Z/3d-refusal.json"
+    "INSTALL-P4.2d/hello-20261006T112349.691723Z/live/dotnet-a-hello.json",
+    "W-VOICE-01/p42d-voice2-20261006T112706.963706Z/workflow/voice/spoken-prompts.json"
   ]
 }

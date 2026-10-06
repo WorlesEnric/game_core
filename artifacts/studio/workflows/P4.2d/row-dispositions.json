@@ -1,12 +1,14 @@
 {
   "W-UI-05": {
     "status": "PASS",
-    "note": "CORE-PICK on main 40fb91fa: 100 picks and 100 marquees over 500 distinct candidates pass; p95 1.2553 ms / 0.341 ms against unchanged 16/50 ms budgets. The 21-update timing regression also passes (2/2 XML).",
+    "note": "CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3.",
     "patterns": [
-      "W-UI-05/p42d-selection-*/results.xml",
-      "W-UI-05/p42d-selection-*/selection.json"
+      "W-UI-05/p42d-selection-20261006T112100.063994Z/results.xml",
+      "W-UI-05/p42d-selection-20261006T112100.063994Z/selection.json",
+      "W-UI-05/p42d-selection-repeat-*/results.xml",
+      "W-UI-05/p42d-selection-repeat-*/selection.json"
     ],
-    "command": "studio/tools/verify-all.sh p42d selection",
+    "command": "studio/tools/verify-all.sh p42d selection\nstudio/tools/verify-all.sh p42d selection-repeat",
     "tests": [
       "R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
       "R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms"
@@ -108,5 +110,30 @@
       "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-transcript.json"
     ],
     "command": "See docs/studio/packets/P4.2d-live-rerun.md and artifacts/studio/verification/TOOLS/README-P4.2d.md."
+  },
+  "W-DOC-01": {
+    "status": "PASS",
+    "note": "The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition.",
+    "patterns": [
+      "W-DOC-01/p42d-guide-*/results.xml",
+      "W-DOC-01/p42d-guide-*/guide.json",
+      "W-DOC-01/p42d-guide-*/guide-applied.png"
+    ],
+    "command": "studio/tools/verify-all.sh p42d guide",
+    "tests": [
+      "P42d.Live.NoviceGuideTests.R2_38_Guide_NpcAndDialogueContextToolsUndo"
+    ]
+  },
+  "W-AI-07": {
+    "status": "PASS",
+    "note": "Installed-main provider-before-budget 3D refusal returns not_configured; no generation. The named XML case passes.",
+    "patterns": [
+      "W-DOC-01/p42d-guide-*/3d-refusal.json",
+      "W-DOC-01/p42d-guide-*/results.xml"
+    ],
+    "command": "studio/tools/verify-all.sh p42d guide",
+    "tests": [
+      "P42c.Live.GuideTests.P42_OPS_01_Installed3dRefusesUnconfigured"
+    ]
   }
 }
