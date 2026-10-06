@@ -76,9 +76,9 @@ printf '%s\n' "$((SECONDS-wait_start))" > "$out/wait-seconds.txt"
   echo "launcher_revision=$(git rev-parse HEAD)"
   echo "host=$(hostname)"
   echo "started=$(date -Is)"
-  echo 'PROBE_RUNS=2; one allocator reservation; allocator mutex held throughout both probes'
+  echo 'PROBE_RUNS=2 per VSync state; one allocator reservation; allocator mutex held throughout all four probes'
   echo 'No video/screen capture; no service operations; no batchmode; no Xvfb'
-  sha256sum "$root/games/hollowmere/Autoplay/playthrough.txt" "$root/games/hollowmere/Tools/frame_stats.py"
+  sha256sum "$root/games/hollowmere/Autoplay/playthrough.txt" "$root/games/hollowmere/Tools/frame_stats.py" "$root/games/hollowmere/Tools/measure_frames_p31d.sh"
 } > "$out/provenance.txt"
 for vsync in 0 1; do
 for run in 1 2; do

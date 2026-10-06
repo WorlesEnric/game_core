@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Report the unchanged B-FRAME gate, real menu readiness, route and save windows for both VSync states."""
 import csv
+import gzip
 import json
 import re
 import sys
@@ -12,7 +13,8 @@ for vsync in (0, 1):
     state = []
     for run in (1, 2):
         folder = root / f'vsync{vsync}' / f'run{run}'
-        text = (folder / 'frame-log.csv').read_text()
+        csv_path = folder / 'frame-log.csv'
+        text = csv_path.read_text() if csv_path.exists() else gzip.open(str(csv_path) + '.gz', 'rt').read()
         rows = list(csv.DictReader(line for line in text.splitlines() if not line.startswith('#')))
         log = (folder / 'player.log').read_text()
         stats = json.loads((folder / 'frame-stats.json').read_text())
