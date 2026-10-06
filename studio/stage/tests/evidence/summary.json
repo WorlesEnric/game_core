@@ -21,7 +21,8 @@
       "failed": "1",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "03f90a1e05e808e198f0e0708aaec76ab49ad8b5fa57a104f58aaec9aacf9895"
+      "sha256": "ce03114c1c781259ea932aa5472114561829e0f559d0847cffb3d64d3c7aa3f7",
+      "rawSha256": "03f90a1e05e808e198f0e0708aaec76ab49ad8b5fa57a104f58aaec9aacf9895"
     },
     "r5-driver-first-fix.xml": {
       "result": "Failed(Child)",
@@ -30,7 +31,8 @@
       "failed": "2",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "d054ea253232e34b8785233eb42ef3106907ae691e907448ce5abbad498a6e8c"
+      "sha256": "97073cc7ed5798a0d5c18718f1f13b5010f402a333c8aad8e74aa6a3a0ec0324",
+      "rawSha256": "d054ea253232e34b8785233eb42ef3106907ae691e907448ce5abbad498a6e8c"
     },
     "r5-driver-green.xml": {
       "result": "Passed",
@@ -39,7 +41,8 @@
       "failed": "0",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "daaed6bdece20bf6faf4b7dcaec157399db8c62d05fb02368714d7a7b82792ac"
+      "sha256": "e55a503c0f360063b687a2e875665144ca76ccd9fc9c31542d2a5bb543f3a7f5",
+      "rawSha256": "daaed6bdece20bf6faf4b7dcaec157399db8c62d05fb02368714d7a7b82792ac"
     },
     "r5-driver-owner-diagnostic.xml": {
       "result": "Failed(Child)",
@@ -48,7 +51,8 @@
       "failed": "1",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "a3765de51bee240d718ae1879ffaba35efb459af88306ab8d78735ce83cb6334"
+      "sha256": "d4612aebd7c528acbff21f8743e2da0d07006200afd00ab3e982eddc5c4e4f7f",
+      "rawSha256": "a3765de51bee240d718ae1879ffaba35efb459af88306ab8d78735ce83cb6334"
     },
     "r5-driver-red.xml": {
       "result": "Failed(Child)",
@@ -57,7 +61,8 @@
       "failed": "7",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "0acc6488fec0abf7b75b14d4a506d03637b8eb5d91b9b8512c198e864de0ce6b"
+      "sha256": "111d6b5d76f0885526746cc4250d2f0747d541c90ed4b1dbc101681f229bb086",
+      "rawSha256": "0acc6488fec0abf7b75b14d4a506d03637b8eb5d91b9b8512c198e864de0ce6b"
     },
     "r5-driver-reload-wait.xml": {
       "result": "Failed(Child)",
@@ -66,7 +71,8 @@
       "failed": "1",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "f3fa6d63b752eb9c1c68447ab77db976e793f40506799947dc9a01e24e326237"
+      "sha256": "7489c5640c43ce9de9ca808f073aa21c4ee636b64c4ef88fa426822641728797",
+      "rawSha256": "f3fa6d63b752eb9c1c68447ab77db976e793f40506799947dc9a01e24e326237"
     },
     "r5-driver-replay-diagnostic.xml": {
       "result": "Failed(Child)",
@@ -75,7 +81,8 @@
       "failed": "1",
       "skipped": "0",
       "inconclusive": "0",
-      "sha256": "67944ad867fa78ad3ffc649b9aec0a1c206589dfbb0f045930a03aad2d917596"
+      "sha256": "ab7734cbc7206b6a002d9803fbab8ffaa2a81076e6e9dc219c6ea171787333e0",
+      "rawSha256": "67944ad867fa78ad3ffc649b9aec0a1c206589dfbb0f045930a03aad2d917596"
     }
   },
   "metadata": "pass: 42 packages, 91 assemblies",
@@ -109,5 +116,6 @@
     "Graphical W-AI-02 navigation is intentionally refused in mandated -nographics dry mode.",
     "No new paid creator workflow or acceptance-matrix qualification.",
     "Intermittent pre-dispatch Unity startup delay remains unexplained."
-  ]
+  ],
+  "evidenceNormalization": "Stored transcripts trim trailing whitespace only; raw XML hashes are retained alongside normalized hashes. Result counts are unchanged."
 }
