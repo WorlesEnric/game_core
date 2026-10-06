@@ -1,0 +1,236 @@
+{
+  "stages": [
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-submit-20261006T170309.995129Z",
+      "jobId": "stg_1a1122c347741e6d06d6cb9",
+      "state": "done",
+      "coldCache": true,
+      "durationMs": 156122,
+      "pass": true,
+      "catalogDelta": {
+        "mechanisms": [
+          {
+            "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+            "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+            "package": "com.hollowmere.mechanism.pressureplate"
+          }
+        ],
+        "predicted": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+        "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18"
+      },
+      "xml": {
+        "service/slot-out/editmode.xml": {
+          "total": 36,
+          "counts": {
+            "Passed": 36
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        },
+        "service/slot-out/playmode.xml": {
+          "total": 2,
+          "counts": {
+            "Passed": 2
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        }
+      }
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-submit-20261006T171632.907547Z",
+      "jobId": "stg_1a1123828a2d61651f1fe1c",
+      "state": "done",
+      "coldCache": false,
+      "durationMs": 80801,
+      "pass": true,
+      "catalogDelta": {
+        "mechanisms": [
+          {
+            "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+            "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+            "package": "com.hollowmere.mechanism.pressureplate"
+          }
+        ],
+        "predicted": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+        "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18"
+      },
+      "xml": {
+        "service/slot-out/editmode.xml": {
+          "total": 36,
+          "counts": {
+            "Passed": 36
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        },
+        "service/slot-out/playmode.xml": {
+          "total": 2,
+          "counts": {
+            "Passed": 2
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        }
+      }
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-submit-negative-20261006T172735.631334Z",
+      "jobId": "stg_1a112425aab84b7b4f47642",
+      "state": "done",
+      "coldCache": false,
+      "durationMs": 22883,
+      "pass": false,
+      "catalogDelta": {
+        "mechanisms": []
+      },
+      "xml": {}
+    }
+  ],
+  "graphicalAttempts": [
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-review-20261006T170945.223444Z",
+      "outcome": {
+        "ok": false,
+        "reason": "rolled back: compile_timeout",
+        "phase": 6,
+        "utc": "2026-10-06T17:12:47.8837860Z"
+      },
+      "upmResolves": [
+        {
+          "completedUtc": "2026-10-06T17:10:58.272Z",
+          "status": 200,
+          "durationMs": 17077
+        },
+        {
+          "completedUtc": "2026-10-06T17:12:37.077Z",
+          "status": 200,
+          "durationMs": 23576
+        }
+      ],
+      "authenticatedRefreshWaitMessages": 20,
+      "refreshSeconds": [
+        5.97,
+        0.315,
+        0.139,
+        0.202,
+        2.839,
+        28.819,
+        32.511,
+        0.02
+      ]
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-review-20261006T171323.900006Z",
+      "outcome": {
+        "ok": false,
+        "reason": "rolled back: compile_timeout",
+        "phase": 6,
+        "utc": "2026-10-06T17:16:17.7313790Z"
+      },
+      "upmResolves": [
+        {
+          "completedUtc": "2026-10-06T17:14:32.962Z",
+          "status": 200,
+          "durationMs": 19286
+        },
+        {
+          "completedUtc": "2026-10-06T17:16:08.715Z",
+          "status": 200,
+          "durationMs": 22094
+        }
+      ],
+      "authenticatedRefreshWaitMessages": 20,
+      "refreshSeconds": [
+        5.151,
+        0.318,
+        0.162,
+        0.15,
+        3.042,
+        29.73,
+        29.042,
+        0.02
+      ]
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-review-20261006T172116.443048Z",
+      "outcome": {
+        "ok": false,
+        "reason": "rolled back: compile_timeout",
+        "phase": 6,
+        "utc": "2026-10-06T17:24:13.7330170Z"
+      },
+      "upmResolves": [
+        {
+          "completedUtc": "2026-10-06T17:22:13.326Z",
+          "status": 200,
+          "durationMs": 7873
+        },
+        {
+          "completedUtc": "2026-10-06T17:24:00.985Z",
+          "status": 200,
+          "durationMs": 23836
+        }
+      ],
+      "authenticatedRefreshWaitMessages": 23,
+      "refreshSeconds": [
+        5.589,
+        0.204,
+        0.092,
+        0.124,
+        2.487,
+        19.047,
+        34.385,
+        0.025
+      ]
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-review-20261006T172434.103813Z",
+      "outcome": {
+        "ok": false,
+        "reason": "rolled back: compile_timeout",
+        "phase": 6,
+        "utc": "2026-10-06T17:27:24.5997160Z"
+      },
+      "upmResolves": [
+        {
+          "completedUtc": "2026-10-06T17:25:41.061Z",
+          "status": 200,
+          "durationMs": 20098
+        },
+        {
+          "completedUtc": "2026-10-06T17:27:14.172Z",
+          "status": 200,
+          "durationMs": 21697
+        }
+      ],
+      "authenticatedRefreshWaitMessages": 19,
+      "refreshSeconds": [
+        5.991,
+        0.332,
+        0.169,
+        0.198,
+        2.763,
+        31.311,
+        30.14,
+        0.023
+      ]
+    },
+    {
+      "run": "artifacts/studio/verification/W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z",
+      "outcome": {
+        "ok": true,
+        "reason": "Admit disabled: no verified passing verdict",
+        "phase": 2,
+        "utc": "2026-10-06T17:29:50.8019070Z"
+      },
+      "upmResolves": [],
+      "authenticatedRefreshWaitMessages": 0,
+      "refreshSeconds": [
+        5.699,
+        0.299,
+        0.122
+      ]
+    }
+  ]
+}

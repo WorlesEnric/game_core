@@ -1,4 +1,4 @@
-# P4.2 + P4.2b + P4.2c verification summary
+# P4.2f verification summary
 
 Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 
@@ -37,7 +37,7 @@ Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 | W-ETOS-09 | BLOCKED | [Evidence](W-ETOS-09/README.md): Client cursor replay is real; a source recompile/domain reload while an in-flight task returns to the tray was not completed. Simulated reload tests remain component evidence. |
 | W-VOICE-01 | BLOCKED | [Evidence](W-VOICE-01/README.md): The unchanged R6-B driver now passes both readiness-gated real takes: move and destructive final transcripts arrive after proper Stop/drain. Destructive tray/request/journal counts remain exactly 8/11/122, and the field holds the destructive text without Send. Both provider traces contain only revision 1 with final=true; no partial speech revision is observed. Full-row partial-revision visibility remains unqualified despite the passing driver. |
 | W-AI-01 | BLOCKED | [Evidence](W-AI-01/README.md): PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised. |
-| W-AI-02 | FAIL | [Evidence](W-AI-02/README.md): R6-B rejects the unchanged retained unreachable-entry witness before writes (GP-DLG-005, nodes 0–7). The fresh installed-worker ferryman candidate instead preserves reachability and applies two operations, creating the 21st entity, but actual Play fails: applied NPC needs patrol and dialogue. After Play reload the candidate UI is Invalid, so the unchanged driver skips undo and records a 21-entity final roster. A separate fresh-Editor normal History.Undo passes (1/1 XML), restores 21→20 and journals Undone; no candidate bytes were repaired. |
+| W-AI-02 | FAIL | [Evidence](W-AI-02/README.md): P4.2f deploys the exact R6-C designer contract with a USD 0.50 worker ceiling. The unchanged text2 run returns needs_clarification for missing confirmed navigation. A fresh NPC-only request receives actual sampled NavMesh points and complete paths as the creator follow-up, then produces an unchanged six-operation candidate: apply succeeds and roster rises 20 to 21. Actual WorkflowPlayChecks.Effect("W-AI-02", ...) enters Play but fails dialogue start refused. R6-C AppliedOr consults the durable Applied journal; normal History undo succeeds, journals Undone and restores 21 to 20 despite post-Play candidate UI invalidity. The retained unreachable-entry witness still refuses before writes in the passing R6 regression XML. No candidate bytes are repaired and no full NPC Play pass is claimed. |
 | W-AI-03 | PASS | [Evidence](W-AI-03/README.md): The fresh installed-worker candidate applies unchanged; actual Hollowmere Play hides its added line while shrine_lit is false and displays it when lit. The corrected driver records pass. |
 | W-AI-04 | PASS | [Evidence](W-AI-04/README.md): The fresh installed-worker HUD candidate applies and saves; a separate Editor reopens with matching saved hashes, and normal undo/redo/final undo succeeds. HUD bytes return exactly to baseline. |
 | W-AI-05 | PASS | [Evidence](W-AI-05/README.md): The fresh installed-worker candidate uses the indexed OilFlask identity. Actual Play holds quest stage 1 after one flask and advances to stage 2 after two; the driver records pass. |
@@ -61,7 +61,7 @@ Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 | W-PERSIST-03 | PASS | [Evidence](W-PERSIST-03/README.md): Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged. |
 | W-REC-01 | PASS | [Evidence](W-REC-01/README.md): Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained. |
 | W-REC-03 | BLOCKED | [Evidence](W-REC-03/README.md): Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation. |
-| W-MECH-01 | FAIL | [Evidence](W-MECH-01/README.md): R6-A installed stages pass in 157.145 s cold and 75.479 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted catalog hashes. Both graphical Play Admit attempts terminate in production rollback with compile_timeout after Unity Package Manager stalls at Installing packages (76/76). The second attempt retains the same compile_timeout; package and pending record are removed by rollback. No live restore, tri-state smoke or successful admission undo is inferred from isolated stage smoke. Negative candidate: 14 lexical hits, no issued passing verdict, Admit disabled. A separate real Docker Roslyn scan refuses the exact negative-semantic sources with 21 findings across SG001–SG010. |
+| W-MECH-01 | FAIL | [Evidence](W-MECH-01/README.md): P4.2f current-main installed stages pass in 156.122 s cold / 80.801 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted hashes. Both graphical Play admissions and one retry each roll back with compile_timeout. Owned UPM admission resolves take 17.077 / 19.286 / 7.873 / 20.098 s; logs then repeatedly report Awaiting authenticated companion verdict refresh after domain reload. The historical 146 s native resolve is not reproduced. No live restoration, tri-state smoke or successful admission undo is claimed. Negative candidate has no passing verdict and Admit stays disabled; production Docker Roslyn separately refuses 21 findings across SG001–SG010. |
 | W-GAME-01 | BLOCKED | [Evidence](W-GAME-01/README.md): reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open. |
 | W-GAME-05 | BLOCKED | [Evidence](W-GAME-05/README.md): Editor full-quest endings and save/load pass; a current standalone menu→save→load→ending→restart playthrough is not re-recorded under the explicit recording-reuse instruction. |
 | W-GAME-06 | PASS | [Evidence](W-GAME-06/README.md): Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget. |
@@ -102,8 +102,12 @@ Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 | [INSTALL-P4.2c/unity-fresh-compile-20261006T071423.613958Z](INSTALL-P4.2c/unity-fresh-compile-20261006T071423.613958Z/README.md) | PASS | f787829289ea |
 | [INSTALL-P4.2d/hello-20261006T112349.691723Z](INSTALL-P4.2d/hello-20261006T112349.691723Z/README.md) | PASS | ed1969e4cc14 |
 | [INSTALL-P4.2e/p42e-receipt-hello-20261006T143912.780456Z](INSTALL-P4.2e/p42e-receipt-hello-20261006T143912.780456Z/README.md) | PASS | 26c971a61ab0 |
+| [INSTALL-P4.2f/p42f-receipt-hello-20261006T165823.107949Z](INSTALL-P4.2f/p42f-receipt-hello-20261006T165823.107949Z/README.md) | PASS | 4ac7ba858b91 |
+| [INSTALL-P4.2f/p42f-receipt-hello-20261006T173136.849346Z](INSTALL-P4.2f/p42f-receipt-hello-20261006T173136.849346Z/README.md) | PASS | 55f0a4dfe3cb |
 | [R6-P4.2e/p42e-regression-20261006T143611.682920Z](R6-P4.2e/p42e-regression-20261006T143611.682920Z/README.md) | FAIL | 26c971a61ab0 |
 | [R6-P4.2e/p42e-regression-20261006T143939.136591Z](R6-P4.2e/p42e-regression-20261006T143939.136591Z/README.md) | PASS | 26c971a61ab0 |
+| [R6-P4.2f/p42f-regression-20261006T165922.104070Z](R6-P4.2f/p42f-regression-20261006T165922.104070Z/README.md) | PASS | 4ac7ba858b91 |
+| [R6-P4.2f/p42f-regression-20261006T175113.703121Z](R6-P4.2f/p42f-regression-20261006T175113.703121Z/README.md) | PASS | 611897b46638 |
 | [STATIC/allocator-isolated-20261005T173202.610714Z](STATIC/allocator-isolated-20261005T173202.610714Z/README.md) | PASS | 20e34d1e6a68 |
 | [STATIC/cargo-clippy-20261005T170026.580378Z](STATIC/cargo-clippy-20261005T170026.580378Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/cargo-clippy-20261005T185349.726636Z](STATIC/cargo-clippy-20261005T185349.726636Z/README.md) | PASS | 4214d67b2289 |
@@ -194,6 +198,8 @@ Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 | [W-AI-02/p42d-text2-20261006T113349.342620Z](W-AI-02/p42d-text2-20261006T113349.342620Z/README.md) | FAIL | 274cfc7d24bb |
 | [W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z](W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/README.md) | PASS | c047978f7382 |
 | [W-AI-02/p42e-text2-20261006T150123.555155Z](W-AI-02/p42e-text2-20261006T150123.555155Z/README.md) | FAIL | c047978f7382 |
+| [W-AI-02/p42f-npc-20261006T174113.356793Z](W-AI-02/p42f-npc-20261006T174113.356793Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-AI-02/p42f-text2-20261006T173140.444632Z](W-AI-02/p42f-text2-20261006T173140.444632Z/README.md) | FAIL | 55f0a4dfe3cb |
 | [W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z](W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-03/p42c-narrative-20261006T073303.291662Z](W-AI-03/p42c-narrative-20261006T073303.291662Z/README.md) | FAIL | dbedd2fb6c83 |
 | [W-AI-03/p42d-narrative-20261006T114113.853565Z](W-AI-03/p42d-narrative-20261006T114113.853565Z/README.md) | PASS | 951a05eb084f |
@@ -294,6 +300,17 @@ Matrix row totals: PASS 33, BLOCKED 30, FAIL 5.
 | [W-MECH-01/p42e-stage-submit-20261006T144109.661452Z](W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/README.md) | PASS | 26c971a61ab0 |
 | [W-MECH-01/p42e-stage-submit-20261006T145038.813597Z](W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/README.md) | PASS | 739a5298fe5f |
 | [W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z](W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z/README.md) | PASS | 739a5298fe5f |
+| [W-MECH-01/p42f-receipt-stage-20261006T170710.410489Z](W-MECH-01/p42f-receipt-stage-20261006T170710.410489Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-receipt-stage-20261006T170942.026722Z](W-MECH-01/p42f-receipt-stage-20261006T170942.026722Z/README.md) | PASS | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z](W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z/README.md) | PASS | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-review-20261006T170945.223444Z](W-MECH-01/p42f-stage-review-20261006T170945.223444Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-review-20261006T171323.900006Z](W-MECH-01/p42f-stage-review-20261006T171323.900006Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-review-20261006T172116.443048Z](W-MECH-01/p42f-stage-review-20261006T172116.443048Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-review-20261006T172434.103813Z](W-MECH-01/p42f-stage-review-20261006T172434.103813Z/README.md) | FAIL | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z](W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z/README.md) | PASS | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-submit-20261006T170309.995129Z](W-MECH-01/p42f-stage-submit-20261006T170309.995129Z/README.md) | PASS | 4ac7ba858b91 |
+| [W-MECH-01/p42f-stage-submit-20261006T171632.907547Z](W-MECH-01/p42f-stage-submit-20261006T171632.907547Z/README.md) | PASS | 55f0a4dfe3cb |
+| [W-MECH-01/p42f-stage-submit-negative-20261006T172735.631334Z](W-MECH-01/p42f-stage-submit-negative-20261006T172735.631334Z/README.md) | PASS | 55f0a4dfe3cb |
 | [W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z](W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z](W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z](W-MECH-01/semantic-analyzer-unit-20261005T192618.998527Z/README.md) | PASS | d26494a498d4 |

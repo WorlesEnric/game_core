@@ -1,0 +1,27 @@
+{
+  "W-MECH-01": {
+    "status": "FAIL",
+    "patterns": [
+      "W-MECH-01/p42f-stage-submit-20261006T170309.995129Z",
+      "W-MECH-01/p42f-stage-submit-20261006T171632.907547Z",
+      "W-MECH-01/p42f-stage-review-20261006T170945.223444Z",
+      "W-MECH-01/p42f-stage-review-20261006T171323.900006Z",
+      "W-MECH-01/p42f-stage-review-20261006T172116.443048Z",
+      "W-MECH-01/p42f-stage-review-20261006T172434.103813Z",
+      "W-MECH-01/p42f-stage-review-negative-*",
+      "W-MECH-01/p42f-receipt-stage-*"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42f.py stage-submit --candidate artifacts/studio/workflows/P4.2f/candidate\n# Follow README-P4.2f for service wait, signed receipt and graphical review.",
+    "note": "P4.2f current-main installed stages pass in 156.122 s cold / 80.801 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted hashes. Both graphical Play admissions and one retry each roll back with compile_timeout. Owned UPM admission resolves take 17.077 / 19.286 / 7.873 / 20.098 s; logs then repeatedly report Awaiting authenticated companion verdict refresh after domain reload. The historical 146 s native resolve is not reproduced. No live restoration, tri-state smoke or successful admission undo is claimed. Negative candidate has no passing verdict and Admit stays disabled; production Docker Roslyn separately refuses 21 findings across SG001\u2013SG010."
+  },
+  "W-AI-02": {
+    "status": "FAIL",
+    "patterns": [
+      "W-AI-02/p42f-text2-*",
+      "W-AI-02/p42f-npc-*",
+      "R6-P4.2f/p42f-regression-*"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42f.py text2\npython3 artifacts/studio/verification/TOOLS/live-p42f.py npc",
+    "note": "P4.2f deploys the exact R6-C designer contract with a USD 0.50 worker ceiling. The unchanged text2 run returns needs_clarification for missing confirmed navigation. A fresh NPC-only request receives actual sampled NavMesh points and complete paths as the creator follow-up, then produces an unchanged six-operation candidate: apply succeeds and roster rises 20 to 21. Actual WorkflowPlayChecks.Effect(\"W-AI-02\", ...) enters Play but fails dialogue start refused. R6-C AppliedOr consults the durable Applied journal; normal History undo succeeds, journals Undone and restores 21 to 20 despite post-Play candidate UI invalidity. The retained unreachable-entry witness still refuses before writes in the passing R6 regression XML. No candidate bytes are repaired and no full NPC Play pass is claimed."
+  }
+}

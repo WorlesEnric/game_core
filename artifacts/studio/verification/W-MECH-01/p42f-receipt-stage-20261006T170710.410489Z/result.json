@@ -1,0 +1,35 @@
+{
+  "label": "p42f-receipt-stage",
+  "revision": "55f0a4dfe3cbf86ca9c195f6880c948deca57d27",
+  "host": "worlesenric",
+  "started": "2026-10-06T17:07:10.411642+00:00",
+  "command": "dotnet test ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/P42eReceipt.csproj --filter 'FullyQualifiedName~R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted' --logger trx --results-directory ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/W-MECH-01/p42f-receipt-stage-20261006T170710.410489Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2f",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/p42f-receipt-stage-20261006T170710.410489Z",
+  "queuedAtRevision": "55f0a4dfe3cbf86ca9c195f6880c948deca57d27",
+  "executionStarted": "2026-10-06T17:07:10.412866+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T17:07:13.930193+00:00",
+  "seconds": 3.51964686694555,
+  "suites": {
+    "trx/_worlesenric_2026-10-07_01_07_13.trx": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted",
+          "result": "Failed",
+          "detail": "String lengths are both 40. Strings differ at index 0.\n  Expected: \"d140f7487092a40cbead927c5546127e0cb6fe14\"\n  But was:  \"4ac7ba858b91e73e2d5de9dc6f02852c13feec56\"\n  -----------^\n \n              at P42e.Receipt.ReceiptTests.R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted() in ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs:line 68\n   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.BlockUntilCompleted()\n   at NUnit.Framework.Internal.MessagePumpStrategy.NoMessagePumpStrategy.WaitForCompletion(AwaitAdapter awaiter)\n   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)\n   at NUnit.Framework.Internal.Execution.SimpleWorkItem.<>c__DisplayClass4_0.<PerformWork>b__0()\n   at NUnit.Framework.Internal.ContextUtils.<>c__DisplayClass1_0`1.<DoIsolated>b__0(Object _)\n\n1)    at P42e.Receipt.ReceiptTests.R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted() in ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs:line 68"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json.",
+  "productRevision": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
+  "installedBinarySha256": "0a44dc20026599b75c86fb410e389e7cbb6337b79fbb7d40d6ff7108e800e751"
+}

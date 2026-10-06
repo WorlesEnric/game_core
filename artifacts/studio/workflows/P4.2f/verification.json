@@ -1,0 +1,66 @@
+{
+  "productRevision": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
+  "companion": {
+    "fmt": "pass",
+    "clippyAllTargetsWarningsDenied": "pass",
+    "testsPassed": 145,
+    "testsIgnored": 12,
+    "releaseBuild": "pass"
+  },
+  "policies": {
+    "packages": 42,
+    "packageAssemblies": 91,
+    "csharpFiles": 1228,
+    "result": "pass"
+  },
+  "semanticDocker": {
+    "command": "bash studio/stage/analyzer/offline-check.sh .evidence/p42f-semantic <owned-version-cache>",
+    "testsPassed": 50,
+    "positiveFindings": 0,
+    "negativeFindings": 21,
+    "negativeRules": [
+      "SG001",
+      "SG002",
+      "SG003",
+      "SG004",
+      "SG005",
+      "SG006",
+      "SG007",
+      "SG008",
+      "SG009",
+      "SG010"
+    ]
+  },
+  "acceptancePython": {
+    "toolTestsPassed": 20,
+    "runnerTestsPassed": 11,
+    "resourceWarnings": "Existing verify.run stdout pipe emits ResourceWarning in unit tests; assertions all pass."
+  },
+  "unityRegression": {
+    "resultXml": "artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T165922.104070Z/results.xml",
+    "total": 41,
+    "counts": {
+      "Passed": 41
+    },
+    "failedSuites": [],
+    "nonpassing": []
+  },
+  "finalUnityRegression": {
+    "artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T175113.703121Z/results.xml": {
+      "total": 41,
+      "counts": {
+        "Passed": 41
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T165922.104070Z/results.xml": {
+      "total": 41,
+      "counts": {
+        "Passed": 41
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

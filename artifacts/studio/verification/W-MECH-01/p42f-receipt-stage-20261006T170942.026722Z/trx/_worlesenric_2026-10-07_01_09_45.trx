@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c006f0a2-9dc1-4413-a0b9-d78ea178e3ee" name="@worlesenric 2026-10-07 01:09:45" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T01:09:45.0953668+08:00" queuing="2026-10-07T01:09:45.0953669+08:00" start="2026-10-07T01:09:44.4061672+08:00" finish="2026-10-07T01:09:45.1023312+08:00" />
+  <TestSettings name="default" id="24fa33b0-febb-43a5-9544-989cd6aa64af">
+    <Deployment runDeploymentRoot="_worlesenric_2026-10-07_01_09_45" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="92de697c-9df3-43ae-a28f-cc486e6b9682" testId="071607af-8c52-7884-81c2-094c7b7d2d8a" testName="R2_09_13_P42f_InstalledSignedRecordBindsCurrentMain" computerName="worlesenric" duration="00:00:00.0615590" startTime="2026-10-07T01:09:44.8944049+08:00" endTime="2026-10-07T01:09:44.9559034+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92de697c-9df3-43ae-a28f-cc486e6b9682" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="R2_09_13_P42f_InstalledSignedRecordBindsCurrentMain" storage="~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/tools/p42freceipt/bin/debug/net8.0/gamecore.studio.etos.client.tests.dll" id="071607af-8c52-7884-81c2-094c7b7d2d8a">
+      <Execution id="92de697c-9df3-43ae-a28f-cc486e6b9682" />
+      <TestMethod codeBase="~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42fReceipt/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="P42f.Receipt.ReceiptTests" name="R2_09_13_P42f_InstalledSignedRecordBindsCurrentMain" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="071607af-8c52-7884-81c2-094c7b7d2d8a" executionId="92de697c-9df3-43ae-a28f-cc486e6b9682" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running selected tests in ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42fReceipt/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
