@@ -1,0 +1,31 @@
+{
+  "buildReport": {
+    "development": false,
+    "errors": 0,
+    "managedStripping": "Low",
+    "platform": "StandaloneLinux64",
+    "result": "Succeeded",
+    "scriptingBackend": "IL2CPP",
+    "totalSize": 1914568491,
+    "totalTimeSeconds": 95.083,
+    "warnings": 4
+  },
+  "buildSeconds": 163,
+  "executable": "HollowmereLinux/Hollowmere.x86_64",
+  "executableBytes": 14784,
+  "executableSha256": "aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70",
+  "fileCount": 36,
+  "notShippedBytes": 1738125478,
+  "outputBytes": 176448393,
+  "result": "succeeded",
+  "revision": "fc3245ea4143220629a1a562081a2d097da39759",
+  "smoke": {
+    "command": "xvfb-run -a Hollowmere.x86_64 -batchmode -nographics -frameLog build/smoke/frame-log.csv -autoplay games/hollowmere/Autoplay/smoke.txt",
+    "exit": 0,
+    "frameLogRows": 2507,
+    "result": "pass",
+    "seconds": 9
+  },
+  "unityBatchExit": 0,
+  "unityVersion": "6000.0.75f1"
+}

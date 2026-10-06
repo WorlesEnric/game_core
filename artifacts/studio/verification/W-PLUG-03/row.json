@@ -1,15 +1,16 @@
 {
-  "status": "BLOCKED",
-  "note": "Real walking, focus/interact and travel pass; the deterministic script includes Jump but does not assert clearing a ledge and landing, so that required observation stays open.",
-  "command": "studio/tools/verify-all.sh unity",
+  "status": "PASS",
+  "note": "R7-C two identical 110-frame traces prove walking is blocked by a solid 0.8 m ledge, Jump clears its lip airborne, descends and lands grounded. Existing real walking/focus/prompt/dispatch/travel case passes.",
+  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels' -force-glcore",
   "tests": [
-    "WalksInteractsTalksPastNpcsAndTravels"
+    "LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels"
   ],
   "row": "W-PLUG-03",
   "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
   "requirement": "SR-6.3",
-  "reportedAt": "2026-10-06T15:29:44.410640+00:00",
+  "reportedAt": "2026-10-06T21:25:19.117913+00:00",
   "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+    "W-PLUG-03/r7-play/results.xml",
+    "W-PLUG-08/r7-pickup/results.xml"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "counts": {
-    "PASS": 35,
-    "BLOCKED": 30,
-    "FAIL": 3
+    "PASS": 41,
+    "BLOCKED": 23,
+    "FAIL": 4
   },
   "rows": [
     {
@@ -721,49 +721,52 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Real three-region travel/pose/residency tests pass. Region texture/audio release and the required peak-relative Memory Profiler delta remain unmeasured.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825\u20130.15878% of peak; both passing runs meet load \u22642 s/unload \u22641 s. Reloadable 702-byte clip descriptors remain included in the residual.",
+      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'NativeMediaAcceptance' -force-glcore",
       "tests": [
         "TravelsVillageMarshBelfryVillage"
       ],
       "row": "W-PLUG-01",
       "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
       "requirement": "SR-6.1, B-REGION",
-      "reportedAt": "2026-10-06T15:29:44.409021+00:00",
+      "reportedAt": "2026-10-06T21:25:18.936154+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
-        "B-REGION/README.md"
+        "W-PLUG-01/r7-region-repeat/results.xml",
+        "W-PLUG-01/r7-region-repeat/external-snapshots.json",
+        "W-PLUG-01/r7-native-final/results.xml"
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Despawn/respawn variant and scale override preservation passes; the required real Animator-binding part is not asserted by this suite.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C production binders drive real Animator transitions and animated poses; despawn destroys the old Animator and respawn retains variant prefab, 1.2 scale and committed bindings. Named XML passes in graphics-enabled batch Editor.",
+      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'AnimatorRespawnTests' -force-glcore",
       "tests": [
         "WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides"
       ],
       "row": "W-PLUG-02",
       "scenario": "Despawn/respawn keeps override; Animator bound",
       "requirement": "SR-6.2",
-      "reportedAt": "2026-10-06T15:29:44.410069+00:00",
+      "reportedAt": "2026-10-06T21:25:19.093842+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-PLUG-02/r7-baseline/results.xml",
+        "W-PLUG-01/r7-region-repeat/results.xml"
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Real walking, focus/interact and travel pass; the deterministic script includes Jump but does not assert clearing a ledge and landing, so that required observation stays open.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C two identical 110-frame traces prove walking is blocked by a solid 0.8 m ledge, Jump clears its lip airborne, descends and lands grounded. Existing real walking/focus/prompt/dispatch/travel case passes.",
+      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels' -force-glcore",
       "tests": [
         "WalksInteractsTalksPastNpcsAndTravels"
       ],
       "row": "W-PLUG-03",
       "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
       "requirement": "SR-6.3",
-      "reportedAt": "2026-10-06T15:29:44.410640+00:00",
+      "reportedAt": "2026-10-06T21:25:19.117913+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+        "W-PLUG-03/r7-play/results.xml",
+        "W-PLUG-08/r7-pickup/results.xml"
       ]
     },
     {
@@ -836,18 +839,18 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Exactly-once outbox restoration and grant IDs pass, but the specific repeated lantern pickup plus reload yielding exactly one lantern is not asserted by the retained tests.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C 32 actual barn interactions across cooldown and production save/restore leave exactly one lantern; canonical saved/restored hash matches and the replacement world handles further retries. Final 10-case XML passes.",
+      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'FullQuestHeadless' -force-glcore",
       "tests": [
         "TwoHundredGrants_GetDistinctRequestIds_AndGrantsAfterAReloadStillApply"
       ],
       "row": "W-PLUG-08",
       "scenario": "Take spam + reload: exactly one lantern",
       "requirement": "SR-6.8",
-      "reportedAt": "2026-10-06T15:29:44.414274+00:00",
+      "reportedAt": "2026-10-06T21:25:19.143896+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+        "W-PLUG-08/r7-pickup/results.xml"
       ]
     },
     {
@@ -866,28 +869,31 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Definition and tool validators run, but the same invalid definition is not compared through inspector, validator and live-agent fronts in one retained parity case.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "FAIL",
+      "note": "R7-C actual inspector/validator/live-gateway fake-transport parity case fails: inspector drops location; candidate staging accepts the same missing-prefab definition with diagnostics=[]. Exact Studio core/UI seam requests are outside R7-C ownership.",
+      "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'DefinitionDiagnosticParityTests' -force-glcore",
       "row": "W-PLUG-10",
       "scenario": "Definition validator parity (inspector, validator, agent)",
       "requirement": "SR-5.2",
-      "reportedAt": "2026-10-06T15:29:44.415356+00:00",
+      "reportedAt": "2026-10-06T21:25:19.174906+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
+        "W-PLUG-10/r7-baseline/results.xml"
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Boot/UI/audio and direct TTS import pass; audible ambience crossfade and native clip release have no current combined capture/snapshot proof.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals \u22640.159%; no paid calls.",
+      "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record\nnode artifacts/studio/verification/W-PLUG-11/audio-identity.mjs",
       "row": "W-PLUG-11",
       "scenario": "Ambience crossfade, voice line, clip release",
       "requirement": "SR-6.11",
-      "reportedAt": "2026-10-06T15:29:44.415887+00:00",
+      "reportedAt": "2026-10-06T22:09:06.544313+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
-        "W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md"
+        "W-PLUG-11/r7-combined/results.xml",
+        "W-PLUG-11/r7-combined/external-snapshots.json",
+        "W-PLUG-11/r7-voice-final/results.xml",
+        "W-PLUG-11/r7-audio-identity.json",
+        "W-GAME-05/r7-lifecycle-final/playthrough.mp4"
       ]
     },
     {
@@ -1242,9 +1248,9 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Editor full-quest endings and save/load pass; a current standalone menu\u2192save\u2192load\u2192ending\u2192restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-C fc3245ea Linux IL2CPP recording passes production menu/save/UI Quit, second-process menu/load, Ending C and Play Again reset. Final 350.2 s 1080p movie has actual voice/ambience, exact saved-state assertions and two exit-0 processes; Xvfb/llvmpipe, not B-FRAME.",
+      "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record",
       "tests": [
         "EndingA_Silence",
         "EndingB_Toll",
@@ -1255,9 +1261,12 @@
       "row": "W-GAME-05",
       "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
       "requirement": "SR-6.10",
-      "reportedAt": "2026-10-06T15:29:44.429337+00:00",
+      "reportedAt": "2026-10-06T22:09:06.546015+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+        "W-GAME-05/r7-lifecycle-final/driver-summary.json",
+        "W-GAME-05/r7-lifecycle-final/saves/lifecycle-report.json",
+        "W-GAME-05/r7-lifecycle-final/playthrough.mp4",
+        "W-GAME-05/r7-build-final/build-summary.json"
       ]
     },
     {

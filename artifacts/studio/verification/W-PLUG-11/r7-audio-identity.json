@@ -1,0 +1,46 @@
+{
+  "method": "Normalized sample cross-correlation, mono 2000 Hz ffmpeg decoding; fixed frame-marker-aligned windows. Threshold 0.2 plus mismatched-region control. No human-listening claim.",
+  "sampleRate": 2000,
+  "files": [
+    {
+      "file": "artifacts/studio/verification/W-GAME-05/r7-lifecycle-final/playthrough.mp4",
+      "sha256": "b6e439cb5edc3ff6152927672be57a0dd64b0e44b04c7d72b9915bc39aa9749c"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Media/Voices/Maren_greet.wav",
+      "sha256": "bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Audio/Generated/ambience_village.wav",
+      "sha256": "41e22070e104cd52faa3c7f9ab1f6a6064c38f9ddcd7fe4d634dbf76f997d6bc"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Audio/Generated/ambience_marsh.wav",
+      "sha256": "dbe12cc8cfe0f529ddab531bc863b2a81fd76f28a8a9878dc7e41db4966998ad"
+    }
+  ],
+  "voice": {
+    "correlation": 0.5905074975299984,
+    "offsetSeconds": 7.5055,
+    "searchStartSeconds": 15
+  },
+  "villageBefore": {
+    "correlation": 0.4641603087157645,
+    "offsetSeconds": 5.03,
+    "searchStartSeconds": 100
+  },
+  "marshAfter": {
+    "correlation": 0.455205504092498,
+    "offsetSeconds": 6.577,
+    "searchStartSeconds": 118
+  },
+  "wrongMarshBefore": {
+    "correlation": 0.049220203420101194,
+    "offsetSeconds": 0.9785
+  },
+  "wrongVillageAfter": {
+    "correlation": 0.07397936543590122,
+    "offsetSeconds": 8.6785
+  },
+  "status": "PASS"
+}

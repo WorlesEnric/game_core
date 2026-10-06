@@ -1,19 +1,19 @@
 # W-PLUG-02: Despawn/respawn keeps override; Animator bound
 
-Verdict: **BLOCKED**. Despawn/respawn variant and scale override preservation passes; the required real Animator-binding part is not asserted by this suite.
+Verdict: **PASS**.
 
-Report timestamp: 2026-10-06T15:29:44.410069+00:00 UTC.
+R7-C, source checkpoint `7ad4a809`, Linux Unity 6000.0.75f1, graphics-enabled **batch** Editor on isolated Xvfb `:97` (llvmpipe). No real-GPU performance claim.
 
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+## Evidence
+
+- [Executed XML](r7-baseline/results.xml): `Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides` **Passed**.
+- [Shared initial Editor log](../W-PLUG-11/r7-baseline-tests/r7-edit-baseline-20261007T045248-3963472-a1.log). The combined run has two unrelated failing acceptance cases; this row's named case passes.
+- Driver: `games/hollowmere/Assets/Hollowmere/Tests/R7_C/Animation/AnimatorRespawnTests.cs`.
+
+The production `GameplayBoot`/`CreateViews` presentation binds committed variant and scale to a real AnimatorController. Controller transitions evaluate real animation clips that move a child transform. Variant 2 selects the override prefab and 1.2 scale; returning to variant 0 changes the evaluated state/pose. Despawn destroys the old view and Animator; respawn creates a different view whose override, scale, parameters and evaluated pose match the committed state. The test does not call Animator.Play or SetInteger.
+
+Temporary controller/clips/prefabs are deleted during teardown. ImmediateSceneLoader isolates the presentation assertion; region streaming remains qualified separately in W-PLUG-01.
 
 ## Reproduce
 
-```sh
-studio/tools/verify-all.sh unity
-```
-
-## Retained evidence
-
-- [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md)
-
-Exact acceptance/component cases: `WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides`. Component cases do not close any missing external workflow.
+Use `studio/tools/unity-batch.sh --project <absolute games/hollowmere> --log-dir <dir> --label animator --results <xml> -- -runTests -testPlatform EditMode -testFilter AnimatorRespawnTests -force-glcore`, with `DISPLAY` set and `UNITY=<absolute Tests/R7_C/batch-graphics.py>`. The adapter preserves batch mode, host allocation, redaction and deadlines.

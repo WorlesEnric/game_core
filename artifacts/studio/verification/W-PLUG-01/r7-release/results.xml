@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.6919003">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="571" result="Failed" site="Child" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.691900" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1849" name="Hollowmere.R7_C.Media.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Media.Tests.dll" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.637145" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4014589" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1850" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.636728" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1851" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.636471" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1846" name="NativeMediaAcceptance" fullname="Hollowmere.R7_C.NativeMediaAcceptance" classname="Hollowmere.R7_C.NativeMediaAcceptance" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 21:04:47Z" end-time="2026-10-06 21:07:36Z" duration="169.635459" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1848" name="W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak" fullname="Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak" methodname="W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak" classname="Hollowmere.R7_C.NativeMediaAcceptance" runstate="Runnable" seed="1651517950" result="Failed" start-time="2026-10-06 21:04:43Z" end-time="2026-10-06 21:07:36Z" duration="172.924819" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Thornwick Village: retained 55.5779594391934% of native media peak (limit 5%); Blackmere Marsh: retained 83.3459323423789% of native media peak (limit 5%); Drowned Belfry: retained 100% of native media peak (limit 5%)
+  Expected: <empty>
+  But was:  < "Thornwick Village: retained 55.5779594391934% of native media peak (limit 5%)", "Blackmere Marsh: retained 83.3459323423789% of native media peak (limit 5%)", "Drowned Belfry: retained 100% of native media peak (limit 5%)" >
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R7_C.NativeMediaAcceptance+<W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak>d__1.MoveNext () [0x00a85] in /home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Media/NativeMediaAcceptance.cs:137
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1847" name="W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" fullname="Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" methodname="W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" classname="Hollowmere.R7_C.NativeMediaAcceptance" runstate="Runnable" seed="880709752" result="Passed" start-time="2026-10-06 21:07:36Z" end-time="2026-10-06 21:07:36Z" duration="0.005649" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

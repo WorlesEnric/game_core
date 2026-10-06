@@ -1,19 +1,20 @@
 # W-PLUG-03: Walk, jump a ledge, focus prompt, interact dispatch
 
-Verdict: **BLOCKED**. Real walking, focus/interact and travel pass; the deterministic script includes Jump but does not assert clearing a ledge and landing, so that required observation stays open.
+Verdict: **PASS**.
 
-Report timestamp: 2026-10-06T15:29:44.410640+00:00 UTC.
+## R7-C evidence
 
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+[Executed PlayMode XML](r7-play/results.xml), Linux Unity 6000.0.75f1, graphics-enabled batch Editor via the host-wide allocator, isolated Xvfb/llvmpipe:
+
+- `Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding.WPLUG03_DeterministicJumpClearsSolidLedgeAndLands`: **Passed**.
+- `Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels`: **Passed** (retained real walking, focus/prompt, interaction dispatch and travel).
+- [Editor log](r7-play/r7-play-20261007T050003-4000332-a1.log).
+- [Gameplay rules TRX](r7-rules/r7-rules.trx): **309 passed, 0 failed/skipped**.
+
+The ledge test boots the real game twice. Production input, kernel motion and CharacterController traverse an isolated solid 0.8 m ledge above the streamed map. Walking alone is blocked by its lip. Jump must commit ascent with grounded=0, clear the top while crossing the lip, descend, land inside the supporting bounds, and remain grounded with zero vertical speed. The actual controller must report contact; off-map fallback is forbidden. Both fresh boots must produce identical 110-frame committed traces. No pose writes occur during traversal.
+
+The initial combined XML has 13 passing cases and one lantern-driver assertion failure (W-PLUG-08); that does not change these two passing cases. No graphical frame-budget claim is made from Xvfb.
 
 ## Reproduce
 
-```sh
-studio/tools/verify-all.sh unity
-```
-
-## Retained evidence
-
-- [UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md](../UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md)
-
-Exact acceptance/component cases: `WalksInteractsTalksPastNpcsAndTravels`. Component cases do not close any missing external workflow.
+`studio/tools/unity-batch.sh --project <abs project> --log-dir <dir> --label ledge --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels' -force-glcore`, with `DISPLAY` and `UNITY=<abs Tests/R7_C/batch-graphics.py>`.

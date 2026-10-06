@@ -1,19 +1,19 @@
 {
-  "status": "BLOCKED",
-  "note": "Editor full-quest endings and save/load pass; a current standalone menu\u2192save\u2192load\u2192ending\u2192restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
-  "command": "studio/tools/verify-all.sh unity",
+  "status": "PASS",
+  "note": "R7-C fc3245ea Linux IL2CPP recording passes production menu/save/UI Quit, second-process menu/load, Ending C and Play Again reset. Final 350.2 s 1080p movie has actual voice/ambience, exact saved-state assertions and two exit-0 processes; Xvfb/llvmpipe, not B-FRAME.",
+  "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record",
   "tests": [
-    "EndingA_Silence",
-    "EndingB_Toll",
-    "EndingC_FreedEcho",
-    "SaveRestoreMidQuest"
+    "run_lifecycle.py"
   ],
   "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
   "row": "W-GAME-05",
   "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
   "requirement": "SR-6.10",
-  "reportedAt": "2026-10-06T15:29:44.429337+00:00",
+  "reportedAt": "2026-10-06T22:09:06.546015+00:00",
   "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
+    "W-GAME-05/r7-lifecycle-final/driver-summary.json",
+    "W-GAME-05/r7-lifecycle-final/saves/lifecycle-report.json",
+    "W-GAME-05/r7-lifecycle-final/playthrough.mp4",
+    "W-GAME-05/r7-build-final/build-summary.json"
   ]
 }

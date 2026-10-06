@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:18Z" duration="3.0414325">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="571" result="Failed" site="Child" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:18Z" duration="3.041433" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1841" name="Hollowmere.R7_C.Animation.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Animation.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.098848" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3963500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1842" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.097114" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1843" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.095777" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1844" name="Animation" fullname="Hollowmere.R7_C.Animation" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.094613" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1845" name="Tests" fullname="Hollowmere.R7_C.Animation.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.093447" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1839" name="AnimatorRespawnTests" fullname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" classname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.091807" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1840" name="W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" fullname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" methodname="W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" classname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" runstate="Runnable" seed="796593811" result="Passed" start-time="2026-10-06 20:54:15Z" end-time="2026-10-06 20:54:16Z" duration="1.076934" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[W-PLUG-02] PASS: committed variant drives real controller state and animated pose; despawn destroys Animator; respawn restores variant prefab, 1.2 scale and binding.
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1849" name="Hollowmere.R7_C.Media.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Media.Tests.dll" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.016729" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3963500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1850" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.012329" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1851" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.011971" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1846" name="NativeMediaAcceptance" fullname="Hollowmere.R7_C.NativeMediaAcceptance" classname="Hollowmere.R7_C.NativeMediaAcceptance" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.011699" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1847" name="W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" fullname="Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" methodname="W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip" classname="Hollowmere.R7_C.NativeMediaAcceptance" runstate="Runnable" seed="2067709548" result="Failed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.010876" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  completed fade must not pin the outgoing native clip
+  Expected: null
+  But was:  <outgoing (UnityEngine.AudioClip)>
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip () [0x000eb] in /home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Media/NativeMediaAcceptance.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1854" name="Hollowmere.R7_C.PlayerFlow.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.PlayerFlow.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.003129" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3963500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1855" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.002560" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1856" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.002320" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1857" name="PlayerFlow" fullname="Hollowmere.R7_C.PlayerFlow" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.002129" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1858" name="Tests" fullname="Hollowmere.R7_C.PlayerFlow.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.001922" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1852" name="LifecycleSnapshotTests" fullname="Hollowmere.R7_C.PlayerFlow.Tests.LifecycleSnapshotTests" classname="Hollowmere.R7_C.PlayerFlow.Tests.LifecycleSnapshotTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.001759" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1853" name="RestoreAssertionRejectsFreshWorldOrMissingQuestItem" fullname="Hollowmere.R7_C.PlayerFlow.Tests.LifecycleSnapshotTests.RestoreAssertionRejectsFreshWorldOrMissingQuestItem" methodname="RestoreAssertionRejectsFreshWorldOrMissingQuestItem" classname="Hollowmere.R7_C.PlayerFlow.Tests.LifecycleSnapshotTests" runstate="Runnable" seed="576634421" result="Passed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:16Z" duration="0.001067" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1861" name="Hollowmere.R7_C.Validation.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Validation.Tests.dll" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.842156" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3963500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1862" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.841832" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1863" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.841635" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1864" name="Validation" fullname="Hollowmere.R7_C.Validation" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.841424" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1859" name="DefinitionDiagnosticParityTests" fullname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" classname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.841244" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1860" name="WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" fullname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" methodname="WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" classname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" runstate="Runnable" seed="1273998291" result="Failed" start-time="2026-10-06 20:54:16Z" end-time="2026-10-06 20:54:18Z" duration="1.840218" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Category" value="R7_C" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  agent candidate validation must report the same invalid definition
+  Expected: property Length equal to 1
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests+<WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts>d__4.MoveNext () [0x00656] in /home/worlesenric/wkspace/gc-studio/r7-c/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Validation/DefinitionDiagnosticParityTests.cs:125
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[W-PLUG-10 asset=Assets/Hollowmere/Tests/R7_C/Validation/Temporary_c6f5e8d7e6c44fc6b4694e0b8c20e866.asset subject=884bf6bd-2039-468d-bba6-19d4d7f1564c
+inspector rendered=[
+  "GP-ENT-006: definition Temporary_c6f5e8d7e6c44fc6b4694e0b8c20e866 has no prefab"
+]
+inspector diagnostics=[
+  {
+    "code": "GP-ENT-006",
+    "message": "definition Temporary_c6f5e8d7e6c44fc6b4694e0b8c20e866 has no prefab"
+  }
+]
+validator diagnostics=[
+  {
+    "code": "GP-ENT-006",
+    "message": "definition Temporary_c6f5e8d7e6c44fc6b4694e0b8c20e866 has no prefab",
+    "where": {
+      "kind": "Definition",
+      "authoringId": "884bf6bd-2039-468d-bba6-19d4d7f1564c",
+      "global": "GlobalObjectId_V1-3-ff78afaa2af110e28bb94debb93f288e-11400000-0",
+      "assetGuid": "ff78afaa2af110e28bb94debb93f288e",
+      "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_c6f5e8d7e6c44fc6b4694e0b8c20e866.asset"
+    },
+    "data": {
+      "subject": "884bf6bd-2039-468d-bba6-19d4d7f1564c"
+    }
+  }
+]
+agent request=cs_01M49FXT7TJPT6BPQPY0SQ6HM0 accepted=True diagnostics=[]
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

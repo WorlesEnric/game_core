@@ -13,6 +13,7 @@ namespace Hollowmere.P3_1.PlayMode.Tests
     public sealed partial class FullQuestHeadless
     {
         [UnityTest]
+        [Explicit("Native audio acceptance: select this case in a graphics-enabled batch Editor.")]
         public IEnumerator R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip()
         {
             yield return Boot();
