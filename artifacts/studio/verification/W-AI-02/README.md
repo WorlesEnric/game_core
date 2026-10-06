@@ -1,26 +1,18 @@
 # W-AI-02: Point at a location; "add a ferryman NPC here who talks about the bell": NPC spawned with dialogue, patrol, nav
 
-Verdict: **FAIL**. R6-B rejects the unchanged retained unreachable-entry witness before writes (GP-DLG-005, nodes 0–7). The fresh installed-worker ferryman candidate instead preserves reachability and applies two operations, creating the 21st entity, but actual Play fails: applied NPC needs patrol and dialogue. After Play reload the candidate UI is Invalid, so the unchanged driver skips undo and records a 21-entity final roster. A separate fresh-Editor normal History.Undo passes (1/1 XML), restores 21→20 and journals Undone; no candidate bytes were repaired.
+Verdict: **FAIL**. P4.2f deploys the exact R6-C designer contract with a USD 0.50 worker ceiling. The unchanged text2 run returns needs_clarification for missing confirmed navigation. A fresh NPC-only request receives actual sampled NavMesh points and complete paths as the creator follow-up, then produces an unchanged six-operation candidate: apply succeeds and roster rises 20 to 21. Actual WorkflowPlayChecks.Effect("W-AI-02", ...) enters Play but fails dialogue start refused. R6-C AppliedOr consults the durable Applied journal; normal History undo succeeds, journals Undone and restores 21 to 20 despite post-Play candidate UI invalidity. The retained unreachable-entry witness still refuses before writes in the passing R6 regression XML. No candidate bytes are repaired and no full NPC Play pass is claimed.
 
-Report timestamp: 2026-10-06T15:29:44.398965+00:00 UTC.
-
-Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Product revision: `4ac7ba858b91e73e2d5de9dc6f02852c13feec56`. Earlier attempts remain historical evidence.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/live-p42e.py text2
+python3 artifacts/studio/verification/TOOLS/live-p42f.py text2
+python3 artifacts/studio/verification/TOOLS/live-p42f.py npc
 ```
 
 ## Retained evidence
 
-- [W-AI-02/p42e-text2-20261006T150123.555155Z/result.json](../W-AI-02/p42e-text2-20261006T150123.555155Z/result.json)
-- [W-AI-02/p42e-text2-20261006T150123.555155Z/workflow/ferryman2/play-effect.json](../W-AI-02/p42e-text2-20261006T150123.555155Z/workflow/ferryman2/play-effect.json)
-- [W-AI-02/p42e-text2-20261006T150123.555155Z/workflow/ferryman2/candidate.json](../W-AI-02/p42e-text2-20261006T150123.555155Z/workflow/ferryman2/candidate.json)
-- [R6-P4.2e/p42e-regression-20261006T143939.136591Z/result.json](../R6-P4.2e/p42e-regression-20261006T143939.136591Z/result.json)
-- [W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/result.json](../W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/result.json)
-- [W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/normal-undo.json](../W-AI-02/p42e-cleanup-npc-20261006T151151.965982Z/normal-undo.json)
-
-Exact acceptance/component cases: `R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite`, `WorkflowPlayChecks.Effect("W-AI-02", "ferryman2")`, `R2_38_P42e_NormalJournalUndoAfterNpcPlayReload`. Component cases do not close any missing external workflow.
-
-Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.
+- [W-AI-02/p42f-text2-20261006T173140.444632Z](../W-AI-02/p42f-text2-20261006T173140.444632Z)
+- [W-AI-02/p42f-npc-20261006T174113.356793Z](../W-AI-02/p42f-npc-20261006T174113.356793Z)
+- [R6-P4.2f/p42f-regression-20261006T175113.703121Z](../R6-P4.2f/p42f-regression-20261006T175113.703121Z)

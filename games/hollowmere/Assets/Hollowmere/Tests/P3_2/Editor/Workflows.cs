@@ -59,6 +59,7 @@ namespace Hollowmere.P3_2.Workflows
                 case "smoke": return Smoke();
                 case "text": return Text();
                 case "text2": return Text2();
+                case "p42f-npc": return NpcQualification();
                 case "robe": return Robe(false);
                 case "robe2": return Robe(true);
                 case "narrative": return Narrative();
@@ -244,6 +245,58 @@ namespace Hollowmere.P3_2.Workflows
                     return true;
                 }),
             };
+        }
+
+        private static IReadOnlyList<Step> NpcQualification()
+        {
+            return new[]
+            {
+                S.OpenScene(S.VillageScene), S.Relayout(), S.WaitGateway(),
+                S.Note("clear selection", () => S.Context.Selection.Clear()),
+                S.PointAt("Village Well", new Vector3(4f, 0f, 3f)),
+                S.AddAsset("Assets/Hollowmere/Npcs/Definitions/Odd.asset"),
+                S.Note("confirmed navigation", () => NpcNavigationAnswer(string.Empty)),
+                S.Note("roster before ferryman", () => { WorkflowPlayChecks.CaptureNpcBaseline(); Roster("ferryman2", "before"); }),
+                S.Send("ferryman2", "Add a ferryman NPC here who talks about the bell."),
+                S.Await("ferryman2", NpcNavigationAnswer, 1200),
+                S.Do("preview ferryman", () => Guard("ferryman2", () => S.Preview("ferryman2").Run())),
+                S.Do("apply ferryman", () => Guard("ferryman2", () => S.Apply("ferryman2").Run())),
+                S.Do("after ferryman", () => Guard("ferryman2", () =>
+                {
+                    Roster("ferryman2", "applied"); DescribeTargets("ferryman2", "applied"); return true;
+                })),
+                WorkflowPlayChecks.Effect("W-AI-02", "ferryman2"),
+                S.Do("undo ferryman", () => AppliedOr("ferryman2", () => S.Undo("ferryman2").Run())),
+                S.Note("roster after ferryman undo", () => Roster("ferryman2", "undone")),
+                S.Note("finish", () => { RejectIfOpen("ferryman2"); WorkflowRunner.Recording(false); }),
+            };
+        }
+
+        private static string NpcNavigationAnswer(string question)
+        {
+            Vector3 origin = GameObject.Find("Village Well").transform.position + new Vector3(4f, 0f, 3f);
+            var points = new JArray();
+            var corners = new JArray();
+            if (!UnityEngine.AI.NavMesh.SamplePosition(origin, out UnityEngine.AI.NavMeshHit spawn, 1f, UnityEngine.AI.NavMesh.AllAreas))
+                throw new InvalidOperationException("selected ferryman spawn has no NavMesh");
+            foreach (Vector3 offset in new[] { Vector3.left, Vector3.right })
+            {
+                if (!UnityEngine.AI.NavMesh.SamplePosition(spawn.position + offset, out UnityEngine.AI.NavMeshHit hit, 0.5f, UnityEngine.AI.NavMesh.AllAreas))
+                    throw new InvalidOperationException("ferryman patrol point has no NavMesh");
+                var route = new UnityEngine.AI.NavMeshPath();
+                if (!UnityEngine.AI.NavMesh.CalculatePath(spawn.position, hit.position, UnityEngine.AI.NavMesh.AllAreas, route)
+                    || route.status != UnityEngine.AI.NavMeshPathStatus.PathComplete)
+                    throw new InvalidOperationException("ferryman patrol point is not connected to spawn");
+                points.Add(new JArray(hit.position.x, hit.position.y, hit.position.z));
+                corners.Add(new JArray(route.corners.Select(p => new JArray(p.x, p.y, p.z))));
+            }
+            var facts = new JObject { ["spawn"] = new JArray(spawn.position.x, spawn.position.y, spawn.position.z),
+                ["patrolPoints"] = points, ["spawnToPointPaths"] = corners, ["pathStatus"] = "PathComplete",
+                ["source"] = "actual Unity NavMesh.SamplePosition and CalculatePath in the loaded Village scene" };
+            WorkflowRunner.Json("ferryman2/navigation-context.json", facts);
+            return "Create Ferryman Bram with his own bell dialogue and a Patrol behaviour using these confirmed world-space points. " +
+                "Reuse the selected Odd definition as the catalog template, preserve existing graph reachability, and include the roster, placement and navigation prerequisites. " +
+                "No image, audio, describe, 3D or other media generation is authorized. The creator measured these facts in the actual loaded scene: " + facts.ToString(Newtonsoft.Json.Formatting.None);
         }
 
         // -------------------------------------------------------------------------------------------------- robe

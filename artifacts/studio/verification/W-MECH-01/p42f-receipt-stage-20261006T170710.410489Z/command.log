@@ -1,0 +1,34 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.Contracts -> ~/wkspace/gc-studio/p4.2f/dotnet/src/GameCore.Contracts/bin/Debug/netstandard2.1/GameCore.Contracts.dll
+  GameCore.Studio.Model -> ~/wkspace/gc-studio/p4.2f/dotnet/src/GameCore.Studio.Model/bin/Debug/netstandard2.1/GameCore.Studio.Model.dll
+  GameCore.Studio.Etos.Client -> ~/wkspace/gc-studio/p4.2f/dotnet/src/GameCore.Studio.Etos.Client/bin/Debug/netstandard2.1/GameCore.Studio.Etos.Client.dll
+  P42eReceipt -> ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll
+Test run for ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/bin/Debug/net8.0/GameCore.Studio.Etos.Client.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted [89 ms]
+  Error Message:
+     String lengths are both 40. Strings differ at index 0.
+  Expected: "d140f7487092a40cbead927c5546127e0cb6fe14"
+  But was:  "4ac7ba858b91e73e2d5de9dc6f02852c13feec56"
+  -----------^
+
+  Stack Trace:
+     at P42e.Receipt.ReceiptTests.R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted() in ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs:line 68
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.BlockUntilCompleted()
+   at NUnit.Framework.Internal.MessagePumpStrategy.NoMessagePumpStrategy.WaitForCompletion(AwaitAdapter awaiter)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Execution.SimpleWorkItem.<>c__DisplayClass4_0.<PerformWork>b__0()
+   at NUnit.Framework.Internal.ContextUtils.<>c__DisplayClass1_0`1.<DoIsolated>b__0(Object _)
+
+1)    at P42e.Receipt.ReceiptTests.R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted() in ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42eReceipt/ReceiptTests.cs:line 68
+
+
+Results File: ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/W-MECH-01/p42f-receipt-stage-20261006T170710.410489Z/trx/_worlesenric_2026-10-07_01_07_13.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 89 ms - GameCore.Studio.Etos.Client.Tests.dll (net8.0)

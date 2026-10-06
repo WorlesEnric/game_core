@@ -1,0 +1,28 @@
+{
+  "label": "p42f-receipt-stage",
+  "revision": "55f0a4dfe3cbf86ca9c195f6880c948deca57d27",
+  "host": "worlesenric",
+  "started": "2026-10-06T17:21:13.589634+00:00",
+  "command": "dotnet test ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/TOOLS/P42fReceipt/P42fReceipt.csproj --filter 'FullyQualifiedName~R2_09_13_P42f_InstalledSignedRecordBindsCurrentMain' --logger trx --results-directory ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2f",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z",
+  "queuedAtRevision": "55f0a4dfe3cbf86ca9c195f6880c948deca57d27",
+  "executionStarted": "2026-10-06T17:21:13.590593+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T17:21:16.384372+00:00",
+  "seconds": 2.795853942167014,
+  "suites": {
+    "trx/_worlesenric_2026-10-07_01_21_16.trx": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "productRevision": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
+  "installedBinarySha256": "0a44dc20026599b75c86fb410e389e7cbb6337b79fbb7d40d6ff7108e800e751"
+}

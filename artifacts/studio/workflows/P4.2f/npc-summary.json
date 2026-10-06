@@ -1,0 +1,77 @@
+{
+  "candidateId": "cs_01M49500E9KFTHBKGBCXWW3VZC",
+  "candidateSha256": "fb19405db6643d7a0243826aee8ce33ff92a049af23cf990c82abba700045d70",
+  "operationCount": 6,
+  "play": {
+    "row": "W-AI-02",
+    "status": "fail",
+    "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+    "deadline": 1791309120476,
+    "phase": "exit",
+    "changeSetId": "cs_01M49500E9KFTHBKGBCXWW3VZC",
+    "npcId": "a7a1fafb-e7c2-460a-8470-7997799bf12f",
+    "detail": "dialogue start refused"
+  },
+  "undo": {
+    "ok": true,
+    "changeSetId": "cs_01M49500E9KFTHBKGBCXWW3VZC",
+    "state": "Undone",
+    "milliseconds": 444.5,
+    "diagnostics": [],
+    "status": "Undo done (cs_01M49500E9KFTHBKGBCXWW3VZC) in 359.7 ms"
+  },
+  "rosterCounts": {
+    "before": 20,
+    "applied": 21,
+    "undone": 20
+  },
+  "navigation": {
+    "spawn": [
+      4.0,
+      0.08333337,
+      1.1
+    ],
+    "patrolPoints": [
+      [
+        3.0,
+        0.08333337,
+        1.1
+      ],
+      [
+        5.0,
+        0.08333337,
+        1.1
+      ]
+    ],
+    "spawnToPointPaths": [
+      [
+        [
+          4.0,
+          0.08333337,
+          1.1
+        ],
+        [
+          3.0,
+          0.08333337,
+          1.1
+        ]
+      ],
+      [
+        [
+          4.0,
+          0.08333337,
+          1.1
+        ],
+        [
+          5.0,
+          0.08333337,
+          1.1
+        ]
+      ]
+    ],
+    "pathStatus": "PathComplete",
+    "source": "actual Unity NavMesh.SamplePosition and CalculatePath in the loaded Village scene"
+  },
+  "candidateMutation": "none; exact received candidate applied",
+  "dialogueDiagnosisLimit": "The retained production probe reports dialogue start refused, without DialogueRunner.Start out-detail. Missing runtime graph enrollment is a source/candidate-based inference, not an observed refusal code."
+}

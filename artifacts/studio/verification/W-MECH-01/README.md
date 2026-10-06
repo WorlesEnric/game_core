@@ -1,27 +1,23 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **FAIL**. R6-A installed stages pass in 157.145 s cold and 75.479 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted catalog hashes. Both graphical Play Admit attempts terminate in production rollback with compile_timeout after Unity Package Manager stalls at Installing packages (76/76). The second attempt retains the same compile_timeout; package and pending record are removed by rollback. No live restore, tri-state smoke or successful admission undo is inferred from isolated stage smoke. Negative candidate: 14 lexical hits, no issued passing verdict, Admit disabled. A separate real Docker Roslyn scan refuses the exact negative-semantic sources with 21 findings across SG001–SG010.
+Verdict: **FAIL**. P4.2f current-main installed stages pass in 156.122 s cold / 80.801 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted hashes. Both graphical Play admissions and one retry each roll back with compile_timeout. Owned UPM admission resolves take 17.077 / 19.286 / 7.873 / 20.098 s; logs then repeatedly report Awaiting authenticated companion verdict refresh after domain reload. The historical 146 s native resolve is not reproduced. No live restoration, tri-state smoke or successful admission undo is claimed. Negative candidate has no passing verdict and Admit stays disabled; production Docker Roslyn separately refuses 21 findings across SG001–SG010.
 
-Report timestamp: 2026-10-06T15:29:44.424602+00:00 UTC.
-
-Acceptance baseline: merged main `d140f748`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Product revision: `4ac7ba858b91e73e2d5de9dc6f02852c13feec56`. Earlier attempts remain historical evidence.
 
 ## Reproduce
 
 ```sh
-See TOOLS/README-P4.2e.md: stage-submit, watcher, receipt-stage, stage-review.
+python3 artifacts/studio/verification/TOOLS/live-p42f.py stage-submit --candidate artifacts/studio/workflows/P4.2f/candidate
+# Follow README-P4.2f for service wait, signed receipt and graphical review.
 ```
 
 ## Retained evidence
 
-- [W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/service/job.json](../W-MECH-01/p42e-stage-submit-20261006T144109.661452Z/service/job.json)
-- [W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/service/job.json](../W-MECH-01/p42e-stage-submit-20261006T145038.813597Z/service/job.json)
-- [W-MECH-01/p42e-receipt-stage-20261006T145345.507609Z/result.json](../W-MECH-01/p42e-receipt-stage-20261006T145345.507609Z/result.json)
-- [W-MECH-01/p42e-stage-review-20261006T144510.582506Z/result.json](../W-MECH-01/p42e-stage-review-20261006T144510.582506Z/result.json)
-- [W-MECH-01/p42e-stage-review-20261006T145348.148583Z/result.json](../W-MECH-01/p42e-stage-review-20261006T145348.148583Z/result.json)
-- [W-MECH-01/p42e-stage-review-negative-20261006T150052.077560Z/outcome.json](../W-MECH-01/p42e-stage-review-negative-20261006T150052.077560Z/outcome.json)
-- [W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z/service/job.json](../W-MECH-01/p42e-stage-submit-negative-20261006T145836.138161Z/service/job.json)
-
-Exact acceptance/component cases: `R2_09_13_P42e_InstalledSignedRecordHasWorldAndPredicted`, `P42e.Live.StageUi.Review`. Component cases do not close any missing external workflow.
-
-Historical references: P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.
+- [W-MECH-01/p42f-stage-submit-20261006T170309.995129Z](../W-MECH-01/p42f-stage-submit-20261006T170309.995129Z)
+- [W-MECH-01/p42f-stage-submit-20261006T171632.907547Z](../W-MECH-01/p42f-stage-submit-20261006T171632.907547Z)
+- [W-MECH-01/p42f-stage-review-20261006T170945.223444Z](../W-MECH-01/p42f-stage-review-20261006T170945.223444Z)
+- [W-MECH-01/p42f-stage-review-20261006T171323.900006Z](../W-MECH-01/p42f-stage-review-20261006T171323.900006Z)
+- [W-MECH-01/p42f-stage-review-20261006T172116.443048Z](../W-MECH-01/p42f-stage-review-20261006T172116.443048Z)
+- [W-MECH-01/p42f-stage-review-20261006T172434.103813Z](../W-MECH-01/p42f-stage-review-20261006T172434.103813Z)
+- [W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z](../W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z)
+- [W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z](../W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z)

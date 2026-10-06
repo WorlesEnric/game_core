@@ -1,0 +1,28 @@
+{
+  "label": "p42f-regression",
+  "revision": "611897b46638e090ba0dbf5b59b03e7b76a16020",
+  "host": "worlesenric",
+  "started": "2026-10-06T17:51:13.704667+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2f/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2f/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T175113.703121Z/logs --label p42e-regression --timeout 1800 --results ~/wkspace/gc-studio/p4.2f/artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T175113.703121Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'Hollowmere.R6_A.AdmissionLifecycleTests|Hollowmere.R6_B|Hollowmere.P3_2.Headless.DriverDryTests'",
+  "cwd": "~/wkspace/gc-studio/p4.2f/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/R6-P4.2f/p42f-regression-20261006T175113.703121Z",
+  "queuedAtRevision": "611897b46638e090ba0dbf5b59b03e7b76a16020",
+  "executionStarted": "2026-10-06T17:51:13.706102+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-06T17:52:05.745321+00:00",
+  "seconds": 52.04214006499387,
+  "suites": {
+    "results.xml": {
+      "total": 41,
+      "counts": {
+        "Passed": 41
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "productRevision": "4ac7ba858b91e73e2d5de9dc6f02852c13feec56",
+  "installedBinarySha256": "0a44dc20026599b75c86fb410e389e7cbb6337b79fbb7d40d6ff7108e800e751"
+}

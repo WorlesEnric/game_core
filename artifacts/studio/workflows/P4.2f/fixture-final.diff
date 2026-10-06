@@ -1,0 +1,319 @@
+diff --git a/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity b/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
+index c0c4f0bb..93684db7 100644
+--- a/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
++++ b/games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity
+@@ -4758,6 +4758,55 @@ MeshFilter:
+   m_PrefabAsset: {fileID: 0}
+   m_GameObject: {fileID: 1360887857}
+   m_Mesh: {fileID: 4300000, guid: 124e69c2d6863b5f08c0d1f2a69ea283, type: 2}
++--- !u!1 &1368936278
++GameObject:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  serializedVersion: 6
++  m_Component:
++  - component: {fileID: 1368936280}
++  - component: {fileID: 1368936279}
++  m_Layer: 0
++  m_Name: Ferryman Bram
++  m_TagString: Untagged
++  m_Icon: {fileID: 0}
++  m_NavMeshLayer: 0
++  m_StaticEditorFlags: 0
++  m_IsActive: 1
++--- !u!114 &1368936279
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1368936278}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: cd2472fec3314fecb00d0cbb9610bce2, type: 3}
++  m_Name:
++  m_EditorClassIdentifier:
++  authoringId: a7a1fafb-e7c2-460a-8470-7997799bf12f
++  definition: {fileID: 11400000, guid: b660176f8c239780486b8e0040b196bb, type: 2}
++  variant: 0
++  overrides:
++    entries: []
++--- !u!4 &1368936280
++Transform:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1368936278}
++  serializedVersion: 2
++  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
++  m_LocalPosition: {x: 4, y: 0.08333337, z: 1.1}
++  m_LocalScale: {x: 1, y: 1, z: 1}
++  m_ConstrainProportionsScale: 0
++  m_Children: []
++  m_Father: {fileID: 0}
++  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+ --- !u!1 &1382142349
+ GameObject:
+   m_ObjectHideFlags: 0
+@@ -6746,3 +6795,4 @@ SceneRoots:
+   - {fileID: 742764982}
+   - {fileID: 1801231040}
+   - {fileID: 1273892466}
++  - {fileID: 1368936280}
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json b/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
+index 29ec903c..070eb579 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
++++ b/games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json
+@@ -5,7 +5,7 @@
+   "startRegionId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+   "focusEntityId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+   "preloadNeighbours": false,
+-  "catalogFingerprint": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
++  "catalogFingerprint": "e890a2b0329a48108a1e63c941caddb2874bc16d63926a0843b4d83e28d4dec2",
+   "definitions": [
+     {
+       "id": "05b934c3-466a-4cbd-9ec5-e887ecf26794",
+@@ -243,6 +243,20 @@
+         "visible"
+       ]
+     },
++    {
++      "id": "a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62",
++      "name": "FerrymanBramEntity",
++      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
++      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
++      "revision": 13380354565897398245,
++      "variantCount": 1,
++      "variants": [],
++      "overridableFields": [
++        "scaleMilli",
++        "tint",
++        "visible"
++      ]
++    },
+     {
+       "id": "acefbaad-340d-466f-9d66-214afb15646f",
+       "name": "Stone",
+@@ -677,6 +691,20 @@
+       "overrides": [
+       ]
+     },
++    {
++      "id": "a7a1fafb-e7c2-460a-8470-7997799bf12f",
++      "name": "Ferryman Bram",
++      "target": "96cb62fe8e6f93e2bb1d45aba6309f28",
++      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
++      "definition": "a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62",
++      "pose": "4000,83,1100@0",
++      "variant": 0,
++      "scaleMilli": 1000,
++      "visible": true,
++      "alive": true,
++      "overrides": [
++      ]
++    },
+     {
+       "id": "bcc77f89-ca7d-4197-8c86-a6efe61aba9a",
+       "name": "Marsh Herbs (garden)",
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Catalog/HollowmereCatalog.catalog.json b/games/hollowmere/Assets/Hollowmere/World/Catalog/HollowmereCatalog.catalog.json
+index 51130179..7b1861e8 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Catalog/HollowmereCatalog.catalog.json
++++ b/games/hollowmere/Assets/Hollowmere/World/Catalog/HollowmereCatalog.catalog.json
+@@ -997,6 +997,14 @@
+           "implementationId": "db74bb785de26f027bd0dddbb2cc259f",
+           "implementationExpression": "new GameplayCatalogEntry(Recipe9e5589ccc56c4b2bade66aa6a11f1ec2)"
+         },
++        {
++          "stableName": "gameplay.recipe.a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62",
++          "keyName": "Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62",
++          "keyVersion": 1,
++          "ownerPackageId": "401691215250b041448008843372a06c",
++          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
++          "implementationExpression": "new GameplayCatalogEntry(Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62)"
++        },
+         {
+           "stableName": "gameplay.recipe.acefbaad-340d-466f-9d66-214afb15646f",
+           "keyName": "Recipeacefbaad340d466f9d66214afb15646f",
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalog.g.cs b/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalog.g.cs
+index b98e34f7..3861d028 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalog.g.cs
++++ b/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalog.g.cs
+@@ -41,7 +41,7 @@ namespace Hollowmere.Generated
+         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
+
+         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
+-        public const string CatalogFingerprint = "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18";
++        public const string CatalogFingerprint = "e890a2b0329a48108a1e63c941caddb2874bc16d63926a0843b4d83e28d4dec2";
+
+         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
+         public static readonly Id128[] SupportedFeatureIds =
+@@ -189,6 +189,9 @@ namespace Hollowmere.Generated
+         /// <summary>Generated key of gameplay.recipe.2a8a3d76-2dea-4c2c-88a3-13be92ea473f ('gameplay.recipe.2a8a3d76-2dea-4c2c-88a3-13be92ea473f').</summary>
+         public static readonly FactoryKey Recipe2a8a3d762dea4c2c88a313be92ea473f = new FactoryKey(new Id128(0xA91DBB131BF00463UL, 0x1ACB428ED42FBB6CUL), 1U);
+
++        /// <summary>Generated key of gameplay.recipe.a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62 ('gameplay.recipe.a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62').</summary>
++        public static readonly FactoryKey Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62 = new FactoryKey(new Id128(0xAF183063177EF850UL, 0x563C3935C1F9E6DDUL), 1U);
++
+         /// <summary>Generated key of gameplay.recipe.19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54 ('gameplay.recipe.19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54').</summary>
+         public static readonly FactoryKey Recipe19b21d1c92034d9aa4fdcb3e57a6ac54 = new FactoryKey(new Id128(0xBAE64286F42BF7D5UL, 0x68829B437D1DED0EUL), 1U);
+
+@@ -799,6 +802,10 @@ namespace Hollowmere.Generated
+                 Recipe2a8a3d762dea4c2c88a313be92ea473f,
+                 "gameplay.recipe.2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+                 new GameplayCatalogEntry(Recipe2a8a3d762dea4c2c88a313be92ea473f)),
++            new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
++                Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62,
++                "gameplay.recipe.a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62",
++                new GameplayCatalogEntry(Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62)),
+             new BoundRegistration<GameCore.Gameplay.Contracts.IGameplayCatalogEntry>(
+                 Recipe19b21d1c92034d9aa4fdcb3e57a6ac54,
+                 "gameplay.recipe.19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+@@ -874,6 +881,7 @@ namespace Hollowmere.Generated
+             Recipe81ae7773969741d7b7902d0346b8fd58,
+             Recipece5030244b28419488658eec9dd6d8a7,
+             Recipe2a8a3d762dea4c2c88a313be92ea473f,
++            Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62,
+             Recipe19b21d1c92034d9aa4fdcb3e57a6ac54,
+             Reciped7081228f4974a3d811e0bb0e3c72807,
+             Recipe68d2519f2a40439bbe2d63d16581cd06,
+@@ -981,6 +989,12 @@ namespace Hollowmere.Generated
+                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
+                 new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
+                 1U),
++            new FactoryRegistration(
++                Recipea29dd11c0dde4ec1b51fe7e2b1cd3c62,
++                FactoryKind.LayoutApply,
++                new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
++                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
++                1U),
+             new FactoryRegistration(
+                 Recipe19b21d1c92034d9aa4fdcb3e57a6ac54,
+                 FactoryKind.LayoutApply,
+@@ -4198,14 +4212,14 @@ namespace Hollowmere.Generated
+         /// <summary>Every group's catalog registrations concatenated in declaration order.</summary>
+         private static FactoryRegistration[] GroupCatalogRegistrations()
+         {
+-            FactoryRegistration[] all = new FactoryRegistration[72];
++            FactoryRegistration[] all = new FactoryRegistration[73];
+             int offset = 0;
+             Array.Copy(LayoutRegistrationsCatalogRegistrations, 0, all, offset, 22);
+             offset += 22;
+             Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 11);
+             offset += 11;
+-            Array.Copy(RecipeRegistrationsCatalogRegistrations, 0, all, offset, 28);
+-            offset += 28;
++            Array.Copy(RecipeRegistrationsCatalogRegistrations, 0, all, offset, 29);
++            offset += 29;
+             Array.Copy(SystemRegistrationsCatalogRegistrations, 0, all, offset, 11);
+             offset += 11;
+             return all;
+@@ -4242,6 +4256,6 @@ namespace Hollowmere.Generated
+         public const int SchemaCount = 25;
+
+         /// <summary>Hash of the generated source that precedes this declaration.</summary>
+-        public const string CatalogFileHash = "dcec91a7e17d235e02182065dce0c14f1b4e4a07854b49223c400668a5817023";
++        public const string CatalogFileHash = "ba7c7774c36cd4fa62457cd4a8902f85c445403e06b2b6ce697c7e555d0b1647";
+     }
+ }
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalogCoverage.g.cs b/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalogCoverage.g.cs
+index 3172d733..a826ae55 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalogCoverage.g.cs
++++ b/games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalogCoverage.g.cs
+@@ -20,7 +20,7 @@ namespace Hollowmere.Generated
+     public static class HollowmereCatalogCoverage
+     {
+         /// <summary>Number of generated registration entries this exercise resolves by key.</summary>
+-        public const int RegistrationCount = 72;
++        public const int RegistrationCount = 73;
+
+         /// <summary>
+         /// Resolves every generated registration through the table's own generated lookup method and checks that a
+@@ -58,7 +58,7 @@ namespace Hollowmere.Generated
+                 exercised++;
+             }
+
+-            // RecipeRegistrations (LayoutApply, 28 entries)
++            // RecipeRegistrations (LayoutApply, 29 entries)
+             for (int i = 0; i < HollowmereCatalog.RecipeRegistrations.Length; i++)
+             {
+                 FactoryKey key = HollowmereCatalog.RecipeRegistrations[i].Key;
+diff --git a/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset b/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
+index b5c031d9..6cce0d34 100644
+--- a/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
++++ b/games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset
+@@ -18,9 +18,9 @@ MonoBehaviour:
+   startRegionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+   focusEntityId: 90f935f8-12d5-4278-b336-107b081e1dfd
+   preloadNeighbours: 0
+-  catalogFingerprint: d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18
++  catalogFingerprint: e890a2b0329a48108a1e63c941caddb2874bc16d63926a0843b4d83e28d4dec2
+   catalogTypeName: Hollowmere.Generated.HollowmereCatalog
+-  bakeReportHash: b27a50b97cc1517350bec8e523208cd71af3ceb23796ee3087fcdb85e0cab154
++  bakeReportHash: 7c3dfe9cc1628a3b15c89b9a427e2167fbf1b08f096dcf83d2857ec7ae1f7a86
+   regions:
+   - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+     name: Thornwick Village
+@@ -186,6 +186,12 @@ MonoBehaviour:
+     contentStamp: a21327d10c09384db52770d44583c36271cf11df4d371c1ab3d7d6cfc5211ffd
+     structuralStamp: db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183
+     variantCount: 1
++  - authoringId: a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62
++    name: FerrymanBramEntity
++    definition: {fileID: 11400000, guid: b660176f8c239780486b8e0040b196bb, type: 2}
++    contentStamp: af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17
++    structuralStamp: b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39
++    variantCount: 1
+   - authoringId: acefbaad-340d-466f-9d66-214afb15646f
+     name: Stone
+     definition: {fileID: 11400000, guid: 59f550ace0092d66a8c292df84a423e7, type: 2}
+@@ -449,6 +455,19 @@ MonoBehaviour:
+     visible: 1
+     alive: 1
+     overrides: []
++  - authoringId: a7a1fafb-e7c2-460a-8470-7997799bf12f
++    name: Ferryman Bram
++    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
++    definitionId: a29dd11c-0dde-4ec1-b51f-e7e2b1cd3c62
++    x: 4000
++    y: 83
++    z: 1100
++    yaw: 0
++    variant: 0
++    scaleMilli: 1000
++    visible: 1
++    alive: 1
++    overrides: []
+   - authoringId: bcc77f89-ca7d-4197-8c86-a6efe61aba9a
+     name: Marsh Herbs (garden)
+     regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+diff --git a/games/hollowmere/ProjectSettings/GraphicsSettings.asset b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+index cc5d30ee..2fa377fa 100644
+--- a/games/hollowmere/ProjectSettings/GraphicsSettings.asset
++++ b/games/hollowmere/ProjectSettings/GraphicsSettings.asset
+@@ -59,8 +59,8 @@ GraphicsSettings:
+   m_AlbedoSwatchInfos: []
+   m_RenderPipelineGlobalSettingsMap:
+     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 7673ede96ed794ac7aa16917c829f021, type: 2}
+-  m_LightsUseLinearIntensity: 0
+-  m_LightsUseColorTemperature: 0
++  m_LightsUseLinearIntensity: 1
++  m_LightsUseColorTemperature: 1
+   m_LogWhenShaderIsCompiled: 0
+   m_LightProbeOutsideHullStrategy: 1
+   m_CameraRelativeLightCulling: 0
+diff --git a/games/hollowmere/ProjectSettings/QualitySettings.asset b/games/hollowmere/ProjectSettings/QualitySettings.asset
+index c9f23094..888162fc 100644
+--- a/games/hollowmere/ProjectSettings/QualitySettings.asset
++++ b/games/hollowmere/ProjectSettings/QualitySettings.asset
+@@ -282,7 +282,7 @@ QualitySettings:
+     globalTextureMipmapLimit: 0
+     textureMipmapLimitSettings: []
+     anisotropicTextures: 2
+-    antiAliasing: 2
++    antiAliasing: 0
+     softParticles: 1
+     softVegetation: 1
+     realtimeReflectionProbes: 1

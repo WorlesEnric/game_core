@@ -1,0 +1,30 @@
+{
+  "rawMaximumUnityProcesses": 4,
+  "maximumClassifiedActiveEditors": 1,
+  "strictExclusivity": "unproven",
+  "unclassifiedOverlapSamples": [
+    {
+      "utcEpoch": 1791306080.4011006,
+      "processes": [
+        {
+          "pid": 3170803,
+          "parentPid": 3170802,
+          "assetImportWorker": false,
+          "thisProject": true,
+          "batchMode": true,
+          "emptyArguments": false
+        },
+        {
+          "pid": 3186121,
+          "parentPid": 3170803,
+          "assetImportWorker": false,
+          "thisProject": false,
+          "batchMode": false,
+          "emptyArguments": true
+        }
+      ]
+    }
+  ],
+  "reason": "The early sample has child PID 3186121, parent owned regression Editor 3170803, but empty arguments and no process-state field. Its role/exit state cannot be established retrospectively. Later samples include processState; earlier bytes remain unchanged.",
+  "sampleCount": 3253
+}
