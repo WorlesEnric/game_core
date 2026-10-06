@@ -1,0 +1,78 @@
+{
+  "row": "W-PLUG-10",
+  "status": "PASS",
+  "revision": "aadc10447a92c97c5c064f46f2a301c892b701c0",
+  "unity": {
+    "passed": 181,
+    "failed": 0,
+    "skipped": 0
+  },
+  "rules": {
+    "passed": 309,
+    "failed": 0,
+    "skipped": 0
+  },
+  "parityCase": "Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts",
+  "observations": {
+    "inspector": [
+      {
+        "code": "GP-ENT-006",
+        "message": "definition Temporary_c33ca313af80403280bc112b3d00f528 has no prefab",
+        "where": {
+          "kind": "Definition",
+          "authoringId": "c72adddf-5a01-4d48-8508-4c758124ecd5",
+          "global": "GlobalObjectId_V1-3-08895c6accc34a3fb85ca5b9ac747db2-11400000-0",
+          "assetGuid": "08895c6accc34a3fb85ca5b9ac747db2",
+          "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_c33ca313af80403280bc112b3d00f528.asset"
+        },
+        "data": {
+          "subject": "c72adddf-5a01-4d48-8508-4c758124ecd5"
+        }
+      }
+    ],
+    "validator": [
+      {
+        "code": "GP-ENT-006",
+        "message": "definition Temporary_c33ca313af80403280bc112b3d00f528 has no prefab",
+        "where": {
+          "kind": "Definition",
+          "authoringId": "c72adddf-5a01-4d48-8508-4c758124ecd5",
+          "global": "GlobalObjectId_V1-3-08895c6accc34a3fb85ca5b9ac747db2-11400000-0",
+          "assetGuid": "08895c6accc34a3fb85ca5b9ac747db2",
+          "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_c33ca313af80403280bc112b3d00f528.asset"
+        },
+        "data": {
+          "subject": "c72adddf-5a01-4d48-8508-4c758124ecd5"
+        }
+      }
+    ],
+    "agent": [
+      {
+        "code": "GP-ENT-006",
+        "message": "definition Temporary_c33ca313af80403280bc112b3d00f528 has no prefab",
+        "where": {
+          "kind": "Definition",
+          "authoringId": "c72adddf-5a01-4d48-8508-4c758124ecd5",
+          "global": "GlobalObjectId_V1-3-08895c6accc34a3fb85ca5b9ac747db2-11400000-0",
+          "assetGuid": "08895c6accc34a3fb85ca5b9ac747db2",
+          "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_c33ca313af80403280bc112b3d00f528.asset"
+        },
+        "data": {
+          "subject": "c72adddf-5a01-4d48-8508-4c758124ecd5"
+        }
+      }
+    ]
+  },
+  "sourceSha256": {
+    "Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs": "455e83b853c3e533322dd8eb1c049a0211865788eb5902a0df064f57ec29570d",
+    "Packages/com.gamecore.studio.core/Tests/Editor/ChangeSetEngineTests.cs": "b918f08016e28c13b2c584bbff9333ceefa33d9a23bac64127e7ab7b0da4960c",
+    "Packages/com.gamecore.studio.ui/Editor/Context/ContextPanelView.cs": "f8cee42a9fdb8cf868b1c40b6b4d2e3cb1e9000a8d6b3705715776a9b99a9180",
+    "games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereMedia.cs": "a1e01adccc0440b65916fe9a7b06c9ff7074f51ac50da90b82b5f06d723ac6b0",
+    "games/hollowmere/Assets/Hollowmere/Tests/R7_C/Validation/DefinitionDiagnosticParityTests.cs": "37dff03135711cefdd02423fe1f127a14abfded7465fcc5de9da5f9a1e23b5bf",
+    "games/hollowmere/Assets/Hollowmere/Tests/R7_E/GeneratedVoiceEnrollmentTests.cs": "6afbe01c4176bffc940d511293b12179b780a2a6dd9267b89a053994ade80b8e"
+  },
+  "receiptSha256": {
+    "r7-e-final/results.xml": "0f4cc6c6d1c9d0befc7c1b28c83e13ff216c7a2f9f554b8c48dc721912b2a804",
+    "r7-e-rules/r7-e-rules.trx": "311239972f165c542bdb06cf1071795b4d30a72b3c71ae97486256181d427a7e"
+  }
+}

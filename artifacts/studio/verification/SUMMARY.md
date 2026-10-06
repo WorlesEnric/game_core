@@ -1,6 +1,6 @@
 # P4.2 + P4.2b + P4.2c verification summary
 
-Matrix row totals: PASS 49, BLOCKED 17, FAIL 2.
+Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
@@ -52,7 +52,7 @@ Matrix row totals: PASS 49, BLOCKED 17, FAIL 2.
 | W-PLUG-07 | PASS | [Evidence](W-PLUG-07/README.md): Both quest branches pass; failure closes dependents transitively, cycles refuse, and the actual LanternLost failure ending is reached. |
 | W-PLUG-08 | PASS | [Evidence](W-PLUG-08/README.md): R7-C 32 actual barn interactions across cooldown and production save/restore leave exactly one lantern; canonical saved/restored hash matches and the replacement world handles further retries. Final 10-case XML passes. |
 | W-PLUG-09 | PASS | [Evidence](W-PLUG-09/README.md): The real Hollowmere logic why-not trace names the failed condition and the change that would make it true. |
-| W-PLUG-10 | FAIL | [Evidence](W-PLUG-10/README.md): R7-C actual inspector/validator/live-gateway fake-transport parity case fails: inspector drops location; candidate staging accepts the same missing-prefab definition with diagnostics=[]. Exact Studio core/UI seam requests are outside R7-C ownership. |
+| W-PLUG-10 | PASS | [Evidence](W-PLUG-10/README.md): R7-E real context inspector, validator console and live ETOS gateway with fake transport report identical GP-ENT-006 code/message/canonical subject for one missing-prefab definition; candidate refuses without writes. Full EditMode XML 181/181, Rules 309/309; generated voice bank enrollment and History inverses pass. |
 | W-PLUG-11 | PASS | [Evidence](W-PLUG-11/README.md): R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals ≤0.159%; no paid calls. |
 | W-PLUG-12 | PASS | [Evidence](W-PLUG-12/README.md): Both final-tree rebakes/Entry.Verify pass without output changes; byte identity and single-definition revision tests pass. Structural recipe revisions did not change, preserving existing save compatibility. |
 | W-KERNEL-01 | PASS | [Evidence](W-KERNEL-01/README.md): Production GameApplication boot with a corrupted catalog returns CatalogFingerprintMismatch and creates no world. |
