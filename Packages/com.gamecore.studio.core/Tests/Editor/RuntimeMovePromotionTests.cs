@@ -97,6 +97,23 @@ namespace GameCore.Studio.Edit.Tests
         }
 
         [Test]
+        public void W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses()
+        {
+            var change = StudioRuntime.Single("runtime experiment", IntentOrigin.Manual,
+                new Operation("move", RuntimeMovePromotion.ToolId, _bed.Ref(_entity).WithScope(AuthorScope.Instance),
+                    new JObject { ["position"] = new JArray(3, 2, 1), ["yaw"] = 0 }));
+            StagedChangeSet staged = _bed.Runtime.Engine.Stage(change);
+            ulong expected = _bed.Live.CommittedRevision;
+            _bed.Live.CommittedRevision++;
+            ApplyReport report = _bed.Runtime.Engine.Apply(staged);
+            Assert.That(report.Ok, Is.False);
+            Assert.That(_gateway.Calls, Is.Zero);
+            Assert.That(report.Diagnostics, Has.Some.Matches<Diagnostic>(d => d.Code == DiagnosticCodes.Conflict
+                && (string?)d.Data?["expected"] == "revision:" + expected
+                && (string?)d.Data?["actual"] == "revision:" + _bed.Live.CommittedRevision));
+        }
+
+        [Test]
         public void W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch()
         {
             var move = new Operation("move", RuntimeMovePromotion.ToolId, _bed.Ref(_entity).WithScope(AuthorScope.Instance),

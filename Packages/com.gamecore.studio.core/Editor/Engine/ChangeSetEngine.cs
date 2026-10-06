@@ -890,8 +890,15 @@ namespace GameCore.Studio.Edit
                 {
                     if (!IsPlayMode || !_runtime.Live.IsAvailable)
                         return OperationResult.Refused(DiagnosticCodes.Refused, "Runtime moves require an available Play world.");
-                    if (expectedRevision != _runtime.Live.CommittedRevision)
+                    ulong actualRevision = _runtime.Live.CommittedRevision;
+                    if (expectedRevision != actualRevision)
+                    {
+                        diagnostics.Add(Diagnostic.ConflictAt(operation.Target!,
+                            "revision:" + expectedRevision, "revision:" + actualRevision,
+                            "The world revision changed before runtime placement.",
+                            "Re-stage the runtime move against the current world."));
                         return OperationResult.Refused(DiagnosticCodes.Conflict, "The world revision changed before runtime placement.");
+                    }
                     return tool.Apply(context);
                 }
                 ILiveOpTranslator? translator = staging.Live ? _runtime.Services.FindLiveTranslator(context) : null;
