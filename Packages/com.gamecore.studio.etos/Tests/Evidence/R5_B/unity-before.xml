@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Failed(Child)" total="5" passed="1" failed="3" inconclusive="0" skipped="1" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.8126391">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="493" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.812639" total="5" passed="1" failed="3" inconclusive="0" skipped="1" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1726" name="Hollowmere.R5_B.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/r5-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R5_B.EditMode.Tests.dll" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.794482" total="5" passed="1" failed="3" inconclusive="0" skipped="1" asserts="0">
+      <properties>
+        <property name="_PID" value="1724986" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1727" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.793845" total="5" passed="1" failed="3" inconclusive="0" skipped="1" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1728" name="R5_B" fullname="Hollowmere.R5_B" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.793549" total="5" passed="1" failed="3" inconclusive="0" skipped="1" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1716" name="CandidateTests" fullname="Hollowmere.R5_B.CandidateTests" classname="Hollowmere.R5_B.CandidateTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.286171" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="ParameterizedMethod" id="1719" name="Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload" fullname="Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload" classname="Hollowmere.R5_B.CandidateTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.280817" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1717" name="Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(False)" fullname="Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(False)" methodname="Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload" classname="Hollowmere.R5_B.CandidateTests" runstate="Runnable" seed="1258516916" result="Failed" start-time="2026-10-06 09:58:12Z" end-time="2026-10-06 09:58:13Z" duration="0.250609" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected string length 12 but was 10. Strings differ at index 0.
+  Expected: "verdict pass"
+  But was:  "not staged"
+  -----------^
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001ff] in ~/wkspace/gc-studio/r5-b/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:45
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1718" name="Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(True)" fullname="Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(True)" methodname="Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload" classname="Hollowmere.R5_B.CandidateTests" runstate="Runnable" seed="542179485" result="Failed" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.017722" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected string length 12 but was 10. Strings differ at index 0.
+  Expected: "verdict pass"
+  But was:  "not staged"
+  -----------^
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001ff] in ~/wkspace/gc-studio/r5-b/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:45
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1720" name="ImporterTests" fullname="Hollowmere.R5_B.ImporterTests" classname="Hollowmere.R5_B.ImporterTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.013165" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1721" name="Request8_OriginalCandidateStillRefusesAndPublishedEnumsMatchUnity" fullname="Hollowmere.R5_B.ImporterTests.Request8_OriginalCandidateStillRefusesAndPublishedEnumsMatchUnity" methodname="Request8_OriginalCandidateStillRefusesAndPublishedEnumsMatchUnity" classname="Hollowmere.R5_B.ImporterTests" runstate="Runnable" seed="29098906" result="Passed" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.012267" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1722" name="VirtualVoiceSelfTest" fullname="Hollowmere.R5_B.VirtualVoiceSelfTest" classname="Hollowmere.R5_B.VirtualVoiceSelfTest" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.009997" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1723" name="Request6_VirtualMicrophoneBothRetainedLinesTranscribe" fullname="Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe" methodname="Request6_VirtualMicrophoneBothRetainedLinesTranscribe" classname="Hollowmere.R5_B.VirtualVoiceSelfTest" runstate="Runnable" seed="1917618506" result="Skipped" label="Ignored" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.008810" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="240000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[Requires explicit realtime-operation authorization and GAMECORE_R5B_VOICE_SELF_TEST=1; no paid calls in the offline packet.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1724" name="VoiceTests" fullname="Hollowmere.R5_B.VoiceTests" classname="Hollowmere.R5_B.VoiceTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.482998" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1725" name="Request6_TwoTakesTraceFramesBytesReleaseAndFinalWithoutAudioOrText" fullname="Hollowmere.R5_B.VoiceTests.Request6_TwoTakesTraceFramesBytesReleaseAndFinalWithoutAudioOrText" methodname="Request6_TwoTakesTraceFramesBytesReleaseAndFinalWithoutAudioOrText" classname="Hollowmere.R5_B.VoiceTests" runstate="Runnable" seed="1314004359" result="Failed" start-time="2026-10-06 09:58:13Z" end-time="2026-10-06 09:58:13Z" duration="0.482191" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Expected: String containing "frame=audio-0 bytes=4800" and containing "frame=audio-1 bytes=2"
+  But was:  "voice session vs_fake4f576b70 capturing from r5-b-low-level
+voice session closed: stopped
+voice session vs_fake24a223d2 capturing from r5-b-low-level
+voice session closed: stopped"
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R5_B.VoiceTests+<Request6_TwoTakesTraceFramesBytesReleaseAndFinalWithoutAudioOrText>d__0.MoveNext () [0x0027c] in ~/wkspace/gc-studio/r5-b/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/VoiceTests.cs:35
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

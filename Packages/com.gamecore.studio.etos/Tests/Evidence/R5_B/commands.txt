@@ -1,0 +1,26 @@
+# All commands ran on myubuntu, branch codex/r5-b, based on c9866292.
+# No service, live apply, credential file, or paid operation was used.
+
+python3 -m venv /tmp/r5-b-venv
+/tmp/r5-b-venv/bin/pip install pytest jsonschema
+/tmp/r5-b-venv/bin/python -m pytest -q studio/etos/agent/workers/tests studio/etos/workers/tests
+python3 Packages/com.gamecore.studio.ui/Tests/Host/test_evidence_contract.py
+
+PATH="$HOME/.dotnet:$PATH" dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --logger 'trx;LogFileName=r5-b-client.trx' --results-directory /tmp/r5-b-dotnet
+
+# Run from studio/agent:
+~/.cargo/bin/cargo fmt --check
+~/.cargo/bin/cargo clippy --all-targets -- -D warnings
+~/.cargo/bin/cargo test
+# The focused retained-audio baseline used c9866292:studio/agent/src/voice.rs with the
+# unchanged new test. The fixed source was restored byte-for-byte before final checks.
+~/.cargo/bin/cargo test --test companion request6_voice -- --nocapture
+
+# Run from repository root. The wrapper owns the lock and testResults argument.
+GAMECORE_ETOS_AUTOSTART=0 GAMECORE_ETOS_LIVE=0 GAMECORE_R4A_VOICE_SELF_TEST=0 GAMECORE_R5B_VOICE_SELF_TEST=0 bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir "$PWD/.unity-logs" --label r5-b-final --results "$PWD/.unity-logs/r5-b-final.xml" -- -runTests -testPlatform EditMode -testFilter 'GameCore\.Studio\.(UI|Etos).*|Hollowmere\.P2_[12].*|Hollowmere\.R[234]_[BCD].*|Hollowmere\.R5_B.*'
+# Baseline: same wrapper, --label r5-b-before3, --results .unity-logs/r5-b-before.xml,
+# and -testFilter 'Hollowmere\.R5_B.*', before the three production C# files changed.
+
+python3 tools/check_package_metadata.py
+python3 tools/check_game_core_csharp.py
+git diff --check

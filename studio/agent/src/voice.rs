@@ -5,7 +5,7 @@
 //!   (32 KiB base64) per frame (04 §2; a larger frame is refused with `too_large` and not
 //!   forwarded); each frame becomes one etos `input_audio` command with the companion's own
 //!   gapless sequence and ids `audio-<seq>`;
-//! - `{"type":"stop"}` — close the session (pending transcripts are still forwarded).
+//! - `{"type":"stop"}` — commit unfinalized audio, drain the final transcript, then close.
 //!
 //! Companion → client:
 //! - `{"type":"ready","sessionId","audioFormat":"pcm16","sampleRateHz":24000,"maxChunkBytes":24576}`;
@@ -154,6 +154,22 @@ async fn send(tx: &mut Sink, v: Value) -> bool {
     tx.send(Message::Text(v.to_string().into())).await.is_ok()
 }
 
+// Metadata only: never Debug-format a provider event (it can contain audio or speech).
+fn event_kind(event: &RealtimeEvent) -> &'static str {
+    match event {
+        RealtimeEvent::Ready { .. } => "ready",
+        RealtimeEvent::ControlApplied { .. } => "control_applied",
+        RealtimeEvent::Audio { .. } => "audio",
+        RealtimeEvent::Transcript { .. } => "transcript",
+        RealtimeEvent::SpeechStarted { .. } => "speech_started",
+        RealtimeEvent::SpeechEnded { .. } => "speech_ended",
+        RealtimeEvent::ResponseEnded { .. } => "response_ended",
+        RealtimeEvent::Usage { .. } => "usage",
+        RealtimeEvent::Error { .. } => "error",
+        RealtimeEvent::Closed { .. } => "closed",
+    }
+}
+
 impl VoiceBridge {
     /// A bridge.
     pub fn new(
@@ -272,6 +288,8 @@ impl VoiceBridge {
         let mut chunks: u64 = 0;
         let mut audio_bytes: u64 = 0;
         let mut transcripts: u64 = 0;
+        let mut pending_audio = false;
+        let mut provider_events: u64 = 0;
         let mut closed_sent = false;
         let mut draining: Option<tokio::time::Instant> = None;
         let reason: String;
@@ -305,16 +323,20 @@ impl VoiceBridge {
                                         continue;
                                     }
                                 };
+                                let peak = bytes.chunks_exact(2).map(|b| i32::from(i16::from_le_bytes([b[0], b[1]])).abs()).max().unwrap_or(0);
+                                pending_audio |= peak > 0;
+                                tracing::info!(session = %session_id, frame = %format!("audio-{cseq}"), bytes = bytes.len(), peak, "voice audio received");
                                 let mut failed = None;
                                 for chunk in bytes.chunks(MAX_CHUNK) {
                                     if let Err(e) = sender.audio(seq, chunk).await {
                                         failed = Some(e);
                                         break;
                                     }
+                                    tracing::info!(session = %session_id, frame = %format!("audio-{seq}"), bytes = chunk.len(), "voice audio forwarded");
+                                    audio_bytes += chunk.len() as u64;
                                     seq += 1;
                                     chunks += 1;
                                 }
-                                audio_bytes += bytes.len() as u64;
                                 if let Some(e) = failed {
                                     let (code, message) = refusal_of(&e);
                                     send(&mut tx, json!({"type": "error", "code": code, "message": message})).await;
@@ -323,9 +345,24 @@ impl VoiceBridge {
                                 }
                             }
                             Ok(ClientMsg::Stop) => {
-                                // Ask etos to close; keep forwarding until it does (≤ 3 s).
-                                let _ = sender.command("close-1", Action::Close).await;
-                                draining = Some(tokio::time::Instant::now() + Duration::from_secs(3));
+                                tracing::info!(session = %session_id, chunks, audio_bytes, transcripts, pending_audio, "voice stop received");
+                                // Close releases the upstream session; it does not commit its input buffer.
+                                // Explicit commit produces input transcription without creating a response.
+                                // Do not recommit a take already finalized by provider VAD.
+                                if chunks > 0 && (pending_audio || transcripts == 0) {
+                                    if let Err(e) = sender.command("commit-stop", Action::InputCommit { item_id: format!("{session_id}-stop") }).await {
+                                        let (code, message) = refusal_of(&e);
+                                        send(&mut tx, json!({"type":"error", "code":code, "message":message})).await;
+                                        reason = "audio commit failed".into();
+                                        break;
+                                    }
+                                    tracing::info!(session = %session_id, command = "commit-stop", "voice input committed");
+                                    // Below the client's 10 s drain deadline; never wait indefinitely.
+                                    draining = Some(tokio::time::Instant::now() + Duration::from_secs(8));
+                                } else {
+                                    reason = "stopped".into();
+                                    break;
+                                }
                             }
                             Err(_) => {
                                 send(&mut tx, json!({"type": "error", "code": "bad_message",
@@ -349,8 +386,15 @@ impl VoiceBridge {
                 }
                 ev = events.next() => {
                     match ev {
-                        Some(Ok(frame)) => match frame.event {
+                        Some(Ok(frame)) => {
+                            provider_events += 1;
+                            tracing::info!(session = %session_id, provider_session = %frame.session_id,
+                                generation = frame.generation, event_id = provider_events,
+                                event = event_kind(&frame.event), "voice provider event");
+                            match frame.event {
                             RealtimeEvent::Transcript { role, item_id, revision, text, done, .. } => {
+                                tracing::info!(session = %session_id, event_id = provider_events, item = %item_id,
+                                    role = %role, revision, final_revision = done, text_bytes = text.len(), "voice transcript received");
                                 // The user's speech only (04 §2).
                                 if role != "user" {
                                     continue;
@@ -359,13 +403,17 @@ impl VoiceBridge {
                                     "revision": revision, "text": text});
                                 if done {
                                     transcripts += 1;
+                                    pending_audio = false;
                                     frame["final"] = json!(true);
                                     let _ = self.hub.emit("voice_transcript", None,
                                         &json!({"sessionId": session_id, "itemId": item_id, "text": text}));
                                 }
-                                send(&mut tx, frame).await;
+                                let delivered = send(&mut tx, frame).await;
+                                tracing::info!(session = %session_id, event_id = provider_events, revision,
+                                    final_revision = done, delivered, "voice transcript forwarded");
                             }
                             RealtimeEvent::SpeechStarted { item_id } => {
+                                pending_audio = true;
                                 send(&mut tx, json!({"type": "speech_started", "itemId": item_id})).await;
                             }
                             RealtimeEvent::SpeechEnded { item_id } => {
@@ -375,6 +423,7 @@ impl VoiceBridge {
                                 send(&mut tx, json!({"type": "usage", "usage": usage})).await;
                             }
                             RealtimeEvent::Error { code, message } => {
+                                tracing::warn!(session = %session_id, event_id = provider_events, code = %code, "voice provider error");
                                 send(&mut tx, json!({"type": "error", "code": code, "message": message})).await;
                             }
                             RealtimeEvent::Closed { reason: r } => {
@@ -388,6 +437,7 @@ impl VoiceBridge {
                             | RealtimeEvent::ResponseEnded { .. }
                             | RealtimeEvent::Ready { .. }
                             | RealtimeEvent::ControlApplied { .. } => {}
+                            }
                         },
                         Some(Err(e)) => {
                             let (code, message) = refusal_of(&e);
@@ -402,16 +452,18 @@ impl VoiceBridge {
                     }
                 }
                 _ = drain_deadline => {
-                    reason = "stopped".into();
+                    reason = if pending_audio || transcripts == 0 { "transcript drain timed out".into() } else { "stopped".into() };
                     break;
                 }
             }
         }
-        let _ = sender.close().await;
+        tracing::info!(session = %session_id, provider_events, "voice closing after drain");
         if !closed_sent {
             send(&mut tx, json!({"type": "closed", "reason": reason})).await;
         }
         let _ = tx.close().await;
+        // Notify the client before the SDK's additional transport-close deadline.
+        let _ = sender.close().await;
         if let Err(e) =
             self.ledger
                 .voice_ended(&session_id, &reason, chunks, audio_bytes, transcripts)
@@ -424,7 +476,7 @@ impl VoiceBridge {
             &json!({"sessionId": session_id, "state": "ended", "reason": reason,
                     "chunks": chunks, "transcripts": transcripts}),
         );
-        tracing::info!(session = %session_id, reason = %reason, chunks, transcripts, "voice session closed");
+        tracing::info!(session = %session_id, reason = %reason, chunks, audio_bytes, transcripts, provider_events, "voice session closed");
     }
 }
 

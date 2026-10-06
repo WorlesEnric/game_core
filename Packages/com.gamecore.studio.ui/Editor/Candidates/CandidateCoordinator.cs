@@ -459,7 +459,7 @@ namespace GameCore.Studio.UI
                 IStageService service = admission.Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
                 StageCandidateRequest request = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
                 entry.StageRequest = request;
-                admission.MarkStagePending(entry.Id, null);
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Pending, "staging", entry.ChangeSet);
                 entry.StageJobId = await service.RequestStage(request);
                 if (string.IsNullOrWhiteSpace(entry.StageJobId)) throw new InvalidOperationException("stage_job_missing");
                 SessionState.SetString(StageJobKey(entry), new JObject
@@ -473,7 +473,7 @@ namespace GameCore.Studio.UI
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
                 Diagnostic failure = new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message));
-                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Message);
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Message, entry.ChangeSet);
                 return Problem(entry, failure);
             }
             finally
@@ -515,12 +515,15 @@ namespace GameCore.Studio.UI
                 if (entry.StageRequest == null || string.IsNullOrEmpty(entry.StageJobId)
                     || !JToken.DeepEquals(JObject.FromObject(current), JObject.FromObject(entry.StageRequest)))
                     throw new InvalidOperationException("stage_context_changed: restage this candidate");
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Pending, "refreshing verdict", entry.ChangeSet);
                 entry.VerifiedVerdict = await admission.FetchVerdict(entry.StageJobId!, entry.StageRequest);
                 return null;
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                return Problem(entry, new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message)));
+                Diagnostic failure = new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message));
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Message, entry.ChangeSet);
+                return Problem(entry, failure);
             }
             finally { entry.Staging = false; Changed?.Invoke(); }
         }

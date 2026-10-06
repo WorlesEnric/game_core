@@ -736,7 +736,7 @@ async fn voice_session_ready_transcripts_and_close() {
         assert!(
             g.rt_actions
                 .iter()
-                .all(|a| a == "input_audio" || a == "close"),
+                .all(|a| a == "input_audio" || a == "input_commit" || a == "close"),
             "transcription only: {:?}",
             g.rt_actions
         );
@@ -2287,5 +2287,86 @@ async fn r4_published_tts_charge_and_configured_missing_tariff() {
         .unwrap()
         .unwrap();
     assert!((charge.cost_usd - 3.0 * 0.0000114682).abs() < 1e-12);
+    running.shutdown().await;
+}
+
+// Request #6: use the real bridge/proxy/SDK with a node that faithfully treats Close
+// as resource release, not an audio commit. No paid provider or canned live proof.
+#[tokio::test]
+async fn request6_voice_stop_commits_before_close_when_vad_emits_nothing() {
+    let node = FakeNode::start().await;
+    node.lock().rt_needs_commit = true;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let fixture = std::fs::read(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../artifacts/studio/verification/W-VOICE-01/p42c-voice2-20261006T074412.994071Z/workflow/voice/destructive.wav")).unwrap();
+    assert_eq!(&fixture[..4], b"RIFF");
+    let mut offset = 12;
+    while &fixture[offset..offset + 4] != b"data" {
+        let len = u32::from_le_bytes(fixture[offset + 4..offset + 8].try_into().unwrap()) as usize;
+        offset += 8 + len + len % 2;
+    }
+    let len = u32::from_le_bytes(fixture[offset + 4..offset + 8].try_into().unwrap()) as usize;
+    // PipeWire retained a streaming WAV length sentinel; actual EOF bounds its PCM.
+    let audio = &fixture[offset + 8..(offset + 8 + len).min(fixture.len())];
+    let mut digests = Vec::new();
+    for count in [600, 560] {
+        let mut ws = api.ws("/v1/voice").await;
+        assert_eq!(next_json(&mut ws).await["type"], "ready");
+        for seq in 0..count {
+            let mut pcm = vec![0; 4800];
+            let start = seq * pcm.len();
+            if start < audio.len() {
+                let size = pcm.len().min(audio.len() - start);
+                pcm[..size].copy_from_slice(&audio[start..start + size]);
+            }
+            digests.push(sha(&pcm));
+            ws.send(Message::Text(
+                json!({"type":"audio", "seq":seq,
+                "pcm16":base64::engine::general_purpose::STANDARD.encode(&pcm)})
+                .to_string()
+                .into(),
+            ))
+            .await
+            .unwrap();
+        }
+        ws.send(Message::Text(json!({"type":"stop"}).to_string().into()))
+            .await
+            .unwrap();
+        let mut finals = 0;
+        loop {
+            let frame = next_json(&mut ws).await;
+            if frame["type"] == "transcript" && frame["final"] == true {
+                finals += 1;
+            }
+            if frame["type"] == "closed" {
+                break;
+            }
+        }
+        assert_eq!(
+            finals, 1,
+            "release must commit unfinalized audio before closing"
+        );
+    }
+    assert_eq!(node.lock().rt_chunks.len(), 1160);
+    assert_eq!(
+        node.lock().rt_audio_digests,
+        digests,
+        "retained PCM reaches the SDK unchanged"
+    );
+    assert_eq!(
+        node.lock()
+            .rt_actions
+            .iter()
+            .filter(|a| *a == "input_commit")
+            .count(),
+        2
+    );
+    assert!(
+        node.lock()
+            .rt_actions
+            .iter()
+            .all(|a| matches!(a.as_str(), "input_audio" | "input_commit" | "close"))
+    );
     running.shutdown().await;
 }

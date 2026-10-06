@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gamecore.studio.worker.importer-enums/1",
+  "description": "Enum subset of the strict engine media importer contract; not import authorization.",
+  "type": "object",
+  "properties": {
+    "textureType": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "NormalMap",
+        "GUI",
+        "Sprite",
+        "Cursor",
+        "Cookie",
+        "Lightmap",
+        "SingleChannel",
+        "DirectionalLightmap",
+        "Shadowmask"
+      ]
+    },
+    "spriteImportMode": {
+      "type": "string",
+      "enum": [
+        "Single"
+      ]
+    },
+    "filterMode": {
+      "type": "string",
+      "enum": [
+        "Point",
+        "Bilinear",
+        "Trilinear"
+      ]
+    },
+    "wrapMode": {
+      "type": "string",
+      "enum": [
+        "Repeat",
+        "Clamp",
+        "Mirror",
+        "MirrorOnce"
+      ]
+    }
+  }
+}

@@ -1,0 +1,79 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+___________ test_request8_retained_candidate_refuses_inspector_label ___________
+
+    def test_request8_retained_candidate_refuses_inspector_label():
+        original = ROOT / "artifacts/studio/workflows/P4.2c/guide-image-ledger-candidate.json"
+        retained = WORKERS / "tests/fixtures/request8-original.json"
+        assert retained.read_bytes() == original.read_bytes()
+>       schema = json.loads((WORKERS / "importer-contract.json").read_text())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+studio/etos/agent/workers/tests/test_r5_b.py:16:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/importer-contract.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/importer-contract.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+____________ test_request8_installed_prompts_embed_common_contract _____________
+
+    def test_request8_installed_prompts_embed_common_contract():
+>       common = (WORKERS / "common.md").read_text().strip()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+studio/etos/agent/workers/tests/test_r5_b.py:25:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/common.md')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/common.md'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+____________ test_describe_tariff_placeholder_refuses_before_apply _____________
+
+    def test_describe_tariff_placeholder_refuses_before_apply():
+        spec = importlib.util.spec_from_file_location("install_state", ROOT / "studio/etos/install-state.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        text = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+>       with pytest.raises(ValueError, match="tariff_placeholder"):
+E       Failed: DID NOT RAISE ValueError
+
+studio/etos/agent/workers/tests/test_r5_b.py:35: Failed
+=========================== short test summary info ============================
+FAILED studio/etos/agent/workers/tests/test_r5_b.py::test_request8_retained_candidate_refuses_inspector_label
+FAILED studio/etos/agent/workers/tests/test_r5_b.py::test_request8_installed_prompts_embed_common_contract
+FAILED studio/etos/agent/workers/tests/test_r5_b.py::test_describe_tariff_placeholder_refuses_before_apply
+3 failed in 0.29s

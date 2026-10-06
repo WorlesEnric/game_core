@@ -1,0 +1,50 @@
+{
+  "base": "c9866292",
+  "branch": "codex/r5-b",
+  "sourceCommit": "43725155ae50233a35a1f130b3f9bb650aea610b",
+  "unity": {
+    "passed": 185,
+    "failed": 0,
+    "skipped": 9,
+    "inconclusive": 0,
+    "total": 194
+  },
+  "unityBaseline": {
+    "passed": 1,
+    "failed": 3,
+    "skipped": 1
+  },
+  "rust": {
+    "passed": 138,
+    "failed": 0,
+    "ignored": 11,
+    "fmt": "pass",
+    "clippy": "pass"
+  },
+  "dotnet": {
+    "passed": 69,
+    "failed": 0,
+    "skipped": 6
+  },
+  "workers": {
+    "passed": 13,
+    "failed": 0
+  },
+  "uiHost": {
+    "passed": 1,
+    "failed": 0
+  },
+  "checks": {
+    "packageMetadata": "pass",
+    "csharpPolicy": "pass",
+    "diffScope": "pass"
+  },
+  "qualification": {
+    "paidCalls": 0,
+    "serviceRestarts": 0,
+    "liveApply": false,
+    "voiceRecognition": "not run: paid calls forbidden",
+    "historicalProviderVadCause": "not isolated: original provider events absent",
+    "exportedCatalogDocs": "core owner seam requested in PACKET.md"
+  }
+}

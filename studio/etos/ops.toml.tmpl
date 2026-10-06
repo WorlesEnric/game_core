@@ -42,10 +42,16 @@ name = "echo-describe"
 family = "describe"
 kind = "chat"
 model = "echo/gpt-5.6-sol"
-# Source: https://developers.openai.com/api/docs/models/gpt-5.6-sol
+# No published Echo reseller describe tariff could be verified (2026-10-06).
+# Provider site checked: https://api.echo-coding.com (no public tariff returned).
+# Publisher token prices do not bind this reseller's total charge. Full template apply
+# refuses tariff_placeholder until the operator sets BOTH a positive total per-call
+# estimate and its basis below. Never interpret this placeholder as a free operation.
+# @studio source = "operator"
+# @studio note = "SET_BY_OPERATOR: total USD estimate per describe call"
+# @studio unit = "call"
 [providers.cost]
-per_1m_input_tokens = 4.0
-per_1m_output_tokens = 20.0
+per_unit = 0.0 # SET_BY_OPERATOR
 
 # Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
 [[providers]]

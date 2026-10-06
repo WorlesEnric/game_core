@@ -261,3 +261,29 @@ virtual-source self-test). All seven offline R4-A Editor regressions pass.
 Metadata and C# policy pass. Before/after XML/TRX, retained startup attempts,
 commands and hashes are linked from the package record; skips do not qualify
 live recognition, installed pairing or Stage → Admit acceptance.
+
+## R5 — R5-B
+
+Request #6: client voice logs correlate session id, gapless audio frame id, sent bytes,
+RMS, release totals, speech boundaries, transcript revision/final flag and delivery time.
+They contain no audio or transcript text. Companion records receipt/forwarding separately,
+provider event types/sequence, final forwarding outcome and stop/commit/close ordering.
+`Request6_TwoTakesTraceFramesBytesReleaseAndFinalWithoutAudioOrText` exercises two client
+takes and main-thread final delivery without a submitted request.
+
+The companion commits unfinalized audio before draining and closing, instead of sending
+Close immediately on release. The retained 600/560-frame failure has an offline bridge
+regression; the full historical provider cause remains unproven. No speculative gain
+normalisation is applied: contract 04 has no such rule and the retained peak-RMS meter
+cannot establish provider VAD probability. `Request6_VirtualMicrophoneBothRetainedLinesTranscribe`
+reuses the R4-A virtual source/sink contract, requires `GAMECORE_R5B_VOICE_SELF_TEST=1`,
+checks both original move/delete fixtures, and remains skipped under this packet's
+no-paid-ops constraint. Installed service activation is also forbidden.
+
+Exact witnesses, reproduction, cross-packet catalog request and counts:
+[R5-B PACKET.md](../../../Packages/com.gamecore.studio.etos/Tests/Evidence/R5_B/PACKET.md).
+
+R5-B final validation: requested EditMode **185 passed / 0 failed / 9 skipped**;
+.NET client **69 passed / 6 live skipped**; Rust **138 passed / 11 ignored**, fmt/clippy
+clean; worker **13 passed** and UI host **1 passed**. All four offline R5-B cases pass.
+The real two-line voice self-test is the new explicit skip, not a recognition pass.
