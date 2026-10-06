@@ -112,6 +112,8 @@ namespace P42c.Live
                     ["problem"] = error == null ? "" : error.Code + ": " + error.Message,
                     ["verdict"] = entry.VerifiedVerdict?.Document ?? new JObject() });
                 Shot("panel-verdict");
+                if (can && Context.Candidates.StageStateOf(entry).Label == "not staged")
+                    throw new InvalidOperationException("R5-B verified app-origin badge still says not staged");
                 if (!can) { Stop(Environment.GetEnvironmentVariable("GAMECORE_P42C_NEGATIVE") == "1", "Admit disabled: no verified passing verdict"); return; }
                 if (Environment.GetEnvironmentVariable("GAMECORE_P42C_REVIEW_ONLY") == "1") { Stop(true, "verified verdict displayed; admission reserved for warm run"); return; }
                 Phase = 3; EditorApplication.EnterPlaymode(); return;
