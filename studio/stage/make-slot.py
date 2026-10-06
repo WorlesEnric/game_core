@@ -262,7 +262,27 @@ def copy_tree(source: Path, target: Path, skip_dirs: set[str]) -> list[Path]:
     return copied
 
 
+def root_mismatch(detail: str) -> SlotError:
+    return SlotError("stage_package_root_mismatch: " + detail +
+                     "; register the intended checkout's project in stage.projects and pin local packages "
+                     "to that checkout's Packages/<package-name> (not the companion tools checkout)")
+
+
+def project_root(source_project: Path) -> Path:
+    """Only the operator-selected source project determines the trusted checkout."""
+    result = subprocess.run(["git", "-C", str(source_project), "rev-parse", "--show-toplevel"],
+                            capture_output=True, text=True, timeout=10)
+    if result.returncode or not result.stdout.strip():
+        raise root_mismatch(f"{source_project} is not in a git checkout")
+    root = Path(result.stdout.strip()).resolve()
+    packages = root / "Packages"
+    if packages.is_symlink() or not packages.is_dir():
+        raise root_mismatch(f"{packages} must be a real package directory")
+    return root
+
+
 def build_manifest(source_project: Path, package: str, allow: dict) -> tuple[dict, dict]:
+    trusted_packages = project_root(source_project) / "Packages"
     manifest = load_json(source_project / "Packages" / "manifest.json")
     deps = manifest.get("dependencies") or {}
     packages_dir = source_project / "Packages"
@@ -280,6 +300,11 @@ def build_manifest(source_project: Path, package: str, allow: dict) -> tuple[dic
             if not isinstance(version, str) or not version.startswith("file:"):
                 raise SlotError(f"the source manifest pins {name} as {version!r}; slots need a file: package")
             resolved = (packages_dir / version[len("file:"):]).resolve()
+            expected = trusted_packages / name
+            if not PACKAGE_NAME.fullmatch(name) or expected.is_symlink() or resolved != expected:
+                raise root_mismatch(f"{name} resolves to {resolved}; expected {expected}")
+            if any(p.is_symlink() for p in expected.rglob("*")):
+                raise root_mismatch(f"{name} contains a symlink")
             if not (resolved / "package.json").is_file():
                 raise SlotError(f"{name} resolves to {resolved}, which has no package.json")
             out[name] = "file:" + resolved.as_posix()
@@ -387,6 +412,12 @@ def make_slot(args) -> dict:
     if not (source_project / "ProjectSettings").is_dir() or not (source_project / "Packages" / "manifest.json").is_file():
         raise SlotError(f"{source_project} is not a Unity project")
     allow = load_json(ALLOWLIST)
+    repo = project_root(source_project)
+    expected_root = getattr(args, "package_root", None)
+    if expected_root and Path(expected_root).absolute() != repo / "Packages":
+        raise root_mismatch(f"sandbox mount {expected_root} differs from {repo / 'Packages'}")
+    # Validate pins before reading candidate artifacts or creating a slot.
+    build_manifest(source_project, "", allow)
     slot = Path(args.slot_root).expanduser().resolve() / args.slot
     if args.candidate:
         cand = read_candidate(Path(args.candidate).absolute())
@@ -507,9 +538,6 @@ def make_slot(args) -> dict:
         if (warm / "ArtifactDB").exists() or warm.is_dir():
             subprocess.run(["cp", "-a", "--reflink=auto", str(warm), str(library)], check=False)
 
-    repo = source_project
-    while repo != repo.parent and not (repo / "studio" / "tools").is_dir():
-        repo = repo.parent
     record = {
         "schema": SLOT_SCHEMA,
         "slotId": args.slot,
@@ -532,8 +560,9 @@ def make_slot(args) -> dict:
         "blobs": (proposal or {}).get("blobs") or [],
         "source": {
             "project": source_project.as_posix(),
-            "repo": repo.as_posix() if (repo / "studio" / "tools").is_dir() else None,
-            "commit": git_head(source_project),
+            "repo": repo.as_posix(),
+            "packageRoot": (repo / "Packages").as_posix(),
+            "commit": git_head(repo),
         },
         "template": tree_digest(TEMPLATE),
         "createdAt": created_at,
@@ -545,10 +574,12 @@ def make_slot(args) -> dict:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--slot-root", required=True)
-    parser.add_argument("--slot", required=True)
+    parser.add_argument("--slot-root")
+    parser.add_argument("--slot")
     parser.add_argument("--source-project", required=True)
-    group = parser.add_mutually_exclusive_group(required=True)
+    parser.add_argument("--package-root", help="trusted sandbox package mount; must match the source checkout")
+    parser.add_argument("--describe-project", action="store_true", help="validate the registered checkout without a candidate")
+    group = parser.add_mutually_exclusive_group()
     group.add_argument("--candidate", help="directory with change-set.json and its artifacts")
     group.add_argument("--package-dir", help="a bare package directory (legacy stage.sh mode)")
     parser.add_argument("--change-set-id", help="with --package-dir")
@@ -559,6 +590,16 @@ def main(argv: list[str]) -> int:
     except SystemExit as exit_:
         return 2 if exit_.code else 0
     try:
+        if args.describe_project:
+            project = Path(args.source_project).resolve()
+            root = project_root(project)
+            manifest, _ = build_manifest(project, "", load_json(ALLOWLIST))
+            print(json.dumps({"project": str(project), "repo": str(root),
+                              "packageRoot": str(root / "Packages"), "commit": git_head(root),
+                              "manifest": manifest}))
+            return 0
+        if not args.slot or not args.slot_root or not (args.candidate or args.package_dir):
+            raise SlotError("--slot, --slot-root and --candidate or --package-dir are required")
         summary = make_slot(args)
     except (SlotError, ValueError, OSError, TypeError, KeyError) as error:
         print(redact(json.dumps({"ok": False, "error": str(error)})).strip())

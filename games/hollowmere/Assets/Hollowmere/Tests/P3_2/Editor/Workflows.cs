@@ -188,9 +188,9 @@ namespace Hollowmere.P3_2.Workflows
             {
                 S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
-                S.IndexProbe("text2", new[] { MarenNpc, PipNpc, OddNpc, MarenEntity }, new[] { "Maren", "Pip", "Odd", "Village Well" }),
+                S.IndexProbe("text2", new[] { MarenNpc, PipNpc, OddNpc, MarenEntity }, new[] { "Maren", "Pip", "Village Well" }),
 
-                S.Select("Maren", "Pip", "Odd"),
+                S.Select("Maren", "Pip"),
                 S.AddAsset(MarenNpc, PipNpc, OddNpc),
                 S.Send("clarify2", "Make one of them patrol around the well."),
                 S.Await("clarify2", q => "Maren (npc.definition Maren). Centre a loop of four points on the Village Well, about 3 m from it (+Z north, +X east, metres)."),
@@ -221,7 +221,7 @@ namespace Hollowmere.P3_2.Workflows
                 S.Note("clear selection", () => S.Context.Selection.Clear()),
                 S.PointAt("Village Well", new Vector3(4f, 0f, 3f)),
                 S.AddAsset(OddNpc),
-                S.Note("roster before ferryman2", () => Roster("ferryman2", "before")),
+                S.Note("roster before ferryman2", () => { WorkflowPlayChecks.CaptureNpcBaseline(); Roster("ferryman2", "before"); }),
                 S.Send("ferryman2", "Add a ferryman NPC here who talks about the bell."),
                 S.Await("ferryman2", q => "Create a new NPC called Ferryman Bram at the selected location (create new definitions from Odd's as templates if the catalog needs them), " +
                                           "with his own short dialogue about the Drowned Bell, a small patrol within 3 m of the location, and navigation like the other village NPCs.", 1200),
@@ -233,6 +233,7 @@ namespace Hollowmere.P3_2.Workflows
                     DescribeTargets("ferryman2", "applied");
                     return true;
                 })),
+                WorkflowPlayChecks.Effect("W-AI-02", "ferryman2"),
                 S.Do("undo ferryman2", () => Guard("ferryman2", () => AppliedOr("ferryman2", () => S.Undo("ferryman2").Run()))),
                 S.Note("roster after ferryman2 undo", () => Roster("ferryman2", "undone")),
                 S.Do("reject leftovers", () =>
@@ -312,11 +313,12 @@ namespace Hollowmere.P3_2.Workflows
         {
             return new[]
             {
-                S.OpenScene(S.VillageScene), S.Relayout(),
+                S.OpenScene(S.MarshScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Do("hashes before narrative", () => HashStep("narrative", "before", OddGraph, HudDoc, Quest, LanternItem)),
                 S.Note("previews before", () =>
                 {
+                    WorkflowPlayChecks.CaptureDialogueBaseline();
                     DialoguePreview("odd-line", "before", OddGraph, "");
                     QuestSimulate("quest", "before");
                     DescribeAsset("hud", "before", HudDoc);
@@ -341,6 +343,8 @@ namespace Hollowmere.P3_2.Workflows
 
                     return true;
                 })),
+
+                WorkflowPlayChecks.Effect("W-AI-03", "odd-line"),
 
                 // W-AI-04
                 S.SelectAsset(HudDoc),
@@ -369,6 +373,8 @@ namespace Hollowmere.P3_2.Workflows
                     QuestSimulate("quest", "applied");
                     return true;
                 })),
+
+                WorkflowPlayChecks.Effect("W-AI-05", "quest"),
 
                 // Persist for W-AI-06 (reopen run).
                 S.Do("save project", () =>
@@ -1511,6 +1517,8 @@ namespace Hollowmere.P3_2.Workflows
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
                 data["error"] = (error.InnerException ?? error).Message;
+                WorkflowRunner.Json(tag + "/dialogue-preview-" + WorkflowRunner.Slug(label) + ".json", data);
+                throw;
             }
 
             WorkflowRunner.Json(tag + "/dialogue-preview-" + WorkflowRunner.Slug(label) + ".json", data);
@@ -1518,20 +1526,25 @@ namespace Hollowmere.P3_2.Workflows
 
         private static void QuestSimulate(string tag, string label)
         {
-            JObject data = new JObject();
-            foreach (string path in new[] { "start", "start;advance:1", "start;collect:oil_flask=1", "start;collect:oil_flask=2" })
+            StudioRuntime runtime = StudioServices.Runtime;
+            string identity = WorkflowPlayChecks.OilFlaskIdentity(runtime);
+            JObject data = new JObject { ["oilId"] = identity };
+            Exception? failure = null;
+            foreach (string path in new[] { "start", "start;advance:1", "start;advance:1;collect:" + identity + "=1", "start;advance:1;collect:" + identity + "=2" })
             {
                 try
                 {
-                    data[path] = S.InvokeTool("quest.simulate", AssetDatabase.LoadMainAssetAtPath(Quest), path)?.ToString();
+                    data[path] = WorkflowPlayChecks.SimulateQuest(runtime, path);
                 }
                 catch (Exception error) when (!(error is OutOfMemoryException))
                 {
-                    data[path] = "error: " + (error.InnerException ?? error).Message;
+                    failure = error.GetBaseException();
+                    data[path] = "error: " + failure.Message;
                 }
             }
 
             WorkflowRunner.Json(tag + "/quest-simulate-" + label + ".json", data);
+            if (failure != null) throw new InvalidOperationException("quest simulation failed: " + failure.Message, failure);
         }
 
         /// <summary>snake_case identifiers in the candidate's operation args that contain <paramref name="word"/>.</summary>

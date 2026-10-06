@@ -1,0 +1,12 @@
+{
+  "witness": "docs/studio/packets/P4.2c-live-rows.md request 4: registered project and companion tools in different checkouts",
+  "project": "registered/games/hollowmere",
+  "package": "com.gamecore.contracts",
+  "cases": [
+    {"name": "registered_relative", "pin": "file:../../../Packages/com.gamecore.contracts", "ok": true},
+    {"name": "registered_absolute", "pin": "file:{root}/registered/Packages/com.gamecore.contracts", "ok": true},
+    {"name": "tools_checkout", "pin": "file:{root}/tools/Packages/com.gamecore.contracts", "ok": false},
+    {"name": "candidate_path", "pin": "file:{root}/candidate/com.gamecore.contracts", "ok": false},
+    {"name": "linked_package", "pin": "file:../../../Packages/linked", "ok": false}
+  ]
+}
