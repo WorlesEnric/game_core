@@ -37,6 +37,7 @@ namespace GameCore.Studio.Edit
         {
             _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             Options = options ?? new EngineOptions();
+            _runtime.Registry.Register(new DeletePreparedCreationTool());
         }
 
         public EngineOptions Options { get; }
@@ -696,6 +697,10 @@ namespace GameCore.Studio.Edit
                     {
                         Fault(EngineFaultPoint.BeforeOperation, operation.OpId);
                         JObject? hints = replay != null && replay.TryGetValue(operation.OpId, out JObject? found) ? found : null;
+                        PreparedCreation? creation = !operation.Live && !operation.Tool!.ReadOnly
+                            ? PreparedCreation.For(new EditContext(_runtime, changeSet, operation.Operation,
+                                operation.Target != null ? operation.Target : operation.Operation.Target == null ? null : _runtime.Resolver.Find(operation.Operation.Target), true, hints)) : null;
+                        hints = creation?.Replay ?? hints;
                         List<Operation> prepared = new List<Operation>();
                         bool preparedAssets = false;
                         _prepare = (inverse, assetLevel) =>
@@ -718,7 +723,8 @@ namespace GameCore.Studio.Edit
                                 if (info != null && operation.Operation.Target != null)
                                     PrepareInverse(new[] { ToolSupport.SetFieldsInverse(operation.Operation.Target, ToolSupport.CaptureMembers(preparation, operation.Target, info)) }, false);
                             }
-                            result = ApplyOne(staged, operation, hints, ref expectedRevision, diagnostics);
+                            if (creation != null) PrepareInverse(creation.Inverse, creation.AssetLevel);
+                            result = ApplyOne(staged, operation, hints, ref expectedRevision, diagnostics, creation);
                             if (result.Status != OutcomeStatus.Applied && prepared.Count > 0 && result.Inverse.Count == 0)
                             {
                                 if (preparedAssets) result.WithAssetLevelInverse(prepared.ToArray());
@@ -813,7 +819,7 @@ namespace GameCore.Studio.Edit
             return Finish(staged, final, diagnostics, rolledBack, journal, watch, applied);
         }
 
-        private OperationResult ApplyOne(StagedChangeSet staged, StagedOperation staging, JObject? replay, ref ulong? expectedRevision, List<Diagnostic> diagnostics)
+        private OperationResult ApplyOne(StagedChangeSet staged, StagedOperation staging, JObject? replay, ref ulong? expectedRevision, List<Diagnostic> diagnostics, PreparedCreation? creation = null)
         {
             Operation operation = staging.Operation;
             IStudioTool tool = staging.Tool!;
@@ -882,6 +888,10 @@ namespace GameCore.Studio.Edit
                         result.WithGameCoreOp(live.OperationId);
                     }
                 }
+                else if (creation?.Apply != null)
+                {
+                    result = creation.Apply(context);
+                }
                 else if (operation.Tool == "dialogue.setFact" && !string.IsNullOrEmpty(context.StringArg("authoringId")))
                 {
                     // Candidate fact identities must be imported before the next typed argument binds.
@@ -927,35 +937,14 @@ namespace GameCore.Studio.Edit
         /// Recomputes the after-stamps once asset editing has stopped. Inside StartAssetEditing an asset created by the
         /// change set is not imported yet, so a reference to it (a new portal in the world's portal list) serializes
         /// without its GUID and the stamp taken then never matches again: the undo would report a false conflict. An
-        /// object a later operation of the same change set also touched keeps its in-loop stamp (that operation's undo
-        /// runs first and restores it).
+        /// object touched by several operations carries the final committed stamp in every outcome.
         /// </summary>
         private void Rewitness(List<KeyValuePair<Operation, OperationResult>> appliedOps, Dictionary<string, OperationOutcome> outcomeById)
         {
-            HashSet<UnityEngine.Object> later = new HashSet<UnityEngine.Object>();
-            for (int i = appliedOps.Count - 1; i >= 0; i--)
-            {
-                Operation operation = appliedOps[i].Key;
-                OperationResult result = appliedOps[i].Value;
-                bool stable = true;
-                foreach (UnityEngine.Object touched in result.Touched)
-                {
-                    stable &= touched == null || !later.Contains(touched);
-                }
-
-                if (stable)
-                {
-                    outcomeById[operation.OpId] = ToOutcome(operation, result);
-                }
-
-                foreach (UnityEngine.Object touched in result.Touched)
-                {
-                    if (touched != null)
-                    {
-                        later.Add(touched);
-                    }
-                }
-            }
+            // Every witness describes the committed postimage, including targets shared by operations.
+            // Execution follows dependencies and can differ from the candidate's declaration order.
+            foreach (KeyValuePair<Operation, OperationResult> applied in appliedOps)
+                outcomeById[applied.Key.OpId] = ToOutcome(applied.Key, applied.Value);
         }
 
         private OperationOutcome ToOutcome(Operation operation, OperationResult result)
@@ -1160,27 +1149,31 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Stable topological order: listed order, each op after its dependencies (cycles keep listed order).</summary>
-        private static List<StagedOperation> Order(IReadOnlyList<StagedOperation> operations)
+        private static List<StagedOperation> Order(IReadOnlyList<StagedOperation> operations) =>
+            OrderByDependencies(operations, operation => operation.OpId, operation => operation.Operation.DependsOn);
+
+        internal static List<T> OrderByDependencies<T>(IReadOnlyList<T> operations,
+            Func<T, string> idOf, Func<T, IReadOnlyList<string>?> dependenciesOf)
         {
-            List<StagedOperation> ordered = new List<StagedOperation>();
+            List<T> ordered = new List<T>();
             HashSet<string> placed = new HashSet<string>(StringComparer.Ordinal);
             HashSet<string> known = new HashSet<string>(StringComparer.Ordinal);
-            foreach (StagedOperation operation in operations)
+            foreach (T operation in operations)
             {
-                known.Add(operation.OpId);
+                known.Add(idOf(operation));
             }
 
-            List<StagedOperation> remaining = new List<StagedOperation>(operations);
+            List<T> remaining = new List<T>(operations);
             while (remaining.Count > 0)
             {
                 int index = remaining.FindIndex(operation =>
                 {
-                    if (operation.Operation.DependsOn == null)
+                    if (dependenciesOf(operation) == null)
                     {
                         return true;
                     }
 
-                    foreach (string dependency in operation.Operation.DependsOn)
+                    foreach (string dependency in dependenciesOf(operation)!)
                     {
                         if (known.Contains(dependency) && !placed.Contains(dependency))
                         {
@@ -1195,10 +1188,10 @@ namespace GameCore.Studio.Edit
                     index = 0;
                 }
 
-                StagedOperation next = remaining[index];
+                T next = remaining[index];
                 remaining.RemoveAt(index);
                 ordered.Add(next);
-                placed.Add(next.OpId);
+                placed.Add(idOf(next));
             }
 
             return ordered;

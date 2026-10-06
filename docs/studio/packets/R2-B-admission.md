@@ -259,3 +259,32 @@ Final metadata validation after restoring Unity-generated lockfile changes:
 **failed, exactly the same four inherited errors** listed in Requests/Left open
 (41 packages, 89 assemblies). No dependency manifests/locks were committed by this
 packet. The existing untracked `.codex/` launcher directory was left untouched.
+
+## R5 — R5-A Play-safe catalog capture
+
+P4.2c request #3: `AdmissionLifecycle.Admit` no longer invokes the authored-scene
+catalog rebake while Play is running. It durably captures and stops Play first. In
+Edit mode, it retains the real catalog baseline in `pending` before package installation.
+Signed-verdict refresh, context checks, compile/reload verification and rollback remain
+mandatory. A cancellation or failed capture before any catalog baseline terminates without
+installing/removing packages; the creator's capture is retained.
+
+`Hollowmere.R5_A.P31AdmissionInPlayMode.R5_03_InstalledVerdict_CapturesInPlay_VerifiesCatalogBeforeInstall`
+uses the actual installed P4.2c job, authenticated fetch/verify, real Hollowmere SaveService
+and real `ReflectionAdmissionCatalog`. It replays that job's original signed context and
+stops at the durable pre-install checkpoint. It does not claim a stage verdict for this
+branch or use a catalog/service double. The original P3.1 fixture remains a separate
+suite regression, with its documented test service/compiler/catalog doubles.
+
+The retained passing service record has `catalogDelta.mechanisms` but no `world` or
+`predicted`. Full admission will still refuse that incomplete catalog delta at the existing
+verification check. Completing the current branch's full installed stage/admit requires a
+new correctly bound stage job and the stage-owner fix; no authority check was weakened.
+See [R5-A packet](../../../games/hollowmere/Assets/Hollowmere/Tests/R5_A/PACKET.md) for exact
+requests, evidence and final counts.
+
+R5-A final host verification on code `6638db2c`: **203/203 EditMode**, **8/8 P3_1 PlayMode**,
+**1/1 separate-Editor reopen repeat**, **113/113 .NET Model**, and **2/2 adapter-boundary tests**.
+All final XMLs have zero failures/skips/inconclusives; metadata, C# policy and whitespace checks pass.
+The packet retains baseline failures, the Play startup timeout/retry, exact commands and hashes.
+Full current-branch installed admission remains the explicit cross-packet follow-up above.

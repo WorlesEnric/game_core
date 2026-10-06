@@ -42,8 +42,10 @@ namespace GameCore.Studio.Edit
             string directory = PackageDirectory(package, Options.SharedPolicy);
             if (System.IO.Directory.Exists(directory) || File.Exists(directory)) return Reject(candidate.Id, "package_exists", "The destination package already exists.");
             StageDataPaths.ContainedFile(Path.GetDirectoryName(directory)!, Path.GetFileName(directory));
-            string? before = LiveHash(null, out _);
-            if (before == null) return Reject(candidate.Id, "catalog_missing", "The current world catalog cannot be captured for verified rollback.");
+            // Entry.Verify opens authored scenes. In Play, retain capture/stop first and witness the
+            // rollback catalog durably in Edit mode, before installing any candidate bytes.
+            string? before = IsPlaying ? null : LiveHash(null, out _);
+            if (!IsPlaying && before == null) return Reject(candidate.Id, "catalog_missing", "The current world catalog cannot be captured for verified rollback.");
             var pending = new JObject
             {
                 ["schema"] = "gamecore.studio.admission/2", ["changeSetId"] = candidate.Id,
@@ -202,6 +204,13 @@ namespace GameCore.Studio.Edit
                             continue;
                         case "pending":
                             if (IsPlaying) return Waiting(id, "Stop Play Mode before installing the package.");
+                            if (p["before"]?.Type != JTokenType.String)
+                            {
+                                string? baseline = LiveHash(null, out _);
+                                if (baseline == null) return Waiting(id, "The current world catalog cannot be captured for verified rollback.");
+                                p["before"] = baseline;
+                                Checkpoint(id, p, "pending", AdmissionFaultPoint.Pending);
+                            }
                             if (!System.IO.Directory.Exists(directory))
                             {
                                 string removed = Path.Combine(StateRoot, "removed", id, "package");
@@ -419,6 +428,21 @@ namespace GameCore.Studio.Edit
 
         private AdmissionResult BeginRollback(string id, JObject p, string reason)
         {
+            if (p["before"]?.Type != JTokenType.String)
+            {
+                // No catalog checkpoint means installation has never been authorized. A failed capture or
+                // creator cancellation needs no package removal or compile; retain the capture for the creator.
+                if (System.IO.Directory.Exists(FromProjectRelative((string)p["directory"]!)))
+                    return Waiting(id, "Unexpected package before catalog verification; recovery remains pending.");
+                ChangeSet entry = _runtime.Journal.Read(id)!;
+                _runtime.Journal.Write(WithScenario(entry.WithState(ChangeSetState.Failed), AdmissionScenario,
+                    ScenarioStatus.Fail, "cancelled before installation: " + reason));
+                DeletePending(id);
+                var cancelled = new AdmissionResult(id, AdmissionOutcome.RolledBack, "No package was installed.")
+                { Reason = reason, CaptureSlot = (string?)p["captureSlot"] };
+                Finished?.Invoke(cancelled);
+                return cancelled;
+            }
             p["action"] = "rollback";
             p["reason"] = reason;
             Checkpoint(id, p, "rollback-pending", AdmissionFaultPoint.UndoPending);
