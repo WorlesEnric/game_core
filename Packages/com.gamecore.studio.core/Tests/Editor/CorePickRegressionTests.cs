@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GameCore.Studio.Authoring;
@@ -153,19 +152,19 @@ namespace GameCore.Studio.Edit.Tests
         {
             // Qualifying this test requires an otherwise idle Editor host, not just a spare slot.
             int editors = 0;
-            foreach (Process process in Process.GetProcessesByName("Unity"))
+            foreach (string process in Directory.EnumerateDirectories("/proc"))
             {
-                using (process)
+                if (!int.TryParse(Path.GetFileName(process), out _)) continue;
+                try
                 {
-                    try
-                    {
-                        string args = File.ReadAllText("/proc/" + process.Id + "/cmdline");
-                        if (args.Length > 0 && !args.Contains("AssetImportWorker")) editors++;
-                    }
-                    catch (IOException) { } // A process that exited during the inventory is not active.
+                    if (File.ReadAllText(Path.Combine(process, "comm")).Trim() != "Unity") continue;
+                    string args = File.ReadAllText(Path.Combine(process, "cmdline"));
+                    if (args.Length > 0 && !args.Contains("AssetImportWorker")) editors++;
                 }
+                catch (IOException) { } // A process that exited during the inventory is not active.
+                catch (UnauthorizedAccessException) { }
             }
-            Assert.That(editors, Is.EqualTo(1), "run through unity-batch with GC_STUDIO_UNITY_SLOTS=1 on an idle host");
+            Assert.That(editors, Is.EqualTo(1), "run with the solo-unity adapter through unity-batch on an idle host");
             for (int i = 0; i < 500; i++)
             {
                 var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

@@ -33,18 +33,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, required=True, help='new evidence directory (never overwritten)')
     parser.add_argument('--library', type=Path, help='warm Library from this packet only')
+    parser.add_argument('--reuse-source', type=Path, help='this packet’s already prepared clone at HEAD; source must be clean')
     args = parser.parse_args()
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=False)
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    clone = out / 'source'
-    subprocess.run(['git', 'clone', '--shared', '--no-hardlinks', str(ROOT), str(clone)], check=True)
-    subprocess.run(['git', 'checkout', '--detach', revision], cwd=clone, check=True)
+    clone = args.reuse_source.resolve() if args.reuse_source else out / 'source'
+    if args.reuse_source:
+        actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=clone, text=True).strip()
+        if actual != revision:
+            raise SystemExit('Reusable clone must be pinned to current HEAD.')
+        subprocess.run(['git', 'diff', '--exit-code', '--', 'Packages'], cwd=clone, check=True)
+    else:
+        subprocess.run(['git', 'clone', '--shared', '--no-hardlinks', str(ROOT), str(clone)], check=True)
+        subprocess.run(['git', 'checkout', '--detach', revision], cwd=clone, check=True)
     project = clone / 'games/hollowmere'
-    if args.library:
+    if args.library and not args.reuse_source:
         subprocess.run(['cp', '-a', '--reflink=auto', str(args.library.resolve()), str(project / 'Library')], check=True)
     harness = clone / 'artifacts/studio/verification/TOOLS/P42bHarness'
-    shutil.copytree(harness, project / 'Assets/P42bHarness')
+    shutil.copytree(harness, project / 'Assets/P42bHarness', dirs_exist_ok=True)
     # Add phase output to the disposable copy only. Keep the retained workload,
     # identities, Stopwatch totals, sample counts and assertions exactly intact.
     timing = project / 'Assets/P42bHarness/TimingTests.cs'
@@ -66,11 +73,12 @@ def main():
         results = folder / 'results.xml'
         command = ['bash', str(ROOT / 'studio/tools/unity-batch.sh'), '--project', str(project),
                    '--log-dir', str(folder / 'logs'), '--label', 'core-pick-' + str(number),
-                   '--results', str(results), '--', '-runTests', '-testPlatform', 'EditMode', '-testFilter',
+                   '--results', str(results), '--timeout', '3000', '--', '-runTests', '-testPlatform', 'EditMode', '-testFilter',
                    'P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee']
         if number == 1:
             command[-1] += '|GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms'
-        env = {**os.environ, 'GAMECORE_ETOS_AUTOSTART': '0', 'GC_STUDIO_UNITY_SLOTS': '1',
+        env = {**os.environ, 'GAMECORE_ETOS_AUTOSTART': '0', 'GC_STUDIO_UNITY_SLOTS': '3',
+               'UNITY': str(ROOT / 'Packages/com.gamecore.studio.core/Tests/CORE-PICK/solo-unity.py'),
                'GAMECORE_P42_EVIDENCE': str(folder)}
         peak = 0
         with (folder / 'runner.txt').open('w') as log:

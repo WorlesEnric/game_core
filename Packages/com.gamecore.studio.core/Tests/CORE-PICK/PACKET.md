@@ -42,8 +42,15 @@ clone's Assets, and performs exactly two 100-pick/100-marquee runs over 500 dist
 It adds only renderer/reference phase arrays to the disposable harness copy; original and
 instrumented hashes are in the receipt. Service Stopwatch totals, sample counts, target
 assertions and fixed 16/50 ms p95 budgets are unchanged. Every result is read from XML.
-The host-wide allocator is invoked with `GC_STUDIO_UNITY_SLOTS=1`; the runner also monitors
-active Editors and refuses qualification if another Editor overlaps either run.
+The runner reserves one of the three host-wide slots through `unity-batch.sh`, then its
+`UNITY=solo-unity.py` adapter takes the allocator mutex, drains already running Editors
+without stopping them, and holds the mutex until its own Editor exits. This prevents new
+leases during measurement while holding only one slot. Completed runners may briefly wait
+to release their bookkeeping slots; no sibling source or process is changed. The wrapper's
+3,000-second timeout includes the drain wait. Active Editor monitoring independently refuses
+qualification if another Editor overlaps either run. The first run also executes the
+21-update timing regression. An earlier unreserved wait was cancelled before any Editor or
+sample (exit -15, zero XML cases, peak Editors zero); it is not a third dataset.
 
 The broad EditMode command uses the same batch arguments as `unity-compile.sh`:
 
@@ -67,6 +74,11 @@ GAMECORE_ETOS_AUTOSTART=0 GC_STUDIO_UNITY_SLOTS=1 bash studio/tools/unity-batch.
   Unity's class-level filter selection included it despite the attempted regex exclusion.
   All existing selected tests and all four new correctness/cache tests passed. The final
   runner explicitly repeats the timing test in run 1 under exclusive Editor monitoring.
+- First exclusive attempt: retained workload **1 passed**, bounded timing guard **1 failed**.
+  Mono `Process.GetProcessesByName("Unity")` returned zero although the independent `/proc`
+  monitor retained peak=1. The guard now enumerates `/proc` directly, matching the host allocator.
+  The prequalification dataset (pick p95 0.8187 ms, marquee p95 0.2088 ms) and failed XML
+  remain in `evidence/guard-fix-*`; they do not replace the final two datasets.
 - Final two datasets and exclusive timing results are recorded below after execution.
 
 ## Requests to other packets
@@ -81,8 +93,8 @@ GAMECORE_ETOS_AUTOSTART=0 GC_STUDIO_UNITY_SLOTS=1 bash studio/tools/unity-batch.
 
 ## Left open
 
-- The changed-tree Unity run and final two datasets are waiting for the host to have no
-  other active Editor. No sibling clone or service is touched to obtain a slot.
+- Final dataset execution is in progress under the exclusive adapter. No sibling clone
+  or service is touched to obtain the measurement window.
 - Cold reference construction and content invalidation still invoke the trusted resolver
   synchronously. The benchmark includes the cold first sample; qualification is the
   matrix's p95 over 100, plus a separate median across 21 Editor updates, not a maximum
