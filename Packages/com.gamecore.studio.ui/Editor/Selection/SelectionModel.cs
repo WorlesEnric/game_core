@@ -468,7 +468,7 @@ namespace GameCore.Studio.UI
                 bool found = false;
                 for (int j = 0; j < right.Count; j++)
                 {
-                    if (left[i].SameTarget(right[j]))
+                    if (left[i].SameTarget(right[j]) && left[i].Scope == right[j].Scope)
                     {
                         found = true;
                         break;

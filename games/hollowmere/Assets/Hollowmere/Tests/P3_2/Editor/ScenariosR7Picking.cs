@@ -1,6 +1,6 @@
-// R7-B exact W-UI-02/W-UI-03 acceptance drivers. No gateway, provider, or Play Mode is used.
-// Invoke ScenariosR7Picking.RunFence or RunLantern through the host batch lock, without -quit.
-// Receipts distinguish engine/controller proof from rendered creator interaction; missing UI never passes.
+// R7-D exact W-UI-02/W-UI-03 acceptance drivers. No gateway, provider, or Play Mode is used.
+// Invoke ScenariosR7Picking.RunFence or RunLantern in an isolated graphics-enabled Editor, without -quit.
+// Receipts require actual creator choices and viewport/GUIView captures; controller-only proof never passes.
 #nullable enable
 using System;
 using System.Collections;
@@ -43,9 +43,6 @@ namespace Hollowmere.P3_2.Workflows
         private SelectionModel? _selection;
         private StudioViewportWindow? _window;
         private Camera? _camera;
-        private GameObject? _cameraObject;
-        private ViewportPicker? _picker;
-        private PickingService? _service;
         private readonly List<string> _blockers = new List<string>();
         private readonly JArray _observations = new JArray();
         private double _deadline;
@@ -53,8 +50,7 @@ namespace Hollowmere.P3_2.Workflows
 
         private StudioRuntime Runtime => _runtime ?? throw new InvalidOperationException("No picking runtime");
         private SelectionModel Selection => _selection ?? throw new InvalidOperationException("No selection model");
-        private ViewportPicker Picker => _window != null ? _window.Picker : _picker!;
-        private Rect Viewport => _window != null ? _window.ImageRect : new Rect(0, 0, 960, 540);
+        private Rect Viewport => _window!.ImageRect;
 
         public void Begin(string row)
         {
@@ -64,7 +60,7 @@ namespace Hollowmere.P3_2.Workflows
             _observations.Clear();
             string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../../.."));
             _output = Path.Combine(root, "artifacts/studio/verification", row,
-                "r7-b-" + DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ"));
+                "r7-d-" + DateTime.UtcNow.ToString("yyyyMMddTHHmmssfffZ"));
             Directory.CreateDirectory(_output);
             _deadline = EditorApplication.timeSinceStartup + 180;
             _steps = Execute();
@@ -87,7 +83,6 @@ namespace Hollowmere.P3_2.Workflows
 
         private IEnumerator Execute()
         {
-            Require(Application.isBatchMode, "This driver is batch-Editor only; do not run on the interactive desktop");
             Require(!EditorApplication.isPlayingOrWillChangePlaymode, "Start in Edit Mode");
             for (int i = 0; i < SceneManager.sceneCount; i++)
                 Require(!SceneManager.GetSceneAt(i).isDirty, "Save or discard existing scene changes before this isolated scenario");
@@ -113,29 +108,32 @@ namespace Hollowmere.P3_2.Workflows
             _selection = new SelectionModel(Runtime);
             _context = new StudioUiContext(Runtime, () => NullAgentGateway.Instance, Selection,
                 new TaskLedger(new MemoryTaskRowStore()), false);
-            if (ViewportRenderer.CanRender)
+            if (!ViewportRenderer.CanRender)
             {
-                _window = CreateInstance<StudioViewportWindow>();
-                _window.UseContext(_context);
-                _window.position = new Rect(0, 0, 1280, 800);
-                _window.Show();
-                _shown = true;
-                _window.EnsureGui();
-                _window.SetMode(ViewportMode.Select);
-                _window.Renderer.ForceFreeCamera = true;
-                for (int frame = 0; frame < 120 && !ReadyLayout(); frame++) yield return null;
-                Require(ReadyLayout(), "The real Studio viewport never obtained usable layout");
-                _camera = _window.Renderer.ChooseCamera();
+                Block("capture_unavailable: a graphics-enabled Editor is required (batch or the explicitly authorized graphical display :1); -nographics cannot supply real viewport or GUIView captures. No controller-only scenario was substituted.");
+                yield break;
             }
-            else
+            // Restored Studio panels from earlier qualification otherwise overlap the composite capture.
+            // This process is an isolated executeMethod Editor, not the creator's running session.
+            foreach (EditorWindow restored in Resources.FindObjectsOfTypeAll<EditorWindow>())
+                if (restored.GetType().Namespace == UnityWindowCapture.StudioNamespace) restored.Close();
+            _window = CreateInstance<StudioViewportWindow>();
+            _window.UseContext(_context);
+            _window.minSize = new Vector2(1280, 720);
+            _window.position = new Rect(0, 0, 1280, 720);
+            _window.Show();
+            _shown = true;
+            _window.EnsureGui();
+            _window.SetMode(ViewportMode.Select);
+            _window.Renderer.ForceFreeCamera = true;
+            for (int frame = 0; frame < 120 && !ReadyLayout(); frame++)
             {
-                Block("capture_unavailable: the batch Editor has no graphics device (-nographics). Real offscreen viewport and GUIView captures require a graphics-enabled batch Editor, not display :1.");
-                _cameraObject = new GameObject("R7 picking camera");
-                _camera = _cameraObject.AddComponent<Camera>();
-                _camera.enabled = false;
-                _service = new PickingService(_camera, Viewport, Runtime.Resolver, Runtime.Identity);
-                _picker = new ViewportPicker(Selection, () => _service!, new SelectTimings(), () => 4);
+                _window.Repaint();
+                EditorApplication.QueuePlayerLoopUpdate();
+                yield return null;
             }
+            Require(ReadyLayout(), "The real Studio viewport never obtained usable layout");
+            _camera = _window.Renderer.ChooseCamera();
             _camera.transform.SetPositionAndRotation(new Vector3(0, 1.2f, -14), Quaternion.identity);
             _camera.orthographic = true;
             _camera.orthographicSize = 3.8f;
@@ -173,21 +171,49 @@ namespace Hollowmere.P3_2.Workflows
                 ["fenceRail"] = StudioJson.ToToken(Ref(rail)),
                 ["geometry"] = "NPC z=1; opaque fence rails/posts z=-1; camera z=-14 looking +Z",
             });
-            Capture("01-three-npcs-behind-fence");
+            foreach (object? frame in Capture("01-three-npcs-behind-fence")) yield return frame;
             Rect marquee = BoundsRect(npcs.SelectMany(n => n.GetComponentsInChildren<Renderer>()));
             marquee = Rect.MinMaxRect(marquee.xMin - 3, marquee.yMin - 3, marquee.xMax + 3, marquee.yMax + 3);
-            PickResult result = _window != null
-                ? _window.MarqueeSelect(marquee, SelectionOp.Replace, true)
-                : Picker.Marquee(marquee, SelectionOp.Replace, true);
+            PickResult result = _window!.MarqueeSelect(marquee, SelectionOp.Replace, true);
             foreach (AuthoredEntity npc in npcs) Require(Selection.Targets.Any(t => t.SameTarget(Ref(npc))), "Marquee omitted " + npc.name);
             Require(Selection.RegionRect != null, "Marquee rectangle missing from selection snapshot");
             Record("marquee", new JObject { ["result"] = Candidates(result.Candidates), ["selection"] = Snapshot(),
                 ["resultingOverlapVisible"] = _window?.Overlap?.Visible ?? false });
-            yield return null;
-            Capture("02-marquee-result");
-            if (_window?.Overlap?.Visible != true)
-                Block("marquee_choices_missing: StudioViewportWindow.MarqueeSelect(Rect, SelectionOp, bool?) selects targets but does not present the resulting overlap choices. A later point-click list is not evidence of the requested marquee chooser.");
-            var chosen = new List<PickCandidate>();
+            RegionRect regionRect = Selection.RegionRect!;
+            Require(_window.Overlap?.Visible == true && _window.Overlap.panel != null,
+                "Marquee must present the real attached result chooser; later point overlap is not a substitute");
+            OverlapPopup popup = _window.Overlap!;
+            Require(result.Candidates.Any(c => !npcs.Any(n => c.Ref.SameTarget(Ref(n)))),
+                "Marquee must include fence geometry to prove its exclusion through the chooser");
+            foreach (object? frame in Capture("02-marquee-chooser")) yield return frame;
+            for (int i = 0; i < result.Candidates.Count; i++)
+            {
+                PickCandidate candidate = result.Candidates[i];
+                Toggle include = popup.Q<Toggle>("overlap-include-" + i)
+                    ?? throw new InvalidOperationException("Real marquee inclusion toggle missing at " + i);
+                Require(include.panel != null && include.value, "Marquee candidates must start checked in attached toggles");
+                bool keep = npcs.Any(n => candidate.Ref.SameTarget(Ref(n)));
+                if (!keep) Submit(include);
+                Require(include.value == keep, "Marquee toggle did not retain NPCs and exclude fence geometry");
+                Record("marquee-choice", new JObject { ["ref"] = StudioJson.ToToken(candidate.Ref),
+                    ["control"] = include.name, ["included"] = include.value, ["creatorInteraction"] = true,
+                    ["input"] = keep ? "Initially checked attached Toggle" : "NavigationSubmitEvent sent to attached real Toggle" });
+            }
+            Button apply = popup.Q<Button>("overlap-apply")
+                ?? throw new InvalidOperationException("Real marquee Apply button missing");
+            foreach (object? frame in Capture("03-marquee-npc-choices")) yield return frame;
+            Submit(apply);
+            Require(!popup.Visible, "Marquee Apply did not activate the actual chooser button");
+            AssertTargets(npcs.Select(Ref).ToArray());
+            Require(Selection.Targets.Count == 3 && !Selection.Targets.Any(t => t.SameTarget(Ref(rail))),
+                "Marquee Apply must select exactly the three NPCs, excluding the fence");
+            Require(Selection.Parts.Count == 0, "Marquee NPC choices must remain logical targets without mesh parts");
+            Require(Selection.RegionRect != null && Selection.RegionRect.Screen.SequenceEqual(regionRect.Screen),
+                "Marquee Apply must retain the original selection region rectangle");
+            Record("marquee-applied", new JObject { ["creatorInteraction"] = true, ["control"] = apply.name,
+                ["input"] = "NavigationSubmitEvent sent to attached real Button", ["selection"] = Snapshot(),
+                ["originalRegionRect"] = StudioJson.ToToken(regionRect) });
+            foreach (object? frame in Capture("04-marquee-three-npcs-result")) yield return frame;
             foreach (AuthoredEntity npc in npcs)
             {
                 Vector2 point = Project(new Vector3(npc.transform.position.x, 1.2f, 1));
@@ -196,21 +222,13 @@ namespace Hollowmere.P3_2.Workflows
                 Require(candidate.Occluded, npc.name + " must be occluded by the fence");
                 Require(hits.Any(h => h.Ref.SameTarget(Ref(rail)) && h.Distance < candidate.Distance), "Fence must precede " + npc.name);
                 Record("point-overlap-" + npc.name, new JObject { ["candidates"] = Candidates(hits) });
-                yield return null;
-                Capture("03-overlap-" + npc.name);
-                Choose(candidate, false, hits);
+                foreach (object? frame in Capture("05-overlap-" + npc.name)) yield return frame;
+                Choose(candidate, PickChoice.Logical, hits);
                 AssertTargets(Ref(npc));
                 Require(Selection.Parts.Count == 0, "Logical NPC choice retained a mesh subpart");
-                chosen.Add(candidate);
                 Record("chosen-" + npc.name, new JObject { ["selection"] = Snapshot() });
-                yield return null;
-                Capture("04-chosen-" + npc.name);
+                foreach (object? frame in Capture("06-chosen-" + npc.name)) yield return frame;
             }
-            // This is explicitly below-UI coverage, never a substitute for the missing marquee choice command.
-            Picker.Choose(chosen[0], false, SelectionOp.Replace);
-            for (int i = 1; i < chosen.Count; i++) Picker.Choose(chosen[i], false, SelectionOp.Add);
-            AssertTargets(npcs.Select(Ref).ToArray());
-            Record("controller-only-three-npcs", new JObject { ["creatorInteraction"] = false, ["selection"] = Snapshot() });
         }
 
         private IEnumerator Lantern(Scene scene)
@@ -218,7 +236,7 @@ namespace Hollowmere.P3_2.Workflows
             const string prefabPath = "Assets/Hollowmere/World/Prefabs/Lantern.prefab";
             AuthoredEntity lantern = Place(prefabPath, Load<EntityDefinition>("Assets/Hollowmere/World/Definitions/Lantern.asset"),
                 "Lantern", Vector3.zero);
-            // Real scenery behind the lantern makes the existing overlap UI available for the part/logical choices.
+            // Real scenery behind the lantern makes the actual overlap chooser available for every choice.
             Cube("Wall behind lantern", new Vector3(0, 1.2f, 2), new Vector3(4, 3, 0.2f));
             SaveRig(scene);
             AuthoringRef logical = Ref(lantern);
@@ -229,42 +247,65 @@ namespace Hollowmere.P3_2.Workflows
             Record("fixture", new JObject { ["logical"] = StudioJson.ToToken(logical),
                 ["prefab"] = StudioJson.ToToken(prefab), ["instanceScope"] = StudioJson.ToToken(instanceScope),
                 ["part"] = "Mesh:Body" });
-            yield return null;
-            Capture("01-lantern");
+            foreach (object? frame in Capture("01-lantern")) yield return frame;
             Vector2 point = Project(lantern.transform.Find("Body").GetComponent<Renderer>().bounds.center);
             IReadOnlyList<PickCandidate> hits = Click(point);
             PickCandidate body = hits.Single(h => h.Ref.SameTarget(logical) && h.Part == "Mesh:Body");
             Record("lantern-overlap", new JObject { ["candidates"] = Candidates(hits) });
-            yield return null;
-            Capture("02-lantern-chooser");
-            Choose(body, true, hits);
+            foreach (object? frame in Capture("02-lantern-chooser")) yield return frame;
+            Choose(body, PickChoice.Part, hits);
             AssertTargets(logical);
             Require(Selection.Parts.Count == 1 && Selection.Parts[0].Owner.SameTarget(logical)
                 && Selection.Parts[0].Part == "Mesh:Body", "Subpart selection must retain precisely Mesh:Body and its logical lantern owner");
             Record("subpart", new JObject { ["selection"] = Snapshot() });
-            yield return null;
-            Capture("03-lantern-subpart");
+            foreach (object? frame in Capture("03-lantern-subpart")) yield return frame;
             hits = Click(point);
             body = hits.Single(h => h.Ref.SameTarget(logical) && h.Part == "Mesh:Body");
-            Choose(body, false, hits);
+            foreach (object? frame in Capture("04-lantern-logical-chooser")) yield return frame;
+            Choose(body, PickChoice.Logical, hits);
             AssertTargets(logical);
             Require(Selection.Parts.Count == 0, "Logical choice must clear the previous subpart");
             Record("logical", new JObject { ["selection"] = Snapshot() });
-            yield return null;
-            Capture("04-lantern-logical");
+            foreach (object? frame in Capture("05-lantern-logical")) yield return frame;
             hits = Click(point);
-            Record("available-creator-choices", new JObject
-            {
-                ["buttons"] = new JArray(_window?.Overlap?.Query<Button>().ToList().Select(b => b.text) ?? Enumerable.Empty<string>()),
-                ["expectedPrefab"] = StudioJson.ToToken(prefab), ["expectedInstanceScope"] = StudioJson.ToToken(instanceScope),
-                ["prefabAndScopeChosen"] = false,
-            });
-            yield return null;
-            Capture("05-prefab-scope-missing");
-            Block("lantern_prefab_scope_choices_missing: OverlapPopup.Show offers only logical and part buttons; ViewportPicker.Choose(PickCandidate, bool, SelectionOp) has no prefab or authoring-scope choice. The driver resolved the real prefab and Instance-scoped lantern refs but deliberately did not set them programmatically and claim a creator choice.");
+            body = hits.Single(h => h.Ref.SameTarget(logical) && h.Part == "Mesh:Body");
+            foreach (object? frame in Capture("06-lantern-prefab-chooser")) yield return frame;
+            Choose(body, PickChoice.Prefab, hits);
+            AssertTargets(prefab);
+            AuthoringRef selectedPrefab = Selection.Targets[0];
+            Require(selectedPrefab.Scope == AuthorScope.Prefab && selectedPrefab.IdentityKey == prefab.IdentityKey
+                && selectedPrefab.AssetGuid == AssetDatabase.AssetPathToGUID(prefabPath)
+                && selectedPrefab.Path == prefab.Path, "Prefab choice must identify exactly the originating Lantern prefab with Prefab scope");
+            Require(Runtime.Resolver.Resolve(selectedPrefab).Object == Runtime.Resolver.Resolve(prefab).Object,
+                "Prefab choice must resolve to the same shipped Lantern prefab as the expected reference");
+            Require(Selection.Parts.Count == 0, "Prefab choice must not retain a mesh part");
+            Record("prefab", new JObject { ["selection"] = Snapshot(), ["expectedPrefab"] = StudioJson.ToToken(prefab) });
+            foreach (object? frame in Capture("07-lantern-prefab")) yield return frame;
+            // Re-establish a real mesh choice so Instance scope proves that it clears an existing part.
+            hits = Click(point);
+            body = hits.Single(h => h.Ref.SameTarget(logical) && h.Part == "Mesh:Body");
+            Choose(body, PickChoice.Part, hits);
+            AssertTargets(logical);
+            Require(Selection.Parts.Count == 1 && Selection.Parts[0].Owner.SameTarget(logical)
+                && Selection.Parts[0].Part == "Mesh:Body", "Instance-scope setup must select the actual Body part");
+            Record("subpart-before-instance-scope", new JObject { ["selection"] = Snapshot() });
+            foreach (object? frame in Capture("08-lantern-subpart-before-scope")) yield return frame;
+            hits = Click(point);
+            body = hits.Single(h => h.Ref.SameTarget(logical) && h.Part == "Mesh:Body");
+            foreach (object? frame in Capture("09-lantern-instance-scope-chooser")) yield return frame;
+            Choose(body, PickChoice.InstanceScope, hits);
+            AssertTargets(instanceScope);
+            Require(Selection.Targets[0].Scope == AuthorScope.Instance
+                && Selection.Targets[0].SameTarget(logical) && Selection.Targets[0].IdentityKey == logical.IdentityKey,
+                "Instance scope must preserve the exact logical Lantern identity with Instance scope");
+            Require(Selection.Parts.Count == 0, "Instance scope must clear the previous Body subpart");
+            Record("instance-scope", new JObject { ["selection"] = Snapshot(),
+                ["expectedInstanceScope"] = StudioJson.ToToken(instanceScope) });
+            foreach (object? frame in Capture("10-lantern-instance-scope")) yield return frame;
         }
 
         private bool ReadyLayout() => _window != null && _window.Area?.panel != null
+            && _window.position.width >= 1280 && _window.position.height >= 720
             && _window.ImageRect.width >= 640 && _window.ImageRect.height >= 360;
 
         private AuthoredEntity Place(string prefabPath, EntityDefinition definition, string name, Vector3 position)
@@ -323,31 +364,35 @@ namespace Hollowmere.P3_2.Workflows
             return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
-        private IReadOnlyList<PickCandidate> Click(Vector2 point) => _window != null
-            ? _window.ClickAt(point, SelectionOp.Replace) : Picker.Click(point, SelectionOp.Replace);
+        private IReadOnlyList<PickCandidate> Click(Vector2 point) => _window!.ClickAt(point, SelectionOp.Replace);
 
-        private void Choose(PickCandidate candidate, bool part, IReadOnlyList<PickCandidate> hits)
+        private void Choose(PickCandidate candidate, PickChoice choice, IReadOnlyList<PickCandidate> hits)
         {
-            if (_window == null)
-            {
-                Picker.Choose(candidate, part, SelectionOp.Replace);
-                Record("controller-choice", new JObject { ["creatorInteraction"] = false, ["part"] = part });
-                return;
-            }
-            OverlapPopup popup = _window.Overlap!;
-            Require(popup.Visible, "The real overlap popup must be visible before choosing");
+            OverlapPopup popup = _window!.Overlap!;
+            Require(popup.Visible && popup.panel != null, "The real attached overlap popup must be visible before choosing");
             int index = hits.ToList().IndexOf(candidate);
-            Button logicalButton = popup.Q<Button>("overlap-" + index)
-                ?? throw new InvalidOperationException("Real overlap button missing");
-            Button button = part ? logicalButton.parent.Query<Button>().ToList().Single(b => b != logicalButton) : logicalButton;
-            using (NavigationSubmitEvent submit = NavigationSubmitEvent.GetPooled())
-            {
-                submit.target = button;
-                button.SendEvent(submit);
-            }
+            Require(index >= 0, "Chosen candidate must belong to the displayed picking result");
+            string prefix = choice == PickChoice.Part ? "overlap-part-"
+                : choice == PickChoice.Prefab ? "overlap-prefab-"
+                : choice == PickChoice.InstanceScope ? "overlap-scope-" : "overlap-";
+            Button button = popup.Q<Button>(prefix + index)
+                ?? throw new InvalidOperationException("Real overlap choice button missing: " + prefix + index);
+            Submit(button);
             Require(!popup.Visible, "UI Toolkit submit did not activate the actual chooser button");
             Record("creator-button", new JObject { ["creatorInteraction"] = true, ["text"] = button.text,
-                ["input"] = "NavigationSubmitEvent sent to attached real Button" });
+                ["control"] = button.name, ["choice"] = choice.ToString(), ["candidate"] = StudioJson.ToToken(candidate.Ref),
+                ["selection"] = Snapshot(), ["input"] = "NavigationSubmitEvent sent to attached real Button" });
+        }
+
+        private static void Submit(VisualElement control)
+        {
+            Require(control.panel != null && control.enabledInHierarchy,
+                "Creator input requires an enabled control attached to the real panel: " + control.name);
+            using (NavigationSubmitEvent submit = NavigationSubmitEvent.GetPooled())
+            {
+                submit.target = control;
+                control.SendEvent(submit);
+            }
         }
 
         private void AssertTargets(params AuthoringRef[] expected)
@@ -365,43 +410,49 @@ namespace Hollowmere.P3_2.Workflows
             ["part"] = c.Part, ["source"] = c.Source.ToString(), ["overlapGroup"] = c.OverlapGroup,
         }));
 
-        private void Capture(string name)
+        private IEnumerable<object?> Capture(string name)
         {
-            var receipt = new JObject { ["name"] = name, ["source"] = "batch Editor offscreen; no desktop capture",
-                ["graphicsDevice"] = SystemInfo.graphicsDeviceType.ToString() };
-            if (_window == null)
+            Require(_window != null && _window.rootVisualElement.panel != null,
+                "Evidence requires the real attached Studio window; no synthetic capture is permitted");
+            double repaintUntil = EditorApplication.timeSinceStartup + 0.2;
+            int repaintFrames = 0;
+            while (repaintFrames < 6 || EditorApplication.timeSinceStartup < repaintUntil)
             {
-                receipt["captured"] = false;
-                receipt["reason"] = "No graphics device; no synthetic image or PASS substituted";
+                _window!.Repaint();
+                _window.rootVisualElement.MarkDirtyRepaint();
+                EditorApplication.QueuePlayerLoopUpdate();
+                repaintFrames++;
+                yield return null;
             }
-            else
+            var receipt = new JObject { ["name"] = name,
+                ["source"] = "Studio viewport RenderTexture readback and Studio Editor GUIView.GrabPixels window composite; no desktop capture",
+                ["batchMode"] = Application.isBatchMode, ["display"] = Environment.GetEnvironmentVariable("DISPLAY"),
+                ["repaintFrames"] = repaintFrames, ["graphicsDevice"] = SystemInfo.graphicsDeviceType.ToString() };
+            _window!.Renderer.EnsureTarget(Mathf.RoundToInt(Viewport.width), Mathf.RoundToInt(Viewport.height));
+            Require(_window.Renderer.Render(_camera!), "Real viewport render failed");
+            RenderTexture target = _window.Texture!;
+            RenderTexture previous = RenderTexture.active;
+            var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
+            try
             {
-                _window.Renderer.EnsureTarget(Mathf.RoundToInt(Viewport.width), Mathf.RoundToInt(Viewport.height));
-                Require(_window.Renderer.Render(_camera!), "Real viewport render failed");
-                RenderTexture target = _window.Texture!;
-                RenderTexture previous = RenderTexture.active;
-                var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
-                try
-                {
-                    RenderTexture.active = target;
-                    image.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
-                    image.Apply();
-                    File.WriteAllBytes(Path.Combine(_output, name + "-viewport.png"), image.EncodeToPNG());
-                }
-                finally
-                {
-                    RenderTexture.active = previous;
-                    Object.DestroyImmediate(image);
-                }
-                string? problem = UnityWindowCapture.CaptureStudio(Path.Combine(_output, name + "-ui.png"), false);
-                receipt["captured"] = problem == null;
-                receipt["viewport"] = name + "-viewport.png";
-                receipt["ui"] = name + "-ui.png";
-                if (problem != null)
-                {
-                    receipt["problem"] = problem;
-                    Block("ui_capture_unavailable: " + problem);
-                }
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                image.Apply();
+                File.WriteAllBytes(Path.Combine(_output, name + "-viewport.png"), image.EncodeToPNG());
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                Object.DestroyImmediate(image);
+            }
+            string? problem = UnityWindowCapture.CaptureStudio(Path.Combine(_output, name + "-ui.png"), false);
+            receipt["captured"] = problem == null;
+            receipt["viewport"] = name + "-viewport.png";
+            receipt["ui"] = name + "-ui.png";
+            if (problem != null)
+            {
+                receipt["problem"] = problem;
+                Block("ui_capture_unavailable: " + problem);
             }
             Record("capture", receipt);
         }
@@ -434,7 +485,6 @@ namespace Hollowmere.P3_2.Workflows
                 _context?.Dispose();
                 _selection?.Dispose();
                 _runtime?.Dispose();
-                if (_cameraObject != null) Object.DestroyImmediate(_cameraObject);
                 if (_originalScenes != null)
                 {
                     if (_originalScenes.Length > 0) EditorSceneManager.RestoreSceneManagerSetup(_originalScenes);
@@ -451,11 +501,12 @@ namespace Hollowmere.P3_2.Workflows
             {
                 ["row"] = _row, ["verdict"] = verdict, ["utc"] = DateTime.UtcNow.ToString("o"),
                 ["batchMode"] = Application.isBatchMode, ["graphicsDevice"] = SystemInfo.graphicsDeviceType.ToString(),
+                ["display"] = Environment.GetEnvironmentVariable("DISPLAY"),
                 ["blockers"] = new JArray(_blockers), ["error"] = error,
                 ["observations"] = "observations.json", ["fixture"] = "Isolated saved scene, real Hollowmere definitions and prefab instances; fixture deleted after run",
                 ["paidOperations"] = 0,
             }.ToString());
-            Debug.Log("R7-B " + _row + " " + verdict + ": " + _output);
+            Debug.Log("R7-D " + _row + " " + verdict + ": " + _output);
             EditorApplication.Exit(verdict == "PASS" ? 0 : verdict == "BLOCKED" ? 2 : 1);
         }
     }

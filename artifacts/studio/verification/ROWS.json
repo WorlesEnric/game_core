@@ -22,38 +22,42 @@
       "baseline": "1a462f88"
     },
     {
-      "status": "BLOCKED",
-      "note": "R7-B real three-NPC/fence marquee and occluded controller choices succeed; the creator marquee-result overlap chooser is absent in R7-A-owned studio.ui. Exact request retained; no graphical pass inferred.",
-      "command": "See exact unity-batch commands in artifacts/studio/verification/W-UI-02/README.md",
+      "status": "PASS",
+      "note": "R7-D graphical 1280×720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
+      "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
       "requirement": "SR-1.2",
-      "reportedAt": "2026-10-06T21:16:51.128039+00:00",
+      "reportedAt": "2026-10-06T21:54:21.756282+00:00",
       "evidence": [
-        "W-UI-02/r7-b-20261006T210920229Z/receipt.json",
-        "W-UI-02/r7-b-20261006T210920229Z/observations.json"
+        "W-UI-02/r7-d-20261006T215026225Z/receipt.json",
+        "W-UI-02/r7-d-20261006T215026225Z/observations.json",
+        "W-UI-02/README.md",
+        "W-UI-02/r7-d/results.xml"
       ],
       "tests": [
         "ScenariosR7Picking.RunFence"
       ],
-      "baseline": "0909e4a2"
+      "baseline": "b2717d03"
     },
     {
-      "status": "BLOCKED",
-      "note": "R7-B real lantern Body/logical choices succeed and prefab/scope refs resolve; the creator prefab/scope choices are absent in R7-A-owned studio.ui. Exact request retained; no synthetic chooser or capture.",
-      "command": "See exact unity-batch commands in artifacts/studio/verification/W-UI-03/README.md",
+      "status": "PASS",
+      "note": "R7-D graphical 1280×720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
+      "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
       "requirement": "SR-1.3",
-      "reportedAt": "2026-10-06T21:16:51.128063+00:00",
+      "reportedAt": "2026-10-06T21:54:21.756633+00:00",
       "evidence": [
-        "W-UI-03/r7-b-20261006T211016902Z/receipt.json",
-        "W-UI-03/r7-b-20261006T211016902Z/observations.json"
+        "W-UI-03/r7-d-20261006T215104970Z/receipt.json",
+        "W-UI-03/r7-d-20261006T215104970Z/observations.json",
+        "W-UI-03/README.md",
+        "W-UI-02/r7-d/results.xml"
       ],
       "tests": [
         "ScenariosR7Picking.RunLantern"
       ],
-      "baseline": "0909e4a2"
+      "baseline": "b2717d03"
     },
     {
       "status": "PASS",

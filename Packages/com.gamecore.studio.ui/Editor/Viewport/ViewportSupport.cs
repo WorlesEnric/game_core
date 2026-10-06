@@ -190,17 +190,25 @@ namespace GameCore.Studio.UI
     /// <summary>The overlap list (03 s2): candidates under the cursor in depth order with occlusion flags.</summary>
     public sealed class OverlapPopup : VisualElement
     {
-        private readonly Action<PickCandidate, bool> _choose;
+        private readonly Action<PickCandidate, PickChoice> _choose;
+        private readonly Func<PickCandidate, PickChoice, bool>? _available;
         private bool _shown;
 
         /// <param name="choose">Called with the chosen candidate and whether "this part" was chosen.</param>
         public OverlapPopup(Action<PickCandidate, bool> choose)
+            : this((candidate, choice) => choose(candidate, choice == PickChoice.Part), null)
+        {
+        }
+
+        public OverlapPopup(Action<PickCandidate, PickChoice> choose, Func<PickCandidate, PickChoice, bool>? available)
         {
             _choose = choose ?? throw new ArgumentNullException(nameof(choose));
+            _available = available;
             name = "overlap-popup";
             AddToClassList("gcs-popup");
             style.position = Position.Absolute;
             style.display = DisplayStyle.None;
+            RegisterCallback<GeometryChangedEvent>(_ => ClampToParent());
         }
 
         public IReadOnlyList<PickCandidate> Candidates { get; private set; } = Array.Empty<PickCandidate>();
@@ -209,44 +217,94 @@ namespace GameCore.Studio.UI
 
         public void Show(IReadOnlyList<PickCandidate> candidates, Vector2 at, Func<AuthoringRef, string> nameOf)
         {
-            Candidates = candidates;
-            Clear();
-            Label title = new Label(StudioStyles.Safe(candidates.Count + " objects here (nearest first)"));
-            title.AddToClassList("gcs-section__title");
-            Add(title);
+            ScrollView list = Begin(candidates, "objects here (nearest first)");
             for (int i = 0; i < candidates.Count; i++)
             {
                 PickCandidate candidate = candidates[i];
                 VisualElement row = new VisualElement();
                 row.AddToClassList("gcs-row");
-                string text = (i + 1).ToString(CultureInfo.InvariantCulture) + ". " + nameOf(candidate.Ref) + " · " + candidate.Ref.Kind
-                    + " · " + candidate.Distance.ToString("0.0", CultureInfo.InvariantCulture) + " m" + (candidate.Occluded ? " · occluded" : string.Empty)
-                    + (candidate.Source == PickSource.Ui ? " · ui" : string.Empty);
-                Button choose = new Button(() =>
-                {
-                    Hide();
-                    _choose(candidate, false);
-                })
-                { text = StudioStyles.Safe(text), name = "overlap-" + i.ToString(CultureInfo.InvariantCulture) };
-                choose.AddToClassList("gcs-popup__item");
-                choose.EnableInClassList("gcs-popup__item--occluded", candidate.Occluded);
-                row.Add(choose);
+                AddChoice(row, candidate, PickChoice.Logical, LabelFor(candidate, i, nameOf), "overlap-" + i);
                 if (candidate.Part != null)
+                    AddChoice(row, candidate, PickChoice.Part, "part " + candidate.Part, "overlap-part-" + i);
+                if (_available != null)
                 {
-                    row.Add(new Button(() =>
-                    {
-                        Hide();
-                        _choose(candidate, true);
-                    }) { text = StudioStyles.Safe("part " + candidate.Part), tooltip = "Select this part (the logical owner stays the target)" });
+                    AddChoice(row, candidate, PickChoice.Prefab, "Prefab", "overlap-prefab-" + i);
+                    AddChoice(row, candidate, PickChoice.InstanceScope, "Scope: Instance", "overlap-scope-" + i);
                 }
-
-                Add(row);
+                row.style.flexWrap = Wrap.Wrap;
+                list.Add(row);
             }
+            Present(at);
+        }
 
+        public void ShowMarquee(IReadOnlyList<PickCandidate> candidates, Vector2 at, Func<AuthoringRef, string> nameOf,
+            Action<IReadOnlyList<PickCandidate>> apply)
+        {
+            ScrollView list = Begin(candidates, "marquee candidates · choose objects to keep");
+            var included = new List<Toggle>(candidates.Count);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                var toggle = new Toggle(LabelFor(candidates[i], i, nameOf))
+                    { name = "overlap-include-" + i, value = true };
+                included.Add(toggle);
+                list.Add(toggle);
+            }
+            Add(new Button(() =>
+            {
+                var chosen = new List<PickCandidate>();
+                for (int i = 0; i < candidates.Count; i++)
+                    if (included[i].value) chosen.Add(candidates[i]);
+                Hide();
+                apply(chosen);
+            }) { name = "overlap-apply", text = "Select chosen objects" });
+            Present(at);
+        }
+
+        private ScrollView Begin(IReadOnlyList<PickCandidate> candidates, string title)
+        {
+            Candidates = candidates;
+            Clear();
+            var label = new Label(StudioStyles.Safe(candidates.Count + " " + title));
+            label.AddToClassList("gcs-section__title");
+            Add(label);
+            var list = new ScrollView(ScrollViewMode.Vertical);
+            list.style.flexShrink = 1;
+            Add(list);
+            return list;
+        }
+
+        private static string LabelFor(PickCandidate candidate, int index, Func<AuthoringRef, string> nameOf)
+            => StudioStyles.Safe((index + 1).ToString(CultureInfo.InvariantCulture) + ". " + nameOf(candidate.Ref)
+                + " · " + candidate.Ref.Kind + " · " + candidate.Distance.ToString("0.0", CultureInfo.InvariantCulture)
+                + " m" + (candidate.Occluded ? " · occluded" : string.Empty));
+
+        private void AddChoice(VisualElement row, PickCandidate candidate, PickChoice choice, string text, string buttonName)
+        {
+            var button = new Button(() => { Hide(); _choose(candidate, choice); })
+                { text = StudioStyles.Safe(text), name = buttonName };
+            button.AddToClassList("gcs-popup__item");
+            button.SetEnabled(_available == null || _available(candidate, choice));
+            row.Add(button);
+        }
+
+        private void Present(Vector2 at)
+        {
             style.left = at.x;
             style.top = at.y;
             style.display = DisplayStyle.Flex;
             _shown = true;
+            ClampToParent();
+        }
+
+        private void ClampToParent()
+        {
+            if (!_shown || parent == null || !float.IsFinite(parent.contentRect.width)) return;
+            float width = Mathf.Max(0, parent.contentRect.width - 16);
+            float height = Mathf.Max(0, parent.contentRect.height - 16);
+            style.maxWidth = width;
+            style.maxHeight = height;
+            style.left = Mathf.Clamp(style.left.value.value, 8, Mathf.Max(8, width - layout.width));
+            style.top = Mathf.Clamp(style.top.value.value, 8, Mathf.Max(8, height - layout.height));
         }
 
         public void Hide()

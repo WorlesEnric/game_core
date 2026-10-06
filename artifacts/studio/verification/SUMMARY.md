@@ -1,12 +1,12 @@
 # P4.2 + P4.2b + P4.2c verification summary
 
-Matrix row totals: PASS 41, BLOCKED 26, FAIL 1.
+Matrix row totals: PASS 43, BLOCKED 24, FAIL 1.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
 | [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
-| W-UI-02 | BLOCKED | [Evidence](W-UI-02/README.md): R7-B real three-NPC/fence marquee and occluded controller choices succeed; the creator marquee-result overlap chooser is absent in R7-A-owned studio.ui. Exact request retained; no graphical pass inferred. |
-| W-UI-03 | BLOCKED | [Evidence](W-UI-03/README.md): R7-B real lantern Body/logical choices succeed and prefab/scope refs resolve; the creator prefab/scope choices are absent in R7-A-owned studio.ui. Exact request retained; no synthetic chooser or capture. |
+| W-UI-02 | PASS | [Evidence](W-UI-02/README.md): R7-D graphical 1280×720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained. |
+| W-UI-03 | PASS | [Evidence](W-UI-03/README.md): R7-D graphical 1280×720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures. |
 | W-UI-04 | PASS | [Evidence](W-UI-04/README.md): Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes. |
 | W-UI-05 | PASS | [Evidence](W-UI-05/README.md): CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3. |
 | W-VIEW-01 | PASS | [Evidence](W-VIEW-01/README.md): Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed. |
