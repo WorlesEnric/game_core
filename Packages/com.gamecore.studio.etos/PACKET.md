@@ -115,3 +115,101 @@ host slot at a time. Generated parent metadata `Tests/R2_D.meta` and `Tests/R3_B
   upstream Close is a hypothesis, not proof of a node defect. No paid/live-node rerun is authorized.
 - Fake-companion latency and simulated late placement do not qualify loaded-host live latency or
   the physical `:1` window manager. No paid ops, installed companion changes, or credential-file reads.
+
+## R4 — R4-A implementation record
+
+Branch `codex/r4-a`, base `c79a3832`, Linux build host. The retained P4.2
+W-MECH-01, W-ETOS-07 and W-VOICE-01 reports are the reproductions, including
+404 `no owned resource`, 404 `no request`, and the 44-frame/0.199-peak final
+“To lead every N P C in the village.” No provider/service configuration changes.
+
+### R4 fixes
+
+- P42-STAGE-01: exact UTF-8 app payload signed with domain-separated HMAC-SHA256;
+  transient stage-key header only on app intake. Candidate, catalog and verified
+  CAS bytes travel together. Authenticated ledger ownership selects the worker
+  route; missing linked worker requests never downgrade to app origin. Open UI,
+  preview and journal candidates are read through a runtime-scoped resolver.
+  Pending stage jobs are polled before fetching the companion-issued verdict;
+  signed record fields, including origin, remain unchanged.
+- P42-MEDIA-01: local voice request IDs remain display/file identifiers only.
+  Direct media omits changeSetId; an explicitly supplied owned ID retains the
+  existing server checks and all configured cost ceilings.
+- P42-STARTUP-01: the automatic watcher binds when Open Studio creates the runtime
+  and when reload replaces it; explicit Stop disables that watcher. Pairing resolves the host override/documented key
+  location independently of a stale project key-file preference. Missing paths
+  produce `not_configured` with the path; a newly available pairing is retried.
+- P42-VOICE-01: provider readiness precedes source start; source sample readiness
+  precedes IsCapturing/StartAsync completion. The first read is queued intact and
+  release drains the final partial frame. Section 04 §5 specifies 24-kHz mono
+  PCM16, without a gain/normalisation requirement; no speculative gain is applied.
+
+### Requests to other packets
+
+- UI/core owners: preserve the optional read-only resolver seam
+  `StudioUiSession.ContextIfCreated.Runtime`, `.Candidates.Find(string id)` and
+  `CandidateEntry.ChangeSet`. It is accessed by fixed public names to keep ETOS
+  usable without a UI package dependency; only an identical runtime is accepted.
+  A future shared `Func<string, ChangeSet?>` registration should replace this
+  optional discovery if these public members change. The service constructor
+  already accepts that typed resolver plus catalog/CAS delegates.
+
+- **R4 UI owner**, `Packages/com.gamecore.studio.ui/Editor/Prompt/PromptBar.cs`,
+  `private void StartVoice()`: the current implementation writes `listening...`
+  before observing `IVoiceSession.StartAsync()`. Show a preparing/connecting state
+  until that task completes, then update the active take on the Editor thread.
+  Do not update a stopped/replaced take or overwrite an arrived transcript. The
+  existing `Task StartAsync()` seam now completes only after source sample readiness;
+  no interface change or artificial transcript event is needed. The retained voice
+  harness already waits on `EtosVoiceSession.IsCapturing`; ordinary prompt UX needs
+  this corresponding external-path change to avoid inviting speech too early.
+
+### Left open
+
+- Real recognition of “Delete” remains an external qualification: this packet
+  forbids paid operations and real key-file reads. The opt-in virtual microphone
+  test requires an already authenticated session, explicit realtime authorization,
+  named existing PipeWire source/sink, and pw-play. It honestly skips otherwise.
+  A fake transcript is never counted as speech recognition evidence.
+- The retained startup report has no key-resolution or initialization-order trace,
+  so its exact historical precedence/timing cause cannot be established without
+  an installed-session reproduction. The host resolver and runtime-creation watcher
+  are verified with fixture credentials; installed pairing remains unqualified.
+- No installed companion restart, sandbox stage, live Admit, or real domain reload
+  with a paid in-flight task is performed. Offline route/lifecycle tests do not
+  claim those acceptance rows.
+
+### Verification
+
+Final Linux host results, implementation `1dd5b491`:
+
+- .NET client: **69 passed, 0 failed, 6 NotExecuted**, 75 total, counted from TRX
+  result records (not stdout). The six require real ETOS opt-in.
+- Requested Hollowmere EditMode filter: **39 passed, 0 failed, 5 skipped**, 44 total,
+  read from XML. All seven new offline R4-A cases pass. Four existing P2.2 live
+  cases and the virtual-microphone case skip honestly. Editor exit 0; wrapper
+  correctly returns PARTIAL/NotRun for skips. Test time 10.898 s, Editor run 45 s.
+- `check_package_metadata.py`: pass, 42 packages / 91 package assemblies.
+  `check_game_core_csharp.py`: pass, 1,200 files. `git diff --check`: pass.
+- Before fix: the .NET app-intake test fails on the missing API; the three Editor
+  tests fail on the transmitted local ID, missing automatic resolver, and capture
+  becoming ready before the first source samples. The first Editor attempt timed
+  out after 1,501 seconds with no XML. The unchanged warm attempt produced all
+  three expected failures in XML (420-second run), with a recovered ILPP startup
+  error also retained. None of these attempts is erased or counted as a pass.
+- An auxiliary C# 9 compile against this clone's Unity references caught the queue
+  overload error before the final Editor run. Its initial broad reference set had
+  bridge/private-library conflicts; the corrected source and test compile had zero
+  errors (one reference-version warning). This compile is not EditMode evidence.
+- The final Editor waited for the shared allocator behind another packet's standalone
+  verification. No foreign process, reservation, installed service or sibling clone
+  was changed. Only one Editor reservation was held by this packet at a time.
+
+Receipts and hashes: [Tests/Evidence/R4_A/summary.json](Tests/Evidence/R4_A/summary.json).
+Exact final commands: [Tests/Evidence/R4_A/commands.txt](Tests/Evidence/R4_A/commands.txt).
+Before/after XML/TRX and compressed startup/final logs are retained beside them.
+Text receipts replace the home directory with `~`; synthetic credential vectors in
+TRX test labels are masked without changing result IDs or outcomes. Raw result hashes
+are also recorded.
+The requested EditMode regex was used verbatim. No package dependency, validator,
+confinement mode, budget, or existing test assertion was weakened.

@@ -58,6 +58,23 @@ namespace GameCore.Studio.Etos
         [NonSerialized]
         private bool _hooked;
 
+        [NonSerialized]
+        private double _nextPairingCheck;
+
+        [NonSerialized]
+        private bool _automatic;
+
+        /// <summary>Observe Studio runtime creation on Open Studio and after domain reload.</summary>
+        public static void EnableAutomaticStartup()
+        {
+            instance._automatic = true;
+            instance._nextPairingCheck = 0;
+            instance.Hook();
+        }
+
+        /// <summary>Idempotent entry seam for OpenStudio and domain reload.</summary>
+        public static bool EnsureStarted() => instance._gateway != null || Start();
+
         /// <summary>The running gateway, or null (not configured, or not started).</summary>
         public static EtosAgentGateway? Gateway => instance._gateway;
 
@@ -97,12 +114,14 @@ namespace GameCore.Studio.Etos
         /// <summary>Starts (or restarts) the session over the project's runtime; false with <see cref="Problem"/> set when it cannot.</summary>
         public static bool Start()
         {
+            instance._automatic = true;
             return instance.StartCore(StudioServices.Runtime);
         }
 
         /// <summary>Stops the session and unregisters the gateway.</summary>
         public static void Stop()
         {
+            instance._automatic = false;
             instance.StopCore();
         }
 
@@ -130,17 +149,13 @@ namespace GameCore.Studio.Etos
         {
             StopCore();
             _runtime = runtime;
-            EtosSettings settings = EtosSettings.Load(runtime.Paths.ProjectRoot);
-            if (!settings.IsConfigured)
-            {
-                _problem = new Diagnostic(EtosCodes.NotConfigured, "No app key file: Project Settings > GameCore Studio > ETOS, or " + EtosCredentials.KeyFileVariable + ".");
-                Hook();
-                return false;
-            }
-
             try
             {
-                EtosCredentials credentials = settings.ReadCredentials();
+                EtosSettings settings = EtosSettings.Load(runtime.Paths.ProjectRoot);
+                // A stale project key-file preference must not hide an installed host pairing.
+                string? keyFile = EtosCredentials.ResolveAutomaticKeyFile();
+                EtosCredentials credentials = EtosCredentials.FromKeyFile(keyFile ?? string.Empty);
+                settings.KeyFile = keyFile ?? string.Empty;
                 RedactingStudioLog log = new RedactingStudioLog(runtime.Log);
                 CompanionClient client = new CompanionClient(settings.ToClientOptions(credentials, line => log.Write(StudioLogLevel.Debug, "etos", line)), credentials);
                 MainThreadQueue queue = new MainThreadQueue(log);
@@ -165,6 +180,7 @@ namespace GameCore.Studio.Etos
                 _gateway = null;
             }
 
+            _nextPairingCheck = EditorApplication.timeSinceStartup + 1;
             Hook();
             return _gateway != null;
         }
@@ -241,10 +257,14 @@ namespace GameCore.Studio.Etos
                 gateway.Tick();
             }
 
-            if (_runtime != null && StudioServices.HasRuntime && !ReferenceEquals(StudioServices.Runtime, _runtime))
-            {
+            // Opening Studio creates its runtime. Wait for that boundary instead of creating it during
+            // package/domain initialization, when optional services and project identity may not be ready.
+            if (_automatic && _gateway == null && StudioServices.HasRuntime
+                && EditorApplication.timeSinceStartup >= _nextPairingCheck)
                 StartCore(StudioServices.Runtime);
-            }
+
+            if (_automatic && _runtime != null && StudioServices.HasRuntime && !ReferenceEquals(StudioServices.Runtime, _runtime))
+                StartCore(StudioServices.Runtime);
         }
 
         private void OnFocus(bool focused)
@@ -257,6 +277,7 @@ namespace GameCore.Studio.Etos
 
         private void OnBeforeReload()
         {
+            _automatic = false;
             StopCore();
             if (_hooked)
             {
@@ -285,7 +306,7 @@ namespace GameCore.Studio.Etos
                 return;
             }
 
-            EtosStudioSession.Start();
+            EtosStudioSession.EnableAutomaticStartup();
         }
     }
 }

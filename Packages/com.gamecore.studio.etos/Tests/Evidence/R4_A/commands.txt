@@ -1,0 +1,6 @@
+# Run from the repository root on myubuntu. Each Unity invocation holds at most one host-wide slot.
+PATH="$HOME/.dotnet:$PATH" GAMECORE_ETOS_LIVE=0 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --logger 'trx;LogFileName=r4-a-final.trx' --results-directory /tmp/r4-a-dotnet
+GAMECORE_ETOS_AUTOSTART=0 GAMECORE_ETOS_LIVE=0 GAMECORE_R4A_VOICE_SELF_TEST=0 bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir "$PWD/.unity-logs" --label r4-a-final --results "$PWD/.unity-logs/r4-a-final.xml" -- -runTests -testPlatform EditMode -testFilter 'GameCore\.Studio\.Etos.*|Hollowmere\.P2_2.*|Hollowmere\.R2_D.*|Hollowmere\.R3_B.*|Hollowmere\.R4_A.*'
+python3 tools/check_package_metadata.py
+python3 tools/check_game_core_csharp.py
+git diff --check

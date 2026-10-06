@@ -1,0 +1,35 @@
+{
+    "name": "Hollowmere.R4_A.EditMode.Tests",
+    "rootNamespace": "Hollowmere.R4_A",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.Etos",
+        "GameCore.Studio.Etos.Client",
+        "GameCore.Studio.Etos.Testing",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "GameCore.Gameplay.Contracts",
+        "GameCore.Gameplay.Audio",
+        "GameCore.Gameplay.Audio.Editor",
+        "GameCore.Studio.Hollowmere.P2_2.Tests",
+        "GameCore.Studio.UI.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

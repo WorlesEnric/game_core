@@ -235,3 +235,29 @@ R3 final host result: **dotnet 67 passed / 0 failed / 6 live skipped**; **Unity 
 for 20 fake-companion transitions. Buffered-handler failure/replay is also covered by
 `D13_BufferedFailureReplaysWithoutAcknowledgingLaterEvents`. Metadata and C# checkers pass.
 Retained before/intermediate/final results and their hashes are retained in the linked packet's `Tests/Evidence/R3_B/`.
+
+## R4 — packet R4-A
+
+The implementation, before/after receipts, exact commands, limitations and optional
+UI seam are recorded in [the package PACKET.md](../../../Packages/com.gamecore.studio.etos/PACKET.md).
+
+| Finding | R4 fix | Regression test |
+|---|---|---|
+| P42-STAGE-01 | Domain-separated HMAC over the exact app payload; candidate/catalog/CAS snapshot; authenticated ledger route for agent candidates; wait for terminal state before fetching the signed verdict, retaining origin | `P42_STAGE_01_AppIntakeSignsExactPayloadAndRejectsTampering`, `P42_STAGE_01_RetainedAppAndOwnedAgentUseSeparateRoutes`, `P42_STAGE_01_ResolvesUnpreviewedUiCandidateOnlyForItsRuntime`, `P42_STAGE_01_WaitsForIssuedVerdictAndPreservesOrigin` |
+| P42-MEDIA-01 | Direct voice omits the unowned local request ID; explicit owned IDs and budget checks remain | `P42_MEDIA_01_DirectVoiceOmitsUnownedLocalId`, `P42_MEDIA_01_UnownedLocalIdRefusesButDirectTtsDownloadsVerifiedBytes` |
+| P42-STARTUP-01 | Automatic startup resolves the host pairing independently of project key-file preferences; precise missing-file diagnostic and retry when pairing appears | `P42_STARTUP_01_AutomaticPairingIgnoresProjectSettingsAndNamesMissingFile`, `P42_STARTUP_01_AutomaticSessionBindsHostPairingAfterReload` |
+| P42-VOICE-01 | Start completes only after source samples arrive; preserve initial bytes and drain the final partial frame | `P42_VOICE_01_WaitsForSourceAndPreservesFirstSamples`; env-gated `P42_VOICE_01_VirtualMicrophoneFixtureFinalContainsDelete` |
+
+The live speech test requires `GAMECORE_R4A_VOICE_SELF_TEST=1`, an already paired
+session, named existing `GAMECORE_R4A_VIRTUAL_SOURCE` / `GAMECORE_R4A_VIRTUAL_SINK`,
+and `/usr/bin/pw-play`. It plays the retained clear WAV only after capture readiness,
+requires a final containing “Delete”, and checks that no request or journal entry
+was created. No paid operation, real key-file read or installed-service restart is
+performed in the offline R4-A run. Contract 04 §5 has no gain/normalisation rule.
+
+R4 final host verification: **.NET 69 passed / 0 failed / 6 live skipped**;
+**EditMode 39 passed / 0 failed / 5 skipped** (four existing live cases plus the
+virtual-source self-test). All seven offline R4-A Editor regressions pass.
+Metadata and C# policy pass. Before/after XML/TRX, retained startup attempts,
+commands and hashes are linked from the package record; skips do not qualify
+live recognition, installed pairing or Stage → Admit acceptance.

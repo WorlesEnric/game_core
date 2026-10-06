@@ -136,7 +136,20 @@ namespace GameCore.Studio.Etos.Testing
         private int _openedEventConnections;
         public int OpenedEventConnections => Volatile.Read(ref _openedEventConnections);
         public int PendingUpgrades => Volatile.Read(ref _pendingUpgrades);
-        public JObject? SignedStageVerdict { get; set; }
+        private JObject? _signedStageVerdict;
+        public JObject? SignedStageVerdict
+        {
+            get => _signedStageVerdict;
+            set
+            {
+                lock (_gate)
+                {
+                    _signedStageVerdict = value;
+                    string? jobId = (string?)value?["jobId"];
+                    if (jobId != null && _stageJobs.TryGetValue(jobId, out JObject? job)) job["state"] = "done";
+                }
+            }
+        }
         public bool VerifyStageVerdict { get; set; } = true;
 
         public FakeCompanion()
@@ -196,6 +209,8 @@ namespace GameCore.Studio.Etos.Testing
 
         /// <summary>Voice frames received (decoded byte counts, by seq order).</summary>
         public List<int> VoiceFrameBytes { get; } = new List<int>();
+        public List<byte[]> VoicePcm { get; } = new List<byte[]>();
+        public bool EnforceMediaOwnership { get; set; }
 
         public List<long> VoiceSeqs { get; } = new List<long>();
 
@@ -298,6 +313,15 @@ namespace GameCore.Studio.Etos.Testing
             lock (_gate)
             {
                 return _requests.TryGetValue(requestId, out JObject? view) ? (JObject)view.DeepClone() : null;
+            }
+        }
+
+        public void CompleteStage(string jobId, string state, JObject? issued = null)
+        {
+            lock (_gate)
+            {
+                _stageJobs[jobId]["state"] = state;
+                SignedStageVerdict = issued;
             }
         }
 
@@ -509,6 +533,44 @@ namespace GameCore.Studio.Etos.Testing
                 return;
             }
 
+            if (route == "/v1/stage/app-candidate" && method == "POST")
+            {
+                JObject envelope = JObject.Parse(request.BodyText);
+                byte[] payloadBytes = Convert.FromBase64String((string)envelope["payloadBase64"]!);
+                byte[] domain = Encoding.UTF8.GetBytes("gamecore.stage.app-candidate/1\n");
+                byte[] message = domain.Concat(payloadBytes).ToArray();
+                string signature;
+                using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(AppKey)))
+                    signature = Json.Hex(hmac.ComputeHash(message));
+                if (request.Header("x-gamecore-stage-key") != AppKey || (string?)envelope["signature"] != signature)
+                {
+                    await Refuse(connection, 403, "forbidden", "invalid app signature").ConfigureAwait(false);
+                    return;
+                }
+                JObject payload = JObject.Parse(Encoding.UTF8.GetString(payloadBytes));
+                JObject body = (JObject)payload["request"]!;
+                JObject candidate = (JObject)payload["changeSet"]!;
+                JObject catalog = (JObject)payload["toolCatalog"]!;
+                var files = ((JArray)payload["files"]!).Select(f => Convert.FromBase64String((string)f["bytesBase64"]!)).ToArray();
+                if ((string?)payload["app"] != request.Header("x-etos-app")
+                    || (string?)body["projectId"] != request.Header("x-gamecore-project")
+                    || (string?)body["changeSetId"] != (string?)candidate["id"]
+                    || (string?)body["catalogRevision"] != (string?)catalog["revision"]
+                    || Json.FirstNull(payload) != null
+                    || ((JArray)candidate["operations"]!).Any(op => (string?)op["tool"] != "mechanism.propose")
+                    || ((JArray)candidate["artifacts"]!).Any(a => !files.Any(b => Json.Sha256Hex(b) == (string?)a["sha256"] && b.LongLength == (long)a["bytes"]!)))
+                {
+                    await Refuse(connection, 400, "candidate_invalid", "app candidate binding mismatch").ConfigureAwait(false);
+                    return;
+                }
+                var job = new JObject { ["jobId"] = "sj_" + Interlocked.Increment(ref _taskCounter),
+                    ["changeSetId"] = body["changeSetId"], ["projectId"] = body["projectId"],
+                    ["app"] = payload["app"], ["origin"] = "app", ["state"] = "queued" };
+                lock (_gate) _stageJobs[(string)job["jobId"]!] = job;
+                await connection.RespondJsonAsync(202, job.ToString(Formatting.None)).ConfigureAwait(false);
+                return;
+            }
+
             if (route == "/v1/stage" && method == "POST")
             {
                 JObject body = JObject.Parse(request.BodyText);
@@ -531,6 +593,7 @@ namespace GameCore.Studio.Etos.Testing
                     ["projectId"] = body["projectId"],
                     ["app"] = request.Header("x-etos-app"),
                     ["state"] = "queued",
+                    ["origin"] = "agent",
                     ["createdAt"] = Now(),
                     ["updatedAt"] = Now(),
                 };
@@ -840,6 +903,12 @@ namespace GameCore.Studio.Etos.Testing
                 return;
             }
 
+            if (EnforceMediaOwnership && body["changeSetId"] != null && RequestView((string)body["changeSetId"]!) == null)
+            {
+                await Refuse(connection, 404, "not_found", "no request").ConfigureAwait(false);
+                return;
+            }
+
             if (OpRefusals.TryGetValue(op, out Tuple<int, JObject>? refusal))
             {
                 await connection.RespondJsonAsync(refusal.Item1, refusal.Item2.ToString(Formatting.None)).ConfigureAwait(false);
@@ -997,6 +1066,7 @@ namespace GameCore.Studio.Etos.Testing
                         lock (_gate)
                         {
                             VoiceFrameBytes.Add(bytes.Length);
+                            VoicePcm.Add(bytes);
                             if (seq != null)
                             {
                                 VoiceSeqs.Add(seq.Value);

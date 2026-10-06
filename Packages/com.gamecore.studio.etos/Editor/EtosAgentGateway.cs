@@ -131,8 +131,8 @@ namespace GameCore.Studio.Etos
             if (request.ProjectId != options.ProjectId || request.SourceRevision != options.SourceRevision?.Invoke()
                 || request.CatalogRevision != options.CatalogRevision?.Invoke())
                 throw new EtosException(new EtosError(0, EtosCodes.StaleContext, "stage_context_changed"));
-            StageJobInfo job = await Client.StageAsync(request.ChangeSetId, request.ProjectId,
-                request.SourceRevision, request.CatalogRevision, cancellationToken).ConfigureAwait(false);
+            StageJobInfo job = await EtosProjectContext.CreateStageService(Client, Runtime)
+                .RequestStageJobAsync(request, cancellationToken).ConfigureAwait(false);
             return job.Raw;
         }
 

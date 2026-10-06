@@ -116,15 +116,25 @@ namespace GameCore.Studio.Etos
                     {
                         if (_disposed) throw new ObjectDisposedException(nameof(EtosVoiceSession));
                         _source.Start();
-                        _capturing = true;
-                        if (!_ticking)
-                        {
-                            EditorApplication.update += Tick;
-                            _ticking = true;
-                        }
-                        _log.Write(StudioLogLevel.Info, "etos", "voice session " + channel.ReadyInfo?.SessionId + " capturing from " + _source.Name);
                         return true;
                     }).ConfigureAwait(false);
+                    // A provider-ready frame and Microphone.Start do not mean the device has delivered samples.
+                    // Keep the first read and only report capture readiness after it is queued for transmission.
+                    DateTime readyDeadline = DateTime.UtcNow.AddSeconds(10);
+                    while (true)
+                    {
+                        _life.Token.ThrowIfCancellationRequested();
+                        byte[] first = Array.Empty<byte>();
+                        await _queue.Run(() => { first = _source.Read(); }, _life.Token).ConfigureAwait(false);
+                        if (first.Length != 0)
+                        {
+                            await _queue.Run(() => BeginCapture(channel, first), _life.Token).ConfigureAwait(false);
+                            break;
+                        }
+                        if (DateTime.UtcNow >= readyDeadline)
+                            throw new EtosException(new EtosError(0, "voice_source_not_ready", "The audio source delivered no samples within 10 seconds."));
+                        await Task.Delay(10, _life.Token).ConfigureAwait(false);
+                    }
                 }
                 catch (Exception error)
                 {
@@ -144,6 +154,23 @@ namespace GameCore.Studio.Etos
             finally { _lifecycle.Release(); }
         }
 
+        private bool BeginCapture(VoiceChannel channel, byte[] first)
+        {
+            if (_disposed) throw new ObjectDisposedException(nameof(EtosVoiceSession));
+            if (channel.Completion.IsCompleted) throw EtosException.Protocol("voice_closed_before_source_ready");
+            QueuePcm(first);
+            _capturing = true;
+            if (!_ticking) { EditorApplication.update += Tick; _ticking = true; }
+            _log.Write(StudioLogLevel.Info, "etos", "voice session " + channel.ReadyInfo?.SessionId + " capturing from " + _source.Name);
+            return true;
+        }
+
+        private void QueuePcm(byte[] pcm)
+        {
+            Level?.Invoke(VoiceFraming.Level(pcm, 0, pcm.Length));
+            foreach (byte[] frame in _frames.Add(pcm, 0, pcm.Length)) Send(frame);
+        }
+
         /// <summary>Main-thread tick: reads the source, raises the level, streams complete frames.</summary>
         public void Tick()
         {
@@ -158,11 +185,7 @@ namespace GameCore.Studio.Etos
                 return;
             }
 
-            Level?.Invoke(VoiceFraming.Level(pcm, 0, pcm.Length));
-            foreach (byte[] frame in _frames.Add(pcm, 0, pcm.Length))
-            {
-                Send(frame);
-            }
+            QueuePcm(pcm);
         }
 
         /// <summary>Stops capture, sends the remaining audio and stop, and waits for the final transcript and close.</summary>
