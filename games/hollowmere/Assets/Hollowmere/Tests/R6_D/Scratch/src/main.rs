@@ -6,14 +6,14 @@ mod support;
 
 use gamecore_studio::ledger::{CandidateRow, Ledger, NewRequest, RequestUpdate};
 use gamecore_studio::model::RequestState;
-use gamecore_studio::stage::pipeline::{cache_version, SlotSource, StageOptions};
+use gamecore_studio::stage::pipeline::{SlotSource, StageOptions, cache_version};
 use gamecore_studio::store::ArtifactStore;
 use gamecore_studio::util::sha256_hex;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
-use support::{FakeNode, AGENT, AGENT_KEY, APP_KEY};
+use support::{AGENT, AGENT_KEY, APP_KEY, FakeNode};
 
 struct Companion(std::process::Child);
 impl Drop for Companion {
@@ -104,8 +104,15 @@ async fn main() {
     );
     std::fs::create_dir(&evidence).unwrap();
     let evidence = evidence.canonicalize().unwrap();
-    let state = evidence.join("service");
-    std::fs::create_dir(&state).unwrap();
+    // Installation authority must never live in the repository, even in ignored evidence.
+    let service_root = PathBuf::from(std::env::var_os("HOME").expect("HOME is required"))
+        .join(".cache/gamecore-studio/r6-d/service");
+    std::fs::create_dir_all(&service_root).unwrap();
+    let state = tempfile::Builder::new()
+        .prefix("node-")
+        .tempdir_in(service_root)
+        .unwrap()
+        .keep();
     let revision = revision(&repo);
     let node = FakeNode::start().await;
     let project = "1".repeat(64);
@@ -359,7 +366,9 @@ async fn main() {
         }),
     );
     println!("R6_D_READY {}", evidence.display());
-    println!("Run graphical then batch with R6_D/run-live.py and the corresponding live-config.json; keep this process alive until both finish.");
+    println!(
+        "Run graphical then batch with R6_D/run-live.py and the corresponding live-config.json; keep this process alive until both finish."
+    );
     record_node_evidence(&node, &evidence, job);
 
     // Main supervises this service through hub. Both sequential Editor processes re-fetch and
