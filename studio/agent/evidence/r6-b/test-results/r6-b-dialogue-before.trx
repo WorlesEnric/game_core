@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b801ff07-c3cb-44db-8069-4bfe1d4da828" name="@worlesenric 2026-10-06 21:29:54" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-06T21:29:54.8499555+08:00" queuing="2026-10-06T21:29:54.8499556+08:00" start="2026-10-06T21:29:53.7018158+08:00" finish="2026-10-06T21:29:54.8598059+08:00" />
+  <TestSettings name="default" id="341bc8d4-58e2-489c-85cd-e34a846d7566">
+    <Deployment runDeploymentRoot="_worlesenric_2026-10-06_21_29_54" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="0a52ec1f-d55f-484a-96e7-0b272c24b865" testId="d3a2f2e3-a015-481a-5c12-dc52fef1b7db" testName="R6_Request6_IncompleteGraphCannotApproveEntryChange" computerName="worlesenric" duration="00:00:00.0317049" startTime="2026-10-06T21:29:54.6504802+08:00" endTime="2026-10-06T21:29:54.6821840+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a52ec1f-d55f-484a-96e7-0b272c24b865">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_IncompleteGraphCannotApproveEntryChange() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 85
+
+1)    at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_IncompleteGraphCannotApproveEntryChange() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 85
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fdf759bf-9afc-4ff6-a3a9-8288865175e5" testId="bdf95900-1eba-2e41-59fa-066158385f80" testName="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(False)" computerName="worlesenric" duration="00:00:00.0058620" startTime="2026-10-06T21:29:54.6324379+08:00" endTime="2026-10-06T21:29:54.6383001+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdf759bf-9afc-4ff6-a3a9-8288865175e5" />
+    <UnitTestResult executionId="62c852b3-109b-4252-8454-7a858c6e51fc" testId="02c237ea-fdf8-1cf4-bd5c-2c20a6bd4a05" testName="R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" computerName="worlesenric" duration="00:00:00.0033550" startTime="2026-10-06T21:29:54.6874276+08:00" endTime="2026-10-06T21:29:54.6907823+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62c852b3-109b-4252-8454-7a858c6e51fc">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Sequence contains no matching element</Message>
+          <StackTrace>   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 47
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="56d7fb4e-a24c-482e-a20e-f3d1830a8fda" testId="4a730ed2-edae-a69e-5b5f-1fb0e4a222c9" testName="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(True)" computerName="worlesenric" duration="00:00:00.0042670" startTime="2026-10-06T21:29:54.6383430+08:00" endTime="2026-10-06T21:29:54.6426090+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56d7fb4e-a24c-482e-a20e-f3d1830a8fda" />
+    <UnitTestResult executionId="37fcf420-c802-4654-93f4-2262674d3057" testId="ea83fdb6-7c8d-960c-f453-a540a6d42403" testName="R6_Request6_DuplicatePortCannotInventAReachablePath" computerName="worlesenric" duration="00:00:00.0980470" startTime="2026-10-06T21:29:54.5321442+08:00" endTime="2026-10-06T21:29:54.6300978+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="37fcf420-c802-4654-93f4-2262674d3057">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Sequence contains no matching element</Message>
+          <StackTrace>   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_DuplicatePortCannotInventAReachablePath() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 79
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bef5fda1-2785-4d0b-a72e-f4cd14f4832e" testId="35fb1751-7117-79a9-637b-233a9eb1883b" testName="R6_Request6_FieldsEntryCannotBypassReachability" computerName="worlesenric" duration="00:00:00.0038470" startTime="2026-10-06T21:29:54.6466025+08:00" endTime="2026-10-06T21:29:54.6504498+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bef5fda1-2785-4d0b-a72e-f4cd14f4832e">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Sequence contains no matching element</Message>
+          <StackTrace>   at System.Linq.ThrowHelper.ThrowNoMatchException()
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_FieldsEntryCannotBypassReachability() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 93
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d78af8b4-571e-41d7-8ebd-1ac415b95899" testId="c3ea7e3e-de5c-3de5-7bae-0c9448bc1443" testName="R6_Request6_OutOfRangeEntryRefusesBeforeBake" computerName="worlesenric" duration="00:00:00.0051440" startTime="2026-10-06T21:29:54.6822418+08:00" endTime="2026-10-06T21:29:54.6873860+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d78af8b4-571e-41d7-8ebd-1ac415b95899">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_OutOfRangeEntryRefusesBeforeBake() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 101
+
+1)    at Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_OutOfRangeEntryRefusesBeforeBake() in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs:line 101
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="R6_Request6_IncompleteGraphCannotApproveEntryChange" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="d3a2f2e3-a015-481a-5c12-dc52fef1b7db">
+      <Execution id="0a52ec1f-d55f-484a-96e7-0b272c24b865" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_IncompleteGraphCannotApproveEntryChange" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="02c237ea-fdf8-1cf4-bd5c-2c20a6bd4a05">
+      <Execution id="62c852b3-109b-4252-8454-7a858c6e51fc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_OutOfRangeEntryRefusesBeforeBake" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="c3ea7e3e-de5c-3de5-7bae-0c9448bc1443">
+      <Execution id="d78af8b4-571e-41d7-8ebd-1ac415b95899" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_OutOfRangeEntryRefusesBeforeBake" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_FieldsEntryCannotBypassReachability" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="35fb1751-7117-79a9-637b-233a9eb1883b">
+      <Execution id="bef5fda1-2785-4d0b-a72e-f4cd14f4832e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_FieldsEntryCannotBypassReachability" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(True)" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="4a730ed2-edae-a69e-5b5f-1fb0e4a222c9">
+      <Execution id="56d7fb4e-a24c-482e-a20e-f3d1830a8fda" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(True)" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_DuplicatePortCannotInventAReachablePath" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="ea83fdb6-7c8d-960c-f453-a540a6d42403">
+      <Execution id="37fcf420-c802-4654-93f4-2262674d3057" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_DuplicatePortCannotInventAReachablePath" />
+    </UnitTest>
+    <UnitTest name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(False)" storage="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/debug/net8.0/tests.dll" id="bdf95900-1eba-2e41-59fa-066158385f80">
+      <Execution id="fdf759bf-9afc-4ff6-a3a9-8288865175e5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Hollowmere.R6_B.DialogueCandidateTests" name="R6_Request6_EntryWithExplicitRelinkPreservesEveryNode(False)" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d3a2f2e3-a015-481a-5c12-dc52fef1b7db" executionId="0a52ec1f-d55f-484a-96e7-0b272c24b865" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bdf95900-1eba-2e41-59fa-066158385f80" executionId="fdf759bf-9afc-4ff6-a3a9-8288865175e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02c237ea-fdf8-1cf4-bd5c-2c20a6bd4a05" executionId="62c852b3-109b-4252-8454-7a858c6e51fc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a730ed2-edae-a69e-5b5f-1fb0e4a222c9" executionId="56d7fb4e-a24c-482e-a20e-f3d1830a8fda" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ea83fdb6-7c8d-960c-f453-a540a6d42403" executionId="37fcf420-c802-4654-93f4-2262674d3057" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="35fb1751-7117-79a9-637b-233a9eb1883b" executionId="bef5fda1-2785-4d0b-a72e-f4cd14f4832e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3ea7e3e-de5c-3de5-7bae-0c9448bc1443" executionId="d78af8b4-571e-41d7-8ebd-1ac415b95899" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="7" executed="7" passed="2" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-studio/r6-b/studio/agent/evidence/r6-b/before/bin/Debug/net8.0/Tests.dll
+   NUnit3TestExecutor discovered 7 of 7 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.2043527">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="554" result="Failed" site="Child" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.204353" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1811" name="Hollowmere.R6_B.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_B.Tests.dll" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.190810" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2520434" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1812" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.190295" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1813" name="R6_B" fullname="Hollowmere.R6_B" runstate="Runnable" testcasecount="20" result="Failed" site="Child" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.189965" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1805" name="RealPathTests" fullname="Hollowmere.R6_B.RealPathTests" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.188866" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1810" name="R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" fullname="Hollowmere.R6_B.RealPathTests.R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" methodname="R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains" classname="Hollowmere.R6_B.RealPathTests" runstate="Runnable" seed="423248797" result="Failed" start-time="2026-10-06 13:38:09Z" end-time="2026-10-06 13:38:09Z" duration="0.178153" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Elapsed three-second timer is not capture/provider readiness
+  Expected: False
+  But was:  True
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.R6_B.RealPathTests+<R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains>d__4.MoveNext () [0x002e8] in /home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:167
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[P3.2 workflow] {"shot":"keyframes/001-voice-r6-dry-pressed.png","captureProblem":"capture: DirectoryNotFoundException: Could not find a part of the path \"/home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Temp/P3.2-workflows/keyframes/001-voice-r6-dry-pressed.png\".","utc":"2026-10-06T13:38:09.528Z","step":0,"stepName":"","name":"voice-r6-dry-pressed","caption":"Mic pressed (push-to-talk); the voice session opens on the default microphone."}
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.9847609">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="554" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.984761" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1103" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r6-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.969220" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2531530" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1104" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.968676" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1105" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.968346" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1106" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.968039" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1107" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.967700" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1013" name="CorePickRegressionTests" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.965060" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1018" name="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" methodname="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="998351055" result="Passed" start-time="2026-10-06 13:42:05Z" end-time="2026-10-06 13:42:06Z" duration="0.953198" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[CORE-PICK] N=21 median=1.9138ms max=172.7520ms rendererSum=45.0835ms resolveSum=263.1437ms
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -100,3 +100,16 @@ Raw artifacts remain non-executable media/data only. Do not import code, assembl
 import hooks, or raw prefab/controller/material files. Use the staging lane for code.
 The original failed lantern candidate is retained unchanged in
 `tests/fixtures/request8-original.json`; it is a negative example, not a template.
+
+## Dialogue entry reachability (R6 request #6)
+
+Before proposing `set entry` (including `fields.entry`), project the complete graph after
+all candidate operations. Every retained node must remain reachable from the proposed
+entry through Next, branch Else, or choice Option links. `GP-DLG-005` carries
+`data: {"unreachable":[...]}` with the disconnected node indices. Re-link the graph
+using the catalog's `set edges`/`set fields` operations and explicit dependencies, or
+return `needs-clarification` when the intended conversation or full graph is unknown.
+Never change entry to a new terminal line merely to make it speak first, and never
+remove existing nodes to silence the diagnostic. Keep condition and consequence paths.
+The unmodified ferryman witness at `tests/fixtures/request6-original.json` adds node 8
+then sets entry to 8; nodes 0–7 are disconnected. It is a failing example, not a template.

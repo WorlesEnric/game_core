@@ -368,6 +368,7 @@ namespace Hollowmere.P3_2.Workflows
         [SerializeField] private int frames;
         [SerializeField] private bool recording;
 
+        [NonSerialized] public VoiceTakeDriver? VoiceTake;
         [NonSerialized] public ProbeExecution? PlayProbe;
         [NonSerialized] public string PlayError = string.Empty;
 
