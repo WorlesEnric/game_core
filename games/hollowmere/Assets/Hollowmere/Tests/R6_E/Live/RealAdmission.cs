@@ -39,6 +39,7 @@ namespace Hollowmere.R6_E
 
         static RealAdmission()
         {
+            if (Argument("-gcR6EContext").Length != 0) EditorApplication.update += PrepareTick;
             if (Argument("-gcR6EConfig").Length == 0) return;
             EditorApplication.update += Tick;
             AssemblyReloadEvents.beforeAssemblyReload += BeforeReload;
@@ -66,6 +67,26 @@ namespace Hollowmere.R6_E
                     throw new InvalidOperationException("existing pending admission must be resolved by its owner before this regression");
                 if (Directory.Exists(Path.Combine(Project, "Packages", HollowmereAdmittedSmoke.PressurePlatePackage)))
                     throw new InvalidOperationException("pressure-plate package is already installed");
+                SessionState.SetBool("Hollowmere.R6_E.Preparing", true);
+                EditorSceneManager.OpenScene("Assets/Hollowmere/Boot/Boot.unity");
+                EditorApplication.isPlaying = true;
+            }
+            catch (Exception error)
+            {
+                Debug.LogError(new SecretRedactor().Redact(error.ToString()));
+                EditorApplication.Exit(1);
+            }
+        }
+
+        private static void PrepareTick()
+        {
+            if (!SessionState.GetBool("Hollowmere.R6_E.Preparing", false) || !EditorApplication.isPlaying
+                || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            GameBoot? boot = UnityEngine.Object.FindAnyObjectByType<GameBoot>();
+            if (boot?.Saves == null || !boot.AdmissionReady(boot.Saves)) return;
+            try
+            {
+                StudioRuntime runtime = StudioServices.Runtime;
                 var context = new JObject {
                     ["changeSetId"] = IdDerivation.NewChangeSetId(),
                     ["projectId"] = EtosProjectContext.LoadProjectId(Project),
@@ -74,7 +95,8 @@ namespace Hollowmere.R6_E
                     ["catalogRevision"] = runtime.Registry.Catalog.Revision ?? runtime.Registry.Catalog.ComputeRevision(),
                     ["graphics"] = GraphicsWitness(),
                 };
-                StudioPaths.WriteAllTextAtomic(output, context.ToString());
+                StudioPaths.WriteAllTextAtomic(Argument("-gcR6EContext"), context.ToString());
+                SessionState.SetBool("Hollowmere.R6_E.Preparing", false);
                 EditorApplication.Exit(0);
             }
             catch (Exception error)
@@ -186,7 +208,13 @@ namespace Hollowmere.R6_E
                         || admission.Options.ProjectId != expected.ProjectId
                         || admission.Options.SourceRevision?.Invoke() != expected.SourceRevision
                         || admission.Options.CatalogRevision?.Invoke() != expected.CatalogRevision)
-                        throw new InvalidOperationException("automatic session context differs from fresh scratch stage");
+                        throw new InvalidOperationException("automatic session context differs from fresh scratch stage: " + new JObject {
+                            ["currentRuntime"] = ReferenceEquals(EtosStudioSession.Gateway.Runtime, runtime),
+                            ["node"] = EtosStudioSession.Gateway.Client.NodeUrl, ["expectedNode"] = config["nodeUrl"],
+                            ["project"] = admission.Options.ProjectId, ["expectedProject"] = expected.ProjectId,
+                            ["source"] = admission.Options.SourceRevision?.Invoke(), ["expectedSource"] = expected.SourceRevision,
+                            ["catalog"] = admission.Options.CatalogRevision?.Invoke(), ["expectedCatalog"] = expected.CatalogRevision,
+                        });
                     HollowmereGame game = boot.GetComponent<HollowmereGame>();
                     if (progress["coins"] == null)
                     {
