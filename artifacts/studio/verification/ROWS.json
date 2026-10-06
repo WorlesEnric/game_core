@@ -1,7 +1,7 @@
 {
   "counts": {
-    "PASS": 35,
-    "BLOCKED": 30,
+    "PASS": 39,
+    "BLOCKED": 26,
     "FAIL": 3
   },
   "rows": [
@@ -21,27 +21,37 @@
     },
     {
       "status": "BLOCKED",
-      "note": "The capture includes marquee/overlap UI, but not the required three NPCs behind a fence with the resulting overlap choices.",
-      "command": "studio/tools/verify-all.sh ui",
+      "note": "R7-B real three-NPC/fence marquee and occluded controller choices succeed; the creator marquee-result overlap chooser is absent in R7-A-owned studio.ui. Exact request retained; no graphical pass inferred.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-UI-02/README.md",
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
       "requirement": "SR-1.2",
-      "reportedAt": "2026-10-06T15:29:44.363294+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128039+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-      ]
+        "W-UI-02/r7-b-20261006T210920229Z/receipt.json",
+        "W-UI-02/r7-b-20261006T210920229Z/observations.json"
+      ],
+      "tests": [
+        "ScenariosR7Picking.RunFence"
+      ],
+      "baseline": "0909e4a2"
     },
     {
       "status": "BLOCKED",
-      "note": "Logical-object selection is captured; the lantern subpart/prefab/scope chooser sequence is not demonstrated by this driver.",
-      "command": "studio/tools/verify-all.sh ui",
+      "note": "R7-B real lantern Body/logical choices succeed and prefab/scope refs resolve; the creator prefab/scope choices are absent in R7-A-owned studio.ui. Exact request retained; no synthetic chooser or capture.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-UI-03/README.md",
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
       "requirement": "SR-1.3",
-      "reportedAt": "2026-10-06T15:29:44.363879+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128063+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-      ]
+        "W-UI-03/r7-b-20261006T211016902Z/receipt.json",
+        "W-UI-03/r7-b-20261006T211016902Z/observations.json"
+      ],
+      "tests": [
+        "ScenariosR7Picking.RunLantern"
+      ],
+      "baseline": "0909e4a2"
     },
     {
       "status": "PASS",
@@ -187,19 +197,21 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Current index/impact tests cover typed references and lantern reward/stock; the exact deleted-item dialogue-line/objective witness is not exercised.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-B actual delete preview identifies the dialogue choice line through its item condition and the collect objective by nested field paths; engine deletion and ordinary History undo succeed. Exact case passes in final 8/8 XML.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-MODEL-02/README.md",
       "tests": [
-        "IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock"
+        "Hollowmere.R7_B.Model.ItemDeletionImpactTests.W_MODEL_02_DeleteItemListsReferencingDialogueLineAndObjective"
       ],
       "row": "W-MODEL-02",
       "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
       "requirement": "SR-2.2",
-      "reportedAt": "2026-10-06T15:29:44.376151+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128070+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-      ]
+        "W-MODEL-02/r7-b-final/impact.json",
+        "W-EDIT-06/r7-b-final/results.xml"
+      ],
+      "baseline": "de18d3b9"
     },
     {
       "status": "PASS",
@@ -272,16 +284,22 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Stale-target pieces pass, but the exact live NPC \u2192 exit Play \u2192 apply \u2192 delete \u2192 apply sequence is not retained as a combined acceptance run.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-B combined real Bram NPC command/staged edit, Play exit, authored apply, engine deletion and second apply produces a journaled Refused/StaleTarget without resurrection. Normal History undo restores original costume and scene bytes.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-EDIT-04/README.md",
       "row": "W-EDIT-04",
       "scenario": "Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget`",
       "requirement": "SR-1.4",
-      "reportedAt": "2026-10-06T15:29:44.381210+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128076+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-      ]
+        "W-EDIT-04/r7-b/attempt-1/edit-result.json",
+        "W-EDIT-04/r7-b/attempt-1/edit-events.json",
+        "W-EDIT-04/r7-b/attempt-1/after-delete-apply.json"
+      ],
+      "tests": [
+        "ScenariosR7Lifecycle.EditLifecycle"
+      ],
+      "baseline": "0909e4a2"
     },
     {
       "status": "PASS",
@@ -300,19 +318,25 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "No durable Apply-to-authored workflow for runtime-only moves is exposed by the current engine/UI seam; runtime-only refusal tests are not this persistence workflow.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-B real committed world.place leaves authored proxy unchanged; Changes creator command persists a distinct authored candidate. Play exit, ordinary move/save/reopen and History inverse/reopen pass. Runtime action remains non-undoable; final XML 8/8 includes refusal boundaries.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-EDIT-06/README.md",
       "tests": [
-        "R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo"
+        "Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance.W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse",
+        "GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests"
       ],
       "row": "W-EDIT-06",
       "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
       "requirement": "SR-1.8",
-      "reportedAt": "2026-10-06T15:29:44.382245+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128079+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-      ]
+        "W-EDIT-06/r7-b-final/results.xml",
+        "W-EDIT-06/r7-b/promotion.json",
+        "W-EDIT-06/r7-b/runtime.json",
+        "W-EDIT-06/r7-b/authored-undone.json",
+        "W-EDIT-06/conflict-before/results.xml"
+      ],
+      "baseline": "de18d3b9"
     },
     {
       "status": "PASS",
@@ -940,19 +964,23 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Cosmetic-content save compatibility passes, but the literal prefab rename/reopen case is not exercised; no claim is inferred from stable GUID design alone.",
-      "command": "studio/tools/verify-all.sh unity",
+      "status": "PASS",
+      "note": "R7-B literally renames the referenced NPC prefab after real checkpoint capture; a separate Editor PID reopens and restores identical canonical slot hash, eight NPC fields and costume content. Original prefab/meta path and bytes restored exactly.",
+      "command": "See exact unity-batch commands in artifacts/studio/verification/W-PERSIST-02/README.md",
       "tests": [
-        "CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch"
+        "ScenariosR7Lifecycle.PersistPrepare",
+        "ScenariosR7Lifecycle.PersistReopen"
       ],
       "row": "W-PERSIST-02",
       "scenario": "Rename prefab, re-run: NPC keeps state in a save",
       "requirement": "SR-2.1",
-      "reportedAt": "2026-10-06T15:29:44.421086+00:00",
+      "reportedAt": "2026-10-06T21:16:51.128089+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
-      ]
+        "W-PERSIST-02/r7-b/attempt-1/prepare-result.json",
+        "W-PERSIST-02/r7-b/attempt-1/reopen-result.json",
+        "W-PERSIST-02/r7-b/attempt-1/handoff.json"
+      ],
+      "baseline": "0909e4a2"
     },
     {
       "status": "PASS",

@@ -1,0 +1,15 @@
+{
+  "row": "W-UI-03",
+  "verdict": "BLOCKED",
+  "utc": "2026-10-06T21:10:19.1981490Z",
+  "batchMode": true,
+  "graphicsDevice": "Null",
+  "blockers": [
+    "capture_unavailable: the batch Editor has no graphics device (-nographics). Real offscreen viewport and GUIView captures require a graphics-enabled batch Editor, not display :1.",
+    "lantern_prefab_scope_choices_missing: OverlapPopup.Show offers only logical and part buttons; ViewportPicker.Choose(PickCandidate, bool, SelectionOp) has no prefab or authoring-scope choice. The driver resolved the real prefab and Instance-scoped lantern refs but deliberately did not set them programmatically and claim a creator choice."
+  ],
+  "error": null,
+  "observations": "observations.json",
+  "fixture": "Isolated saved scene, real Hollowmere definitions and prefab instances; fixture deleted after run",
+  "paidOperations": 0
+}

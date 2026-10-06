@@ -38,9 +38,13 @@ namespace GameCore.Studio.Edit
             _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             Options = options ?? new EngineOptions();
             _runtime.Registry.Register(new DeletePreparedCreationTool());
+            RuntimeMoves = new RuntimeMovePromotion(runtime);
+            _runtime.Registry.Register(new RuntimeMoveTool());
         }
 
         public EngineOptions Options { get; }
+
+        public RuntimeMovePromotion RuntimeMoves { get; }
 
         /// <summary>True in Play mode (or when the probe says so).</summary>
         public bool IsPlayMode => Options.PlayModeProbe?.Invoke() ?? EditorApplication.isPlaying;
@@ -441,7 +445,7 @@ namespace GameCore.Studio.Edit
                     if (tool.Entry.RuntimeOnly && (!IsPlayMode || !liveRevision.HasValue))
                         staged.Add(StudioDiagnostics.Op(DiagnosticCodes.Refused, operation.OpId, "Runtime actions require an available Play world."));
                     staged.Live = liveRevision.HasValue && tool.Entry.RuntimeApply == RuntimeApply.Live
-                        && _runtime.Services.FindLiveTranslator(new EditContext(_runtime, changeSet, operation, staged.Target, true, null)) != null;
+                        && (tool is RuntimeMoveTool || _runtime.Services.FindLiveTranslator(new EditContext(_runtime, changeSet, operation, staged.Target, true, null)) != null);
                     if (tool.Entry.RuntimeOnly && !staged.Live)
                         staged.Add(StudioDiagnostics.Op(DiagnosticCodes.NotConfigured, operation.OpId, "Runtime action translator is not registered."));
                     if (staged.Blocked || staged.Deferred || staged.DeferredFactArgument)
@@ -882,6 +886,21 @@ namespace GameCore.Studio.Edit
                         return OperationResult.Refused(checkedArguments.Diagnostics[0].Code, checkedArguments.Diagnostics[0].Message);
                 }
                 OperationResult result;
+                if (tool is RuntimeMoveTool)
+                {
+                    if (!IsPlayMode || !_runtime.Live.IsAvailable)
+                        return OperationResult.Refused(DiagnosticCodes.Refused, "Runtime moves require an available Play world.");
+                    ulong actualRevision = _runtime.Live.CommittedRevision;
+                    if (expectedRevision != actualRevision)
+                    {
+                        diagnostics.Add(Diagnostic.ConflictAt(operation.Target!,
+                            "revision:" + expectedRevision, "revision:" + actualRevision,
+                            "The world revision changed before runtime placement.",
+                            "Re-stage the runtime move against the current world."));
+                        return OperationResult.Refused(DiagnosticCodes.Conflict, "The world revision changed before runtime placement.");
+                    }
+                    return tool.Apply(context);
+                }
                 ILiveOpTranslator? translator = staging.Live ? _runtime.Services.FindLiveTranslator(context) : null;
                 if (translator != null)
                 {

@@ -1,0 +1,1122 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-06T21:03:41.718141Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+
+COMMAND LINE ARGUMENTS:
+~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-batchmode
+-nographics
+-projectPath
+<repo>/games/hollowmere
+-logFile
+-
+-testResults
+<repo>/artifacts/studio/verification/W-EDIT-06/r7-b-tests/attempt-4/results.xml
+-runTests
+-testPlatform
+EditMode
+-testFilter
+Hollowmere\.R7_B\.Promotion
+Successfully changed project path to: <repo>/games/hollowmere
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              ea2ed0d5add94c3784d84d16f2dd7d67
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 7620957290955879377
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-06T21:03:41.71968Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+
+(process:4012835): Gtk-CRITICAL **: 05:03:41.720: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+
+(process:4012835): Gtk-CRITICAL **: 05:03:41.720: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+<repo>/games/hollowmere
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+Player connection [134190917391680]  Target information:
+
+Player connection [134190917391680]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 172.19.0.1 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680]  * "[IP] 172.20.0.1 [Port] 55504 [Flags] 2 [Guid] 373536542 [EditorId] 373536542 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [134190917391680] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [134190917391680] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-4012835" after 0.2 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.13 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path <repo>/games/hollowmere/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Initialize mono
+Mono path[0] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56835
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001408 seconds.
+- Loaded All Assemblies, in  0.322 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in 19.893 seconds
+Domain Reload Profiling: 20215ms
+	BeginReloadAssembly (81ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (54ms)
+	LoadAllAssembliesAndSetupDomain (143ms)
+		LoadAssemblies (80ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (140ms)
+			TypeCache.Refresh (139ms)
+				TypeCache.ScanAssembly (127ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (19893ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (19857ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (19555ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (63ms)
+			ProcessInitializeOnLoadAttributes (171ms)
+			ProcessInitializeOnLoadMethodAttributes (61ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 76 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: <repo>/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Local packages:
+    com.gamecore.composition@file:<repo>/Packages/com.gamecore.composition (location: <repo>/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:<repo>/Packages/com.gamecore.content.compiler (location: <repo>/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:<repo>/Packages/com.gamecore.contracts (location: <repo>/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:<repo>/Packages/com.gamecore.derivation (location: <repo>/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.audio@file:<repo>/Packages/com.gamecore.gameplay.audio (location: <repo>/Packages/com.gamecore.gameplay.audio)
+    com.gamecore.gameplay.cards@file:<repo>/Packages/com.gamecore.gameplay.cards (location: <repo>/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:<repo>/Packages/com.gamecore.gameplay.compile (location: <repo>/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:<repo>/Packages/com.gamecore.gameplay.contracts (location: <repo>/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.dialogue@file:<repo>/Packages/com.gamecore.gameplay.dialogue (location: <repo>/Packages/com.gamecore.gameplay.dialogue)
+    com.gamecore.gameplay.entities@file:<repo>/Packages/com.gamecore.gameplay.entities (location: <repo>/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:<repo>/Packages/com.gamecore.gameplay.integration (location: <repo>/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.interaction@file:<repo>/Packages/com.gamecore.gameplay.interaction (location: <repo>/Packages/com.gamecore.gameplay.interaction)
+    com.gamecore.gameplay.inventory@file:<repo>/Packages/com.gamecore.gameplay.inventory (location: <repo>/Packages/com.gamecore.gameplay.inventory)
+    com.gamecore.gameplay.logic@file:<repo>/Packages/com.gamecore.gameplay.logic (location: <repo>/Packages/com.gamecore.gameplay.logic)
+    com.gamecore.gameplay.narrative@file:<repo>/Packages/com.gamecore.gameplay.narrative (location: <repo>/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.npc@file:<repo>/Packages/com.gamecore.gameplay.npc (location: <repo>/Packages/com.gamecore.gameplay.npc)
+    com.gamecore.gameplay.player@file:<repo>/Packages/com.gamecore.gameplay.player (location: <repo>/Packages/com.gamecore.gameplay.player)
+    com.gamecore.gameplay.quest@file:<repo>/Packages/com.gamecore.gameplay.quest (location: <repo>/Packages/com.gamecore.gameplay.quest)
+    com.gamecore.gameplay.rewards@file:<repo>/Packages/com.gamecore.gameplay.rewards (location: <repo>/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.save@file:<repo>/Packages/com.gamecore.gameplay.save (location: <repo>/Packages/com.gamecore.gameplay.save)
+    com.gamecore.gameplay.traversal@file:<repo>/Packages/com.gamecore.gameplay.traversal (location: <repo>/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.ui@file:<repo>/Packages/com.gamecore.gameplay.ui (location: <repo>/Packages/com.gamecore.gameplay.ui)
+    com.gamecore.gameplay.world@file:<repo>/Packages/com.gamecore.gameplay.world (location: <repo>/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:<repo>/Packages/com.gamecore.planning (location: <repo>/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:<repo>/Packages/com.gamecore.rules.cards (location: <repo>/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:<repo>/Packages/com.gamecore.rules.gameplay (location: <repo>/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:<repo>/Packages/com.gamecore.rules.narrative (location: <repo>/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:<repo>/Packages/com.gamecore.rules.traversal (location: <repo>/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:<repo>/Packages/com.gamecore.studio.core (location: <repo>/Packages/com.gamecore.studio.core)
+    com.gamecore.studio.etos@file:<repo>/Packages/com.gamecore.studio.etos (location: <repo>/Packages/com.gamecore.studio.etos)
+    com.gamecore.studio.gameplay@file:<repo>/Packages/com.gamecore.studio.gameplay (location: <repo>/Packages/com.gamecore.studio.gameplay)
+    com.gamecore.studio.ui@file:<repo>/Packages/com.gamecore.studio.ui (location: <repo>/Packages/com.gamecore.studio.ui)
+    com.gamecore.studio.views@file:<repo>/Packages/com.gamecore.studio.views (location: <repo>/Packages/com.gamecore.studio.views)
+    com.gamecore.unity.adapters@file:<repo>/Packages/com.gamecore.unity.adapters (location: <repo>/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:<repo>/Packages/com.gamecore.unity.app (location: <repo>/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:<repo>/Packages/com.gamecore.unity.runtime (location: <repo>/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-547e73308def5ad1c000e452139aced3
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: <repo>/games/hollowmere/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 41.1864ms
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: <repo>/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 43.8917ms
+DisplayProgressbar: Compiling Scripts
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/Hollowmere.R7_B.Promotion.dll, with 122 defines and 264 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 16.1129ms
+ExitCode: 0 Duration: 2s195ms
+[1357/1926  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1922/1926  2s] Csc Library/Bee/artifacts/2400b0aE.dag/Hollowmere.R7_B.Promotion.dll (+2 others)
+[1923/1926  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/Hollowmere.R7_B.Promotion.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/Hollowmere.R7_B.Promotion.dll, with 122 defines and 264 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1924/1926  0s] CopyFiles Library/ScriptAssemblies/Hollowmere.R7_B.Promotion.pdb
+[1925/1926  0s] CopyFiles Library/ScriptAssemblies/Hollowmere.R7_B.Promotion.dll
+*** Tundra build success (2.18 seconds), 5 items updated, 1926 evaluated
+AssetDatabase: script compilation time: 2.721774s
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Begin MonoManager ReloadAssembly
+Total cache size 264245387
+Total cache size after purge 264245387, took 00:00:00.1805051
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.706 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Refreshing native plugins compatible for Editor in 0.21 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 186ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.420 seconds
+Domain Reload Profiling: 4119ms
+	BeginReloadAssembly (135ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (27ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (29ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (28ms)
+	LoadAllAssembliesAndSetupDomain (491ms)
+		LoadAssemblies (288ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (251ms)
+			TypeCache.Refresh (165ms)
+				TypeCache.ScanAssembly (149ms)
+			BuildScriptInfoCaches (75ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (3421ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (3231ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (45ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (148ms)
+			ProcessInitializeOnLoadAttributes (2913ms)
+			ProcessInitializeOnLoadMethodAttributes (116ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=012e78319f1d40df0b24c6108a782396): Total: 8.294 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=4361 ms
+		Asset DB Callback time: managed=410 ms, native=16 ms
+		Scripting: domain reloads=1, domain reload time=707 ms, compile time=2723 ms, other=75 ms
+		Project Asset Count: scripts=1801, non-scripts=2645
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 10.162ms
+	ApplyChangesToAssetFolders: 0.638ms
+	Scan: 641.265ms
+	OnSourceAssetsModified: 0.911ms
+	CategorizeAssetsWithTransientArtifact: 41.574ms
+	ProcessAssetsWithTransientArtifactChanges: 52.213ms
+	CategorizeAssets: 45.854ms
+	ImportOutOfDateAssets: 3428.324ms (702.198ms without children)
+		CompileScripts: 2723.311ms
+		ReloadNativeAssets: 0.019ms
+		UnloadImportedAssets: 1.334ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.799ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.662ms
+	PostProcessAllAssets: 410.956ms
+	Hotreload: 6.390ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 2.174ms
+	PersistCurrentRevisions: 0.187ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.395ms
+	Untracked: 3653.605ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.825ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Hollowmere
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6116 unused Assets / (4.2 MB). Loaded Objects now: 6792.
+Memory consumption went from 186.5 MB to 182.3 MB.
+Total: 19.911847 ms (FindLiveObjects: 0.474551 ms CreateObjectMapping: 0.655418 ms MarkObjects: 13.215654 ms  DeleteObjects: 5.564811 ms)
+
+
+(process:4012835): GLib-GObject-CRITICAL **: 05:04:11.238: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:4012835): GLib-GObject-CRITICAL **: 05:04:11.238: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:4012835): GLib-GObject-CRITICAL **: 05:04:11.238: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:4012835): Gtk-CRITICAL **: 05:04:11.238: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+Disable old input system
+[Project] Loading completed in 30.502 seconds
+	Project init time: 				29.314 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.190 seconds
+		Asset Database init time: 		0.238 seconds
+		Global illumination init time: 	0.003 seconds
+		Assemblies load time: 			20.233 seconds
+		Unity extensions init time: 	0.011 seconds
+		Asset Database refresh time: 	8.294 seconds
+	Scene opening time: 			0.205 seconds
+##utp:{"type": "ProjectInfo", "version": 2, "phase": "Immediate", "time": 1791320651239, "processId": 4012835, "projectLoad": 30.502055187000003, "projectInit": 29.314286763, "templateInit": 0.0, "packageManagerInit": 0.19025409, "assetDatabaseInit": 0.238337144, "globalIlluminationInit": 0.002856126, "assembliesLoad": 20.232837214, "unityExtensionsInit": 0.010741569, "assetDatabaseRefresh": 8.294312666, "sceneOpening": 0.205476408}
+##utp:{"type": "EditorInfo", "version": 2, "phase": "Immediate", "time": 1791320651239, "processId": 4012835, "editorVersion": "6000.0.75f1 (26349cd2a5c8)", "branch": "6000.0/staging", "buildType": "Release", "platform": "Linux"}
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=be9b169675ffbce578d45bd939a20133): Total: 0.397 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=396 ms
+		Asset DB Callback time: managed=0 ms, native=0 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1801, non-scripts=2645
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.890ms
+	ApplyChangesToAssetFolders: 0.246ms
+	Scan: 352.794ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 0.137ms
+	CategorizeAssets: 33.482ms
+	ImportOutOfDateAssets: 1.320ms (-0.315ms without children)
+		CompileScripts: 0.615ms
+		ReloadNativeAssets: 0.027ms
+		UnloadImportedAssets: 0.112ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.487ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.394ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.250ms
+	UnloadStreamsBegin: 0.060ms
+	PersistCurrentRevisions: 0.209ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 7.026ms
+
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=aca96a3bdb11abfc69b29a53a373ea25): Total: 0.196 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Running tests for ExecutionSettings with details:
+targetPlatform = 
+playerHeartbeatTimeout = 600
+filters[0] = 
+   Filter with settings:
+   testMode = EditMode
+   targetPlatform = 
+   testNames = null
+   groupNames = Hollowmere\.R7_B\.Promotion
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+DisplayProgressbar: Material Upgrader re-import
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Decal.mat using Guid(31d0dcc6f2dd4e4408d18036a2c93862) (NativeFormatImporter) -> (artifact id: '8f3d32c29394a79b41f28a25b53defe8') in 0.005864111 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat using Guid(31321ba15b8f8eb4c954353edc038b1d) (NativeFormatImporter) -> (artifact id: '960643f9fe6857c5d72b0d2fd2085c0e') in 0.000702705 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundVillage.mat using Guid(713e4a8c856d6875c9df6859f6a4f960) (NativeFormatImporter) -> (artifact id: '8e8a8a3575acbe896ce8b57cf9ab38cd') in 0.000679226 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Lantern.mat using Guid(911842b1b2bff39c88a5577d4380b74c) (NativeFormatImporter) -> (artifact id: '1189a75c8e8613e1fd25f0baffdf7c87') in 0.000621552 seconds
+Start importing Assets/Hollowmere/Interactables/Prefabs/CausewayGate.mat using Guid(e1273d4abee0663cdb97dec74f5ff31d) (NativeFormatImporter) -> (artifact id: 'd38245b469119e5904a38e035a221d4d') in 0.000621754 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Reed.mat using Guid(2209f72f758962a97822bc22c61ba1d2) (NativeFormatImporter) -> (artifact id: '750f6e096e6cfa91e4be05da2390118f') in 0.000611814 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Gold.mat using Guid(c2e40fa84d53ccd428f640eac126b1fb) (NativeFormatImporter) -> (artifact id: '9a75d51d1e747d94c5fd36e74b0d88c1') in 0.000680088 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/MossStone.mat using Guid(63bdb57a54a47419d8773aa27705ac1d) (NativeFormatImporter) -> (artifact id: '7dff20719302b067f182e280b595e5df') in 0.000648894 seconds
+Start importing Assets/Hollowmere/Interactables/Prefabs/WellBucket.mat using Guid(837be9b6dcc2c8e65aab00060bded8fc) (NativeFormatImporter) -> (artifact id: '423d739197c6a127b57bbf3079523e67') in 0.000614176 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Thatch.mat using Guid(e3dcd598da5abcf9fbf9fb1fe11dd238) (NativeFormatImporter) -> (artifact id: '8d7d382d63fef3b824386e654c884ec0') in 0.000590733 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpriteMask-Default.mat using Guid(15d0c3709176029428a0da2f8cecf0b5) (NativeFormatImporter) -> (artifact id: '9b9123c1145efbdb38e316f85cad951e') in 0.000524758 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/ShrineGlow.mat using Guid(554bce7dabc8d758e8fff4f11d9fe04d) (NativeFormatImporter) -> (artifact id: '9bcf4f36fcfd4edc66aed7aac3393662') in 0.000630637 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/BlackWater.mat using Guid(a50f9ee368d97c86fb2dbc0f180491e6) (NativeFormatImporter) -> (artifact id: '9908b7eb58864d6e48c7525f9a48c218') in 0.000604882 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingOcclusion.mat using Guid(b51db210fe78df745a372851b3db949e) (NativeFormatImporter) -> (artifact id: 'e725b235a682e6bf286c10ab07552b74') in 0.000594305 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Bark.mat using Guid(c5881decd396e19dc85d4745df923580) (NativeFormatImporter) -> (artifact id: '4ca0c3913b740a495c4839533aa55e18') in 0.000576112 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Ground.mat using Guid(761d8e1f988ed2345a28312145c79c6e) (NativeFormatImporter) -> (artifact id: '97be10e07c1f855859a62635d45b8539') in 0.000599776 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Crate.mat using Guid(28346a61812b63be2b91a3f072f4ac60) (NativeFormatImporter) -> (artifact id: '9d74e66a6f26e5e612fb92c405a7463b') in 0.000577389 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/FullscreenInvertColors.mat using Guid(78a08787ca30045abb69f6f7dd878e09) (NativeFormatImporter) -> (artifact id: 'ee24d1240c4d3093a35a8ce9cd6a6123') in 0.001049012 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingWireframe.mat using Guid(9875a245ac49007498213638a307faa1) (NativeFormatImporter) -> (artifact id: '40a3a03ad30c23572795ee7951b74454') in 0.00060356 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ParticlesUnlit.mat using Guid(e823cd5b5d27c0f4b8256e7c12ee3e6d) (NativeFormatImporter) -> (artifact id: 'aa862bff269d59d834f13819255630e6') in 0.000539536 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Cloth.mat using Guid(59d591d89c6969fb8ac5ae64a174d032) (NativeFormatImporter) -> (artifact id: 'ce2a7ffa3d789f66f6b8125cad84313f') in 0.000569448 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/TerrainLit.mat using Guid(594ea882c5a793440b60ff72d896021e) (NativeFormatImporter) -> (artifact id: '32c0756065a4c99773d8b19abfdb7370') in 0.000546717 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Traveller.mat using Guid(695cafc4cebe0be4683c45c1e428a8d1) (NativeFormatImporter) -> (artifact id: '9b7da67280074084b8dbe69179ae9e08') in 0.000561566 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Lit-Default.mat using Guid(a97c105638bdf8b4a8650670310a4cd3) (NativeFormatImporter) -> (artifact id: 'b2cd4e4a5173cb188e255112e4a6b285') in 0.00044937 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Bronze.mat using Guid(f9267e7c7f3858a14b2cfa7d1290c7b4) (NativeFormatImporter) -> (artifact id: '9ba1f274c1e4be21a68c24f3f5ca63da') in 0.000544755 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/White.mat using Guid(f96821bbefeea864b9b418af4b8615ac) (NativeFormatImporter) -> (artifact id: 'b0a10ce88eba78cadb227317064359ad') in 0.000582016 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SimpleLit.mat using Guid(6a1143ee683302f4aa628c052723efc1) (NativeFormatImporter) -> (artifact id: '4e947c4ad6c49ec8c3dbccd89f2ba9c5') in 0.000569757 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Leaves.mat using Guid(9a635606b8e14ca43b0f5d8d8420903f) (NativeFormatImporter) -> (artifact id: '369124a2a052d970839d238b15d313ae') in 0.000548923 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/LanternGlow.mat using Guid(9ad989929e3f6abf0939545b2ac6d29c) (NativeFormatImporter) -> (artifact id: 'aa797f76b84657e8986ea776daec4c35') in 0.000547191 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Reed.mat using Guid(ea9ec61735f711a46a411ddbf2fb0835) (NativeFormatImporter) -> (artifact id: '05ffedc826e5082cba6374b28117dceb') in 0.000558774 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Stone.mat using Guid(0bbb6a2ec62dbd6ed99c9b2d5e8fda27) (NativeFormatImporter) -> (artifact id: '0a7c37d53cf442810a25da33197eeb4b') in 0.000559963 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundBelfry.mat using Guid(8bb53dd8bab3b475bbda1320015ea2f0) (NativeFormatImporter) -> (artifact id: '7b76881adca40df080d4d1fefc820c14') in 0.000538421 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Cobble.mat using Guid(cbeca43ae13579776b757e82404e62ec) (NativeFormatImporter) -> (artifact id: '98a4fd518a5e8f1a29dae894b6a9fa48') in 0.000656479 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundMarsh.mat using Guid(eb73391a1a25ca478a6a0195766dd3d3) (NativeFormatImporter) -> (artifact id: '1ada639a8dc4ed1028f377fb942505ab') in 0.000598064 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Plaster.mat using Guid(2ce0e9a342a4df461b3ef8fc8f5c687b) (NativeFormatImporter) -> (artifact id: 'ecf084c9fe40c85ebf17681d77f570bc') in 0.000577356 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Water.mat using Guid(4c360173c4bb7adc3b7daa94c2cf5a70) (NativeFormatImporter) -> (artifact id: 'b61ba6cdc9e8abf7717c4165aaa72bc1') in 0.000565141 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Timber.mat using Guid(3d3223d30e9f476bebc6b5a69364b197) (NativeFormatImporter) -> (artifact id: '667f4c1c8011f2140e175fd42f6c4458') in 0.000547978 seconds
+Start importing Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.mat using Guid(6db5381322a108024b1b8a91e0405e12) (NativeFormatImporter) -> (artifact id: 'ea77e7c2fe06713b0c0706a8a9af1cba') in 0.000567295 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Unlit-Default.mat using Guid(9dfc825aed78fcd4ba02077103263b40) (NativeFormatImporter) -> (artifact id: '3535407266e63a704ebed07394e8e29d') in 0.000466801 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Signpost.mat using Guid(ad46b0c010e025b1ba7850de65835bb8) (NativeFormatImporter) -> (artifact id: '9a629eeaf2b1aa04aafd0c2a63d91dc4') in 0.000552908 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Planks.mat using Guid(4f16c6b7dc318c98c84ac4ee8b4c7941) (NativeFormatImporter) -> (artifact id: '32a698a0560c6e385b28d7b08a583061') in 0.000534042 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Black.mat using Guid(4f1ef37ae953c484bbc5d5e4049147e5) (NativeFormatImporter) -> (artifact id: 'c073248664ba5268b69bc9cf80293393') in 0.000578408 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Bell.mat using Guid(5f4092027bf0baedaa554561a3810e7c) (NativeFormatImporter) -> (artifact id: '6297ada650afc4aed2fcdc63d4528fb6') in 0.000567697 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Stone.mat using Guid(9fa5037e7fefc39bfaa0b68144e64ef4) (NativeFormatImporter) -> (artifact id: 'a38a9a417d67ab6163981f3d2fb24b66') in 0.001042668 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Black.ttf using Guid(1062c701058745940ae5dca6219c64c8) (TrueTypeFontImporter) -> (artifact id: '3d2ca9ae18e896f9e515bb462bac0909') in 0.002954454 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Regular.ttf using Guid(30dc370b164eefc43b95744fc796dad0) (TrueTypeFontImporter) -> (artifact id: '7832638d633eff303fcf3ed8f8c85e78') in 0.000848397 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-ThinItalic.ttf using Guid(b2ea3b3f1765e544b9eb5bd1a93a91ce) (TrueTypeFontImporter) -> (artifact id: '4f6c2aa7215fb21f189270f0bbe3b50e') in 0.000804991 seconds
+Start importing Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf using Guid(74a5091d8707f334b9a5c31ef71a64ba) (TrueTypeFontImporter) -> (artifact id: 'b1e2b4726236af250e8a9e0edefa19ad') in 0.000663157 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Medium.ttf using Guid(a51a3aebb43ac044989270407476b208) (TrueTypeFontImporter) -> (artifact id: 'e7322fcc653770ceff992dbaffdc342c') in 0.000818846 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Bold.ttf using Guid(3750c318f40cab44a97d3a81beaefeb3) (TrueTypeFontImporter) -> (artifact id: '111caa903ed7225ec6078e61ef9fb671') in 0.000775019 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Italic.ttf using Guid(c839255fc8f6b4b4d90bf8c1af9f9bd1) (TrueTypeFontImporter) -> (artifact id: '8fb74d7c7a155d1ca255c69a209f86ab') in 0.000801481 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Thin.ttf using Guid(19a9abb883540be48b75b951a927ae03) (TrueTypeFontImporter) -> (artifact id: 'b0f726bd0974874e2c0598b808b85eed') in 0.000789652 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-MediumItalic.ttf using Guid(d93c1bc57fdf1ac4dad1bf04fac05464) (TrueTypeFontImporter) -> (artifact id: 'e37e57e9981fdfe39977ebf001f95a35') in 0.000812163 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BlackItalic.ttf using Guid(f95147a9bab9fe649b8070170fa7ebd2) (TrueTypeFontImporter) -> (artifact id: '7352c0e7207c5b52e94f2677e4fad37a') in 0.000815231 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Light.ttf using Guid(2a29e27936eb547458f646f71125b264) (TrueTypeFontImporter) -> (artifact id: '030c3049eebc0c442f157756287951d7') in 0.00076479 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-LightItalic.ttf using Guid(5e63515167650a541b309ba3bfd4db3d) (TrueTypeFontImporter) -> (artifact id: '2acb95d6e05d7756b0e095214c4bf8e6') in 0.000763821 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BoldItalic.ttf using Guid(dfb97a9307a577a41bcacba34b9a7e32) (TrueTypeFontImporter) -> (artifact id: '51a36f17beac0bd54da540106340b9d8') in 0.000782847 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurfaceTransparent.shadergraph using Guid(30fa68ce467463643a86b839ca0eb195) (ScriptedImporter)Launched and connected shader compiler UnityShaderCompiler after 0.03 seconds
+ -> (artifact id: '8fc0ff3f85a90c5130bf3270e7243190') in 0.505960887 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveMasked.shadergraph using Guid(80aa867ac363ac043847b06ad71604cd) (ScriptedImporter) -> (artifact id: '1710ad3feff674f0fdd404dca67d30af') in 0.1154772 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteLit.shadergraph using Guid(24a73dccd7b6fad4798be282f96a21f4) (ScriptedImporter) -> (artifact id: '5c800554f4918d2481e16be201c8c76e') in 0.069849808 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMax.shadergraph using Guid(44245ab89240f51459a5077d7145c452) (ScriptedImporter) -> (artifact id: '07436cb67b88c78c816edac04e26a215') in 0.109992892 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurface.shadergraph using Guid(3739e562a03fc0b4982d8aa66cc50865) (ScriptedImporter) -> (artifact id: '2da4cada6b181800187a91f1f3d6c72a') in 0.102872439 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteUnlit.shadergraph using Guid(d7288f66e4fb0634c9afef98c31b722a) (ScriptedImporter) -> (artifact id: 'f857dd8b113cb04ea68882fc5378ac39') in 0.057043498 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree8_PBRLit.shadergraph using Guid(9920c1f1781549a46ba081a2a15a16ec) (ScriptedImporter) -> (artifact id: '0e262520feb8c53edda491304a51ecd9') in 0.877618215 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMaxTransparent.shadergraph using Guid(1a207e3bee00db44b940e6f362a8e148) (ScriptedImporter) -> (artifact id: '324b0866b974ffc32393ff8c001a69ec') in 0.087344116 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Decal.shadergraph using Guid(9b4e681081e2b4c469111bb649e2f7ee) (ScriptedImporter) -> (artifact id: '6acad91e000775ea9efb37a2bfba7973') in 0.06995535 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree9_URP.shadergraph using Guid(cbd3e1cc4ae141c42a30e33b4d666a61) (ScriptedImporter) -> (artifact id: 'b7b91e002f57a0067e0e06cdcce3ba6e') in 0.672211628 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/FullscreenInvertColors.shadergraph using Guid(fb6390f650ca44a5ba3246d8dda47927) (ScriptedImporter) -> (artifact id: '7a53917a475e82f1e66f413fdc68f9d8') in 0.051870182 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveTransparent.shadergraph using Guid(5c81372d981403744adbdda4433c9c11) (ScriptedImporter) -> (artifact id: '96d27a6638f6898a0494ad4dd56ac7b8') in 0.158459061 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractive.shadergraph using Guid(0e9d5a909a1f7e84882a534d0d11e49f) (ScriptedImporter) -> (artifact id: 'bb1d157d4f06a2a75f92ef82e7b2fd4c') in 0.131992587 seconds
+Start importing Assets/Hollowmere/UI/Theme/HollowmereTheme.tss using Guid(90e0f2de55b54915a87cde66f14e0b4a) (ScriptedImporter) -> (artifact id: 'f580981d8f0316befd780a9e709ed224') in 0.033820878 seconds
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=c54f27e437e466569982fb74c71387fe): Total: 3.269 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=71 (actual=71, local cache=0, cache server=0)
+		Asset DB Process Time: managed=5 ms, native=3223 ms
+		Asset DB Callback time: managed=17 ms, native=22 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1801, non-scripts=2645
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 106
+	InvokeCustomDependenciesCallbacks: 0.000ms
+	InvokePackagesCallback: 0.000ms
+	ApplyChangesToAssetFolders: 0.146ms
+	Scan: 10.689ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.068ms
+	ProcessAssetsWithTransientArtifactChanges: 0.082ms
+	CategorizeAssets: 1.516ms
+	ImportOutOfDateAssets: 3213.667ms (-5.465ms without children)
+		ImportManagerImport: 3211.316ms (112.483ms without children)
+			ImportInProcess: 3096.595ms
+			UpdateCategorizedAssets: 2.239ms
+		ReloadNativeAssets: 0.026ms
+		UnloadImportedAssets: 0.893ms
+		ReloadImportedAssets: 5.793ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.571ms
+		InitializingProgressBar: 0.004ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.528ms
+	PostProcessAllAssets: 39.980ms
+	Hotreload: 0.341ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.194ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.147ms
+	UnloadStreamsEnd: 0.027ms
+	Untracked: 2.618ms
+
+[UnityConnectServicesConfig] config is NOT valid, switching to default
+Created GICache directory at ~/.cache/unity3d/GiCache. Took: 0.002s, timestamps: [30.517 - 30.519]
+Unloading 114 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 189 unused Assets / (3.5 MB). Loaded Objects now: 6864.
+Memory consumption went from 269.8 MB to 266.3 MB.
+Total: 12.630622 ms (FindLiveObjects: 0.216028 ms CreateObjectMapping: 0.140700 ms MarkObjects: 11.498481 ms  DeleteObjects: 0.774616 ms)
+
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+Unloading 29 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.898 ms
+	Integration:            232.814 ms
+	Integration of assets:  0.789 ms
+	Thread Wait Time:       0.002 ms
+	Total Operation Time:   243.503 ms
+Unloading 1 unused Assets / (0.5 KB). Loaded Objects now: 7406.
+Memory consumption went from 261.1 MB to 261.1 MB.
+Total: 11.555870 ms (FindLiveObjects: 0.285499 ms CreateObjectMapping: 0.192922 ms MarkObjects: 11.053803 ms  DeleteObjects: 0.022753 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.794 seconds
+Refreshing native plugins compatible for Editor in 0.21 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 116ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.335 seconds
+Domain Reload Profiling: 2124ms
+	BeginReloadAssembly (521ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (21ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (253ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (28ms)
+	LoadAllAssembliesAndSetupDomain (198ms)
+		LoadAssemblies (90ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (154ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (136ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1335ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (953ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (80ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (152ms)
+			ProcessInitializeOnLoadAttributes (495ms)
+			ProcessInitializeOnLoadMethodAttributes (216ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (30ms)
+Asset Pipeline Refresh (id=13ec824739ef55190aed18b314b73cd7): Total: 2.263 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1420 ms
+		Asset DB Callback time: managed=37 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=803 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1801, non-scripts=2645
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.403ms
+	ApplyChangesToAssetFolders: 0.355ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.004ms
+	ProcessAssetsWithTransientArtifactChanges: 3.118ms
+	CategorizeAssets: 45.143ms
+	ImportOutOfDateAssets: 1341.699ms (1335.898ms without children)
+		CompileScripts: 1.253ms
+		CollectScriptTypesHashes: 2.180ms
+		ReloadNativeAssets: 1.061ms
+		UnloadImportedAssets: 0.039ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.729ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.539ms
+	PostProcessAllAssets: 37.573ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.147ms
+	UnloadStreamsBegin: 0.133ms
+	PersistCurrentRevisions: 0.208ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.952ms
+	Untracked: 831.768ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            8.810 ms
+	Integration:            378.810 ms
+	Integration of assets:  0.325 ms
+	Thread Wait Time:       0.001 ms
+	Total Operation Time:   387.947 ms
+Unloading 228 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.437561 ms
+Loaded scene 'Assets/Hollowmere/Boot/Boot.unity'
+	Deserialize:            39.182 ms
+	Integration:            183.978 ms
+	Integration of assets:  1.144 ms
+	Thread Wait Time:       0.174 ms
+	Total Operation Time:   224.478 ms
+Refreshing native plugins compatible for Editor in 0.27 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 43 unused Assets / (286.2 KB). Loaded Objects now: 7346.
+Memory consumption went from 270.5 MB to 270.2 MB.
+Total: 11.346200 ms (FindLiveObjects: 0.269008 ms CreateObjectMapping: 0.233012 ms MarkObjects: 10.337772 ms  DeleteObjects: 0.505504 ms)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.178 ms
+	Integration:            3.366 ms
+	Integration of assets:  0.168 ms
+	Thread Wait Time:       17.299 ms
+	Total Operation Time:   30.011 ms
+[GameCore.Studio/engine] applied cs_01M49GG7827WMCKCRRR8C12ZXC -> Applied (1 op(s), 63.9 ms)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Edit.ChangeSetEngine:Finish (GameCore.Studio.Edit.StagedChangeSet,GameCore.Studio.Model.ChangeSet,System.Collections.Generic.List`1<GameCore.Studio.Model.Diagnostic>,bool,bool,System.Diagnostics.Stopwatch,System.Collections.Generic.IReadOnlyList`1<GameCore.Studio.Edit.OperationResult>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:1101)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyCore (GameCore.Studio.Edit.StagedChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool,System.Action`1<GameCore.Studio.Model.ChangeSet>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:861)
+GameCore.Studio.Edit.ChangeSetEngine:Apply (GameCore.Studio.Edit.StagedChangeSet) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:300)
+GameCore.Studio.Edit.ChangeSetEngine:Apply (GameCore.Studio.Model.ChangeSet,GameCore.Studio.Edit.StageOptions) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:270)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance/<ExerciseRuntime>d__6:MoveNext () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:86)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Unloading 472 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            2.168 ms
+	Integration:            191.348 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   193.521 ms
+Unloading 534 unused Assets / (27.0 MB). Loaded Objects now: 7438.
+Memory consumption went from 442.0 MB to 415.0 MB.
+Total: 12.123820 ms (FindLiveObjects: 0.336356 ms CreateObjectMapping: 0.232334 ms MarkObjects: 9.745276 ms  DeleteObjects: 1.808982 ms)
+
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            4.013 ms
+	Integration:            189.325 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   193.348 ms
+Unloading 1 unused Assets / (20.8 MB). Loaded Objects now: 7439.
+Memory consumption went from 290.1 MB to 269.3 MB.
+Total: 10.235564 ms (FindLiveObjects: 0.275904 ms CreateObjectMapping: 0.202287 ms MarkObjects: 9.736028 ms  DeleteObjects: 0.020508 ms)
+
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=80c5155b732065526bc6258887d11c20): Total: 0.003 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[GameCore.Studio/engine] applied cs_01M49GG7YXQ377P8DYP8HC881F -> Applied (1 op(s), 31.0 ms)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Edit.ChangeSetEngine:Finish (GameCore.Studio.Edit.StagedChangeSet,GameCore.Studio.Model.ChangeSet,System.Collections.Generic.List`1<GameCore.Studio.Model.Diagnostic>,bool,bool,System.Diagnostics.Stopwatch,System.Collections.Generic.IReadOnlyList`1<GameCore.Studio.Edit.OperationResult>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:1101)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyCore (GameCore.Studio.Edit.StagedChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool,System.Action`1<GameCore.Studio.Model.ChangeSet>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:861)
+GameCore.Studio.Edit.ChangeSetEngine:Apply (GameCore.Studio.Edit.StagedChangeSet) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:300)
+GameCore.Studio.Edit.ChangeSetEngine:Apply (GameCore.Studio.Model.ChangeSet,GameCore.Studio.Edit.StageOptions) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:270)
+GameCore.Studio.Edit.RuntimeMovePromotion:ApplyPending () (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/RuntimeMovePromotion.cs:121)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance:VerifyAuthored () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:127)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance/<W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse>d__4:MoveNext () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:36)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Start importing Assets/Hollowmere/Regions/ThornwickVillage.unity using Guid(6cba302899c45bb919b097ade959283c) (DefaultImporter) -> (artifact id: '781721eaca3f172aef6db8da3cfd609d') in 0.00373972 seconds
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=acda27706e730519c837678c974cb49f): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+Unloading 12 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            3.639 ms
+	Integration:            174.371 ms
+	Integration of assets:  0.003 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   178.018 ms
+Unloading 542 unused Assets / (49.5 MB). Loaded Objects now: 7446.
+Memory consumption went from 460.6 MB to 411.1 MB.
+Total: 10.803052 ms (FindLiveObjects: 0.292433 ms CreateObjectMapping: 0.198693 ms MarkObjects: 9.367370 ms  DeleteObjects: 0.943666 ms)
+
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op u1)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Edit.ChangeSetEngine:StageCore (GameCore.Studio.Model.ChangeSet,GameCore.Studio.Edit.StageOptions,bool,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:371)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyForHistory (GameCore.Studio.Model.ChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool,System.Action`1<GameCore.Studio.Model.ChangeSet>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:328)
+GameCore.Studio.Edit.HistoryService:Transition (GameCore.Studio.Model.ChangeSet,GameCore.Studio.Model.ChangeSet,string,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:120)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:212)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance:VerifyAuthored () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:137)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance/<W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse>d__4:MoveNext () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:36)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Asset Pipeline Refresh (id=ef25253e533ab5e7890ac7d7c726418b): Total: 0.002 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[GameCore.Studio/engine] history apply cs_01M49GG9N7PVKP19P7QC37KFKP -> Applied (1 op(s), 32.2 ms)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Edit.ChangeSetEngine:Finish (GameCore.Studio.Edit.StagedChangeSet,GameCore.Studio.Model.ChangeSet,System.Collections.Generic.List`1<GameCore.Studio.Model.Diagnostic>,bool,bool,System.Diagnostics.Stopwatch,System.Collections.Generic.IReadOnlyList`1<GameCore.Studio.Edit.OperationResult>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:1101)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyCore (GameCore.Studio.Edit.StagedChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool,System.Action`1<GameCore.Studio.Model.ChangeSet>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:861)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyForHistory (GameCore.Studio.Model.ChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool,System.Action`1<GameCore.Studio.Model.ChangeSet>) (at <repo>/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:337)
+GameCore.Studio.Edit.HistoryService:Transition (GameCore.Studio.Model.ChangeSet,GameCore.Studio.Model.ChangeSet,string,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:120)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:212)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance:VerifyAuthored () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:137)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance/<W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse>d__4:MoveNext () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:36)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/history] undid cs_01M49GG7YXQ377P8DYP8HC881F (1 inverse op(s))
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at <repo>/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:224)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance:VerifyAuthored () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:137)
+Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance/<W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse>d__4:MoveNext () (at Assets/Hollowmere/Tests/R7_B/Promotion/RuntimeMoveAcceptance.cs:36)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: <repo>/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Start importing Assets/Hollowmere/Regions/ThornwickVillage.unity using Guid(6cba302899c45bb919b097ade959283c) (DefaultImporter) -> (artifact id: '60ac16391b4326b7926249765a773c9f') in 0.000672784 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a7e161085316e2d569ac0b56be7f227b): Total: 0.016 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            3.624 ms
+	Integration:            169.447 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   173.076 ms
+Unloading 20 unused Assets / (2.3 MB). Loaded Objects now: 7446.
+Memory consumption went from 280.9 MB to 278.6 MB.
+Total: 10.366218 ms (FindLiveObjects: 0.285034 ms CreateObjectMapping: 0.200713 ms MarkObjects: 9.801453 ms  DeleteObjects: 0.078192 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 148 unused Assets / (2.5 MB). Loaded Objects now: 6872.
+Memory consumption went from 278.3 MB to 275.8 MB.
+Total: 10.458171 ms (FindLiveObjects: 0.217339 ms CreateObjectMapping: 0.144822 ms MarkObjects: 9.833970 ms  DeleteObjects: 0.261245 ms)
+
+Start importing Assets/Hollowmere/Regions/ThornwickVillage.unity using Guid(6cba302899c45bb919b097ade959283c) (DefaultImporter) -> (artifact id: '60ac16391b4326b7926249765a773c9f') in 0.000580617 seconds
+Refreshing native plugins compatible for Editor in 0.20 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=150a9c8e200af578183430045dc10a60): Total: 0.014 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+Saving results to: <repo>/artifacts/studio/verification/W-EDIT-06/r7-b-tests/attempt-4/results.xml
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 4 unused Assets / (0 B). Loaded Objects now: 6878.
+Memory consumption went from 274.9 MB to 274.9 MB.
+Total: 9.334119 ms (FindLiveObjects: 0.216927 ms CreateObjectMapping: 0.156045 ms MarkObjects: 8.939136 ms  DeleteObjects: 0.021308 ms)
+
+DisplayProgressbar: Undo
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 6878.
+Memory consumption went from 285.5 MB to 285.5 MB.
+Total: 11.923203 ms (FindLiveObjects: 0.220974 ms CreateObjectMapping: 0.129814 ms MarkObjects: 11.558131 ms  DeleteObjects: 0.013534 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 42
+[Package Manager] Server process was shutdown
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type": "MemoryLeaks", "version": 2, "phase": "Immediate", "time": 1791320668513, "processId": 4012835, "allocatedMemory": 16184342, "memoryLabels": [{"Default": 13965}, {"Permanent": 16147}, {"Thread": 1084616}, {"Manager": 3081329}, {"VertexData": 8}, {"Geometry": 408}, {"VFX": -104}, {"Texture": 296}, {"Shader": 79299}, {"Material": 24}, {"GfxDevice": 35976}, {"Animation": 456}, {"Audio": 4032}, {"Font": 1782565}, {"FreeType": 63500}, {"FontEngine": 320}, {"Physics": 2081}, {"Serialization": 376}, {"Input": 26752}, {"JobScheduler": 33024}, {"TextLib": 160}, {"Mono": 32}, {"MonoCode": 96}, {"ScriptingNativeRuntime": 155096}, {"BaseObject": 1622832}, {"Resource": 1032}, {"Renderer": 2928}, {"Transform": 4678}, {"File": 12516}, {"WebCam": 80}, {"Culling": 32}, {"Terrain": 11298}, {"Wind": 24}, {"String": 12923}, {"DynamicArray": 105836}, {"HashMap": 122239}, {"Utility": 2665104}, {"PoolAlloc": 4112}, {"AI": 72}, {"TypeTree": 5005}, {"ScriptManager": 512}, {"RuntimeInitializeOnLoadManager": 64}, {"SpriteAtlas": 112}, {"GI": 7448}, {"Director": 8208}, {"WebRequest": 808}, {"VR": 45689}, {"SceneManager": 528}, {"Video": 64}, {"LazyScriptCache": 32}, {"NativeArray": 1080}, {"Camera": 17}, {"Secure": 265}, {"SerializationCache": 1576}, {"APIUpdating": 10320}, {"Subsystems": 336}, {"VirtualTexturing": 57552}, {"StaticSafetyDebugInfo": 278528}, {"Analytics": 256}, {"Hierarchy": 832}, {"CoreStats": 12456}, {"Identifiers": 12384}, {"Gui": 112}, {"EditorUtility": 36292}, {"VersionControl": 4}, {"Undo": 979}, {"AssetDatabase": 4716558}, {"EditorGi": 328}, {"UnityConnect": 24816}, {"Upm": 1852}, {"DrivenProperties": 72}, {"LocalIPC": 210}, {"ProfilerEditor": 9746}, {"CoreBusinessMetrics": 2389}, {"Licensing": 688}, {"AssetReference": 32}, {"IPCStream": 32}]}

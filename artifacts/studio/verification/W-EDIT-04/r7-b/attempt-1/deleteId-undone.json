@@ -1,0 +1,75 @@
+{
+  "id": "cs_01M49GJG20SXTT6JWX22A74CD2",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "R7 W-EDIT-04 delete selected NPC",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "delete-npc",
+      "tool": "delete",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:729cf1581d99add34073c13d676e817d090bf9793f37a09ba99ea3b5817f2e24"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "delete-npc",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.restoreObject",
+              "args": {
+                "localPosition": [
+                  11.0,
+                  0.0,
+                  -13.0
+                ],
+                "localRotation": [
+                  0.0,
+                  0.7071068,
+                  0.0,
+                  -0.7071068
+                ],
+                "localScale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "siblingIndex": 23,
+                "blob": {
+                  "artifact": "sha256:8246e4c3808c315df9c2b3ad40763a0d576e9476c3a005a2bf68386aa2a8c32c"
+                },
+                "name": "Bram",
+                "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+              },
+              "preconditions": "none"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-06T21:05:35.812Z",
+    "applied": "2026-10-06T21:05:36.051Z"
+  }
+}

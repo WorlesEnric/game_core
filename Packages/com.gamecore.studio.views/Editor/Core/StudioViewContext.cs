@@ -31,6 +31,7 @@ namespace GameCore.Studio.Views
             Gameplay = gameplay ?? throw new ArgumentNullException(nameof(gameplay));
             Contributor = runtime.References;
             Edits = new ViewEdits(runtime);
+            if (gameplay is IRuntimeMoveGateway moves) runtime.Engine.RuntimeMoves.Gateway = moves;
             Tools = new ReadOnlyToolInvoker(runtime);
             runtime.Index.Changed += OnIndexChanged;
             runtime.Engine.Applied += OnApplied;

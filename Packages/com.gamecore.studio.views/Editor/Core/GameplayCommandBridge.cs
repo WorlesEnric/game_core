@@ -150,7 +150,7 @@ namespace GameCore.Studio.Views
     }
 
     /// <summary>The default bridge: finds the running world by reflection (see the file header).</summary>
-    public sealed class ReflectionGameplayBridge : IGameplayCommandBridge
+    public sealed partial class ReflectionGameplayBridge : IGameplayCommandBridge, GameCore.Studio.Edit.IRuntimeMoveGateway
     {
         private const BindingFlags Public = BindingFlags.Public | BindingFlags.Instance;
         private readonly Func<object?> _registered;
