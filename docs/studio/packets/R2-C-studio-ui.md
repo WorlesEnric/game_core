@@ -116,3 +116,37 @@ detached UI Toolkit fields do not emit real panel change events. No graphical in
 - D5: candidate review renders `StagedChangeSet.Inferences` in its own informational section, separate from refusal diagnostics. `D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply` checks the visible evidence and successful Apply.
 
 Host results and packet seams: [R3-F packet](../../../Packages/com.gamecore.studio.ui/PACKET.md).
+
+## R4 — packet R4-B
+
+- **P42-UI-01 / R2-29:** corrected the graphical rig's focus and event-phase
+  assumptions. Prompt/root delivery is real while TextField bubbling stays zero;
+  controls never reach image callbacks, viewport keys do, and FocusOut releases
+  routing synchronously. Product viewport routing is unchanged. Test:
+  `R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers`.
+- **P42-UI-02 / D12:** retry placement across updates, settle for 0.5 seconds,
+  space writes by 250 ms, and stop with `layout_timeout` after five seconds or
+  120 writes. Native pixel-aligned tiles, stable observations, clamped readback,
+  timeout and later creator moves have R4 regression coverage. On `:1`, native
+  frames clamp the original y=40 request to y=69. The literal request now has a
+  required timeout regression (`P42_UI_02_GraphicalClampedOriginReportsTimeout`);
+  the positive `D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce`
+  asserts exact feasible `(20,100,1048,694)` and later `(60,140,900,700)` bounds.
+  No successful placement of the impossible y=40 rectangle is claimed.
+- **P42-STARTUP-01 (UI):** OpenStudio starts the optional ETOS session without
+  restarting an existing gateway; the tray displays the session's precise
+  diagnostic code/message/hint and updates after connection. Tests:
+  `P42_STARTUP_01_OpenUsesOptionalIdempotentSessionAndPreservesGateway`,
+  `P42_STARTUP_01_NullGatewayPreservesOptionalSessionProblem`, and the two
+  `P42_STARTUP_01_TrayShowsPreciseSessionProblem` cases. R4-A's automatic startup
+  remains an integration seam, detailed in the package packet.
+- **P42-MEMORY-01:** the legacy game assertion now uses 15%, with a failing-before
+  source budget guard and a passing real `TenPlayEditCycles` run.
+
+Final product code `c1bb1f0c`: requested UI headless **65 passed / 0 failed /
+4 graphical skips**; graphical `:1` **12 passed / 0 failed / 0 skipped**,
+covering all four skips. Both P3.1 hooks pass (including ten memory cycles,
+allocated -27.18% at cycle 10). Host tests **2 passed**; package metadata and
+C# policy pass. All intermediate failures are retained and explained in the
+[R4-B packet](../../../Packages/com.gamecore.studio.ui/PACKET.md#r4--r4-b-studio-ui-graphical-failures)
+and [evidence/commands](../../../Packages/com.gamecore.studio.ui/Documentation~/R4-B/README.md).

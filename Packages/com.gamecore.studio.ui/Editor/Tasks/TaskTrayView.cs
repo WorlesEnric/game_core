@@ -24,6 +24,7 @@ namespace GameCore.Studio.UI
         private readonly ScrollView _list;
         private readonly VisualElement _details;
         private readonly Label _header;
+        private readonly Label _connection;
         private string? _selected;
         private bool _attached;
         private double _lastTick;
@@ -43,6 +44,10 @@ namespace GameCore.Studio.UI
             toolbar.Add(new Button(() => RefreshFromGateway()) { name = "tasks-refresh", text = "Refresh", tooltip = "Re-fetch requests from the Studio companion" });
             toolbar.Add(new Button(() => _context.Tasks.ClearClosed()) { name = "tasks-clear", text = "Clear closed" });
             Add(toolbar);
+            _connection = new Label { name = "tasks-connection" };
+            _connection.AddToClassList("gcs-muted");
+            _connection.style.whiteSpace = WhiteSpace.Normal;
+            Add(_connection);
 
             VisualElement body = new VisualElement();
             body.AddToClassList("gcs-split");
@@ -134,6 +139,7 @@ namespace GameCore.Studio.UI
         /// <summary>Re-renders the rows and the details.</summary>
         public void Rebuild()
         {
+            RefreshConnection();
             _list.Clear();
             DateTime now = DateTime.UtcNow;
             int open = 0;
@@ -156,6 +162,17 @@ namespace GameCore.Studio.UI
 
             BuildDetails();
         }
+
+        private void RefreshConnection()
+        {
+            ProviderStatus status = _context.Gateway.Status;
+            Diagnostic? problem = status.Problem;
+            _connection.text = StudioStyles.Safe(problem != null
+                ? problem.Code + ": " + problem.Message + (problem.Hint == null ? string.Empty : " " + problem.Hint)
+                : "Studio companion: " + ProviderNames.ConnectionOf(status));
+        }
+
+        private void OnStatusChanged(ProviderStatus status) => RefreshConnection();
 
         private VisualElement BuildRow(TaskRow row, DateTime now)
         {
@@ -269,6 +286,7 @@ namespace GameCore.Studio.UI
 
             _attached = true;
             _context.Tasks.Changed += Rebuild;
+            _context.StatusChanged += OnStatusChanged;
             _context.Candidates.Changed += Rebuild;
             schedule.Execute(Tick).Every(1000);
             RefreshFromGateway();
@@ -283,6 +301,7 @@ namespace GameCore.Studio.UI
 
             _attached = false;
             _context.Tasks.Changed -= Rebuild;
+            _context.StatusChanged -= OnStatusChanged;
             _context.Candidates.Changed -= Rebuild;
         }
 
@@ -300,6 +319,7 @@ namespace GameCore.Studio.UI
             }
 
             _lastTick = now;
+            RefreshConnection();
             DateTime utc = DateTime.UtcNow;
             int index = 0;
             foreach (VisualElement child in _list.Children())

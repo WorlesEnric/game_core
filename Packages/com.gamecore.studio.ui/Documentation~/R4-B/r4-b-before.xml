@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.0512035">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="467" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.051204" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1215" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="~/wkspace/gc-studio/r4-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="55" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.040587" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3823425" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1216" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="55" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.039845" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1217" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="55" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.039270" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1218" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="55" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.038739" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1219" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="55" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.038192" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1197" name="R4UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:48Z" duration="26.036870" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-suite type="ParameterizedMethod" id="1201" name="P42_STARTUP_01_TrayShowsPreciseSessionProblem" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_STARTUP_01_TrayShowsPreciseSessionProblem" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:41Z" duration="18.575702" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <failure>
+                    <message><![CDATA[One or more child tests had errors]]></message>
+                  </failure>
+                  <test-case id="1199" name="P42_STARTUP_01_TrayShowsPreciseSessionProblem(&quot;not_configured&quot;,&quot;Not paired: configure the Studio companion.&quot;)" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_STARTUP_01_TrayShowsPreciseSessionProblem(&quot;not_configured&quot;,&quot;Not paired: configure the Studio companion.&quot;)" methodname="P42_STARTUP_01_TrayShowsPreciseSessionProblem" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="1622493443" result="Failed" start-time="2026-10-05 21:27:22Z" end-time="2026-10-05 21:27:36Z" duration="14.096943" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  P42-STARTUP-01: missing tray connection diagnostic
+  Expected: not null
+  But was:  null
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_STARTUP_01_TrayShowsPreciseSessionProblem (System.String code, System.String message) [0x00049] in ~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Editor/R4UiRegressionTests.cs:55
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case id="1200" name="P42_STARTUP_01_TrayShowsPreciseSessionProblem(&quot;key_file_missing&quot;,&quot;App key file is missing; pair the Editor again.&quot;)" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_STARTUP_01_TrayShowsPreciseSessionProblem(&quot;key_file_missing&quot;,&quot;App key file is missing; pair the Editor again.&quot;)" methodname="P42_STARTUP_01_TrayShowsPreciseSessionProblem" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="131294980" result="Failed" start-time="2026-10-05 21:27:36Z" end-time="2026-10-05 21:27:41Z" duration="4.464328" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <failure>
+                      <message><![CDATA[  P42-STARTUP-01: missing tray connection diagnostic
+  Expected: not null
+  But was:  null
+]]></message>
+                      <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_STARTUP_01_TrayShowsPreciseSessionProblem (System.String code, System.String message) [0x00049] in ~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Editor/R4UiRegressionTests.cs:55
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </test-suite>
+                <test-case id="1198" name="P42_UI_02_LatePlacementIsRetriedUntilStable" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_LatePlacementIsRetriedUntilStable" methodname="P42_UI_02_LatePlacementIsRetriedUntilStable" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="7863002" result="Failed" start-time="2026-10-05 21:27:41Z" end-time="2026-10-05 21:27:48Z" duration="7.455907" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  P42-UI-02: late placement must be retried
+  Expected: (x:20.00, y:40.00, width:1048.00, height:772.00)
+  But was:  (x:100.00, y:100.00, width:800.00, height:700.00)
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R4UiRegressionTests+<P42_UI_02_LatePlacementIsRetriedUntilStable>d__0.MoveNext () [0x0017d] in ~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Editor/R4UiRegressionTests.cs:33
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

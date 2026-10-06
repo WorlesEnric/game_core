@@ -22,6 +22,23 @@ namespace GameCore.Studio.UI
     /// <summary>Gateway resolution.</summary>
     public static class StudioAgentGateways
     {
+        // Optional package seam: UI must not add an ETOS assembly/package dependency.
+        private static Type? SessionType => Type.GetType("GameCore.Studio.Etos.EtosStudioSession, GameCore.Studio.Etos", false);
+
+        public static void EnsureSessionStarted() => StartSession(StudioServices.Runtime, SessionType);
+
+        private static bool StartSession(StudioRuntime runtime, Type? session)
+        {
+            if (AgentGatewayLookup.From(runtime.Services.AgentGateway) != null) return true;
+            MethodInfo? start = session?.GetMethod("EnsureStarted", BindingFlags.Public | BindingFlags.Static,
+                null, Type.EmptyTypes, null) ?? session?.GetMethod("Start", BindingFlags.Public | BindingFlags.Static,
+                null, Type.EmptyTypes, null);
+            return start?.Invoke(null, null) is bool started && started;
+        }
+
+        public static Diagnostic? SessionProblem => SessionType?.GetProperty("Problem", BindingFlags.Public | BindingFlags.Static)
+            ?.GetValue(null) is Diagnostic problem ? GatewayErrors.Redact(problem) : null;
+
         public static IAgentGateway Resolve(StudioRuntime runtime)
         {
             return AgentGatewayLookup.From(runtime.Services.AgentGateway) ?? NullAgentGateway.Instance;
@@ -33,24 +50,15 @@ namespace GameCore.Studio.UI
     {
         public const string Detail = "No Studio agent gateway is registered. Install com.gamecore.studio.etos and pair the editor with the Studio companion (Project Settings > GameCore Studio > ETOS).";
 
-        private static readonly ProviderStatus NotConfiguredStatus = new ProviderStatus(
-            ProviderState.NotConfigured,
-            ProviderState.NotConfigured,
-            ProviderState.NotConfigured,
-            ProviderState.NotConfigured,
-            ProviderState.NotConfigured,
-            false,
-            false,
-            null,
-            new Diagnostic("not_configured", Detail));
-
         private NullAgentGateway()
         {
         }
 
         public static NullAgentGateway Instance { get; } = new NullAgentGateway();
 
-        public ProviderStatus Status => NotConfiguredStatus;
+        public ProviderStatus Status => new ProviderStatus(ProviderState.NotConfigured, ProviderState.NotConfigured,
+            ProviderState.NotConfigured, ProviderState.NotConfigured, ProviderState.NotConfigured, false, false,
+            null, Refusal());
 
         public IReadOnlyList<RequestView> Requests => Array.Empty<RequestView>();
 
@@ -72,7 +80,7 @@ namespace GameCore.Studio.UI
             remove { }
         }
 
-        public static Diagnostic Refusal() => new Diagnostic("not_configured", Detail);
+        public static Diagnostic Refusal() => StudioAgentGateways.SessionProblem ?? new Diagnostic("not_configured", Detail);
 
         public Task<string> SubmitAsync(AgentRequest req, CancellationToken ct) => Task.FromException<string>(new StudioGatewayException(Refusal()));
 

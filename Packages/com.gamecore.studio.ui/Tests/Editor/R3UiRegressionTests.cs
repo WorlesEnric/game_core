@@ -28,6 +28,16 @@ namespace GameCore.Studio.UI.Tests
             bar.SelectedWorker = "gc-designer";
         }
 
+        private static IEnumerator WaitForPlacement()
+        {
+            System.Type scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout")!;
+            object owner = scheduler.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
+            PropertyInfo pending = scheduler.GetProperty("PendingCount")!;
+            double deadline = EditorApplication.timeSinceStartup + 6;
+            while ((int)pending.GetValue(owner)! != 0 && EditorApplication.timeSinceStartup < deadline) yield return null;
+            Assert.That((int)pending.GetValue(owner)!, Is.Zero, "placement must finish within its documented bound");
+        }
+
         [UnityTest]
         public IEnumerator D12_DeferredPlacementRunsOnceWithoutOpeningGraphics()
         {
@@ -42,8 +52,7 @@ namespace GameCore.Studio.UI.Tests
                 place.Invoke(owner, new object[] { window, expected });
                 place.Invoke(owner, new object[] { window, expected });
                 window.position = new Rect(100, 100, 800, 700);
-                yield return null;
-                yield return null;
+                yield return WaitForPlacement();
                 Assert.That(window.position, Is.EqualTo(expected));
                 Rect user = new Rect(60, 60, 900, 700);
                 window.position = user;
@@ -59,19 +68,29 @@ namespace GameCore.Studio.UI.Tests
             if (!ViewportRenderer.CanRender) Assert.Ignore("D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless.");
             bool wizard = StudioUiSettings.FirstRunDone;
             StudioUiSettings.FirstRunDone = true;
-            Rect area = new Rect(20, 40, 1600, 1000);
+            // :1 has a 32-pixel desktop panel and a native frame minimum y=69. The retained
+            // y=40 request is a clamped-origin/timeout case, not a feasible placement target.
+            // Keep this positive test inside the native work area and assert the exact layout.
+            Rect area = new Rect(20, 100, 1600, 900);
             try
             {
                 StudioMenu.OpenStudio(area, true);
                 StudioViewportWindow viewport = EditorWindow.GetWindow<StudioViewportWindow>();
                 viewport.position = new Rect(100, 100, 800, 700); // simulated late WM placement from :1
-                yield return null;
-                yield return null;
+                // Simulate more than one late ConfigureNotify, across actual Editor updates.
+                for (int i = 0; i < 4; i++)
+                {
+                    yield return null;
+                    viewport.position = new Rect(100, 100, 800, 700);
+                }
+                yield return WaitForPlacement();
                 Assert.That(viewport.position, Is.EqualTo(StudioMenu.Layout(area)[0]));
-                Rect user = new Rect(60, 60, 900, 700);
+                Rect user = new Rect(60, 140, 900, 700);
                 viewport.position = user;
-                yield return null;
-                Assert.That(viewport.position, Is.EqualTo(user), "deferred layout must unsubscribe after one update");
+                double userSettled = EditorApplication.timeSinceStartup + 1;
+                while (EditorApplication.timeSinceStartup < userSettled) yield return null;
+                Assert.That(viewport.position, Is.EqualTo(user), "settled layout must unsubscribe and preserve creator moves");
+                Debug.Log("[R4-B layout settled] requested=" + StudioMenu.Layout(area)[0] + " creator=" + viewport.position);
             }
             finally
             {

@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_P42_MEMORY_01_ten_cycle_assertion_enforces_fifteen_percent (r4_memory.MemoryBudgetTests.test_P42_MEMORY_01_ten_cycle_assertion_enforces_fifteen_percent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Host/test_r4_memory_budget.py", line 14, in test_P42_MEMORY_01_ten_cycle_assertion_enforces_fifteen_percent
+    self.assertEqual(float(match[1]), 15.0)
+AssertionError: 25.0 != 15.0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.253s
+
+FAILED (failures=1)
