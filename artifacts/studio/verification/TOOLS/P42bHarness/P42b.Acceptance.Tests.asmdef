@@ -1,0 +1,39 @@
+{
+  "name": "P42b.Acceptance.Tests",
+  "rootNamespace": "P42b.Acceptance",
+  "references": [
+    "GameCore.Studio.Model",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.UI.Editor",
+    "GameCore.Unity.App",
+    "GameCore.Contracts",
+    "GameCore.Gameplay.World",
+    "Hollowmere.Game",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "Hollowmere.P2_1.Evidence",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "GameCore.Composition",
+    "GameCore.Unity.Runtime",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Npc"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
