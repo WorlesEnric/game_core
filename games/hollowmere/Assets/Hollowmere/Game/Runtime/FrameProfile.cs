@@ -24,11 +24,6 @@ namespace Hollowmere.Game
             string[] args = Environment.GetCommandLineArgs();
             for (int i = 0; i + 1 < args.Length; i++)
             {
-                if (args[i] == "-frameVsync" && int.TryParse(args[i + 1], out int vsync) && (vsync == 0 || vsync == 1))
-                {
-                    QualitySettings.vSyncCount = vsync;
-                    Application.targetFrameRate = -1;
-                }
                 if (args[i] == "-frameProfile") host.AddComponent<FrameProfile>().Begin(args[i + 1]);
             }
             Debug.Log("[Hollowmere] frame pacing vsync=" + QualitySettings.vSyncCount + " target=" + Application.targetFrameRate);

@@ -91,6 +91,7 @@ for run in 1 2; do
     -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route"
     -saveDir "$target/saves" -logFile "$target/player.log")
   if [[ "${PROFILE:-0}" == 1 ]]; then
+    if [[ "${PROFILE_FRAMES:-0}" != 0 ]]; then args+=(-quitAfterFrames "$PROFILE_FRAMES"); fi
     args+=(-frameProfile "$target/timings.csv" -profiler-enable -profiler-log-file "$target/capture.raw")
   fi
   printf '%q ' "${args[@]}" > "$target/command.txt"

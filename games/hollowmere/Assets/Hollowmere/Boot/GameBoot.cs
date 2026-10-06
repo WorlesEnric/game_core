@@ -156,8 +156,18 @@ namespace Hollowmere.Boot
 
         private UnityEngine.ThreadPriority previousLoadingPriority;
 
+        public static void ConfigureFramePacing(string[] args)
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = -1;
+            for (int i = 0; i + 1 < args.Length; i++)
+                if (args[i] == "-frameVsync" && int.TryParse(args[i + 1], out int value) && (value == 0 || value == 1))
+                    QualitySettings.vSyncCount = value;
+        }
+
         private void Awake()
         {
+            ConfigureFramePacing(Environment.GetCommandLineArgs());
             previousLoadingPriority = Application.backgroundLoadingPriority;
             Application.backgroundLoadingPriority = UnityEngine.ThreadPriority.Low;
         }
@@ -279,7 +289,9 @@ namespace Hollowmere.Boot
                 world.Streamer.PreloadNeighbours = true;
             }
 
-            world.UseSceneLoader(new DeferredRegionLoader(new UnitySceneLoader(), () => Time.frameCount, Time.frameCount + 3));
+            Hollowmere.UiAudio.HollowmereUiAudio? rig = UiAudioBootstrap.RigOf(gameObject);
+            world.UseSceneLoader(new DeferredRegionLoader(new UnitySceneLoader(), () => Time.frameCount, Time.frameCount + 3,
+                () => rig == null || rig.CanLoadFirstRegion));
             world.Streamer.Observe(destroyCancellationToken);
             world.CreateViews(transform);
             Camera? orbit = playerCamera != null ? playerCamera : Camera.main;
