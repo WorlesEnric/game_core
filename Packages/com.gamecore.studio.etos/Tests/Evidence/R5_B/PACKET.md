@@ -74,7 +74,7 @@ credential-file reads, paid calls, live tariff apply, or sibling-clone changes.
 - .NET client TRX: **69 passed / 0 failed / 6 live skipped**.
 - Final package metadata and C# checks: pass (42 packages, 91 package assemblies,
   1,211 C# files). Exact commands: `commands.txt`. Retained receipts replace the host
-  home prefix with `~`; raw Unity XML remains in this clone's `.unity-logs/`.
+  home prefix with `~` and trim log-line trailing whitespace; raw Unity XML remains in this clone's `.unity-logs/`.
 - Full requested EditMode XML: **185 passed / 0 failed / 9 skipped / 0 inconclusive**
   (194 total), Unity exit 0, wrapper 212 seconds. All four offline R5-B cases pass.
   Four existing graphical cases, four existing live ETOS cases, and the new real-provider

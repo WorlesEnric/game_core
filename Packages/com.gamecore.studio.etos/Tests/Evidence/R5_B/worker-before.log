@@ -9,12 +9,12 @@ ___________ test_request8_retained_candidate_refuses_inspector_label ___________
 >       schema = json.loads((WORKERS / "importer-contract.json").read_text())
                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-studio/etos/agent/workers/tests/test_r5_b.py:16: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+studio/etos/agent/workers/tests/test_r5_b.py:16:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 /usr/lib/python3.12/pathlib.py:1029: in read_text
     with self.open(mode='r', encoding=encoding, errors=errors) as f:
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = PosixPath('~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/importer-contract.json')
 mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
@@ -38,12 +38,12 @@ ____________ test_request8_installed_prompts_embed_common_contract _____________
 >       common = (WORKERS / "common.md").read_text().strip()
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-studio/etos/agent/workers/tests/test_r5_b.py:25: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+studio/etos/agent/workers/tests/test_r5_b.py:25:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 /usr/lib/python3.12/pathlib.py:1029: in read_text
     with self.open(mode='r', encoding=encoding, errors=errors) as f:
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = PosixPath('~/wkspace/gc-studio/r5-b/studio/etos/agent/workers/common.md')
 mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
