@@ -42,6 +42,10 @@ name = "echo-describe"
 family = "describe"
 kind = "chat"
 model = "echo/gpt-5.6-sol"
+# R6-B: models.toml.tmpl alias "describe" resolves to echo/gpt-5.6-sol at
+# https://api.echo-coding.com/v1, NOT DashScope. A DashScope list price cannot
+# price this route. Keep the operator placeholder until a total per-call estimate
+# and basis are supplied; no live configuration is changed by this template.
 # No published Echo reseller describe tariff could be verified (2026-10-06).
 # Provider site checked: https://api.echo-coding.com (no public tariff returned).
 # Publisher token prices do not bind this reseller's total charge. Full template apply
