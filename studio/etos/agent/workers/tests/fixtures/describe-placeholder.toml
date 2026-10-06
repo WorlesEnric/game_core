@@ -1,0 +1,11 @@
+# Offline refusal fixture, independent of the owner's shipping tariff.
+[[providers]]
+name = "echo-describe"
+family = "describe"
+kind = "chat"
+model = "echo/gpt-5.6-sol"
+# @studio source = "operator"
+# @studio note = "SET_BY_OPERATOR: total USD estimate per describe call"
+# @studio unit = "call"
+[providers.cost]
+per_unit = 0.0 # SET_BY_OPERATOR

@@ -31,7 +31,7 @@ def test_describe_tariff_placeholder_refuses_before_apply():
     spec = importlib.util.spec_from_file_location("install_state", ROOT / "studio/etos/install-state.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    text = (ROOT / "studio/etos/ops.toml.tmpl").read_text()
+    text = (WORKERS / "tests/fixtures/describe-placeholder.toml").read_text()
     with pytest.raises(ValueError, match="tariff_placeholder"):
         module.tariffs(text, "describe")
     # The explicit operator seam binds the provider/model and unit, without a live apply.
