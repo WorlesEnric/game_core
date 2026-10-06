@@ -107,7 +107,7 @@ Committed receipts: [run 1 XML](evidence/run1-results.xml), [run 2 XML](evidence
 [run 1 samples](evidence/run1-selection.json), [run 2 samples](evidence/run2-selection.json),
 [run 1 profile](evidence/run1-profile.json), [run 2 profile](evidence/run2-profile.json),
 [revision/harness/host receipt](evidence/final-receipt.json), and
-[original XML/data hashes](evidence/final-original-hashes.json). XML home paths are scrubbed
+[original XML/data hashes](evidence/final-original-hashes.json). Home paths and transcript trailing whitespace are normalized
 in committed copies; originals and redacted Editor logs remain under `.evidence/core-pick-verified/`.
 
 Final policy gates: metadata **42 packages / 91 assemblies passed**; C# policy
