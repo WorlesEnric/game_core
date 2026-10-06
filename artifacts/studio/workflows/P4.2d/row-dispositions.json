@@ -79,5 +79,34 @@
     "tests": [
       "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload"
     ]
+  },
+  "W-MECH-01": {
+    "status": "FAIL",
+    "note": "Installed app-origin stage passes all seven gates in 158.122 s (33 EditMode + 2 PlayMode XML passes). Authenticated fetch/verify enables Admit and the visible badge says verdict pass. Explicit Play Admit captures/stops and passes the real catalog checkpoint, but compilation stalls; the owned wrapper is stopped at 817 s. Recovery finishes rollback with catalog_mismatch because the signed delta has no world/predicted hashes. Package and pending record are absent afterward. No live restoration, tri-state smoke or successful admission undo is claimed. The semantic-negative fixture is refused with 14 lexical hits, no issued passing verdict and Admit disabled; Roslyn/Unity are skipped for that refusal.",
+    "patterns": [
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/job.json",
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/editmode.xml",
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/playmode.xml",
+      "W-MECH-01/p42d-stage-review-*/panel-verdict.json",
+      "W-MECH-01/p42d-stage-review-*/play-verification.json",
+      "W-MECH-01/p42d-stage-recover-*/admission.json",
+      "W-MECH-01/p42d-stage-recover-*/outcome.json",
+      "W-MECH-01/p42d-signed-verdict-*/verified.json",
+      "W-MECH-01/p42d-signed-verdict-*/signed-record.json",
+      "W-MECH-01/p42d-stage-review-negative-*/panel-verdict.json",
+      "W-MECH-01/p42d-stage-submit-negative-*/service/job.json"
+    ],
+    "command": "See artifacts/studio/verification/TOOLS/README-P4.2d.md: fresh identity, cache provision, stage-submit, watch-stage-p42c.py, stage-review, stage-recover."
+  },
+  "W-E2E-01": {
+    "status": "BLOCKED",
+    "note": "P4.2d requalifies the requested R5/CORE-PICK rows on main 40fb91fa with the matching installed release. Real dialogue/quest Play effects and targeted NPC/history fixes pass, but the ferryman Play bake, full byte consistency, driver voice, and live admission retain failures. Describe remains unpriced. Untouched rows retain their original revision-specific evidence; this is not all-row product acceptance.",
+    "patterns": [
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/play-effect.json",
+      "W-AI-06/p42d-reopen-*/workflow/reopen/final.json",
+      "W-MECH-01/p42d-stage-recover-*/outcome.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-transcript.json"
+    ],
+    "command": "See docs/studio/packets/P4.2d-live-rerun.md and artifacts/studio/verification/TOOLS/README-P4.2d.md."
   }
 }

@@ -38,8 +38,8 @@ def main():
     elif lane.startswith('voice-self'):
         reserve(lane,{})
         live.unity('W-VOICE-01','p42d-'+lane,['-runTests','-testPlatform','EditMode','-testFilter','Hollowmere.R5_B.VirtualVoiceSelfTest'],results='results.xml',environment={'GAMECORE_R5B_VOICE_SELF_TEST':'1','GAMECORE_R4A_VIRTUAL_SOURCE':'GC_P42d_mic','GAMECORE_R4A_VIRTUAL_SINK':'gc_p42d_sink'})
-    elif lane=='selection':
-        live.unity('W-UI-05','p42d-selection',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_B_SELECT_100PicksAnd500CandidateMarquee|R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms'],results='results.xml',environment={'GAMECORE_ETOS_AUTOSTART':'0'})
+    elif lane in ('selection','selection-repeat'):
+        live.unity('W-UI-05','p42d-'+lane,['-runTests','-testPlatform','EditMode','-testFilter',('R2_38_B_SELECT_100PicksAnd500CandidateMarquee' if lane=='selection-repeat' else 'R2_38_B_SELECT_100PicksAnd500CandidateMarquee|R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms')],results='results.xml',environment={'GAMECORE_ETOS_AUTOSTART':'0'})
     elif lane=='history-prepare':
         live.unity('W-AI-06','p42d-history-prepare',['-executeMethod','Hollowmere.R5_A.HistoryReopenTests.Prepare','-quit'],environment={'GAMECORE_ETOS_AUTOSTART':'0'})
     elif lane=='history-reopen':
@@ -47,6 +47,10 @@ def main():
     elif lane=='guide':
         reserve(lane,{})
         live.unity('W-DOC-01','p42d-guide',['-runTests','-testPlatform','EditMode','-testFilter','P42d.Live.NoviceGuideTests|P42_OPS_01_Installed3dRefusesUnconfigured'],results='results.xml')
+    elif lane=='stage-recover':
+        import argparse
+        parser=argparse.ArgumentParser();parser.add_argument('lane');parser.add_argument('--input',required=True);a=parser.parse_args()
+        live.unity('W-MECH-01','p42d-stage-recover',['-executeMethod','P42c.Live.StageUi.Recover'],environment={'GAMECORE_P42C_INPUT':str(Path(a.input).resolve())})
     elif lane.startswith('stage-'):
         sys.argv[0]=str(Path(__file__).with_name('live-p42c.py'))
         original=live.unity

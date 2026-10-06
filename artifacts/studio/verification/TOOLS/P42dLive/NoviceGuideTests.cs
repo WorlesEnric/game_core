@@ -54,7 +54,7 @@ namespace P42d.Live
             using var viewContext = StudioViewContext.ForProject();
             var dialogue = new DialogueView(viewContext);
             dialogue.ShowGraph(graphRef);
-            int terminal = Enumerable.Range(0, graph.Nodes.Count).First(i => !string.IsNullOrEmpty(graph.Nodes[i].text) && graph.Target(i, DialoguePort.Next, 0) < 0);
+            int terminal = Enumerable.Range(0, graph.Nodes.Count).First(i => graph.Nodes[i].kind == DialogueNodeKind.Line && graph.Target(i, DialoguePort.Next, 0) < 0);
             dialogue.SelectNode(terminal);
             var line = dialogue.AddLine("The Drowned Bell guides travellers home.", "Maren")!;
             receipt["dialogue"] = StudioJson.ToToken(line.Entry);

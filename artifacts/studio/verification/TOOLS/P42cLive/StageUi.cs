@@ -50,6 +50,17 @@ namespace P42c.Live
             Hook();
         }
 
+        public static void Recover()
+        {
+            SessionState.SetString(Prefix + "out", Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE")!);
+            SessionState.SetString(Prefix + "mode", "recover");
+            SessionState.SetString(Prefix + "start", DateTime.UtcNow.ToString("o"));
+            SessionState.SetString(Prefix + "id", (string)ReadBinding()["request"]!["changeSetId"]!);
+            Phase = 6;
+            EtosStudioSession.Start();
+            Hook();
+        }
+
         private static void Write(string name, JObject data) => File.WriteAllText(Path.Combine(Output, name + ".json"), data.ToString());
         private static void Shot(string name) => UnityWindowCapture.CaptureStudio(Path.Combine(Output, name + ".png"), false);
         private static void Stop(bool ok, string reason)
@@ -176,6 +187,14 @@ namespace P42c.Live
                 Write(Phase == 6 ? "admission" : "undo", new JObject { ["scenario"] = StudioJson.ToToken(scenario), ["journal"] = StudioJson.ToToken(Context.Runtime.Journal.Read(id)!) });
                 if (scenario.Status != ScenarioStatus.Pass) { Stop(false, scenario.Detail ?? "admission or undo failed"); return; }
                 if (Phase == 9) { Stop(true, "verified stage, Play capture/restore/smoke and undo completed"); return; }
+                if (mode == "recover")
+                {
+                    Write("recovery-observation", new JObject { ["isPlaying"] = EditorApplication.isPlaying,
+                        ["restorationAssertion"] = "The original process timed out; its SessionState coin expectation is unavailable. No fresh restore assertion is claimed." });
+                    Phase = 8;
+                    if (EditorApplication.isPlaying) EditorApplication.ExitPlaymode();
+                    return;
+                }
                 HollowmereGame? game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>();
                 int actual = game?.Director?.ItemCount("OldCoin") ?? -1;
                 Write("restored-world", new JObject { ["coinsExpected"] = SessionState.GetInt(Prefix + "coins", -1), ["coinsActual"] = actual,

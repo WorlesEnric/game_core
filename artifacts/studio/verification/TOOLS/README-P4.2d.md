@@ -27,3 +27,14 @@ The trusted graphics adapter forwards only the driver's bounded environment sett
 the stage submit adapter holds the host allocator mutex until the creator Editor exits.
 The standard runner handles startup retry, redaction and result XML. Test pass/fail
 comes from XML; workflow acceptance additionally requires its specific observations.
+
+The pressure-plate fixed fixture ID belongs to the previous project. Use
+`instantiate-p42d.py SOURCE NEW_DEST` to mint only a fresh envelope identity;
+`instantiation.json` proves package/proposal/operation bytes are unchanged.
+Before stage, `provision-p42d.sh` derives the exact owner/version cache and invokes
+the trusted pinned-cache provisioner. It does not reset cold markers or deadlines.
+
+`history-prepare` then `history-reopen` runs the retained two-operation R5-A witness
+in two real Editor processes; `GAMECORE_R5_REOPEN=1` requires distinct PIDs and a
+Play/Edit domain reload. It supplements the live candidate run, which may contain
+only one operation per target.
