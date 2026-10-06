@@ -1,0 +1,28 @@
+{
+  "name": "Hollowmere.R7_C.Animation.Tests",
+  "rootNamespace": "Hollowmere.R7_C.Animation.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Execution",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.World",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.App",
+    "GameCore.Unity.Runtime",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

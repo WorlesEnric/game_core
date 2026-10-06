@@ -167,6 +167,95 @@ namespace Hollowmere.P3_1.PlayMode.Tests
             Report("save/restore");
         }
 
+        [UnityTest]
+        [Timeout(600000)]
+        public IEnumerator R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern()
+        {
+            yield return Boot();
+            Assert.That(Item("Lantern"), Is.Zero, "a fresh game has no lantern");
+            string lanternId = EntityId("Lantern (barn)");
+            TargetId lantern = AuthoringIds.TargetIdFor(lanternId);
+            yield return StandBy(lanternId);
+            yield return LanternUseBurst(lantern, 1);
+            yield return Until(() => Item("Lantern") == 1, "the actual barn pickup delivers its lantern");
+            yield return Until(() => game.World!.Slots.ReadOrDefault(lantern, InteractionSlots.Owner, InteractionSlots.CooldownMs, -1) == 0, "the pickup cooldown expires");
+            yield return LanternUseBurst(lantern, 0);
+            Assert.That(Item("Lantern"), Is.EqualTo(1), "repeated pickup after cooldown does not grant another lantern");
+
+            const string slot = "r7c-lantern-spam";
+            SaveService saves = game.Saves!;
+            try
+            {
+                SaveResult captured = saves.Capture(slot);
+                Assert.That(captured.Succeeded, Is.True, captured.ToString());
+                GameplayWorld original = game.World!;
+                int restoresBefore = game.Restores;
+                SaveResult restored = saves.Restore(slot);
+                Assert.That(restored.Succeeded, Is.True, restored.ToString());
+                Assert.That(restored.SlotHash, Is.EqualTo(captured.SlotHash), "production restore preserves all captured slot rows");
+                yield return Until(() => game.Restores > restoresBefore, "the restored world and narrative sessions attach");
+                Assert.That(game.RestoreFailure, Is.Empty);
+                Assert.That(game.World, Is.Not.SameAs(original), "the test continues in the production-restored world");
+                Assert.That(Item("Lantern"), Is.EqualTo(1), "the save contains exactly the barn's single lantern");
+                yield return StandBy(lanternId);
+                yield return LanternUseBurst(lantern, 0);
+                yield return LanternUseBurst(lantern, 0);
+                Assert.That(Item("Lantern"), Is.EqualTo(1), "take spam after reload still leaves exactly one lantern");
+                Assert.That(game.World!.Slots.ReadOrDefault(lantern, InteractionSlots.Owner, InteractionSlots.Uses, -1), Is.EqualTo(1));
+                Assert.That(game.Narrative!.Delivery.Dropped, Is.Zero, game.Narrative.Delivery.LastDropDetail);
+                Assert.That(game.World.Root.PumpCounter.Violations, Is.Zero);
+                Report("R7-C W-PLUG-08: 32 real barn uses, one successful pickup, one lantern across save/reload");
+            }
+            finally
+            {
+                SaveResult deleted = saves.Delete(slot);
+                Assert.That(deleted.Succeeded, Is.True, deleted.ToString());
+            }
+        }
+
+        private IEnumerator LanternUseBurst(TargetId lantern, int expectedSuccesses)
+        {
+            const int attempts = 8;
+            GameplayWorld world = game.World!;
+            var cursor = new GameplayEventCursor();
+            var events = new List<CommittedEvent>();
+            cursor.ReadInto(world, events, 4096);
+            var commands = new InteractionCommands(world);
+            for (int i = 0; i < attempts; i++)
+            {
+                Assert.That(commands.Use(world.Focus, game.Narrative!.Runtime.ActorKey, lantern).Admitted, Is.True, "real interact.use attempt " + i);
+            }
+
+            int succeeded = 0;
+            int refused = 0;
+            for (int waited = 0; waited < MaxFrames && succeeded + refused < attempts; waited++)
+            {
+                yield return null;
+                events.Clear();
+                cursor.ReadInto(world, events, 4096);
+                foreach (CommittedEvent committed in events)
+                {
+                    if (!GameplayActorEvent.TryDecode(committed.Payload, out GameplayActorEvent payload) || !payload.Target.Equals(lantern))
+                        continue;
+                    if (committed.Schema.Equals(InteractionSlots.SucceededEvent))
+                        succeeded++;
+                    else if (committed.Schema.Equals(InteractionSlots.RefusedEvent))
+                    {
+                        refused++;
+                        Assert.That(new[] { "interaction.cooling-down", "interaction.uses-exhausted", "interaction.already-used" }, Does.Contain(InteractionSlots.RefusalCode(payload.B)), "repeat uses must be refused because this lantern was already taken, not due to range or broken wiring");
+                    }
+                }
+            }
+
+            Assert.That(succeeded + refused, Is.EqualTo(attempts), "every admitted pickup attempt reaches a committed outcome");
+            Assert.That(succeeded, Is.EqualTo(expectedSuccesses));
+            Assert.That(refused, Is.EqualTo(attempts - expectedSuccesses));
+            // Give the real action/outbox/inventory stages time to expose any duplicated grant.
+            for (int i = 0; i < 10; i++)
+                yield return null;
+            Assert.That(Item("Lantern"), Is.EqualTo(1));
+        }
+
         // ------------------------------------------------------------------ phases
 
         private IEnumerator Boot()
