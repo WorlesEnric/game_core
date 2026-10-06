@@ -17,3 +17,10 @@ None identified.
 ## Left open
 
 - VSync qualification policy is unspecified in 07; both states will be reported without changing its budget.
+
+Profiler API references (Unity primary sources):
+- https://docs.unity.com/en-us/engine/6000.5/manual/analysis/profiler/command-line-arguments
+- https://unity.com/blog/engine-platform/detecting-performance-bottlenecks-with-unity-frame-timing-manager
+- https://github.com/Unity-Technologies/UnityCsReference/blob/6000.0/Modules/ProfilerEditor/Public/RawFrameDataView.bindings.cs
+
+`profile_stats.py` excludes the first 12 seconds only for *diagnostic attribution* of steady village work. `frame_stats.py` is unchanged and qualification still includes every row from the first ready marker, with the original transition rule.
