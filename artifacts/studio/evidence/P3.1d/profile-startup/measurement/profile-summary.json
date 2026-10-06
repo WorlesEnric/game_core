@@ -1,0 +1,5972 @@
+{
+  "vsync0/run1/timings.csv": {
+    "frames": 121,
+    "steadyFrames": 0,
+    "counters": {
+      "delta_ms": null,
+      "cpu_ms": null,
+      "main_ms": null,
+      "present_wait_ms": null,
+      "render_ms": null,
+      "gpu_ms": null,
+      "main_rec_ns": null,
+      "render_rec_ns": null,
+      "wait_rec_ns": null,
+      "gc_bytes": null
+    },
+    "native": {
+      "firstFrame": 0,
+      "lastFrame": 121,
+      "topInclusiveSamples": [
+        {
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "totalMs": 30653.539
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "totalMs": 30653.513
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "totalMs": 19217.795
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 19217.264
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "totalMs": 19143.965
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "totalMs": 13995.878
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "totalMs": 8540.268
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "totalMs": 8514.692
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "totalMs": 8171.931
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "totalMs": 7444.542
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "totalMs": 5969.043
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "totalMs": 5793.079
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine::ClassLibraryInitializer.Init() [Invoke]",
+          "totalMs": 5646.695
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "totalMs": 4733.128
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "totalMs": 4732.688
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "totalMs": 4600.465
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.dll!Unity.Entities.Content::RuntimeContentManager.RuntimeInitialization() [Invoke]",
+          "totalMs": 3371.28
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "totalMs": 3255.367
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 2696.624
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "totalMs": 2635.345
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2563.811
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "totalMs": 2562.304
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2530.836
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "totalMs": 2525.233
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "AwakeFromLoad Threaded",
+          "totalMs": 1574.471
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Script RebuildFromAwake",
+          "totalMs": 1574.129
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "MonoScript.Renew",
+          "totalMs": 1571.107
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Scripting.GetDefaultExecutionOrder",
+          "totalMs": 1311.878
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine::UnitySynchronizationContext.InitializeSynchronizationContext() [Invoke]",
+          "totalMs": 1011.701
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadObjectsThreaded",
+          "totalMs": 758.303
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitializeInPlayer() [Invoke]",
+          "totalMs": 700.362
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "File.Read",
+          "totalMs": 671.716
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "AsyncReadManager.SyncRequest",
+          "totalMs": 671.497
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "totalMs": 573.171
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Texture.WaitForAsyncUpload",
+          "totalMs": 568.847
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadBlocking",
+          "totalMs": 568.841
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "totalMs": 547.602
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ManagedObjectProxy.Init",
+          "totalMs": 520.247
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Load Default Shaders",
+          "totalMs": 386.628
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine._Scripting.APIUpdating::APIUpdaterRuntimeHelpers.GetMovedFromAttributeDataForType() [Invoke]",
+          "totalMs": 367.775
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "MonoScript.PopulateMethods",
+          "totalMs": 257.62
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.dll!Unity.Entities::DefaultWorldInitialization.CleanupWorldBeforeSceneLoad() [Invoke]",
+          "totalMs": 251.425
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.RenderPipelines.Core.Runtime.dll!UnityEngine.Rendering::VolumeProfile.OnEnable() [Invoke]",
+          "totalMs": 250.885
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileHeaders",
+          "totalMs": 238.695
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Init FMOD",
+          "totalMs": 216.306
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "totalMs": 209.335
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "totalMs": 183.846
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "totalMs": 177.491
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "totalMs": 159.654
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "totalMs": 159.415
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "totalMs": 156.815
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "totalMs": 148.802
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "totalMs": 134.19
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "totalMs": 121.815
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "totalMs": 116.679
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!::UpdateFunction.Invoke() [Invoke]",
+          "totalMs": 111.096
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GameCorePumpLoop",
+          "totalMs": 108.779
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "totalMs": 107.074
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "totalMs": 107.054
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "totalMs": 95.87
+        }
+      ],
+      "startupSamplesOver5ms": [
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "30079.351563"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Load Il2cpp",
+          "total_ms": "75.512154"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "total_ms": "134.190018"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Player",
+          "total_ms": "6.311858"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "File.Read",
+          "total_ms": "669.254194"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "total_ms": "7444.542473"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "total_ms": "8169.616952"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileHeaders",
+          "total_ms": "238.695050"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "AsyncReadManager.SyncRequest",
+          "total_ms": "668.951361"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "total_ms": "5967.264965"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "total_ms": "2633.600159"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "AwakeFromLoad Threaded",
+          "total_ms": "1574.470934"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadRemainingPreallocatedObjects",
+          "total_ms": "58.059856"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "total_ms": "8514.169709"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "8515.092692"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "total_ms": "19143.964844"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "total_ms": "547.601563"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "total_ms": "159.654022"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "total_ms": "159.414673"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "2687.191528"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Load Default Shaders",
+          "total_ms": "386.628448"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseMainThread",
+          "total_ms": "10.030679"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseThreaded",
+          "total_ms": "9.140495"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ShaderFromSerializedShader",
+          "total_ms": "8.886163"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "total_ms": "13995.877930"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Init FMOD",
+          "total_ms": "216.306061"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine::UnitySynchronizationContext.InitializeSynchronizationContext() [Invoke]",
+          "total_ms": "1011.700806"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Alloc",
+          "total_ms": "9.461577"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine::ClassLibraryInitializer.Init() [Invoke]",
+          "total_ms": "5646.694824"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "27.098607"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ManagedObjectProxy.Init",
+          "total_ms": "520.247375"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine::StackTraceUtility.SetProjectFolder() [Invoke]",
+          "total_ms": "29.205126"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadObjectsThreaded",
+          "total_ms": "758.303406"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Script RebuildFromAwake",
+          "total_ms": "1574.129117"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "MonoScript.Renew",
+          "total_ms": "1571.107268"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "MonoScript.PopulateMethods",
+          "total_ms": "257.619828"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Scripting.GetDefaultExecutionOrder",
+          "total_ms": "1311.878168"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "total_ms": "5793.079102"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "total_ms": "4733.128418"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "total_ms": "4732.687988"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine._Scripting.APIUpdating::APIUpdaterRuntimeHelpers.GetMovedFromAttributeDataForType() [Invoke]",
+          "total_ms": "367.774547"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.RenderPipelines.Core.Runtime.dll!UnityEngine.Rendering::VolumeProfile.OnEnable() [Invoke]",
+          "total_ms": "250.885408"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "total_ms": "4600.465332"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.dll!Unity.Entities::DefaultWorldInitialization.CleanupWorldBeforeSceneLoad() [Invoke]",
+          "total_ms": "251.425217"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.dll!Unity.Entities.Content::RuntimeContentManager.RuntimeInitialization() [Invoke]",
+          "total_ms": "3371.279785"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitializeInPlayer() [Invoke]",
+          "total_ms": "700.362366"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InputActionMap.ResolveBindings",
+          "total_ms": "51.204543"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem.UI::InputSystemUIInputModule.ResetDefaultActions() [Invoke]",
+          "total_ms": "6.478022"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.ForUI.dll!UnityEngine.InputSystem.Plugins.InputForUI::InputSystemProvider.Bootstrap() [Invoke]",
+          "total_ms": "17.345091"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Serialization.dll!Unity.Serialization.Json::JsonArray.RegisterPropertyBag() [Invoke]",
+          "total_ms": "13.368761"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GameCore.Unity.Adapters.dll!GameCore.Unity.Adapters::GameCoreApplicationReset.ResetForNewSession() [Invoke]",
+          "total_ms": "12.770908"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "total_ms": "209.334747"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GameObject.AddComponent",
+          "total_ms": "13.315386"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIDocument.OnEnable() [Invoke]",
+          "total_ms": "12.142761"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "total_ms": "58.211372"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "didChangeActiveScene.Invoke",
+          "total_ms": "6.672257"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.SceneManagement::SceneManager.Internal_ActiveSceneChanged() [Invoke]",
+          "total_ms": "5.313038"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "total_ms": "51.446426"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.PropertiesModule.dll!Unity.Properties.Internal::PropertiesInitialization.InitializeProperties() [Invoke]",
+          "total_ms": "18.020746"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsInitialization.InitializeUIElementsManaged() [Invoke]",
+          "total_ms": "31.997623"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "158.957427"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2530.836080"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "2525.232694"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "total_ms": "156.814774"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "152.980011"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "total_ms": "148.802460"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AttachToEntityClonerInjection.Initialize() [Invoke]",
+          "total_ms": "33.159786"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeAllComponentTypes",
+          "total_ms": "19.533491"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "total_ms": "107.073532"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "total_ms": "107.054367"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "new World()",
+          "total_ms": "12.242518"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitialUpdate() [Invoke]",
+          "total_ms": "5.181811"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "30094.195313"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "18771.070076"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "18770.998845"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "3142.749218"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Texture.WaitForAsyncUpload",
+          "total_ms": "568.846939"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadBlocking",
+          "total_ms": "568.840552"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadAll",
+          "total_ms": "10.976975"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUpload",
+          "total_ms": "10.423948"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingCompleteCallback",
+          "total_ms": "10.400724"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingFinalizeCallback",
+          "total_ms": "10.391204"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.UploadTexture",
+          "total_ms": "10.362945"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2563.810806"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRenderBackground",
+          "total_ms": "6.378458"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "2553.128130"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "251.621658"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "251.605728"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "total_ms": "61.916775"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "total_ms": "61.931693"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::GameBoot.Start() [Invoke]",
+          "total_ms": "51.918453"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.GetHandle",
+          "total_ms": "9.873223"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.LoadFMODSound",
+          "total_ms": "9.869277"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "8.529063"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Game.dll!Hollowmere.Game::HollowmereGame.Start() [Invoke]",
+          "total_ms": "9.957636"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "6.943661"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "GameCorePumpLoop",
+          "total_ms": "5.429808"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!::UpdateFunction.Invoke() [Invoke]",
+          "total_ms": "5.805916"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "WaitForJobGroupID",
+          "total_ms": "6.830399"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EngineJob",
+          "total_ms": "8.123290"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PreLateUpdate.UIElementsUpdatePanels",
+          "total_ms": "25.940018"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.UpdatePanels() [Invoke]",
+          "total_ms": "25.927973"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Layout.HollowmerePanelSettings (runtime)",
+          "total_ms": "20.943296"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Layout",
+          "total_ms": "17.158657"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "LayoutUpdater.ComputeLayout",
+          "total_ms": "16.806480"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "InvokeMeasureFunction",
+          "total_ms": "16.663157"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextGenerator.Prepare",
+          "total_ms": "5.879680"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.TryAddCharacter",
+          "total_ms": "5.387943"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "total_ms": "91.763962"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "total_ms": "91.756546"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "total_ms": "91.463478"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "total_ms": "91.462257"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Runtime Bindings",
+          "total_ms": "18.289120"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Binding",
+          "total_ms": "16.465535"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "total_ms": "73.048088"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "total_ms": "62.322933"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "total_ms": "62.044025"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "total_ms": "55.340973"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.UpdateGlyphAdjustmentRecords",
+          "total_ms": "25.248423"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetPairAdjustmentRecords",
+          "total_ms": "20.159998"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeFontFeatures",
+          "total_ms": "20.129583"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeLayoutTables",
+          "total_ms": "19.958204"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Table",
+          "total_ms": "18.228060"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Lookups",
+          "total_ms": "18.224396"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "61.804543"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "total_ms": "60.382195"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Shader.CreateGPUProgram",
+          "total_ms": "6.963038"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "total_ms": "24.114716"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "total_ms": "23.538849"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "15.105187"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RecordRenderGraph",
+          "total_ms": "7.277926"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_On Record Render Graph",
+          "total_ms": "6.253447"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "total_ms": "7.072609"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "7.048022"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "7.035850"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "236.838669"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "10.546788"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "226.393438"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "226.020144"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "7.192617"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "7.189762"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "27.315212"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "27.304615"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "total_ms": "24.555967"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Loading.UpdatePreloading",
+          "total_ms": "24.555733"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "total_ms": "24.555479"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "total_ms": "24.555023"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "24.554596"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "24.511404"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "24.388831"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Font.CacheFontForText",
+          "total_ms": "23.785831"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "29.098288"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "26.711803"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "26.709309"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "5.052116"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "5.041909"
+        }
+      ]
+    }
+  },
+  "vsync0/run2/timings.csv": {
+    "frames": 121,
+    "steadyFrames": 0,
+    "counters": {
+      "delta_ms": null,
+      "cpu_ms": null,
+      "main_ms": null,
+      "present_wait_ms": null,
+      "render_ms": null,
+      "gpu_ms": null,
+      "main_rec_ns": null,
+      "render_rec_ns": null,
+      "wait_rec_ns": null,
+      "gc_bytes": null
+    },
+    "native": {
+      "firstFrame": 0,
+      "lastFrame": 121,
+      "topInclusiveSamples": [
+        {
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "totalMs": 9124.356
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "totalMs": 9124.329
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 2734.669
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "totalMs": 2699.355
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2556.136
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "totalMs": 2551.874
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2527.102
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "totalMs": 2521.247
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "totalMs": 836.555
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 835.802
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "totalMs": 526.827
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "totalMs": 379.559
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "totalMs": 204.835
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "totalMs": 203.097
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "totalMs": 202.863
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "totalMs": 146.643
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "totalMs": 143.38
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "totalMs": 124.093
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "totalMs": 119.716
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!::UpdateFunction.Invoke() [Invoke]",
+          "totalMs": 119.315
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "totalMs": 118.924
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GameCorePumpLoop",
+          "totalMs": 118.54
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "totalMs": 114.468
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "totalMs": 91.473
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "totalMs": 90.18
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "totalMs": 89.521
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "totalMs": 89.452
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "totalMs": 89.082
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "totalMs": 89.068
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "totalMs": 88.875
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "totalMs": 88.806
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "totalMs": 88.479
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "totalMs": 83.24
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "totalMs": 81.865
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "totalMs": 74.933
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "totalMs": 67.705
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "totalMs": 65.589
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "totalMs": 60.941
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 60.395
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "totalMs": 60.326
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "totalMs": 59.382
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "totalMs": 56.027
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "totalMs": 54.897
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 54.175
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "totalMs": 53.646
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "totalMs": 46.45
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "totalMs": 45.858
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "totalMs": 42.072
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "totalMs": 37.979
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "totalMs": 36.442
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "totalMs": 30.133
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "totalMs": 29.572
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "totalMs": 29.272
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "totalMs": 29.034
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "totalMs": 29.005
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "totalMs": 28.799
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "totalMs": 28.534
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "totalMs": 28.426
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "totalMs": 28.259
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "totalMs": 27.131
+        }
+      ],
+      "startupSamplesOver5ms": [
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "8596.360352"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "total_ms": "42.071720"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Player",
+          "total_ms": "6.326885"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "total_ms": "36.442001"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "total_ms": "64.825874"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "total_ms": "55.755591"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "total_ms": "45.628783"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "AwakeFromLoad Threaded",
+          "total_ms": "6.995645"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadRemainingPreallocatedObjects",
+          "total_ms": "19.903243"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "total_ms": "54.420050"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "55.057723"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "total_ms": "379.559357"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "total_ms": "204.835342"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "total_ms": "203.097153"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "total_ms": "202.862732"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "2725.514840"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseMainThread",
+          "total_ms": "10.948726"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseThreaded",
+          "total_ms": "9.967706"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ShaderFromSerializedShader",
+          "total_ms": "9.715918"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "total_ms": "83.239639"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Init FMOD",
+          "total_ms": "16.520412"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Alloc",
+          "total_ms": "9.231565"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "21.777850"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ManagedObjectProxy.Init",
+          "total_ms": "9.544832"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Script RebuildFromAwake",
+          "total_ms": "6.711169"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "total_ms": "46.449646"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "total_ms": "29.272493"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "total_ms": "28.799313"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "total_ms": "91.473358"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitializeInPlayer() [Invoke]",
+          "total_ms": "5.804403"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "total_ms": "74.932724"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "total_ms": "30.133495"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "total_ms": "29.571882"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsInitialization.InitializeUIElementsManaged() [Invoke]",
+          "total_ms": "25.321236"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "120.072812"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2527.102268"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "2521.247446"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "total_ms": "118.923744"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "117.334641"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "total_ms": "114.467857"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AttachToEntityClonerInjection.Initialize() [Invoke]",
+          "total_ms": "21.565121"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeAllComponentTypes",
+          "total_ms": "13.557208"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "total_ms": "89.082039"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "total_ms": "89.067909"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "new World()",
+          "total_ms": "8.378776"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "8612.833984"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "452.041066"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "451.944139"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "2572.359928"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Texture.WaitForAsyncUpload",
+          "total_ms": "6.758844"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadBlocking",
+          "total_ms": "6.755541"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadAll",
+          "total_ms": "6.638489"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUpload",
+          "total_ms": "6.366200"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingCompleteCallback",
+          "total_ms": "6.344996"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingFinalizeCallback",
+          "total_ms": "6.336945"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.UploadTexture",
+          "total_ms": "6.317961"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2556.135670"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRenderBackground",
+          "total_ms": "6.535643"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "2545.058106"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "190.361847"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "190.345566"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "total_ms": "29.005217"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "total_ms": "29.019569"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::GameBoot.Start() [Invoke]",
+          "total_ms": "21.701313"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.GetHandle",
+          "total_ms": "9.458370"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.LoadFMODSound",
+          "total_ms": "9.454536"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "7.677949"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Game.dll!Hollowmere.Game::HollowmereGame.Start() [Invoke]",
+          "total_ms": "7.250010"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "7.616799"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "WaitForJobGroupID",
+          "total_ms": "7.337155"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EngineJob",
+          "total_ms": "8.504283"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PreLateUpdate.UIElementsUpdatePanels",
+          "total_ms": "17.384769"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.UpdatePanels() [Invoke]",
+          "total_ms": "17.373549"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Layout.HollowmerePanelSettings (runtime)",
+          "total_ms": "14.360801"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Layout",
+          "total_ms": "12.491569"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "LayoutUpdater.ComputeLayout",
+          "total_ms": "12.413000"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "InvokeMeasureFunction",
+          "total_ms": "12.280458"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextGenerator.Prepare",
+          "total_ms": "5.694702"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.TryAddCharacter",
+          "total_ms": "5.538105"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "total_ms": "84.506363"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "total_ms": "84.497650"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "total_ms": "84.468353"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "total_ms": "84.467270"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Runtime Bindings",
+          "total_ms": "18.196545"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Binding",
+          "total_ms": "16.304816"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "total_ms": "66.190994"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "total_ms": "59.557953"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "total_ms": "59.298222"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "total_ms": "53.645752"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.UpdateGlyphAdjustmentRecords",
+          "total_ms": "23.314615"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetPairAdjustmentRecords",
+          "total_ms": "22.798052"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeFontFeatures",
+          "total_ms": "22.764923"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeLayoutTables",
+          "total_ms": "22.570299"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Table",
+          "total_ms": "20.597538"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Lookups",
+          "total_ms": "20.593721"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "52.067719"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "total_ms": "51.403187"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Shader.CreateGPUProgram",
+          "total_ms": "7.645396"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "total_ms": "22.618174"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "total_ms": "22.123360"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "13.129890"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RecordRenderGraph",
+          "total_ms": "6.722430"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_On Record Render Graph",
+          "total_ms": "5.595428"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "total_ms": "7.882641"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "7.843734"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "7.821282"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "174.006165"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "23.508519"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "150.638921"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "150.107395"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "7.906215"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "7.905096"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "28.970869"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "28.959856"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "total_ms": "26.090128"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Loading.UpdatePreloading",
+          "total_ms": "26.089996"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "total_ms": "26.089725"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "total_ms": "26.089394"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "26.088921"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "26.045153"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "25.922213"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Font.CacheFontForText",
+          "total_ms": "25.295652"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "30.868567"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "28.261975"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "28.259973"
+        }
+      ]
+    }
+  },
+  "vsync1/run1/timings.csv": {
+    "frames": 121,
+    "steadyFrames": 0,
+    "counters": {
+      "delta_ms": null,
+      "cpu_ms": null,
+      "main_ms": null,
+      "present_wait_ms": null,
+      "render_ms": null,
+      "gpu_ms": null,
+      "main_rec_ns": null,
+      "render_rec_ns": null,
+      "wait_rec_ns": null,
+      "gc_bytes": null
+    },
+    "native": {
+      "firstFrame": 0,
+      "lastFrame": 121,
+      "topInclusiveSamples": [
+        {
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "totalMs": 10823.344
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "totalMs": 10823.32
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "totalMs": 4545.003
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "totalMs": 4380.19
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 4339.43
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "totalMs": 4154.682
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2557.814
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2523.786
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "totalMs": 2273.736
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "totalMs": 1787.89
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 734.708
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "totalMs": 734.658
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "totalMs": 329.765
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "totalMs": 151.842
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "totalMs": 150.143
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "totalMs": 149.656
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "totalMs": 145.322
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "totalMs": 141.575
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "totalMs": 138.015
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!::UpdateFunction.Invoke() [Invoke]",
+          "totalMs": 129.408
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GameCorePumpLoop",
+          "totalMs": 128.294
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "totalMs": 115.126
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "totalMs": 113.385
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "totalMs": 110.548
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "totalMs": 110.533
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "totalMs": 90.491
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "totalMs": 90.414
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "totalMs": 90.072
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "totalMs": 89.831
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "totalMs": 89.745
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "totalMs": 87.837
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "totalMs": 86.482
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "totalMs": 84.768
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "totalMs": 84.754
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "totalMs": 70.389
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "totalMs": 70.125
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 70.057
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "totalMs": 69.972
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "totalMs": 69.169
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 66.252
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "totalMs": 63.742
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "totalMs": 61.664
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "totalMs": 61.492
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "totalMs": 54.456
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "totalMs": 53.488
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "totalMs": 47.164
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "totalMs": 43.519
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "totalMs": 42.626
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "totalMs": 41.646
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "totalMs": 36.715
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "totalMs": 34.787
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 29.084
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "totalMs": 29.052
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "totalMs": 28.802
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "totalMs": 28.773
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "totalMs": 28.612
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "totalMs": 28.374
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ExecuteRenderGraph",
+          "totalMs": 28.043
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "totalMs": 27.863
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "totalMs": 26.7
+        }
+      ],
+      "startupSamplesOver5ms": [
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "8548.198242"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "total_ms": "41.645992"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Player",
+          "total_ms": "5.964852"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "total_ms": "42.625581"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "total_ms": "68.559433"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "total_ms": "53.267268"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "total_ms": "43.333168"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "AwakeFromLoad Threaded",
+          "total_ms": "6.926266"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadRemainingPreallocatedObjects",
+          "total_ms": "18.052891"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "total_ms": "61.288769"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "61.580542"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "total_ms": "329.765350"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "total_ms": "151.841721"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "total_ms": "150.143387"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "total_ms": "149.655914"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "2668.788800"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseMainThread",
+          "total_ms": "11.612321"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseThreaded",
+          "total_ms": "10.456989"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ShaderFromSerializedShader",
+          "total_ms": "10.182924"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "total_ms": "90.072235"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Init FMOD",
+          "total_ms": "22.764526"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Alloc",
+          "total_ms": "8.721573"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "21.048285"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ManagedObjectProxy.Init",
+          "total_ms": "9.427752"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Script RebuildFromAwake",
+          "total_ms": "6.667287"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "total_ms": "47.163609"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "total_ms": "29.051949"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "total_ms": "28.611685"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "total_ms": "87.837059"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitializeInPlayer() [Invoke]",
+          "total_ms": "5.665019"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "total_ms": "70.389122"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "total_ms": "28.373652"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "total_ms": "27.863228"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsInitialization.InitializeUIElementsManaged() [Invoke]",
+          "total_ms": "23.946655"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "116.793228"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2523.786102"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "2518.276222"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "total_ms": "115.125717"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "113.569237"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "total_ms": "110.547546"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AttachToEntityClonerInjection.Initialize() [Invoke]",
+          "total_ms": "21.925512"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeAllComponentTypes",
+          "total_ms": "13.835523"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "total_ms": "84.768486"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "total_ms": "84.753685"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "new World()",
+          "total_ms": "8.489634"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "8564.541992"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "447.674121"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "447.603192"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "2573.184166"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Texture.WaitForAsyncUpload",
+          "total_ms": "6.543930"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadBlocking",
+          "total_ms": "6.540033"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadAll",
+          "total_ms": "6.415788"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUpload",
+          "total_ms": "6.125412"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingCompleteCallback",
+          "total_ms": "6.105499"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingFinalizeCallback",
+          "total_ms": "6.096285"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.UploadTexture",
+          "total_ms": "6.079085"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2557.813997"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRenderBackground",
+          "total_ms": "6.896338"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "2546.166244"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "197.048767"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "197.031235"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "total_ms": "28.772739"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "total_ms": "28.786967"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::GameBoot.Start() [Invoke]",
+          "total_ms": "20.972506"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.GetHandle",
+          "total_ms": "9.041010"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.LoadFMODSound",
+          "total_ms": "9.037809"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "7.801565"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Game.dll!Hollowmere.Game::HollowmereGame.Start() [Invoke]",
+          "total_ms": "7.747874"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "10.647974"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "WaitForJobGroupID",
+          "total_ms": "9.454333"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EngineJob",
+          "total_ms": "10.593956"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PreLateUpdate.UIElementsUpdatePanels",
+          "total_ms": "21.286592"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.UpdatePanels() [Invoke]",
+          "total_ms": "21.278402"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Layout.HollowmerePanelSettings (runtime)",
+          "total_ms": "17.901611"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Layout",
+          "total_ms": "15.725576"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "LayoutUpdater.ComputeLayout",
+          "total_ms": "15.631556"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "InvokeMeasureFunction",
+          "total_ms": "15.474732"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextGenerator.Prepare",
+          "total_ms": "8.460407"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.TryAddCharacter",
+          "total_ms": "8.268678"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GlyphRasterizer.Calculate3x3AAEDT",
+          "total_ms": "5.192617"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "total_ms": "84.316132"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "total_ms": "84.307793"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "total_ms": "84.275719"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "total_ms": "84.274033"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Runtime Bindings",
+          "total_ms": "16.097900"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Binding",
+          "total_ms": "14.737475"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "total_ms": "68.100143"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "total_ms": "61.783600"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "total_ms": "61.492146"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "total_ms": "54.455929"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.UpdateGlyphAdjustmentRecords",
+          "total_ms": "24.400539"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetPairAdjustmentRecords",
+          "total_ms": "23.830486"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeFontFeatures",
+          "total_ms": "23.792744"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeLayoutTables",
+          "total_ms": "23.585772"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Table",
+          "total_ms": "21.702576"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Lookups",
+          "total_ms": "21.698654"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "55.033127"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "total_ms": "54.474663"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Shader.CreateGPUProgram",
+          "total_ms": "10.721922"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "total_ms": "24.555635"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "total_ms": "24.109674"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "12.215495"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RecordRenderGraph",
+          "total_ms": "6.792803"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_On Record Render Graph",
+          "total_ms": "5.670031"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "total_ms": "10.848637"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "10.819343"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "10.797355"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "180.758514"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "14.123651"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "166.722092"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "166.324237"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "CreateGpuProgram",
+          "total_ms": "6.211045"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "11.030810"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "11.029372"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "15.439612"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "14.501551"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "14.014062"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "14.921256"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "14.910140"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "13.864695"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "13.245514"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "13.242886"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.529032"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.333662"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.654243"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.566120"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.556177"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.971361"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.319762"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.317679"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.921387"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.920225"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.606478"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "27.389090"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "27.376490"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "total_ms": "24.492249"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Loading.UpdatePreloading",
+          "total_ms": "24.492054"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "total_ms": "24.491472"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "total_ms": "24.490831"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "24.490322"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "24.445776"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "24.287757"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Font.CacheFontForText",
+          "total_ms": "23.620202"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.534580"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "5.933964"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "10.598873"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "10.593017"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "6.244922"
+        },
+        {
+          "frame": "7",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "6.233934"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.705080"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.152092"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.360325"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.695240"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.684164"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.123081"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.310533"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.306750"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.650349"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.065414"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.550858"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.628166"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.617460"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.868225"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.076748"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.072669"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.783148"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.205754"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.781881"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.799686"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.788773"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.107290"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.299690"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.296342"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.478628"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.886583"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.419571"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.464273"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.452744"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.797577"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.002901"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.000343"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.619497"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.045333"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.453770"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.563835"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.553444"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.969308"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.219783"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.217570"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.756454"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.224399"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.231500"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.878912"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.869371"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.255849"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.393824"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.390311"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.559671"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.934517"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.230306"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.632118"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.620123"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "13.585425"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "12.648667"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "12.644227"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.779068"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.087318"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.616251"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.701431"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.689205"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.008818"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.152309"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.148785"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.671520"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.035786"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.595748"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "17.063480"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "17.048880"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.357002"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.158331"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.155331"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.557737"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.691766"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.250364"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.416407"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.404343"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.055739"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "12.957556"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "12.951942"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.699425"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.860653"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.398818"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.418507"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.408096"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.873925"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.051112"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.046472"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.647842"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.037123"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.600858"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "17.071301"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "17.055901"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.333246"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.118314"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.111430"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.806013"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.867164"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.002262"
+        }
+      ]
+    }
+  },
+  "vsync1/run2/timings.csv": {
+    "frames": 121,
+    "steadyFrames": 0,
+    "counters": {
+      "delta_ms": null,
+      "cpu_ms": null,
+      "main_ms": null,
+      "present_wait_ms": null,
+      "render_ms": null,
+      "gpu_ms": null,
+      "main_rec_ns": null,
+      "render_rec_ns": null,
+      "wait_rec_ns": null,
+      "gc_bytes": null
+    },
+    "native": {
+      "firstFrame": 0,
+      "lastFrame": 121,
+      "topInclusiveSamples": [
+        {
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "totalMs": 10867.887
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "totalMs": 10867.864
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "totalMs": 4549.942
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "totalMs": 4397.636
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 4390.133
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "totalMs": 4188.496
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2552.278
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "totalMs": 2522.297
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "totalMs": 2244.939
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "totalMs": 1808.902
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "totalMs": 767.911
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "totalMs": 767.345
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "totalMs": 341.658
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "totalMs": 171.466
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "totalMs": 169.581
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "totalMs": 169.342
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "totalMs": 140.625
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "totalMs": 137.906
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "totalMs": 129.961
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "totalMs": 115.067
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!::UpdateFunction.Invoke() [Invoke]",
+          "totalMs": 114.087
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GameCorePumpLoop",
+          "totalMs": 113.009
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "totalMs": 110.542
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "totalMs": 100.773
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "totalMs": 98.072
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "totalMs": 85.874
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "totalMs": 84.309
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "totalMs": 83.721
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "totalMs": 83.633
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "totalMs": 83.619
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "totalMs": 79.914
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "totalMs": 79.859
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "totalMs": 79.315
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "totalMs": 79.241
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "totalMs": 68.866
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "totalMs": 67.699
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "totalMs": 61.423
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 61.254
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "totalMs": 59.033
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "totalMs": 56.523
+        },
+        {
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "totalMs": 56.453
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "totalMs": 55.344
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "totalMs": 53.258
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "totalMs": 51.203
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "totalMs": 48.28
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "totalMs": 43.588
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "totalMs": 42.016
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "totalMs": 41.779
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "totalMs": 40.777
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "totalMs": 34.326
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "totalMs": 28.806
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "totalMs": 28.778
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "totalMs": 27.89
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "totalMs": 27.544
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "totalMs": 27.179
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "totalMs": 27.108
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "totalMs": 26.657
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "totalMs": 25.838
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "totalMs": 25.722
+        },
+        {
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "totalMs": 24.663
+        }
+      ],
+      "startupSamplesOver5ms": [
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "8621.646484"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initiliaze Il2cpp",
+          "total_ms": "40.776928"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Player",
+          "total_ms": "6.091838"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Manager",
+          "total_ms": "42.016291"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObject",
+          "total_ms": "67.179458"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.ReadObjectThreaded",
+          "total_ms": "51.002600"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ReadObjectFromSerializedFile",
+          "total_ms": "41.608922"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "AwakeFromLoad Threaded",
+          "total_ms": "6.324467"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadRemainingPreallocatedObjects",
+          "total_ms": "17.623751"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "IntegrateAllThreadedObjects",
+          "total_ms": "58.725453"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "59.143071"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Graphics",
+          "total_ms": "341.658325"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeEngineGraphics",
+          "total_ms": "171.465546"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Initialize Gfx Device",
+          "total_ms": "169.581360"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create Client Gfx Device Main",
+          "total_ms": "169.342270"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "2686.481033"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseMainThread",
+          "total_ms": "10.171508"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Shader.ParseThreaded",
+          "total_ms": "9.233079"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ShaderFromSerializedShader",
+          "total_ms": "9.009687"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading Gloabl Managers",
+          "total_ms": "85.873535"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Init FMOD",
+          "total_ms": "24.240337"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Alloc",
+          "total_ms": "8.803722"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "20.438061"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "ManagedObjectProxy.Init",
+          "total_ms": "8.272849"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Script RebuildFromAwake",
+          "total_ms": "6.073182"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Loading.LoadFileCompletely",
+          "total_ms": "43.587612"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded",
+          "total_ms": "27.543552"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFileThreaded_LoadObjects",
+          "total_ms": "27.107613"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "doneInitializingEngineGraphics.Invoke",
+          "total_ms": "84.309090"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.InputSystem.dll!UnityEngine.InputSystem::InputSystem.RunInitializeInPlayer() [Invoke]",
+          "total_ms": "5.271966"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::HollowmereApplication.RegisterAtStartup() [Invoke]",
+          "total_ms": "68.865822"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "LoadFirstScene",
+          "total_ms": "27.178766"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "playerLoadFirstScenePreAwake.Invoke",
+          "total_ms": "26.656679"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsInitialization.InitializeUIElementsManaged() [Invoke]",
+          "total_ms": "22.794661"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "115.966045"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2522.297260"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "2515.012129"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.WaitForAsyncOperationToComplete",
+          "total_ms": "115.067329"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "113.609825"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "sceneLoadedBeforeAwake.Invoke",
+          "total_ms": "110.541977"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AttachToEntityClonerInjection.Initialize() [Invoke]",
+          "total_ms": "22.442863"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "InitializeAllComponentTypes",
+          "total_ms": "14.385970"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Unity.Entities.Hybrid.dll!Unity.Entities::AutomaticWorldBootstrap.Initialize() [Invoke]",
+          "total_ms": "83.632744"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "Create World & Systems",
+          "total_ms": "83.618736"
+        },
+        {
+          "frame": "0",
+          "thread": "Main Thread",
+          "marker": "new World()",
+          "total_ms": "8.735012"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "8638.208984"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "518.103847"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "517.998823"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "2570.058662"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Texture.WaitForAsyncUpload",
+          "total_ms": "6.162897"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadBlocking",
+          "total_ms": "6.160385"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUploadAll",
+          "total_ms": "8.945429"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "AsyncUploadManager.AsyncResourceUpload",
+          "total_ms": "8.667636"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingCompleteCallback",
+          "total_ms": "8.647156"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.TextureProcessingFinalizeCallback",
+          "total_ms": "8.639626"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Async.UploadTexture",
+          "total_ms": "8.620998"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRender",
+          "total_ms": "2552.278301"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "SplashScreenRenderBackground",
+          "total_ms": "7.489984"
+        },
+        {
+          "frame": "0",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "2539.970242"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "174.239990"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "174.223083"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.ScriptRunDelayedStartupFrame",
+          "total_ms": "28.777557"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "CoroutinesDelayedCalls",
+          "total_ms": "28.791888"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Boot.dll!Hollowmere.Boot::GameBoot.Start() [Invoke]",
+          "total_ms": "21.041746"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.GetHandle",
+          "total_ms": "8.889640"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "SoundManager.LoadFMODSound",
+          "total_ms": "8.885806"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "GC.Collect",
+          "total_ms": "7.490669"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Hollowmere.Game.dll!Hollowmere.Game::HollowmereGame.Start() [Invoke]",
+          "total_ms": "7.681220"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "6.501106"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "WaitForJobGroupID",
+          "total_ms": "6.740425"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "EngineJob",
+          "total_ms": "8.099471"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PreLateUpdate.UIElementsUpdatePanels",
+          "total_ms": "17.051575"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.UpdatePanels() [Invoke]",
+          "total_ms": "17.043327"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Layout.HollowmerePanelSettings (runtime)",
+          "total_ms": "14.124813"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Layout",
+          "total_ms": "12.101899"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "LayoutUpdater.ComputeLayout",
+          "total_ms": "12.031711"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "InvokeMeasureFunction",
+          "total_ms": "11.891486"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextGenerator.Prepare",
+          "total_ms": "5.322965"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.TryAddCharacter",
+          "total_ms": "5.170585"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.UIElementsRepaintPanels",
+          "total_ms": "74.268738"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.UIElementsModule.dll!UnityEngine.UIElements::UIElementsRuntimeUtilityNative.RepaintPanels() [Invoke]",
+          "total_ms": "74.261086"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UIElementsRuntimeUtility.DoDispatch(Repaint Event)",
+          "total_ms": "74.232422"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Panel.Update.HollowmerePanelSettings (runtime)",
+          "total_ms": "74.231277"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Runtime Bindings",
+          "total_ms": "14.640870"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Binding",
+          "total_ms": "13.394756"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Update Rendering",
+          "total_ms": "59.517590"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.Process",
+          "total_ms": "53.501972"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "RenderChain.UpdateVisuals",
+          "total_ms": "53.258034"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "TextJob.UpdateMainThread",
+          "total_ms": "48.279968"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontAsset.UpdateGlyphAdjustmentRecords",
+          "total_ms": "20.908028"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetPairAdjustmentRecords",
+          "total_ms": "20.424408"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeFontFeatures",
+          "total_ms": "20.392817"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.GetOpenTypeLayoutTables",
+          "total_ms": "20.226955"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Table",
+          "total_ms": "18.524302"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "FontEngine.Get_GPOS_Lookups",
+          "total_ms": "18.520380"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "46.603737"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UnityEngine.CoreModule.dll!UnityEngine.Rendering::RenderPipelineManager.DoRenderLoop_Internal() [Invoke]",
+          "total_ms": "46.173294"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Shader.CreateGPUProgram",
+          "total_ms": "6.534455"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderTotal",
+          "total_ms": "18.816799"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RenderCameraStack",
+          "total_ms": "18.429296"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "10.848415"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_RecordRenderGraph",
+          "total_ms": "5.993296"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "Inl_ScriptableRenderContext.Submit",
+          "total_ms": "6.653694"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "6.628433"
+        },
+        {
+          "frame": "1",
+          "thread": "Main Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "6.615556"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "157.734650"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "9.236454"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "148.635590"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "148.263684"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera",
+          "total_ms": "6.829621"
+        },
+        {
+          "frame": "1",
+          "thread": "Render Thread",
+          "marker": "ExecuteRenderGraph",
+          "total_ms": "6.828334"
+        },
+        {
+          "frame": "2",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "8.751495"
+        },
+        {
+          "frame": "2",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "7.067281"
+        },
+        {
+          "frame": "2",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "6.501557"
+        },
+        {
+          "frame": "3",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "7.436885"
+        },
+        {
+          "frame": "3",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "7.426761"
+        },
+        {
+          "frame": "3",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "6.306381"
+        },
+        {
+          "frame": "3",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "5.677398"
+        },
+        {
+          "frame": "3",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "5.675713"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.818758"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.368580"
+        },
+        {
+          "frame": "3",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.879137"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.914621"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.903776"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.684574"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.968305"
+        },
+        {
+          "frame": "4",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.964005"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.660376"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.424607"
+        },
+        {
+          "frame": "4",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.665065"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.732080"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.722355"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.972939"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.187210"
+        },
+        {
+          "frame": "5",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.182900"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.691397"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.690195"
+        },
+        {
+          "frame": "5",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "14.780788"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "28.734793"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "28.713987"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "EarlyUpdate.UpdatePreloading",
+          "total_ms": "24.349707"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Loading.UpdatePreloading",
+          "total_ms": "24.349566"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "UpdatePreloading",
+          "total_ms": "24.349064"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Application.Integrate Assets in Background",
+          "total_ms": "24.348251"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Preload Single Step",
+          "total_ms": "24.347692"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Application.LoadLevelAsync Integrate",
+          "total_ms": "24.296463"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Loading.AwakeFromLoad",
+          "total_ms": "24.016576"
+        },
+        {
+          "frame": "6",
+          "thread": "Main Thread",
+          "marker": "Font.CacheFontForText",
+          "total_ms": "23.236309"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.508024"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "Gfx.WaitForGfxCommandsFromMainThread",
+          "total_ms": "12.250652"
+        },
+        {
+          "frame": "6",
+          "thread": "Render Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "12.248237"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.654358"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.185179"
+        },
+        {
+          "frame": "7",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.553434"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.742521"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.732418"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.373807"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.593827"
+        },
+        {
+          "frame": "8",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.591311"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.723782"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.146202"
+        },
+        {
+          "frame": "8",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.283126"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.724501"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.715628"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.194415"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.405501"
+        },
+        {
+          "frame": "9",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.404151"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.790642"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.213088"
+        },
+        {
+          "frame": "9",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.431580"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.960669"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.948217"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.473843"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.535631"
+        },
+        {
+          "frame": "10",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.530663"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.533823"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.845626"
+        },
+        {
+          "frame": "10",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "14.998807"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.488783"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.476845"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.654089"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "13.759765"
+        },
+        {
+          "frame": "11",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "13.755058"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.676510"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.007968"
+        },
+        {
+          "frame": "11",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.477298"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.603613"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.591429"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.824368"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "13.999135"
+        },
+        {
+          "frame": "12",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "13.994466"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.667309"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.067836"
+        },
+        {
+          "frame": "12",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.391080"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.752411"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.739313"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.109135"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.209743"
+        },
+        {
+          "frame": "13",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.204833"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.659899"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.998828"
+        },
+        {
+          "frame": "13",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.509732"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.704647"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.692526"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.811855"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "13.863030"
+        },
+        {
+          "frame": "14",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "13.857930"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.655273"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "15.953895"
+        },
+        {
+          "frame": "14",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.379538"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.551373"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.539530"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.654922"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "13.798930"
+        },
+        {
+          "frame": "15",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "13.793727"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.820721"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.208466"
+        },
+        {
+          "frame": "15",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.729381"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.736397"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.724840"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.903258"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.131182"
+        },
+        {
+          "frame": "16",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.127331"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.587297"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.022956"
+        },
+        {
+          "frame": "16",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.590709"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.510517"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.500149"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "14.858266"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.155772"
+        },
+        {
+          "frame": "17",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.154258"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.626974"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.124801"
+        },
+        {
+          "frame": "17",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.758862"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.623314"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.614117"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.106967"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.419863"
+        },
+        {
+          "frame": "18",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.417772"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.682076"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.146827"
+        },
+        {
+          "frame": "18",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.777913"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "Main Thread",
+          "total_ms": "16.675114"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "PlayerLoop",
+          "total_ms": "16.666485"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "PostLateUpdate.FinishFrameRendering",
+          "total_ms": "15.269503"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "WaitForTargetFPS",
+          "total_ms": "14.571547"
+        },
+        {
+          "frame": "19",
+          "thread": "Main Thread",
+          "marker": "Semaphore.WaitForSignal",
+          "total_ms": "14.570048"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "(unnamed)",
+          "total_ms": "16.665934"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "RenderLoop",
+          "total_ms": "16.151152"
+        },
+        {
+          "frame": "19",
+          "thread": "Render Thread",
+          "marker": "Gfx.PresentFrame",
+          "total_ms": "15.813910"
+        }
+      ]
+    }
+  }
+}

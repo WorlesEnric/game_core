@@ -1,0 +1,120 @@
+The selected window backend is x11 
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-studio/p3.1d/artifacts/studio/evidence/P3.1d/player/Hollowmere_Data/UnitySubsystems
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Hollowmere] registered the application definition at SubsystemRegistration (11 plugins)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Boot.HollowmereApplication:RegisterAtStartup()
+
+Disable old input system
+UnloadTime: 0.193097 ms
+[Hollowmere] adopted the application root registered at SubsystemRegistration
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Boot.GameBoot:Adopt(HollowmereApplication)
+Hollowmere.Boot.GameBoot:Start()
+
+[Hollowmere] frame pacing vsync=0 target=-1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.FrameProfile:Configure(GameObject)
+Hollowmere.Game.HollowmerePersistentSession:Begin(HollowmereCommandLine)
+Hollowmere.Game.HollowmerePersistentSession:Ensure(HollowmereCommandLine)
+Hollowmere.Game.HollowmereGame:Start()
+
+[Hollowmere] frame log -> /home/worlesenric/wkspace/gc-studio/p3.1d/artifacts/studio/evidence/P3.1d/smoke/frame-log.csv
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.HollowmerePersistentSession:Begin(HollowmereCommandLine)
+Hollowmere.Game.HollowmerePersistentSession:Ensure(HollowmereCommandLine)
+Hollowmere.Game.HollowmereGame:Start()
+
+[autoplay] script with 9 commands, quitAfterFrames=0 frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Run(AutoplayScript, IAutoplayHost, Int32)
+Hollowmere.Game.HollowmerePersistentSession:Begin(HollowmereCommandLine)
+Hollowmere.Game.HollowmerePersistentSession:Ensure(HollowmereCommandLine)
+Hollowmere.Game.HollowmereGame:Start()
+
+[autoplay] 3 waituntil ready timeout 90 frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 3 reached 'ready' after 0.00 s (Running)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Step(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 4 mark boot frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 5 ui newgame frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 6 waituntil ready timeout 90 frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 6 reached 'ready' after 0.00 s (Running)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Step(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 7 mark newgame frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 8 walk 0 -9 timeout 15 frame=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 8 arrived at (0.00, -10.00) after 0.78 s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Walk(AutoplayCommand, Single)
+Hollowmere.Game.AutoplayRunner:Step(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 9 waitframes 450 frame=1425
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 10 mark done frame=1875
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] 11 quit 0 frame=1875
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Begin(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[autoplay] quit 0 at frame 1875
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+Hollowmere.Game.AutoplayRunner:Step(AutoplayCommand)
+Hollowmere.Game.AutoplayRunner:Update()
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.

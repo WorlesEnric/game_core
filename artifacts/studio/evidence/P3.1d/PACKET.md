@@ -1,103 +1,125 @@
-# P3.1d — real-GPU frame performance
+# P3.1d — Hollowmere real-GPU B-FRAME
 
-Branch `codex/p3.1d`, base `1752ca8a`. Only owned game, evidence, B-FRAME cell and appended P3.1b note paths.
-
-## Profile first
-
-07 does not specify VSync or an uncapped rate. Preserve the row rule and measure both VSync states on Xorg :1, RTX 4060 Ti, 1920×1080 borderless, without capture or another Editor. Development diagnostics precede performance changes. No deep profiling. Opt-in frame timing/ProfilerRecorder samples and native profiler captures are retained separately from qualification.
+Branch `codex/p3.1d`, base `1752ca8a`. Final runtime/build revision **`f67a6de368263c21df86a1ce81d15e8eeeea0a23`**.
+Host myubuntu, 2026-10-06 (+08:00). **Default uncapped: PASS in both final runs. VSync enabled: FAIL on p95 only.**
 
 ## R2 fixes
 
-Pending profiler attribution (B-FRAME subset of R2-38; packet-specific IDs below).
+These are packet-specific IDs for the B-FRAME subset of R2-38.
+
+| Finding | Profiled cause and final fix | Regression / proof |
+|---|---|---|
+| P31d-PACING | VSync presentation wait dominates the ~18 ms p95; GameBoot now defaults to uncapped rendering, with `-frameVsync 0\|1` for explicit comparison. No quality downgrade. | `P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored`; unchanged budget check fails on P3.1c and passes on both final default runs. |
+| P31d-BOOT | `Attach` emitted ready before presentation. First-render layout, font, binding and render setup are CPU-heavy. Render the real menu under an opaque loading curtain with controls disabled, then expose/enable it and focus `menu-new`. Region IO waits until after the first menu presentation frames. | `P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu` fails on baseline XML, passes after; `P31d_BOOT_RegionWaitsForPresentedMenu`; all four final ready rows match real presentation frame 3, input enabled and focus `menu-new`. |
+| P31d-LOG | Native frame 10680 attributes **704.595 ms** of a **706.662 ms** frame to `FrameLogRecorder.LateUpdate`, with **705.763 ms** render-thread wait and only **0.088 ms GC.Alloc**. Final recording retains immutable 120-frame blocks in memory; explicit Flush/shutdown coalesces/writes them and surfaces errors. Automatic recording performs no IO or task scheduling. | `P31d_LOG_AutomaticFlushDoesNotWaitForStorage` fails with the blocking automatic flush and passes after; `P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain`; all four final runs have zero post-ready stalls. |
+
+The recorder runs after game/session LateUpdate. `boot-warmup` deliberately has no `load` substring and cannot
+manufacture a transition exemption. **The statistics algorithm, clocks, sample values and budgets are unchanged.**
+All startup rows remain retained; the menu is physically covered and disabled during warmup. No logger-only ready
+delay, dt clamping, dropped rows or new statistical exclusion was added. The first visible, responsive menu frame
+is included in the ready window.
+
+## Profile first
+
+Baseline development player **`352b0499`**, :1 / RTX 4060 Ti / OpenGLCore / 1920×1080 borderless; no deep profiling.
+Short village profiles precede performance changes. Their steady diagnostic windows (after 12 s only for
+attribution) have uncapped p95 **2.857 / 2.852 ms**, versus VSync **18.118 / 17.945 ms**. Median VSync main work is
+**2.390 / 2.417 ms**, present wait **14.227 / 14.188 ms**, render-thread p95 **0.780 / 0.782 ms**. Native
+`Gfx.PresentFrame` / `WaitForTargetFPS` agrees. No shared plugin or visual quality reduction was justified.
+
+Separate 120-frame startup captures retain initialization. A representative first gameplay frame has
+GameBoot.Start **51.918 ms**, HollowmereGame.Start **9.958 ms**, UI layout **20.943 ms**, UI repaint **91.764 ms**,
+and finish-frame rendering **61.805 ms**. These are inclusive/nested samples, not additive independent costs.
+The first logged delta also spans preceding engine/splash startup.
+
+Long captures initially exported a 300-frame tail; the later 2000-frame export of the **same capture** includes
+the logger stall. See `profile-baseline/flush-stall.json`. All eight original native captures remain at the host
+paths and SHA-256 values in `capture-manifest.json`; compressed native sample exports are committed.
+`profile-baseline/measurement/profile-summary.json` and `profile-startup/measurement/profile-summary.json`
+retain the counter/sample summaries. GPU-duration counters return zero on this OpenGL player and are unavailable,
+not zero-cost GPU evidence.
+
+## Final real-GPU measurements
+
+Exactly `PROBE_RUNS=2` per VSync state on the final player, unchanged `Autoplay/playthrough.txt`, no capture,
+no profiler instrumentation, no other Editor/player. One allocator reservation plus its mutex covers all four
+launches. Exact commands and before/after inventories are in each run directory. Authoritative report:
+[measurement/qualification.json](measurement/qualification.json).
+
+| Metric | VSync off 1 | VSync off 2 | VSync on 1 | VSync on 2 |
+|---|---:|---:|---:|---:|
+| Duration (s) | 607.359 | 609.984 | 608.382 | 608.196 |
+| p95 (ms; ≤16.7) | 2.778 | 2.856 | 18.062 | 18.089 |
+| >100 ms outside transitions | 0 | 0 | 0 | 0 |
+| Worst transition (ms; ≤250) | 87.853 | 91.395 | 93.913 | 85.264 |
+| Marsh→belfry (ms) | 10.03 | 8.522 | 19.982 | 19.666 |
+| Manual-save worst frame (ms) | 46.235 | 47.326 | 48.542 | 45.811 |
+| Manual-save capture diagnostic (ms) | 42.433 | 43.383 | 41.9 | 41.434 |
+| First ready frame (frame 3; ms) | 1.388 | 3.424 | 2.151 | 1.830 |
+| B-FRAME | PASS | PASS | FAIL | FAIL |
+
+All four players exit **0** and reach menu → new game → three regions → save → Ending C → restart → restore →
+final walk. Every manual-save window has zero >100 ms frames. Its window remains two frames before `ui save.1`
+through three frames after `saved`, inclusive. All profile, route, readiness, focus, save and inventory checks pass.
+
+**VSync ambiguity:** 07 does not define VSync. Its rule is unchanged and both states are reported. The game's
+new default (off/uncapped) passes; the explicitly enabled state fails the p95 limit. There is no unqualified
+claim that the VSync-enabled profile passes. The original P3.1 video is unchanged; no new recording was made.
+
+## Intermediate failures retained
+
+- `measurement-before-logger/`, **703e5509**: two complete uncapped routes, p95 **2.873 / 2.855 ms**, >100 ms
+  **7 / 0**. All seven stalls follow synchronous 120-frame flushes. This superseded sequence stopped after the
+  second player exited, before VSync runs.
+- `measurement-worker/`, **a5dc112d**: one complete uncapped route, p95 **2.877 ms**, >100 ms **5**. Background
+  filesystem writing did not suffice; that sequence stopped after this completed player, before further runs.
+- These three intermediate full runs are visible, not relabeled as passes or erased. The final four runs use
+  changed code; no unchanged failing binary was repeatedly sampled to obtain a lucky pass.
+- The first profiler exporter failed on an unnamed render sample; null-name handling/thread enumeration fixed
+  it. The combined export/test invocation produced no XML and is not test evidence. The separate baseline
+  readiness test failed for the expected premature marker. A preliminary scoped suite exposed a SendMessage
+  fixture assertion after Play Mode; direct invocation fixed that fixture.
+- After all **four final player exits, host-after inventories and statistics files**, the launcher returned 127
+  (`line 111: 3: command not found`) following an in-place provenance-text edit. The launch-time script is retained
+  as `measurement/launcher-at-start.sh`; `wrapper-result.json` records the error. The report was run offline and
+  all non-budget checks pass. Current scripts pass `bash -n`. No player was rerun for this trailing shell error.
+
+## Verification
+
+| Check on final runtime | Result | Evidence |
+|---|---|---|
+| Full EditMode | **468 passed, 0 failed, 20 skipped** (488) | `tests/editmode-buffered.xml` |
+| Full PlayMode | **22/22 passed** | `tests/playmode-buffered.xml` |
+| Five P31d regressions + BakeVerifies | **Passed** | full EditMode XML; baseline failures in `baseline-test-only.xml`, `logger-before.xml` |
+| Metadata / C# | **PASS**, 42 packages / 1207 C# files | `metadata-check.txt`, `csharp-check.txt` |
+| Linux IL2CPP release build | **PASS**, 0 errors, 5 warnings; 83 s wrapper / 43.413 s build | `build/release-buffered-*.log`, `build/build-report.json` |
+| Player smoke | **exit 0**, 1875 frames | `smoke/result.json` |
+| Final GPU routes | **4/4 complete**, per-state budgets above | `measurement/` |
+
+XML is authoritative. The 20 unchanged skips are explicit/live ETOS/voice/workflow or graphical Editor fixtures;
+they are listed by name/reason in `tests/results.json` and are not counted as passes. No paid gate was enabled.
+No dotnet/Rust source or shared package changed. No authored content, bake or Studio authoring journal change is
+committed. Build-generated settings were preserved beside the build then restored. Test-created fixture journals
+were removed with hashes in `tests/fixture-cleanup.json`; incidental historical memory output was retained here
+and its original file restored. Shipped player file hashes are in `build/shipped-files.json`.
 
 ## Requests to other packets
 
-None identified.
+None. All implementation changes are game-owned; no shared runtime seam was required.
 
 ## Left open
 
-- VSync qualification policy is unspecified in 07; both states will be reported without changing its budget.
+- 07's VSync policy is unspecified. Default/off passes; on fails p95 **18.062 / 18.089 ms**. The row preserves both
+  measured dispositions without relaxing any budget.
+- Direct GPU-duration counters are unavailable on this OpenGL profile. Attribution uses CPU/present/render
+  timings, native samples and controlled VSync comparison; no GPU-millisecond value is claimed.
+- The exact mechanism of the worker-version residual stalls was not isolated with a native capture of that
+  intermediate revision. Do not attribute them to GC/GPU. The original 704.595 ms synchronous logger stall is
+  directly profiled; final acceptance is based on the completed memory-buffered runs.
+- The opt-in frame recorder uses memory proportional to run length and can lose unflushed samples on abrupt
+  process death. Explicit Flush/normal shutdown publishes all rows. Normal play without `-frameLog` has no recorder.
+- The 20 skipped Editor cases and unrelated verification rows remain outside this performance qualification.
 
-Profiler API references (Unity primary sources):
-- https://docs.unity.com/en-us/engine/6000.5/manual/analysis/profiler/command-line-arguments
-- https://unity.com/blog/engine-platform/detecting-performance-bottlenecks-with-unity-frame-timing-manager
-- https://github.com/Unity-Technologies/UnityCsReference/blob/6000.0/Modules/ProfilerEditor/Public/RawFrameDataView.bindings.cs
-
-`profile_stats.py` excludes the first 12 seconds only for *diagnostic attribution* of steady village work. `frame_stats.py` is unchanged and qualification still includes every row from the first ready marker, with the original transition rule.
-
-## Baseline attribution
-
-Development player `352b0499`, zero build errors; native binary profiling (no deep profiling), plus `FrameTimingManager` and `ProfilerRecorder`. Four short village profiles and four separately capped 120-frame startup profiles, all on :1/NVIDIA/1080p under the allocator mutex with zero Editors. These are diagnostic samples, not additional acceptance attempts.
-
-Steady village (after 12 s, diagnostics only): uncapped p95 **2.857 / 2.852 ms**; VSync p95 **18.118 / 17.945 ms**. VSync main-thread median **2.390 / 2.417 ms**, present wait median **14.227 / 14.188 ms**, render-thread p95 **0.780 / 0.782 ms**. Native samples independently show `Gfx.PresentFrame` / `WaitForTargetFPS` dominating; kernel pump is about 1 ms in the captured VSync tail. Thus the ~18 ms steady excess is presentation pacing, not a demonstrated need to reduce visual quality or change shared plugins.
-
-The startup capture shows real first-render initialization on the CPU: representative frame 1 has GameBoot.Start 51.918 ms, HollowmereGame.Start 9.958 ms, UI panel layout 20.943 ms (26 ms UI update), UI repaint 91.764 ms (font/layout/binding/render-chain work), finish-frame rendering 61.805 ms. These are inclusive/nested samples, not additive independent timings. The first logged delta also spans preceding engine/splash startup. Full startup rows remain retained.
-
-Native long captures are larger than the Editor history window; their initial exported CSV covered a 300-frame tail; the final export expands this to 2000 frames for logger attribution. Short startup captures preserve frame 0 onward. The first exporter failed on an unnamed render-thread sample; null-name handling and explicit thread counts fix the exporter. The failed combined export/test invocation has no XML and is NOT test evidence. The isolated baseline regression XML records the expected failure: `Ready == false` while Attach emitted `ready`.
-
-## Implementation under validation
-
-- **P31d-PACING:** GameBoot defaults to uncapped rendering; `-frameVsync 0|1` explicitly selects both measured states. No URP quality downgrade.
-- **P31d-BOOT:** Warm the real menu layout, glyph atlas, bindings and first render under an opaque loading surface, with menu controls disabled. After two completed loading renders, expose/enable the menu. Only actual readiness emits `ready`. Region IO additionally waits until after the menu presentation frames. This is a product loading state, not a logger-only delay; all pre-ready rows carry `boot-warmup` and remain in the CSV. The statistics algorithm is unchanged.
-- Regression: `P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu` fails on baseline (`tests/baseline-test-only.xml`); additional policy coverage: `P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored`, `P31d_BOOT_RegionWaitsForPresentedMenu`.
-- No shared package, authored content, bake, or Studio authoring journal change is intended.
-
-GPU duration counters return zero on this OpenGL player and are unavailable, not zero-cost GPU evidence. Attribution relies on the measured CPU/present/render counters, native samples and the controlled VSync comparison.
-
-The recorder runs after gameplay/session LateUpdate, so the first visible menu frame carries readiness in that same row. `boot-warmup` deliberately contains no `load` substring: it cannot manufacture a transition exemption in the existing statistics rule.
-
-## Test verification on `703e5509`
-
-| Check | Disposition |
-|---|---|
-| Full final EditMode | 466 passed, 0 failed, 20 skipped, 486 total; `tests/editmode-final.xml` |
-| Full PlayMode | 22 passed, 0 failed, 0 skipped; `tests/playmode-full.xml` |
-| All three P31d regressions | Passed in full EditMode; premature-ready regression has retained baseline failure |
-| `P31AuthoringTests.BakeVerifies` | Passed in full EditMode; bake/content unchanged |
-| Metadata and C# checkers | Pass; transcripts retained |
-
-The 20 skips are retained by name/reason in `tests/results.json`: explicitly gated live ETOS/voice/workflow cases,
-graphical Editor cases, and explicit acceptance/memory fixtures. They are not counted as passes. No paid gate was enabled.
-The wrapper therefore calls EditMode partial/skipped despite zero failures; the packet reports the XML counts directly.
-The game-focused preliminary filter selected a memory fixture which wrote its historical default evidence path;
-that incidental file was copied into this packet and the original restored. New test fixture journal entries were
-removed (hashes in `tests/fixture-cleanup.json`); no authoring-journal/content change is committed.
-
-## P31d-LOG — newly reproduced synchronous logger stalls
-
-The first release (`703e5509`) completed two uncapped full routes: p95 **2.873 / 2.855 ms**, post-ready >100 ms
-**7 / 0**. All seven run-1 stalls occurred at `frame % 120 == 1`, immediately after synchronous logger flushes.
-Those runs remain in `measurement-before-logger/`; the first player's binaries/manifests are retained separately.
-The superseded sequence was stopped only after run 2 exited, before starting VSync qualification. This is an
-intermediate-code failure, not an unchanged-binary rerun to obtain a lucky pass.
-
-Expanding the **existing** baseline capture to Unity's 2000-frame history limit proves the cause:
-`profile-baseline/flush-stall.json` records native frame 10680, **704.595 ms in FrameLogRecorder.LateUpdate**,
-with **705.763 ms render-thread wait** and only **0.088 ms GC.Alloc**. The following logged delta is 706.662 ms.
-Thus this stall is logger/main-thread IO, not shader/GPU work or a large GC sample.
-
-Automatic 120-row flushes now enqueue immutable text to a serial worker. Explicit Flush/quit/destroy drain the
-queue, preserve row order and surface write failures. No row, timestamp or budget is changed. The deterministic
-`P31d_LOG_AutomaticFlushDoesNotWaitForStorage` failed with the blocking automatic flush (`tests/logger-before.xml`);
-`logger-before.patch` retains that test setup. `P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain` covers ordered
-publication and IO failure propagation. Final qualification must use the rebuilt logger-fixed revision, two full
-runs per VSync state; the intermediate pair remains reported separately.
-
-Final logger-fixed source **`a5dc112d`**: full EditMode **468 passed, 0 failed, 20 unchanged skips**
-(`tests/editmode-logger.xml`); full PlayMode **22/22 passed** (`tests/playmode-logger.xml`). All five P31d
-regressions and `BakeVerifies` pass. The deterministic logger-before XML is **1 passed / 1 expected failed**;
-the failure names `automatic flush waited for storage`, proving the old blocking path cannot return while the
-injected writer is held. Metadata and C# checkers pass on this source.
-
-The worker-writing intermediate (`a5dc112d`) also reproduced post-ready >100 ms stalls, so it is not promoted
-as accepted. Its completed run is retained separately. **Final recording policy:** automatic 120-frame blocks
-stay in memory; explicit Flush/shutdown coalesces and writes them, preserving all rows and surfacing failure.
-There is no filesystem activity or task scheduling from automatic recording. The slow-storage regression now
-also asserts that the writer has not even entered before explicit Flush. This opt-in benchmark log uses memory
-proportional to its run length (recorded CSV byte sizes provide the concrete scale); normal play without `-frameLog`
-creates no recorder. No frame-time samples or budget checks are removed.
-
-**Left open (historical attribution):** the exact mechanism of the worker-version residual stalls was not isolated
-with a native capture of that intermediate revision. Do not claim they were GC or GPU stalls. The directly profiled
-704.595 ms synchronous logger stall remains the proven initial cause; final outcome requires measurement of the
-memory-buffered implementation.
+Profiler API references: Unity's [command-line profiling](https://docs.unity.com/en-us/engine/6000.5/manual/analysis/profiler/command-line-arguments),
+[frame timing explanation](https://unity.com/blog/engine-platform/detecting-performance-bottlenecks-with-unity-frame-timing-manager),
+and [6000.0 native frame-data API](https://github.com/Unity-Technologies/UnityCsReference/blob/6000.0/Modules/ProfilerEditor/Public/RawFrameDataView.bindings.cs).

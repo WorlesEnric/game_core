@@ -1,0 +1,6 @@
+{
+  "source": "a5dc112d",
+  "reason": "Post-ready stalls persisted with background filesystem activity. Preserve the completed run; buffer recording blocks in memory until explicit flush/shutdown, then qualify changed source.",
+  "intentionalStopAfter": "vsync0/run1",
+  "notABudgetPass": true
+}

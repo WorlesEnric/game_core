@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.0723127">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="488" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.072313" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1584" name="Hollowmere.P3_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.057950" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1025284" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1585" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.057407" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1586" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.057090" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1587" name="EditMode" fullname="Hollowmere.P3_1.EditMode" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.056815" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1588" name="Tests" fullname="Hollowmere.P3_1.EditMode.Tests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.056516" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1581" name="P31dLogWriterTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.055243" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1582" name="P31d_LOG_AutomaticFlushDoesNotWaitForStorage" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_AutomaticFlushDoesNotWaitForStorage" methodname="P31d_LOG_AutomaticFlushDoesNotWaitForStorage" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" seed="515773250" result="Failed" start-time="2026-10-06 05:42:43Z" end-time="2026-10-06 05:42:48Z" duration="5.038418" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  the frame callback must return while storage is blocked
+  Expected: No Exception to be thrown
+  But was:  <System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.IO.IOException: automatic flush waited for storage
+  at Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests+<>c__DisplayClass0_0.<P31d_LOG_AutomaticFlushDoesNotWaitForStorage>b__0 (System.String text) [0x00053] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31dLogWriterTests.cs:35 
+  at Hollowmere.Game.FrameLogWriter+<>c__DisplayClass3_0.<Append>b__0 () [0x00072] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Game/Runtime/FrameLogRecorder.cs:32 
+  at Hollowmere.Game.FrameLogWriter.Drain () [0x00000] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Game/Runtime/FrameLogRecorder.cs:35 
+  at Hollowmere.Game.FrameLogRecorder.Flush () [0x00006] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Game/Runtime/FrameLogRecorder.cs:111 
+  at Hollowmere.Game.FrameLogRecorder.LateUpdate () [0x0010f] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Game/Runtime/FrameLogRecorder.cs:152 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <297b518d2c9f4ee5bb6b049e9ead4f70>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <297b518d2c9f4ee5bb6b049e9ead4f70>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <297b518d2c9f4ee5bb6b049e9ead4f70>:0 
+  at Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests+<>c__DisplayClass0_1.<P31d_LOG_AutomaticFlushDoesNotWaitForStorage>b__1 () [0x00004] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31dLogWriterTests.cs:39 
+  at NUnit.Framework.Constraints.ThrowsConstraint+VoidInvocationDescriptor.Invoke () [0x00000] in <f577cd9686154d6ab10efd7e65e64366>:0 
+  at NUnit.Framework.Constraints.ThrowsConstraint+ExceptionInterceptor.Intercept (System.Object invocation) [0x00041] in <f577cd9686154d6ab10efd7e65e64366>:0 >
+]]></message>
+                    <stack-trace><![CDATA[at Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_AutomaticFlushDoesNotWaitForStorage () [0x000d7] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31dLogWriterTests.cs:37
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1583" name="P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" methodname="P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" seed="2138697979" result="Passed" start-time="2026-10-06 05:42:48Z" end-time="2026-10-06 05:42:48Z" duration="0.006159" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

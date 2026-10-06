@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.042907">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="484" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.042907" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1579" name="Hollowmere.P3_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.033721" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="891284" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1580" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.033395" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1581" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.033219" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1582" name="EditMode" fullname="Hollowmere.P3_1.EditMode" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.033058" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1583" name="Tests" fullname="Hollowmere.P3_1.EditMode.Tests" runstate="Runnable" testcasecount="9" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.032881" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1577" name="P31dFrameTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.032024" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1578" name="P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" methodname="P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" seed="1637490934" result="Failed" start-time="2026-10-06 04:53:48Z" end-time="2026-10-06 04:53:48Z" duration="0.023785" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  attachment is not proof of a visible, responsive menu
+  Expected: not String containing ",ready"
+  But was:  "# hollowmere frame log
+# revision editor
+# started 2026-10-06T04:53:48.570Z
+# screen 640x480 Null Device Null
+frame,time_s,dt_ms,region,marker
+4,0.1395,99.494,,ready
+"
+]]></message>
+                    <stack-trace><![CDATA[at Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu () [0x000ac] in /home/worlesenric/wkspace/gc-studio/p3.1d/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31dFrameTests.cs:26
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[Assertion failed on expression: 'ShouldRunBehaviour()'
+[Hollowmere] frame pacing vsync=1 target=-1
+[Hollowmere] frame log -> /tmp/hollowmere-p31d-6561694da4764eadada900982fd1a126.csv
+Assertion failed on expression: 'ShouldRunBehaviour()'
+Failed to call function Begin of class FrameLogRecorder
+Calling function Begin with 1 parameter but the function requires 2.
+Assertion failed on expression: 'ShouldRunBehaviour()'
+Assertion failed on expression: 'ShouldRunBehaviour()'
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
