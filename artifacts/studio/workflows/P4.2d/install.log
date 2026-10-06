@@ -1,0 +1,119 @@
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -3,12 +3,13 @@
+ # Capped image/describe calls remain budget_unpriced: the node's image tariff is
+ # output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
+ [stage]
+-"command" = "~/wkspace/gc-studio/p4.2c/.evidence/live/studio/stage/stage.sh"
++"command" = "~/wkspace/gc-studio/p4.2d/.evidence/live/studio/stage/stage.sh"
+
+ [stage.projects]
+ "1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof"
+ "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
+ "b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere"
++"e41e230dc8eb516c7707488c9f8a1fe843009cc5f500b72e8605d7fae1684809" = "~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere"
+ "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8" = "~/wkspace/gc-studio/p4.2/games/hollowmere"
+
+ [[ops_prices]]
+
+registered e41e230dc8eb516c7707488c9f8a1fe843009cc5f500b72e8605d7fae1684809 -> ~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere
+--- ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
++++ ~/.local/share/etos-studio/agents/gamecore-studio/state/config.toml
+@@ -7,6 +7,7 @@
+
+ [stage.projects]
+ "1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof"
++"9fc502f5c3d9cf4613cb4acf536b0f1699dc59aaecff898f698ae6b4ffb6c408" = "~/wkspace/gc-studio/p4.2d/.evidence/live/games/cleanproof"
+ "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f" = "~/wkspace/gc-studio/p4.2/games/cleanproof"
+ "b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912" = "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere"
+ "e41e230dc8eb516c7707488c9f8a1fe843009cc5f500b72e8605d7fae1684809" = "~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere"
+
+registered 9fc502f5c3d9cf4613cb4acf536b0f1699dc59aaecff898f698ae6b4ffb6c408 -> ~/wkspace/gc-studio/p4.2d/.evidence/live/games/cleanproof
+restarted gamecore-studio
+healthy: 0.1.0-e8a72b2d6eb3aad9; previous release retained: 0.1.0-426b3ead95f21815
+unchanged: release 0.1.0-e8a72b2d6eb3aad9 (checksums verified)
+agent.toml: OK
+bin/gamecore-studio: OK
+workers/common.md: OK
+workers/gc-designer.md: OK
+workers/gc-mechanic.md: OK
+workers/importer-contract.json: OK
+workers/tests/fixtures/request8-original.json: OK
+workers/tests/test_r5_b.py: OK
+[
+  {
+    "agent": "gamecore-studio",
+    "version": "0.1.0",
+    "label": "GameCore Studio companion",
+    "source": "~/wkspace/gc-studio/main/studio/etos/agent",
+    "linked": true,
+    "state": "ready",
+    "pid": 2088961,
+    "restarts": 0,
+    "last_error": null,
+    "started_at": 1791285828501,
+    "connection": {
+      "connected": true,
+      "ready": true,
+      "sdk": "etos-sdk/rust/1.0.0",
+      "since": 1791285828550,
+      "endpoint": "http://127.0.0.1:39601",
+      "pending": 0
+    },
+    "grants": [
+      "logger",
+      "query",
+      "changes",
+      "tasks",
+      "files",
+      "topics",
+      "ops",
+      "providers",
+      "realtime",
+      "proxy",
+      "services"
+    ],
+    "workers": [
+      "gc-designer",
+      "gc-mechanic"
+    ],
+    "entrances": [],
+    "installed_at": 1791142156232,
+    "updated_at": 1791190286245
+  }
+]
+{
+  "release": "0.1.0-e8a72b2d6eb3aad9",
+  "stage": {
+    "command": "~/wkspace/gc-studio/p4.2d/.evidence/live/studio/stage/stage.sh",
+    "projects": {
+      "1d56403fe66c87acc3be4600467356128d250d0890881b7875bdb6df08c1cf1d": "~/wkspace/gc-studio/p4.2c/.evidence/live/games/cleanproof",
+      "9fc502f5c3d9cf4613cb4acf536b0f1699dc59aaecff898f698ae6b4ffb6c408": "~/wkspace/gc-studio/p4.2d/.evidence/live/games/cleanproof",
+      "a78d356acfe99f046f9aa6263828f36d55c969b068521c3472f5da6c8bbd3b7f": "~/wkspace/gc-studio/p4.2/games/cleanproof",
+      "b0adaacfa03e8add3e6684c91db5e5fba8cedf2cc36cd3a00116e384a8697912": "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere",
+      "e41e230dc8eb516c7707488c9f8a1fe843009cc5f500b72e8605d7fae1684809": "~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere",
+      "fd465bc5bd5491d4f887faf017ddb99ac90cba9ce717877fc5f6a53fbbfaa6d8": "~/wkspace/gc-studio/p4.2/games/hollowmere"
+    }
+  },
+  "ops_prices": [
+    {
+      "source": "operator",
+      "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+      "unit": "image",
+      "op": "image",
+      "provider": "echo-images",
+      "model": "gpt-image-2",
+      "per_unit": 0.2
+    },
+    {
+      "source": "published",
+      "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+      "unit": "bailian_character",
+      "op": "tts",
+      "provider": "bailian-tts",
+      "model": "qwen3-tts-flash",
+      "per_unit": 1.14682e-05
+    }
+  ],
+  "binarySha256": "2fa8b5ee1befa187730d539edfac46b01e3caef0a63b344072b821eacf555ab9"
+}

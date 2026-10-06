@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.764345">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="543" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.764345" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1783" name="Hollowmere.R5_B.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R5_B.EditMode.Tests.dll" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.745177" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2094410" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1784" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.741375" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1785" name="R5_B" fullname="Hollowmere.R5_B" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.740038" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1779" name="VirtualVoiceSelfTest" fullname="Hollowmere.R5_B.VirtualVoiceSelfTest" classname="Hollowmere.R5_B.VirtualVoiceSelfTest" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.738010" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1780" name="Request6_VirtualMicrophoneBothRetainedLinesTranscribe" fullname="Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe" methodname="Request6_VirtualMicrophoneBothRetainedLinesTranscribe" classname="Hollowmere.R5_B.VirtualVoiceSelfTest" runstate="Runnable" seed="1715711642" result="Passed" start-time="2026-10-06 11:26:34Z" end-time="2026-10-06 11:26:52Z" duration="17.724175" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="240000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] voice session vs_1a110f724ef84903ef151c1 capturing from microphone GC_P42d_mic @ 24000 Hz
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-0 bytes=4800 next=1 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-1 bytes=4800 next=2 rms=1.72070613E-05
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-2 bytes=4800 next=3 rms=0.0147898206
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-3 bytes=4800 next=4 rms=0.08347106
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-4 bytes=4800 next=5 rms=0.103006616
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-5 bytes=4800 next=6 rms=0.120809712
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-6 bytes=4800 next=7 rms=0.0366644524
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-7 bytes=4800 next=8 rms=0.0531885
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-8 bytes=4800 next=9 rms=0.09195445
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-9 bytes=4800 next=10 rms=0.124233954
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-10 bytes=4800 next=11 rms=0.143244937
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-11 bytes=4800 next=12 rms=0.131939515
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-12 bytes=4800 next=13 rms=0.08797699
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 provider speech_started item=item_ILlnYL6KZbpDZhurOEmwi
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-13 bytes=4800 next=14 rms=0.12944971
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-14 bytes=4800 next=15 rms=0.07515944
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-15 bytes=4800 next=16 rms=0.0640680343
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-16 bytes=4800 next=17 rms=0.0943417251
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-17 bytes=4800 next=18 rms=0.02782773
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-18 bytes=4800 next=19 rms=0.0818393752
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-19 bytes=4800 next=20 rms=0.07899677
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-20 bytes=4800 next=21 rms=0.03136648
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-21 bytes=4800 next=22 rms=0.04594312
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-22 bytes=4800 next=23 rms=0.0975592956
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-23 bytes=4800 next=24 rms=0.0685526058
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-24 bytes=4800 next=25 rms=0.13718614
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-25 bytes=4800 next=26 rms=0.050428547
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-26 bytes=4800 next=27 rms=0.009143997
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-27 bytes=4800 next=28 rms=0.003745935
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-28 bytes=4800 next=29 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-29 bytes=4800 next=30 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-30 bytes=4800 next=31 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-31 bytes=4800 next=32 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 provider speech_ended item=item_ILlnYL6KZbpDZhurOEmwi
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-32 bytes=4800 next=33 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-33 bytes=4800 next=34 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 transcript delivered item=item_ILlnYL6KZbpDZhurOEmwi revision=1 final=True chars=36 receivedAt=1791285998605
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-34 bytes=4800 next=35 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-35 bytes=4800 next=36 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-36 bytes=4800 next=37 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-37 bytes=4800 next=38 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-38 bytes=4800 next=39 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-39 bytes=4800 next=40 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-40 bytes=4800 next=41 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-41 bytes=4800 next=42 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 sent frame=audio-42 bytes=1152 next=43 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 release frames=43 bytes=202752
+[GameCore.Studio/etos] voice session=vs_1a110f724ef84903ef151c1 closed: stopped frames=43 bytes=202752 finals=1
+[GameCore.Studio/etos] voice session vs_1a110f7373ef226390757b5 capturing from microphone GC_P42d_mic @ 24000 Hz
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-0 bytes=4800 next=1 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-1 bytes=4800 next=2 rms=3.32265736E-05
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-2 bytes=4800 next=3 rms=0.0225019846
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-3 bytes=4800 next=4 rms=0.08787311
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-4 bytes=4800 next=5 rms=0.06593511
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-5 bytes=4800 next=6 rms=0.102716833
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-6 bytes=4800 next=7 rms=0.0809662938
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-7 bytes=4800 next=8 rms=0.0286359135
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-8 bytes=4800 next=9 rms=0.007144722
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-9 bytes=4800 next=10 rms=0.000425828679
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-10 bytes=4800 next=11 rms=0.07412877
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-11 bytes=4800 next=12 rms=0.113037489
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-12 bytes=4800 next=13 rms=0.05455306
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-13 bytes=4800 next=14 rms=0.0830936953
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-14 bytes=4800 next=15 rms=0.04668567
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-15 bytes=4800 next=16 rms=0.09543376
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-16 bytes=4800 next=17 rms=0.0300168172
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-17 bytes=4800 next=18 rms=0.0663030446
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-18 bytes=4800 next=19 rms=0.0287346672
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-19 bytes=4800 next=20 rms=0.0797123462
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-20 bytes=4800 next=21 rms=0.0670080855
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-21 bytes=4800 next=22 rms=0.09274551
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-22 bytes=4800 next=23 rms=0.07288996
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-23 bytes=4800 next=24 rms=0.1334905
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-24 bytes=4800 next=25 rms=0.09645871
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-25 bytes=4800 next=26 rms=0.0549917668
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-26 bytes=4800 next=27 rms=0.012655641
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-27 bytes=4800 next=28 rms=0.013041703
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-28 bytes=4800 next=29 rms=3.48789363E-05
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-29 bytes=4800 next=30 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-30 bytes=4800 next=31 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-31 bytes=4800 next=32 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-32 bytes=4800 next=33 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-33 bytes=4800 next=34 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-34 bytes=4800 next=35 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-35 bytes=4800 next=36 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-36 bytes=4800 next=37 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-37 bytes=4800 next=38 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-38 bytes=4800 next=39 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-39 bytes=4800 next=40 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-40 bytes=4800 next=41 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-41 bytes=4800 next=42 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-42 bytes=4800 next=43 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 sent frame=audio-43 bytes=448 next=44 rms=0
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 release frames=44 bytes=206848
+[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 transcript delivered item=item_Ne1TowofB9MlIrn1Q5Zrk revision=1 final=True chars=32 receivedAt=1791286004462
+[GameCore.Studio/etos] voice session=vs_1a110f7373ef226390757b5 closed: stopped frames=44 bytes=206848 finals=1
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

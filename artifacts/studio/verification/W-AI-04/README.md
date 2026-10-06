@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. The installed-companion candidate applies ui.bind: objective-line.text → vm:hud.QuestStageTitle (R3-D/D10b). The resulting authored binding is retained; separate-Editor reopen preserves it and its undo/redo/final undo succeeds.
 
-Report timestamp: 2026-10-06T09:08:50.174780+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.172977+00:00 UTC.
 
 Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

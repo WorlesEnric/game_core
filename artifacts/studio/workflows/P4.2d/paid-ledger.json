@@ -1,0 +1,45 @@
+{
+  "charges": [
+    {
+      "id": "gc-74fb8bcc4847800f4309361ef927a10a06edf441",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 36.0,
+      "costUsd": 0.0004128552
+    },
+    {
+      "id": "gc-99be1c47413505830ccefe739d6e79bd970d0256",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 32.0,
+      "costUsd": 0.0003669824
+    }
+  ],
+  "companionLedgerUsd": 0.0007798376,
+  "accountedUsd": 0.0007798376,
+  "operationCounts": {
+    "image": 0,
+    "tts": 2,
+    "describe": 0,
+    "3dPaid": 0,
+    "3dRefusals": 1
+  },
+  "voiceAccounting": "voice_sessions has no USD column; no provider invoice inferred",
+  "workerMicroUsd": 0,
+  "workerTaskCount": 8,
+  "voiceSessionCount": 4
+}

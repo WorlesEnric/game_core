@@ -1,17 +1,20 @@
 {
   "status": "FAIL",
-  "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-  "note": "Saved asset hashes and all three Applied journals survive a real Editor close/reopen. HUD and quest undo/redo/final undo pass; Odd undo refuses Conflict against the first operation\u2019s intermediate after-stamp although the second operation\u2019s final stamp matches. Final backToBefore=false; no forced undo or candidate edit.",
-  "command": "studio/tools/verify-all.sh p42c narrative\nstudio/tools/verify-all.sh p42c reopen",
-  "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+  "note": "All three live entries survive close/reopen with matching saved hashes; undo/redo/final undo succeeds. The separate retained two-operation Odd witness also passes in a different Editor with Play/Edit domain reload (1/1 XML), closing R5-A\u2019s final-postimage conflict. Full byte consistency still fails: backToBefore=false, with only contentStamp differences in Odd and DrownedBell among the four compared assets. Driver exit 0 is not treated as a full-row pass.",
+  "command": "studio/tools/verify-all.sh p42d reopen\nstudio/tools/verify-all.sh p42d history-prepare\nstudio/tools/verify-all.sh p42d history-reopen",
+  "tests": [
+    "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload"
+  ],
+  "baseline": "40fb91fa",
+  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-AI-06",
   "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T09:08:50.176943+00:00",
+  "reportedAt": "2026-10-06T12:40:21.174475+00:00",
   "evidence": [
-    "W-AI-06/p42c-reopen-20261006T073813.299352Z/README.md",
-    "W-AI-06/p42c-reopen-20261006T073813.299352Z/workflow/reopen/after-reopen.json",
-    "W-AI-06/p42c-reopen-20261006T073813.299352Z/workflow/odd-line/undo-result.json",
-    "W-AI-06/p42c-reopen-20261006T073813.299352Z/workflow/reopen/final.json"
+    "W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/after-reopen.json",
+    "W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/reopen/final.json",
+    "W-AI-06/p42d-history-reopen-20261006T115409.820866Z/results.xml",
+    "W-AI-06/p42d-reopen-20261006T114958.044810Z/workflow/odd-line/undo-result.json"
   ]
 }

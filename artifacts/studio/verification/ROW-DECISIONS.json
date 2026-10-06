@@ -36,14 +36,21 @@
     "command": "studio/tools/verify-all.sh memory"
   },
   "W-UI-05": {
-    "status": "FAIL",
-    "baseline": "1752ca8a",
-    "note": "picks: p95 [3.245, 3.7098] ms, median 3.4774 ms, budget 16.0 ms; marquee: p95 [330.90360000000004, 621.8599] ms, median 476.3818 ms, budget 50.0 ms",
+    "status": "PASS",
+    "note": "CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3.",
     "patterns": [
-      "B-SELECT/p42b-dataset-summary/README.md",
-      "B-SELECT/p42b-dataset-summary/dataset.json"
+      "W-UI-05/p42d-selection-20261006T112100.063994Z/results.xml",
+      "W-UI-05/p42d-selection-20261006T112100.063994Z/selection.json",
+      "W-UI-05/p42d-selection-repeat-*/results.xml",
+      "W-UI-05/p42d-selection-repeat-*/selection.json"
     ],
-    "command": "studio/tools/verify-all.sh final-timing\nstudio/tools/verify-all.sh final-selection"
+    "command": "studio/tools/verify-all.sh p42d selection\nstudio/tools/verify-all.sh p42d selection-repeat",
+    "tests": [
+      "R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
+      "R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms"
+    ],
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-MODEL-02": {
     "status": "BLOCKED",
@@ -223,15 +230,14 @@
   },
   "W-ETOS-07": {
     "status": "BLOCKED",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "Installed R4 operator-priced image and published-priced TTS calls return verified imports; Sprite binding passes and 3D refuses honestly. The full media row remains partial: describe has no binding tariff in authenticated hello and is not called. No provider invoice is inferred from local ceiling charges.",
+    "note": "P4.2d authenticated hello exposes image operator and TTS published tariffs; two TTS calls succeed. Describe is live but has no tariff; R5-B\u2019s template explicitly remains SET_BY_OPERATOR/0.0, so no describe call is made. Prior image-import evidence remains revision-specific; no invented per-call tariff or provider invoice.",
     "patterns": [
-      "INSTALL-P4.2c/hello-*/live/dotnet-a-hello.json",
-      "W-AI-01/p42c-robe2-*/workflow/icon/assign.json",
-      "W-DOC-01/p42c-guides-*/3d-refusal.json"
+      "INSTALL-P4.2d/hello-*/live/dotnet-a-hello.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/spoken-prompts.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c robe2\nstudio/tools/verify-all.sh p42c guides",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "studio/tools/verify-all.sh p42d hello\nstudio/tools/verify-all.sh p42d voice2",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-ETOS-08": {
     "status": "BLOCKED",
@@ -252,18 +258,19 @@
   },
   "W-VOICE-01": {
     "status": "FAIL",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "R4-A microphone path delivers the move final and its explicit Send/apply/undo. Destructive speech yields no transcript in the reused session and a fresh ready-gated session (560 chunks, peak 0.15248). Request/tray/journal counts stay unchanged. Dedicated XML: 0 passed, 1 failed; listening/final status labels are not partial speech revisions.",
+    "note": "R5-B ready-gated self-test passes both real speech fixtures with no submission. The later unchanged driver fails both takes after a provider session.updated acknowledgement error: playback falls outside capture and two late sessions deliver 70/144 all-zero frames, with zero transcripts. Destructive tray/request/journal counts remain unchanged. No transcript loss occurs on the companion\u2192client hop in the passing self-test.",
     "patterns": [
-      "W-VOICE-01/p42c-voice2-*/workflow/voice/destructive-check.json",
-      "W-VOICE-01/p42c-fresh-destructive-*/results.xml",
-      "W-VOICE-01/p42c-fresh-destructive-*/voice-result.json"
+      "W-VOICE-01/p42d-voice-self-compile-retry-*/results.xml",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/move-transcript.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-transcript.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-check.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c voice2\nstudio/tools/verify-all.sh p42c voice-proof",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "command": "bash artifacts/studio/verification/TOOLS/voice-self-p42d.sh\nstudio/tools/verify-all.sh p42d voice2",
     "tests": [
-      "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits"
-    ]
+      "Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe"
+    ],
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-AI-01": {
     "status": "BLOCKED",
@@ -278,28 +285,29 @@
     "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-02": {
-    "status": "BLOCKED",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "PARTIAL: the installed R4-C validator accepts the scoped move/patrol and ferryman candidates; both apply. The P3.2 driver has no in-Play NPC/nav assertion and tries to select Odd in Village. Ferryman Undo reports Undone but leaves the created NPC (roster 20\u219221\u219221); owner request retained.",
+    "status": "FAIL",
+    "note": "Creation/undo portion passes: exact roster identity set returns 20\u219221\u219220. The untouched live ferryman candidate also edits Odd\u2019s graph entry, leaving nodes 0\u20137 unreachable. The corrected driver fails its Play gate at bake with GP-DLG-005; NPC navigation/dialogue in Play is not established.",
     "patterns": [
-      "W-AI-02/p42c-text2-*/README.md",
-      "W-AI-02/p42c-text2-*/workflow/ferryman2/roster-undone.json",
-      "W-AI-02/p42c-text2-*/workflow/ferryman2/undo-result.json"
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/play-effect.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/roster-undone.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/undo-result.json",
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/candidate.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c text2",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "studio/tools/verify-all.sh p42d text2",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-AI-03": {
-    "status": "BLOCKED",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "PARTIAL: the live candidate applies; R3-D conditional-dialogue preview hides the new line when unlit and shows it for shrine_lit=1. The existing fact is reused, so R3-F same-candidate fact creation is not exercised. This driver does not run dialogue in Play.",
+    "status": "PASS",
+    "note": "The newly received live candidate applies unchanged. R5-C\u2019s actual Hollowmere Play observer confirms the added line is absent unlit and displayed when shrine_lit=1; the driver records pass.",
     "patterns": [
-      "W-AI-03/p42c-narrative-*/README.md",
-      "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-unlit.json",
-      "W-AI-03/p42c-narrative-*/workflow/odd-line/dialogue-preview-applied-shrine-lit.json"
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/play-effect.json",
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/candidate.json",
+      "W-AI-03/p42d-narrative-*/workflow/odd-line/apply-report.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c narrative",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "studio/tools/verify-all.sh p42d narrative",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-AI-04": {
     "status": "PASS",
@@ -314,43 +322,46 @@
     "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
   },
   "W-AI-05": {
-    "status": "BLOCKED",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "PARTIAL: the live scoped quest.addObjective candidate applies a Collect requirement of 2 against the real OilFlask definition, exercising R3-F/R4-C validation. The legacy simulator uses oil_flask and refuses GP-QST-004; no in-Play consequence is established.",
+    "status": "PASS",
+    "note": "The live two-operation candidate applies against the real indexed OilFlask identity. The simulator no longer refuses GP-QST-004, and the actual Play observer confirms stage 1 after one flask and stage 2 after two; the driver records pass.",
     "patterns": [
-      "W-AI-03/p42c-narrative-*/workflow/quest/candidate.json",
-      "W-AI-03/p42c-narrative-*/workflow/quest/apply-report.json",
-      "W-AI-03/p42c-narrative-*/workflow/quest/quest-simulate-applied.json"
+      "W-AI-03/p42d-narrative-*/workflow/quest/play-effect.json",
+      "W-AI-03/p42d-narrative-*/workflow/quest/candidate.json",
+      "W-AI-03/p42d-narrative-*/workflow/quest/apply-report.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c narrative",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "studio/tools/verify-all.sh p42d narrative",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-AI-06": {
     "status": "FAIL",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "Saved asset hashes and all three Applied journals survive a real Editor close/reopen. HUD and quest undo/redo/final undo pass; Odd undo refuses Conflict against the first operation\u2019s intermediate after-stamp although the second operation\u2019s final stamp matches. Final backToBefore=false; no forced undo or candidate edit.",
+    "note": "All three live entries survive close/reopen with matching saved hashes; undo/redo/final undo succeeds. The separate retained two-operation Odd witness also passes in a different Editor with Play/Edit domain reload (1/1 XML), closing R5-A\u2019s final-postimage conflict. Full byte consistency still fails: backToBefore=false, with only contentStamp differences in Odd and DrownedBell among the four compared assets. Driver exit 0 is not treated as a full-row pass.",
     "patterns": [
-      "W-AI-06/p42c-reopen-*/README.md",
-      "W-AI-06/p42c-reopen-*/workflow/reopen/after-reopen.json",
-      "W-AI-06/p42c-reopen-*/workflow/odd-line/undo-result.json",
-      "W-AI-06/p42c-reopen-*/workflow/reopen/final.json"
+      "W-AI-06/p42d-reopen-*/workflow/reopen/after-reopen.json",
+      "W-AI-06/p42d-reopen-*/workflow/reopen/final.json",
+      "W-AI-06/p42d-history-reopen-*/results.xml",
+      "W-AI-06/p42d-reopen-*/workflow/odd-line/undo-result.json"
     ],
-    "command": "studio/tools/verify-all.sh p42c narrative\nstudio/tools/verify-all.sh p42c reopen",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "studio/tools/verify-all.sh p42d reopen\nstudio/tools/verify-all.sh p42d history-prepare\nstudio/tools/verify-all.sh p42d history-reopen",
+    "tests": [
+      "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload"
+    ],
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-AI-07": {
     "status": "PASS",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "Installed R4-C provider-before-budget 3D refusal: not_configured surfaced, no generation.",
+    "note": "Installed-main provider-before-budget 3D refusal returns not_configured; no generation. The named XML case passes.",
     "patterns": [
-      "W-DOC-01/p42c-guides-*/results.xml",
-      "W-DOC-01/p42c-guides-*/3d-refusal.json"
+      "W-DOC-01/p42d-guide-*/3d-refusal.json",
+      "W-DOC-01/p42d-guide-*/results.xml"
     ],
-    "command": "studio/tools/verify-all.sh p42c guides",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "command": "studio/tools/verify-all.sh p42d guide",
     "tests": [
       "P42c.Live.GuideTests.P42_OPS_01_Installed3dRefusesUnconfigured"
-    ]
+    ],
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-PLUG-01": {
     "status": "BLOCKED",
@@ -562,19 +573,23 @@
   },
   "W-MECH-01": {
     "status": "FAIL",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "Installed R4-A/R3-C app-origin stage verifies through the authenticated service and enables Admit; the visible badge still says not staged. Docker cold 142.260 s / warm 62.905 s; each XML has 33 EditMode + 2 PlayMode passes. Actual Play Admit refuses catalog_missing because Entry.Verify opens Editor scenes during Play. No capture/restore/smoke/undo follows. Negative fixture is refused with Admit disabled (14 lexical hits).",
+    "note": "Installed app-origin stage passes all seven gates in 158.122 s (33 EditMode + 2 PlayMode XML passes). Authenticated fetch/verify enables Admit and the visible badge says verdict pass. Explicit Play Admit captures/stops and passes the real catalog checkpoint, but compilation stalls; the owned wrapper is stopped at 817 s. Recovery finishes rollback with catalog_mismatch because the signed delta has no world/predicted hashes. Package and pending record are absent afterward. No live restoration, tri-state smoke or successful admission undo is claimed. The semantic-negative fixture is refused with 14 lexical hits, no issued passing verdict and Admit disabled; Roslyn/Unity are skipped for that refusal.",
     "patterns": [
-      "W-MECH-01/p42c-signed-receipts-*/result.json",
-      "W-MECH-01/p42c-stage-submit-20261006T075911.180322Z/service/job.json",
-      "W-MECH-01/p42c-stage-submit-20261006T080546.723368Z/service/job.json",
-      "W-MECH-01/p42c-stage-review-20261006T081247.078280Z/play-verification.json",
-      "W-MECH-01/p42c-stage-review-20261006T081247.078280Z/admit.json",
-      "W-MECH-01/p42c-play-catalog-diagnostic-*/catalog-preflight.json",
-      "W-MECH-01/p42c-stage-review-negative-*/panel-verdict.json"
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/job.json",
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/editmode.xml",
+      "W-MECH-01/p42d-stage-submit-20261006T120325.388551Z/service/slot-out/playmode.xml",
+      "W-MECH-01/p42d-stage-review-*/panel-verdict.json",
+      "W-MECH-01/p42d-stage-review-*/play-verification.json",
+      "W-MECH-01/p42d-stage-recover-*/admission.json",
+      "W-MECH-01/p42d-stage-recover-*/outcome.json",
+      "W-MECH-01/p42d-signed-verdict-*/verified.json",
+      "W-MECH-01/p42d-signed-verdict-*/signed-record.json",
+      "W-MECH-01/p42d-stage-review-negative-*/panel-verdict.json",
+      "W-MECH-01/p42d-stage-submit-negative-*/service/job.json"
     ],
-    "command": "See artifacts/studio/verification/TOOLS/README-P4.2c.md: stage-submit, watch-stage-p42c.py, stage-review.",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source."
+    "command": "See artifacts/studio/verification/TOOLS/README-P4.2d.md: fresh identity, cache provision, stage-submit, watch-stage-p42c.py, stage-review, stage-recover.",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-GAME-01": {
     "status": "BLOCKED",
@@ -655,24 +670,19 @@
     "command": "studio/tools/verify-all.sh clean"
   },
   "W-DOC-01": {
-    "status": "FAIL",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-    "note": "Text Send passed. Image Send was accepted and produced a PNG; after the initial 180-second harness timeout, the same request was recovered without resubmission. Unity refuses its candidate: MediaImporterInvalid for textureType \"Sprite (2D and UI)\". The two deferred Send actions are recorded, but image import/assignment and the full novice NPC/dialogue walkthrough do not pass.",
+    "status": "PASS",
+    "note": "The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition.",
     "patterns": [
-      "W-DOC-01/p42c-guides-*/results.xml",
-      "W-DOC-01/p42c-guides-*/text-sent.json",
-      "W-DOC-01/p42c-guides-*/text-outcome.json",
-      "W-DOC-01/p42c-guides-*/image-sent.json",
-      "W-DOC-01/p42c-image-recovered-*/image-outcome.json",
-      "W-DOC-01/p42c-image-recovered-*/results.xml"
+      "W-DOC-01/p42d-guide-*/results.xml",
+      "W-DOC-01/p42d-guide-*/guide.json",
+      "W-DOC-01/p42d-guide-*/guide-applied.png"
     ],
-    "command": "studio/tools/verify-all.sh p42c guides\nstudio/tools/verify-all.sh p42c guide-recover",
-    "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+    "command": "studio/tools/verify-all.sh p42d guide",
     "tests": [
-      "P42c.Live.GuideTests.R2_38_CreatorGuide_TextSend",
-      "P42c.Live.GuideTests.R2_38_CreatorGuide_ImageSend",
-      "P42c.Live.GuideTests.R2_38_CreatorGuide_ResumeImageSendWithoutAnotherRequest"
-    ]
+      "P42d.Live.NoviceGuideTests.R2_38_Guide_NpcAndDialogueContextToolsUndo"
+    ],
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-DOC-02": {
     "status": "FAIL",
@@ -687,12 +697,16 @@
   },
   "W-E2E-01": {
     "status": "BLOCKED",
-    "note": "P4.2c ran the installed final-tree companion and disposed the requested rows, but live admission, history and destructive voice have retained failures; several workflow assertions and node-death scenarios remain unqualified. Inherited rows keep their original revision-specific evidence; this is not all-row product acceptance.",
+    "note": "P4.2d requalifies the requested R5/CORE-PICK rows on main 40fb91fa with the matching installed release. Real dialogue/quest Play effects and targeted NPC/history fixes pass, but the ferryman Play bake, full byte consistency, driver voice, and live admission retain failures. Describe remains unpriced. Untouched rows retain their original revision-specific evidence; this is not all-row product acceptance.",
     "patterns": [
-      "STATIC/final-evidence-regressions-*/README.md"
+      "W-AI-02/p42d-text2-*/workflow/ferryman2/play-effect.json",
+      "W-AI-06/p42d-reopen-*/workflow/reopen/final.json",
+      "W-MECH-01/p42d-stage-recover-*/outcome.json",
+      "W-VOICE-01/p42d-voice2-*/workflow/voice/destructive-transcript.json"
     ],
-    "command": "studio/tools/verify-all.sh all\n# Display/node jobs are separate documented subcommands.",
-    "baseline": "f787829289ea7402c08917a78553ff6c3838bda8"
+    "command": "See docs/studio/packets/P4.2d-live-rerun.md and artifacts/studio/verification/TOOLS/README-P4.2d.md.",
+    "baseline": "40fb91fa",
+    "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence."
   },
   "W-VIEW-01": {
     "status": "PASS",

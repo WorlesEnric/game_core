@@ -1,14 +1,21 @@
 {
-  "status": "FAIL",
-  "baseline": "1752ca8a",
-  "note": "picks: p95 [3.245, 3.7098] ms, median 3.4774 ms, budget 16.0 ms; marquee: p95 [330.90360000000004, 621.8599] ms, median 476.3818 ms, budget 50.0 ms",
-  "command": "studio/tools/verify-all.sh final-timing\nstudio/tools/verify-all.sh final-selection",
+  "status": "PASS",
+  "note": "CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3.",
+  "command": "studio/tools/verify-all.sh p42d selection\nstudio/tools/verify-all.sh p42d selection-repeat",
+  "tests": [
+    "R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
+    "R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms"
+  ],
+  "baseline": "40fb91fa",
+  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-UI-05",
   "scenario": "Selection/hover and marquee timings",
   "requirement": "B-SELECT",
-  "reportedAt": "2026-10-06T09:08:50.152336+00:00",
+  "reportedAt": "2026-10-06T12:40:21.152854+00:00",
   "evidence": [
-    "B-SELECT/p42b-dataset-summary/README.md",
-    "B-SELECT/p42b-dataset-summary/dataset.json"
+    "W-UI-05/p42d-selection-20261006T112100.063994Z/results.xml",
+    "W-UI-05/p42d-selection-20261006T112100.063994Z/selection.json",
+    "W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/results.xml",
+    "W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/selection.json"
   ]
 }

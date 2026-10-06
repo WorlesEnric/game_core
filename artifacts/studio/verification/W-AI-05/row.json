@@ -1,16 +1,16 @@
 {
-  "status": "BLOCKED",
-  "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-  "note": "PARTIAL: the live scoped quest.addObjective candidate applies a Collect requirement of 2 against the real OilFlask definition, exercising R3-F/R4-C validation. The legacy simulator uses oil_flask and refuses GP-QST-004; no in-Play consequence is established.",
-  "command": "studio/tools/verify-all.sh p42c narrative",
-  "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+  "status": "PASS",
+  "note": "The live two-operation candidate applies against the real indexed OilFlask identity. The simulator no longer refuses GP-QST-004, and the actual Play observer confirms stage 1 after one flask and stage 2 after two; the driver records pass.",
+  "command": "studio/tools/verify-all.sh p42d narrative",
+  "baseline": "40fb91fa",
+  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-AI-05",
   "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T09:08:50.175633+00:00",
+  "reportedAt": "2026-10-06T12:40:21.173851+00:00",
   "evidence": [
-    "W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/quest/candidate.json",
-    "W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/quest/apply-report.json",
-    "W-AI-03/p42c-narrative-20261006T073303.291662Z/workflow/quest/quest-simulate-applied.json"
+    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/play-effect.json",
+    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/candidate.json",
+    "W-AI-03/p42d-narrative-20261006T114113.853565Z/workflow/quest/apply-report.json"
   ]
 }

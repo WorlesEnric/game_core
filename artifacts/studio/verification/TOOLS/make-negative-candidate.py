@@ -6,10 +6,12 @@ import io
 import json
 from pathlib import Path
 import tarfile
+import sys
 import verify as v
 
 base=v.ROOT/'samples/mechanisms/pressure-plate/candidate'
-out=v.OUT/'W-MECH-01/negative-semantic-input'
+out=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else v.OUT/'W-MECH-01/negative-semantic-input'
+if out.exists() and len(sys.argv)>1: raise RuntimeError('refuse to overwrite retained negative candidate')
 (out/'artifacts').mkdir(parents=True,exist_ok=True)
 files={}
 with tarfile.open(base/'artifacts/package.tgz','r:gz') as archive:

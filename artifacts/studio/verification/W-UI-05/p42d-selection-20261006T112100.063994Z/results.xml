@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:36Z" duration="4.3754732">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="542" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:36Z" duration="4.375473" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1103" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.117520" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2070500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1104" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.112880" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1105" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.109376" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1106" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.106746" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1107" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="88" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.104319" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1013" name="CorePickRegressionTests" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.097723" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1018" name="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" methodname="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="1176375031" result="Passed" start-time="2026-10-06 11:23:31Z" end-time="2026-10-06 11:23:33Z" duration="2.077567" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[CORE-PICK] N=21 median=2.7997ms max=372.5925ms rendererSum=61.6029ms resolveSum=365.3291ms
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1791" name="P42b.Acceptance.Tests.dll" fullname="~/wkspace/gc-studio/p4.2d/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42b.Acceptance.Tests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 11:23:33Z" end-time="2026-10-06 11:23:36Z" duration="2.231756" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2070500" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1792" name="P42b" fullname="P42b" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 11:23:33Z" end-time="2026-10-06 11:23:36Z" duration="2.221620" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1793" name="Acceptance" fullname="P42b.Acceptance" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 11:23:33Z" end-time="2026-10-06 11:23:36Z" duration="2.219098" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1786" name="TimingTests" fullname="P42b.Acceptance.TimingTests" classname="P42b.Acceptance.TimingTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-06 11:23:33Z" end-time="2026-10-06 11:23:36Z" duration="2.215525" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1787" name="R2_38_B_SELECT_100PicksAnd500CandidateMarquee" fullname="P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee" methodname="R2_38_B_SELECT_100PicksAnd500CandidateMarquee" classname="P42b.Acceptance.TimingTests" runstate="Runnable" seed="1542827857" result="Passed" start-time="2026-10-06 11:23:33Z" end-time="2026-10-06 11:23:36Z" duration="2.211347" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

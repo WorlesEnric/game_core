@@ -10,6 +10,7 @@ export PYTHONDONTWRITEBYTECODE=1
 export PATH="$HOME/.dotnet:$HOME/.cargo/bin:$PATH"
 export GC_STUDIO_UNITY_SLOTS="${GC_STUDIO_UNITY_SLOTS:-3}" PROBE_RUNS=2
 case "${1:-all}" in
+  p42d) shift; exec python3 "$root/artifacts/studio/verification/TOOLS/live-p42d.py" "$@" ;;
   p42c) shift; exec python3 "$root/artifacts/studio/verification/TOOLS/live-p42c.py" "$@" ;;
   p42c-report) exec python3 "$root/artifacts/studio/verification/TOOLS/report_p42c.py" ;;
   final-report) exec python3 "$root/artifacts/studio/verification/TOOLS/report_p42b.py" ;;

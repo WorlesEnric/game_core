@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "requestedCalls": 1,
+  "performedCalls": 0,
+  "reason": "Authenticated installed hello reports describe live but includes no describe tariff. The main template has per_unit=0.0 and SET_BY_OPERATOR. No operator amount is supplied; a total packet cap does not establish a truthful per-call tariff.",
+  "source": "studio/etos/ops.toml.tmpl",
+  "requiredSeam": "Operator supplies positive total per-call estimate and provenance; installer prices --only describe applies it; authenticated hello must expose tariff.kind before dispatch. No node restart is authorized."
+}

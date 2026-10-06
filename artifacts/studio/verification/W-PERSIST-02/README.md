@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. Cosmetic-content save compatibility passes, but the literal prefab rename/reopen case is not exercised; no claim is inferred from stable GUID design alone.
 
-Report timestamp: 2026-10-06T09:08:50.183265+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.181785+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

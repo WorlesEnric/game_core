@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Production GameApplication boot with a corrupted catalog returns CatalogFingerprintMismatch and creates no world.
 
-Report timestamp: 2026-10-06T09:08:50.182474+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.180988+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

@@ -2,7 +2,7 @@
 
 Verdict: **PASS**. Belfry save/fresh-boot restore preserves canonical slots, items/facts, resident region and in-flight work exactly once; real game mid-quest restore continues to ending C.
 
-Report timestamp: 2026-10-06T09:08:50.182978+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.181485+00:00 UTC.
 
 Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 

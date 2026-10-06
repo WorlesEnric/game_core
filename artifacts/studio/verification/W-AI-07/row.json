@@ -1,18 +1,18 @@
 {
   "status": "PASS",
-  "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-  "note": "Installed R4-C provider-before-budget 3D refusal: not_configured surfaced, no generation.",
-  "command": "studio/tools/verify-all.sh p42c guides",
-  "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+  "note": "Installed-main provider-before-budget 3D refusal returns not_configured; no generation. The named XML case passes.",
+  "command": "studio/tools/verify-all.sh p42d guide",
   "tests": [
     "P42c.Live.GuideTests.P42_OPS_01_Installed3dRefusesUnconfigured"
   ],
+  "baseline": "40fb91fa",
+  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
   "row": "W-AI-07",
   "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
   "requirement": "SADR-020",
-  "reportedAt": "2026-10-06T09:08:50.177799+00:00",
+  "reportedAt": "2026-10-06T12:40:21.175384+00:00",
   "evidence": [
-    "W-DOC-01/p42c-guides-20261006T082946.366496Z/results.xml",
-    "W-DOC-01/p42c-guides-20261006T082946.366496Z/3d-refusal.json"
+    "W-DOC-01/p42d-guide-20261006T123449.140659Z/3d-refusal.json",
+    "W-DOC-01/p42d-guide-20261006T123449.140659Z/results.xml"
   ]
 }

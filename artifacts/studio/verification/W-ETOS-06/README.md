@@ -2,7 +2,7 @@
 
 Verdict: **BLOCKED**. Companion portion PASS: actual etos agent restart, same task, one cancellation outcome and exact four-event cursor replay; reconnect 143.1 ms, cancel ack 188.0 ms. Node-death portion remains BLOCKED: etosd stop/restart is forbidden, and a companion restart cannot prove delayed attribution after node death.
 
-Report timestamp: 2026-10-06T09:08:50.166823+00:00 UTC.
+Report timestamp: 2026-10-06T12:40:21.167299+00:00 UTC.
 
 Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
 
