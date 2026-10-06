@@ -1,0 +1,37 @@
+   Compiling gamecore-studio v0.1.0 (~/wkspace/gc-studio/r5-b/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5m 54s
+     Running unittests src/lib.rs (studio/agent/target/debug/deps/gamecore_studio-7c49548b0c6f1153)
+
+running 1 test
+test voice::tests::realtime_refusals_are_recovered_from_sdk_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 95 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (studio/agent/target/debug/deps/gamecore_studio-78a602b15b9e6176)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/companion.rs (studio/agent/target/debug/deps/companion-8455471aa95cbf08)
+
+running 3 tests
+
+thread 'request6_voice_stop_commits_before_close_when_vad_emits_nothing' (1743665) panicked at tests/companion.rs:2310:25:
+range end index 2147483591 out of range for slice of length 126764
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test request6_voice_stop_commits_before_close_when_vad_emits_nothing ... FAILED
+
+thread 'tokio-rt-worker' (1743672) panicked at ~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.2/src/runtime/time/entry.rs:539:9:
+A Tokio 1.x context was found, but it is being shutdown.
+test voice_refusal_passes_through ... ok
+test voice_session_ready_transcripts_and_close ... ok
+
+failures:
+
+failures:
+    request6_voice_stop_commits_before_close_when_vad_emits_nothing
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 29 filtered out; finished in 0.30s
+
+error: test failed, to rerun pass `--test companion`
