@@ -157,6 +157,7 @@ namespace GameCore.Studio.UI.Tests
                 Assert.That(apply, Is.Not.Null);
                 using (NavigationSubmitEvent submit = NavigationSubmitEvent.GetPooled())
                 {
+                    submit.target = apply;
                     apply.SendEvent(submit);
                 }
                 yield return null;

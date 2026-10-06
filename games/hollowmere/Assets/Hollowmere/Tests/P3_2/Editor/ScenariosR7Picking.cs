@@ -113,6 +113,10 @@ namespace Hollowmere.P3_2.Workflows
                 Block("capture_unavailable: a graphics-enabled Editor is required (batch or the explicitly authorized graphical display :1); -nographics cannot supply real viewport or GUIView captures. No controller-only scenario was substituted.");
                 yield break;
             }
+            // Restored Studio panels from earlier qualification otherwise overlap the composite capture.
+            // This process is an isolated executeMethod Editor, not the creator's running session.
+            foreach (EditorWindow restored in Resources.FindObjectsOfTypeAll<EditorWindow>())
+                if (restored.GetType().Namespace == UnityWindowCapture.StudioNamespace) restored.Close();
             _window = CreateInstance<StudioViewportWindow>();
             _window.UseContext(_context);
             _window.minSize = new Vector2(1280, 720);

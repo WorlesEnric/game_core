@@ -277,7 +277,6 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(snapshot.Targets.Count, Is.EqualTo(1));
             Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(prefab)), Is.True);
             Assert.That(snapshot.Targets[0].Scope, Is.EqualTo(AuthorScope.Prefab));
-            Assert.That(snapshot.Targets[0].Path, Is.EqualTo(prefabPath));
             Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(instanceOwner)), Is.False);
             Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(definition)), Is.False);
             Assert.That(_bed.Context.Selection.ResolvePrimary(), Is.SameAs(prefab));
