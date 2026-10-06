@@ -177,6 +177,7 @@ namespace GameCore.Studio.Edit
                     return HistoryResult.Refused(id, DiagnosticCodes.Refused, "Runtime actions are non-undoable.");
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             List<Operation> inverses = new List<Operation>();
+            var checkedTargets = new List<AuthoringRef>();
             IReadOnlyList<OperationOutcome> outcomes = entry.Outcomes ?? Array.Empty<OperationOutcome>();
             for (int i = outcomes.Count - 1; i >= 0; i--)
             {
@@ -194,7 +195,7 @@ namespace GameCore.Studio.Edit
 
                 if (!force)
                 {
-                    CheckAfter(payload, diagnostics);
+                    CheckAfter(payload, diagnostics, checkedTargets);
                 }
 
                 inverses.AddRange(payload.Operations);
@@ -529,10 +530,13 @@ namespace GameCore.Studio.Edit
             SaveRedo();
         }
 
-        private void CheckAfter(UndoPayload payload, List<Diagnostic> diagnostics)
+        private void CheckAfter(UndoPayload payload, List<Diagnostic> diagnostics, List<AuthoringRef> checkedTargets)
         {
             foreach (StampWitness witness in payload.After)
             {
+                // Outcomes are visited in reverse: only the final postimage of each target is current.
+                if (checkedTargets.Exists(reference => reference.SameTarget(witness.Ref))) continue;
+                checkedTargets.Add(witness.Ref);
                 UnityEngine.Object? found = _runtime.Resolver.Find(witness.Ref);
                 if (found == null)
                 {

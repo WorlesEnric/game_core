@@ -1,0 +1,37 @@
+{
+  "name": "Hollowmere.R5_A.Editor.Tests",
+  "rootNamespace": "Hollowmere.R5_A",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Npc",
+    "GameCore.Gameplay.Npc.Editor",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "GameCore.Studio.Model",
+    "GameCore.Unity.App",
+    "Hollowmere.Authoring.Editor",
+    "Hollowmere.Boot",
+    "Hollowmere.Game",
+    "UnityEditor.TestRunner",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

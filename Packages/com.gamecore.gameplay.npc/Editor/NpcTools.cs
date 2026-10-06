@@ -40,7 +40,7 @@ namespace GameCore.Gameplay.Npc.Editor
         }
 
         /// <summary><see cref="AddAt"/> into an explicit scene (authoring scripts and tests).</summary>
-        public static AuthoredEntity AddAtIn(Scene scene, NpcDefinition npc, Vector3 location, float yaw, string name)
+        public static AuthoredEntity AddAtIn(Scene scene, NpcDefinition npc, Vector3 location, float yaw, string name, string? authoringId = null)
         {
             if (npc == null || npc.Entity == null)
             {
@@ -55,6 +55,13 @@ namespace GameCore.Gameplay.Npc.Editor
                 throw new ArgumentException(PlayerNpcInteractionCodes.NpcNotPlaced + ": the location lies outside the scene's region");
             }
 
+            if (authoringId != null)
+            {
+                var serialized = new SerializedObject(entity);
+                serialized.FindProperty("authoringId").stringValue = authoringId;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(entity);
+            }
             return entity;
         }
 
@@ -65,6 +72,13 @@ namespace GameCore.Gameplay.Npc.Editor
             NpcDefinition npc,
             [AuthorArg(Unit = "m", Doc = "Patrol points (at least one), world space.")] Vector3[] points,
             [AuthorArg(Unit = "s", Min = 0, Max = 600, Required = false, Doc = "Wait at each point.")] float waitSeconds = 1.5f)
+        {
+            return SetPatrolPrepared(npc, points, waitSeconds, null, null);
+        }
+
+        /// <summary>Trusted engine preparation supplies a retained path and identity before asset creation.</summary>
+        public static BehaviourDefinition SetPatrolPrepared(NpcDefinition npc, Vector3[] points, float waitSeconds,
+            string? preparedPath, string? authoringId)
         {
             if (npc == null)
             {
@@ -83,7 +97,13 @@ namespace GameCore.Gameplay.Npc.Editor
                 behaviour.EnsureAuthoringId();
                 string npcPath = AssetDatabase.GetAssetPath(npc);
                 string directory = string.IsNullOrEmpty(npcPath) ? "Assets" : Path.GetDirectoryName(npcPath)!.Replace('\\', '/');
-                AssetDatabase.CreateAsset(behaviour, AssetDatabase.GenerateUniqueAssetPath(directory + "/" + npc.name + "Behaviour.asset"));
+                if (authoringId != null)
+                {
+                    var serialized = new SerializedObject(behaviour);
+                    serialized.FindProperty("authoringId").stringValue = authoringId;
+                    serialized.ApplyModifiedPropertiesWithoutUndo();
+                }
+                AssetDatabase.CreateAsset(behaviour, preparedPath ?? AssetDatabase.GenerateUniqueAssetPath(directory + "/" + npc.name + "Behaviour.asset"));
                 Undo.RegisterCreatedObjectUndo(behaviour, "npc.setPatrol");
                 Undo.RecordObject(npc, "npc.setPatrol");
                 npc.SetBehaviour(behaviour);
