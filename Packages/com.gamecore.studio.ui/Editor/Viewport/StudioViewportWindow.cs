@@ -242,7 +242,7 @@ namespace GameCore.Studio.UI
         public IReadOnlyList<PickCandidate> ClickAt(Vector2 point, SelectionOp op)
         {
             IReadOnlyList<PickCandidate> candidates = Picker.Click(point, op);
-            if (candidates.Count >= 2 && _overlap != null)
+            if (candidates.Count > 0 && _overlap != null)
             {
                 _pressOp = op;
                 _overlap.Show(candidates, point + new Vector2(12f, 12f), NameOf);
@@ -256,7 +256,17 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>A marquee over <paramref name="rect"/> (viewport points).</summary>
-        public PickResult MarqueeSelect(Rect rect, SelectionOp op, bool? full = null) => Picker.Marquee(rect, op, full ?? fullContainment);
+        public PickResult MarqueeSelect(Rect rect, SelectionOp op, bool? full = null)
+        {
+            var before = new List<AuthoringRef>(Context.Selection.Targets);
+            var beforeParts = new List<PartRef>(Context.Selection.Parts);
+            PickResult result = Picker.Marquee(rect, op, full ?? fullContainment);
+            if (Picker.HasMarqueeOverlap(result.Candidates))
+                _overlap?.ShowMarquee(result.Candidates, rect.max + new Vector2(12, 12), NameOf,
+                    chosen => Picker.ApplyMarqueeChoices(chosen, rect, op, before, beforeParts));
+            else _overlap?.Hide();
+            return result;
+        }
 
         /// <summary>Right-click point-at: samples the ground (NavMesh when present) and sets the selection's location.</summary>
         public LocationPick PointAtLocation(Vector2 point)
@@ -526,7 +536,8 @@ namespace GameCore.Studio.UI
             _statusLabel = new Label { name = "viewport-status", pickingMode = PickingMode.Ignore };
             _statusLabel.AddToClassList("gcs-viewport__status");
             overlay.Add(_statusLabel);
-            _overlap = new OverlapPopup((candidate, part) => Choose(candidate, part, _pressOp));
+            _overlap = new OverlapPopup((candidate, choice) => Picker.Choose(candidate, choice, _pressOp),
+                (candidate, choice) => Picker.TryResolveChoice(candidate, choice, out _));
             _area.Add(_overlap);
             _strip = new CandidateStripView(context);
             _area.Add(_strip);
@@ -1010,7 +1021,6 @@ namespace GameCore.Studio.UI
 
         // ------------------------------------------------------------------------------------------- visuals
 
-        private void Choose(PickCandidate candidate, bool part, SelectionOp op) => Picker.Choose(candidate, part, op);
 
         private void UpdateHoverVisuals()
         {

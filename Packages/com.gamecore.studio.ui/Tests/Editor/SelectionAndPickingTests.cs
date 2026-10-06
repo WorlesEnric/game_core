@@ -242,6 +242,138 @@ namespace GameCore.Studio.UI.Tests
         }
 
         [Test]
+        public void R7_D_W_UI_03_PrefabChoice_SelectsOriginatingRootNotChildPartOrDefinition()
+        {
+            FixtureNpcDefinition definition = _bed.CreateNpc("NpcDefinition");
+            GameObject source = new GameObject("OriginatingPrefab");
+            GameObject ownerObject = new GameObject("AuthoredChild");
+            ownerObject.transform.SetParent(source.transform, false);
+            FixtureAuthoredEntity owner = ownerObject.AddComponent<FixtureAuthoredEntity>();
+            owner.definition = definition;
+            UiTestBed.MintId(owner);
+            GameObject mesh = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            mesh.name = "PickedMesh";
+            mesh.transform.SetParent(ownerObject.transform, false);
+            string prefabPath = _bed.Folder + "/OriginatingPrefab.prefab";
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(source, prefabPath);
+            Object.DestroyImmediate(source);
+            GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            FixtureAuthoredEntity instanceOwner = instance.GetComponentInChildren<FixtureAuthoredEntity>();
+            _bed.SaveScene();
+            _bed.Runtime.Index.Rebuild();
+            string ownerBefore = EditorJsonUtility.ToJson(instanceOwner);
+            string definitionBefore = EditorJsonUtility.ToJson(definition);
+            string prefabBefore = _bed.Ref(prefab).Stamp!;
+            ViewportPicker picker = Picker();
+            PickCandidate candidate = FindCandidate(picker.CandidatesAt(Center, out _), instanceOwner);
+            Assert.That(candidate.Part, Is.Not.Null, "the ray must hit the nested mesh, not the prefab root");
+
+            Assert.That(picker.TryResolveChoice(candidate, PickChoice.Prefab, out AuthoringRef resolved), Is.True);
+            Assert.That(_bed.Runtime.Resolver.Find(resolved), Is.SameAs(prefab));
+            picker.Choose(candidate, PickChoice.Part, SelectionOp.Replace);
+            picker.Choose(candidate, PickChoice.Prefab, SelectionOp.Replace);
+
+            SelectionSnapshot snapshot = _bed.Context.Selection.Capture(SelectionMode.Edit);
+            Assert.That(snapshot.Targets.Count, Is.EqualTo(1));
+            Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(prefab)), Is.True);
+            Assert.That(snapshot.Targets[0].Scope, Is.EqualTo(AuthorScope.Prefab));
+            Assert.That(snapshot.Targets[0].Path, Is.EqualTo(prefabPath));
+            Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(instanceOwner)), Is.False);
+            Assert.That(snapshot.Targets[0].SameTarget(_bed.Ref(definition)), Is.False);
+            Assert.That(_bed.Context.Selection.ResolvePrimary(), Is.SameAs(prefab));
+            Assert.That(_bed.Context.Selection.Parts, Is.Empty);
+            Assert.That(EditorJsonUtility.ToJson(instanceOwner), Is.EqualTo(ownerBefore));
+            Assert.That(EditorJsonUtility.ToJson(definition), Is.EqualTo(definitionBefore));
+            Assert.That(_bed.Ref(prefab).Stamp, Is.EqualTo(prefabBefore), "choosing an edit scope must not mutate the prefab");
+        }
+
+        [Test]
+        public void R7_D_W_UI_03_LogicalAndPartChoices_KeepOwnerAndOnlyExplicitPart()
+        {
+            FixtureAuthoredEntity owner = _bed.SpawnEntity("LogicalOwner", Vector3.zero);
+            _bed.SaveScene();
+            AuthoringRef reference = _bed.Ref(owner);
+            PickCandidate candidate = new PickCandidate(reference, owner, owner.gameObject, "Mesh:Detail", 10f, false, PickSource.Marquee, 0, Vector3.zero);
+            ViewportPicker picker = Picker();
+
+            picker.Choose(candidate, PickChoice.Part, SelectionOp.Replace);
+            AssertTargets(owner);
+            Assert.That(_bed.Context.Selection.Parts.Count, Is.EqualTo(1));
+            Assert.That(_bed.Context.Selection.Parts[0].Owner.SameTarget(reference), Is.True);
+            Assert.That(_bed.Context.Selection.Parts[0].Part, Is.EqualTo("Mesh:Detail"));
+            picker.Choose(candidate, PickChoice.Logical, SelectionOp.Replace);
+            AssertTargets(owner);
+            Assert.That(_bed.Context.Selection.Parts, Is.Empty);
+            Assert.That(_bed.Context.Selection.Targets[0].Scope, Is.EqualTo(reference.Scope));
+            Assert.That(_bed.Ref(owner).Stamp, Is.EqualTo(reference.Stamp));
+        }
+
+        [Test]
+        public void R7_D_W_UI_03_InstanceScope_PreservesIdentityClearsPartsAndReplacesPriorScope()
+        {
+            FixtureAuthoredEntity owner = _bed.SpawnEntity("SceneInstance", Vector3.zero);
+            _bed.SaveScene();
+            AuthoringRef reference = _bed.Ref(owner);
+            PickCandidate candidate = new PickCandidate(reference, owner, owner.gameObject, "Mesh:Detail", 10f, false, PickSource.Marquee, 0, Vector3.zero);
+            ViewportPicker picker = Picker();
+            picker.Choose(candidate, PickChoice.Part, SelectionOp.Replace);
+
+            picker.Choose(candidate, PickChoice.InstanceScope, SelectionOp.Replace);
+            AssertTargets(owner);
+            Assert.That(_bed.Context.Selection.Targets[0].Scope, Is.EqualTo(AuthorScope.Instance));
+            Assert.That(_bed.Context.Selection.Parts, Is.Empty);
+            Assert.That(_bed.Context.Selection.ResolvePrimary(), Is.SameAs(owner));
+
+            _bed.Context.Selection.Set(new[] { reference });
+            Assert.That(_bed.Context.Selection.Targets[0].Scope, Is.EqualTo(reference.Scope));
+            picker.Choose(candidate, PickChoice.InstanceScope, SelectionOp.Replace);
+            Assert.That(_bed.Context.Selection.Targets[0].SameTarget(reference), Is.True);
+            Assert.That(_bed.Context.Selection.Targets[0].Scope, Is.EqualTo(AuthorScope.Instance), "same identity with no parts still needs an explicit scope update");
+            Assert.That(_bed.Ref(owner).Stamp, Is.EqualTo(reference.Stamp));
+        }
+
+        [Test]
+        public void R7_D_W_UI_03_AbsentPrefabChoice_PreservesSelectionPartsAndRectangle()
+        {
+            FixtureAuthoredEntity owner = _bed.SpawnEntity("NotAPrefabInstance", Vector3.zero);
+            _bed.SaveScene();
+            AuthoringRef reference = _bed.Ref(owner);
+            RegionRect rectangle = new RegionRect(new double[] { 10, 20, 100, 200 });
+            _bed.Context.Selection.Set(new[] { reference }, SelectionOp.Replace, rectangle, new[] { new PartRef(reference, "Mesh:Detail") });
+            long version = _bed.Context.Selection.Version;
+            PickCandidate candidate = new PickCandidate(reference, owner, owner.gameObject, "Mesh:Detail", 10f, false, PickSource.Marquee, 0, Vector3.zero);
+            ViewportPicker picker = Picker();
+
+            Assert.That(picker.TryResolveChoice(candidate, PickChoice.Prefab, out _), Is.False);
+            picker.Choose(candidate, PickChoice.Prefab, SelectionOp.Replace);
+
+            AssertTargets(owner);
+            Assert.That(_bed.Context.Selection.Parts.Count, Is.EqualTo(1));
+            Assert.That(_bed.Context.Selection.Parts[0].Part, Is.EqualTo("Mesh:Detail"));
+            Assert.That(_bed.Context.Selection.RegionRect!.Screen, Is.EqualTo(rectangle.Screen));
+            Assert.That(_bed.Context.Selection.Version, Is.EqualTo(version));
+            Assert.That(_bed.Ref(owner).Stamp, Is.EqualTo(reference.Stamp));
+        }
+
+        [Test]
+        public void R7_D_W_UI_02_MarqueeAmbiguity_DistinguishesSeparatedAndOverlappingGeometry()
+        {
+            FixtureAuthoredEntity left = _bed.SpawnEntity("Left", new Vector3(-3f, 0f, 0f));
+            FixtureAuthoredEntity right = _bed.SpawnEntity("Right", new Vector3(3f, 0f, 0f));
+            _bed.SaveScene();
+            ViewportPicker picker = Picker();
+            PickResult plain = picker.Marquee(Viewport, SelectionOp.Replace, true);
+            AssertTargets(left, right);
+            Assert.That(picker.HasMarqueeOverlap(plain.Candidates), Is.False);
+
+            right.transform.position = left.transform.position;
+            Physics.SyncTransforms();
+            PickResult overlapping = picker.Marquee(Viewport, SelectionOp.Replace, true);
+            AssertTargets(left, right);
+            Assert.That(picker.HasMarqueeOverlap(overlapping.Candidates), Is.True, "marquee candidates do not carry point-pick overlap flags");
+        }
+
+        [Test]
         public void Badges_ReportStaleTargets()
         {
             FixtureAuthoredEntity doomed = _bed.SpawnEntity("Doomed", Vector3.zero);

@@ -3,6 +3,8 @@
 // the viewport area at the editor's pixel scale with the camera's image in it.
 #nullable enable
 using System.Collections;
+using GameCore.Studio.Authoring;
+using GameCore.Studio.Model;
 using GameCore.Studio.Fixtures;
 using NUnit.Framework;
 using UnityEditor;
@@ -93,6 +95,99 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(window.Mode, Is.EqualTo(ViewportMode.Inspect), "Tab cycles the mode");
             Assert.That(window.HandleKey(KeyCode.Alpha2), Is.True);
             Assert.That(window.Mode, Is.EqualTo(ViewportMode.Select), "2 selects Select mode");
+        }
+
+        [UnityTest]
+        public IEnumerator R7_D_W_UI_02_MarqueeChooser_OnlyAmbiguityOpensAndFilteringPreservesOriginalOperation()
+        {
+            if (!ViewportRenderer.CanRender)
+            {
+                Assert.Ignore("W-UI-02 popup interaction requires a graphical editor panel; geometry classification is covered without graphics.");
+            }
+
+            FixtureAuthoredEntity left = _bed.SpawnEntity("Left", new Vector3(-2f, 0f, 0f));
+            FixtureAuthoredEntity right = _bed.SpawnEntity("Right", new Vector3(2f, 0f, 0f));
+            FixtureAuthoredEntity outside = _bed.SpawnEntity("OutsideMarquee", new Vector3(100f, 0f, 0f));
+            _bed.SaveScene();
+            StudioViewportWindow window = OpenWindow();
+            window.SetMode(ViewportMode.Select);
+            Camera camera = window.Renderer.FreeCamera;
+            camera.transform.SetPositionAndRotation(new Vector3(0f, 0f, -10f), Quaternion.identity);
+            camera.orthographic = true;
+            camera.orthographicSize = 5f;
+            camera.nearClipPlane = 0.1f;
+            camera.farClipPlane = 200f;
+            for (int frame = 0; frame < 60 && (window.Area == null || float.IsNaN(window.Area.contentRect.width) || window.Area.contentRect.width < 2f); frame++)
+            {
+                window.Repaint();
+                yield return null;
+            }
+
+            if (window.Area == null || float.IsNaN(window.Area.contentRect.width) || window.Area.contentRect.width < 2f)
+            {
+                Assert.Ignore("W-UI-02 popup interaction requires the editor to lay out its panel.");
+            }
+
+            Rect rectangle = window.ImageRect;
+            camera.aspect = rectangle.width / rectangle.height;
+            PickResult plain = window.MarqueeSelect(rectangle, SelectionOp.Replace, true);
+            Assert.That(plain.Candidates.Count, Is.EqualTo(2));
+            Assert.That(window.Overlap!.Visible, Is.False, "a multi-object marquee alone is not ambiguous");
+            Assert.That(_bed.Context.Selection.Targets.Count, Is.EqualTo(2));
+
+            right.transform.position = left.transform.position;
+            Physics.SyncTransforms();
+            AuthoringRef leftRef = _bed.Ref(left);
+            AuthoringRef outsideRef = _bed.Ref(outside);
+            foreach (SelectionOp operation in new[] { SelectionOp.Replace, SelectionOp.Add, SelectionOp.Toggle })
+            {
+                _bed.Context.Selection.Set(new[] { leftRef, outsideRef });
+                PickResult ambiguous = window.MarqueeSelect(rectangle, operation, true);
+                Assert.That(window.Overlap.Visible, Is.True, operation.ToString());
+                Assert.That(ambiguous.Candidates.Count, Is.EqualTo(2));
+                for (int index = 0; index < window.Overlap.Candidates.Count; index++)
+                {
+                    Toggle include = window.Overlap.Q<Toggle>("overlap-include-" + index);
+                    Assert.That(include, Is.Not.Null);
+                    Assert.That(include.value, Is.True, "every marquee candidate starts included");
+                    include.value = window.Overlap.Candidates[index].Ref.SameTarget(leftRef);
+                }
+
+                Button apply = window.Overlap.Q<Button>("overlap-apply");
+                Assert.That(apply, Is.Not.Null);
+                using (NavigationSubmitEvent submit = NavigationSubmitEvent.GetPooled())
+                {
+                    apply.SendEvent(submit);
+                }
+                yield return null;
+
+                Assert.That(window.Overlap.Visible, Is.False);
+                SelectionModel selection = _bed.Context.Selection;
+                if (operation == SelectionOp.Replace)
+                {
+                    Assert.That(selection.Targets.Count, Is.EqualTo(1));
+                    Assert.That(selection.Targets[0].SameTarget(leftRef), Is.True);
+                }
+                else if (operation == SelectionOp.Add)
+                {
+                    Assert.That(selection.Targets.Count, Is.EqualTo(2));
+                    Assert.That(selection.Targets[0].SameTarget(leftRef), Is.True);
+                    Assert.That(selection.Targets[1].SameTarget(outsideRef), Is.True);
+                }
+                else
+                {
+                    Assert.That(selection.Targets.Count, Is.EqualTo(1));
+                    Assert.That(selection.Targets[0].SameTarget(outsideRef), Is.True, "toggle must use the selection before the initial marquee, not toggle it twice");
+                }
+                Assert.That(selection.RegionRect!.Screen, Is.EqualTo(new double[] { rectangle.xMin, rectangle.yMin, rectangle.xMax, rectangle.yMax }));
+            }
+
+            window.MarqueeSelect(rectangle, SelectionOp.Replace, true);
+            Assert.That(window.Overlap.Visible, Is.True);
+            right.transform.position = new Vector3(2f, 0f, 0f);
+            Physics.SyncTransforms();
+            window.MarqueeSelect(rectangle, SelectionOp.Replace, true);
+            Assert.That(window.Overlap.Visible, Is.False, "a subsequent plain marquee dismisses stale ambiguity");
         }
 
         [UnityTest]
