@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections;
 using GameCore.Gameplay.Ui;
+using GameCore.Rules.Gameplay.Ui;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -47,9 +48,14 @@ namespace Hollowmere.UiAudio
             curtain?.RemoveFromHierarchy();
             foreach (VisualElement layer in root.Document.rootVisualElement.Children()) layer.SetEnabled(true);
             root.enabled = true;
-            root.Document.rootVisualElement.Q<Button>()?.Focus();
+            foreach (UiDocumentDefinition definition in root.Flow!.Documents)
+                if (definition.Screen == UiScreen.Menu)
+                    root.Document.rootVisualElement.Q<VisualElement>("layer-" + definition.name)?.Q<Button>()?.Focus();
             PresentedFrame = Time.frameCount;
             Ready = true;
+            var focused = root.Document.rootVisualElement.panel?.focusController?.focusedElement as VisualElement;
+            Debug.Log("[Hollowmere] menu presented frame=" + PresentedFrame + " input=" + root.enabled
+                + " focus=" + (focused?.name ?? "none"));
         }
     }
 }

@@ -1,5 +1,6 @@
 #nullable enable
 using System.IO;
+using System.Reflection;
 using Hollowmere.Game;
 using Hollowmere.Boot;
 using GameCore.Gameplay.World;
@@ -54,10 +55,12 @@ namespace Hollowmere.P3_1.EditMode.Tests
             {
                 HollowmereGame game = host.AddComponent<HollowmereGame>();
                 HollowmerePersistentSession session = sessionHost.AddComponent<HollowmerePersistentSession>();
-                session.SendMessage("Begin", HollowmereCommandLine.Parse(new[] { "-frameLog", path }));
+                typeof(HollowmerePersistentSession).GetMethod("Begin", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(session, new object[] { HollowmereCommandLine.Parse(new[] { "-frameLog", path }) });
                 session.Attach(game);
                 Assert.That(session.Ready, Is.False);
-                session.FrameLog!.SendMessage("LateUpdate");
+                typeof(FrameLogRecorder).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(session.FrameLog!, null);
                 session.FrameLog.Flush();
                 Assert.That(File.ReadAllText(path), Does.Not.Contain(",ready"), "attachment is not proof of a visible, responsive menu");
             }
