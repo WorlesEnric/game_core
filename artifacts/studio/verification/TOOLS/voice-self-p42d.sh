@@ -9,4 +9,4 @@ sleep 2
 mic="$(wpctl status --name | sed -n '/Sources:/,/Source endpoints:/p' | grep -m1 gc_p42d_mic | grep -oE '[0-9]+\.' | head -n1 | tr -d '.')"
 wpctl set-default "$mic"
 export GAMECORE_P42C_MIC=gc_p42d_mic
-bash studio/tools/verify-all.sh p42d voice-self
+bash studio/tools/verify-all.sh p42d "${1:-voice-self}"
