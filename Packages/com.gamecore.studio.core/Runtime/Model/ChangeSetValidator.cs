@@ -133,6 +133,7 @@ namespace GameCore.Studio.Model
                 perOperation.Add(CheckApplyRequirement(operation, tool, diagnostics));
             }
 
+            CheckDialogueEntries(changeSet, diagnostics);
             CheckArtifacts(changeSet, diagnostics);
             CheckRequirements(changeSet, perOperation, diagnostics);
             CheckBaseVersions(changeSet, diagnostics);
@@ -1225,6 +1226,148 @@ namespace GameCore.Studio.Model
             }
 
             return string.Join(", ", names);
+        }
+
+        // Built-in set does not invoke gameplay validators. Project dialogue fields at candidate precheck.
+        private void CheckDialogueEntries(ChangeSet changeSet, List<Diagnostic> diagnostics)
+        {
+            if (_options.Mode != ValidationMode.Candidate || _index == null) return;
+            foreach (IndexNode graph in _index.Nodes)
+            {
+                if (graph.Type != "dialogue.graph") continue;
+                Operation? entryChange = null;
+                foreach (Operation op in changeSet.Operations)
+                    if (op.Tool == "set" && op.Target != null && graph.Ref.SameTarget(op.Target)
+                        && DialogueAssignments(op.Args).ContainsKey("entry")) entryChange = op;
+                if (entryChange == null) continue;
+
+                JObject projected = new JObject();
+                if (graph.Fields != null)
+                    foreach (var field in graph.Fields) projected[field.Key] = field.Value.Value?.DeepClone();
+                bool complete = projected["nodes"] is JArray && projected["edges"] is JArray;
+                // The engine executes the operations in envelope order; dependencies must name earlier ops.
+                foreach (Operation op in changeSet.Operations)
+                {
+                    if (op.Target == null || !graph.Ref.SameTarget(op.Target)) continue;
+                    if (op.Tool == "set")
+                    {
+                        foreach (var field in DialogueAssignments(op.Args))
+                        {
+                            if (field.Key == "entry" || field.Key == "nodes" || field.Key == "edges")
+                                projected[field.Key] = field.Value.DeepClone();
+                            else if (field.Key.StartsWith("nodes[", StringComparison.Ordinal) || field.Key.StartsWith("edges[", StringComparison.Ordinal))
+                            {
+                                // Serialized field paths are already checked by the ordinary field validator.
+                                JToken? target = null;
+                                try { target = projected.SelectToken(field.Key); }
+                                catch (Newtonsoft.Json.JsonException) { complete = false; }
+                                if (target == null) complete = false;
+                                else target.Replace(field.Value.DeepClone());
+                            }
+                        }
+                    }
+                    else if (op.Tool == "dialogue.addLine" || op.Tool == "dialogue.addChoice")
+                    {
+                        if (!(projected["nodes"] is JArray nodes) || !(projected["edges"] is JArray edges)) { complete = false; continue; }
+                        int added = nodes.Count;
+                        JArray options = op.Args?["options"] as JArray ?? new JArray();
+                        nodes.Add(new JObject { ["kind"] = op.Tool == "dialogue.addLine" ? "Line" : "Choice", ["options"] = options.DeepClone() });
+                        int after = DialogueInt(op.Args?["after"], -1);
+                        if (after >= 0) DialogueLink(edges, after, 0, 0, added);
+                        if (op.Tool == "dialogue.addChoice")
+                            for (int i = 0; i < options.Count; i++)
+                            {
+                                JArray? targets = op.Args?["targets"] as JArray;
+                                DialogueLink(edges, added, 2, i, targets != null && i < targets.Count ? DialogueInt(targets[i], -1) : -1);
+                            }
+                    }
+                    else if (op.Tool != "dialogue.linkCondition" && op.Tool != "dialogue.setConsequence"
+                        && _catalog.FindTool(op.Tool)?.ReadOnly != true)
+                        complete = false;
+                }
+
+                if (!complete || !(projected["nodes"] is JArray finalNodes) || !(projected["edges"] is JArray finalEdges))
+                {
+                    diagnostics.Add(Diagnostic.AtOperation(DiagnosticCodes.StaleContext, entryChange.OpId,
+                        "Cannot prove dialogue entry reachability from the supplied graph projection.",
+                        "Refresh the full graph; use catalogued set/addLine/addChoice operations with explicit links."));
+                    continue;
+                }
+                bool malformed = false;
+                foreach (JToken node in finalNodes) if (!(node is JObject)) malformed = true;
+                foreach (JToken edge in finalEdges) if (!(edge is JObject)) malformed = true;
+                if (malformed)
+                {
+                    diagnostics.Add(Diagnostic.AtOperation(DiagnosticCodes.InvalidArgs, entryChange.OpId, "Dialogue nodes and edges must be objects."));
+                    continue;
+                }
+                int entry = DialogueInt(projected["entry"], -1);
+                if (entry < 0 || entry >= finalNodes.Count)
+                {
+                    diagnostics.Add(Diagnostic.AtOperation(DiagnosticCodes.ValidationFailed, entryChange.OpId, "[GP-DLG-002] Dialogue entry is not a node in the proposed graph."));
+                    continue;
+                }
+                HashSet<int> seen = new HashSet<int>();
+                Stack<int> pending = new Stack<int>();
+                pending.Push(entry);
+                while (pending.Count > 0)
+                {
+                    int current = pending.Pop();
+                    if (current < 0 || current >= finalNodes.Count || !seen.Add(current)) continue;
+                    JToken node = finalNodes[current];
+                    HashSet<string> ports = new HashSet<string>(StringComparer.Ordinal);
+                    foreach (JToken edge in finalEdges)
+                    {
+                        if (DialogueInt(edge["from"], -1) != current) continue;
+                        int port = DialogueEnum(edge["port"], "Next", "Else", "Option");
+                        int kind = DialogueEnum(node["kind"], "Line", "Choice", "Branch", "Action", "End");
+                        int option = DialogueInt(edge["option"], -1);
+                        // DialogueGraphDefinition.Target takes the first edge for a port, and the bake
+                        // only converts Choice options (at most eight). Match those semantics exactly.
+                        if (!ports.Add(port.ToString(CultureInfo.InvariantCulture) + ":" + (port == 2 ? option : 0))) continue;
+                        if (port == 0 || (port == 1 && kind == 2)
+                            || (port == 2 && kind == 1 && node["options"] is JArray choices && option >= 0 && option < Math.Min(8, choices.Count)))
+                            pending.Push(DialogueInt(edge["to"], -1));
+                    }
+                }
+                JArray unreachable = new JArray();
+                for (int i = 0; i < finalNodes.Count; i++) if (!seen.Contains(i)) unreachable.Add(i);
+                if (unreachable.Count > 0)
+                    diagnostics.Add(Diagnostic.AtOperation(DiagnosticCodes.ValidationFailed, entryChange.OpId,
+                        "[GP-DLG-005] Dialogue entry change leaves nodes unreachable.",
+                        "Re-link the proposed entry to every retained node, or ask for clarification; do not discard existing dialogue.",
+                        new JObject { ["unreachable"] = unreachable }));
+            }
+        }
+
+        private static Dictionary<string, JToken> DialogueAssignments(JObject? args)
+        {
+            var result = new Dictionary<string, JToken>(StringComparer.Ordinal);
+            if (args?["field"]?.Type == JTokenType.String && args["value"] != null)
+                result[(string)args["field"]!] = args["value"]!;
+            if (args?["fields"] is JObject fields)
+                foreach (JProperty field in fields.Properties()) result[field.Name] = field.Value;
+            return result;
+        }
+
+        private static int DialogueInt(JToken? token, int fallback) =>
+            token?.Type == JTokenType.Integer && long.TryParse(token.ToString(), out long value)
+                && value >= int.MinValue && value <= int.MaxValue ? (int)value : fallback;
+
+        private static int DialogueEnum(JToken? token, params string[] names)
+        {
+            if (token?.Type == JTokenType.String)
+                for (int i = 0; i < names.Length; i++) if ((string?)token == names[i]) return i;
+            return DialogueInt(token, -1);
+        }
+
+        private static void DialogueLink(JArray edges, int from, int port, int option, int to)
+        {
+            foreach (JToken edge in edges)
+                if (edge is JObject && DialogueInt(edge["from"], -1) == from && DialogueEnum(edge["port"], "Next", "Else", "Option") == port
+                    && (port != 2 || DialogueInt(edge["option"], -1) == option))
+                { edge["to"] = to; return; }
+            edges.Add(new JObject { ["from"] = from, ["port"] = port, ["option"] = option, ["to"] = to });
         }
     }
 }

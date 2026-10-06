@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../../games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/DialogueCandidateTests.cs" />
+    <ProjectReference Include="../../../../../dotnet/src/GameCore.Studio.Model/GameCore.Studio.Model.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" /><PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+</Project>
