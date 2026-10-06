@@ -29,13 +29,12 @@ options = { quality = "low", response_format = "b64_json" }
 timeout = "300s"
 max_outputs = 4
 # No published Echo reseller list price is verified. This is NOT an OpenAI list price.
-# Operator must replace SET_BY_OPERATOR with a positive total USD estimate per image,
-# including input costs, and replace the declaration note before installation.
+# Owner declared a total estimate on 2026-10-06; this is not a reseller invoice.
 # @studio source = "operator"
-# @studio note = "SET_BY_OPERATOR: declare a total per-image estimate and its basis"
+# @studio note = "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff"
 # @studio unit = "image"
 [providers.cost]
-per_unit = "SET_BY_OPERATOR"
+per_unit = 0.20
 
 # Image description: a vision chat model of models.toml.
 [[providers]]
