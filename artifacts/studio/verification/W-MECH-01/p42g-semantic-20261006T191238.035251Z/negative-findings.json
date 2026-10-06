@@ -1,0 +1,132 @@
+{
+  "schema": "gamecore.stage.findings/1",
+  "pass": false,
+  "findings": [
+    {
+      "rule": "SG003",
+      "file": "Execution.cs",
+      "line": 2,
+      "message": "Process execution is forbidden."
+    },
+    {
+      "rule": "SG004",
+      "file": "Execution.cs",
+      "line": 3,
+      "message": "Networking is forbidden."
+    },
+    {
+      "rule": "SG002",
+      "file": "Execution.cs",
+      "line": 4,
+      "message": "Reflection emit is forbidden."
+    },
+    {
+      "rule": "SG003",
+      "file": "Execution.cs",
+      "line": 9,
+      "message": "Process execution is forbidden."
+    },
+    {
+      "rule": "SG004",
+      "file": "Execution.cs",
+      "line": 10,
+      "message": "Networking is forbidden."
+    },
+    {
+      "rule": "SG002",
+      "file": "Execution.cs",
+      "line": 12,
+      "message": "Reflection emit is forbidden."
+    },
+    {
+      "rule": "SG007",
+      "file": "Execution.cs",
+      "line": 13,
+      "message": "Native imports are forbidden."
+    },
+    {
+      "rule": "SG006",
+      "file": "Execution.cs",
+      "line": 15,
+      "message": "Unsafe code is forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 3,
+      "message": "Automatic editor hooks and menu entry points are forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 5,
+      "message": "Editor importer inheritance is forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 6,
+      "message": "Editor importer inheritance is forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 9,
+      "message": "Automatic editor hooks and menu entry points are forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 11,
+      "message": "Automatic editor hooks and menu entry points are forbidden."
+    },
+    {
+      "rule": "SG001",
+      "file": "Hooks.cs",
+      "line": 13,
+      "message": "Automatic editor hooks and menu entry points are forbidden."
+    },
+    {
+      "rule": "SG008",
+      "file": "StateAndPaths.cs",
+      "line": 5,
+      "message": "Static mutable state is forbidden."
+    },
+    {
+      "rule": "SG005",
+      "file": "StateAndPaths.cs",
+      "line": 8,
+      "message": "Filesystem access must prove every path stays within package Assets or persistentDataPath."
+    },
+    {
+      "rule": "SG005",
+      "file": "StateAndPaths.cs",
+      "line": 9,
+      "message": "Filesystem access must prove every path stays within package Assets or persistentDataPath."
+    },
+    {
+      "rule": "SG005",
+      "file": "StateAndPaths.cs",
+      "line": 10,
+      "message": "Filesystem access must prove every path stays within package Assets or persistentDataPath."
+    },
+    {
+      "rule": "SG005",
+      "file": "StateAndPaths.cs",
+      "line": 11,
+      "message": "Filesystem access must prove every path stays within package Assets or persistentDataPath."
+    },
+    {
+      "rule": "SG009",
+      "file": "StateAndPaths.cs",
+      "line": 12,
+      "message": "Resources.Load requires a normalized relative constant path."
+    },
+    {
+      "rule": "SG010",
+      "file": "StateAndPaths.cs",
+      "line": 13,
+      "message": "Editor APIs require a declared author operation, validator or catalog contributor call chain."
+    }
+  ]
+}

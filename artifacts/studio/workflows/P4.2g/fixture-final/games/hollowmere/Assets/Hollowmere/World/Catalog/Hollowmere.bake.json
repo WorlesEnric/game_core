@@ -1,0 +1,1232 @@
+{
+  "format": "gamecore.gameplay-bake/1",
+  "worldId": "a2e71200-b7bb-4d4a-8aec-26370b7da0f3",
+  "worldName": "Hollowmere",
+  "startRegionId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+  "focusEntityId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+  "preloadNeighbours": false,
+  "catalogFingerprint": "959f3a1be0c88d937cbd0caf557fc88828169b7055b6bf884c0e187d172a0d97",
+  "definitions": [
+    {
+      "id": "05b934c3-466a-4cbd-9ec5-e887ecf26794",
+      "name": "Bell",
+      "contentHash": "01919629a2ec2900e6697b8a05125be7acc0928c2f031495e24d46753c5a6f18",
+      "structuralHash": "3c11f0416eed64384d875d67eabe98c5891bea346a4d7a76e42213b2ba5886e9",
+      "revision": 4328504880704349240,
+      "variantCount": 2,
+      "variants": [
+        "9a5c3ba1-f5fa-4837-8d2a-5ed7a65b43a7"
+      ],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+      "name": "BramEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "18779563-f74f-4223-947f-19f0502c5a63",
+      "name": "Lantern",
+      "contentHash": "fcd4a2a886ef25c0385023d52feb4e185d2fff6a292519a26da79d6a40cb3c71",
+      "structuralHash": "3de6a1c808e470435a325bae916fa8681b2f9838d21ae71ec841c933c6d06ce1",
+      "revision": 4460430361471774787,
+      "variantCount": 2,
+      "variants": [
+        "25202781-2e82-44a3-a000-16760c72bfbc"
+      ],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "193f7ebc-6242-4813-b1cc-6afeea0918b9",
+      "name": "Traveller",
+      "contentHash": "f12c2d310f01ff671b5e5f6ce6d86f751702fce1ecd4f256f29fd1220f55eb4d",
+      "structuralHash": "2600adff4fb65f3b03ece5e0e192c300f7be45ebace2ddc2473690d57b3b87c6",
+      "revision": 2738379885506879291,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "visible"
+      ]
+    },
+    {
+      "id": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+      "name": "WellBucketEntity",
+      "contentHash": "718cc2c44388d3442dc3cc1054371c1cedf0d54cfb6ed3528f95e82efdabeae7",
+      "structuralHash": "f6dafe12297cd6b24db4e44855faef22c82571bc041b38b20e52efafac23e357",
+      "revision": 17787809032212108978,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+      "name": "BelfryEchoEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "2e52c6af-c201-47b6-925d-9f53530eb275",
+      "name": "PickupHerbsEntity",
+      "contentHash": "84001b3e4c9340cf9572c1a9cee5ab696130d74d98ec968feca4cf4a99d5a8bf",
+      "structuralHash": "f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83",
+      "revision": 17794676264797659188,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+      "name": "PipEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+      "name": "DrownedSatchelEntity",
+      "contentHash": "84268ea3036c72ddac016600b76dfeecab7768e9b52e6de3e498224cbf1544d5",
+      "structuralHash": "dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf",
+      "revision": 16130163526508915160,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+      "name": "ShrinePostEastEntity",
+      "contentHash": "a21327d10c09384db52770d44583c36271cf11df4d371c1ab3d7d6cfc5211ffd",
+      "structuralHash": "db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183",
+      "revision": 15813470317250244354,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "name": "Crate",
+      "contentHash": "cd5b823c038bebccceb70ebf4240e572d25085d4f603469ab37b9cd8f5f2c1b9",
+      "structuralHash": "db635bfeff6cb63d8bb808a36b810861aacba6f27697ac514ecbb2c433286746",
+      "revision": 15808580267765708349,
+      "variantCount": 2,
+      "variants": [
+        "d23d9f8e-5862-4612-a4dc-3c82dad38f18"
+      ],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "5ffeae11-f167-46ca-86d4-6d1b37687905",
+      "name": "ShrinePostWestEntity",
+      "contentHash": "a21327d10c09384db52770d44583c36271cf11df4d371c1ab3d7d6cfc5211ffd",
+      "structuralHash": "db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183",
+      "revision": 15813470317250244354,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "68d2519f-2a40-439b-be2d-63d16581cd06",
+      "name": "HaleEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "81ae7773-9697-41d7-b790-2d0346b8fd58",
+      "name": "PickupMarshHerbsEntity",
+      "contentHash": "84001b3e4c9340cf9572c1a9cee5ab696130d74d98ec968feca4cf4a99d5a8bf",
+      "structuralHash": "f6f363c85856e034c10785a52ad42cc45e79bfc0e8f9e45a7d4e16bc1e75eb83",
+      "revision": 17794676264797659188,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "8f7c3953-8560-4072-8754-be36e8a94b06",
+      "name": "SinkholeGlintEntity",
+      "contentHash": "682f55be5b531ac75f33c17e221a64bf4da4fe3f388a910841bec8c9586cfb58",
+      "structuralHash": "30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5",
+      "revision": 3463915939961655962,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+      "name": "ShrinePostMiddleEntity",
+      "contentHash": "a21327d10c09384db52770d44583c36271cf11df4d371c1ab3d7d6cfc5211ffd",
+      "structuralHash": "db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183",
+      "revision": 15813470317250244354,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "acefbaad-340d-466f-9d66-214afb15646f",
+      "name": "Stone",
+      "contentHash": "1600d4ca2bcfd866cb1d4f47f78aadb4f0841bf1487c07dfaa70cc6ef3260bd3",
+      "structuralHash": "0b8ec0e8133f3ebcbb7cc36ae5aa7ff0dbb54d2973dbfde98c11bff97be02a98",
+      "revision": 832815084097978044,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "ada7a792-63fb-480a-9445-3b61f5dece1b",
+      "name": "CausewayGateEntity",
+      "contentHash": "4c7c9354386cf8676690fdaa01926fbccb911f153daf1b1e1677e3de70529f94",
+      "structuralHash": "8c8436dd0c9f2d001d30f4c71a3d56b3458a62dd69e03da39c48a812cdd8b6ea",
+      "revision": 10125278185263148288,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+      "name": "OddEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+      "name": "OldPuntEntity",
+      "contentHash": "9761be24557f4d08bac09f068a1e096ed31f6861e9a9d67c760f32022c429911",
+      "structuralHash": "3ee5c7efd8e81dce49796a4ee565054eebc52b8e4b9b07e3624dc0ee0a3cde92",
+      "revision": 4532248432968474062,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "name": "Reed",
+      "contentHash": "64566f903f18c935c9a54cca9c67212f66697dcb86f58b9b3a6862d8371fbbce",
+      "structuralHash": "6774e23be712d4e00df62aece426e5632dc6fd7dd882bb4f30f7a93e19ff9776",
+      "revision": 7454832030112732384,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+      "name": "TinkersBenchEntity",
+      "contentHash": "a83788d095e9eba99191b71aac8d5fbdf6191ce3f6709a7d408d61150623e6ab",
+      "structuralHash": "dfd9da441e86a9d8d71b911a1a8795397bbbe7c457e5909454aef838724d72bf",
+      "revision": 16130163526508915160,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+      "name": "PickupCoinsEntity",
+      "contentHash": "2b1c894725502979a1754476e643869cc140dbaa2542c7f51564376f0eb8b2e8",
+      "structuralHash": "30124d31dd3a529a898495a04dce9a83b2eaafdbd5263d774f0e294dac5d04a5",
+      "revision": 3463915939961655962,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+      "name": "MarenEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "d4ef35fe-0d8b-4876-a5fe-8c1a067b953f",
+      "name": "FerrymanElianEntity",
+      "contentHash": "af01e1c8f064477c3118203718988df9230fc2f089bbecc72aa56cbba8423a17",
+      "structuralHash": "b9b09195e51727e5180df00bdb2d86f53471c198867b6781d3a07e564fbb5c39",
+      "revision": 13380354565897398245,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "d7081228-f497-4a3d-811e-0bb0e3c72807",
+      "name": "Signpost",
+      "contentHash": "e8b5f82d9eb1caa047943e8e9af942253417b796c6908e90c0646ae762549727",
+      "structuralHash": "339361070744b5918a91e3abb69e38fb98f3d915bcfd035462c2da41d4dd2eb8",
+      "revision": 3716420800325399953,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+      "name": "PickupClapperEntity",
+      "contentHash": "ab2e49fd7fbd7a235ee98f67451bfa73fe903eb2c98930943f9e11323233db46",
+      "structuralHash": "0cebbf98b5a343ffe58ac8300e70d6dbaf06a6c0fa8ecbcfe632b0243c0ea4a3",
+      "revision": 931048410585449471,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+      "name": "PickupLanternEntity",
+      "contentHash": "5b3838a74d5c4f8b8243a31ce540e9e002bdff19308182f6abcc336f6757420d",
+      "structuralHash": "db74bb785de26f027bd0dddbb2cc259fad309bb7cdb89852023485a664f4f183",
+      "revision": 15813470317250244354,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    },
+    {
+      "id": "fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+      "name": "PickupOilEntity",
+      "contentHash": "9976e694bc4bfc1d3e66476412f218fda32f95d6c83f23176297b0ca5b0a8c55",
+      "structuralHash": "e787116304bfe70a8e6e1ac7862f8ea9e8a1ba026af018cf12b2680a4bc16ce3",
+      "revision": 16683322461596411658,
+      "variantCount": 1,
+      "variants": [],
+      "overridableFields": [
+        "alive",
+        "scaleMilli",
+        "tint",
+        "visible"
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "id": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "name": "Thornwick Village",
+      "key": 529176640,
+      "target": "9e5e2478b092322ae0a2afc3908edeea",
+      "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+      "spawn": "0,0,-12000@0",
+      "bounds": "0,10000,0 +- 40000,15000,40000"
+    },
+    {
+      "id": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "name": "Drowned Belfry",
+      "key": 2053726868,
+      "target": "fa46fc6d0621caa12b7362cd9b52f0f8",
+      "scene": "Assets/Hollowmere/Regions/DrownedBelfry.unity",
+      "spawn": "100000,0,186000@0",
+      "bounds": "100000,10000,200000 +- 40000,15000,40000"
+    },
+    {
+      "id": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "name": "Blackmere Marsh",
+      "key": 2118164163,
+      "target": "69f4f019dc4c54d85677db8944205ded",
+      "scene": "Assets/Hollowmere/Regions/BlackmereMarsh.unity",
+      "spawn": "190000,0,0@1571",
+      "bounds": "200000,10000,0 +- 40000,15000,40000"
+    }
+  ],
+  "portals": [
+    {
+      "id": "68bf5935-dbc0-4c24-b344-35782ef929bf",
+      "name": "ThornwickVillage_BlackmereMarsh",
+      "key": 203911975,
+      "regionA": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "regionB": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "arrivalA": "32500,0,0@4712",
+      "arrivalB": "167500,0,0@1571"
+    },
+    {
+      "id": "75251765-e092-4fa4-981d-b2258693ec31",
+      "name": "BlackmereMarsh_DrownedBelfry",
+      "key": 326991361,
+      "regionA": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "regionB": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "arrivalA": "185466,0,29069@2678",
+      "arrivalB": "114534,0,170931@5820"
+    },
+    {
+      "id": "89836cc9-4d04-4634-90ad-1f52cd0698df",
+      "name": "DrownedBelfry_ThornwickVillage",
+      "key": 1973623197,
+      "regionA": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "regionB": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "arrivalA": "85466,0,170931@464",
+      "arrivalB": "14534,0,29069@3605"
+    }
+  ],
+  "entities": [
+    {
+      "id": "0e714e11-b708-4dfa-a7d5-5ddb99f8724b",
+      "name": "Village Signpost",
+      "target": "014e676612ed5ffec8a065a16e8c24d2",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "d7081228-f497-4a3d-811e-0bb0e3c72807",
+      "pose": "4000,0,-16000@524",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "2825db71-11a1-4155-b1db-9e7734111d9e",
+      "name": "Bram",
+      "target": "e01807d16bec380c75727b1e8397b6ef",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+      "pose": "11000,0,-13000@4712",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#8e3d2f"
+      ]
+    },
+    {
+      "id": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96",
+      "name": "Coins (square)",
+      "target": "e80ab9ad2eeec3276f2fd9a74a8558ca",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+      "pose": "4000,0,-3000@0",
+      "variant": 0,
+      "scaleMilli": 350,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#d6b03a"
+      ]
+    },
+    {
+      "id": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+      "name": "Pip",
+      "target": "aa8f508884f47abf8543fc26801bff46",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+      "pose": "5000,0,3000@1571",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#d8a23f"
+      ]
+    },
+    {
+      "id": "5536e67e-9df5-48d1-8e4e-dde2fac37d97",
+      "name": "Crate 2",
+      "target": "20068f1b050d0428eb2a52df682d3518",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "pose": "-10000,0,2000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "575fe140-5c48-49e0-8fdd-4ddd1344176f",
+      "name": "Lantern East",
+      "target": "afd56ad15a4f326e3c03d40fb2715d28",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "18779563-f74f-4223-947f-19f0502c5a63",
+      "pose": "4000,0,-6000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "5943f467-f789-4796-8766-fb265a2f3cd2",
+      "name": "Tinker's Bench",
+      "target": "34c092853433e079db1fb79b7d028176",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+      "pose": "11000,0,-17500@1571",
+      "variant": 0,
+      "scaleMilli": 900,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "5da00079-ec5a-4f59-a2ec-b669010f1c12",
+      "name": "Stone 4",
+      "target": "99ed292e38106e944c665ecb8a4e29b9",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "-4114,0,-5663@628",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "6e61f1c8-b9e4-4144-b5e5-81c28c117f55",
+      "name": "Stone 2",
+      "target": "dabc19db0e24235a0c0449aac57fb570",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "6657,0,2163@4398",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "70edd5d3-9a2c-4f87-92b1-cd3b5fe7b8a3",
+      "name": "Market Crate",
+      "target": "ae5e53e3edee29cb3b6ca62ab5f12708",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "pose": "-10000,0,-2000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "7f182be0-b3b5-4823-82d2-acaefad6bb7f",
+      "name": "Crate 3",
+      "target": "0d9b36450f8ebb0dc7cbc535bad82c91",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "pose": "-10000,0,6000@0",
+      "variant": 0,
+      "scaleMilli": 1500,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "scaleMilli=1500"
+      ]
+    },
+    {
+      "id": "81278897-3ba4-4dd1-8b29-028a831c6018",
+      "name": "Stone 1",
+      "target": "3ad3b1f4a09b3b9a57c5f7db9925d6e6",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "0,0,7000@3142",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "837b3fc0-a424-4411-bc69-7ac040f8def0",
+      "name": "Lantern (barn)",
+      "target": "55666e36e9a02a55370a541b100e4f2f",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+      "pose": "8000,0,7000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "90f935f8-12d5-4278-b336-107b081e1dfd",
+      "name": "Traveller",
+      "target": "0a9cb62cc01a4bc9e0324d4684eecb4c",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "193f7ebc-6242-4813-b1cc-6afeea0918b9",
+      "pose": "0,0,-12000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "bcc77f89-ca7d-4197-8c86-a6efe61aba9a",
+      "name": "Marsh Herbs (garden)",
+      "target": "a97dd45e268c223d16cb43cc644c9ee6",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "2e52c6af-c201-47b6-925d-9f53530eb275",
+      "pose": "-9000,0,15000@0",
+      "variant": 0,
+      "scaleMilli": 600,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "c1e74839-df9c-4ae5-a9c4-4315ea9dab40",
+      "name": "Ferryman Elian",
+      "target": "1df5c058b37f432d3493ffc706288bd4",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "d4ef35fe-0d8b-4876-a5fe-8c1a067b953f",
+      "pose": "4000,83,1100@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "c2b6586b-55d7-4891-977f-9b2d92324532",
+      "name": "Stone 5",
+      "target": "8a7f01014d3a4941fb61d4273c824ca6",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "-6657,0,2163@1885",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "da525107-c2c1-4626-ac08-5058a1e01c06",
+      "name": "Maren",
+      "target": "b10beda5c00213510a8dd809f9a82a6c",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+      "pose": "-8000,0,-8000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#6f9a76"
+      ]
+    },
+    {
+      "id": "e0981979-d2fd-4cbc-8261-2e2f83eab806",
+      "name": "Lantern West",
+      "target": "7f58586a8b982aef310a1769f30f7ea5",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "18779563-f74f-4223-947f-19f0502c5a63",
+      "pose": "-4000,0,-6000@0",
+      "variant": 1,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+      "name": "Village Well",
+      "target": "9b514a9666ac9979b8d5c72c243d370e",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+      "pose": "0,0,-1900@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e74544f2-0c65-40fa-aec5-5126b86754d1",
+      "name": "Stone 3",
+      "target": "d07d1bae90e3fe8423f07f4c81f41a12",
+      "region": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "4114,0,-5663@5655",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "5a17c7fd-d5ee-4f4d-8393-ef97267b8136",
+      "name": "Belfry Lantern",
+      "target": "f25f147ff70a91e9eb852a94c7634d94",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "18779563-f74f-4223-947f-19f0502c5a63",
+      "pose": "92000,0,190000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "6a6129c6-dab0-4b03-a935-0459bf02354f",
+      "name": "Stone 4",
+      "target": "7104e1c8d91d058c6dd0583541d85a7e",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "95757,0,202243@2356",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "7a39f27f-7f89-4855-9c7d-62f2f7dec386",
+      "name": "Stone 1",
+      "target": "ee17434e0dc06980a363b17df98d7b4e",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "104243,0,202243@3927",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "93b747d7-8bfd-4973-a727-a73e21f0d55b",
+      "name": "Stone 3",
+      "target": "41db07c9598b9e92be86234b7a093071",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "95757,0,193757@785",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "a91b8bb5-cbd4-4872-871b-118e53cc465d",
+      "name": "Belfry Echo",
+      "target": "553e76413b7f9f001a4ee5191d096611",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+      "pose": "100000,0,191000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#a9c9ea"
+      ]
+    },
+    {
+      "id": "aef0bdae-1d73-4283-ae97-8dce12658586",
+      "name": "Crate 1",
+      "target": "e00aae2e9cdd1972ca808e5132f50fed",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "pose": "108000,0,190000@1571",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "d6506291-4824-43c5-b113-260293881862",
+      "name": "Crate 2",
+      "target": "227c170c987be33de04dbfc90f2324ca",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "58338d2c-5721-4ba3-8c6e-96f863268d8b",
+      "pose": "112000,0,190000@1571",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e45e9ce2-198c-48ee-8a4e-b01bc4bf0bbf",
+      "name": "Drowned Bell",
+      "target": "d687891309b3783d95fcf567283b1bd9",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "05b934c3-466a-4cbd-9ec5-e887ecf26794",
+      "pose": "100000,0,198000@0",
+      "variant": 1,
+      "scaleMilli": 1500,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "f4d48126-e58d-4dd5-8c47-f01dea7e7f4c",
+      "name": "Stone 2",
+      "target": "d02c09441a3b2ae9c0915ba4286d6f3e",
+      "region": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "104243,0,193757@5498",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "0131f58d-bed5-4484-97f0-8e2ee2220399",
+      "name": "Shrine Lantern East",
+      "target": "072d2a0c40c46b2e20259d5d3141ff36",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+      "pose": "213000,0,4000@0",
+      "variant": 0,
+      "scaleMilli": 1400,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "041817b7-8aaf-4a0c-84f5-c2826612563a",
+      "name": "Reed 5",
+      "target": "a5a442bd593f04ce4df87a33efa1dbc9",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "198273,0,3929@1309",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "0b44e6c8-4c3c-483f-9202-57dc00024a20",
+      "name": "Causeway Gate",
+      "target": "8d55f63ebff9065932749e99f9219f36",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "ada7a792-63fb-480a-9445-3b61f5dece1b",
+      "pose": "169500,0,2000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "1cc6ccc5-4575-41ac-8bf3-1446f594d70a",
+      "name": "Oil Flask (marsh)",
+      "target": "2ef7ba650521bdfeda997653a4a3a312",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+      "pose": "190000,0,-6000@0",
+      "variant": 0,
+      "scaleMilli": 450,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "26d3a9df-8316-4c10-8c33-b82ba8f68d38",
+      "name": "Reed 4",
+      "target": "bd45cfd95cc87abab89b6f464ff0e989",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "203929,0,-1727@262",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "27bdeb0d-b36c-447c-b827-4122c7c31461",
+      "name": "Stone 3",
+      "target": "8264a6d6665cd9a74076cc96f993dbdb",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "198000,0,-14000@1893",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "3f2e423d-ec9f-4051-8713-662180be4db9",
+      "name": "Hale",
+      "target": "c0917e4014b5b5d797c888fea7f3235f",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "68d2519f-2a40-439b-be2d-63d16581cd06",
+      "pose": "167500,0,4500@4712",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#52668c"
+      ]
+    },
+    {
+      "id": "435ac6cc-d279-4249-891c-fa754873ee93",
+      "name": "Bell Clapper",
+      "target": "319c35fb63d5d2d8e48a9349c4b85c4d",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+      "pose": "194000,0,9000@0",
+      "variant": 0,
+      "scaleMilli": 300,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "4a5e74a1-c6a4-4769-9683-823a32cba083",
+      "name": "Reed 6",
+      "target": "df6b0f305286df492feabfa532568bad",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "200343,0,11657@2356",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "4b2ce3a3-23f1-4fab-9d2e-b0e56d1b3d22",
+      "name": "Stone 1",
+      "target": "86245770546adb0805aaa704d87e9996",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "186000,0,-10000@1893",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "678aa351-4c7a-41c3-8146-a81e488dc269",
+      "name": "Reed 1",
+      "target": "5913b9ecb02a250673e7410b6f103a00",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "208071,0,13727@3403",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "7a2034e5-4ccb-4621-8c06-fbfe18bda89d",
+      "name": "Stone 2",
+      "target": "99ce9671e6e763ebe43f88015f0fdc1b",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "acefbaad-340d-466f-9d66-214afb15646f",
+      "pose": "192000,0,-12000@1893",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": false,
+      "alive": true,
+      "overrides": [
+        "visible=false"
+      ]
+    },
+    {
+      "id": "83d50830-abde-42e5-abee-45629e38d17c",
+      "name": "Old Punt",
+      "target": "675413871c884a82f3f09cc43a373d12",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b341c519-f6b4-42b7-99ff-649bd5fb071f",
+      "pose": "228500,0,27000@785",
+      "variant": 0,
+      "scaleMilli": 700,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "a0ec0302-146b-494d-9ef5-95812f441000",
+      "name": "Marsh Herbs (marsh)",
+      "target": "70e5c77dede6bb702a34b1ca44c1a98d",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "81ae7773-9697-41d7-b790-2d0346b8fd58",
+      "pose": "204000,0,-14000@0",
+      "variant": 0,
+      "scaleMilli": 600,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "a33d46a3-4ccf-4e1c-b837-781e246e232a",
+      "name": "Shrine Lantern Middle",
+      "target": "afff10ce4b3129b66c241ec7fd7a58a5",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+      "pose": "206000,0,2000@0",
+      "variant": 0,
+      "scaleMilli": 1400,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+      "name": "Odd",
+      "target": "d7c30efd4b98a0d35674f49ab514c282",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+      "pose": "221000,0,20000@785",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+        "tint=#6e5b44"
+      ]
+    },
+    {
+      "id": "d69435d0-4ca3-411a-afd0-20cb86c8c24d",
+      "name": "Drowned Satchel",
+      "target": "b0b525d49c885d48925cef0bd2e615e6",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "37902cb4-be99-4267-90cb-c02bd295f8d1",
+      "pose": "186000,0,-16000@349",
+      "variant": 0,
+      "scaleMilli": 450,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "db488917-7d9b-49d7-827d-b42b3712aa01",
+      "name": "Reed 3",
+      "target": "2f4fc0b33e222fa8bfdcdc33d0086650",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "211657,0,343@5498",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e32488d4-b4f8-4450-b6cc-3a5c1773e795",
+      "name": "Marsh Lantern",
+      "target": "60bfa10133c7c93b2064a85cc9f35b00",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "18779563-f74f-4223-947f-19f0502c5a63",
+      "pose": "194000,0,-4000@0",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e37866ef-7b93-4781-a9e6-4448f1d3c30a",
+      "name": "Shrine Lantern West",
+      "target": "9fe1e47f0d050391ae8033339e124734",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "5ffeae11-f167-46ca-86d4-6d1b37687905",
+      "pose": "199000,0,4000@0",
+      "variant": 0,
+      "scaleMilli": 1400,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "e7431036-f8e5-4cfd-bd13-256c8014b254",
+      "name": "Glinting Sinkhole",
+      "target": "ed6cc373fb6f656746311b0740fa4d82",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "8f7c3953-8560-4072-8754-be36e8a94b06",
+      "pose": "216000,0,-12000@0",
+      "variant": 0,
+      "scaleMilli": 500,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    },
+    {
+      "id": "eccb1ef1-18b0-4b23-8382-833fcbd1d825",
+      "name": "Reed 2",
+      "target": "bd04e84dc3c07c7199751d4463c36ea3",
+      "region": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+      "definition": "b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+      "pose": "213727,0,8071@4451",
+      "variant": 0,
+      "scaleMilli": 1000,
+      "visible": true,
+      "alive": true,
+      "overrides": [
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.3346202">
+  <test-suite type="TestSuite" id="1011" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.334620" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1004" name="GameCore.Stage.Harness.PlayMode.dll" fullname="/w/p/Library/ScriptAssemblies/GameCore.Stage.Harness.PlayMode.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.327652" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1005" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.327324" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1006" name="Stage" fullname="GameCore.Stage" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.327178" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1007" name="Harness" fullname="GameCore.Stage.Harness" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.327016" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="SmokeRunner" fullname="GameCore.Stage.Harness.SmokeRunner" classname="GameCore.Stage.Harness.SmokeRunner" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.326095" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1002" name="SmokeRun1" fullname="GameCore.Stage.Harness.SmokeRunner.SmokeRun1" methodname="SmokeRun1" classname="GameCore.Stage.Harness.SmokeRunner" runstate="Runnable" seed="339997741" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.305989" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="300000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[stage-harness] smoke {"run":1,"status":"ran","steps":120,"frames":120,"sanctionedPumps":120,"duplicateFramePumps":0,"bypassPumps":0,"errors":0,"slotHash":"5aa1e545c15decb392160ed7784fdc221908bc9a4be571224809b74acbb2cd3a","milliseconds":282}
+]]></output>
+              </test-case>
+              <test-case id="1003" name="SmokeRun2" fullname="GameCore.Stage.Harness.SmokeRunner.SmokeRun2" methodname="SmokeRun2" classname="GameCore.Stage.Harness.SmokeRunner" runstate="Runnable" seed="880005015" result="Passed" start-time="2026-10-06 19:15:50Z" end-time="2026-10-06 19:15:50Z" duration="0.010705" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="300000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[stage-harness] smoke {"run":2,"status":"ran","steps":120,"frames":120,"sanctionedPumps":120,"duplicateFramePumps":0,"bypassPumps":0,"errors":0,"slotHash":"5aa1e545c15decb392160ed7784fdc221908bc9a4be571224809b74acbb2cd3a","milliseconds":9}
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

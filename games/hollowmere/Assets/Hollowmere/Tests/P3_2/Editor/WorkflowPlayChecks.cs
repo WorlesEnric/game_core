@@ -84,7 +84,7 @@ namespace Hollowmere.P3_2.Workflows
         private static bool Tick(string row, string tag)
         {
             string key = "play-effect." + tag;
-            var receipt = State.Get(key) as JObject;
+            var receipt = State.PlayReceipt ?? State.Get(key) as JObject;
             if (receipt == null)
             {
                 receipt = new JObject { ["row"] = row, ["status"] = "pending", ["scene"] = SceneManager.GetActiveScene().path,
@@ -151,10 +151,15 @@ namespace Hollowmere.P3_2.Workflows
                     if (State.PlayProbe == null)
                     {
                         State.PlayProbe = new ProbeExecution(Observe(row, receipt));
+                        State.PlayReceipt = receipt;
                         Application.logMessageReceived += State.ObservePlayLog;
                     }
                     Require(string.IsNullOrEmpty(State.PlayError), "Play exception: " + State.PlayError);
-                    if (State.PlayProbe.MoveNext()) return false;
+                    if (State.PlayProbe.MoveNext())
+                    {
+                        State.Set(key, receipt);
+                        return false;
+                    }
                     receipt["status"] = "pass";
                     receipt["phase"] = "exit";
                 }
@@ -167,6 +172,7 @@ namespace Hollowmere.P3_2.Workflows
             }
             Application.logMessageReceived -= State.ObservePlayLog;
             State.PlayProbe = null;
+            State.PlayReceipt = null;
             State.Set(key, receipt);
             WorkflowRunner.Json(tag + "/play-effect.json", receipt);
             if ((string?)receipt["status"] != "pass") WorkflowRunner.MarkFailed(row + ": " + receipt["detail"]);
@@ -228,6 +234,11 @@ namespace Hollowmere.P3_2.Workflows
             Require(Application.isPlaying, "NPC observation requires Play");
             var npc = boot.NpcExtension!.Records.Single(n => n.AuthoringId == authoringId);
             Require(npc.Route.Count > 1 && !string.IsNullOrEmpty(npc.DialogueGraph), "applied NPC needs patrol and dialogue");
+            var content = AssetDatabase.LoadAssetAtPath<GameplayContentSet>("Assets/Hollowmere/Rules/HollowmereContent.asset");
+            bool enrolled = content.Definitions.OfType<DialogueGraphDefinition>().Any(graph => graph.AuthoringId == npc.DialogueGraph);
+            receipt["graphEnrolled"] = enrolled;
+            receipt["graphId"] = npc.DialogueGraph;
+            Require(enrolled, "NPC dialogue graph is not enrolled in GameplayContentSet.definitions");
             var world = boot.World!;
             Require(world.Views != null && world.Views.IsActive, "NPC navigation evidence requires graphical Play; headless views are inactive");
             yield return Until(() => world.Views != null && world.Views.TryGetView(npc.Target, out _), "NPC view");
@@ -247,6 +258,8 @@ namespace Hollowmere.P3_2.Workflows
             yield return Converse(boot, npc.AuthoringId, npc.DialogueGraph, lines, null);
             Require(lines.Any(line => line.Contains("bell", StringComparison.OrdinalIgnoreCase)), "the new NPC never talks about the bell");
             receipt["dialogueLines"] = new JArray(lines);
+            receipt["dialogueStartSucceeded"] = true;
+            receipt["conversationEnded"] = true;
         }
 
         public static IEnumerator NpcMotion(GameBoot boot, string authoringId, JObject receipt)
@@ -282,7 +295,8 @@ namespace Hollowmere.P3_2.Workflows
         private static IEnumerator Converse(GameBoot boot, string npcId, string graphId, List<string> seen, string? exitChoice)
         {
             var runner = boot.Modules!.Dialogue.Runner!;
-            Require(runner.Start(npcId, graphId), "dialogue start refused");
+            bool started = runner.Start(npcId, graphId, out string detail);
+            Require(started, "dialogue start refused: " + detail);
             yield return Until(() => boot.Modules.Dialogue.Presenter!.Last.Active, "conversation started");
             for (int step = 0; step < 64 && boot.Modules.Dialogue.Presenter!.Last.Active; step++)
             {

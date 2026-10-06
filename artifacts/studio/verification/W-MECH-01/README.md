@@ -1,14 +1,13 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **FAIL**. P4.2f current-main installed stages pass in 156.122 s cold / 80.801 s warm, each with 36 EditMode + 2 PlayMode XML passes and authenticated signed world/predicted hashes. Both graphical Play admissions and one retry each roll back with compile_timeout. Owned UPM admission resolves take 17.077 / 19.286 / 7.873 / 20.098 s; logs then repeatedly report Awaiting authenticated companion verdict refresh after domain reload. The historical 146 s native resolve is not reproduced. No live restoration, tri-state smoke or successful admission undo is claimed. Negative candidate has no passing verdict and Admit stays disabled; production Docker Roslyn separately refuses 21 findings across SG001–SG010.
+Verdict: **PASS**. P4.2g installed main after R6-E/R6-F/R6-G: cold/warm signed Docker stages pass in 158.011/79.598 s, each 36 EditMode + 2 PlayMode XML passes. Explicit graphical Play Admit restores nine coins, completes 120-frame Pending-to-Passed smoke and normal undo twice. Cold durable-UTC admission is 42.869 s; corrected warm timer 47.070 s. Owned UPM admission/undo resolves are 16.622/19.119 s cold and 15.891/19.461 s warm. Both reload traces establish authenticated service through the R6-E resumer with zero refresh waits. No admission timeout or timeout retry occurred. Negative app candidate cannot Admit; separate production Docker Roslyn refuses 21 findings across SG001-SG010. A pre-Admit wrong-filename launch and the old cold harness timezone arithmetic remain retained, not rewritten.
 
-Product revision: `4ac7ba858b91e73e2d5de9dc6f02852c13feec56`. Earlier attempts remain historical evidence.
+Product revision: `55091b74be95eb6e47fe0e33c01ce2d8f2528779`. Earlier attempts remain historical evidence.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/live-p42f.py stage-submit --candidate artifacts/studio/workflows/P4.2f/candidate
-# Follow README-P4.2f for service wait, signed receipt and graphical review.
+See artifacts/studio/verification/TOOLS/README-P4.2g.md: stage-submit, authenticated receipt-stage, graphical stage-review for the two retained envelopes.
 ```
 
 ## Retained evidence
@@ -21,3 +20,14 @@ python3 artifacts/studio/verification/TOOLS/live-p42f.py stage-submit --candidat
 - [W-MECH-01/p42f-stage-review-20261006T172434.103813Z](../W-MECH-01/p42f-stage-review-20261006T172434.103813Z)
 - [W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z](../W-MECH-01/p42f-stage-review-negative-20261006T172910.619626Z)
 - [W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z](../W-MECH-01/p42f-receipt-stage-20261006T172113.588454Z)
+- [W-MECH-01/p42g-receipt-stage-20261006T191613.095454Z](../W-MECH-01/p42g-receipt-stage-20261006T191613.095454Z)
+- [W-MECH-01/p42g-receipt-stage-20261006T191613.151367Z](../W-MECH-01/p42g-receipt-stage-20261006T191613.151367Z)
+- [W-MECH-01/p42g-receipt-stage-20261006T192303.876009Z](../W-MECH-01/p42g-receipt-stage-20261006T192303.876009Z)
+- [W-MECH-01/p42g-semantic-20261006T191238.035251Z](../W-MECH-01/p42g-semantic-20261006T191238.035251Z)
+- [W-MECH-01/p42g-stage-review-20261006T191631.705512Z](../W-MECH-01/p42g-stage-review-20261006T191631.705512Z)
+- [W-MECH-01/p42g-stage-review-20261006T191739.034437Z](../W-MECH-01/p42g-stage-review-20261006T191739.034437Z)
+- [W-MECH-01/p42g-stage-review-20261006T192308.082336Z](../W-MECH-01/p42g-stage-review-20261006T192308.082336Z)
+- [W-MECH-01/p42g-stage-review-negative-20261006T192617.136441Z](../W-MECH-01/p42g-stage-review-negative-20261006T192617.136441Z)
+- [W-MECH-01/p42g-stage-submit-20261006T191228.517592Z](../W-MECH-01/p42g-stage-submit-20261006T191228.517592Z)
+- [W-MECH-01/p42g-stage-submit-20261006T192039.511265Z](../W-MECH-01/p42g-stage-submit-20261006T192039.511265Z)
+- [W-MECH-01/p42g-stage-submit-negative-20261006T192510.393381Z](../W-MECH-01/p42g-stage-submit-negative-20261006T192510.393381Z)

@@ -1,0 +1,6 @@
+{
+  "test": "R2_38_P42g_FreshNpcEffectHasClosureDialogueAndDurableUndo",
+  "beforeRun": "W-AI-02/p42g-npc-creation-20261006T195723.136865Z",
+  "expectedFailure": "'graphEnrolled'",
+  "reason": "Old Play receipt drops observation fields between coroutine ticks; status alone is insufficient."
+}

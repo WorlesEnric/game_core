@@ -257,7 +257,9 @@ namespace Hollowmere.P3_2.Workflows
                 S.AddAsset("Assets/Hollowmere/Npcs/Definitions/Odd.asset"),
                 S.Note("confirmed navigation", () => NpcNavigationAnswer(string.Empty)),
                 S.Note("roster before ferryman", () => { WorkflowPlayChecks.CaptureNpcBaseline(); Roster("ferryman2", "before"); }),
-                S.Send("ferryman2", "Add a ferryman NPC here who talks about the bell."),
+                S.Send("ferryman2", Environment.GetEnvironmentVariable("GAMECORE_P42G_NPC_CREATION") == "1"
+                    ? "Add a NEW NPC named Ferryman Elian here who talks about the bell and patrols nearby. Do not repurpose Odd or the existing Bram. Use catalog creation operations for the new entity, graph, behaviour and NPC definitions; enrollment, roster append and placement belong in the same candidate."
+                    : "Add a ferryman NPC here who talks about the bell."),
                 S.Await("ferryman2", NpcNavigationAnswer, 1200),
                 S.Do("preview ferryman", () => Guard("ferryman2", () => S.Preview("ferryman2").Run())),
                 S.Do("apply ferryman", () => Guard("ferryman2", () => S.Apply("ferryman2").Run())),
@@ -268,6 +270,7 @@ namespace Hollowmere.P3_2.Workflows
                 WorkflowPlayChecks.Effect("W-AI-02", "ferryman2"),
                 S.Do("undo ferryman", () => AppliedOr("ferryman2", () => S.Undo("ferryman2").Run())),
                 S.Note("roster after ferryman undo", () => Roster("ferryman2", "undone")),
+                S.Note("save normal undo", () => { AssetDatabase.SaveAssets(); EditorSceneManager.SaveOpenScenes(); }),
                 S.Note("finish", () => { RejectIfOpen("ferryman2"); WorkflowRunner.Recording(false); }),
             };
         }
@@ -294,9 +297,24 @@ namespace Hollowmere.P3_2.Workflows
                 ["patrolPoints"] = points, ["spawnToPointPaths"] = corners, ["pathStatus"] = "PathComplete",
                 ["source"] = "actual Unity NavMesh.SamplePosition and CalculatePath in the loaded Village scene" };
             WorkflowRunner.Json("ferryman2/navigation-context.json", facts);
-            return "Create Ferryman Bram with his own bell dialogue and a Patrol behaviour using these confirmed world-space points. " +
+            string viewEvidence = Environment.GetEnvironmentVariable("GAMECORE_P42G_NPC_VIEW") ?? string.Empty;
+            string viewAnswer = string.Empty;
+            if (!string.IsNullOrEmpty(viewEvidence))
+            {
+                var observed = JObject.Parse(File.ReadAllText(viewEvidence));
+                if ((string?)observed["status"] != "PASS" || (bool?)observed["isPlaying"] != true
+                    || (bool?)observed["viewActive"] != true || (bool?)observed["agentEnabled"] != true || (bool?)observed["onNavMesh"] != true)
+                    throw new InvalidOperationException("NPC view prerequisite observation did not pass");
+                WorkflowRunner.Json("ferryman2/view-prerequisite.json", observed);
+                viewAnswer = " The creator observed the shared NPC prefab's active graphical view and enabled on-NavMesh agent in actual Play, and explicitly chooses that existing prefab for Ferryman Bram: " + observed.ToString(Newtonsoft.Json.Formatting.None);
+            }
+            bool explicitCreation = Environment.GetEnvironmentVariable("GAMECORE_P42G_NPC_CREATION") == "1";
+            string creationAnswer = explicitCreation
+                ? " Do not repurpose any existing NPC. The intended new name is Ferryman Elian, not Bram. The current engine supports dependency-ordered path references to assets created earlier in the SAME change set; those new references have no fabricated stamp or ID and use preconditions none. Existing input targets retain their real stamps. Generic create of dialogue.graph routes through the trusted enrolled graph creator. Include complete graph nodes and edges in creation, rather than needing a pre-staged graph."
+                : string.Empty;
+            return "Create " + (explicitCreation ? "Ferryman Elian" : "Ferryman Bram") + " with his own bell dialogue and a Patrol behaviour using these confirmed world-space points. " +
                 "Reuse the selected Odd definition as the catalog template, preserve existing graph reachability, and include the roster, placement and navigation prerequisites. " +
-                "No image, audio, describe, 3D or other media generation is authorized. The creator measured these facts in the actual loaded scene: " + facts.ToString(Newtonsoft.Json.Formatting.None);
+                "No image, audio, describe, 3D or other media generation is authorized. The creator measured these facts in the actual loaded scene: " + facts.ToString(Newtonsoft.Json.Formatting.None) + viewAnswer + creationAnswer;
         }
 
         // -------------------------------------------------------------------------------------------------- robe

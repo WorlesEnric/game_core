@@ -1,0 +1,1112 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "Hollowmere.Generated",
+  "className": "HollowmereCatalog",
+  "fileName": "HollowmereCatalog.g.cs",
+  "supportedFeatureIds": [],
+  "schemas": [
+    {
+      "stableName": "gameplay.entities.serializer.config",
+      "valueTypeName": "EntitiesConfigValue",
+      "serializerTypeName": "EntitiesConfigSerializer",
+      "serializerKeyName": "EntitiesConfigSerializerKey",
+      "schemaId": "ce219a2b270de50e7f6c3ddb35afe7a3",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "401691215250b041448008843372a06c",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.entities.serializer.domain-entity",
+      "valueTypeName": "EntityDomainValue",
+      "serializerTypeName": "EntityDomainSerializer",
+      "serializerKeyName": "EntityDomainSerializerKey",
+      "schemaId": "7e9832f89fea7930769a8da69c625eb6",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "401691215250b041448008843372a06c",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.world.serializer.config",
+      "valueTypeName": "WorldConfigValue",
+      "serializerTypeName": "WorldConfigSerializer",
+      "serializerKeyName": "WorldConfigSerializerKey",
+      "schemaId": "bbe64ff0e171cf3ce1ece89fc954bc82",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.world.serializer.domain-region",
+      "valueTypeName": "RegionDomainValue",
+      "serializerTypeName": "RegionDomainSerializer",
+      "serializerKeyName": "RegionDomainSerializerKey",
+      "schemaId": "763e0609d0898de043f8aa639960b02b",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.world.serializer.domain-placement",
+      "valueTypeName": "PlacementDomainValue",
+      "serializerTypeName": "PlacementDomainSerializer",
+      "serializerKeyName": "PlacementDomainSerializerKey",
+      "schemaId": "fcdc101ab71eb5f59343a9c70a259c29",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.audio.serializer.config",
+      "valueTypeName": "AudioConfigValue",
+      "serializerTypeName": "AudioConfigSerializer",
+      "serializerKeyName": "AudioConfigSerializerKey",
+      "schemaId": "56e032f53333ee2c6dc6e1a6698f7900",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.audio.serializer.domain-session",
+      "valueTypeName": "AudioSessionDomainValue",
+      "serializerTypeName": "AudioSessionDomainSerializer",
+      "serializerKeyName": "AudioSessionDomainSerializerKey",
+      "schemaId": "1bc456373fbe3f868bc2e5c177007664",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.dialogue.serializer.config",
+      "valueTypeName": "DialogueConfigValue",
+      "serializerTypeName": "DialogueConfigSerializer",
+      "serializerKeyName": "DialogueConfigSerializerKey",
+      "schemaId": "c02eb03e6678a1720470abee65689dbe",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.dialogue.serializer.domain-state",
+      "valueTypeName": "DialogueStateDomainValue",
+      "serializerTypeName": "DialogueStateDomainSerializer",
+      "serializerKeyName": "DialogueStateDomainSerializerKey",
+      "schemaId": "9723cd74e6b88c9031b8fa1d1767395e",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.dialogue.serializer.domain-graph",
+      "valueTypeName": "DialogueGraphDomainValue",
+      "serializerTypeName": "DialogueGraphDomainSerializer",
+      "serializerKeyName": "DialogueGraphDomainSerializerKey",
+      "schemaId": "3afb67258a3dda2def658105a47fc26a",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.interaction.serializer.config",
+      "valueTypeName": "InteractionConfigValue",
+      "serializerTypeName": "InteractionConfigSerializer",
+      "serializerKeyName": "InteractionConfigSerializerKey",
+      "schemaId": "6c702eda39f2982117ee001ce9516d37",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "770f76c2ba18f7423e0fed2ed03c1359",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.interaction.serializer.domain-interactable",
+      "valueTypeName": "InteractionDomainValue",
+      "serializerTypeName": "InteractionDomainSerializer",
+      "serializerKeyName": "InteractionDomainSerializerKey",
+      "schemaId": "2169d0baa981113cde1059c43dd1fd13",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "770f76c2ba18f7423e0fed2ed03c1359",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.inventory.serializer.config",
+      "valueTypeName": "InventoryConfigValue",
+      "serializerTypeName": "InventoryConfigSerializer",
+      "serializerKeyName": "InventoryConfigSerializerKey",
+      "schemaId": "cd2052cbaa743793e449cb926eb1c8fd",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.inventory.serializer.domain-inventory",
+      "valueTypeName": "InventoryDomainValue",
+      "serializerTypeName": "InventoryDomainSerializer",
+      "serializerKeyName": "InventoryDomainSerializerKey",
+      "schemaId": "95008c0e39a2fe353887dc478908698d",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.inventory.serializer.domain-world-item",
+      "valueTypeName": "WorldItemDomainValue",
+      "serializerTypeName": "WorldItemDomainSerializer",
+      "serializerKeyName": "WorldItemDomainSerializerKey",
+      "schemaId": "4edba65df9246fdbed60cdc2ed88b816",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.logic.serializer.config",
+      "valueTypeName": "LogicConfigValue",
+      "serializerTypeName": "LogicConfigSerializer",
+      "serializerKeyName": "LogicConfigSerializerKey",
+      "schemaId": "4b5734672d486b6a91b9802f79a74e09",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.logic.serializer.domain-rule",
+      "valueTypeName": "LogicRuleDomainValue",
+      "serializerTypeName": "LogicRuleDomainSerializer",
+      "serializerKeyName": "LogicRuleDomainSerializerKey",
+      "schemaId": "0646108e2c9b02c3de2817bd30ee7e0f",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.npc.serializer.config",
+      "valueTypeName": "NpcConfigValue",
+      "serializerTypeName": "NpcConfigSerializer",
+      "serializerKeyName": "NpcConfigSerializerKey",
+      "schemaId": "1f1b4fc9193f8e1733bc1db6de6d0134",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "ff88b271933c8753bc6482bd4845c610",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.npc.serializer.domain-npc",
+      "valueTypeName": "NpcDomainValue",
+      "serializerTypeName": "NpcDomainSerializer",
+      "serializerKeyName": "NpcDomainSerializerKey",
+      "schemaId": "fe98b27ba9917261398580b36f108750",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "ff88b271933c8753bc6482bd4845c610",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.player.serializer.config",
+      "valueTypeName": "PlayerConfigValue",
+      "serializerTypeName": "PlayerConfigSerializer",
+      "serializerKeyName": "PlayerConfigSerializerKey",
+      "schemaId": "591e4c60589dd3cc036f8ef9b6b36583",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "7e1276c9f1819a5d17369cce1aa9e8f9",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.player.serializer.domain-player",
+      "valueTypeName": "PlayerDomainValue",
+      "serializerTypeName": "PlayerDomainSerializer",
+      "serializerKeyName": "PlayerDomainSerializerKey",
+      "schemaId": "ae4de82841137791564467a29c5bee08",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "7e1276c9f1819a5d17369cce1aa9e8f9",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.quest.serializer.config",
+      "valueTypeName": "QuestConfigValue",
+      "serializerTypeName": "QuestConfigSerializer",
+      "serializerKeyName": "QuestConfigSerializerKey",
+      "schemaId": "7b9ec8ce112e6fc07530c359352c41ff",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.quest.serializer.domain-quest",
+      "valueTypeName": "QuestDomainValue",
+      "serializerTypeName": "QuestDomainSerializer",
+      "serializerKeyName": "QuestDomainSerializerKey",
+      "schemaId": "38d15112d28acadb6465397519364557",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.ui.serializer.config",
+      "valueTypeName": "UiConfigValue",
+      "serializerTypeName": "UiConfigSerializer",
+      "serializerKeyName": "UiConfigSerializerKey",
+      "schemaId": "526e30afb16e0beb969141e359dff9fd",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.ui.serializer.domain-session",
+      "valueTypeName": "UiSessionDomainValue",
+      "serializerTypeName": "UiSessionDomainSerializer",
+      "serializerKeyName": "UiSessionDomainSerializerKey",
+      "schemaId": "514b9cfaae18602912501c90f1c06da4",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPlugin",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "gameplay.entities.plugin",
+          "keyName": "EntitiesPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "3a0277dfe2876559e64101339ef28547",
+          "implementationExpression": "new GameplayCatalogEntry(EntitiesPluginKey)"
+        },
+        {
+          "stableName": "gameplay.world.plugin",
+          "keyName": "WorldPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+          "implementationId": "620272d3adb5d74a4ceba02958c433e3",
+          "implementationExpression": "new GameplayCatalogEntry(WorldPluginKey)"
+        },
+        {
+          "stableName": "gameplay.audio.plugin",
+          "keyName": "AudioPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "3d11c67e99ebf0c22d651747169cee8c",
+          "implementationExpression": "new GameplayCatalogEntry(AudioPluginKey)"
+        },
+        {
+          "stableName": "gameplay.dialogue.plugin",
+          "keyName": "DialoguePluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+          "implementationId": "4feb29dad216aafd1ebccfdfc09e46d6",
+          "implementationExpression": "new GameplayCatalogEntry(DialoguePluginKey)"
+        },
+        {
+          "stableName": "gameplay.interaction.plugin",
+          "keyName": "InteractionPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "770f76c2ba18f7423e0fed2ed03c1359",
+          "implementationId": "fc9df3dc42666cc1cc758ac4af3dc9a4",
+          "implementationExpression": "new GameplayCatalogEntry(InteractionPluginKey)"
+        },
+        {
+          "stableName": "gameplay.inventory.plugin",
+          "keyName": "InventoryPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+          "implementationId": "678732d08fc2c54beaf6ee02f8362638",
+          "implementationExpression": "new GameplayCatalogEntry(InventoryPluginKey)"
+        },
+        {
+          "stableName": "gameplay.logic.plugin",
+          "keyName": "LogicPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+          "implementationId": "89136f3d19d73c942d55f640e40fb481",
+          "implementationExpression": "new GameplayCatalogEntry(LogicPluginKey)"
+        },
+        {
+          "stableName": "gameplay.npc.plugin",
+          "keyName": "NpcPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "ff88b271933c8753bc6482bd4845c610",
+          "implementationId": "3c9814e370e9a364b3468cc4236333ed",
+          "implementationExpression": "new GameplayCatalogEntry(NpcPluginKey)"
+        },
+        {
+          "stableName": "gameplay.player.plugin",
+          "keyName": "PlayerPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "7e1276c9f1819a5d17369cce1aa9e8f9",
+          "implementationId": "c8be15dad0b92fad934e95f73996040f",
+          "implementationExpression": "new GameplayCatalogEntry(PlayerPluginKey)"
+        },
+        {
+          "stableName": "gameplay.quest.plugin",
+          "keyName": "QuestPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+          "implementationId": "992be007c8076d0e2a0bec213731ebc4",
+          "implementationExpression": "new GameplayCatalogEntry(QuestPluginKey)"
+        },
+        {
+          "stableName": "gameplay.ui.plugin",
+          "keyName": "UiPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "831405303ddd09243ed045e6d16a6708",
+          "implementationExpression": "new GameplayCatalogEntry(UiPluginKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "SystemRegistrations",
+      "keysName": "SystemKeys",
+      "lookupMethodName": "TryGetSystem",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "SystemFactory",
+      "entries": [
+        {
+          "stableName": "gameplay.entities.system.command",
+          "keyName": "EntitiesCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "82ca28c90ec43ae7ac7b2e8919fc5570",
+          "implementationExpression": "new GameplayCatalogEntry(EntitiesCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.world.system.command",
+          "keyName": "WorldCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+          "implementationId": "aad9d9e51de0ab68b90722029f91a94c",
+          "implementationExpression": "new GameplayCatalogEntry(WorldCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.audio.system.command",
+          "keyName": "AudioCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "91c4998b997deb4d5f7075c806dc48ed",
+          "implementationExpression": "new GameplayCatalogEntry(AudioCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.dialogue.system.command",
+          "keyName": "DialogueCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+          "implementationId": "e22b014752bf3c79490988470abe1763",
+          "implementationExpression": "new GameplayCatalogEntry(DialogueCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.interaction.system.command",
+          "keyName": "InteractionCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "770f76c2ba18f7423e0fed2ed03c1359",
+          "implementationId": "e9a906f2c13fe6e57d2627f280e7b9af",
+          "implementationExpression": "new GameplayCatalogEntry(InteractionCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.inventory.system.command",
+          "keyName": "InventoryCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+          "implementationId": "4a93f57f91fcb1060a8e8743361244fa",
+          "implementationExpression": "new GameplayCatalogEntry(InventoryCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.logic.system.command",
+          "keyName": "LogicCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+          "implementationId": "a7ebfbfd78b3719e8038078ec0a7c578",
+          "implementationExpression": "new GameplayCatalogEntry(LogicCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.npc.system.command",
+          "keyName": "NpcCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "ff88b271933c8753bc6482bd4845c610",
+          "implementationId": "1acf48323886bd995e4af0fa6eacbe09",
+          "implementationExpression": "new GameplayCatalogEntry(NpcCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.player.system.command",
+          "keyName": "PlayerCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "7e1276c9f1819a5d17369cce1aa9e8f9",
+          "implementationId": "b69053c8394f163d60681f368dd0bebb",
+          "implementationExpression": "new GameplayCatalogEntry(PlayerCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.quest.system.command",
+          "keyName": "QuestCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+          "implementationId": "c387c3ac389208d3e3ae33437f3b946f",
+          "implementationExpression": "new GameplayCatalogEntry(QuestCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.ui.system.command",
+          "keyName": "UiCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "9b88925250c20213e4a27ac6b2777879",
+          "implementationExpression": "new GameplayCatalogEntry(UiCommandSystemKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "LayoutRegistrations",
+      "keysName": "LayoutKeys",
+      "lookupMethodName": "TryGetLayout",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "LayoutApply",
+      "entries": [
+        {
+          "stableName": "gameplay.entities.applier",
+          "keyName": "EntityApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "adc62cc8019b6371945eb15172f82574",
+          "implementationExpression": "new GameplayCatalogEntry(EntityApplierKey)"
+        },
+        {
+          "stableName": "gameplay.world.region-applier",
+          "keyName": "RegionApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+          "implementationId": "9297636e49e5c3878c95204e3026426a",
+          "implementationExpression": "new GameplayCatalogEntry(RegionApplierKey)"
+        },
+        {
+          "stableName": "gameplay.entities.layout.entity",
+          "keyName": "EntityLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "0e7481fc9198d2182d3341f18825c3ab",
+          "implementationExpression": "new GameplayCatalogEntry(EntityLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.world.layout.region",
+          "keyName": "RegionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+          "implementationId": "08240a24d154ba4ce433fdea676f190a",
+          "implementationExpression": "new GameplayCatalogEntry(RegionLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.world.layout.placement",
+          "keyName": "PlacementLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
+          "implementationId": "de483dbfb5e314a1a46897cb62bbfdf5",
+          "implementationExpression": "new GameplayCatalogEntry(PlacementLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.audio.session-applier",
+          "keyName": "AudioSessionApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "72b66b7d5778469747c1f544a92c8634",
+          "implementationExpression": "new GameplayCatalogEntry(AudioSessionApplierKey)"
+        },
+        {
+          "stableName": "gameplay.audio.layout.session",
+          "keyName": "AudioSessionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "8c1f83ade5d35e781174168dfb927f62",
+          "implementationExpression": "new GameplayCatalogEntry(AudioSessionLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.dialogue.applier",
+          "keyName": "DialogueApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+          "implementationId": "343daf1d348fec7e082c74760d5b65ae",
+          "implementationExpression": "new GameplayCatalogEntry(DialogueApplierKey)"
+        },
+        {
+          "stableName": "gameplay.dialogue.layout.state",
+          "keyName": "DialogueLayout1Key",
+          "keyVersion": 1,
+          "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+          "implementationId": "aee74db9555bec452e775bb5375c0912",
+          "implementationExpression": "new GameplayCatalogEntry(DialogueLayout1Key)"
+        },
+        {
+          "stableName": "gameplay.dialogue.layout.graph",
+          "keyName": "DialogueLayout2Key",
+          "keyVersion": 1,
+          "ownerPackageId": "e621d625c5d0d0dfcbfdc589678dfe37",
+          "implementationId": "ddbedafc313cd88e37a06977b5b80143",
+          "implementationExpression": "new GameplayCatalogEntry(DialogueLayout2Key)"
+        },
+        {
+          "stableName": "gameplay.interaction.layout.interactable",
+          "keyName": "InteractionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "770f76c2ba18f7423e0fed2ed03c1359",
+          "implementationId": "b91214860a211e678675d6df96d851b7",
+          "implementationExpression": "new GameplayCatalogEntry(InteractionLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.inventory.applier",
+          "keyName": "InventoryApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+          "implementationId": "3733885478d7971f0191c5c44f53af3b",
+          "implementationExpression": "new GameplayCatalogEntry(InventoryApplierKey)"
+        },
+        {
+          "stableName": "gameplay.inventory.layout.inventory",
+          "keyName": "InventoryLayout1Key",
+          "keyVersion": 1,
+          "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+          "implementationId": "3a737ba827a819dae287a61fe84c7ad5",
+          "implementationExpression": "new GameplayCatalogEntry(InventoryLayout1Key)"
+        },
+        {
+          "stableName": "gameplay.inventory.layout.world-item",
+          "keyName": "InventoryLayout2Key",
+          "keyVersion": 1,
+          "ownerPackageId": "3cbda98bfe825529ccba62aa9e92c72e",
+          "implementationId": "e867674a9734d0900842725d47dd832e",
+          "implementationExpression": "new GameplayCatalogEntry(InventoryLayout2Key)"
+        },
+        {
+          "stableName": "gameplay.logic.applier",
+          "keyName": "LogicApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+          "implementationId": "5f96c45e0807f3592617c9967affc843",
+          "implementationExpression": "new GameplayCatalogEntry(LogicApplierKey)"
+        },
+        {
+          "stableName": "gameplay.logic.layout.rule",
+          "keyName": "LogicLayout1Key",
+          "keyVersion": 1,
+          "ownerPackageId": "517bcb94525a7a5ee5ca5de819d11620",
+          "implementationId": "702f63a996651b5fab167f637df57f0c",
+          "implementationExpression": "new GameplayCatalogEntry(LogicLayout1Key)"
+        },
+        {
+          "stableName": "gameplay.npc.layout.npc",
+          "keyName": "NpcLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "ff88b271933c8753bc6482bd4845c610",
+          "implementationId": "bbba1b6e7864650b0e63eecf5ae2b893",
+          "implementationExpression": "new GameplayCatalogEntry(NpcLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.player.layout.player",
+          "keyName": "PlayerLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "7e1276c9f1819a5d17369cce1aa9e8f9",
+          "implementationId": "d798b90c96dbe3be8f5e624a53c61b6d",
+          "implementationExpression": "new GameplayCatalogEntry(PlayerLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.quest.applier",
+          "keyName": "QuestApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+          "implementationId": "a1c4f6f1a203e97097c7fba2ed6de8c6",
+          "implementationExpression": "new GameplayCatalogEntry(QuestApplierKey)"
+        },
+        {
+          "stableName": "gameplay.quest.layout.quest",
+          "keyName": "QuestLayout1Key",
+          "keyVersion": 1,
+          "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
+          "implementationId": "f4c0ff66bb8147420c9e672926ee1980",
+          "implementationExpression": "new GameplayCatalogEntry(QuestLayout1Key)"
+        },
+        {
+          "stableName": "gameplay.ui.session-applier",
+          "keyName": "UiSessionApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "57d695a5c5027926d188d7ab60945224",
+          "implementationExpression": "new GameplayCatalogEntry(UiSessionApplierKey)"
+        },
+        {
+          "stableName": "gameplay.ui.layout.session",
+          "keyName": "UiSessionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "a3a3f67f0313b484905fe636f930ef5a",
+          "implementationExpression": "new GameplayCatalogEntry(UiSessionLayoutKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "RecipeRegistrations",
+      "keysName": "RecipeKeys",
+      "lookupMethodName": "TryGetRecipe",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "LayoutApply",
+      "entries": [
+        {
+          "stableName": "gameplay.recipe.05b934c3-466a-4cbd-9ec5-e887ecf26794",
+          "keyName": "Recipe05b934c3466a4cbd9ec5e887ecf26794",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "3c11f0416eed64384d875d67eabe98c5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe05b934c3466a4cbd9ec5e887ecf26794)"
+        },
+        {
+          "stableName": "gameplay.recipe.13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+          "keyName": "Recipe13778dd935bd4e39a90ef001d6d1d5da",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe13778dd935bd4e39a90ef001d6d1d5da)"
+        },
+        {
+          "stableName": "gameplay.recipe.18779563-f74f-4223-947f-19f0502c5a63",
+          "keyName": "Recipe18779563f74f4223947f19f0502c5a63",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "3de6a1c808e470435a325bae916fa868",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe18779563f74f4223947f19f0502c5a63)"
+        },
+        {
+          "stableName": "gameplay.recipe.193f7ebc-6242-4813-b1cc-6afeea0918b9",
+          "keyName": "Recipe193f7ebc62424813b1cc6afeea0918b9",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "2600adff4fb65f3b03ece5e0e192c300",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe193f7ebc62424813b1cc6afeea0918b9)"
+        },
+        {
+          "stableName": "gameplay.recipe.19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+          "keyName": "Recipe19b21d1c92034d9aa4fdcb3e57a6ac54",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "f6dafe12297cd6b24db4e44855faef22",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe19b21d1c92034d9aa4fdcb3e57a6ac54)"
+        },
+        {
+          "stableName": "gameplay.recipe.2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+          "keyName": "Recipe2a8a3d762dea4c2c88a313be92ea473f",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe2a8a3d762dea4c2c88a313be92ea473f)"
+        },
+        {
+          "stableName": "gameplay.recipe.2e52c6af-c201-47b6-925d-9f53530eb275",
+          "keyName": "Recipe2e52c6afc20147b6925d9f53530eb275",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "f6f363c85856e034c10785a52ad42cc4",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe2e52c6afc20147b6925d9f53530eb275)"
+        },
+        {
+          "stableName": "gameplay.recipe.2e855e96-41a6-4b39-b5a0-56319b43c989",
+          "keyName": "Recipe2e855e9641a64b39b5a056319b43c989",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe2e855e9641a64b39b5a056319b43c989)"
+        },
+        {
+          "stableName": "gameplay.recipe.37902cb4-be99-4267-90cb-c02bd295f8d1",
+          "keyName": "Recipe37902cb4be99426790cbc02bd295f8d1",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "dfd9da441e86a9d8d71b911a1a879539",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe37902cb4be99426790cbc02bd295f8d1)"
+        },
+        {
+          "stableName": "gameplay.recipe.3e5ad90c-f48f-43bc-aeeb-aa51360dc71d",
+          "keyName": "Recipe3e5ad90cf48f43bcaeebaa51360dc71d",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "db74bb785de26f027bd0dddbb2cc259f",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe3e5ad90cf48f43bcaeebaa51360dc71d)"
+        },
+        {
+          "stableName": "gameplay.recipe.55e8e15b-8e96-48e7-ae07-2a83e43065ee",
+          "keyName": "Recipe55e8e15b8e9648e7ae072a83e43065ee",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe55e8e15b8e9648e7ae072a83e43065ee)"
+        },
+        {
+          "stableName": "gameplay.recipe.58338d2c-5721-4ba3-8c6e-96f863268d8b",
+          "keyName": "Recipe58338d2c57214ba38c6e96f863268d8b",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "db635bfeff6cb63d8bb808a36b810861",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe58338d2c57214ba38c6e96f863268d8b)"
+        },
+        {
+          "stableName": "gameplay.recipe.5ffeae11-f167-46ca-86d4-6d1b37687905",
+          "keyName": "Recipe5ffeae11f16746ca86d46d1b37687905",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "db74bb785de26f027bd0dddbb2cc259f",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe5ffeae11f16746ca86d46d1b37687905)"
+        },
+        {
+          "stableName": "gameplay.recipe.68d2519f-2a40-439b-be2d-63d16581cd06",
+          "keyName": "Recipe68d2519f2a40439bbe2d63d16581cd06",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe68d2519f2a40439bbe2d63d16581cd06)"
+        },
+        {
+          "stableName": "gameplay.recipe.81ae7773-9697-41d7-b790-2d0346b8fd58",
+          "keyName": "Recipe81ae7773969741d7b7902d0346b8fd58",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "f6f363c85856e034c10785a52ad42cc4",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe81ae7773969741d7b7902d0346b8fd58)"
+        },
+        {
+          "stableName": "gameplay.recipe.8f7c3953-8560-4072-8754-be36e8a94b06",
+          "keyName": "Recipe8f7c3953856040728754be36e8a94b06",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "30124d31dd3a529a898495a04dce9a83",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe8f7c3953856040728754be36e8a94b06)"
+        },
+        {
+          "stableName": "gameplay.recipe.9e5589cc-c56c-4b2b-ade6-6aa6a11f1ec2",
+          "keyName": "Recipe9e5589ccc56c4b2bade66aa6a11f1ec2",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "db74bb785de26f027bd0dddbb2cc259f",
+          "implementationExpression": "new GameplayCatalogEntry(Recipe9e5589ccc56c4b2bade66aa6a11f1ec2)"
+        },
+        {
+          "stableName": "gameplay.recipe.acefbaad-340d-466f-9d66-214afb15646f",
+          "keyName": "Recipeacefbaad340d466f9d66214afb15646f",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "0b8ec0e8133f3ebcbb7cc36ae5aa7ff0",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeacefbaad340d466f9d66214afb15646f)"
+        },
+        {
+          "stableName": "gameplay.recipe.ada7a792-63fb-480a-9445-3b61f5dece1b",
+          "keyName": "Recipeada7a79263fb480a94453b61f5dece1b",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "8c8436dd0c9f2d001d30f4c71a3d56b3",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeada7a79263fb480a94453b61f5dece1b)"
+        },
+        {
+          "stableName": "gameplay.recipe.b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+          "keyName": "Recipeb30c7c024a114a929bf9b15f89b7acaf",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeb30c7c024a114a929bf9b15f89b7acaf)"
+        },
+        {
+          "stableName": "gameplay.recipe.b341c519-f6b4-42b7-99ff-649bd5fb071f",
+          "keyName": "Recipeb341c519f6b442b799ff649bd5fb071f",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "3ee5c7efd8e81dce49796a4ee565054e",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeb341c519f6b442b799ff649bd5fb071f)"
+        },
+        {
+          "stableName": "gameplay.recipe.b69745cd-c1d0-4d13-84a4-f1bc351f5948",
+          "keyName": "Recipeb69745cdc1d04d1384a4f1bc351f5948",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "6774e23be712d4e00df62aece426e563",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeb69745cdc1d04d1384a4f1bc351f5948)"
+        },
+        {
+          "stableName": "gameplay.recipe.b6f71bc7-2c1f-4165-8f25-a249cfa316e5",
+          "keyName": "Recipeb6f71bc72c1f41658f25a249cfa316e5",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "dfd9da441e86a9d8d71b911a1a879539",
+          "implementationExpression": "new GameplayCatalogEntry(Recipeb6f71bc72c1f41658f25a249cfa316e5)"
+        },
+        {
+          "stableName": "gameplay.recipe.bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+          "keyName": "Recipebdecb271eb2c4fd894d5c47c158b9a6d",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "30124d31dd3a529a898495a04dce9a83",
+          "implementationExpression": "new GameplayCatalogEntry(Recipebdecb271eb2c4fd894d5c47c158b9a6d)"
+        },
+        {
+          "stableName": "gameplay.recipe.ce503024-4b28-4194-8865-8eec9dd6d8a7",
+          "keyName": "Recipece5030244b28419488658eec9dd6d8a7",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "b9b09195e51727e5180df00bdb2d86f5",
+          "implementationExpression": "new GameplayCatalogEntry(Recipece5030244b28419488658eec9dd6d8a7)"
+        },
+        {
+          "stableName": "gameplay.recipe.d7081228-f497-4a3d-811e-0bb0e3c72807",
+          "keyName": "Reciped7081228f4974a3d811e0bb0e3c72807",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "339361070744b5918a91e3abb69e38fb",
+          "implementationExpression": "new GameplayCatalogEntry(Reciped7081228f4974a3d811e0bb0e3c72807)"
+        },
+        {
+          "stableName": "gameplay.recipe.e0e2c42d-7ed8-45a5-a891-4edcb8b0ae6c",
+          "keyName": "Recipee0e2c42d7ed845a5a8914edcb8b0ae6c",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "0cebbf98b5a343ffe58ac8300e70d6db",
+          "implementationExpression": "new GameplayCatalogEntry(Recipee0e2c42d7ed845a5a8914edcb8b0ae6c)"
+        },
+        {
+          "stableName": "gameplay.recipe.f90bdbd3-d3c4-413e-a6a1-454bafd3bc5b",
+          "keyName": "Recipef90bdbd3d3c4413ea6a1454bafd3bc5b",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "db74bb785de26f027bd0dddbb2cc259f",
+          "implementationExpression": "new GameplayCatalogEntry(Recipef90bdbd3d3c4413ea6a1454bafd3bc5b)"
+        },
+        {
+          "stableName": "gameplay.recipe.fafbedd0-6061-4883-93da-4c2a1e6b1a21",
+          "keyName": "Recipefafbedd06061488393da4c2a1e6b1a21",
+          "keyVersion": 1,
+          "ownerPackageId": "401691215250b041448008843372a06c",
+          "implementationId": "e787116304bfe70a8e6e1ac7862f8ea9",
+          "implementationExpression": "new GameplayCatalogEntry(Recipefafbedd06061488393da4c2a1e6b1a21)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": [
+      "GameCore.Gameplay.Contracts"
+    ]
+  }
+}
