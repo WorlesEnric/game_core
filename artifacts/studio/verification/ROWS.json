@@ -1,14 +1,8 @@
 {
   "counts": {
-<<<<<<< HEAD
     "PASS": 39,
     "BLOCKED": 26,
     "FAIL": 3
-=======
-    "PASS": 37,
-    "BLOCKED": 30,
-    "FAIL": 1
->>>>>>> host/omp/r7-a
   },
   "rows": [
     {
@@ -66,7 +60,7 @@
       "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
       "command": "studio/tools/verify-all.sh memory",
       "row": "W-UI-04",
-      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
+      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10×",
       "requirement": "SR-8.2",
       "reportedAt": "2026-10-06T15:29:44.364423+00:00",
       "evidence": [
@@ -283,7 +277,7 @@
       "note": "No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence.",
       "command": "studio/tools/verify-all.sh media",
       "row": "W-EDIT-03",
-      "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
+      "scenario": "Generate portrait → apply → undo → redo: no second generation (usage unchanged)",
       "requirement": "SR-3.3",
       "reportedAt": "2026-10-06T15:29:44.380165+00:00",
       "evidence": [
@@ -334,7 +328,7 @@
         "GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests"
       ],
       "row": "W-EDIT-06",
-      "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
+      "scenario": "Runtime-only move → \"Apply to authored\" → persists after exiting Play",
       "requirement": "SR-1.8",
       "reportedAt": "2026-10-06T21:16:51.128079+00:00",
       "evidence": [
@@ -397,7 +391,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet\u2019s scope.",
+      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope.",
       "command": "studio/tools/verify-all.sh security",
       "row": "W-ETOS-01",
       "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
@@ -486,7 +480,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Removing the shared image provider and reloading the node would change concurrent users\u2019 provider service; that operator scenario is outside the permitted no-node-restart run.",
+      "note": "Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run.",
       "command": "studio/tools/verify-all.sh media",
       "row": "W-ETOS-08",
       "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
@@ -539,7 +533,7 @@
       "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
       "row": "W-AI-01",
       "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.397410+00:00",
       "evidence": [
         "W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md",
@@ -642,7 +636,7 @@
       "historical": "P4.2g installed qualification; earlier attempts remain retained as historical evidence. Other rows retain their own revision-specific evidence.",
       "row": "W-AI-02",
       "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T20:20:42.654114+00:00",
       "evidence": [
         "W-AI-02/p42f-text2-20261006T173140.444632Z",
@@ -671,7 +665,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.401563+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -688,7 +682,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-04",
       "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.403575+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -704,7 +698,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-05",
       "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.404795+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -725,7 +719,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T21:13:46.407929+00:00",
       "evidence": [
         "W-AI-06/r7-a/README.md",
@@ -801,7 +795,7 @@
     },
     {
       "status": "PASS",
-      "note": "Fresh-boot restore retains the unloaded NPC\u2019s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
+      "note": "Fresh-boot restore retains the unloaded NPC’s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
       "command": "studio/tools/verify-all.sh unity",
       "tests": [
         "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
@@ -932,7 +926,7 @@
         "OneFieldChange_ChangesOnlyThatDefinitionsRevision"
       ],
       "row": "W-PLUG-12",
-      "scenario": "Bake byte-identity; one line change \u2192 one revision change",
+      "scenario": "Bake byte-identity; one line change → one revision change",
       "requirement": "SR-5.3",
       "reportedAt": "2026-10-06T15:29:44.417891+00:00",
       "evidence": [
@@ -949,7 +943,7 @@
         "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
       ],
       "row": "W-KERNEL-01",
-      "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
+      "scenario": "Corrupted catalog → named failure, not an empty world",
       "requirement": "SR-7.1",
       "reportedAt": "2026-10-06T15:29:44.419407+00:00",
       "evidence": [
@@ -1280,7 +1274,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Editor full-quest endings and save/load pass; a current standalone menu\u2192save\u2192load\u2192ending\u2192restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
+      "note": "Editor full-quest endings and save/load pass; a current standalone menu→save→load→ending→restart playthrough is not re-recorded under the explicit recording-reuse instruction.",
       "command": "studio/tools/verify-all.sh unity",
       "tests": [
         "EndingA_Silence",
@@ -1290,7 +1284,7 @@
       ],
       "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
       "row": "W-GAME-05",
-      "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
+      "scenario": "Full flow menu→save→load→ending→restart in the player",
       "requirement": "SR-6.10",
       "reportedAt": "2026-10-06T15:29:44.429337+00:00",
       "evidence": [
@@ -1299,7 +1293,7 @@
     },
     {
       "status": "PASS",
-      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1\u20138 and resumed 9\u201311 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
+      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
       "command": "studio/tools/verify-all.sh build\nstudio/tools/verify-all.sh v1",
       "row": "W-GAME-06",
       "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
