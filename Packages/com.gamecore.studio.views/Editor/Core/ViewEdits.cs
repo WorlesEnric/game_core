@@ -79,6 +79,10 @@ namespace GameCore.Studio.Views
             return Apply(Build(intent, new[] { operation }));
         }
 
+        /// <summary>Explicit creator command; creates one durable authored candidate for exit Play.</summary>
+        public bool ApplyToAuthored(string runtimeChangeSetId, out ChangeSet? authored, out Diagnostic? problem) =>
+            _runtime.Engine.RuntimeMoves.TryApplyToAuthored(runtimeChangeSetId, out authored, out problem);
+
         /// <summary>Journal-based undo of a change set the views (or anyone) applied.</summary>
         public HistoryResult Undo(string? changeSetId = null) => _runtime.History.Undo(changeSetId);
 

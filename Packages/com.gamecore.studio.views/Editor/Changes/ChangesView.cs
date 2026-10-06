@@ -610,8 +610,23 @@ namespace GameCore.Studio.Views
             {
                 _diff.Clear();
                 _diff.Add(new Button(() => Inspect(chosen[0].Entry!)) { text = "Inspect this change set" });
+                ChangeSet selected = chosen[0].Entry!;
+                if (selected.Operations.Count == 1 && selected.Operations[0].Tool == RuntimeMovePromotion.ToolId)
+                    _diff.Add(new Button(() => ApplyToAuthored(selected.Id))
+                    {
+                        text = "Apply to authored",
+                        name = "apply-to-authored",
+                        tooltip = "Keep this committed runtime move as a separate authored edit after exiting Play. The runtime action stays non-undoable.",
+                    });
                 _diff.Add(Text("Select a second entry (Ctrl/Cmd-click) to compare stamps.", 10f));
             }
+        }
+
+        public bool ApplyToAuthored(string runtimeChangeSetId)
+        {
+            bool accepted = Context.Edits.ApplyToAuthored(runtimeChangeSetId, out ChangeSet? authored, out Diagnostic? problem);
+            SetStatus(accepted ? "Apply to authored queued for exit Play: " + authored!.Id : problem!.ToString());
+            return accepted;
         }
 
         private VisualElement Page(string tab)

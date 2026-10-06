@@ -1,0 +1,22 @@
+{
+    "name": "Hollowmere.R7_B.Promotion",
+    "rootNamespace": "Hollowmere.R7_B.Promotion",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.Views.Editor",
+        "GameCore.Gameplay.Entities",
+        "Hollowmere.P3_2.Workflows"
+    ],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["Newtonsoft.Json.dll", "nunit.framework.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": ["TestAssemblies"]
+}
