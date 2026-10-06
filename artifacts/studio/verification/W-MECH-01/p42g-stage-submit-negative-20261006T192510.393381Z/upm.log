@@ -1,0 +1,38 @@
+[2026-10-06T19:25:10.994Z][INFO] Command-line: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 3690478 -ipc -ipc-path /tmp/Unity-Upm-3690478.sock -l 2 --log-file ~/wkspace/gc-studio/p4.2g/artifacts/studio/verification/W-MECH-01/p42g-stage-submit-negative-20261006T192510.393381Z/upm.log
+[2026-10-06T19:25:10.999Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-3690478.sock).
+[2026-10-06T19:25:10.999Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-3690478.
+[2026-10-06T19:25:11.662Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-10-06T19:25:31.258Z][INFO] project:add-dependency --> 200 (19596 ms)
+[2026-10-06T19:25:31.535Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:31.586Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:31.597Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:31.606Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-06T19:25:31.635Z][INFO] config:project:get-registries --> 200 (29 ms)
+[2026-10-06T19:25:32.731Z][INFO] project:list-packages --> 200 (1196 ms)
+[2026-10-06T19:25:33.018Z][INFO] project:list-packages --> 200 (1431 ms)
+[2026-10-06T19:25:34.171Z][INFO] project:list-packages --> 200 (2574 ms)
+[2026-10-06T19:25:39.568Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:39.959Z][INFO] project:list-packages --> 200 (391 ms)
+[2026-10-06T19:25:42.916Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:42.927Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:42.939Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-06T19:25:42.965Z][INFO] config:project:get-registries --> 200 (26 ms)
+[2026-10-06T19:25:43.532Z][INFO] project:list-packages --> 200 (605 ms)
+[2026-10-06T19:25:46.802Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:46.812Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-06T19:25:47.482Z][INFO] project:list-packages --> 200 (680 ms)
+[2026-10-06T19:25:57.513Z][INFO] project:list-packages --> 200 (14597 ms)
+[2026-10-06T19:25:57.721Z][INFO] Received shutdown request (SIGINT), shutting down Unity Package Manager

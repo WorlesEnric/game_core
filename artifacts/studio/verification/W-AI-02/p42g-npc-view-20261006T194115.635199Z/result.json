@@ -1,0 +1,39 @@
+{
+  "label": "p42g-npc-view",
+  "revision": "e4bb29fb83c9b7eb438cbc8d9788f240ebe35be9",
+  "host": "worlesenric",
+  "started": "2026-10-06T19:41:15.636352+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2g/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2g/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2g/artifacts/studio/verification/W-AI-02/p42g-npc-view-20261006T194115.635199Z/logs --label p42g-npc-view --timeout 1800 --results ~/wkspace/gc-studio/p4.2g/artifacts/studio/verification/W-AI-02/p42g-npc-view-20261006T194115.635199Z/results.xml -- -runTests -testPlatform EditMode -testFilter R2_38_P42g_OddTemplateHasActiveGraphicalNavMeshView",
+  "cwd": "~/wkspace/gc-studio/p4.2g/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-AI-02/p42g-npc-view-20261006T194115.635199Z",
+  "queuedAtRevision": "e4bb29fb83c9b7eb438cbc8d9788f240ebe35be9",
+  "executionStarted": "2026-10-06T19:41:15.637522+00:00",
+  "sourceDiffSha256": "2f6d4fefa49766619a36a8c28eab410057671f823219877af17e18f2a2f5624b",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T19:41:57.773792+00:00",
+  "seconds": 42.13853574288078,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2g/.evidence/live/games/hollowmere/Library/ScriptAssemblies/P42g.Live.Tests.dll",
+        "P42g",
+        "P42g.Live",
+        "P42g.Live.NpcPrerequisiteProbe"
+      ],
+      "nonpassing": [
+        {
+          "name": "P42g.Live.NpcPrerequisiteProbe.R2_38_P42g_OddTemplateHasActiveGraphicalNavMeshView",
+          "result": "Failed",
+          "detail": "System.NullReferenceException : Object reference not set to an instance of an object \n                   at P42g.Live.NpcPrerequisiteProbe+<R2_38_P42g_OddTemplateHasActiveGraphicalNavMeshView>d__0.MoveNext () [0x0018e] in ~/wkspace/gc-studio/p4.2g/.evidence/live/games/hollowmere/Assets/P42gLive/NpcPrerequisiteProbe.cs:35 \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44  \n               \n               Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

@@ -1,0 +1,26 @@
+{
+  "reason": "Previous normal undo was observed in memory and journal but the driver did not explicitly save before closing; next attempt entered with 21 entities and failed bake. Retained all changed fixture bytes first. Restored only owned tracked fixture content after both journals were Undone; this is not substituted for undo.",
+  "beforeRosters": {
+    "creation": [
+      20,
+      21,
+      20
+    ],
+    "evidence": [
+      21,
+      22,
+      21
+    ]
+  },
+  "restored": [
+    "games/hollowmere/Assets/Hollowmere/Regions/ThornwickVillage.unity",
+    "games/hollowmere/Assets/Hollowmere/Rules/HollowmereContent.content.asset",
+    "games/hollowmere/Assets/Hollowmere/World/Catalog/Hollowmere.bake.json",
+    "games/hollowmere/Assets/Hollowmere/World/Catalog/HollowmereCatalog.catalog.json",
+    "games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalog.g.cs",
+    "games/hollowmere/Assets/Hollowmere/World/Generated/HollowmereCatalogCoverage.g.cs",
+    "games/hollowmere/Assets/Hollowmere/World/Hollowmere.manifest.asset",
+    "games/hollowmere/ProjectSettings/GraphicsSettings.asset",
+    "games/hollowmere/ProjectSettings/QualitySettings.asset"
+  ]
+}

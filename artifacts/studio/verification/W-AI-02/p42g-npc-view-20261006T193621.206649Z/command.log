@@ -1,0 +1,6 @@
+-- attempt 1/2: Unity (arguments withheld from logs)
+-- compiler diagnostics (Editor / current Bee log):
+Assets/P42gLive/NpcPrerequisiteProbe.cs(27,111): error CS0012: The type 'NarrativeWorld' is defined in an assembly that is not referenced. You must add a reference to assembly 'GameCore.Gameplay.Logic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+-- error lines from ~/wkspace/gc-studio/p4.2g/artifacts/studio/verification/W-AI-02/p42g-npc-view-20261006T193621.206649Z/logs/p42g-npc-view-20261007T033621-3724501-a1.log:
+   Assets/P42gLive/NpcPrerequisiteProbe.cs(27,111): error CS0012: The type 'NarrativeWorld' is defined in an assembly that is not referenced. You must add a reference to assembly 'GameCore.Gameplay.Logic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+RESULT p42g-npc-view: FAIL (unity exit 3, 32s, attempts 1, log ~/wkspace/gc-studio/p4.2g/artifacts/studio/verification/W-AI-02/p42g-npc-view-20261006T193621.206649Z/logs/p42g-npc-view-20261007T033621-3724501-a1.log)
