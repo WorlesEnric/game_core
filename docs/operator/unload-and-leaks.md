@@ -140,3 +140,7 @@ hook exists and why it must not be removed.
 The headless player also runs with Unity audio disabled (`m_DisableAudio: 1`), because an FMOD/PulseAudio
 crash at exit was recorded as crash-139. The traversal genre's committed audio output goes to the engine-free
 recording sink in that configuration; the Unity audio sink is never constructed there.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

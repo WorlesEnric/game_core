@@ -103,3 +103,7 @@ domain outcome, not a kernel failure.
 | `EncounterUnchanged` | `encounter-unchanged` |
 | `MigrationSourceRefused` | `migration-source-refused` |
 
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

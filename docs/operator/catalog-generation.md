@@ -123,3 +123,7 @@ python3 tools/compare_registration_fingerprints.py --self-test
 
 These are the halves of the codegen contract that can be falsified without an Editor, and `tools/reproduce.sh`
 runs them.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

@@ -1,23 +1,24 @@
-# GameCore Studio — AI-native game creation environment
+# GameCore Studio documentation
 
-**Status: in implementation (started 2026-10-04).** GameCore Studio is a Unity Editor extension, a companion
-etos agent, a reusable gameplay plugin library and a reference game, built on the GameCore V1 kernel and the
-etos v2 platform. This directory is the product's design and delivery set. The kernel's normative protocol remains
-[`../game-core/00-core-protocols.md`](../game-core/00-core-protocols.md).
+Final documentation **as of P4.2d (2026-10-06)**. Product acceptance is **33 PASS / 29 BLOCKED / 6 FAIL (68 rows)**, with revision-specific receipts. Start with the [completion report](12-completion-report.md); R6 is reserved for its Addendum. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [P4.2d](packets/P4.2d-live-rerun.md))
 
-| Document | Holds |
+| Document | Contents |
 |---|---|
-| [01-gap-assessment.md](01-gap-assessment.md) | Requirement-by-requirement assessment (SR-x.y), source-cited status, prerequisites found |
-| [02-architecture.md](02-architecture.md) | Product shape, ownership boundaries A–E, layout, data flows, commit boundaries, identity map, decision records SADR-001..020 |
-| [03-authoring-contracts.md](03-authoring-contracts.md) | AuthoringRef, selection, semantic index, authoring metadata, tools, change sets, concurrency, staging, diagnostics |
-| [04-etos-integration.md](04-etos-integration.md) | Roles and keys, Unity↔companion protocol, task lifecycle mapping, workers, media/voice, staging, RG publication, host setup |
-| [05-plugin-catalog.md](05-plugin-catalog.md) | The twelve capability groups: packages, slots, commands, binders, definitions, tools, acceptance; reference game content |
-| [06-implementation-plan.md](06-implementation-plan.md) | Packets, owners, exclusive paths, dependencies, waves, integration checks |
-| [07-verification-matrix.md](07-verification-matrix.md) | Budgets, evidence conventions, every verification row, platform matrix |
-| 08-creator-guide.md | (W4) how to author, prompt, review, save, build |
-| 09-plugin-developer-guide.md | (W4) metadata, tools, definitions, validators, tests, diagnostic codes |
-| 10-install-build-run.md | (W4) reproducible installation, build and run |
-| 11-completion-report.md | (W4) supported profile and completion status |
-| [archive/](archive/) | The paused 2026-09-28 design draft and its open problems (superseded where [02](02-architecture.md) §8 says so) |
+| [01 Gap assessment](01-gap-assessment.md) | Original 67 SR requirements plus closing status/evidence |
+| [02 Architecture](02-architecture.md) | Boundaries, lifecycle and SADR-001..053 |
+| [03 Authoring contracts](03-authoring-contracts.md) | Identities, metadata, generated schemas, edits and admission |
+| [04 ETOS integration](04-etos-integration.md) | Service-form agent, authority, routes, deadlines and tariffs |
+| [05 Plugin catalog](05-plugin-catalog.md) | Twelve groups, tool IDs/flags and reuse findings |
+| [06 Implementation plan](06-implementation-plan.md) | Scope history and merge provenance |
+| [07 Verification matrix](07-verification-matrix.md) | 68 dispositions, budgets and VSync decision |
+| [08 Creator guide](08-creator-guide.md) | Author, prompt, review, save and troubleshoot |
+| [09 Plugin developer guide](09-plugin-developer-guide.md) | Metadata, runtime/save seams, trusted stage and admission |
+| [10 Install, build and run](10-install-build-run.md) | Linux commands, Saltmarsh/new-project flow and host troubleshooting |
+| [11 Ownership plan](11-ownership-plan.md) | Maintenance roles and review/test boundaries |
+| [12 Completion report](12-completion-report.md) | Delivery, blocked/failed rows, security posture and handover |
+| [P4.3-final packet](packets/P4.3-final-docs.md) | All 57 reconciliation items and remaining requests |
+| [Review](reviews/2026-10-05-studio-review.md) / [packet notes](packets/) | Revision-specific findings and implementation receipts |
+| [Generated schemas](schemas/) | Generated authoring contracts; never hand-edit |
+| [Archive](archive/) | Historical design, superseded by numbered decision records |
 
-Evidence lives under [`../../artifacts/studio/`](../../artifacts/studio/), keyed by verification row.
+Kernel normative semantics remain in [00-core-protocols.md](../game-core/00-core-protocols.md). Studio evidence is under [artifacts/studio](../../artifacts/studio/).

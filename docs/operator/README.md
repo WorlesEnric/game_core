@@ -40,3 +40,7 @@ family probes twice, and validates the documentation. See [build-and-run.md](bui
 | **NotRun (pending orchestrator build host)** | The step has not been executed on the machine that produced this guide. Nothing in this directory may be read as a passing build or test result unless it cites archived evidence. |
 | **Deferred (owner decision)** | Explicitly removed from V1's required scope by the project owner, with the decision recorded. Never a synonym for Pass. |
 | **Unqualified** | No evidence exists. Not a claim that the code is wrong there — a claim that nothing has been demonstrated. |
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

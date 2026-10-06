@@ -122,3 +122,7 @@ Two cautions, both from that report:
 - This is evidence for the fix in this project, **not** a general Unity engine patch.
 - **Do not propagate this setting to an audio-enabled product** without diagnosing its audio backend. A
   product that needs audio must have its audio path qualified separately.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.

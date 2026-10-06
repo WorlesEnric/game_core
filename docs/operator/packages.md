@@ -175,3 +175,7 @@ python3 tools/check_game_core_csharp.py --self-test   # falsify the Studio rules
 **Meta files.** `tools/make_unity_metas.py` also covers `games/*/Assets` and the Studio content kinds
 (`.inputactions`, `.mat`, `.prefab`, `.unity`, `.shadergraph`, `.png`, `.wav`, `.mp3`, `.ogg`, `.fbx`, `.anim`,
 `.controller`). A meta it writes carries only the GUID; Unity adds the importer block on the next import.
+
+## Studio operations
+
+For Studio, Hollowmere and Saltmarsh installation, host execution, pairing and troubleshooting, use [Studio install, build and run](../studio/10-install-build-run.md). Its [completion report](../studio/12-completion-report.md) keeps graphical Studio acceptance separate from this kernel runbook.
