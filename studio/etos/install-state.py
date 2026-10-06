@@ -233,7 +233,7 @@ def main():
     parser.add_argument("--root", type=Path, required=True)
     sub = parser.add_subparsers(dest="action", required=True)
     price_parser = sub.add_parser("prices")
-    price_parser.add_argument("--only", choices=["tts"])
+    price_parser.add_argument("--only", choices=["tts", "describe"])
     sub.add_parser("validate-prices")
     reg = sub.add_parser("register")
     reg.add_argument("identity")

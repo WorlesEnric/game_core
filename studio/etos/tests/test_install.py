@@ -166,6 +166,79 @@ if sys.argv[1:] == ["--json","agent","list"]:
         self.assertEqual(tts["source"], "published")
         self.assertTrue(tts["url"].startswith("https://www.alibabacloud.com/"))
 
+    def test_r6_c_describe_only_cli_refuses_placeholder_without_writes(self):
+        fixture = self.root / "installer"
+        fixture.mkdir()
+        for name in ("install.sh", "install-state.py"):
+            shutil.copyfile(HERE / name, fixture / name)
+        template = (HERE / "ops.toml.tmpl").read_text()
+        describe = next(b for b in mod.provider_blocks(template)
+                        if tomllib.loads(b)["providers"][0]["family"] == "describe")
+        for name in ("models", "ops"):
+            (self.root / f"{name}.toml").write_text("# untouched\n")
+        config_path = self.root / "agents/gamecore-studio/state/config.toml"
+        config_path.parent.mkdir(parents=True)
+        config_path.write_text("port = 7451\n")
+        placeholders = {
+            "price": re.sub(r'(?m)^per_unit = .*$', 'per_unit = "SET_BY_OPERATOR"', describe),
+            "note": re.sub(r'(?m)^# @studio note = .*$',
+                           '# @studio note = "SET_BY_OPERATOR: declare a per-call estimate and basis"', describe),
+        }
+        for field, placeholder in placeholders.items():
+            with self.subTest(field=field):
+                (fixture / "ops.toml.tmpl").write_text(template.replace(describe, placeholder))
+                before = {p.relative_to(self.root): (p.read_bytes(), p.stat().st_mtime_ns)
+                          for p in self.root.rglob("*") if p.is_file()}
+                result = subprocess.run(
+                    ["bash", str(fixture / "install.sh"), "--apply-prices", "--only", "describe"],
+                    env={**os.environ, "ETOS_STUDIO_ROOT": str(self.root)}, capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("tariff_placeholder", result.stderr)
+                self.assertEqual(result.stdout, "")
+                self.assertEqual(
+                    {p.relative_to(self.root): (p.read_bytes(), p.stat().st_mtime_ns)
+                     for p in self.root.rglob("*") if p.is_file()}, before)
+
+    def test_r6_c_describe_only_cli_updates_provider_and_tariff_preserving_other_state(self):
+        template = (HERE / "ops.toml.tmpl").read_text()
+        # Distinct installed tariffs expose any accidental full-template replacement.
+        before_ops = re.sub(r'(?m)^per_unit = .*$', 'per_unit = 0.75', template)
+        ops_path = self.root / "ops.toml"
+        ops_path.write_text(before_ops)
+        models_path = self.root / "models.toml"
+        models_path.write_text('# custom model prices\noperator_setting = "keep"\n')
+        models_before = (models_path.read_bytes(), models_path.stat().st_mtime_ns)
+        config_path = self.root / "agents/gamecore-studio/state/config.toml"
+        config_path.parent.mkdir(parents=True)
+        before_config = ('port = 7451\n' + (HERE / "agent/config.example.toml").read_text()
+                         + '"' + "c" * 64 + '" = "/kept/project"\n'
+                         + '\n[[ops_prices]]\nop = "image"\nprovider = "custom-image"\nper_unit = 0.5\n'
+                         + '\n[[ops_prices]]\nop = "describe"\nprovider = "old-describe"\nper_unit = 0.75\n')
+        config_path.write_text(before_config)
+        result = subprocess.run(
+            ["bash", str(HERE / "install.sh"), "--apply-prices", "--only", "describe"],
+            env={**os.environ, "ETOS_STUDIO_ROOT": str(self.root)}, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((models_path.read_bytes(), models_path.stat().st_mtime_ns), models_before)
+        expected_ops = tomllib.loads(before_ops)
+        describe_block = next(b for b in mod.provider_blocks(template)
+                              if tomllib.loads(b)["providers"][0]["family"] == "describe")
+        describe = tomllib.loads(describe_block)["providers"][0]
+        metadata = tomllib.loads("\n".join(re.findall(r"(?m)^# @studio (.*)$", describe_block)))
+        expected_ops["providers"] = [p for p in expected_ops["providers"] if p["family"] != "describe"] + [describe]
+        self.assertEqual(tomllib.loads(ops_path.read_text()), expected_ops)
+        for block in mod.provider_blocks(before_ops):
+            if tomllib.loads(block)["providers"][0]["family"] != "describe":
+                self.assertIn(block.rstrip(), ops_path.read_text())
+        expected_config = tomllib.loads(before_config)
+        expected_config["ops_prices"] = [p for p in expected_config["ops_prices"] if p["op"] != "describe"] + [{
+            "op": "describe", "provider": "echo-describe", "model": "echo/gpt-5.6-sol",
+            "source": "operator", "unit": "call", "per_unit": 0.01,
+            "note": metadata["note"],
+        }]
+        self.assertEqual(tomllib.loads(config_path.read_text()), expected_config)
+        self.assertFalse((self.root / "calls").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

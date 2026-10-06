@@ -1425,10 +1425,17 @@ namespace Hollowmere.P3_2.Workflows
 
         private static bool AppliedOr(string tag, Func<bool> run)
         {
-            CandidateEntry? entry = S.EntryOf(tag);
-            if (entry == null || entry.Stage != CandidateStage.Applied)
+            string id = S.IdOf(tag);
+            return RunIfApplied(S.Context.Runtime.Journal, id, run, state =>
+                WorkflowRunner.Log(tag + "-not-applied", "undo skipped: journal " + (state?.ToString() ?? "absent"), null));
+        }
+
+        private static bool RunIfApplied(Journal journal, string id, Func<bool> run, Action<ChangeSetState?> skipped)
+        {
+            ChangeSetState? state = id.Length == 0 ? null : journal.Read(id)?.EffectiveState;
+            if (state != ChangeSetState.Applied)
             {
-                WorkflowRunner.Log(tag + "-not-applied", "nothing to undo: candidate " + (entry?.Stage.ToString() ?? "absent"), null);
+                skipped(state);
                 return true;
             }
 

@@ -2,6 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using GameCore.Studio.Edit;
+using GameCore.Studio.Model;
+using GameCore.Studio.UI;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Hollowmere.P3_2.Workflows;
 using Driver = Hollowmere.P3_2.Workflows.Workflows;
@@ -10,6 +14,41 @@ namespace Hollowmere.P3_2.Headless
 {
     public sealed class DriverDryTests
     {
+        [Test]
+        public void R6_C_AppliedJournalWithInvalidUiStillAttemptsHistoryUndo()
+        {
+            string state = Path.Combine(Path.GetTempPath(), "r6-undo-" + System.Guid.NewGuid().ToString("N"));
+            try
+            {
+                using var runtime = StudioRuntime.Create(new StudioRuntimeOptions
+                {
+                    Paths = new StudioPaths(WorkflowRunner.ProjectRoot, state, "r6-dry"), LoadIndexCache = false,
+                });
+                using var selection = new SelectionModel(runtime);
+                using var context = new StudioUiContext(runtime, null, selection, new TaskLedger(new MemoryTaskRowStore()), false);
+                string id = IdDerivation.NewChangeSetId();
+                var invalid = context.Candidates.AddInvalid(id, id, new[] { new Diagnostic("CandidateInvalid", "stale after Play") });
+                runtime.Journal.Write(invalid.ChangeSet.WithState(ChangeSetState.Applied));
+                Assert.That(invalid.Stage, Is.EqualTo(CandidateStage.Invalid));
+                HistoryResult? outcome = null;
+                var guard = typeof(Driver).GetMethod("RunIfApplied", BindingFlags.Static | BindingFlags.NonPublic)!;
+                bool advanced = (bool)guard.Invoke(null, new object[] { runtime.Journal, id, new System.Func<bool>(() =>
+                {
+                    outcome = runtime.History.Undo(id);
+                    return false;
+                }), new System.Action<ChangeSetState?>(_ => Assert.Fail("Applied journal must not be skipped")) })!;
+                Assert.That(outcome, Is.Not.Null, "durable Applied must reach History despite Invalid UI");
+                Assert.That(advanced, Is.False, "the guard must preserve the History step's completion result");
+                Assert.That(outcome!.Ok, Is.True);
+                Assert.That(outcome.State, Is.EqualTo(ChangeSetState.Undone));
+                Assert.That(runtime.Journal.Read(id)!.EffectiveState, Is.EqualTo(ChangeSetState.Undone));
+            }
+            finally
+            {
+                if (Directory.Exists(state)) Directory.Delete(state, true);
+            }
+        }
+
         [Test]
         public void R5_07_TextSelectionDoesNotLookForOddInVillage()
         {

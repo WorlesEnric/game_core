@@ -113,3 +113,62 @@ Never change entry to a new terminal line merely to make it speak first, and nev
 remove existing nodes to silence the diagnostic. Keep condition and consequence paths.
 The unmodified ferryman witness at `tests/fixtures/request6-original.json` adds node 8
 then sets entry to 8; nodes 0–7 are disconnected. It is a failing example, not a template.
+
+## NPC patrol and dialogue prerequisites (W-AI-02)
+
+For a request to add a patrolling, talking NPC such as the ferryman, placement alone
+is not a complete answer. Project the resulting NPC definition, its placed entity,
+roster membership, behaviour and dialogue references before emitting the candidate:
+
+- Bind a Patrol behaviour with at least two distinct world-space patrol points
+  (`npc.setPatrol` when offered by the catalog); one point or an idle duplicate is
+  insufficient. Ensure the active schedule does not override the requested patrol.
+- Bind a non-empty, resolvable dialogue graph (`npc.setDialogue` when offered),
+  with an entry-reachable spoken line about the bell for the ferryman request.
+  Preserve the complete graph's reachability and condition/consequence paths as above.
+- Use the catalog and supplied scene context to establish placement, speed and
+  navigation prerequisites. W-AI-02 requires an active graphical NPC view with an
+  enabled NavMeshAgent on the real NavMesh, committed X/Z displacement greater than
+  100 mm (Manhattan distance), and view displacement greater than 0.1 m while still
+  on the NavMesh. Conversation must start, present a line containing "bell"
+  (case-insensitive), and end. These are Play observations, not claims a JSON answer
+  or successful apply can establish.
+- Copy known references and stamps, order catalog operations with `dependsOn`, and
+  include all missing prerequisites in the proposal. If the bounded inputs do not
+  establish the route, graph, roster or navigation context, request bounded context
+  or return `needs-clarification`; never invent ids, silently omit patrol/dialogue,
+  or claim W-AI-02 passed. Do not repair retained failed evidence as a shortcut.
+
+### Ferryman answer example
+
+This independent operation excerpt assumes the input selection/index already resolve
+the ferryman NPC definition and its empty dialogue graph at these illustrative paths
+and stamps, and establish its roster, placed entity and navigable route. Copy actual
+input refs instead of these examples. A creation request must also include the
+catalog's creation/placement/roster operations and their dependencies; this excerpt
+is not a replacement for them or for the complete change-set envelope.
+
+```json
+{
+  "operations": [
+    {
+      "opId": "patrol", "tool": "npc.setPatrol",
+      "target": {"kind": "Definition", "scope": "Definition", "path": "Assets/Ferryman.asset", "stamp": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "args": {"points": [[1, 0, 1], [3, 0, 1]], "waitSeconds": 1.5},
+      "dependsOn": [], "preconditions": "stamp", "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "bell-line", "tool": "dialogue.addLine",
+      "target": {"kind": "Definition", "scope": "Definition", "path": "Assets/FerrymanDialogue.asset", "stamp": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      "args": {"text": "The bell beneath the water still rings.", "speaker": "Ferryman"},
+      "dependsOn": [], "preconditions": "stamp", "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "dialogue", "tool": "npc.setDialogue",
+      "target": {"kind": "Definition", "scope": "Definition", "path": "Assets/Ferryman.asset", "stamp": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "args": {"graph": {"kind": "Definition", "scope": "Definition", "path": "Assets/FerrymanDialogue.asset", "stamp": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}},
+      "dependsOn": ["bell-line"], "preconditions": "stamp", "applyRequirement": "Rebuild"
+    }
+  ]
+}
+```

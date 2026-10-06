@@ -21,9 +21,8 @@ using UnityEngine.TestTools;
 
 namespace Hollowmere.R5_A
 {
-    /// <summary>Replays the installed P4.2c job's authenticated context and exact candidate through the
-    /// real Play capture and real catalog. Stops at the durable pre-install checkpoint: the retained
-    /// job does not authorize installing code as a newly staged revision of this clone.</summary>
+    /// <summary>The authenticated historical P4.2c verdict lacks the required signed world/predicted
+    /// delta. Even in a ready Play session it must not authorize capture or installation.</summary>
     public sealed class P31AdmissionInPlayMode
     {
         private StudioRuntime? runtime;
@@ -69,40 +68,36 @@ namespace Hollowmere.R5_A
                 StopPlayMode = () => { } };
             StageAdmission admission = StageAdmission.Configure(runtime, options);
             ChangeSet candidate = admission.RetainCandidate(Path.GetFullPath(Path.Combine(Project, "../../samples/mechanisms/pressure-plate/candidate")));
+            string jobId = (string)binding["jobId"]!;
+            Task<StageJobInfo> job = client.GetStageAsync(jobId);
+            deadline = DateTime.UtcNow.AddSeconds(60);
+            while (!job.IsCompleted && DateTime.UtcNow < deadline) yield return null;
+            Assert.That(job.IsCompleted, Is.True, "installed companion stage lookup timed out");
+            StageJobInfo retained = job.GetAwaiter().GetResult();
+            Assert.That(retained.JobId, Is.EqualTo(jobId));
+            Assert.That(retained.Verdict, Is.TypeOf<JObject>());
+            Assert.That((bool?)retained.Verdict!["pass"], Is.True, "historical pass alone cannot authorize admission");
+            Assert.That(retained.Verdict?["catalogDelta"]?["world"], Is.Null);
+            Assert.That(retained.Verdict?["catalogDelta"]?["predicted"], Is.Null);
             Task<StageVerdict> fetch = admission.FetchVerdict((string)binding["jobId"]!, expected);
             deadline = DateTime.UtcNow.AddSeconds(60);
             while (!fetch.IsCompleted && DateTime.UtcNow < deadline) yield return null;
             Assert.That(fetch.IsCompleted, Is.True, "installed companion verdict request timed out");
-            StageVerdict verdict = fetch.GetAwaiter().GetResult();
-            Assert.That(verdict.Pass, Is.True);
+            // The current companion refuses this incomplete signed record before Unity can cache it.
+            EtosException refused = Assert.Throws<EtosException>(() => fetch.GetAwaiter().GetResult())!;
+            Assert.That(refused.Code, Is.EqualTo(EtosCodes.NotFound));
+            Assert.That(refused.Error.Status, Is.EqualTo(404));
+            Assert.That(admission.VerdictOf(candidate.Id), Is.Null);
             HollowmereStudioAdmission.Bind(runtime, boot, boot.Saves!);
-            string destination = Path.Combine(options.PackagesRoot!, verdict.Package);
-            bool captureExisted = boot.Saves!.Exists("admit-" + candidate.Id.ToLowerInvariant());
+            string slot = "admit-" + candidate.Id.ToLowerInvariant();
+            bool captureExisted = boot.Saves!.Exists(slot);
             AdmissionResult result = admission.Admit(candidate, captureAndStop: true);
-            Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.Pending), result.Reason + ": " + result.Detail);
-            JObject pending = admission.ReadPending(candidate.Id)!;
-            Assert.That((string?)pending["phase"], Is.EqualTo("stop-play"));
-            Assert.That(pending["before"]?.Type, Is.Not.EqualTo(JTokenType.String), "catalog verification must wait for Edit mode");
-            Assert.That(Directory.Exists(destination), Is.False);
-            string slot = (string)pending["captureSlot"]!;
-            Assert.That(boot.Saves!.Exists(slot), Is.True, "real SaveService capture precedes stopping Play");
-            if (!captureExisted) boot.Saves.Delete(slot);
+            Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.Refused));
+            Assert.That(admission.ReadPending(candidate.Id), Is.Null);
+            Assert.That(boot.Saves.Exists(slot), Is.EqualTo(captureExisted), "rejected verdict must not capture Play");
+            Assert.That(Directory.Exists(options.PackagesRoot), Is.False, "rejected verdict must not install code");
+            Assert.That(EditorApplication.isPlaying, Is.True);
             yield return new ExitPlayMode();
-            options.FaultHook = (point, id) =>
-            {
-                JObject p = admission.ReadPending(id)!;
-                if (point != AdmissionFaultPoint.Pending || p["before"]?.Type != JTokenType.String) return;
-                Assert.That(EditorApplication.isPlaying, Is.False);
-                Assert.That(Directory.Exists(destination), Is.False, "catalog baseline must be durable before code side effects");
-                throw new AdmissionCrashException();
-            };
-            Assert.Throws<AdmissionCrashException>(() => admission.Resume(candidate.Id));
-            pending = admission.ReadPending(candidate.Id)!;
-            string? actual = new ReflectionAdmissionCatalog().WorldFingerprint(out string? problem);
-            Assert.That(actual, Is.Not.Null.And.Length.EqualTo(64), problem);
-            Assert.That((string?)pending["before"], Is.EqualTo(CatalogSet.Combine(actual!, Array.Empty<string>())));
-            Assert.That(runtime.Journal.Read(candidate.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Interrupted));
-            Assert.That(Directory.Exists(destination), Is.False);
         }
 
         [TearDown]
