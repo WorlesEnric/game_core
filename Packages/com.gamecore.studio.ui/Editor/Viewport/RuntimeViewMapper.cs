@@ -62,11 +62,13 @@ namespace GameCore.Studio.UI
         /// <summary>The candidate re-targeted to the authored object of its view, or the candidate itself.</summary>
         public PickCandidate Map(PickCandidate candidate)
         {
-            if (candidate.Ref.AuthoringId != null || candidate.Source == PickSource.Ground || candidate.Source == PickSource.NavMesh || candidate.Source == PickSource.Ui)
+            if (candidate.Source == PickSource.Ground || candidate.Source == PickSource.NavMesh || candidate.Source == PickSource.Ui)
             {
                 return candidate;
             }
 
+            // A runtime view can live under an authored bootstrap. Its explicit tag identifies the
+            // presented entity; the generic picker's authored ancestor is not its logical owner.
             string? id = ViewAuthoringId(candidate.HitObject);
             if (id == null || !Lookup().TryGetValue(id, out AuthoringRef? authored))
             {

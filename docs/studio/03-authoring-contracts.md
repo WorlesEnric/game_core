@@ -32,6 +32,8 @@ Rules:
   the op declares `preconditions: "none"`.
 - Unity instance IDs, `Entity` indices and `TargetHandle`s never appear in a change set.
 
+The serialized narrative `contentStamp` is bake-derived metadata, distinct from the Studio `AuthoringRef.stamp` conflict precondition: a successful production bake writes the lowercase SHA-256 of `DefinitionCanonicalizer`'s ordinal canonical authored fields and stable references, never a clock or session value. History restores authored fields without fabricating a bake result; if an intervening Play/bake stamped edited content, undo leaves that cached stamp stale until the next successful bake. A saved byte-consistency comparison therefore starts from a baked baseline and runs the production bake after the final history transition, then saves and compares the complete asset bytes (including `contentStamp`); it must neither normalize/drop fields nor restore fixture bytes to manufacture equality. Bake failure fails consistency rather than bypassing validation.
+
 ## 2. Selection (owner: `com.gamecore.studio.core` Picking + `com.gamecore.studio.ui`)
 
 | JSON member | Presence |
