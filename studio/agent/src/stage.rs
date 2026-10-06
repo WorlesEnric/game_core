@@ -442,6 +442,11 @@ impl StageRunner {
                 opts.source_project.display()
             )));
         }
+        opts.bind_project().map_err(|message| {
+            ApiError::stage_failed(message).with_hint(
+                "register the intended checkout's Unity project in stage.projects; local pins must resolve to its Packages/<package-name>",
+            )
+        })?;
         let now = now_ms();
         let job = StageJobView {
             job_id: new_id("stg"),

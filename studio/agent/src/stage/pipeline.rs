@@ -163,6 +163,38 @@ impl StageOptions {
     pub fn slot_dir(&self) -> PathBuf {
         self.root.join(&self.slot)
     }
+
+    /// Resolve pins and the read-only mount from the operator's registered project,
+    /// using the same trusted preflight that constructs the slot manifest.
+    pub fn bind_project(&mut self) -> Result<(), String> {
+        let output = Command::new(&self.tools.python)
+            .env_clear()
+            .envs(stage_env())
+            .arg(&self.tools.make_slot)
+            .arg("--describe-project")
+            .arg("--source-project")
+            .arg(&self.source_project)
+            .output()
+            .map_err(|e| format!("stage_package_root_mismatch: project preflight: {e}"))?;
+        if !output.status.success() {
+            return Err(redact_all(&String::from_utf8_lossy(&output.stdout)));
+        }
+        let record: Value = serde_json::from_slice(&output.stdout).map_err(|e| e.to_string())?;
+        if self
+            .expected_source_revision
+            .as_ref()
+            .is_some_and(|revision| record["commit"].as_str() != Some(revision.as_str()))
+        {
+            return Err("source revision changed in the registered source checkout".into());
+        }
+        let packages = record["packageRoot"]
+            .as_str()
+            .ok_or("missing packageRoot in trusted preflight")?;
+        self.sandbox.packages = PathBuf::from(packages);
+        self.source_project =
+            PathBuf::from(record["project"].as_str().ok_or("missing source project")?);
+        Ok(())
+    }
 }
 
 /// The repository checkout this binary belongs to: `GAMECORE_STAGE_REPO`, else the first
@@ -1224,7 +1256,9 @@ pub fn prepare_slot(opts: &StageOptions, timeout: Duration) -> Result<Value, Str
         .arg("--slot")
         .arg(&opts.slot)
         .arg("--source-project")
-        .arg(&opts.source_project);
+        .arg(&opts.source_project)
+        .arg("--package-root")
+        .arg(&opts.sandbox.packages);
     match &opts.source {
         SlotSource::Existing => {
             return if slot_dir.join("stage.json").is_file() {
@@ -1283,7 +1317,7 @@ pub fn cache_version(opts: &StageOptions) -> Result<String, String> {
             .join("ProjectSettings/ProjectVersion.txt"),
     )
     .map_err(|e| e.to_string())?;
-    let mut packages = std::fs::read_dir(opts.repo.join("Packages"))
+    let mut packages = std::fs::read_dir(&opts.sandbox.packages)
         .map_err(|e| e.to_string())?
         .filter_map(Result::ok)
         .map(|e| e.path())
@@ -1381,8 +1415,6 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     }
     let slot_dir = opts.slot_dir();
     let _lock = SlotLock::acquire(&slot_dir, opts.budget.saturating_mul(4))?;
-    // Probe before any candidate compiler is allowed to start. No fallback on failure.
-    opts.sandbox.probe()?;
     prepare_slot(opts, opts.budget)?;
     let record: Value = std::fs::read(slot_dir.join("stage.json"))
         .ok()
@@ -1395,6 +1427,22 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     {
         return Err("source revision changed while preparing the stage slot".into());
     }
+    // Existing slots receive the same mount agreement check before any Unity probe.
+    for (name, pin) in record["manifest"].as_object().into_iter().flatten() {
+        if let Some(path) = pin.as_str().and_then(|p| p.strip_prefix("file:")) {
+            let expected = opts.sandbox.packages.join(name);
+            if Path::new(path) != expected
+                || expected.canonicalize().ok().as_ref() != Some(&expected)
+            {
+                return Err(format!(
+                    "stage_package_root_mismatch: {name} pin {path} differs from {}; repair stage.projects and recreate the slot",
+                    expected.display()
+                ));
+            }
+        }
+    }
+    // Probe only after validating project pins. No fallback on confinement failure.
+    opts.sandbox.probe()?;
     if let SlotSource::PackageDir { change_set_id, .. } = &opts.source {
         if record["changeSetId"].as_str() != Some(change_set_id.as_str()) {
             return Err("the slot holds another change set".into());
