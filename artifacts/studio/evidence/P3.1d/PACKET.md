@@ -45,3 +45,40 @@ Native long captures are larger than the Editor history window; their exported C
 GPU duration counters return zero on this OpenGL player and are unavailable, not zero-cost GPU evidence. Attribution relies on the measured CPU/present/render counters, native samples and the controlled VSync comparison.
 
 The recorder runs after gameplay/session LateUpdate, so the first visible menu frame carries readiness in that same row. `boot-warmup` deliberately contains no `load` substring: it cannot manufacture a transition exemption in the existing statistics rule.
+
+## Test verification on `703e5509`
+
+| Check | Disposition |
+|---|---|
+| Full final EditMode | 466 passed, 0 failed, 20 skipped, 486 total; `tests/editmode-final.xml` |
+| Full PlayMode | 22 passed, 0 failed, 0 skipped; `tests/playmode-full.xml` |
+| All three P31d regressions | Passed in full EditMode; premature-ready regression has retained baseline failure |
+| `P31AuthoringTests.BakeVerifies` | Passed in full EditMode; bake/content unchanged |
+| Metadata and C# checkers | Pass; transcripts retained |
+
+The 20 skips are retained by name/reason in `tests/results.json`: explicitly gated live ETOS/voice/workflow cases,
+graphical Editor cases, and explicit acceptance/memory fixtures. They are not counted as passes. No paid gate was enabled.
+The wrapper therefore calls EditMode partial/skipped despite zero failures; the packet reports the XML counts directly.
+The game-focused preliminary filter selected a memory fixture which wrote its historical default evidence path;
+that incidental file was copied into this packet and the original restored. New test fixture journal entries were
+removed (hashes in `tests/fixture-cleanup.json`); no authoring-journal/content change is committed.
+
+## P31d-LOG — newly reproduced synchronous logger stalls
+
+The first release (`703e5509`) completed two uncapped full routes: p95 **2.873 / 2.855 ms**, post-ready >100 ms
+**7 / 0**. All seven run-1 stalls occurred at `frame % 120 == 1`, immediately after synchronous logger flushes.
+Those runs remain in `measurement-before-logger/`; the first player's binaries/manifests are retained separately.
+The superseded sequence was stopped only after run 2 exited, before starting VSync qualification. This is an
+intermediate-code failure, not an unchanged-binary rerun to obtain a lucky pass.
+
+Expanding the **existing** baseline capture to Unity's 2000-frame history limit proves the cause:
+`profile-baseline/flush-stall.json` records native frame 10680, **704.595 ms in FrameLogRecorder.LateUpdate**,
+with **705.763 ms render-thread wait** and only **0.088 ms GC.Alloc**. The following logged delta is 706.662 ms.
+Thus this stall is logger/main-thread IO, not shader/GPU work or a large GC sample.
+
+Automatic 120-row flushes now enqueue immutable text to a serial worker. Explicit Flush/quit/destroy drain the
+queue, preserve row order and surface write failures. No row, timestamp or budget is changed. The deterministic
+`P31d_LOG_AutomaticFlushDoesNotWaitForStorage` failed with the blocking automatic flush (`tests/logger-before.xml`);
+`logger-before.patch` retains that test setup. `P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain` covers ordered
+publication and IO failure propagation. Final qualification must use the rebuilt logger-fixed revision, two full
+runs per VSync state; the intermediate pair remains reported separately.

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 
@@ -27,6 +28,9 @@ namespace Hollowmere
         {
             string[] args = Environment.GetCommandLineArgs();
             string root = args[Array.IndexOf(args, "-profileDirectory") + 1];
+            // Unity 6000.0 exposes only this internal history setter; use its documented 2000-frame maximum.
+            typeof(ProfilerDriver).GetMethod("SetMaxFrameHistoryLength", BindingFlags.Static | BindingFlags.NonPublic)!
+                .Invoke(null, new object[] { 2000 });
             foreach (string path in Directory.GetFiles(root, "capture.raw", SearchOption.AllDirectories))
             {
                 ProfilerDriver.ClearAllFrames();
