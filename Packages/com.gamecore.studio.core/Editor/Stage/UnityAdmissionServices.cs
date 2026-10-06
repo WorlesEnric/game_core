@@ -26,112 +26,78 @@ namespace GameCore.Studio.Edit
     /// </summary>
     public sealed class UnityAdmissionCompiler : IAdmissionCompiler
     {
-        /// <summary>Seconds to wait for the Package Manager to register the changed package list.</summary>
-        public double ResolveTimeoutSeconds { get; set; } = 60;
-
-        /// <summary>Seconds to wait for a compile to start before concluding nothing needed compiling.</summary>
-        public double StartTimeoutSeconds { get; set; } = 90;
+        /// <summary>Upper bound of package registration, compilation and reload, persisted by admission.</summary>
+        public double TimeoutSeconds { get; set; } = 90;
+        /// <summary>Removal has no B-STAGE admit-to-Play budget, but must still terminate.</summary>
+        public double RemovalTimeoutSeconds { get; set; } = 180;
+        internal double TimeoutFor(bool removing) => removing ? RemovalTimeoutSeconds : TimeoutSeconds;
 
         public void Compile(string reason, Action<AdmissionCompileResult> done)
         {
-            if (done == null)
-            {
-                throw new ArgumentNullException(nameof(done));
-            }
-
-            List<string> errors = new List<string>();
-            bool registered = false;
-            bool compiling = false;
-            bool started = false;
-            bool finished = false;
-            double resolveDeadline = EditorApplication.timeSinceStartup + ResolveTimeoutSeconds;
-            double startDeadline = double.MaxValue;
+            if (done == null) throw new ArgumentNullException(nameof(done));
+            var errors = new List<string>();
+            bool registered = false, requested = false, started = false, finished = false;
+            DateTime began = DateTime.UtcNow;
+            double timeout = TimeoutFor(reason.StartsWith("undo ", StringComparison.Ordinal));
             Action<UnityEditor.PackageManager.PackageRegistrationEventArgs>? onRegistered = null;
             Action<object>? onStarted = null;
             Action<string, CompilerMessage[]>? onAssembly = null;
             Action<object>? onFinished = null;
             EditorApplication.CallbackFunction? tick = null;
-
-            void Unsubscribe()
+            void Complete(AdmissionCompileResult result)
             {
+                if (finished) return;
+                finished = true;
                 UnityEditor.PackageManager.Events.registeredPackages -= onRegistered;
                 CompilationPipeline.compilationStarted -= onStarted;
                 CompilationPipeline.assemblyCompilationFinished -= onAssembly;
                 CompilationPipeline.compilationFinished -= onFinished;
                 EditorApplication.update -= tick;
+                done(result);
             }
-
-            void BeginCompile(string why)
-            {
-                if (compiling)
-                {
-                    return;
-                }
-
-                // Only compiles from here on count: a compile against the stale package list (before the Package
-                // Manager registered the change) would report errors the real compile does not have.
-                compiling = true;
-                startDeadline = EditorApplication.timeSinceStartup + StartTimeoutSeconds;
-                CompilationPipeline.compilationStarted += onStarted;
-                CompilationPipeline.assemblyCompilationFinished += onAssembly;
-                CompilationPipeline.compilationFinished += onFinished;
-                UnityEngine.Debug.Log("[GameCore Studio] stage: compiling (" + reason + "; " + why + ")");
-                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-                CompilationPipeline.RequestScriptCompilation();
-            }
-
-            onRegistered = _ =>
-            {
-                registered = true;
-                BeginCompile("package list registered");
-            };
-            onStarted = _ => started = true;
+            // Subscribe before Resolve: automatic package compilation can start and reload the domain
+            // before a registeredPackages callback. Never trigger Refresh from inside that callback.
+            onRegistered = _ => registered = true;
+            onStarted = _ => started = registered || requested;
             onAssembly = (assembly, messages) =>
             {
                 foreach (CompilerMessage message in messages)
-                {
-                    if (message.type == CompilerMessageType.Error)
-                    {
-                        errors.Add(message.message);
-                    }
-                }
+                    if (message.type == CompilerMessageType.Error) errors.Add(message.message);
             };
             onFinished = _ =>
             {
-                if (finished || !started)
+                if (!started) return;
+                if ((DateTime.UtcNow - began).TotalSeconds >= timeout)
                 {
+                    Complete(new AdmissionCompileResult(false, false, "compile_timeout"));
                     return;
                 }
-
-                finished = true;
-                Unsubscribe();
-                done(errors.Count > 0
-                    ? new AdmissionCompileResult(false, false, errors.Count + " compile error(s); first: " + errors[0], errors)
-                    : new AdmissionCompileResult(true, true, "compiled; a domain reload follows"));
+                Complete(errors.Count > 0
+                    ? new AdmissionCompileResult(false, false, "compile_failed", errors)
+                    : new AdmissionCompileResult(true, true, "compiled; awaiting domain reload"));
             };
             tick = () =>
             {
-                if (finished)
+                double elapsed = (DateTime.UtcNow - began).TotalSeconds;
+                if (elapsed >= timeout)
                 {
-                    Unsubscribe();
+                    Complete(new AdmissionCompileResult(false, false, "compile_timeout"));
                     return;
                 }
-
-                if (!compiling && !registered && EditorApplication.timeSinceStartup > resolveDeadline && !EditorApplication.isUpdating)
-                {
-                    BeginCompile("no package change registered in " + ResolveTimeoutSeconds + " s");
-                    return;
-                }
-
-                if (compiling && !started && !EditorApplication.isCompiling && EditorApplication.timeSinceStartup > startDeadline)
-                {
-                    finished = true;
-                    Unsubscribe();
-                    done(new AdmissionCompileResult(true, false, "nothing needed compiling"));
-                }
+                if (started || requested || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+                if (!registered && elapsed < 2) return;
+                requested = true;
+                AssetDatabase.Refresh();
+                CompilationPipeline.RequestScriptCompilation();
             };
             UnityEditor.PackageManager.Events.registeredPackages += onRegistered;
+            CompilationPipeline.compilationStarted += onStarted;
+            CompilationPipeline.assemblyCompilationFinished += onAssembly;
+            CompilationPipeline.compilationFinished += onFinished;
             EditorApplication.update += tick;
+            // Resolve schedules registration; batch mode may not service it until Refresh.
+            // Refresh once on a later update (never inside registeredPackages), so registration,
+            // versionDefines, compilation and reload converge in the same asset pipeline pass.
             UnityEngine.Debug.Log("[GameCore Studio] stage: resolving packages (" + reason + ")");
             UnityEditor.PackageManager.Client.Resolve();
         }

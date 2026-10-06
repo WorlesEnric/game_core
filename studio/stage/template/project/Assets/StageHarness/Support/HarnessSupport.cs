@@ -22,6 +22,8 @@ namespace GameCore.Stage.Harness
         public string smokeType = string.Empty;
         public string smokeMethod = "Begin";
         public int smokeSteps = 120;
+        public string worldSnapshotPath = string.Empty;
+        public string worldSnapshotSha256 = string.Empty;
         public string outDir = string.Empty;
     }
 

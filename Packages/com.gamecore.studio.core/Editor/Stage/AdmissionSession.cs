@@ -7,6 +7,7 @@ namespace GameCore.Studio.Edit
 {
     internal sealed class AdmissionSession : ScriptableSingleton<AdmissionSession>
     {
+        [NonSerialized] internal readonly string Domain = Guid.NewGuid().ToString("N");
         [NonSerialized] internal bool ResumeScheduled;
         [NonSerialized] internal bool Resuming;
         [NonSerialized] internal readonly ConditionalWeakTable<StudioRuntime, StageAdmission> Instances = new ConditionalWeakTable<StudioRuntime, StageAdmission>();

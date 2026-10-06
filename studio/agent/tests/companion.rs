@@ -1724,7 +1724,7 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
     let api = Api::new(&running, &node);
     let id = "cs_01J9ZQ00000000000000000092";
     assert_eq!(api.post("/v1/requests", edit_request(id)).await.0, 200);
-    let record = signing::sign(dir.path(), json!({"jobId":"stg_signed","origin":"agent","candidateDigest":"d".repeat(64),"projectId":api.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev(),"packageDigest":"b".repeat(64),"proposalDigest":"c".repeat(64),"steps":gamecore_studio::stage::verdict::STEP_IDS.iter().map(|id|json!({"id":id,"status":"pass"})).collect::<Vec<_>>(),"forbiddenHits":[],"pass":true,"confinement":"docker","coldCache":false})).unwrap();
+    let record = signing::sign(dir.path(), json!({"catalogDelta":{"world":"d".repeat(64),"mechanisms":[{"package":"example","catalogType":"Example.Catalog","fingerprint":"e".repeat(64)}],"predicted":gamecore_studio::util::sha256_hex(format!("gamecore.catalog-set/1\n{}\n{}","d".repeat(64),"e".repeat(64)).as_bytes())},"jobId":"stg_signed","origin":"agent","candidateDigest":"d".repeat(64),"projectId":api.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev(),"packageDigest":"b".repeat(64),"proposalDigest":"c".repeat(64),"steps":gamecore_studio::stage::verdict::STEP_IDS.iter().map(|id|json!({"id":id,"status":"pass"})).collect::<Vec<_>>(),"forbiddenHits":[],"pass":true,"confinement":"docker","coldCache":false})).unwrap();
     // A fixture representing the trusted stage service's persisted record.
     running
         .state
@@ -1763,6 +1763,25 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
         assert_eq!(
             api.post("/v1/stage/stg_signed/verify", forged).await.1["verified"],
             false,
+            "{field}"
+        );
+    }
+    // R6-A: old installation-signed records missing either world field no longer issue authority.
+    for field in ["world", "predicted"] {
+        let mut incomplete = record.clone();
+        incomplete["catalogDelta"]
+            .as_object_mut()
+            .unwrap()
+            .remove(field);
+        let incomplete = signing::sign(dir.path(), incomplete).unwrap();
+        running
+            .state
+            .ledger
+            .update_stage("stg_signed", "done", None, Some(&incomplete))
+            .unwrap();
+        assert_eq!(
+            api.get("/v1/stage/stg_signed/verdict").await.0,
+            404,
             "{field}"
         );
     }

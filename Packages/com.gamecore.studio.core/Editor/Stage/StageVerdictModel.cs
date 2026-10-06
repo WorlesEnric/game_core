@@ -270,6 +270,14 @@ namespace GameCore.Studio.Edit
                 return VerdictReasons.Failed;
             }
 
+            if (verdict.World == null || verdict.World.Length != 64 || verdict.Predicted == null
+                || verdict.Mechanisms.Count == 0
+                || CatalogSet.Combine(verdict.World, System.Linq.Enumerable.Select(verdict.Mechanisms, m => m.Value)) != verdict.Predicted)
+            {
+                message = "The signed world/predicted catalog delta is missing or inconsistent.";
+                return VerdictReasons.Failed;
+            }
+
             if (!string.Equals(verdict.ChangeSetId, changeSetId, StringComparison.Ordinal))
             {
                 message = "The verdict " + verdict.Digest + " is for change set " + verdict.ChangeSetId + ", not " + changeSetId + ".";

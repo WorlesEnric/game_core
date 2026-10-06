@@ -138,6 +138,37 @@ pub struct CatalogDelta {
     pub predicted: Option<String>,
 }
 
+impl CatalogDelta {
+    /// Admission requires complete fingerprints and the canonical predicted catalog set.
+    pub fn admission_ready(&self) -> bool {
+        let digest = |s: &str| {
+            s.len() == 64
+                && s.bytes()
+                    .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+        };
+        let Some(world) = self.world.as_deref().filter(|s| digest(s)) else {
+            return false;
+        };
+        if self.mechanisms.is_empty() || self.mechanisms.iter().any(|m| !digest(&m.fingerprint)) {
+            return false;
+        }
+        let mut fingerprints: Vec<&str> = self
+            .mechanisms
+            .iter()
+            .map(|m| m.fingerprint.as_str())
+            .collect();
+        fingerprints.sort();
+        let predicted = sha256_hex(
+            format!(
+                "gamecore.catalog-set/1\n{world}\n{}",
+                fingerprints.join("\n")
+            )
+            .as_bytes(),
+        );
+        self.predicted.as_deref() == Some(predicted.as_str())
+    }
+}
+
 /// The runner that produced a verdict.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -208,6 +239,7 @@ impl StageVerdict {
             .iter()
             .all(|id| self.steps.iter().any(|s| s.id == *id));
         self.pass = !self.partial
+            && self.catalog_delta.admission_ready()
             && self.failure.is_none()
             && all_present
             && self.steps.len() == STEP_IDS.len()
@@ -295,7 +327,14 @@ mod tests {
                     catalog_type: "Hollowmere.Mechanism.PressurePlate.PressurePlateCatalog".into(),
                     fingerprint: "e".repeat(64),
                 }],
-                predicted: Some("f".repeat(64)),
+                predicted: Some(sha256_hex(
+                    format!(
+                        "gamecore.catalog-set/1\n{}\n{}",
+                        "d".repeat(64),
+                        "e".repeat(64)
+                    )
+                    .as_bytes(),
+                )),
             },
             forbidden_hits: vec![],
             failure: None,
@@ -398,6 +437,20 @@ mod tests {
         v.failure = Some("timeout".into());
         v.settle();
         assert!(!v.pass);
+    }
+
+    #[test]
+    fn r6_a_01_missing_world_or_predicted_never_passes() {
+        for field in ["world", "predicted", "wrong"] {
+            let mut verdict = sample();
+            match field {
+                "world" => verdict.catalog_delta.world = None,
+                "predicted" => verdict.catalog_delta.predicted = None,
+                _ => verdict.catalog_delta.predicted = Some("0".repeat(64)),
+            }
+            verdict.settle();
+            assert!(!verdict.pass, "{field}");
+        }
     }
 
     #[test]

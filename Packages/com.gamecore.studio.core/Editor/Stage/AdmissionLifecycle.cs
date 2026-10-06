@@ -160,6 +160,19 @@ namespace GameCore.Studio.Edit
                 while (true)
                 {
                     string phase = (string)p["phase"]!;
+                    if (phase == "compile-timeout") return new AdmissionResult(id, AdmissionOutcome.UndoFailed,
+                        "Removal compile timed out; durable recovery record retained.") { Reason = "compile_timeout" };
+                    if (Compiler is UnityAdmissionCompiler bounded
+                        && (phase == "compile" || phase == "reload" || phase == "undo-compile" || phase == "undo-reload"))
+                    {
+                        // Older records have only the admission timestamp. Recover their original bound,
+                        // never grant a stalled 817-second attempt a fresh timeout after a process restart.
+                        long deadline = (string?)p["compileAction"] != (string?)p["action"] && p["compileAction"] != null
+                            ? long.MaxValue : (long?)p["compileDeadlineMs"]
+                            ?? ((long?)p["startedMs"] ?? 0) + (long)(bounded.TimeoutFor(phase.StartsWith("undo", StringComparison.Ordinal)) * 1000);
+                        if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() >= deadline)
+                            return CompileTimeout(id, p, phase.StartsWith("undo", StringComparison.Ordinal));
+                    }
                     if (phase == "undo-pending" || phase == "rollback-pending")
                     {
                         if (IsPlaying)
@@ -172,7 +185,7 @@ namespace GameCore.Studio.Edit
                         continue;
                     }
                     if (phase == "undo-compile") return CompilePending(id, p, true);
-                    if (phase == "undo-reload") { Checkpoint(id, p, "undo-verify", AdmissionFaultPoint.UndoVerify); continue; }
+                    if (phase == "undo-reload") { if (!ReloadReady(p)) return CompileWait(id, p, true); Checkpoint(id, p, "undo-verify", AdmissionFaultPoint.UndoVerify); continue; }
                     if (phase == "undo-verify") return VerifyRemoval(id, p);
                     if (phase == "smoke-pending")
                     {
@@ -228,7 +241,7 @@ namespace GameCore.Studio.Edit
                             Checkpoint(id, p, "compile", AdmissionFaultPoint.Compile);
                             continue;
                         case "compile": return CompilePending(id, p, false);
-                        case "reload": Checkpoint(id, p, "rebake", AdmissionFaultPoint.Rebake); continue;
+                        case "reload": if (!ReloadReady(p)) return CompileWait(id, p, false); Checkpoint(id, p, "rebake", AdmissionFaultPoint.Rebake); continue;
                         case "rebake":
                             Fault(AdmissionFaultPoint.BeforeChecks, id);
                             VerifyInstalled(directory, archive!);
@@ -320,22 +333,75 @@ namespace GameCore.Studio.Edit
 
         private AdmissionResult CompilePending(string id, JObject p, bool removing)
         {
-            if (_compiling.Contains(id)) return Waiting(id, "Compilation is already running.");
+            string action = (string)p["action"]!;
+            string phase = (string)p["phase"]!;
+            string compileKey = id + ":" + action;
+            if (_compiling.Contains(compileKey)) return Waiting(id, "Compilation is already running.");
+            if (Compiler is UnityAdmissionCompiler real)
+            {
+                if ((string?)p["compileAction"] == (string?)p["action"] && p["compileDeadlineMs"] != null)
+                {
+                    if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() >= (long)p["compileDeadlineMs"]!)
+                        return CompileTimeout(id, p, removing);
+                    if ((string?)p["compileDomain"] != AdmissionSession.instance.Domain
+                        && !UnityEditor.EditorApplication.isCompiling && !UnityEditor.EditorApplication.isUpdating)
+                    {
+                        if (UnityEditor.EditorUtility.scriptCompilationFailed)
+                            return removing ? CompileTimeout(id, p, true) : BeginRollback(id, p, "compile_failed");
+                        p["compileOutcome"] = "reloaded";
+                        Checkpoint(id, p, removing ? "undo-reload" : "reload", AdmissionFaultPoint.Reload);
+                        return Resume(id);
+                    }
+                    return Waiting(id, "The durable compilation attempt is still pending; it will not be reissued.");
+                }
+                p["compileAction"] = p["action"]!.DeepClone();
+                p["compileDomain"] = AdmissionSession.instance.Domain;
+                p["compileDeadlineMs"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)(real.TimeoutFor(removing) * 1000);
+                p["compileOutcome"] = "pending";
+                WritePending(id, p);
+            }
             Fault(AdmissionFaultPoint.BeforeCompile, id);
-            _compiling.Add(id);
+            _compiling.Add(compileKey);
             AdmissionResult? immediate = null;
             Compiler.Compile((removing ? "undo " : "admit ") + id, result =>
             {
-                _compiling.Remove(id);
+                _compiling.Remove(compileKey);
+                JObject? current = ReadPending(id);
+                if (current == null || (string?)current["action"] != action
+                    || (string?)current["phase"] != phase) return;
+                p["compileOutcome"] = result.Detail;
+                WritePending(id, p);
                 if (!result.Succeeded)
                 {
-                    immediate = removing ? Waiting(id, "Removal compile failed; recovery remains pending.") : BeginRollback(id, p, "compile_failed");
+                    immediate = result.Detail == "compile_timeout" ? CompileTimeout(id, p, removing)
+                        : removing ? Waiting(id, "Removal compile failed; recovery remains pending.") : BeginRollback(id, p, "compile_failed");
                     return;
                 }
                 Checkpoint(id, p, removing ? "undo-reload" : "reload", AdmissionFaultPoint.Reload);
                 immediate = result.ReloadPending ? Waiting(id, "Waiting for domain reload.") : Resume(id);
             });
             return immediate ?? Waiting(id, "Waiting for compilation.");
+        }
+
+        private bool ReloadReady(JObject p) => !(Compiler is UnityAdmissionCompiler)
+            || ((string?)p["compileDomain"] != AdmissionSession.instance.Domain
+                && !UnityEditor.EditorApplication.isCompiling && !UnityEditor.EditorApplication.isUpdating);
+
+        private AdmissionResult CompileWait(string id, JObject p, bool removing) =>
+            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() >= ((long?)p["compileDeadlineMs"] ?? 0)
+                ? CompileTimeout(id, p, removing) : Waiting(id, "Waiting for the compiled domain to reload.");
+
+        private AdmissionResult CompileTimeout(string id, JObject p, bool removing)
+        {
+            p["compileOutcome"] = "compile_timeout";
+            WritePending(id, p);
+            WriteState("compile-timeout-" + id + ".json", p);
+            if (!removing) return BeginRollback(id, p, "compile_timeout");
+            // Failed removal never silently retries the same attempt or discards the inverse.
+            p["phase"] = "compile-timeout";
+            WritePending(id, p);
+            return new AdmissionResult(id, AdmissionOutcome.UndoFailed, "Removal compile timed out; durable recovery record retained.")
+                { Reason = "compile_timeout" };
         }
 
         private static void VerifyInstalled(string directory, PackageArchive archive)
@@ -403,6 +469,7 @@ namespace GameCore.Studio.Edit
             string directory = FromProjectRelative((string)p["directory"]!);
             string? problem = CheckRemovable(directory, (string)p["package"]!);
             if (problem != null) return new AdmissionResult(changeSetId, AdmissionOutcome.UndoFailed, problem);
+            p["compileAction"] ??= p["action"]!.DeepClone();
             p["action"] = "undo";
             Checkpoint(changeSetId, p, "undo-pending", AdmissionFaultPoint.UndoPending);
             return Resume(changeSetId);
@@ -443,6 +510,7 @@ namespace GameCore.Studio.Edit
                 Finished?.Invoke(cancelled);
                 return cancelled;
             }
+            p["compileAction"] ??= p["action"]!.DeepClone();
             p["action"] = "rollback";
             p["reason"] = reason;
             Checkpoint(id, p, "rollback-pending", AdmissionFaultPoint.UndoPending);

@@ -307,6 +307,8 @@ impl StageRunner {
             && record["pass"] == true
             && record["partial"] != true
             && mandatory
+            && serde_json::from_value::<verdict::CatalogDelta>(record["catalogDelta"].clone())
+                .is_ok_and(|delta| delta.admission_ready())
             && record["jobId"] == job
             && record["forbiddenHits"]
                 .as_array()

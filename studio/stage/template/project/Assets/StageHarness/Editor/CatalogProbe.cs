@@ -2,8 +2,8 @@
 // GameCore Studio staging harness, EditMode (P2.4): the catalog delta of the staged mechanism.
 //
 // Writes <out>/catalog-delta.json:
-//   world        the catalog fingerprint the slot's world re-bake produces (GameCore.Gameplay.Compile.Entry.Verify,
-//                in memory, nothing written), present only when the stage inputs carry a WorldDefinition;
+//   world        the fingerprint reconstructed by the trusted content compiler from the read-only,
+//                hash-bound source-world catalog description (no live project mount or candidate world constant);
 //   mechanisms   the candidate's own catalog: the generated `CatalogFingerprint` constant of the type its proposal
 //                names, checked against the fingerprint of the catalog its `BuildCatalog()` really builds;
 //   predicted    the catalog-set hash of world + mechanism (CatalogSetHash.Combine), the hash the live world must
@@ -12,6 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.IO;
+using System.Text;
+using System.Security.Cryptography;
 using GameCore.Contracts;
 using NUnit.Framework;
 
@@ -25,27 +28,9 @@ namespace GameCore.Stage.Harness
             HarnessConfig config = HarnessFiles.Load();
             var result = new HarnessJson().Str("changeSetId", config.changeSetId).Str("package", config.package);
 
-            string? world = null;
-            bool worldVerified = false;
-            string worldSummary = "no GameCore.Gameplay.Compile in the slot";
-            Type? entry = HarnessFiles.FindType("GameCore.Gameplay.Compile.Entry");
-            MethodInfo? verify = entry?.GetMethod("Verify", BindingFlags.Public | BindingFlags.Static, null, Type.EmptyTypes, null);
-            if (verify != null)
-            {
-                object? bake = verify.Invoke(null, null);
-                if (bake != null)
-                {
-                    string fingerprint = Read<string>(bake, "CatalogFingerprint") ?? string.Empty;
-                    worldVerified = Read<bool>(bake, "Succeeded");
-                    worldSummary = Read<string>(bake, "Summary") ?? string.Empty;
-                    if (fingerprint.Length == 64)
-                    {
-                        world = fingerprint;
-                    }
-                }
-            }
-
-            result.Str("world", world).Bool("worldVerified", worldVerified).Str("worldSummary", worldSummary);
+            string world = ReadSourceWorld(config);
+            result.Str("world", world).Bool("worldVerified", true)
+                .Str("worldSnapshotSha256", config.worldSnapshotSha256);
 
             var mechanisms = new List<HarnessJson>();
             var fingerprints = new List<string>();
@@ -75,6 +60,52 @@ namespace GameCore.Stage.Harness
 
             HarnessFiles.Write(config, "catalog-delta.json", result.ToString());
             UnityEngine.Debug.Log("[stage-harness] catalog delta " + result);
+        }
+
+        // Recompile trusted source data with the trusted content compiler. No generated source or
+        // candidate fingerprint is accepted as the world's identity.
+        public static string ReadSourceWorld(HarnessConfig config)
+        {
+            Assert.That(config.worldSnapshotSha256, Has.Length.EqualTo(64), "source_world_missing");
+            byte[] bytes = File.ReadAllBytes(config.worldSnapshotPath);
+            using (SHA256 sha = SHA256.Create())
+            {
+                string digest = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+                Assert.That(digest, Is.EqualTo(config.worldSnapshotSha256), "source_world_changed");
+            }
+            Type? reader = HarnessFiles.FindType("GameCore.Content.Compiler.CatalogDescriptionReader");
+            Assert.That(reader, Is.Not.Null, "trusted catalog compiler missing");
+            MethodInfo? read = reader!.GetMethod("Read", new[] { typeof(string) });
+            Assert.That(read, Is.Not.Null);
+            object? compiled = read!.Invoke(null, new object[] { Encoding.UTF8.GetString(bytes) });
+            Assert.That(Read<bool>(compiled!, "Succeeded"), Is.True, "source_world_invalid");
+            string code = Read<string>(compiled!, "GeneratedCode") ?? string.Empty;
+            var match = System.Text.RegularExpressions.Regex.Match(code,
+                "public const string CatalogFingerprint = \"([0-9a-f]{64})\"");
+            Assert.That(match.Success, Is.True, "source_world_invalid");
+            return match.Groups[1].Value;
+        }
+
+        [Test]
+        public void R6_A_01_MissingSourceWorldRefuses()
+        {
+            Assert.Throws<AssertionException>(() => ReadSourceWorld(new HarnessConfig()));
+        }
+
+        [Test]
+        public void R6_A_01_ChangedSourceWorldRefuses()
+        {
+            HarnessConfig config = HarnessFiles.Load();
+            config.worldSnapshotSha256 = new string('0', 64);
+            Assert.Throws<AssertionException>(() => ReadSourceWorld(config));
+        }
+
+        [Test]
+        public void R6_A_01_TrustedSourceWorldRecompilesDeterministically()
+        {
+            HarnessConfig config = HarnessFiles.Load();
+            string first = ReadSourceWorld(config);
+            Assert.That(ReadSourceWorld(config), Is.EqualTo(first));
         }
 
         private static T? Read<T>(object owner, string property)
