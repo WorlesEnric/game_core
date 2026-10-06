@@ -1,0 +1,58 @@
+{
+  "artifacts": [
+    {
+      "bytes": 34604,
+      "mediaType": "audio/wav",
+      "name": "out.wav",
+      "producer": {
+        "charge": {
+          "costUsd": 0.0000344046,
+          "quantity": 3.0,
+          "tariff": {
+            "kind": "published",
+            "model": "qwen3-tts-flash",
+            "note": "",
+            "perUnitUsd": 0.0000114682,
+            "provider": "bailian-tts",
+            "unit": "bailian_character",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+          }
+        },
+        "etosRef": "ref_01m4816aevrv2rz4ga13behzq3",
+        "key": "gc-653c7c4e7f95ec0500d7597c460f06a2051b0c85",
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "sha256": "525695e24ab8c7d772aae52820ea0bb6ec9900d7b118dcd3fb02b193d8631cf4",
+      "url": "/v1/artifacts/525695e24ab8c7d772aae52820ea0bb6ec9900d7b118dcd3fb02b193d8631cf4"
+    }
+  ],
+  "charge": {
+    "costUsd": 0.0000344046,
+    "quantity": 3.0,
+    "tariff": {
+      "kind": "published",
+      "model": "qwen3-tts-flash",
+      "note": "",
+      "perUnitUsd": 0.0000114682,
+      "provider": "bailian-tts",
+      "unit": "bailian_character",
+      "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+    }
+  },
+  "etosOp": "tts",
+  "key": "gc-653c7c4e7f95ec0500d7597c460f06a2051b0c85",
+  "maxCostUsd": 0.001,
+  "op": "tts",
+  "provider": "bailian-tts",
+  "state": {
+    "state": "succeeded",
+    "usage": {
+      "cost_usd": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "quantity": 3.0,
+      "unit": "character"
+    }
+  }
+}

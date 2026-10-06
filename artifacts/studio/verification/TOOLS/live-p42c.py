@@ -49,13 +49,34 @@ def unity(row,label,extra,workflow=None,results=None,environment=None):
           '--log-dir','{out}/logs','--label',label,'--timeout','1800']
     if results:args+=['--results','{out}/results.xml']
     args+=['--',*extra]
+    if workflow=='voice2':args=['bash',str(TOOLS/'voice-p42c.sh'),'{out}/workflow',*args]
     result=v.run(row,label,args,cwd=LIVE,env=env,results=results,editor=True)
     snapshot('ledger-after-'+label)
     return result
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('lane');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('lane');p.add_argument('--candidate');p.add_argument('--input');p.add_argument('--negative',action='store_true');p.add_argument('--review-only',action='store_true');a=p.parse_args()
     if a.lane=='baseline':snapshot('ledger-before');return
+    if a.lane in ('stage-submit','stage-review'):
+        assert a.candidate
+        env={'GAMECORE_P42C_CANDIDATE':str(Path(a.candidate).resolve())}
+        if a.input:env['GAMECORE_P42C_INPUT']=str(Path(a.input).resolve())
+        if a.negative:env['GAMECORE_P42C_NEGATIVE']='1'
+        if a.review_only:env['GAMECORE_P42C_REVIEW_ONLY']='1'
+        unity('W-MECH-01','p42c-'+a.lane+('-negative' if a.negative else ''),
+              ['-executeMethod','P42c.Live.StageUi.'+('Submit' if a.lane=='stage-submit' else 'Review')],environment=env)
+        return
+    if a.lane=='guides':
+        reserve('guides',{'image':1})
+        unity('W-DOC-01','p42c-guides',['-runTests','-testPlatform','EditMode','-testFilter','P42c.Live.GuideTests'],results='results.xml');return
+    if a.lane=='restart':
+        reserve('restart',{})
+        v.run('W-ETOS-06','p42c-companion-restart',['dotnet','test',str(TOOLS/'P42cReconnect/P42cReconnect.csproj'),
+          '--filter','FullyQualifiedName~R2_38_W_ETOS_06_','--logger','trx','--results-directory','{out}/trx'],
+          env={'GAMECORE_ETOS_LIVE':'1','GAMECORE_ETOS_PROJECT_ID':project_id(),
+          'GAMECORE_ETOS_KEY_FILE':str(Path.home()/'.config/gamecore-studio/app-key.json'),
+          'GC_ETOS_EVIDENCE_DIR':'{out}/live','ETOS_ROOT':str(Path.home()/'.local/share/etos-studio')},results='trx/*.trx')
+        snapshot('ledger-after-restart');return
     if a.lane=='hello':
         env={'GAMECORE_ETOS_LIVE':'1','GAMECORE_ETOS_PROJECT_ID':project_id(),
              'GAMECORE_ETOS_KEY_FILE':str(Path.home()/'.config/gamecore-studio/app-key.json'),
