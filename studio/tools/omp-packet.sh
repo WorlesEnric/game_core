@@ -84,7 +84,7 @@ nohup setsid bash -c '
   rc=$?
   awk "BEGIN{RS=\"\"; ORS=\"\\n\\n\"} {last=\$0} END{print last}" "$4/.omp/$5.log" > "$4/.omp/$5.last.md" 2>/dev/null || true
   echo "exit=$rc" >> "$4/.omp/$5.last.md"
-' _ "$model" "$thinking" "$max_time" "$dir" "$packet" &
+' _ "$model" "$thinking" "$max_time" "$dir" "$packet" >/dev/null 2>&1 </dev/null &
 echo $! > "$dir/.omp/$packet.pid"
 echo "-- omp started for $packet in $dir (pid $(cat "$dir/.omp/$packet.pid"), model $model, thinking $thinking, max-time $max_time)"
 REMOTE
