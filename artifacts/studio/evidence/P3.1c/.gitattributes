@@ -1,0 +1,8 @@
+# Preserve raw tool output byte-for-byte, including its emitted whitespace.
+/build/build-*.log -whitespace
+/build/generated-settings.patch -whitespace
+/build/generated-source/** -whitespace
+/measurement/display.txt -whitespace
+/measurement/opengl.txt -whitespace
+/measurement/run*/command.txt -whitespace
+/measurement/run*/player.log -whitespace

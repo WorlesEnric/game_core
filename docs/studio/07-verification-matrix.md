@@ -16,7 +16,7 @@ every row marked exercised has a folder with a README naming the revision.
 
 | ID | Budget | How measured | Pass rule |
 |---|---|---|---|
-| B-FRAME | Graphical Linux player, 1080p, RTX 4060 Ti: p95 frame time ≤ 16.7 ms over a 10-minute playthrough; no frame > 100 ms outside the first second after a region transition; transition hitch ≤ 250 ms | in-game frame logger (`-frameLog` flag) | both conditions, 1 of 2 runs may be re-run once |
+| B-FRAME | Graphical Linux player, 1080p, RTX 4060 Ti: p95 frame time ≤ 16.7 ms over a 10-minute playthrough; no frame > 100 ms outside the first second after a region transition; transition hitch ≤ 250 ms | in-game frame logger (`-frameLog` flag); **FAIL** — [P3.1c evidence](../../artifacts/studio/evidence/P3.1c/README.md), `c79a3832`: two complete NVIDIA/1080p runs, p95 18.122 / 17.912 ms; >100 ms outside transitions 2 / 2; marsh→belfry 18.695 / 18.518 ms; manual-save worst 80.953 / 31.579 ms | both conditions, 1 of 2 runs may be re-run once |
 | B-SELECT | Hover/click resolution ≤ 16 ms; marquee over 500 candidates ≤ 50 ms | `Stopwatch` in the picking service, Editor log | p95 over 100 picks |
 | B-APPLY | Single-target change set apply ≤ 200 ms; region-wide (all NPCs in Marsh) ≤ 1 s; measured without model time | edit engine timers in the journal (`timings`) | p95 over 20 applies |
 | B-COMPOSE | Kernel prepare for one composition edit in the reference world (≤ 1.5k simulated targets) ≤ 300 ms in the Editor | bridge telemetry | p95 over 20 edits; the 10k-target issue stays open and is reported, not re-budgeted |

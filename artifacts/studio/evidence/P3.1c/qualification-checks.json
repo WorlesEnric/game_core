@@ -1,0 +1,40 @@
+{
+  "P31c_GPU_RequiredProfile": {
+    "before": {
+      "evidence": "../P3.1b/measurement/run2/run-result.json",
+      "actualDeviceAndSize": "640x480 llvmpipe (LLVM 20.1.2; 256 bits) OpenGLCore",
+      "qualified": false
+    },
+    "after": [
+      {
+        "run": 1,
+        "screen": "1920x1080 NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2 OpenGLCore",
+        "qualified": true
+      },
+      {
+        "run": 2,
+        "screen": "1920x1080 NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2 OpenGLCore",
+        "qualified": true
+      }
+    ],
+    "result": "PASS"
+  },
+  "P31c_GPU_TwoGraphicalPlaythroughs": {
+    "complete": [
+      true,
+      true
+    ],
+    "seconds": [
+      608.406,
+      609.22
+    ],
+    "result": "PASS"
+  },
+  "P31c_BFRAME_UnchangedBudget": {
+    "runVerdicts": [
+      "FAIL",
+      "FAIL"
+    ],
+    "result": "FAIL"
+  }
+}
