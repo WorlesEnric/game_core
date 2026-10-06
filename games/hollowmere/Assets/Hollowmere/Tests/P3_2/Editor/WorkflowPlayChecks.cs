@@ -228,6 +228,11 @@ namespace Hollowmere.P3_2.Workflows
             Require(Application.isPlaying, "NPC observation requires Play");
             var npc = boot.NpcExtension!.Records.Single(n => n.AuthoringId == authoringId);
             Require(npc.Route.Count > 1 && !string.IsNullOrEmpty(npc.DialogueGraph), "applied NPC needs patrol and dialogue");
+            var content = AssetDatabase.LoadAssetAtPath<GameplayContentSet>("Assets/Hollowmere/Rules/HollowmereContent.asset");
+            bool enrolled = content.Definitions.OfType<DialogueGraphDefinition>().Any(graph => graph.AuthoringId == npc.DialogueGraph);
+            receipt["graphEnrolled"] = enrolled;
+            receipt["graphId"] = npc.DialogueGraph;
+            Require(enrolled, "NPC dialogue graph is not enrolled in GameplayContentSet.definitions");
             var world = boot.World!;
             Require(world.Views != null && world.Views.IsActive, "NPC navigation evidence requires graphical Play; headless views are inactive");
             yield return Until(() => world.Views != null && world.Views.TryGetView(npc.Target, out _), "NPC view");
@@ -247,6 +252,8 @@ namespace Hollowmere.P3_2.Workflows
             yield return Converse(boot, npc.AuthoringId, npc.DialogueGraph, lines, null);
             Require(lines.Any(line => line.Contains("bell", StringComparison.OrdinalIgnoreCase)), "the new NPC never talks about the bell");
             receipt["dialogueLines"] = new JArray(lines);
+            receipt["dialogueStartSucceeded"] = true;
+            receipt["conversationEnded"] = true;
         }
 
         public static IEnumerator NpcMotion(GameBoot boot, string authoringId, JObject receipt)
@@ -282,7 +289,8 @@ namespace Hollowmere.P3_2.Workflows
         private static IEnumerator Converse(GameBoot boot, string npcId, string graphId, List<string> seen, string? exitChoice)
         {
             var runner = boot.Modules!.Dialogue.Runner!;
-            Require(runner.Start(npcId, graphId), "dialogue start refused");
+            bool started = runner.Start(npcId, graphId, out string detail);
+            Require(started, "dialogue start refused: " + detail);
             yield return Until(() => boot.Modules.Dialogue.Presenter!.Last.Active, "conversation started");
             for (int step = 0; step < 64 && boot.Modules.Dialogue.Presenter!.Last.Active; step++)
             {

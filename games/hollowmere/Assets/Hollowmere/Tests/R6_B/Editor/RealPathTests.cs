@@ -46,20 +46,29 @@ namespace Hollowmere.R6_B
         [Test]
         public void R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting()
         {
-            using GatewayHarness h = GatewayHarness.WithFake();
-            h.Runtime.Index.Rebuild();
-            JObject json = DialogueCandidateTests.Witness();
-            ChangeSet original = StudioJson.Deserialize<ChangeSet>(json.ToString());
-            var graph = h.Runtime.Index.Snapshot().FindNode(original.Operations[1].Target!)!;
-            JArray edges = (JArray)graph.Fields!["edges"].Value!.DeepClone();
-            edges.Add(new JObject { ["from"] = 8, ["port"] = "Next", ["option"] = 0, ["to"] = 0 });
-            json["operations"]![2]!["args"] = new JObject { ["fields"] = new JObject { ["entry"] = 8, ["edges"] = edges } };
-            var staged = h.Runtime.Engine.Stage(StudioJson.Deserialize<ChangeSet>(json.ToString()), new StageOptions
+            var scenes = UnityEditor.SceneManagement.EditorSceneManager.GetSceneManagerSetup();
+            try
             {
-                Mode = ValidationMode.Candidate, ToolCatalogRevision = h.Runtime.Registry.Catalog.Revision,
-            });
-            Assert.That(staged.Ok, Is.True, string.Join("; ", staged.AllDiagnostics.Select(d => d.ToString())));
-            Assert.That(h.Runtime.Journal.List(ChangeSetState.Applied), Is.Empty);
+                UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Hollowmere/Regions/ThornwickVillage.unity");
+                using GatewayHarness h = GatewayHarness.WithFake();
+                h.Runtime.Index.Rebuild();
+                JObject json = DialogueCandidateTests.Witness();
+                ChangeSet original = StudioJson.Deserialize<ChangeSet>(json.ToString());
+                var graph = h.Runtime.Index.Snapshot().FindNode(original.Operations[1].Target!)!;
+                JArray edges = (JArray)graph.Fields!["edges"].Value!.DeepClone();
+                edges.Add(new JObject { ["from"] = 8, ["port"] = "Next", ["option"] = 0, ["to"] = 0 });
+                json["operations"]![2]!["args"] = new JObject { ["fields"] = new JObject { ["entry"] = 8, ["edges"] = edges } };
+                var staged = h.Runtime.Engine.Stage(StudioJson.Deserialize<ChangeSet>(json.ToString()), new StageOptions
+                {
+                    Mode = ValidationMode.Candidate, ToolCatalogRevision = h.Runtime.Registry.Catalog.Revision,
+                });
+                Assert.That(staged.Ok, Is.True, string.Join("; ", staged.AllDiagnostics.Select(d => d.ToString())));
+                Assert.That(h.Runtime.Journal.List(ChangeSetState.Applied), Is.Empty);
+            }
+            finally
+            {
+                UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(scenes);
+            }
         }
 
         [UnityTest]
