@@ -60,6 +60,7 @@ namespace Hollowmere.Game
 
         private void Begin(HollowmereCommandLine commandLine)
         {
+            FrameProfile.Configure(gameObject);
             for (int i = 0; i < commandLine.Problems.Count; i++)
             {
                 Debug.LogWarning("[Hollowmere] command line: " + commandLine.Problems[i]);
