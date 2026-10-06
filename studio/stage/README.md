@@ -102,13 +102,16 @@ zero failed plus skipped/inconclusive is partial, never PASS. Missing/malformed 
 and world/media operation correctness remain with their package/test owners.
 
 ```sh
-studio/stage/cache-key.sh games/hollowmere
+bash studio/stage/provision-cache.sh --stage-root "$GAMECORE_STAGE_ROOT" \
+  --source-project "$PWD/games/hollowmere" --verify
 bash studio/tools/tests/unity-batch-lock.sh
 python3 -m unittest discover -s studio/stage/tests -v
 ```
 
-The cache script emits `stage-cache-v1-<sha256>` over Unity version and sorted kernel/gameplay package names + versions.
-R2-F must key warm caches by this output, seed only on a miss, and invalidate automatically on upgrades. Same versions
-with changed source require version bumps. Sample candidate IDs remain fixed deterministic fixtures: use fresh project
+The runtime's `gamecore-studio stage cache-path` is the cache identity authority: `<stage-root>/_warm/<sha256>` binds source Unity version bytes, trusted package manifests and all three compiled-in dependency locks. `cache-key.sh` is a historical version-only report, not a provisioning path. Use the node-independent `python3 studio/etos/install-state.py stage-cache --stage-root ROOT --source-project PROJECT` action (or `provision-cache.sh --stage-root ROOT --source-project PROJECT`) with `--offline-from NUGET --unity-library LIBRARY --upm-from PUBLIC_UPM`; it derives that exact identity using the locally built companion and verifies the complete offline closure. `--binary` selects another build from this checkout. Root-derived `--verify` refuses incomplete metadata/UPM/PackageCache, not just corrupt NuGet. Exact-directory dependency-only provisioning remains useful for sandbox probes that do not execute Unity.
+
+The literal fresh-root workflow and prerequisites are in [guide 09](../../docs/studio/09-plugin-developer-guide.md#build-and-provision-before-staging); `bash studio/stage/guide-flow.sh NEW_ROOT TRUSTED_LIBRARY` runs its sample regeneration, provisioning and full Docker stage. It never registers a project, installs/restarts services or grants admission. Keep the first stage's `.cold-grace-used` marker and retained verdict/XML; provisioning does not seed a warm ArtifactDB or reset the 360 s warm / once-only 1800 s cold budget.
+
+Sample candidate IDs remain fixed deterministic fixtures: use fresh project
 journals for acceptance, or `--reset-journal` only on an explicitly designated scratch project whose operator-created `.gamecore-stage-scratch` file
 contains its exact absolute project path. The script refuses journal deletion without that marker. Never reset a creator journal.

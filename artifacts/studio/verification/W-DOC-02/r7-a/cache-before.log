@@ -1,0 +1,108 @@
+test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs (r7_cache_tests.CacheTests.test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs) ... ERROR
+test_R7_A_InvalidSeedNeverPassesProvisioning (r7_cache_tests.CacheTests.test_R7_A_InvalidSeedNeverPassesProvisioning) ... FAIL
+test_R7_A_ProvisionExactVersionAndPreserveColdGrace (r7_cache_tests.CacheTests.test_R7_A_ProvisionExactVersionAndPreserveColdGrace) ... ERROR
+test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) ... 
+  test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='../outside') ... FAIL
+  test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='not-a-version') ... FAIL
+  test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') ... FAIL
+test_R7_A_RejectLinkedVersionedRootBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectLinkedVersionedRootBeforeWrites) ... FAIL
+test_R7_A_RequireBothOfflineUnityInputsBeforeProvisioning (r7_cache_tests.CacheTests.test_R7_A_RequireBothOfflineUnityInputsBeforeProvisioning) ... ok
+
+======================================================================
+ERROR: test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs (r7_cache_tests.CacheTests.test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 175, in test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs
+    self.run_provisioner(args + self.seed_arguments())
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
+    cache.main()
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
+  File "/usr/lib/python3.12/argparse.py", line 1911, in parse_args
+    self.error(msg % ' '.join(argv))
+  File "/usr/lib/python3.12/argparse.py", line 2677, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+  File "/usr/lib/python3.12/argparse.py", line 2664, in exit
+    _sys.exit(status)
+SystemExit: 2
+
+======================================================================
+ERROR: test_R7_A_ProvisionExactVersionAndPreserveColdGrace (r7_cache_tests.CacheTests.test_R7_A_ProvisionExactVersionAndPreserveColdGrace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 128, in test_R7_A_ProvisionExactVersionAndPreserveColdGrace
+    self.run_provisioner(args + self.seed_arguments())
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 120, in run_provisioner
+    cache.main()
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/cache.py", line 132, in main
+  File "/usr/lib/python3.12/argparse.py", line 1911, in parse_args
+    self.error(msg % ' '.join(argv))
+  File "/usr/lib/python3.12/argparse.py", line 2677, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+  File "/usr/lib/python3.12/argparse.py", line 2664, in exit
+    _sys.exit(status)
+SystemExit: 2
+
+======================================================================
+FAIL: test_R7_A_InvalidSeedNeverPassesProvisioning (r7_cache_tests.CacheTests.test_R7_A_InvalidSeedNeverPassesProvisioning)
+----------------------------------------------------------------------
+SystemExit: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 198, in test_R7_A_InvalidSeedNeverPassesProvisioning
+    with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
+AssertionError: "cache_invalid" does not match "2"
+
+======================================================================
+FAIL: test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='../outside')
+----------------------------------------------------------------------
+SystemExit: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+    with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
+AssertionError: "cache_invalid" does not match "2"
+
+======================================================================
+FAIL: test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='not-a-version')
+----------------------------------------------------------------------
+SystemExit: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+    with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
+AssertionError: "cache_invalid" does not match "2"
+
+======================================================================
+FAIL: test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) (version='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+----------------------------------------------------------------------
+SystemExit: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 152, in test_R7_A_RejectForeignOrMalformedVersionBeforeWrites
+    with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
+AssertionError: "cache_invalid" does not match "2"
+
+======================================================================
+FAIL: test_R7_A_RejectLinkedVersionedRootBeforeWrites (r7_cache_tests.CacheTests.test_R7_A_RejectLinkedVersionedRootBeforeWrites)
+----------------------------------------------------------------------
+SystemExit: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r7-a/studio/stage/tests/test_cache.py", line 161, in test_R7_A_RejectLinkedVersionedRootBeforeWrites
+    with self.assertRaisesRegex(SystemExit, 'cache_invalid'):
+AssertionError: "cache_invalid" does not match "2"
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.022s
+
+FAILED (failures=5, errors=2)
