@@ -33,7 +33,7 @@ Steady village (after 12 s, diagnostics only): uncapped p95 **2.857 / 2.852 ms**
 
 The startup capture shows real first-render initialization on the CPU: representative frame 1 has GameBoot.Start 51.918 ms, HollowmereGame.Start 9.958 ms, UI panel layout 20.943 ms (26 ms UI update), UI repaint 91.764 ms (font/layout/binding/render-chain work), finish-frame rendering 61.805 ms. These are inclusive/nested samples, not additive independent timings. The first logged delta also spans preceding engine/splash startup. Full startup rows remain retained.
 
-Native long captures are larger than the Editor history window; their exported CSV covers the retained 300-frame tail. Short startup captures preserve frame 0 onward. The first exporter failed on an unnamed render-thread sample; null-name handling and explicit thread counts fix the exporter. The failed combined export/test invocation has no XML and is NOT test evidence. The isolated baseline regression XML records the expected failure: `Ready == false` while Attach emitted `ready`.
+Native long captures are larger than the Editor history window; their initial exported CSV covered a 300-frame tail; the final export expands this to 2000 frames for logger attribution. Short startup captures preserve frame 0 onward. The first exporter failed on an unnamed render-thread sample; null-name handling and explicit thread counts fix the exporter. The failed combined export/test invocation has no XML and is NOT test evidence. The isolated baseline regression XML records the expected failure: `Ready == false` while Attach emitted `ready`.
 
 ## Implementation under validation
 
@@ -82,3 +82,22 @@ queue, preserve row order and surface write failures. No row, timestamp or budge
 `logger-before.patch` retains that test setup. `P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain` covers ordered
 publication and IO failure propagation. Final qualification must use the rebuilt logger-fixed revision, two full
 runs per VSync state; the intermediate pair remains reported separately.
+
+Final logger-fixed source **`a5dc112d`**: full EditMode **468 passed, 0 failed, 20 unchanged skips**
+(`tests/editmode-logger.xml`); full PlayMode **22/22 passed** (`tests/playmode-logger.xml`). All five P31d
+regressions and `BakeVerifies` pass. The deterministic logger-before XML is **1 passed / 1 expected failed**;
+the failure names `automatic flush waited for storage`, proving the old blocking path cannot return while the
+injected writer is held. Metadata and C# checkers pass on this source.
+
+The worker-writing intermediate (`a5dc112d`) also reproduced post-ready >100 ms stalls, so it is not promoted
+as accepted. Its completed run is retained separately. **Final recording policy:** automatic 120-frame blocks
+stay in memory; explicit Flush/shutdown coalesces and writes them, preserving all rows and surfacing failure.
+There is no filesystem activity or task scheduling from automatic recording. The slow-storage regression now
+also asserts that the writer has not even entered before explicit Flush. This opt-in benchmark log uses memory
+proportional to its run length (recorded CSV byte sizes provide the concrete scale); normal play without `-frameLog`
+creates no recorder. No frame-time samples or budget checks are removed.
+
+**Left open (historical attribution):** the exact mechanism of the worker-version residual stalls was not isolated
+with a native capture of that intermediate revision. Do not claim they were GC or GPU stalls. The directly profiled
+704.595 ms synchronous logger stall remains the proven initial cause; final outcome requires measurement of the
+memory-buffered implementation.

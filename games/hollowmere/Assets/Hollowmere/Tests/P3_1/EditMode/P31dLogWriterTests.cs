@@ -38,7 +38,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
                 {
                     for (int i = 0; i < FrameLogRecorder.FlushEveryFrames; i++) update.Invoke(log, null);
                 }, "the frame callback must return while storage is blocked");
-                Assert.That(entered.Wait(TimeSpan.FromSeconds(5)), Is.True);
+                Assert.That(entered.IsSet, Is.False, "recording performs no background filesystem activity either");
                 Assert.That(written, Is.Empty);
                 release.Set();
                 log.Flush();
@@ -61,7 +61,8 @@ namespace Hollowmere.P3_1.EditMode.Tests
             writer.Append("first");
             writer.Append("second");
             writer.Drain();
-            Assert.That(rows, Is.EqualTo(new[] { "first", "second" }));
+            Assert.That(string.Concat(rows), Is.EqualTo("firstsecond"));
+            Assert.That(rows.Count, Is.EqualTo(1), "coalesce blocks into one explicit write");
             var failing = new FrameLogWriter(_ => throw new IOException("storage failed"));
             failing.Append("not lost silently");
             Assert.Throws<IOException>(() => failing.Drain());

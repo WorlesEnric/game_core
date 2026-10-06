@@ -4,7 +4,7 @@
 // Time.unscaledDeltaTime in milliseconds (three decimals); region is the focus region the game last reported
 // (SetRegion); marker joins every label queued with Mark since the previous row with '|'. The game marks region
 // transitions as "region:<from>-><to>", which record_playthrough.sh uses to separate transition hitches from steady
-// frames. Rows are buffered and queued to a serial worker every 120 frames; explicit flush, quit and destroy drain it. Invariant culture, no quoting:
+// frames. Rows are buffered in immutable blocks every 120 frames; explicit flush, quit and destroy write them. Invariant culture, no quoting:
 // commas in a region or marker become ';'.
 #nullable enable
 using System;
@@ -17,22 +17,29 @@ using UnityEngine;
 
 namespace Hollowmere.Game
 {
-    /// <summary>Single-producer serial, worker-thread append queue. Drain surfaces write errors and guarantees complete ordered output.</summary>
+    /// <summary>Single-producer recording buffer. Only explicit Drain performs IO; write failures remain observable.</summary>
     public sealed class FrameLogWriter
     {
         private readonly Action<string> append;
         private Task pending = Task.CompletedTask;
+        private readonly List<string> blocks = new List<string>();
         public FrameLogWriter(Action<string> append) => this.append = append ?? throw new ArgumentNullException(nameof(append));
-        public void Append(string text)
+        public void Append(string text) => blocks.Add(text);
+        public void Drain()
         {
-            Task before = pending;
-            pending = Task.Run(async () =>
+            if (blocks.Count > 0)
             {
-                await before.ConfigureAwait(false);
-                append(text);
-            });
+                string[] batch = blocks.ToArray();
+                blocks.Clear();
+                Task before = pending;
+                pending = Task.Run(async () =>
+                {
+                    await before.ConfigureAwait(false);
+                    append(string.Concat(batch));
+                });
+            }
+            pending.GetAwaiter().GetResult();
         }
-        public void Drain() => pending.GetAwaiter().GetResult();
     }
 
     /// <summary>Writes one CSV row per rendered frame (added by the game when -frameLog is given).</summary>
