@@ -342,3 +342,31 @@ Editor exit; the pre-existing untracked `.codex/` directory is untouched.
 D10a currently binds the consumer's `fact` during Stage, before the producer has executed. R3-F adds the narrow engine seam for `dialogue.setFact(authoringId)` followed by `dialogue.setFactCondition(fact)`: preserve the candidate id, add a producer dependency, defer the typed argument binding until that producer succeeds, and refuse forward/ambiguous references with an operation-local `InvalidArgs` witness. Existing references retain ordinary binding and indexed category checks. No gameplay assembly dependency is added to core.
 
 Tests and final host evidence: [R3-F packet](../../../Packages/com.gamecore.studio.ui/PACKET.md). The same packet completes R3-A's three UI/companion requests above.
+
+## R2 fixes — CORE-PICK (R2-38 / P4.2b B-SELECT)
+
+CORE-PICK addresses the retained 500-candidate marquee failure within the Picking and core
+Tests paths. Full implementation, reproduction, evidence/counts, tooling request and remaining
+limits are in [CORE-PICK PACKET.md](../../../Packages/com.gamecore.studio.core/Tests/CORE-PICK/PACKET.md).
+
+| Finding | Fix | Test |
+|---|---|---|
+| R2-38 / B-SELECT | Cache renderer projection and owner aggregation per Editor update; cache stamped references per content revision; reuse accumulators/candidates | Retained `R2_38_B_SELECT_100PicksAnd500CandidateMarquee`; `R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms`; `R2_38_CORE_PICK_ReusesStampedRefsAndImmutableCandidates` |
+| R2-38 correctness | Preserve all-renderer full containment, intersection, masks, reversed rectangles, depth ordering and all distinct identities | `R2_38_CORE_PICK_SeededMarqueeMatchesNaiveBothContainmentModes`; `R2_38_CORE_PICK_CameraViewportAndExplicitInvalidation` |
+| R2-38 freshness | Singleton-owned Editor/Undo/scene/content notifications, per-update Play expiry, synchronous camera/viewport checks and explicit same-update edit invalidation seam | `R2_38_CORE_PICK_EditorChangesInvalidateGeometryIdentityAndStamp` |
+
+Baseline on the packet host: **0 passed / 1 failed**, all 500 identities retained; marquee
+p95 **266.152 ms**, pick p95 **3.0734 ms**. Changed-source correctness XML has **95 passed**,
+with the timing test refusing the non-exclusive host (**1 failed / 0 skipped**). Final exclusive
+XMLs at `2d992c9f`: **2/2 and 1/1 passed**, peak Editors **1** in each. All **88 core + 8 UI
+selection cases** pass across these runs. The retained 100-pick / 100-marquee workloads
+preserve **500 distinct identities** twice: marquee p95 **0.2688 / 0.3098 ms**, pick p95
+**1.0232 / 1.8488 ms**. The 21-update marquee median is **1.8216 ms**. Cold first queries,
+the initial Mono inventory-guard failure, and the exact profiles remain in the linked packet.
+The matrix now links the two measured datasets. No spatial renderer index exists in
+SemanticIndexService; no kernel, authoring contract, dependency or picking allowlist changes
+are introduced.
+
+CORE-PICK final policy gates: metadata **42 packages / 91 assemblies**, C# **1,209 files**,
+installer **5/5**, and whitespace checks pass. Legacy aggregate evidence/report regeneration
+is requested from its owner because those artifact paths are outside this packet.
