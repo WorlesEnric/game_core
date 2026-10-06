@@ -150,3 +150,21 @@ allocated -27.18% at cycle 10). Host tests **2 passed**; package metadata and
 C# policy pass. All intermediate failures are retained and explained in the
 [R4-B packet](../../../Packages/com.gamecore.studio.ui/PACKET.md#r4--r4-b-studio-ui-graphical-failures)
 and [evidence/commands](../../../Packages/com.gamecore.studio.ui/Documentation~/R4-B/README.md).
+
+## R5 — R5-B
+
+Request #5: Stage journals an unpreviewed retained candidate before submitting the job.
+The badge reads that durable validation entry for pending/pass/fail; authenticated
+StageAdmission updates the same entry. Refresh failures replace a previously passing
+badge with fail. A fresh runtime retains the badge but cannot Admit until it fetches
+and verifies the retained job again. No serialized UI value grants admission authority.
+Regression: `Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload`
+(successful and failed refresh) replays the original P4.2c pressure-plate candidate and
+verdict without Preview, synthetic catalog or candidate edits. The offline service
+replay does not qualify a new signed live stage or Play admission.
+Results: [R5-B PACKET.md](../../../Packages/com.gamecore.studio.etos/Tests/Evidence/R5_B/PACKET.md).
+
+R5-B final requested EditMode XML: **185 passed / 0 failed / 9 skipped**, including both
+unpreviewed-candidate/reload cases. Baseline: both fail on “not staged”. Four graphical,
+four existing live ETOS and one new paid-voice case are explicitly unqualified. UI host
+check and package metadata/C# policy pass. Exact counts and receipts are in the R5-B packet.

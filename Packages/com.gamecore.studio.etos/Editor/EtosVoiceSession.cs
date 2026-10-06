@@ -91,6 +91,9 @@ namespace GameCore.Studio.Etos
                 }
 
                 VoiceChannel channel = new VoiceChannel(_client);
+                channel.SpeechStarted += item => Trace(channel, "provider speech_started item=" + item);
+                channel.SpeechEnded += item => Trace(channel, "provider speech_ended item=" + item);
+                channel.Usage += _ => Trace(channel, "provider usage");
                 channel.Transcript += t => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) OnTranscript(t); });
                 channel.Error += e => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) Raise(EtosAgentGateway.DiagnosticOf(e)); });
                 channel.Closed += reason => _queue.Post(() => { if (ReferenceEquals(_channel, channel)) OnClosed(reason); });
@@ -208,6 +211,7 @@ namespace GameCore.Studio.Etos
                     return true;
                 }).ConfigureAwait(false);
                 await _sending.ConfigureAwait(false);
+                Trace(channel, "release frames=" + channel.FramesSent + " bytes=" + channel.BytesSent);
                 string reason = await channel.StopAsync(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
                 // This barrier follows all transcript callbacks, so StopAsync completes only after main-thread transcript delivery.
                 await _queue.Run(() =>
@@ -248,11 +252,21 @@ namespace GameCore.Studio.Etos
             _sending = SendAfterAsync(_sending, channel, frame);
         }
 
-        private static async Task SendAfterAsync(Task previous, VoiceChannel channel, byte[] frame)
+        private async Task SendAfterAsync(Task previous, VoiceChannel channel, byte[] frame)
         {
             await previous.ConfigureAwait(false);
+            long first = channel.FramesSent;
             await channel.SendPcmAsync(frame).ConfigureAwait(false);
+            Trace(channel, "sent frame=audio-" + first + " bytes=" + frame.Length
+                + " next=" + channel.FramesSent + " rms=" + VoiceFraming.Level(frame, 0, frame.Length).ToString("R", System.Globalization.CultureInfo.InvariantCulture));
             return;
+        }
+
+        private void Trace(VoiceChannel channel, string detail)
+        {
+            string message = "voice session=" + channel.ReadyInfo?.SessionId + " " + detail;
+            // Logging is main-thread owned like transcript delivery. No raw PCM or transcript text.
+            _queue.Post(() => _log.Write(StudioLogLevel.Info, "etos.voice", message));
         }
 
         private void Unhook()
@@ -266,6 +280,9 @@ namespace GameCore.Studio.Etos
 
         private void OnTranscript(VoiceTranscript transcript)
         {
+            _log.Write(StudioLogLevel.Info, "etos.voice", "voice session=" + Ready?.SessionId
+                + " transcript delivered item=" + transcript.ItemId + " revision=" + transcript.Revision
+                + " final=" + transcript.Final + " chars=" + transcript.Text.Length + " receivedAt=" + transcript.ReceivedAt);
             TranscriptUpdate update = new TranscriptUpdate(transcript.ItemId, transcript.Revision, transcript.Text, transcript.Final, transcript.Role);
             if (update.Final)
             {
@@ -280,7 +297,8 @@ namespace GameCore.Studio.Etos
             if (CloseReason == null)
             {
                 CloseReason = reason;
-                _log.Write(StudioLogLevel.Info, "etos", "voice session closed: " + reason);
+                _log.Write(StudioLogLevel.Info, "etos", "voice session=" + Ready?.SessionId + " closed: " + reason
+                    + " frames=" + FramesSent + " bytes=" + (_channel?.BytesSent ?? 0) + " finals=" + _finals.Count);
             }
 
             _capturing = false;

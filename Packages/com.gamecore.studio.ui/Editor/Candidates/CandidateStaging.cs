@@ -97,7 +97,9 @@ namespace GameCore.Studio.UI
         public static StageState StateOf(StudioRuntime runtime, string changeSetId, ChangeSet? fallback = null)
         {
             ChangeSet? source = runtime.Journal.Exists(changeSetId) ? runtime.Journal.Read(changeSetId) : null;
-            IReadOnlyList<ValidationScenario>? validation = source?.Validation ?? fallback?.Validation;
+            // Once journaled, all badge transitions come from that durable entry, including
+            // a deliberately cleared validation list. Never resurrect candidate-supplied status.
+            IReadOnlyList<ValidationScenario>? validation = source != null ? source.Validation : fallback?.Validation;
             return new StageState(Find(validation, StageAdmission.VerdictScenario), Find(validation, StageAdmission.AdmissionScenario), Find(validation, StageAdmission.UndoScenario));
         }
 
@@ -115,10 +117,15 @@ namespace GameCore.Studio.UI
             return null;
         }
 
-        /// <summary>Writes a stage.verdict scenario on the journal entry (a failed stage job carries no verdict bytes to record).</summary>
-        public static void MarkVerdict(StudioRuntime runtime, string changeSetId, ScenarioStatus status, string detail)
+        /// <summary>Writes the durable badge scenario; an unpreviewed candidate is journaled before the first stage transition.</summary>
+        public static void MarkVerdict(StudioRuntime runtime, string changeSetId, ScenarioStatus status, string detail, ChangeSet? fallback = null)
         {
             ChangeSet? entry = runtime.Journal.Exists(changeSetId) ? runtime.Journal.Read(changeSetId) : null;
+            if (entry == null && fallback != null)
+            {
+                if (fallback.Id != changeSetId) throw new ArgumentException("Candidate identity does not match the verdict.", nameof(fallback));
+                entry = fallback.WithState(ChangeSetState.Candidate);
+            }
             if (entry != null)
             {
                 runtime.Journal.Write(StageAdmission.WithScenario(entry, StageAdmission.VerdictScenario, status, detail));
