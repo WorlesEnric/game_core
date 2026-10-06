@@ -357,8 +357,16 @@ limits are in [CORE-PICK PACKET.md](../../../Packages/com.gamecore.studio.core/T
 
 Baseline on the packet host: **0 passed / 1 failed**, all 500 identities retained; marquee
 p95 **266.152 ms**, pick p95 **3.0734 ms**. Changed-source correctness XML has **95 passed**,
-with the timing test refusing the non-exclusive host (**1 failed / 0 skipped**). The final
-exclusive timing runs and their complete datasets are retained in the linked packet. The matrix is updated
-only after both final datasets have been measured. No spatial renderer index exists in
+with the timing test refusing the non-exclusive host (**1 failed / 0 skipped**). Final exclusive
+XMLs at `2d992c9f`: **2/2 and 1/1 passed**, peak Editors **1** in each. All **88 core + 8 UI
+selection cases** pass across these runs. The retained 100-pick / 100-marquee workloads
+preserve **500 distinct identities** twice: marquee p95 **0.2688 / 0.3098 ms**, pick p95
+**1.0232 / 1.8488 ms**. The 21-update marquee median is **1.8216 ms**. Cold first queries,
+the initial Mono inventory-guard failure, and the exact profiles remain in the linked packet.
+The matrix now links the two measured datasets. No spatial renderer index exists in
 SemanticIndexService; no kernel, authoring contract, dependency or picking allowlist changes
 are introduced.
+
+CORE-PICK final policy gates: metadata **42 packages / 91 assemblies**, C# **1,209 files**,
+installer **5/5**, and whitespace checks pass. Legacy aggregate evidence/report regeneration
+is requested from its owner because those artifact paths are outside this packet.

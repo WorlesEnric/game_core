@@ -79,22 +79,65 @@ GAMECORE_ETOS_AUTOSTART=0 GC_STUDIO_UNITY_SLOTS=1 bash studio/tools/unity-batch.
   monitor retained peak=1. The guard now enumerates `/proc` directly, matching the host allocator.
   The prequalification dataset (pick p95 0.8187 ms, marquee p95 0.2088 ms) and failed XML
   remain in `evidence/guard-fix-*`; they do not replace the final two datasets.
-- Final two datasets and exclusive timing results are recorded below after execution.
+- Final source **`2d992c9f`**, exclusive run 1 XML: **2 passed / 0 failed / 0 skipped**;
+  run 2 XML: **1 passed / 0 failed / 0 skipped**. Both independent process inventories
+  retain **peak Editors = 1**. The first run includes the 21-update timing regression.
+- Combined selected coverage: **88 core cases (83 existing + 5 new) and 8 UI selection
+  cases passed**, plus the retained B-SELECT workload passed twice. Earlier guard refusals
+  are retained above and are not relabeled as passing runs.
+
+| Final measurement | Run 1 | Run 2 | Fixed gate |
+|---|---:|---:|---:|
+| 100 picks, p95 | 1.0232 ms | 1.8488 ms | 16 ms |
+| 100 marquees / 500 distinct candidates, p95 | 0.2688 ms | 0.3098 ms | 50 ms |
+| Marquee sample median | 0.21415 ms | 0.25660 ms | reported |
+| Cold first marquee (included in samples) | 96.4086 ms | 169.0545 ms | reported, not a maximum gate |
+
+The additional 21-update test retains all 500 identities on every update: median
+**1.8216 ms**, maximum **232.9629 ms** (cold reference construction included), with
+renderer sum **44.1212 ms** and reference resolution sum **317.5823 ms**. This proves
+geometry refresh across Editor updates, not only repeated queries in one update.
+
+Profiling in the retained harness separates renderer/projection from reference work.
+Run 1's cold query spends **2.2041 ms** in rendering/bounds and **94.2037 ms** in reference
+resolution; warmed medians are **0.0713 / 0.14305 ms** respectively. The implementation
+retains full stamped refs rather than dropping stamps or replacing distinct identities.
+
+Committed receipts: [run 1 XML](evidence/run1-results.xml), [run 2 XML](evidence/run2-results.xml),
+[run 1 samples](evidence/run1-selection.json), [run 2 samples](evidence/run2-selection.json),
+[run 1 profile](evidence/run1-profile.json), [run 2 profile](evidence/run2-profile.json),
+[revision/harness/host receipt](evidence/final-receipt.json), and
+[original XML/data hashes](evidence/final-original-hashes.json). XML home paths are scrubbed
+in committed copies; originals and redacted Editor logs remain under `.evidence/core-pick-verified/`.
+
+Final policy gates: metadata **42 packages / 91 assemblies passed**; C# policy
+**1,209 files passed**; installer recheck **5 passed / 0 failed**; `git diff --check` passed.
+Transcripts are [metadata](evidence/final-metadata.txt), [C#](evidence/final-csharp.txt)
+and [installer](evidence/final-installer.txt). No test budget or identity assertion was relaxed.
 
 ## Requests to other packets
 
 - Verification tooling owner: `artifacts/studio/verification/TOOLS/timing-p42b.sh`
-  hard-pins `1752ca8a`; add an explicit source-revision argument and clone that revision
-  before installing `P42bHarness`. Keep the existing default for historical reproduction.
+  hard-pins `1752ca8a`; support `timing-p42b.sh OUT ATTEMPT [FILTER] [REVISION=1752ca8a]`,
+  resolve/check out that exact revision before installing `P42bHarness`, and retain it in
+  the receipt. `live_acceptance.py`'s `final-selection` branch should forward an explicitly
+  supplied `GAMECORE_SELECTION_REVISION` as argument 4. Keep the existing default for
+  historical reproduction.
   CORE-PICK runs the same B-SELECT timing workload with the scoped runner above, because
   invoking the frozen `final-selection` lane would measure old product code. The current
   `verify-all.sh ui` entry invokes the graphical capture/live gateway, not a separate
   500-candidate timing-only branch; no graphical/live ETOS action is required here.
 
+- Verification report owner: update `artifacts/studio/verification/ROWS.json`'s
+  `rows[row="W-UI-05"]` to `status="PASS"`, `baseline="2d992c9f"` and the final metrics/evidence
+  above; regenerate `SUMMARY.md` and the W-UI-05/B-SELECT summary links from these receipts.
+  Those paths are outside CORE-PICK. Relative to the retained aggregate, the row delta is
+  **29→30 PASS, 7→6 FAIL, 32 BLOCKED unchanged**; no other row is requalified here.
+
 ## Left open
 
-- Final dataset execution is in progress under the exclusive adapter. No sibling clone
-  or service is touched to obtain the measurement window.
+- The legacy ROWS/SUMMARY artifacts still contain the historical W-UI-05 failure because
+  they are outside the exclusive paths; their exact update is requested above.
 - Cold reference construction and content invalidation still invoke the trusted resolver
   synchronously. The benchmark includes the cold first sample; qualification is the
   matrix's p95 over 100, plus a separate median across 21 Editor updates, not a maximum
