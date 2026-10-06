@@ -1,0 +1,43 @@
+{
+    "name": "Hollowmere.R6_F.Tests",
+    "rootNamespace": "Hollowmere.R6_F",
+    "references": [
+        "GameCore.Studio.Gameplay.Editor",
+        "GameCore.Gameplay.Compile.Core",
+        "Hollowmere.Narrative",
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.UI.Editor",
+        "GameCore.Studio.Etos",
+        "GameCore.Studio.Etos.Client",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Hollowmere.P3_2.Workflows",
+        "Hollowmere.Boot",
+        "GameCore.Gameplay.Logic",
+        "GameCore.Gameplay.Inventory",
+        "GameCore.Gameplay.Npc",
+        "GameCore.Gameplay.Compile.Editor",
+        "GameCore.Gameplay.Dialogue",
+        "GameCore.Gameplay.Entities",
+        "GameCore.Gameplay.World",
+        "GameCore.Gameplay.Contracts"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

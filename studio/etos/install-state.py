@@ -202,6 +202,21 @@ def release(root, binary, manifest_dir, etos, attempts=30):
             new_manifest = tomllib.loads((dest / "agent.toml").read_text())
             if old_manifest != new_manifest:
                 raise ValueError("manifest authority changed; integrator must register the new manifest with etos before atomic release activation")
+        registration_changed = previous != version or not applied.exists()
+        if registration_changed:
+            # etos agent upgrade redefines workers, including clearing an omitted budget.
+            # Refuse policy drift rather than discard an operator's registered ceiling.
+            manifest = tomllib.loads((dest / "agent.toml").read_text())
+            workers = json.loads(subprocess.check_output([etos, "--json", "worker", "list"]))
+            if not isinstance(workers, list):
+                raise ValueError("worker policy inspection failed: expected a worker list")
+            for declared in manifest.get("worker", []):
+                existing = [w for w in workers if w.get("name") == declared["name"]]
+                if previous is not None and not existing:
+                    raise ValueError("registered worker missing; integrator must restore operator image/network policy before release activation")
+                if len(existing) > 1 or (existing and (
+                        "budget" not in existing[0] or existing[0]["budget"] != declared.get("budget"))):
+                    raise ValueError("worker budget differs from manifest; integrator must reconcile operator policy before release activation")
         def switch(target):
             link = base / ".current-next"
             link.unlink(missing_ok=True)
@@ -210,9 +225,13 @@ def release(root, binary, manifest_dir, etos, attempts=30):
         try:
             if previous is None:
                 subprocess.run([etos, "agent", "install", "--link", str(dest)], check=True)
-            switch(version)
-            if previous is not None:
+            elif registration_changed:
+                # Supported upstream CLI: upgrade stops, switches, redefines workers and
+                # starts the agent. Restart alone leaves stored instructions unchanged.
+                subprocess.run([etos, "agent", "upgrade", "--link", str(dest)], check=True)
+            else:
                 subprocess.run([etos, "agent", "restart", "gamecore-studio"], check=True)
+            switch(version)
             for _ in range(attempts):
                 rows = json.loads(subprocess.check_output([etos, "--json", "agent", "list"]))
                 if any(r.get("agent", r.get("name")) == "gamecore-studio" and r.get("state") == "ready" for r in rows):
@@ -221,10 +240,19 @@ def release(root, binary, manifest_dir, etos, attempts=30):
                     return
                 time.sleep(1)
             raise RuntimeError("new companion failed health check; old release retained")
-        except Exception:
+        except Exception as activation_error:
             if previous is not None:
+                if registration_changed:
+                    try:
+                        # Re-register the retained files too: a symlink/restart rollback
+                        # would leave the failed release's worker instructions active.
+                        subprocess.run([etos, "agent", "upgrade", "--link", str(base / previous)], check=True)
+                    except Exception as rollback_error:
+                        applied.unlink(missing_ok=True)
+                        raise RuntimeError(f"release activation failed ({activation_error}); registration rollback failed ({rollback_error}); integrator reconciliation required") from rollback_error
                 switch(previous)
-                subprocess.run([etos, "agent", "restart", "gamecore-studio"], check=False)
+                if not registration_changed:
+                    subprocess.run([etos, "agent", "restart", "gamecore-studio"], check=False)
             raise
 
 

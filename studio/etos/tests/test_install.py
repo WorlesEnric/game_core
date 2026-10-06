@@ -29,14 +29,159 @@ class Installer(unittest.TestCase):
         self.binary.write_bytes(b"release-v1")
         self.etos = self.root / "fake-etos"
         self.etos.write_text('''#!/usr/bin/env python3
-import json,sys
+import json,sys,tomllib
 from pathlib import Path
 root = Path(__file__).parent
 with (root / "calls").open("a") as f: f.write(" ".join(sys.argv[1:]) + "\\n")
-if sys.argv[1:] == ["--json","agent","list"]:
+state = root / "node.json"
+node = json.loads(state.read_text()) if state.exists() else {"workers": []}
+args = sys.argv[1:]
+if args == ["--json", "worker", "list"]:
+ print(json.dumps(node["workers"]))
+elif args == ["--json", "agent", "list"]:
  print(json.dumps([{"agent":"gamecore-studio", "state":"failed" if (root / "fail").exists() else "ready"}]))
+elif len(args) == 4 and args[:2] in (["agent", "install"], ["agent", "upgrade"]) and args[2] == "--link":
+ package = Path(args[3]).resolve()
+ manifest = tomllib.loads((package / "agent.toml").read_text())
+ if (root / "reject-package").exists() and (root / "reject-package").read_text() == str(package):
+  sys.exit(1)
+ for declared in manifest.get("worker", []):
+  worker = next((w for w in node["workers"] if w["name"] == declared["name"]), None)
+  if worker is None:
+   worker = {"name": declared["name"], "image": None, "network": "open"}
+   node["workers"].append(worker)
+  worker.update(model=declared.get("model"), budget=declared.get("budget"),
+                instructions=(package / declared["instructions"]).read_text())
+ node.update(source=str(package), manifest=manifest)
+ state.write_text(json.dumps(node))
+ current = root / "agents/gamecore-studio/current"
+ current.unlink(missing_ok=True)
+ current.symlink_to(package)
+ if (root / "fail-activation").exists() and (root / "fail-activation").read_text() == node["workers"][0]["instructions"]:
+  sys.exit(1)
+elif args != ["agent", "restart", "gamecore-studio"]:
+ sys.exit(2)
 ''')
         self.etos.chmod(0o755)
+        (self.root / "node.json").write_text(json.dumps({"workers": [
+            {"name": name, "budget": None, "image": "operator-image", "network": "offline"}
+            for name in ("gc-designer", "gc-mechanic")]}))
+
+    def worker_release(self):
+        package = self.root / "package"
+        shutil.copytree(HERE / "agent", package)
+        manifest = package / "agent.toml"
+        manifest.write_text(manifest.read_text().replace(
+            'instructions = "workers/gc-designer.md"',
+            'instructions = "workers/gc-designer.md"\nbudget = { usd = 0.50 }'))
+        # Operator-created workers carry image/network policy not declared by the agent.
+        workers = [{"name": name, "budget": budget, "image": "operator-image@sha256:123",
+                    "network": {"allowlist": ["operator.example"]}, "instructions": "old"}
+                   for name, budget in [("gc-designer", {"usd": 0.5}), ("gc-mechanic", None)]]
+        (self.root / "node.json").write_text(json.dumps({"workers": workers}))
+        mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        return package
+
+    def test_r6_f_worker_change_updates_registration_preserves_policy_and_noop(self):
+        package = self.worker_release()
+        before = json.loads((self.root / "node.json").read_text())
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        worker = package / "workers/gc-designer.md"
+        worker.write_text(worker.read_text() + "\nNew narrative closure prerequisite.\n")
+        mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        after = json.loads((self.root / "node.json").read_text())
+        expected = json.loads(json.dumps(before))
+        expected["workers"][0]["instructions"] = worker.read_text()
+        expected["source"] = str(current.resolve())
+        self.assertEqual(after, expected)
+        self.assertNotEqual(current.resolve(), old)
+        self.assertEqual((current / "bin/gamecore-studio").read_bytes(), (old / "bin/gamecore-studio").read_bytes())
+        calls = (self.root / "calls").read_text()
+        mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual((self.root / "calls").read_text(), calls)
+        (current / "workers/gc-designer.md").write_text("corrupted installed instructions")
+        with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual((self.root / "calls").read_text(), calls)
+
+    def test_r6_f_health_failure_restores_worker_registration_and_policy(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        before = json.loads((self.root / "node.json").read_text())
+        marker = self.root / "agents/gamecore-studio/.applied-config.sha256"
+        applied = marker.read_bytes()
+        (package / "workers/gc-designer.md").write_text("failed release instructions")
+        (self.root / "fail").touch()
+        with self.assertRaisesRegex(RuntimeError, "health check"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual(current.resolve(), old)
+        self.assertEqual(json.loads((self.root / "node.json").read_text()), before)
+        self.assertEqual(marker.read_bytes(), applied)
+
+    def test_r6_f_operator_budget_drift_refuses_before_registration(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        node = json.loads((self.root / "node.json").read_text())
+        node["workers"][0]["budget"] = {"usd": 0.25}
+        (self.root / "node.json").write_text(json.dumps(node))
+        (package / "workers/gc-designer.md").write_text("new instructions")
+        with self.assertRaisesRegex(ValueError, "worker budget differs"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual(current.resolve(), old)
+        self.assertEqual(json.loads((self.root / "node.json").read_text()), node)
+        self.assertNotIn("agent upgrade", (self.root / "calls").read_text())
+
+    def test_r6_f_missing_registered_worker_refuses_policy_reset(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        node = json.loads((self.root / "node.json").read_text())
+        node["workers"].pop()
+        (self.root / "node.json").write_text(json.dumps(node))
+        (package / "workers/gc-designer.md").write_text("new instructions")
+        with self.assertRaisesRegex(ValueError, "registered worker missing"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual(current.resolve(), old)
+        self.assertEqual(json.loads((self.root / "node.json").read_text()), node)
+
+    def test_r6_f_manifest_policy_change_refuses_before_node_calls(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        calls = (self.root / "calls").read_text()
+        manifest = package / "agent.toml"
+        manifest.write_text(manifest.read_text().replace('providers = ["studio-voice"]', 'providers = ["other-provider"]'))
+        with self.assertRaisesRegex(ValueError, "manifest authority changed"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual(current.resolve(), old)
+        self.assertEqual((self.root / "calls").read_text(), calls)
+
+    def test_r6_f_partial_upgrade_failure_restores_old_registration(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        before = json.loads((self.root / "node.json").read_text())
+        (package / "workers/gc-designer.md").write_text("partially activated instructions")
+        (self.root / "fail-activation").write_text("partially activated instructions")
+        with self.assertRaises(subprocess.CalledProcessError):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertEqual(current.resolve(), old)
+        self.assertEqual(json.loads((self.root / "node.json").read_text()), before)
+
+    def test_r6_f_failed_registration_rollback_invalidates_noop_marker(self):
+        package = self.worker_release()
+        current = self.root / "agents/gamecore-studio/current"
+        old = current.resolve()
+        (package / "workers/gc-designer.md").write_text("failed release instructions")
+        (self.root / "fail").touch()
+        (self.root / "reject-package").write_text(str(old))
+        with self.assertRaisesRegex(RuntimeError, "registration rollback failed"):
+            mod.release(self.root, self.binary, package, str(self.etos), attempts=1)
+        self.assertFalse((self.root / "agents/gamecore-studio/.applied-config.sha256").exists())
+        self.assertNotEqual(current.resolve(), old)
 
     def test_r3_d15_copy_is_immutable_atomic_switch_and_rollback(self):
         base = self.root / "agents/gamecore-studio"

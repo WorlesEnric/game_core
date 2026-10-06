@@ -1,0 +1,15 @@
+test_r6_f_worker_change_updates_registration_preserves_policy_and_noop (r6_installer_tests.Installer.test_r6_f_worker_change_updates_registration_preserves_policy_and_noop) ... FAIL
+
+======================================================================
+FAIL: test_r6_f_worker_change_updates_registration_preserves_policy_and_noop (r6_installer_tests.Installer.test_r6_f_worker_change_updates_registration_preserves_policy_and_noop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r6-f/studio/etos/tests/test_install.py", line 97, in test_r6_f_worker_change_updates_registration_preserves_policy_and_noop
+    self.assertEqual(after, expected)
+AssertionError: {'wor[11249 chars]```\n', 'model': 'echo/gpt-6-sol'}, {'name': '[6148 chars]'}]}} != {'wor[11249 chars]```\n\nNew narrative closure prerequisite.\n',[6187 chars]'}]}}
+Diff is 35563 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.155s
+
+FAILED (failures=1)
