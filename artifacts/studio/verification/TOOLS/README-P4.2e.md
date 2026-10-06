@@ -23,6 +23,8 @@ launch. `python3 artifacts/studio/verification/TOOLS/live-p42e.py LANE` supports
   `stage-review --candidate DIR --input STAGE_REQUEST_JSON`.
 - Negative `stage-submit` / `stage-review` additionally use `--negative`.
 - `text2`, `narrative`, `reopen`, `voice2` use the unchanged R6-B production drivers.
+  The P4.2e PipeWire wrapper advances past a terminal refused take without playing
+  or retrying it, so that a distinct later take is not starved by a missing marker.
 
 `instantiate-p42d.py SOURCE NEW_DEST` changes only envelope identity, preserving
 sample package/proposal/operations. `provision-p42d.sh` provisions this project's

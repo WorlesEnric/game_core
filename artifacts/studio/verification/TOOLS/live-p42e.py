@@ -29,6 +29,8 @@ def main():
     if lane=='baseline':
         if (live.STATE/'ledger-before.json').exists(): raise RuntimeError('baseline cannot reset spend')
         live.snapshot('ledger-before');return
+    if lane=='cleanup-npc':
+        live.unity('W-AI-02','p42e-cleanup-npc',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_P42e_NormalJournalUndoAfterNpcPlayReload'],results='results.xml',environment={'GAMECORE_ETOS_AUTOSTART':'0','UNITY':str(Path.home()/'Unity/Hub/Editor/6000.0.75f1/Editor/Unity')});return
     if lane=='regression':
         live.unity('R6-P4.2e','p42e-regression',['-runTests','-testPlatform','EditMode','-testFilter','Hollowmere.R6_A.AdmissionLifecycleTests|Hollowmere.R6_B|Hollowmere.P3_2.Headless.DriverDryTests'],results='results.xml',environment={'GAMECORE_ETOS_AUTOSTART':'0','UNITY':str(Path.home()/'Unity/Hub/Editor/6000.0.75f1/Editor/Unity')});return
     if lane in ('receipt-hello','describe','receipt-stage'):
@@ -40,6 +42,18 @@ def main():
         live.snapshot('ledger-after-'+lane);return
     if lane=='hello':
         v.run('INSTALL-P4.2e','hello',['dotnet','test','dotnet/tests/GameCore.Studio.Etos.Client.Tests','--filter','FullyQualifiedName~L01_','--logger','trx','--results-directory','{out}/trx'],cwd=live.LIVE,env={'GAMECORE_ETOS_LIVE':'1','GAMECORE_ETOS_PROJECT_ID':live.project_id(),'GAMECORE_ETOS_KEY_FILE':str(Path.home()/'.config/gamecore-studio/app-key.json'),'GC_ETOS_EVIDENCE_DIR':'{out}/live'},results='trx/*.trx');return
+    if lane == 'voice2':
+        reserve(lane, {'tts':2})
+        v.run('W-VOICE-01','p42e-voice2',[
+            'bash',str(live.TOOLS/'voice-p42e.sh'),'{out}/workflow',
+            'bash',str(v.ROOT/'studio/tools/unity-batch.sh'),'--project',str(live.LIVE/'games/hollowmere'),
+            '--log-dir','{out}/logs','--label','p42e-voice2','--timeout','1800','--',
+            '-executeMethod','Hollowmere.P4_2.EvidenceEntry.RunStage'],cwd=live.LIVE,editor=True,
+            env={'DISPLAY':':1','GAMECORE_ETOS_LIVE':'1','GAMECORE_ETOS_AUTOSTART':'1',
+                 'GAMECORE_ETOS_PROJECT_ID':live.project_id(),'GAMECORE_P42_EVIDENCE':'{out}',
+                 'GAMECORE_P42C_OUT':'{out}/workflow','GAMECORE_P42C_WORKFLOW':'voice2',
+                 'UNITY':str(live.TOOLS/'unity-interactive-p42c.py')})
+        live.snapshot('ledger-after-voice2');return
     if lane in ('text2','narrative','reopen','voice2'):
         reserve(lane,{'tts':2} if lane=='voice2' else {})
         row={'text2':'W-AI-02','narrative':'W-AI-03','reopen':'W-AI-06','voice2':'W-VOICE-01'}[lane]
