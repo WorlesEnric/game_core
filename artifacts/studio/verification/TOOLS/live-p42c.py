@@ -50,21 +50,30 @@ def unity(row,label,extra,workflow=None,results=None,environment=None):
     if results:args+=['--results','{out}/results.xml']
     args+=['--',*extra]
     if workflow=='voice2':args=['bash',str(TOOLS/'voice-p42c.sh'),'{out}/workflow',*args]
+    if env.get('GAMECORE_P42C_VOICE_ACCEPTANCE')=='1':args=['bash',str(TOOLS/'voice-proof-p42c.sh'),'{out}',*args]
     result=v.run(row,label,args,cwd=LIVE,env=env,results=results,editor=True)
     snapshot('ledger-after-'+label)
     return result
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('lane');p.add_argument('--candidate');p.add_argument('--input');p.add_argument('--negative',action='store_true');p.add_argument('--review-only',action='store_true');a=p.parse_args()
-    if a.lane=='baseline':snapshot('ledger-before');return
+    if a.lane=='baseline':
+        if (STATE/'ledger-before.json').exists():raise RuntimeError('baseline already exists; cannot reset packet spend')
+        snapshot('ledger-before');return
     if a.lane in ('stage-submit','stage-review'):
         assert a.candidate
         env={'GAMECORE_P42C_CANDIDATE':str(Path(a.candidate).resolve())}
+        if a.lane=='stage-submit':env['GAMECORE_P42C_STAGE_SUBMIT']='1'
         if a.input:env['GAMECORE_P42C_INPUT']=str(Path(a.input).resolve())
         if a.negative:env['GAMECORE_P42C_NEGATIVE']='1'
         if a.review_only:env['GAMECORE_P42C_REVIEW_ONLY']='1'
         unity('W-MECH-01','p42c-'+a.lane+('-negative' if a.negative else ''),
               ['-executeMethod','P42c.Live.StageUi.'+('Submit' if a.lane=='stage-submit' else 'Review')],environment=env)
+        return
+    if a.lane=='voice-proof':
+        fixture=next(v.OUT.glob('W-VOICE-01/p42c-voice2-*/workflow/voice/destructive.wav'))
+        unity('W-VOICE-01','p42c-fresh-destructive',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits'],results='results.xml',
+          environment={'GAMECORE_P42C_VOICE_ACCEPTANCE':'1','GAMECORE_P42C_VOICE_FIXTURE':str(fixture)})
         return
     if a.lane=='guides':
         reserve('guides',{'image':1})
@@ -95,4 +104,6 @@ def main():
     reserve(a.lane,{'image':3,'tts':2} if a.lane=='robe2' else {'tts':2} if a.lane=='voice2' else {})
     result=unity(row,'p42c-'+a.lane,['-executeMethod','Hollowmere.P4_2.EvidenceEntry.RunStage'],workflow=a.lane)
     raise SystemExit(result['status']!='PASS')
-if __name__=='__main__':main()
+if __name__=='__main__':
+    main()
+    raise SystemExit(int(any(r['status']!='PASS' for r in v.RESULTS)))

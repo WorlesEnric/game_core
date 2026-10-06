@@ -86,7 +86,7 @@ namespace P42c.Live
                 SessionState.SetString(Prefix + "id", candidate.Id);
                 if (mode == "review")
                 {
-                    JObject saved = JObject.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("GAMECORE_P42C_INPUT")!));
+                    JObject saved = ReadBinding();
                     string key = "GameCore.Studio.UI.Stage." + ContentStamp.Sha256Hex(System.Text.Encoding.UTF8.GetBytes(Context.Runtime.Paths.ProjectRoot)) + "." + candidate.Id;
                     SessionState.SetString(key, saved.ToString());
                 }
@@ -172,9 +172,18 @@ namespace P42c.Live
             }
         }
 
+        private static JObject ReadBinding()
+        {
+            JObject record = JObject.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("GAMECORE_P42C_INPUT")!));
+            string path = (string?)record["request"]?["sourceProject"] ?? string.Empty;
+            if (path.StartsWith("~/", StringComparison.Ordinal))
+                record["request"]!["sourceProject"] = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path.Substring(2));
+            return record;
+        }
+
         private void RestoreEntry()
         {
-            JObject saved = JObject.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("GAMECORE_P42C_INPUT")!));
+            JObject saved = ReadBinding();
             ChangeSet candidate = StageAdmission.Of(Context.Runtime).RetainCandidate(Candidate);
             string key = "GameCore.Studio.UI.Stage." + ContentStamp.Sha256Hex(System.Text.Encoding.UTF8.GetBytes(Context.Runtime.Paths.ProjectRoot)) + "." + candidate.Id;
             SessionState.SetString(key, saved.ToString());

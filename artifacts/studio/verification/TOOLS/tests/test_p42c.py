@@ -32,6 +32,11 @@ class Caps(unittest.TestCase):
     def test_R2_38_P42c_no_automatic_paid_replay(self):
         m.reserve('robe2',{'image':3,'tts':2})
         with self.assertRaisesRegex(RuntimeError,'already reserved'):m.reserve('robe2',{})
+    def test_R2_38_P42c_baseline_cannot_reset_spend(self):
+        (self.state/'ledger-before.json').unlink()
+        with patch.object(sys,'argv',['live-p42c.py','baseline']):
+            m.main()
+            with self.assertRaisesRegex(RuntimeError,'baseline already exists'):m.main()
     def test_R2_38_P42c_missing_ledger_refuses(self):
         with patch.object(m,'ledger',side_effect=RuntimeError('unavailable')):
             with self.assertRaisesRegex(RuntimeError,'unavailable'):m.reserve('unknown',{})

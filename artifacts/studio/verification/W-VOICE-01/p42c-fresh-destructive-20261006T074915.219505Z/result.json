@@ -1,0 +1,39 @@
+{
+  "label": "p42c-fresh-destructive",
+  "revision": "dbedd2fb6c830be5213d1658da41f0956cbc7f28",
+  "host": "worlesenric",
+  "started": "2026-10-06T07:49:15.220711+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/TOOLS/voice-proof-p42c.sh ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z bash ~/wkspace/gc-studio/p4.2c/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z/logs --label p42c-fresh-destructive --timeout 1800 --results ~/wkspace/gc-studio/p4.2c/artifacts/studio/verification/W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z/results.xml -- -runTests -testPlatform EditMode -testFilter R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+  "cwd": "~/wkspace/gc-studio/p4.2c/.evidence/live",
+  "evidencePath": "artifacts/studio/verification/W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z",
+  "queuedAtRevision": "dbedd2fb6c830be5213d1658da41f0956cbc7f28",
+  "executionStarted": "2026-10-06T07:49:15.222252+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T07:51:38.379583+00:00",
+  "seconds": 143.16000989614986,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P4_2",
+        "Hollowmere.P4_2.VoiceAcceptanceTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+          "result": "Failed",
+          "detail": "Expected: String containing \"delete\"\n  But was:  <string.Empty>\n \n                 at Hollowmere.P4_2.VoiceAcceptanceTests+<R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits>d__1.MoveNext () [0x0069e] in ~/wkspace/gc-studio/p4.2c/.evidence/live/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/VoiceAcceptanceTests.cs:92\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/etos] voice session vs_1a110311dd3cc155ddf7d8d capturing from microphone (default) @ 24000 Hz\n[GameCore.Studio/etos] voice session closed: client closed\n[GameCore.Studio/etos] voice: voice_no_transcript: The voice session closed without a final user transcript (client closed). (voice_no_transcript: The voice session closed without a final user transcript (client closed).)\nSaving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

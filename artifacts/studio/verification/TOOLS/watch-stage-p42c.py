@@ -9,8 +9,17 @@ import verify as v
 request=Path(sys.argv[1]);data=json.loads(request.read_text());job=data['jobId']
 out=request.parent/'service';out.mkdir(exist_ok=True)
 db=Path.home()/'.local/share/etos-studio/agents/gamecore-studio/state/ledger.db'
-start=time.monotonic();last=None
+start=time.monotonic();last=None; samples=[]
 while time.monotonic()-start<1900:
+    editors=[]
+    for proc in Path('/proc').iterdir():
+        if not proc.name.isdigit():continue
+        try:
+            if (proc/'comm').read_text().strip()=='Unity' and b'AssetImportWorker' not in (proc/'cmdline').read_bytes():editors.append(int(proc.name))
+        except (FileNotFoundError,PermissionError,ProcessLookupError):pass
+    samples.append({'elapsedSeconds':round(time.monotonic()-start,3),'editorPids':editors})
+    (out/'editor-counts.json').write_text(json.dumps({'maximum':max(len(x['editorPids']) for x in samples),'samples':samples},indent=2)+'\n')
+    if len(editors)>1:raise RuntimeError('more than one Editor observed; stop qualification')
     with sqlite3.connect('file:'+str(db)+'?mode=ro',uri=True) as conn:
         row=conn.execute('SELECT state,slot,verdict,created_at,updated_at FROM stage_jobs WHERE job_id=?',(job,)).fetchone()
     if row and row!=last:
