@@ -48,7 +48,7 @@ namespace P42d.Live
             var graphRef = runtime.Resolver.BuildRef(graph, AuthorScope.Definition, true);
             context.Selection.Set(new[] { graphRef }, SelectionOp.Replace);
             var lineTool = ContextTools.For(runtime, graphRef).Single(t => t.Entry.Id == "dialogue.addLine");
-            var line = panel.RunDirect(lineTool, graphRef, new JObject { ["text"] = "The Drowned Bell guides travellers home.", ["after"] = 0 }, graph.name);
+            var line = panel.RunDirect(lineTool, graphRef, new JObject { ["text"] = "The Drowned Bell guides travellers home.", ["after"] = Enumerable.Range(0, graph.Nodes.Count).First(i => !string.IsNullOrEmpty(graph.Nodes[i].text)) }, graph.name);
             receipt["dialogue"] = StudioJson.ToToken(line.Entry);
             Assert.That(line.State, Is.EqualTo(ChangeSetState.Applied), string.Join(";", line.Diagnostics));
             Assert.That(graph.Nodes.Count, Is.EqualTo(lines + 1));

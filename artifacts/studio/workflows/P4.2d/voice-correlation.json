@@ -1,0 +1,71 @@
+{
+  "attempts": [
+    {
+      "attempt": "p42d-voice-self-20261006T112419.768047Z",
+      "sessions": [],
+      "events": []
+    },
+    {
+      "attempt": "p42d-voice-self-compile-retry-20261006T112540.255603Z",
+      "sessions": [
+        {
+          "session": "vs_1a110f724ef84903ef151c1",
+          "frameCount": 43,
+          "bytes": 202752,
+          "firstFrame": 0,
+          "lastFrame": 42,
+          "maxRms": 0.143244937,
+          "nonzeroFrames": 27
+        },
+        {
+          "session": "vs_1a110f7373ef226390757b5",
+          "frameCount": 44,
+          "bytes": 206848,
+          "firstFrame": 0,
+          "lastFrame": 43,
+          "maxRms": 0.1334905,
+          "nonzeroFrames": 28
+        }
+      ],
+      "events": [
+        "[GameCore.Studio/etos] voice session vs_1a110f724ef84903ef151c1 capturing from microphone GC_P42d_mic @ 24000 Hz",
+        "[GameCore.Studio/etos.voice] voice session=vs_1a110f724ef84903ef151c1 transcript delivered item=item_ILlnYL6KZbpDZhurOEmwi revision=1 final=True chars=36 receivedAt=1791285998605",
+        "[GameCore.Studio/etos] voice session vs_1a110f7373ef226390757b5 capturing from microphone GC_P42d_mic @ 24000 Hz",
+        "[GameCore.Studio/etos.voice] voice session=vs_1a110f7373ef226390757b5 transcript delivered item=item_Ne1TowofB9MlIrn1Q5Zrk revision=1 final=True chars=32 receivedAt=1791286004462"
+      ]
+    },
+    {
+      "attempt": "p42d-voice2-20261006T112706.963706Z",
+      "sessions": [
+        {
+          "session": "vs_1a110fb792826257a5a66d5",
+          "frameCount": 70,
+          "bytes": 331776,
+          "firstFrame": 0,
+          "lastFrame": 69,
+          "maxRms": 0.0,
+          "nonzeroFrames": 0
+        },
+        {
+          "session": "vs_1a110fcbd16257c5347b4ba",
+          "frameCount": 144,
+          "bytes": 691200,
+          "firstFrame": 0,
+          "lastFrame": 143,
+          "maxRms": 0.0,
+          "nonzeroFrames": 0
+        }
+      ],
+      "events": [
+        "[GameCore.Studio/etos] voice: bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required (bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required)",
+        "[GameCore.Studio/etos] voice: bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required (bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required)",
+        "[P3.2 workflow] {\"label\": \"move\", \"wav\": \"move.wav\", \"final\": \"\", \"played\": true, \"pressedMs\": 1791286202443, \"releasedMs\": 1791286278265, \"revisions\": [{\"ms\": 1791286202841, \"shown\": \"listening...\", \"field\": \"\"}, {\"ms\": 1791286207154, \"shown\": \"Voice: bad_response: provider `studio-voice` sent a response that could not be read: upstream session.updated was not acknowledged; reconnect required\", \"field\": \"\"}], \"voiceActiveAfterRelease\": true, \"shot\": \"keyframes/004-voice-move-final.png\", \"utc\": \"2026-10-06T11:31:18.427Z\", \"step\": 6, \"stepName\": \"voice move\", \"name\": \"voice-move-final\", \"caption\": \"Mic released: final transcript \\\"\\\" placed in the field (2 partial revision(s) were shown while listening); nothing is sent until Send.\"}",
+        "[GameCore.Studio/etos] voice session vs_1a110fb792826257a5a66d5 capturing from microphone (default) @ 24000 Hz",
+        "[GameCore.Studio/etos] voice session vs_1a110fcbd16257c5347b4ba capturing from microphone (default) @ 24000 Hz"
+      ]
+    }
+  ],
+  "driverDisposition": "FAIL: move and destructive fixture playback occurs outside active capture; no transcript reaches the prompt. Self-test separately passed both real provider recognitions.",
+  "lossHop": "fixture playback -> active Unity microphone capture (all delivered driver PCM is zero); initial provider setup also refused session.updated acknowledgement. No missing transcript was observed between companion and client.",
+  "driverSubmission": "no move or destructive worker request; destructive counts unchanged"
+}

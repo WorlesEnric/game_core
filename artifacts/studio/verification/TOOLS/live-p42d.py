@@ -42,7 +42,7 @@ def main():
         live.unity('W-UI-05','p42d-selection',['-runTests','-testPlatform','EditMode','-testFilter','R2_38_B_SELECT_100PicksAnd500CandidateMarquee|R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms'],results='results.xml',environment={'GAMECORE_ETOS_AUTOSTART':'0'})
     elif lane=='guide':
         reserve(lane,{})
-        live.unity('W-DOC-01','p42d-guide',['-runTests','-testPlatform','EditMode','-testFilter','P42d.Live.NoviceGuideTests'],results='results.xml')
+        live.unity('W-DOC-01','p42d-guide',['-runTests','-testPlatform','EditMode','-testFilter','P42d.Live.NoviceGuideTests|P42_OPS_01_Installed3dRefusesUnconfigured'],results='results.xml')
     elif lane.startswith('stage-'):
         sys.argv[0]=str(Path(__file__).with_name('live-p42c.py'))
         original=live.unity
