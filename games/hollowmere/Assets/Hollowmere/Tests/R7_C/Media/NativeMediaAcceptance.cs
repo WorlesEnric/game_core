@@ -159,8 +159,26 @@ namespace Hollowmere.R7_C
                     Assert.That(world.Streamer.ResidencyOf(from.AuthoringId), Is.EqualTo(RegionResidency.Unloaded));
                     Assert.That(world.Streamer.ResidencyOf(to.AuthoringId), Is.EqualTo(RegionResidency.Resident));
                     Assert.That(world.Views!.ViewCountIn(from.AuthoringId), Is.Zero, "unloaded region has zero presentation views");
-                    // Allow production fades to finish; do not force unload on the product's behalf.
-                    yield return new WaitForSecondsRealtime(4);
+                    // Observe the actual playing sources through the whole production fade.
+                    AmbienceDefinition incomingDefinition = audio.Set.FindAmbience(to.AuthoringId)!;
+                    Assert.That(audio.Set.Bank.TryGet(incomingDefinition.ClipId, out AudioBankEntry? incomingEntry), Is.True);
+                    AudioSource[] sources = Object.FindAnyObjectByType<AudioEngineHost>().GetComponentsInChildren<AudioSource>();
+                    bool playingOverlap = false;
+                    double fadeDeadline = Time.realtimeSinceStartupAsDouble + 4;
+                    while (Time.realtimeSinceStartupAsDouble < fadeDeadline)
+                    {
+                        bool outgoingPlaying = false, incomingPlaying = false;
+                        foreach (AudioSource source in sources)
+                        {
+                            if (!source.isPlaying || source.volume <= 0.01f) continue;
+                            outgoingPlaying |= source.clip == entry.Clip;
+                            incomingPlaying |= source.clip == incomingEntry!.Clip;
+                        }
+                        playingOverlap |= outgoingPlaying && incomingPlaying;
+                        yield return null;
+                    }
+                    Assert.That(playingOverlap, Is.True, "both real region AudioSources must play with positive gains during crossfade");
+                    Assert.That(incomingEntry!.Clip!.loadState, Is.EqualTo(AudioDataLoadState.Loaded), "incoming/returning region loads its actual native samples");
                     yield return Snapshot(Path.Combine(output, "leg-" + leg + "-released.snap"));
                     Assert.That(audio.Ambience.CurrentRegionId, Is.EqualTo(to.AuthoringId));
                     Assert.That(world.Slots.ReadOrDefault(npcTarget, GameplaySlots.WorldOwner, GameplaySlots.PosX, 0), Is.EqualTo(npcX), "moved NPC pose survives travel");
