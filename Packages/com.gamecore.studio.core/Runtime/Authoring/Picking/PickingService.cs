@@ -25,6 +25,20 @@ namespace GameCore.Studio.Authoring
         private readonly IAuthoringRefResolver _resolver;
         private readonly AuthoringIdentity _identity;
         private readonly IRegionLocator _regions;
+        private readonly Dictionary<UnityEngine.Object, MarqueeOwner> _marqueeOwners = new Dictionary<UnityEngine.Object, MarqueeOwner>();
+        private readonly List<MarqueeOwner> _marqueeOrder = new List<MarqueeOwner>();
+        private readonly List<MarqueeBounds> _marqueeBounds = new List<MarqueeBounds>();
+        private readonly List<MarqueeOwner> _marqueeSelected = new List<MarqueeOwner>();
+        private readonly Dictionary<UnityEngine.Object, AuthoringRef?> _marqueeRefs = new Dictionary<UnityEngine.Object, AuthoringRef?>();
+        private readonly List<UnityEngine.Object> _marqueeRemoved = new List<UnityEngine.Object>();
+        private readonly Plane[] _marqueeFrustum = new Plane[6];
+        private long _marqueeFrame = -1;
+        private long _marqueeRevision = -1;
+        private Matrix4x4 _marqueeView;
+        private Matrix4x4 _marqueeProjection;
+        private Rect _marqueeViewport;
+        private int _marqueeMask;
+
 
         public PickingService(Camera camera, Rect viewport, IAuthoringRefResolver resolver, AuthoringIdentity? identity = null, IRegionLocator? regions = null, PickOptions? options = null)
         {
@@ -175,71 +189,46 @@ namespace GameCore.Studio.Authoring
                 Mathf.Max(screenRect.xMin, screenRect.xMax),
                 Mathf.Max(screenRect.yMin, screenRect.yMax));
 
-            Plane[] frustum = GeometryUtility.CalculateFrustumPlanes(Camera);
-            Dictionary<UnityEngine.Object, MarqueeOwner> owners = new Dictionary<UnityEngine.Object, MarqueeOwner>();
-            List<UnityEngine.Object> order = new List<UnityEngine.Object>();
-            foreach (Renderer renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            RefreshMarquee();
+            foreach (MarqueeOwner owner in _marqueeOrder)
             {
-                if (!IsPickableRenderer(renderer))
-                {
-                    continue;
-                }
+                owner.Contained = 0;
+                owner.Intersects = false;
+            }
 
-                MonoBehaviour? logical = _identity.FindLogicalOwner(renderer.transform);
-                UnityEngine.Object owner = logical != null ? (UnityEngine.Object)logical : renderer.gameObject;
-                if (!owners.TryGetValue(owner, out MarqueeOwner? accumulator))
-                {
-                    accumulator = new MarqueeOwner(logical != null ? logical.gameObject : renderer.gameObject);
-                    owners.Add(owner, accumulator);
-                    order.Add(owner);
-                }
-
-                accumulator.Total++;
-                Bounds bounds = renderer.bounds;
-                float distance = Vector3.Distance(Camera.transform.position, bounds.center);
-                if (distance < accumulator.Distance)
-                {
-                    accumulator.Distance = distance;
-                    accumulator.Point = bounds.center;
-                }
-
-                if (!GeometryUtility.TestPlanesAABB(frustum, bounds))
-                {
-                    continue;
-                }
-
-                ProjectBounds(bounds, out Rect projected, out bool anyFront, out bool allFront);
-                if (anyFront && projected.Overlaps(rect))
-                {
-                    accumulator.Intersects = true;
-                }
-
-                if (allFront && rect.Contains(projected.min) && rect.Contains(projected.max))
-                {
-                    accumulator.Contained++;
-                }
+            foreach (MarqueeBounds bounds in _marqueeBounds)
+            {
+                if (bounds.AnyFront && bounds.Projected.Overlaps(rect)) bounds.Owner.Intersects = true;
+                if (bounds.AllFront && rect.Contains(bounds.Projected.min) && rect.Contains(bounds.Projected.max)) bounds.Owner.Contained++;
             }
 
             timings.RendererMs = Lap(step);
-            List<KeyValuePair<UnityEngine.Object, MarqueeOwner>> selected = new List<KeyValuePair<UnityEngine.Object, MarqueeOwner>>();
-            foreach (UnityEngine.Object owner in order)
+            _marqueeSelected.Clear();
+            foreach (MarqueeOwner owner in _marqueeOrder)
             {
-                MarqueeOwner accumulator = owners[owner];
-                bool take = requireFullContainment ? accumulator.Total > 0 && accumulator.Contained == accumulator.Total : accumulator.Intersects;
-                if (take)
-                {
-                    selected.Add(new KeyValuePair<UnityEngine.Object, MarqueeOwner>(owner, accumulator));
-                }
+                bool take = requireFullContainment ? owner.Total > 0 && owner.Contained == owner.Total : owner.Intersects;
+                if (take && owner.Owner != null) _marqueeSelected.Add(owner);
             }
 
-            selected.Sort((left, right) => left.Value.Distance.CompareTo(right.Value.Distance));
-            List<PickCandidate> result = new List<PickCandidate>(selected.Count);
-            foreach (KeyValuePair<UnityEngine.Object, MarqueeOwner> pair in selected)
+            _marqueeSelected.Sort((left, right) => left.Distance.CompareTo(right.Distance));
+            List<PickCandidate> result = new List<PickCandidate>(_marqueeSelected.Count);
+            foreach (MarqueeOwner owner in _marqueeSelected)
             {
-                AuthoringRef? target = _resolver.BuildRef(pair.Key);
+                if (!_marqueeRefs.TryGetValue(owner.Owner, out AuthoringRef? target))
+                {
+                    target = _resolver.BuildRef(owner.Owner);
+                    _marqueeRefs.Add(owner.Owner, target);
+                }
+
                 if (target != null)
                 {
-                    result.Add(new PickCandidate(target, pair.Key, pair.Value.GameObject, null, pair.Value.Distance, false, PickSource.Marquee, 0, pair.Value.Point));
+                    // Candidates are immutable and reusable until geometry or content changes.
+                    if (owner.Candidate == null || !ReferenceEquals(owner.Candidate.Ref, target)
+                        || owner.Candidate.Distance != owner.Distance || owner.Candidate.Point != owner.Point)
+                    {
+                        owner.Candidate = new PickCandidate(target, owner.Owner, owner.GameObject, null, owner.Distance, false, PickSource.Marquee, 0, owner.Point);
+                    }
+                    result.Add(owner.Candidate);
                 }
             }
 
@@ -247,6 +236,78 @@ namespace GameCore.Studio.Authoring
             timings.TotalMs = total.Elapsed.TotalMilliseconds;
             LastTimings = timings;
             return new PickResult(result, timings);
+        }
+
+        /// <summary>Invalidate after synchronous programmatic edits before the next Editor update.
+        /// Normal Editor scene/content notifications invalidate automatically.</summary>
+        public void InvalidateMarqueeCache()
+        {
+            _marqueeFrame = -1;
+            _marqueeRevision = -1;
+            _marqueeRefs.Clear();
+        }
+
+        private void RefreshMarquee()
+        {
+            PickingRevision revision = PickingRevision.instance;
+            bool contentChanged = _marqueeRevision != revision.Content;
+            if (contentChanged) _marqueeRefs.Clear();
+            if (!contentChanged && _marqueeFrame == revision.Frame
+                && _marqueeView == Camera.worldToCameraMatrix && _marqueeProjection == Camera.projectionMatrix
+                && _marqueeViewport == Viewport && _marqueeMask == Camera.cullingMask) return;
+
+            _marqueeFrame = revision.Frame;
+            _marqueeRevision = revision.Content;
+            _marqueeView = Camera.worldToCameraMatrix;
+            _marqueeProjection = Camera.projectionMatrix;
+            _marqueeViewport = Viewport;
+            _marqueeMask = Camera.cullingMask;
+            foreach (MarqueeOwner owner in _marqueeOwners.Values)
+            {
+                owner.Total = 0;
+                owner.Distance = float.MaxValue;
+            }
+            _marqueeOrder.Clear();
+            _marqueeBounds.Clear();
+            GeometryUtility.CalculateFrustumPlanes(Camera, _marqueeFrustum);
+            Vector3 eye = Camera.transform.position;
+            foreach (Renderer renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            {
+                if (!IsPickableRenderer(renderer)) continue;
+                MonoBehaviour? logical = _identity.FindLogicalOwner(renderer.transform);
+                UnityEngine.Object key = logical != null ? (UnityEngine.Object)logical : renderer.gameObject;
+                if (!_marqueeOwners.TryGetValue(key, out MarqueeOwner? owner))
+                {
+                    owner = new MarqueeOwner(key, logical != null ? logical.gameObject : renderer.gameObject);
+                    _marqueeOwners.Add(key, owner);
+                }
+
+                if (owner.Total == 0) _marqueeOrder.Add(owner);
+                owner.Total++;
+                Bounds bounds = renderer.bounds;
+                float distance = Vector3.Distance(eye, bounds.center);
+                if (distance < owner.Distance)
+                {
+                    owner.Distance = distance;
+                    owner.Point = bounds.center;
+                }
+
+                // Off-frustum renderers still count toward full-owner containment.
+                if (!GeometryUtility.TestPlanesAABB(_marqueeFrustum, bounds)) continue;
+                ProjectBounds(bounds, out Rect projected, out bool anyFront, out bool allFront);
+                _marqueeBounds.Add(new MarqueeBounds(owner, projected, anyFront, allFront));
+            }
+
+            _marqueeRemoved.Clear();
+            foreach (KeyValuePair<UnityEngine.Object, MarqueeOwner> pair in _marqueeOwners)
+            {
+                if (pair.Value.Total == 0) _marqueeRemoved.Add(pair.Key);
+            }
+            foreach (UnityEngine.Object removed in _marqueeRemoved)
+            {
+                _marqueeOwners.Remove(removed);
+                _marqueeRefs.Remove(removed);
+            }
         }
 
         public LocationPick PointAt(Vector2 screenPoint)
@@ -652,10 +713,30 @@ namespace GameCore.Studio.Authoring
             public float SortingOrder { get; }
         }
 
+        private readonly struct MarqueeBounds
+        {
+            public MarqueeBounds(MarqueeOwner owner, Rect projected, bool anyFront, bool allFront)
+            {
+                Owner = owner;
+                Projected = projected;
+                AnyFront = anyFront;
+                AllFront = allFront;
+            }
+
+            public MarqueeOwner Owner { get; }
+            public Rect Projected { get; }
+            public bool AnyFront { get; }
+            public bool AllFront { get; }
+        }
+
         private sealed class MarqueeOwner
         {
-            public MarqueeOwner(GameObject gameObject)
+            public UnityEngine.Object Owner { get; }
+            public PickCandidate? Candidate { get; set; }
+
+            public MarqueeOwner(UnityEngine.Object owner, GameObject gameObject)
             {
+                Owner = owner;
                 GameObject = gameObject;
             }
 
