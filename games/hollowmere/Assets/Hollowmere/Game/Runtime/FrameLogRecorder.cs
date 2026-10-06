@@ -17,6 +17,7 @@ using UnityEngine;
 namespace Hollowmere.Game
 {
     /// <summary>Writes one CSV row per rendered frame (added by the game when -frameLog is given).</summary>
+    [DefaultExecutionOrder(1000)]
     [DisallowMultipleComponent]
     public sealed class FrameLogRecorder : MonoBehaviour
     {

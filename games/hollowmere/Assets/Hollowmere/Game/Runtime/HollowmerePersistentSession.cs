@@ -109,7 +109,7 @@ namespace Hollowmere.Game
         {
             game = attached;
             Attaches++;
-            if (Attaches == 1) Mark("loading");
+            if (Attaches == 1) Mark("boot-warmup");
             else Mark("reload");
         }
 

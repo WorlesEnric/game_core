@@ -62,6 +62,7 @@ namespace Hollowmere.P3_1.EditMode.Tests
                 typeof(FrameLogRecorder).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(session.FrameLog!, null);
                 session.FrameLog.Flush();
+                Assert.That(File.ReadAllText(path), Does.Contain("boot-warmup"));
                 Assert.That(File.ReadAllText(path), Does.Not.Contain(",ready"), "attachment is not proof of a visible, responsive menu");
             }
             finally

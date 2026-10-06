@@ -38,8 +38,10 @@ Native long captures are larger than the Editor history window; their exported C
 ## Implementation under validation
 
 - **P31d-PACING:** GameBoot defaults to uncapped rendering; `-frameVsync 0|1` explicitly selects both measured states. No URP quality downgrade.
-- **P31d-BOOT:** Warm the real menu layout, glyph atlas, bindings and first render under an opaque loading surface, with menu controls disabled. After two completed loading renders, expose/enable the menu. Only actual readiness emits `ready`. Region IO additionally waits until after the menu presentation frames. This is a product loading state, not a logger-only delay; all pre-ready rows carry `loading` and remain in the CSV. The statistics algorithm is unchanged.
+- **P31d-BOOT:** Warm the real menu layout, glyph atlas, bindings and first render under an opaque loading surface, with menu controls disabled. After two completed loading renders, expose/enable the menu. Only actual readiness emits `ready`. Region IO additionally waits until after the menu presentation frames. This is a product loading state, not a logger-only delay; all pre-ready rows carry `boot-warmup` and remain in the CSV. The statistics algorithm is unchanged.
 - Regression: `P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu` fails on baseline (`tests/baseline-test-only.xml`); additional policy coverage: `P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored`, `P31d_BOOT_RegionWaitsForPresentedMenu`.
 - No shared package, authored content, bake, or Studio authoring journal change is intended.
 
 GPU duration counters return zero on this OpenGL player and are unavailable, not zero-cost GPU evidence. Attribution relies on the measured CPU/present/render counters, native samples and the controlled VSync comparison.
+
+The recorder runs after gameplay/session LateUpdate, so the first visible menu frame carries readiness in that same row. `boot-warmup` deliberately contains no `load` substring: it cannot manufacture a transition exemption in the existing statistics rule.
