@@ -1428,6 +1428,11 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         return Err("source revision changed while preparing the stage slot".into());
     }
     // Existing slots receive the same mount agreement check before any Unity probe.
+    if record["source"]["project"].as_str().map(Path::new) != Some(opts.source_project.as_path())
+        || record["source"]["repo"].as_str().map(Path::new) != opts.sandbox.packages.parent()
+    {
+        return Err("stage_package_root_mismatch: existing slot source differs from stage.projects; recreate the slot for the registered project".into());
+    }
     for (name, pin) in record["manifest"].as_object().into_iter().flatten() {
         if let Some(path) = pin.as_str().and_then(|p| p.strip_prefix("file:")) {
             let expected = opts.sandbox.packages.join(name);

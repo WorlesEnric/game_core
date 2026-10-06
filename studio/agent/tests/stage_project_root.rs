@@ -118,3 +118,28 @@ fn r5_04_mount_mismatch_refuses_before_slot_creation() {
     );
     assert!(!opts.slot_dir().join("project").exists());
 }
+
+#[test]
+fn r5_04_existing_slot_cannot_reuse_another_project_binding() {
+    use gamecore_studio::stage::pipeline::run_stage;
+    let repo = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .to_path_buf();
+    let temp = tempfile::tempdir().unwrap();
+    let mut opts = StageOptions::from_env(&repo, "existing", SlotSource::Existing);
+    opts.root = temp.path().join("slots");
+    opts.source_project = repo.join("games/hollowmere");
+    fs::create_dir_all(opts.slot_dir()).unwrap();
+    fs::write(
+        opts.slot_dir().join("stage.json"),
+        json!({"source":{"project":"/different/project","repo":repo},"manifest":{}}).to_string(),
+    )
+    .unwrap();
+    let error = run_stage(&opts).unwrap_err();
+    assert!(error.contains("stage_package_root_mismatch"), "{error}");
+    assert!(error.contains("stage.projects"), "{error}");
+    assert!(!opts.slot_dir().join("sandbox.json").exists());
+}
