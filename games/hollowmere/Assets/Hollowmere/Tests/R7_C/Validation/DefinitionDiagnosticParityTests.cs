@@ -71,7 +71,7 @@ namespace Hollowmere.R7_C.Validation
             var panel = new ContextPanelView(_context);
             string[] renderedInspector = panel.Query<Label>(className: "gcs-diagnostic").ToList()
                 .Select(label => label.text).ToArray();
-            Diagnostic[] inspector = new ValidatorDiagnostics().For(definition)
+            Diagnostic[] inspector = new ValidatorDiagnostics().For(definition, gateway.Runtime)
                 .Where(diagnostic => diagnostic.Code == GameplayDiagnosticCodes.DefinitionMissingPrefab).ToArray();
 
             // Front 2: invoke the real validator console over the runtime's real semantic index.
@@ -139,6 +139,8 @@ namespace Hollowmere.R7_C.Validation
                         Assert.That(observed.Message, Is.EqualTo(expected.Message));
                         Assert.That(observed.Where?.Ref?.IdentityKey, Is.EqualTo(expected.Where?.Ref?.IdentityKey),
                             "preserve the diagnostic location itself; do not infer it from selection or operation target");
+                        Assert.That(observed.Data?["subject"]?.Value<string>(), Is.EqualTo(definition.AuthoringId),
+                            "the gameplay validator's canonical subject must survive diagnostic conversion");
                     }
                 }
             }
