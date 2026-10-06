@@ -38,7 +38,6 @@ fn revision(repo: &Path) -> String {
 }
 
 fn record_node_evidence(node: &FakeNode, evidence: &Path, job: &str) {
-    let route = format!("/api/v1/agents/{AGENT}/http/v1/stage/{job}");
     let provider_calls = node.lock().op_calls.len();
     save(
         &evidence.join("scratch-node.json"),
@@ -46,8 +45,6 @@ fn record_node_evidence(node: &FakeNode, evidence: &Path, job: &str) {
             "nodeUrl": node.url,
             "jobId": job,
             "providerCalls": provider_calls,
-            "verdictFetches": node.calls("GET", &format!("{route}/verdict")),
-            "verdictVerifications": node.calls("POST", &format!("{route}/verify")),
         }),
     );
     assert_eq!(provider_calls, 0, "provider operations are forbidden");
