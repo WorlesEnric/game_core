@@ -169,6 +169,7 @@ namespace GameCore.Gameplay.World
             private readonly AsyncOperation operation;
             private readonly string scenePath;
             private readonly bool isLoad;
+            private AsyncOperation? release;
             private bool finished;
 
             public UnitySceneOperation(AsyncOperation operation, string scenePath, bool isLoad)
@@ -192,12 +193,17 @@ namespace GameCore.Gameplay.World
                         return false;
                     }
 
-                    finished = true;
-                    if (isLoad)
+                    if (!isLoad)
+                    {
+                        if (release == null) release = Resources.UnloadUnusedAssets();
+                        if (!release.isDone) return false;
+                    }
+                    else
                     {
                         DeactivateProxies(SceneManager.GetSceneByPath(scenePath));
                     }
 
+                    finished = true;
                     return true;
                 }
             }

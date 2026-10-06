@@ -19,15 +19,17 @@ namespace GameCore.Gameplay.Audio
     public sealed class LoopCrossfader
     {
         private readonly string label;
+        private readonly bool releaseAudioData;
         private AudioSource? a;
         private AudioSource? b;
         private int keyA;
         private int keyB;
         private CrossfadeSchedule schedule;
 
-        public LoopCrossfader(string label)
+        public LoopCrossfader(string label, bool releaseAudioData)
         {
             this.label = label;
+            this.releaseAudioData = releaseAudioData;
         }
 
         /// <summary>The key faded to last (0 = silence).</summary>
@@ -79,6 +81,7 @@ namespace GameCore.Gameplay.Audio
             Volume = volume;
             if (clip != null && key != 0)
             {
+                if (clip.loadState == AudioDataLoadState.Unloaded) clip.LoadAudioData();
                 incoming.Play();
             }
         }
@@ -103,9 +106,20 @@ namespace GameCore.Gameplay.Audio
         {
             float gain = key == schedule.ToKey ? gains.Incoming : (key == schedule.FromKey ? gains.Outgoing : 0f);
             source.volume = gain * Volume;
-            if (gains.Complete && key != schedule.ToKey && source.isPlaying)
+            if (gains.Complete && key != schedule.ToKey && source.clip != null)
             {
-                source.Stop();
+                AudioClip released = source.clip;
+                if (source.isPlaying) source.Stop();
+                source.clip = null;
+                if (releaseAudioData)
+                {
+                    // Clips can be shared with music, voices or another world. Even a paused source
+                    // retains its lease. Scan only once when a fade releases a clip, never per frame.
+                    AudioSource[] sources = Resources.FindObjectsOfTypeAll<AudioSource>();
+                    foreach (AudioSource other in sources)
+                        if (other.clip == released) return;
+                    released.UnloadAudioData();
+                }
             }
         }
 
@@ -115,7 +129,7 @@ namespace GameCore.Gameplay.Audio
     /// <summary>Music states with crossfades and stingers.</summary>
     public sealed class MusicController
     {
-        private readonly LoopCrossfader loops = new LoopCrossfader("music");
+        private readonly LoopCrossfader loops = new LoopCrossfader("music", false);
         private AudioSource? stingerSource;
 
         public int CurrentState => loops.CurrentKey;
@@ -162,7 +176,7 @@ namespace GameCore.Gameplay.Audio
     /// <summary>Region ambience loops: crossfades when the committed audio.ambienceZone changes (after RegionEntered).</summary>
     public sealed class AmbienceZoneBinder
     {
-        private readonly LoopCrossfader loops = new LoopCrossfader("ambience");
+        private readonly LoopCrossfader loops = new LoopCrossfader("ambience", true);
 
         public int CurrentZone => loops.CurrentKey;
 
