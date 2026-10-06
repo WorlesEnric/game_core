@@ -342,3 +342,35 @@ Editor exit; the pre-existing untracked `.codex/` directory is untouched.
 D10a currently binds the consumer's `fact` during Stage, before the producer has executed. R3-F adds the narrow engine seam for `dialogue.setFact(authoringId)` followed by `dialogue.setFactCondition(fact)`: preserve the candidate id, add a producer dependency, defer the typed argument binding until that producer succeeds, and refuse forward/ambiguous references with an operation-local `InvalidArgs` witness. Existing references retain ordinary binding and indexed category checks. No gameplay assembly dependency is added to core.
 
 Tests and final host evidence: [R3-F packet](../../../Packages/com.gamecore.studio.ui/PACKET.md). The same packet completes R3-A's three UI/companion requests above.
+
+## R5 — R5-A undo correctness
+
+P4.2c requests #1/#2 are reproduced from the unchanged ferryman2 and Odd candidates.
+The initial XML `.unity-logs/r5-a-before.xml` records **0 passed / 2 failed**: the
+NPC remains after Undone, and the reopened Odd graph conflicts against op1's intermediate stamp.
+
+- #1: the engine prepares creator identity/replay and deletion inverses before mutation.
+  The first-party `NpcCreationAdapter` calls the real NPC tools through their prepared
+  path/identity seam, preserving gameplay's independence from Studio. Both `npc.addAt`
+  and the behaviour-asset creation in `npc.setPatrol` are covered; editing an existing
+  behaviour also retains its own preimage. Core authored create/duplicate/place/addComponent
+  prepare stable D-format identities; asset creators retain paths as well. Scene duplicate
+  clones the source including added prefab components. Replace retains its hierarchy before
+  mutation. Raw asset import/bind already prepare their byte/meta inverse.
+- #2: Undo checks each target once, against its final postimage. The engine now rewitnesses
+  every touched object after the whole change set, including a target shared by operations.
+  Later external edits still conflict. Historical entries retain support for intermediate stamps.
+- Regressions live under `Tests/R5_A/Editor`: `R5_01_FerrymanWitness_UndoRemovesNpc_RedoKeepsIdentity`,
+  `R5_01_CoreCreators_PrepareIdentity_UndoRedo`, `R5_01_SetPatrol_RestoresBehaviourAndCreationIdentity`,
+  `R5_02_OddWitness_FinalPostimageUndoesAfterRuntimeReopen`,
+  `R5_02_FinalPostimageStillRefusesLaterExternalEdit`, and
+  `R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload`.
+
+Final counts, commands, creation audit and remaining cross-packet requests are recorded in
+[the R5-A packet](../../../games/hollowmere/Assets/Hollowmere/Tests/R5_A/PACKET.md).
+
+R5-A final host verification on code `6638db2c`: **203/203 EditMode**, **8/8 P3_1 PlayMode**,
+**1/1 separate-Editor reopen repeat**, **113/113 .NET Model**, and **2/2 adapter-boundary tests**.
+All final XMLs have zero failures/skips/inconclusives; metadata, C# policy and whitespace checks pass.
+The packet retains baseline failures, the Play startup timeout/retry, exact commands and hashes.
+Full current-branch installed admission remains the explicit cross-packet follow-up above.
