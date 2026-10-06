@@ -1,6 +1,8 @@
 #nullable enable
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using GameCore.Studio.Etos.Client;
@@ -54,10 +56,16 @@ namespace P42e.Receipt
             string job = Environment.GetEnvironmentVariable("GAMECORE_P42E_STAGE_JOB")!;
             JObject record = await client.FetchTrustedVerdictAsync(job);
             Write("signed-record", record);
+            using (var output = File.Create(Path.Combine(Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE")!, "signed-record-original.json.gz")))
+            using (var gzip = new GZipStream(output, CompressionMode.Compress))
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(record.ToString());
+                gzip.Write(bytes, 0, bytes.Length);
+            }
             bool verified = await client.VerifyVerdictAsync(job, record);
             Write("verified", new JObject { ["jobId"] = job, ["verified"] = verified });
             Assert.That(verified, Is.True);
-            Assert.That((string?)record["sourceRevision"], Does.StartWith("d140f748"));
+            Assert.That((string?)record["sourceRevision"], Is.EqualTo("d140f7487092a40cbead927c5546127e0cb6fe14"));
             Assert.That((string?)record["catalogDelta"]?["world"], Does.Match("^[0-9a-f]{64}$"));
             Assert.That((string?)record["catalogDelta"]?["predicted"], Does.Match("^[0-9a-f]{64}$"));
         }
