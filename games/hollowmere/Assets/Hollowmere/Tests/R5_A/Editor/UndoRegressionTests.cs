@@ -242,6 +242,60 @@ namespace Hollowmere.R5_A
             Assert.That(runtime.History.Undo(candidate.Id).Ok, Is.True);
         }
 
+        [TestCase("create")]
+        [TestCase("duplicate")]
+        public void R5_01_ReplayNeverDeletesAnAssetThatOccupiedTheOldPath(string tool)
+        {
+            string path = folder + "/Created.asset";
+            AuthoringRef? target = null;
+            var args = new JObject { ["type"] = "npc.behaviour", ["path"] = path };
+            if (tool == "duplicate")
+            {
+                var source = ScriptableObject.CreateInstance<BehaviourDefinition>();
+                source.EnsureAuthoringId();
+                AssetDatabase.CreateAsset(source, folder + "/Source.asset");
+                target = runtime.Resolver.BuildRef(source, AuthorScope.Definition);
+                args.Remove("type");
+            }
+            ChangeSet candidate = StudioRuntime.Single("R5 occupied replay path", IntentOrigin.Manual, new Operation("op1", tool, target, args));
+            Assert.That(runtime.Engine.Apply(candidate).Ok, Is.True);
+            Assert.That(runtime.History.Undo(candidate.Id).Ok, Is.True);
+            var replacement = ScriptableObject.CreateInstance<BehaviourDefinition>();
+            replacement.EnsureAuthoringId();
+            AssetDatabase.CreateAsset(replacement, path);
+            AssetDatabase.SaveAssets();
+            byte[] bytes = File.ReadAllBytes(path);
+            byte[] meta = File.ReadAllBytes(path + ".meta");
+            Assert.That(runtime.History.Redo(candidate.Id).Ok, Is.False, "an occupied replay path must refuse before preparing deletion");
+            Assert.That(replacement != null, Is.True);
+            Assert.That(File.ReadAllBytes(path), Is.EqualTo(bytes));
+            Assert.That(File.ReadAllBytes(path + ".meta"), Is.EqualTo(meta));
+        }
+
+        [TestCase("create")]
+        [TestCase("addComponent")]
+        public void R5_01_ExistingIdentityCannotBecomeACreationInverse(string tool)
+        {
+            AuthoredEntity existing = UnityEngine.Object.FindObjectsByType<AuthoredEntity>(FindObjectsSortMode.None)[0];
+            string id = existing.AuthoringId;
+            string[] before = Entities();
+            AuthoringRef? target = tool == "addComponent" ? runtime.Resolver.BuildRef(new GameObject("Collision host")) : null;
+            ChangeSet candidate = StudioRuntime.Single("R5 collision", IntentOrigin.Manual, new Operation("op1", tool, target,
+                new JObject { ["type"] = "entity.instance", ["authoringId"] = id }));
+            runtime.Engine.Options.FaultHook = (point, _) =>
+            {
+                if (point != EngineFaultPoint.AfterPrepared) return;
+                UndoPayload? payload = UndoPayload.Parse(runtime.Journal.Read(candidate.Id)!.Outcomes![0].Undo!.Inverse, out _);
+                Assert.That(payload!.Operations.Any(op => op.Tool == "history.deleteCreated"), Is.False,
+                    "a prepared creation must never authorize deleting an existing identity");
+            };
+            ApplyReport report = runtime.Engine.Apply(candidate);
+            runtime.Engine.Options.FaultHook = null;
+            Assert.That(report.Ok, Is.False);
+            Assert.That(existing != null, Is.True);
+            Assert.That(Entities(), Is.EquivalentTo(before));
+        }
+
         [Test]
         public void R5_01_CrashAtPreparedNpcCreationRetainsDeletionAndReplay()
         {

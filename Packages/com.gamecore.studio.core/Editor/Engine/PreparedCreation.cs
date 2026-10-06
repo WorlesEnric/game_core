@@ -27,6 +27,35 @@ namespace GameCore.Studio.Edit
 
         internal static PreparedCreation? For(EditContext context)
         {
+            PreparedCreation? plan = Plan(context);
+            if (plan == null) return null;
+            bool creates = false;
+            foreach (Operation inverse in plan.Inverse)
+            {
+                creates |= inverse.Tool == DeletePreparedCreationTool.Id || inverse.Tool == "history.deleteAsset";
+                if (inverse.Tool != "history.deleteAsset") continue;
+                string path = context.Runtime.Paths.Absolute((string)inverse.Args!["path"]!);
+                if (File.Exists(path) || Directory.Exists(path))
+                    return Refuse(plan.Replay, "The prepared creation path is already occupied; redo cannot overwrite it.");
+            }
+            if (!creates) return plan;
+            var ids = new JArray();
+            if (plan.Replay["authoringId"] != null) ids.Add(plan.Replay["authoringId"]!.DeepClone());
+            foreach (JToken id in plan.Replay["ids"] as JArray ?? new JArray()) ids.Add(id.DeepClone());
+            foreach (JToken id in ids)
+            {
+                string? value = id.Type == JTokenType.String ? (string?)id : null;
+                if (string.IsNullOrEmpty(value) || context.Resolver.FindByAuthoringId(value!) != null)
+                    return Refuse(plan.Replay, "A new object needs an unused authoring identity; existing identities cannot authorize a creation inverse.");
+            }
+            return plan;
+        }
+
+        private static PreparedCreation Refuse(JObject replay, string detail) =>
+            new PreparedCreation(replay, Array.Empty<Operation>(), false, _ => OperationResult.Refused(DiagnosticCodes.InvalidArgs, detail));
+
+        private static PreparedCreation? Plan(EditContext context)
+        {
             string tool = context.Operation.Tool;
             JObject replay = context.Replay != null ? (JObject)context.Replay.DeepClone() : new JObject();
             if (tool == "npc.addAt" || tool == "npc.setPatrol")
