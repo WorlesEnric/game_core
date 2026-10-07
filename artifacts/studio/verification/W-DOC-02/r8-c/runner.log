@@ -1,0 +1,65 @@
+$ /home/worlesenric/.local/opt/etos/bin/etosd init --profile local --root /tmp/r8-c-lever/walkthrough-01/node --name r8-c-lever --owner r8-c
+created /tmp/r8-c-lever/walkthrough-01/node/etos.toml
+next: `etosd run`, then open http://127.0.0.1:7400/ to choose a model
+$ python3 /home/worlesenric/wkspace/gc-studio/r8-c/studio/stage/cache.py --stage-root /tmp/r8-c-lever/walkthrough-01/stage/3e0418ec21e97365df252b887fc5abe0e348a005471236140e75d42ed6e4e422 --repo /home/worlesenric/wkspace/gc-studio/r8-c --source-project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --binary /home/worlesenric/wkspace/gc-studio/r8-c/studio/agent/target/release/gamecore-studio --offline-from /home/worlesenric/.nuget/packages --unity-library /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere/Library --upm-from /home/worlesenric/.cache/gamecore-studio/stage/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22/upm
+stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/r8-c-lever/walkthrough-01/stage/3e0418ec21e97365df252b887fc5abe0e348a005471236140e75d42ed6e4e422/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22
+$ /home/worlesenric/.local/opt/etos/bin/etos agent install /tmp/r8-c-lever/walkthrough-01/agent
+installed gamecore-studio 0.1.0 (R8-C scratch stage companion)
+$ /home/worlesenric/.local/opt/etos/bin/etos app install /home/worlesenric/wkspace/gc-studio/r8-c/studio/etos/app
+installed gamecore-unity (GameCore Studio (Unity))
+no extension ids in the manifest: no native messaging host registered
+$ /home/worlesenric/.local/opt/etos/bin/etos app pair gamecore-unity --approve --out /tmp/r8-c-lever/walkthrough-01/pairing.json
+wrote the key of gamecore-unity to /tmp/r8-c-lever/walkthrough-01/pairing.json
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 54s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T105212-893046-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: FAIL (unity exit 1, 41s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T105335-898527-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 42s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T105700-907407-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 40s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T110052-926759-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 67s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T110419-945108-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 217s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T111517-982363-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: FAIL (unity exit 1, 128s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T112009-998286-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 193s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T112408-1008579-a1.log)
+$ /home/worlesenric/.dotnet/dotnet run --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Submit~/LeverSubmit.csproj -- /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+Submitted stg_1a11466d0068f1605e0ade8 after source Editor exit
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: FAIL (unity exit 1, 135s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T112849-1023633-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 47s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T113449-1039773-a1.log)
+$ /home/worlesenric/.dotnet/dotnet run --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Submit~/LeverSubmit.csproj -- /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+Submitted stg_1a1146e60d774c9df8a4476 after source Editor exit
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: PASS (unity exit 0, 137s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T113657-1048455-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 49s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T114304-1064834-a1.log)
+$ /home/worlesenric/.dotnet/dotnet run --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Submit~/LeverSubmit.csproj -- /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+Submitted stg_1a11475f0137457be83b5d5 after source Editor exit
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: FAIL (unity exit 1, 94s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T114512-1073584-a1.log)
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Stage --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CStage /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Stage: PASS (unity exit 0, 40s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Stage-20261007T115112-1089934-a1.log)
+$ /home/worlesenric/.dotnet/dotnet run --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Submit~/LeverSubmit.csproj -- /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+Submitted stg_1a1147d3f1628f4f06c9485 after source Editor exit
+$ bash /home/worlesenric/wkspace/gc-studio/r8-c/studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r8-c/games/hollowmere --log-dir /tmp/r8-c-lever/walkthrough-01/evidence/logs --label r8-c-Config --attempts 1 --timeout 1500 -- -force-glcore -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig /tmp/r8-c-lever/walkthrough-01/evidence/config.json
+-- attempt 1/1: Unity (arguments withheld from logs)
+RESULT r8-c-Config: PASS (unity exit 0, 114s, attempts 1, log /tmp/r8-c-lever/walkthrough-01/evidence/logs/r8-c-Config-20261007T115312-1098386-a1.log)

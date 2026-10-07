@@ -1,0 +1,76 @@
+{
+  "schema": "gamecore.studio.admission/2",
+  "changeSetId": "cs_01K6R8CMECH00000000000000H",
+  "phase": "smoke-pending",
+  "action": "admit",
+  "package": "com.hollowmere.mechanism.lever",
+  "directory": "Packages/com.hollowmere.mechanism.lever",
+  "shared": false,
+  "verdict": "9fd49939be8e270ef5a0bd3c84c528e03a6e1c3e799fe01eb410cccf640fc47b",
+  "startedMs": 1791344753776,
+  "candidate": {
+    "id": "cs_01K6R8CMECH00000000000000H",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Add a bistable lever whose position latches until the next bounded toggle.",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "mechanism.propose",
+        "args": {
+          "description": "One preserved int32 lever.state slot, bounded lever.toggle lane, committed LeverToggled events and handle presentation.",
+          "package": {
+            "artifact": "sha256:96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15"
+          },
+          "proposal": {
+            "artifact": "sha256:5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336"
+          },
+          "stageInputs": []
+        },
+        "applyRequirement": "Compile"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+        "name": "package.tgz",
+        "mediaType": "application/gzip",
+        "bytes": 16680,
+        "role": "package"
+      },
+      {
+        "sha256": "5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336",
+        "name": "proposal.json",
+        "mediaType": "application/json",
+        "bytes": 622,
+        "role": "proposal"
+      }
+    ],
+    "requirements": {
+      "max": "Compile",
+      "worldRebuild": false,
+      "compile": true,
+      "build": false
+    },
+    "state": "Candidate"
+  },
+  "catalogTypes": [
+    "Hollowmere.Mechanism.Lever.Generated.LeverCatalog"
+  ],
+  "restoreRemoved": false,
+  "captureSlot": "admit-cs_01k6r8cmech00000000000000h",
+  "before": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "compileAction": "admit",
+  "compileDomain": "795ebaa5da2947ef915e7d75b772bf9d",
+  "compileDeadlineMs": 1791344847347,
+  "compileOutcome": "reloaded",
+  "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "live": "5403c907fa83cc66a8266912eb1176726f8aff5043cf360f5d15b5f09a5b3fbf",
+  "smokeStartedMs": 1791344794175,
+  "smokeFrames": 120,
+  "smokeFrameBudget": 240,
+  "smokeTimeoutMs": 60000,
+  "smokeStatus": "Pending"
+}

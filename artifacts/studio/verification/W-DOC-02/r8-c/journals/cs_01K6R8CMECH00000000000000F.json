@@ -1,0 +1,68 @@
+{
+  "id": "cs_01K6R8CMECH00000000000000F",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Add a bistable lever whose position latches until the next bounded toggle.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "mechanism.admit",
+      "args": {
+        "package": {
+          "artifact": "sha256:4b5688647e3063f6138bb1441a844c9a34673e3a8572a4c7667f7388ab697dce"
+        },
+        "proposal": {
+          "artifact": "sha256:5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336"
+        },
+        "verdict": {
+          "artifact": "sha256:fcccdd40a2d79b244cd13b814b27740987641d181f628aaf9a927c6e6876bbec"
+        }
+      },
+      "applyRequirement": "Compile"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4b5688647e3063f6138bb1441a844c9a34673e3a8572a4c7667f7388ab697dce",
+      "name": "package.tgz",
+      "mediaType": "application/gzip",
+      "bytes": 16478,
+      "role": "package"
+    },
+    {
+      "sha256": "5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336",
+      "name": "proposal.json",
+      "mediaType": "application/json",
+      "bytes": 622,
+      "role": "proposal"
+    },
+    {
+      "sha256": "fcccdd40a2d79b244cd13b814b27740987641d181f628aaf9a927c6e6876bbec",
+      "name": "verdict.json",
+      "mediaType": "application/vnd.gamecore.stage-verdict+json",
+      "bytes": 9405,
+      "role": "verdict"
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.verdict",
+      "status": "pass",
+      "detail": "pass verdict fcccdd40a2d7 slot cs-01k6r8cmech00000000000000f (84418 ms); sha256:fcccdd40a2d79b244cd13b814b27740987641d181f628aaf9a927c6e6876bbec"
+    },
+    {
+      "scenario": "stage.admission",
+      "status": "fail",
+      "detail": "rolled back: fault"
+    }
+  ],
+  "requirements": {
+    "max": "Compile",
+    "worldRebuild": false,
+    "compile": true,
+    "build": false
+  },
+  "state": "Failed"
+}

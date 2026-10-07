@@ -1,0 +1,45 @@
+{
+  "changeSetId": "cs_01K6R8CMECH00000000000000J",
+  "outcome": "Admitted",
+  "detail": "Admitted and verified.",
+  "milliseconds": 40960.0,
+  "package": "com.hollowmere.mechanism.lever",
+  "directory": "Packages/com.hollowmere.mechanism.lever",
+  "verdict": "sha256:1ed03c711589159c0bcc953274f32ec320dd795a9a62c9c924bb672558b01cd6",
+  "slot": "cs-01k6r8cmech00000000000000j",
+  "before": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "live": "5403c907fa83cc66a8266912eb1176726f8aff5043cf360f5d15b5f09a5b3fbf",
+  "predicted": "5403c907fa83cc66a8266912eb1176726f8aff5043cf360f5d15b5f09a5b3fbf",
+  "confinement": "docker",
+  "coldCache": false,
+  "captureSlot": "admit-cs_01k6r8cmech00000000000000j",
+  "smokeSteps": 120,
+  "smokeTransitions": [
+    "Pending",
+    "Passed"
+  ],
+  "smokeReport": "pass: active root Running, catalog 5403c907fa83, round trip equal (slot hash 19f5cf89be24); 120 game frame(s) stepped and asserted; lever off/on/off committed [Hollowmere.Mechanism.Lever.LeverSmoke.Begin, steps 120]",
+  "mechanismStates": [
+    0,
+    1,
+    0
+  ],
+  "restoredCheckpointSlotHash": "10a88a9619e79e5899c181c1e413a094fa718e899403f9072fedddfa7ff5b01f",
+  "initialSlotHash": "15165473d8c82bc8953ca1f017066211e96378fa7ea44183d5f12c54c0cec7fb",
+  "finalSlotHash": "19f5cf89be24ea572cb6866d5cdfeb0d1a3134c10eec40480f2dc8a406265430",
+  "checkpointRoundTripsEqual": true,
+  "coins": 9,
+  "admissionWallMs": 40990,
+  "admissionBudgetMs": 90000,
+  "resumedDomain": "9625ad74a8cf4d409808668a38f32236",
+  "graphics": {
+    "isBatchMode": false,
+    "display": ":1",
+    "deviceType": "OpenGLCore",
+    "deviceName": "NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2",
+    "deviceVendor": "NVIDIA Corporation",
+    "deviceVersion": "OpenGL 4.5.0 NVIDIA 595.84",
+    "isPlaying": true,
+    "observedMs": 1791345276861
+  }
+}

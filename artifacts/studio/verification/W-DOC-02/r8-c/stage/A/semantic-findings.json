@@ -1,0 +1,18 @@
+{
+  "schema": "gamecore.stage.findings/1",
+  "pass": false,
+  "findings": [
+    {
+      "rule": "SG012",
+      "file": "Runtime/LeverSmoke.cs",
+      "line": 33,
+      "message": "Invocation cannot be resolved with the trusted reference context."
+    },
+    {
+      "rule": "SG012",
+      "file": "Runtime/LeverSmoke.cs",
+      "line": 36,
+      "message": "Invocation cannot be resolved with the trusted reference context."
+    }
+  ]
+}

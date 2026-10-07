@@ -17,7 +17,7 @@ The walkthrough uses a private node with no models, workers or operation provide
 
 ## Verification
 
-Execution results pending. W-DOC-02 remains FAIL until all seven signed service steps, creator Admit, real restored Play with the committed lever transitions, graphical capture and normal undo are observed. Probe passes and unsigned diagnostic stages do not qualify the row.
+**W-DOC-02 PASS** on source `09430b3093b8b97cd4cb878f59d38ce7a8d37743`. [Complete evidence](../../../artifacts/studio/verification/W-DOC-02/r8-c/README.md): real private-node signed seven-step Docker Stage **76.172 s**, creator Admit **40.990 s**, authenticated reload, restored nine coins, equal save roundtrips, **120 normal smoke frames** with committed lever **0/1/0**, visible runtime control on/off, readable **1280×739 Play** and **960×720 world** captures on `:1` / RTX 4060 Ti, normal History Undo **22.911 s**. Package removed, original catalog restored, zero paid/worker/voice activity.
 
 - Rules dotnet: 309 passed, 0 failed, 0 skipped (retained TRX).
 - Locally built companion: fmt/clippy pass; cargo test 145 passed, 12 ignored. Ignored stage/node fixtures are not acceptance.
@@ -28,6 +28,11 @@ Execution results pending. W-DOC-02 remains FAIL until all seven signed service 
 - Candidate attempts A–D failed honestly before admission: missing command-reader import (semantic SG012), missing Derivation/import dependencies, Unity Entities' required Collections reference (DC0061, recovered from retained Bee diagnostics), then two real PlayMode failures from the uninitialized slot. The mechanism recipe description now uses `.description.json`, distinguishing it from the registered game's tracked `.catalog.json` world snapshot.
 - Candidate E passes all seven Docker stage steps after explicit new-slot initialization: six Rules, 16 EditMode and two PlayMode tests. Its first graphical admission driver failed before Admit because it retained only four wire fields rather than the complete `StageCandidateRequest`; the corrected driver exports `BuildStageRequest` directly.
 - Stage submission is now outside Unity through a small production-client dotnet executable after the source Editor releases its lease. This prevents holding a source Editor while the companion's sandbox preflight starts. Final qualification uses this serialized path, not the earlier attempts.
+- Final required EditMode XML: **107 passed / 3 failed / 0 skipped / 0 inconclusive, 110 total**. The exact same three R5-A projection cases remain failed. All registry/admission cases and P3.1 idempotency pass.
+- Final graphics-enabled batch PlayMode suite on `:1`: **10 passed / 0 failed / 0 skipped / 0 inconclusive**. The first headless run was 9/10 because the native Maren voice assertion explicitly requires graphics; the retained rerun uses R7-C's existing graphics adapter, not a weakened assertion.
+- Final literal candidate: **6 Rules + 16 sandbox EditMode + 2 sandbox PlayMode**, all passed. Its retained package SHA-256 is `96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15`.
+- Final policy gates: **42 packages / 91 package assemblies / 1,267 C# files**, pass.
+- The initial graphical G run completed admission, interactions and undo but had a clipped Game View; H correctly failed a readable-size guard and was recovered through product `StageCommandLine.Undo`. Final J uses one standalone free-aspect Game View; controls are asserted attached, enabled and onscreen, and its On/Off captures were visually inspected. The immediate resize-transition `admitted-play.png` is not used as visual proof.
 
 ## Requests to other packets
 
@@ -37,4 +42,10 @@ The initial P3.1 idempotency case applied the missing `media.voices-bank-28` ste
 
 ## Left open
 
-No completed acceptance claim yet. Runtime verification and evidence recording are in progress.
+The three unchanged R5-A dialogue/history projection regressions require the core owner's fix above. They are retained as failures, not skipped or rewritten. This packet qualifies W-DOC-02 only, not every Studio row or an all-green project. Admitted-package player distribution/IL2CPP stripping is not exercised.
+
+## Cleanup
+
+Final normal Undo removed the admitted lever and restored the original catalog; the scratch runner stopped only its owned node/companion. Unity-generated GraphicsSettings/QualitySettings, the P3.1 memory receipt, and the orphan R6-D lock meta were restored to their pre-run tracked contents; generated unrelated folder metas/settings and Python bytecode caches were removed. Fresh creator journals/admission state remain locally, untracked and unreset; relevant journal copies are retained with W-DOC-02 evidence. The `.omp` launcher state is untouched and not committed. No throwaway candidate code was copied into live imports, no failed verdict was promoted, and no cold-grace marker was removed.
+
+Only W-DOC-02's ROWS object, the matching 07 cell and counts are promoted. The other 67 ROWS objects retain their exact prior contents; totals are **57 PASS / 11 BLOCKED / 0 FAIL**. Shared historical packet notes are intentionally unchanged because they are outside R8-C's exclusive paths.

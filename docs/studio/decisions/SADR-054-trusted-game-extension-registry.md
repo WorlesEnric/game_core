@@ -36,3 +36,4 @@ The admission catalog path uses `Entry.Verify`, not a write/rebake of the checke
 - [Lever authoring recipe](../../../games/hollowmere/Assets/Hollowmere/Mechanisms/Lever~/)
 - [Literal plugin guide walkthrough](../09-plugin-developer-guide.md#new-lever-author-stage-admit-observe-and-undo)
 - [R8-B driver, extended with the signed walkthrough](../../../games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/run-probe.py)
+- [R8-C signed Stage, restored working lever and normal Undo evidence](../../../artifacts/studio/verification/W-DOC-02/r8-c/README.md): final literal workflow PASS on `09430b30`; separate broad-suite limitations remain explicit.

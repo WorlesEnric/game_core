@@ -1,0 +1,93 @@
+{
+  "rules": {
+    "passed": 309,
+    "failed": 0,
+    "skipped": 0
+  },
+  "companion": {
+    "fmt": "pass",
+    "clippy": "pass",
+    "passed": 145,
+    "ignored": 12
+  },
+  "initialPolicy": {
+    "packages": 42,
+    "packageAssemblies": 91,
+    "csharpFiles": 1266,
+    "result": "pass"
+  },
+  "initialUnity": {
+    "result": "compile failure",
+    "reason": "walkthrough asmdef GameCore.Gameplay.UI casing corrected to GameCore.Gameplay.Ui"
+  },
+  "candidatePrefilter": {
+    "hits": 0,
+    "initialFiles": 43
+  },
+  "candidateInitialCheckers": {
+    "csharpFiles": 11,
+    "asmdefs": 5,
+    "problems": 0
+  },
+  "initialUnitySuite": {
+    "total": 110,
+    "passed": 106,
+    "failed": 4,
+    "skipped": 0,
+    "inconclusive": 0,
+    "failures": [
+      "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent",
+      "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload",
+      "Hollowmere.R5_A.UndoRegressionTests.R5_02_FinalPostimageStillRefusesLaterExternalEdit",
+      "Hollowmere.R5_A.UndoRegressionTests.R5_02_OddWitness_FinalPostimageUndoesAfterRuntimeReopen"
+    ]
+  },
+  "finalUnitySuite": {
+    "total": 110,
+    "passed": 107,
+    "failed": 3,
+    "skipped": 0,
+    "inconclusive": 0,
+    "failures": [
+      "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload",
+      "Hollowmere.R5_A.UndoRegressionTests.R5_02_FinalPostimageStillRefusesLaterExternalEdit",
+      "Hollowmere.R5_A.UndoRegressionTests.R5_02_OddWitness_FinalPostimageUndoesAfterRuntimeReopen"
+    ]
+  },
+  "finalPolicy": {
+    "packages": 42,
+    "packageAssemblies": 91,
+    "csharpFiles": 1267,
+    "result": "pass"
+  },
+  "literalWalkthrough": {
+    "result": "PASS",
+    "sourceRevision": "09430b3093b8b97cd4cb878f59d38ce7a8d37743",
+    "stageMs": 76172,
+    "admitMs": 40990,
+    "undoMs": 22911,
+    "rulesPassed": 6,
+    "editModePassed": 16,
+    "playModePassed": 2,
+    "states": [
+      0,
+      1,
+      0
+    ],
+    "coins": 9,
+    "display": ":1",
+    "gpu": "RTX 4060 Ti"
+  },
+  "finalGamePlayMode": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0,
+    "graphics": "enabled batch :1 OpenGLCore",
+    "initialHeadless": {
+      "passed": 9,
+      "failed": 1,
+      "reason": "native voice playback requires graphics-enabled batch"
+    }
+  }
+}
