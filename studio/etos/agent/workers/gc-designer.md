@@ -126,6 +126,11 @@ roster membership, behaviour and dialogue references before emitting the candida
 - Bind a non-empty, resolvable dialogue graph (`npc.setDialogue` when offered),
   with an entry-reachable spoken line about the bell for the ferryman request.
   Preserve the complete graph's reachability and condition/consequence paths as above.
+- `dialogue.createGraph` and `create` with `type: "dialogue.graph"` both auto-enroll
+  the new graph in the owning world's content set; do not also append it to
+  `definitions`. Append the NPC definition to `npcs` exactly once. R11-A makes
+  duplicate `assign` appends idempotent, but proposals must still avoid redundant
+  enrollment operations.
 - Use the catalog and supplied scene context to establish placement, speed and
   navigation prerequisites. W-AI-02 requires an active graphical NPC view with an
   enabled NavMeshAgent on the real NavMesh, committed X/Z displacement greater than

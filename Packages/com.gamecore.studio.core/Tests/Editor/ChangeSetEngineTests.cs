@@ -23,6 +23,51 @@ namespace GameCore.Studio.Edit.Tests
         [TearDown]
         public void TearDown() => _bed.Dispose();
 
+        [TestCase("items")]
+        [TestCase("ManagedItems")]
+        public void R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment(string field)
+        {
+            FixtureItemDefinition first = _bed.CreateItem("First");
+            FixtureItemDefinition second = _bed.CreateItem("Second");
+            FixtureNpcDefinition npc = _bed.CreateNpc("Collector");
+            var items = field == "items" ? npc.items : npc.ManagedItems;
+            items.Add(first);
+            EditorUtility.SetDirty(npc);
+            AssetDatabase.SaveAssets();
+            _bed.Runtime.Index.Rebuild();
+            ChangeSet change = StudioTestBed.NewChangeSet("repeat enrollment", null,
+                StudioTestBed.Op("append", "assign", _bed.Runtime.Resolver.BuildRef(npc),
+                    new JObject { ["field"] = field, ["append"] = true, ["value"] = AssetDatabase.GetAssetPath(first) }));
+
+            ApplyReport applied = _bed.Runtime.Engine.Apply(change);
+
+            Assert.That(applied.State, Is.EqualTo(ChangeSetState.Applied), string.Join("; ", applied.Diagnostics));
+            Assert.That(field == "items" ? npc.items : npc.ManagedItems, Is.EqualTo(new[] { first }));
+            JObject outcome = JObject.Parse(applied.Entry.Outcomes![0].Detail!);
+            Assert.That((bool?)outcome["alreadyListed"], Is.True);
+            Assert.That((int?)outcome["index"], Is.EqualTo(0));
+            Assert.That(applied.Entry.Outcomes[0].Undo, Is.Null);
+            items.Add(second);
+            EditorUtility.SetDirty(npc);
+            HistoryResult undone = _bed.Runtime.History.Undo();
+            Assert.That(undone.Ok, Is.True, string.Join("; ", undone.Diagnostics));
+            Assert.That(field == "items" ? npc.items : npc.ManagedItems, Is.EqualTo(new[] { first, second }),
+                "Undoing a recorded no-op must not truncate a later enrollment.");
+
+            FixtureItemDefinition third = _bed.CreateItem("Third");
+            AuthoringRef reference = _bed.Runtime.Resolver.BuildRef(npc)!;
+            ApplyReport edited = _bed.Runtime.Engine.Apply(StudioTestBed.NewChangeSet("append and replace", null,
+                StudioTestBed.Op("append", "assign", reference,
+                    new JObject { ["field"] = field, ["append"] = true, ["value"] = AssetDatabase.GetAssetPath(third) }),
+                StudioTestBed.Op("replace", "assign", reference,
+                    new JObject { ["field"] = field, ["index"] = 0, ["value"] = AssetDatabase.GetAssetPath(second) }, "append")));
+            Assert.That(edited.State, Is.EqualTo(ChangeSetState.Applied), string.Join("; ", edited.Diagnostics));
+            Assert.That(field == "items" ? npc.items : npc.ManagedItems, Is.EqualTo(new[] { second, second, third }),
+                "Distinct append grows the list; index replacement is not deduplicated.");
+            Assert.That(_bed.Runtime.History.Undo().Ok, Is.True);
+            Assert.That(field == "items" ? npc.items : npc.ManagedItems, Is.EqualTo(new[] { first, second }));
+        }
+
         [Test]
         public void R6_G_Request1_GenericDialogueUsesTrustedPreparation()
         {

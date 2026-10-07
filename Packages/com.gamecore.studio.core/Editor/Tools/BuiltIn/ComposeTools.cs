@@ -206,7 +206,7 @@ namespace GameCore.Studio.Edit
                 ToolTier.Compose,
                 RuntimeApply.Rebuild,
                 false,
-                "Create a new authored object of an [Authorable] type: a definition asset (ScriptableObject types, at 'path') or a scene object carrying the component (MonoBehaviour types, under 'parent' or in the active scene). A fresh authoring id is minted.",
+                "Create a new authored object of an [Authorable] type: a definition asset (ScriptableObject types, at 'path') or a scene object carrying the component (MonoBehaviour types, under 'parent' or in the active scene). A fresh authoring id is minted. Creating a dialogue graph automatically enrolls it in the active region world's narrative content set.",
                 null,
                 Arg("type", ValueTypes.String, true, "The [Authorable] type id (or CLR type name)."),
                 Arg("name", ValueTypes.String, false, "Object name."),

@@ -1,5 +1,6 @@
 // GameCore.Studio fixtures - an NPC definition with a value field, an enum field and a reference to an item.
 #nullable enable
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures
@@ -18,6 +19,12 @@ namespace GameCore.Studio.Fixtures
 
         [AuthorRef(Required = false, Doc = "Item the character starts with.")]
         public FixtureItemDefinition? startingItem;
+
+        [AuthorRef(Required = false)]
+        public List<FixtureItemDefinition> items = new List<FixtureItemDefinition>();
+
+        [AuthorRef(Required = false)]
+        public List<FixtureItemDefinition> ManagedItems { get; set; } = new List<FixtureItemDefinition>();
 
         public string AuthoringId => authoringId;
     }

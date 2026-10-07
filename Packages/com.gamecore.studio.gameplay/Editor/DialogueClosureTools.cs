@@ -53,7 +53,7 @@ namespace GameCore.Studio.Gameplay
         }
 
         [AuthorOperation("dialogue.createGraph", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
-            Validator = typeof(DialogueClosureValidator), Doc = "Creates a dialogue graph and enrolls it in the active region world's narrative content set, with durable undo.")]
+            Validator = typeof(DialogueClosureValidator), Doc = "Creates a dialogue graph and automatically enrolls it in the active region world's narrative content set, with durable undo; do not append it to definitions as well.")]
         public static OperationResult CreateGraph(EditContext context,
             [AuthorArg] string name, [AuthorArg] string path, [AuthorArg(Required = false)] object? fields = null)
         {

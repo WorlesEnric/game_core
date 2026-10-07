@@ -178,7 +178,7 @@ namespace GameCore.Studio.Edit
                 ToolTier.Configure,
                 RuntimeApply.Live,
                 true,
-                "Assign a reference ([AuthorRef] field) to another authored thing or an asset; null clears. For list fields, 'append' adds and 'index' replaces one element.",
+                "Assign a reference ([AuthorRef] field) to another authored thing or an asset; null clears. For list fields, 'append' adds and 'index' replaces one element. Appending a reference already in the list is a recorded no-op.",
                 AuthoredKinds,
                 Arg("field", ValueTypes.String, true, "The [AuthorRef] field."),
                 Arg("value", ValueTypes.Ref, false, "The referenced thing: an AuthoringRef, an authoring id, name@revision or an asset path; null clears."),
@@ -226,6 +226,20 @@ namespace GameCore.Studio.Edit
                 ["before"] = context.Codec.ReadMember(context.Target!, member),
                 ["after"] = value?.DeepClone() ?? JValue.CreateNull(),
             };
+            if (member.IsCollection && context.BoolArg("append"))
+            {
+                UnityEngine.Object? referenced = value == null ? null : context.Codec.Refs.ReadRef(value, member.ElementType, out _);
+                if (value == null || referenced != null)
+                {
+                    using SerializedObject serialized = new SerializedObject(context.Target!);
+                    int existing = ReferenceIndex(context.Target!, member, serialized, referenced);
+                    if (existing >= 0)
+                    {
+                        result.Preview["alreadyListed"] = true;
+                        result.Preview["index"] = existing;
+                    }
+                }
+            }
             return result;
         }
 
@@ -260,12 +274,24 @@ namespace GameCore.Studio.Edit
             return new Operation(operation.OpId, operation.Tool, operation.Target?.WithStamp(currentStamp), operation.Args, operation.DependsOn, operation.Preconditions, operation.ApplyRequirement);
         }
 
-        /// <summary>Writes a reference into an [AuthorRef] member (single, append or index) with an inverse <c>set</c>.</summary>
+        /// <summary>Writes a reference with an inverse <c>set</c>; an already-listed append has no inverse.</summary>
         internal static OperationResult AssignReference(EditContext context, AuthorMemberInfo member, UnityEngine.Object? referenced, bool append, int? index)
         {
             UnityEngine.Object target = context.Target!;
+            using SerializedObject serialized = new SerializedObject(target);
+            if (member.IsCollection && append)
+            {
+                int existing = ReferenceIndex(target, member, serialized, referenced);
+                if (existing >= 0)
+                {
+                    JObject output = new JObject { ["alreadyListed"] = true, ["index"] = existing };
+                    return OperationResult.Applied(output).WithDetail(StudioJson.Canonical(output));
+                }
+            }
             JToken before = context.Codec.ReadMember(target, member);
-            SerializedObject serialized = new SerializedObject(target);
+            AuthoringRef? reference = ToolSupport.RefOf(context, target);
+            Operation? inverse = reference == null ? null : ToolSupport.SetFieldsInverse(reference, new JObject { [member.Name] = before });
+            if (inverse != null) context.PrepareInverse(new[] { inverse });
             SerializedProperty? property = member.IsSerializedField ? serialized.FindProperty(member.Name) : null;
             if (property != null)
             {
@@ -336,13 +362,41 @@ namespace GameCore.Studio.Edit
 
             EditorUtility.SetDirty(target);
             OperationResult result = OperationResult.Applied();
-            AuthoringRef? reference = ToolSupport.RefOf(context, target);
-            if (reference != null)
+            if (inverse != null)
             {
-                result.WithInverse(ToolSupport.SetFieldsInverse(reference, new JObject { [member.Name] = before }));
+                result.WithInverse(inverse);
             }
 
             return result.Touch(target);
+        }
+
+        internal static int ReferenceIndex(UnityEngine.Object target, AuthorMemberInfo member, SerializedObject serialized,
+            UnityEngine.Object? referenced, Func<UnityEngine.Object, UnityEngine.Object?>? project = null)
+        {
+            SerializedProperty? property = member.IsSerializedField ? serialized.FindProperty(member.Name) : null;
+            if (property != null)
+            {
+                int id = referenced == null ? 0 : referenced.GetInstanceID();
+                for (int i = 0; i < property.arraySize; i++)
+                {
+                    SerializedProperty element = property.GetArrayElementAtIndex(i);
+                    UnityEngine.Object? value = element.objectReferenceValue;
+                    int existing = project != null && value != null
+                        ? project(value)?.GetInstanceID() ?? 0 : element.objectReferenceInstanceIDValue;
+                    if (existing == id) return i;
+                }
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? value in AuthoringIdentity.Items(member.GetValue(target)))
+                {
+                    object? existing = project != null && value is UnityEngine.Object item ? project(item) : value;
+                    if (ReferenceEquals(existing, referenced)) return i;
+                    i++;
+                }
+            }
+            return -1;
         }
 
         internal static bool CategoryAccepts(EditContext context, AuthorMemberInfo member, UnityEngine.Object referenced)

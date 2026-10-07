@@ -550,7 +550,7 @@ namespace GameCore.Studio.Edit
                         if (!created)
                         {
                             if (staged.Tool is SetTool || staged.Tool is AssignTool)
-                                ProjectDefinition(staged, copy, projection.Codec);
+                                ProjectDefinition(staged, copy, projection);
                             else if (staged.Tool is ReflectedTool reflected && !reflected.ReadOnly
                                 && DefinitionProjection.CanInvoke(staged.Operation.Tool))
                                 projection.Invoke(reflected, staged.Operation, copy);
@@ -664,8 +664,9 @@ namespace GameCore.Studio.Edit
             }
         }
 
-        private void ProjectDefinition(StagedOperation staged, ScriptableObject copy, ValueCodec codec)
+        private void ProjectDefinition(StagedOperation staged, ScriptableObject copy, DefinitionProjection projection)
         {
+            ValueCodec codec = projection.Codec;
             AuthoringTypeInfo info = _runtime.Identity.Describe(copy)!;
             using SerializedObject serialized = new SerializedObject(copy);
             if (staged.Tool is SetTool)
@@ -683,18 +684,40 @@ namespace GameCore.Studio.Edit
                 JToken value = staged.Operation.Args["value"] ?? JValue.CreateNull();
                 if (member.IsCollection)
                 {
-                    JArray items = (JArray)codec.ReadMember(copy, member, serialized);
                     JObject args = staged.Operation.Args!;
-                    if ((bool?)args["append"] == true) items.Add(value.DeepClone());
+                    JArray items;
+                    if ((bool?)args["append"] == true)
+                    {
+                        if (staged.StageResult?.Preview is JObject preview)
+                        {
+                            preview.Remove("alreadyListed");
+                            preview.Remove("index");
+                        }
+                        UnityEngine.Object? referenced = value.Type == JTokenType.Null ? null
+                            : codec.Refs.ReadRef(value, member.ElementType, out _);
+                        int existing = value.Type == JTokenType.Null || referenced != null
+                            ? AssignTool.ReferenceIndex(copy, member, serialized, referenced, projection.ProjectReference) : -1;
+                        if (existing >= 0)
+                        {
+                            staged.StageResult ??= new ToolStageResult();
+                            staged.StageResult.Preview ??= new JObject();
+                            staged.StageResult.Preview["alreadyListed"] = true;
+                            staged.StageResult.Preview["index"] = existing;
+                            return;
+                        }
+                        items = (JArray)codec.ReadMember(copy, member, serialized);
+                        items.Add(value.DeepClone());
+                    }
                     else if (args["index"] is JToken index && ValueCodec.IsInteger(index))
                     {
+                        items = (JArray)codec.ReadMember(copy, member, serialized);
                         int at = index.Value<int>();
                         if (at < 0 || at >= items.Count) throw new InvalidOperationException("Index " + at + " is outside '" + member.Name + "'.");
                         items[at] = value.DeepClone();
                     }
                     else
                     {
-                        items.Clear();
+                        items = new JArray();
                         if (value.Type != JTokenType.Null) items.Add(value.DeepClone());
                     }
                     value = items;
@@ -955,7 +978,7 @@ namespace GameCore.Studio.Edit
                         OperationResult result;
                         try
                         {
-                            if (!operation.Live && !operation.Tool!.ReadOnly && operation.Target != null && (operation.Tool is ReflectedTool || operation.Operation.Tool == "set" || operation.Operation.Tool == "assign" || operation.Operation.Tool == "bind"))
+                            if (!operation.Live && !operation.Tool!.ReadOnly && operation.Target != null && (operation.Tool is ReflectedTool || operation.Operation.Tool == "set" || operation.Operation.Tool == "bind"))
                             {
                                 EditContext preparation = new EditContext(_runtime, changeSet, operation.Operation, operation.Target, true, hints);
                                 AuthoringTypeInfo? info = _runtime.Identity.Describe(operation.Target);
