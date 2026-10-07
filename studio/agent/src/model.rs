@@ -306,7 +306,7 @@ pub struct IndexDelta {
     pub project: String,
     /// The new revision.
     pub revision: u64,
-    /// The revision this delta applies to.
+    /// Present: incremental delta from this revision. Absent: full owner/project snapshot.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub base_revision: Option<u64>,
     /// Project facts for `gc_project` (`unity`, `kernelTag`).
@@ -898,13 +898,12 @@ pub struct StageJobView {
     pub change_set_id: String,
     /// The package digest.
     pub package_ref: String,
-    /// `queued | running | done | failed`.
+    /// `queued | running | cancelling | cancelled | done | failed`.
     pub state: String,
     /// Slot used.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub slot: Option<String>,
-    /// The verdict `{ok, compile, tests, forbidden, durationMs}` (from `stage.sh`), or the
-    /// failure `{code, message, hint}`.
+    /// The stage verdict or failure diagnostic. Cancelled jobs never carry a verdict.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub verdict: Option<Value>,
     /// Created (ms).

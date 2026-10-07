@@ -21,13 +21,14 @@
 //! ticker, at most one delivery round per `index_flush_ms`; [`Indexer::close`] flushes on
 //! shutdown.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 use etos_sdk::wire::{PropSpec, PropType, StateSpec};
 use etos_sdk::{ChangeMeta, Client, FileStore, Logger, LoggerOptions};
+use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use tokio::sync::Notify;
 
@@ -72,6 +73,11 @@ pub fn states() -> BTreeMap<String, StateSpec> {
             g("definition")
                 .prop("type", PropType::String)
                 .prop("fields", PropType::Json)
+                .prop("name", PropType::String)
+                .prop("owner", PropType::String)
+                .prop("graph", PropType::String)
+                .prop("asset_guid", PropType::String)
+                .prop("authoring_id", PropType::String)
                 .prop("asset_path", PropType::String),
         ),
     );
@@ -80,6 +86,12 @@ pub fn states() -> BTreeMap<String, StateSpec> {
         removed(
             g("node")
                 .prop("graph", PropType::String)
+                .prop("owner", PropType::String)
+                .prop("node_index", PropType::Int)
+                .prop("kind", PropType::String)
+                .prop("speaker_name", PropType::String)
+                .prop("options", PropType::Json)
+                .prop("edges", PropType::Json)
                 .prop("text", text("the line"))
                 .prop("conditions", PropType::Json)
                 .prop("consequences", PropType::Json)
@@ -142,16 +154,29 @@ pub fn states() -> BTreeMap<String, StateSpec> {
     m
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 struct Pending {
     values: Map<String, Value>,
-    op: &'static str,
+    op: String,
     correlation: Option<String>,
 }
 
+type ResourceRowKey = (String, String);
+type SourceRows = BTreeMap<String, BTreeSet<ResourceRowKey>>;
+type OwnerInventory = BTreeMap<String, SourceRows>;
+
 #[derive(Default)]
 struct Queue {
-    rows: BTreeMap<(String, String), Pending>,
+    rows: BTreeMap<ResourceRowKey, Pending>,
+    revision: Option<u64>,
+    sources: OwnerInventory,
+    storage_error: Option<String>,
+}
+
+#[derive(Default, Serialize, Deserialize)]
+struct SavedQueue {
+    rows: Vec<(String, String, Pending)>,
+    sources: OwnerInventory,
     revision: Option<u64>,
 }
 
@@ -160,6 +185,7 @@ pub struct Indexer {
     client: Client,
     app: String,
     store: PathBuf,
+    inventory: PathBuf,
     every: Duration,
     queue: Mutex<Queue>,
     logger: tokio::sync::Mutex<Option<Logger>>,
@@ -184,6 +210,9 @@ pub enum IndexError {
     /// The queue is unusable.
     #[error("the index queue is poisoned")]
     Poisoned,
+    /// The publication inventory/outbox could not be read or durably written.
+    #[error("index publication storage: {0}")]
+    Storage(String),
 }
 
 fn field_value(node: &IndexNode, names: &[&str]) -> Option<Value> {
@@ -275,6 +304,18 @@ pub fn node_row(node: &IndexNode) -> Option<(&'static str, String, Map<String, V
         }
         "gc_definition" => {
             put("type", Some(json!(node.ty)));
+            put("name", Some(json!(node.name)));
+            put(
+                "asset_guid",
+                node.reference.asset_guid.clone().map(Value::String),
+            );
+            put(
+                "authoring_id",
+                node.reference.authoring_id.clone().map(Value::String),
+            );
+            if node.ty == "dialogue.graph" {
+                put("graph", graph_key(&node.reference).map(Value::String));
+            }
             put("fields", Some(fields()));
             put(
                 "asset_path",
@@ -333,6 +374,134 @@ pub fn node_row(node: &IndexNode) -> Option<(&'static str, String, Map<String, V
     Some((kind, key, v))
 }
 
+fn graph_key(reference: &AuthoringRef) -> Option<String> {
+    reference
+        .asset_guid
+        .clone()
+        .or_else(|| reference.authoring_id.clone())
+        .or_else(|| {
+            reference
+                .definition
+                .as_deref()
+                .map(|d| d.split('@').next().unwrap_or(d).to_string())
+        })
+}
+
+fn source_key(reference: &AuthoringRef) -> String {
+    let identity = reference
+        .authoring_id
+        .as_ref()
+        .or(reference.global.as_ref())
+        .or(reference.asset_guid.as_ref())
+        .or(reference.path.as_ref());
+    format!(
+        "{:?}:{}",
+        reference.kind,
+        identity.map(String::as_str).unwrap_or_else(|| {
+            reference
+                .definition
+                .as_deref()
+                .unwrap_or("")
+                .split('@')
+                .next()
+                .unwrap_or("")
+        })
+    )
+}
+
+/// Dialogue nodes have no serialized ids: edges address their zero-based list indices.
+/// Only actual object entries in fields.nodes.value produce rows; no entry/end nodes are invented.
+fn dialogue_rows(node: &IndexNode) -> Vec<(String, Map<String, Value>)> {
+    if node.ty != "dialogue.graph" {
+        return Vec::new();
+    }
+    let Some(graph) = graph_key(&node.reference) else {
+        return Vec::new();
+    };
+    let Some(nodes) = node
+        .fields
+        .get("nodes")
+        .and_then(|f| f.value.as_ref())
+        .and_then(Value::as_array)
+    else {
+        return Vec::new();
+    };
+    let graph_speaker = field_value(node, &["speaker"]).unwrap_or(json!(""));
+    let graph_entity = link_to(node, "speakerEntityId").or_else(|| {
+        field_value(node, &["speakerEntityId"]).and_then(|v| v.as_str().map(str::to_string))
+    });
+    let edges = node
+        .fields
+        .get("edges")
+        .and_then(|f| f.value.as_ref())
+        .and_then(Value::as_array);
+    nodes
+        .iter()
+        .enumerate()
+        .filter_map(|(index, entry)| {
+            let entry = entry.as_object()?;
+            let text = |name: &str| {
+                entry
+                    .get(name)
+                    .and_then(Value::as_str)
+                    .filter(|s| !s.is_empty())
+            };
+            let mut values = Map::new();
+            values.insert("graph".into(), json!(graph));
+            values.insert("node_index".into(), json!(index));
+            values.insert(
+                "kind".into(),
+                entry.get("kind").cloned().unwrap_or(Value::Null),
+            );
+            values.insert(
+                "text".into(),
+                entry.get("text").cloned().unwrap_or(Value::Null),
+            );
+            values.insert(
+                "speaker_name".into(),
+                text("speaker").map_or_else(|| graph_speaker.clone(), |s| json!(s)),
+            );
+            let speaker = text("speakerEntityId").map(str::to_string).or_else(|| {
+                if text("speaker").is_some() {
+                    None
+                } else {
+                    graph_entity.clone()
+                }
+            });
+            values.insert(
+                "speaker".into(),
+                speaker
+                    .filter(|s| !s.is_empty())
+                    .map_or(Value::Null, Value::String),
+            );
+            values.insert(
+                "conditions".into(),
+                entry.get("condition").cloned().unwrap_or(Value::Null),
+            );
+            values.insert(
+                "consequences".into(),
+                entry.get("actions").cloned().unwrap_or(Value::Null),
+            );
+            values.insert(
+                "options".into(),
+                entry.get("options").cloned().unwrap_or(Value::Null),
+            );
+            values.insert(
+                "edges".into(),
+                json!(
+                    edges
+                        .into_iter()
+                        .flatten()
+                        .filter(|e| e.get("from").and_then(Value::as_u64) == Some(index as u64))
+                        .collect::<Vec<_>>()
+                ),
+            );
+            values.insert("removed".into(), json!(false));
+            Some((format!("{graph}/{index}"), values))
+        })
+        .collect()
+}
+
 impl Indexer {
     /// An indexer for the binding `app` (the agent's own name). The producer state is kept in
     /// `<state_dir>/logger-producer.json`.
@@ -342,12 +511,35 @@ impl Indexer {
         state_dir: &std::path::Path,
         every_ms: u64,
     ) -> Arc<Indexer> {
+        let inventory = state_dir.join("index-publication.json");
+        let restored = match std::fs::read(&inventory) {
+            Ok(bytes) => serde_json::from_slice::<SavedQueue>(&bytes).map_err(|e| e.to_string()),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(SavedQueue::default()),
+            Err(e) => Err(e.to_string()),
+        };
+        let queue = match restored {
+            Ok(saved) => Queue {
+                rows: saved
+                    .rows
+                    .into_iter()
+                    .map(|(kind, key, value)| ((kind, key), value))
+                    .collect(),
+                sources: saved.sources,
+                revision: saved.revision,
+                storage_error: None,
+            },
+            Err(error) => Queue {
+                storage_error: Some(error),
+                ..Queue::default()
+            },
+        };
         Arc::new(Indexer {
             client,
             app: app.to_string(),
             store: state_dir.join("logger-producer.json"),
+            inventory,
             every: Duration::from_millis(every_ms.max(100)),
-            queue: Mutex::new(Queue::default()),
+            queue: Mutex::new(queue),
             logger: tokio::sync::Mutex::new(None),
             wake: Notify::new(),
             closed: std::sync::atomic::AtomicBool::new(false),
@@ -400,35 +592,80 @@ impl Indexer {
 
     /// Hand the coalesced rows to the logger and run one delivery round.
     async fn deliver(&self) {
-        let rows = match self.queue.lock() {
-            Ok(mut q) => std::mem::take(&mut q.rows),
-            Err(_) => return,
-        };
         let guard = self.logger.lock().await;
         let Some(logger) = guard.as_ref() else {
-            // Not declared yet: put them back.
-            if let Ok(mut q) = self.queue.lock() {
-                for (k, v) in rows {
-                    q.rows.entry(k).or_insert(v);
-                }
-            }
             return;
         };
-        let n = rows.len();
-        for ((kind, key), p) in rows {
+        let rows = match self.queue.lock() {
+            Ok(q) => q.rows.clone(),
+            Err(_) => return,
+        };
+        if rows.is_empty() {
+            return;
+        }
+        let mut accepted = BTreeSet::new();
+        for ((kind, key), p) in &rows {
             let meta = ChangeMeta {
-                op: Some(p.op.to_string()),
+                op: Some(p.op.clone()),
                 at: Some(now_ms()),
                 by: Some(self.app.clone()),
-                correlation: p.correlation,
+                correlation: p.correlation.clone(),
             };
-            if let Err(e) = logger.change(&kind, &key, Value::Object(p.values), meta) {
-                tracing::warn!(kind = %kind, key = %key, error = %e, "index row dropped");
+            match logger.change(kind, key, Value::Object(p.values.clone()), meta) {
+                Ok(()) => {
+                    accepted.insert((kind.clone(), key.clone()));
+                }
+                Err(e) => {
+                    tracing::warn!(kind = %kind, key = %key, error = %e, "index row not accepted")
+                }
             }
         }
         if let Err(e) = logger.flush().await {
-            tracing::warn!(rows = n, error = %e, "index delivery failed; the SDK retries what it can");
+            tracing::warn!(rows = rows.len(), error = %e, "index delivery failed; retained for the next round");
+            return;
         }
+        if let Ok(mut q) = self.queue.lock() {
+            for key in accepted {
+                if q.rows.get(&key) == rows.get(&key) {
+                    q.rows.remove(&key);
+                }
+            }
+            if let Err(e) = self.save(&q) {
+                tracing::warn!(error = %e, "index delivery checkpoint failed; restart may replay rows");
+            }
+        }
+    }
+
+    fn save(&self, queue: &Queue) -> Result<(), IndexError> {
+        use std::io::Write;
+        #[derive(Serialize)]
+        struct Snapshot<'a> {
+            rows: Vec<(&'a String, &'a String, &'a Pending)>,
+            sources: &'a OwnerInventory,
+            revision: Option<u64>,
+        }
+        let snapshot = Snapshot {
+            rows: queue
+                .rows
+                .iter()
+                .map(|((kind, key), pending)| (kind, key, pending))
+                .collect(),
+            sources: &queue.sources,
+            revision: queue.revision,
+        };
+        let temp = self.inventory.with_extension("tmp");
+        let write = || -> Result<(), Box<dyn std::error::Error>> {
+            let mut file = std::fs::File::create(&temp)?;
+            serde_json::to_writer(&mut file, &snapshot)?;
+            file.flush()?;
+            file.sync_all()?;
+            std::fs::rename(&temp, &self.inventory)?;
+            if let Some(parent) = self.inventory.parent() {
+                std::fs::File::open(parent)?.sync_all()?;
+            }
+            Ok(())
+        };
+        write().map_err(|e| IndexError::Storage(e.to_string()))
     }
 
     fn enqueue(
@@ -447,7 +684,7 @@ impl Indexer {
             (kind.to_string(), key),
             Pending {
                 values,
-                op,
+                op: op.to_string(),
                 correlation,
             },
         );
@@ -465,14 +702,23 @@ impl Indexer {
         delta: &IndexDelta,
         owner: &str,
     ) -> Result<IndexDeltaAck, IndexError> {
+        let owner_hash = crate::util::sha256_hex(owner.as_bytes());
         let scoped = |key: &str| {
             if owner.is_empty() {
                 key.to_string()
             } else {
-                format!("{}:{key}", crate::util::sha256_hex(owner.as_bytes()))
+                format!("{owner_hash}:{key}")
             }
         };
-        let mut queued = 0;
+        // The authenticated owner, not the user-supplied display name, defines snapshot replacement.
+        let namespace = if owner.is_empty() {
+            delta.project.clone()
+        } else {
+            owner.to_string()
+        };
+        let specs = states();
+        let mut changes = BTreeMap::new();
+        let mut current = BTreeMap::new();
         let mut skipped = 0;
         let corr = Some(format!("{}@{}", delta.project, delta.revision));
         let mut project = Map::new();
@@ -485,50 +731,112 @@ impl Indexer {
                 }
             }
         }
-        self.enqueue(
-            "gc_project",
-            scoped(&delta.project),
-            project,
-            "index",
-            corr.clone(),
-        )?;
-        queued += 1;
+        changes.insert(
+            ("gc_project".to_string(), scoped(&delta.project)),
+            Pending {
+                values: project,
+                op: "index".into(),
+                correlation: corr.clone(),
+            },
+        );
         for node in &delta.nodes {
-            match node_row(node) {
-                Some((kind, key, mut values)) => {
-                    for link in ["region", "definition", "speaker", "graph"] {
-                        if let Some(Value::String(key)) = values.get_mut(link) {
-                            *key = scoped(key);
-                        }
+            let mut rows = Vec::new();
+            if let Some((kind, key, values)) = node_row(node) {
+                rows.push((kind, key, values));
+            }
+            for (key, values) in dialogue_rows(node) {
+                rows.push(("gc_dialogue_node", key, values));
+            }
+            if rows.is_empty() {
+                skipped += 1;
+            }
+            let mut keys = BTreeSet::new();
+            for (kind, key, mut values) in rows {
+                for link in ["region", "definition", "speaker", "graph"] {
+                    if let Some(Value::String(key)) = values.get_mut(link) {
+                        *key = scoped(key);
                     }
-                    self.enqueue(kind, scoped(&key), values, "index", corr.clone())?;
-                    queued += 1;
                 }
-                None => skipped += 1,
+                if kind == "gc_definition" || kind == "gc_dialogue_node" {
+                    values.insert("owner".into(), json!(owner_hash));
+                }
+                // SDK traces are patches. Clear optional fields/links that disappeared in this snapshot.
+                let spec = &specs[kind];
+                for field in spec.props.keys().chain(spec.links.keys()) {
+                    values.entry(field.clone()).or_insert(Value::Null);
+                }
+                let row = (kind.to_string(), scoped(&key));
+                keys.insert(row.clone());
+                changes.insert(
+                    row,
+                    Pending {
+                        values,
+                        op: "index".into(),
+                        correlation: corr.clone(),
+                    },
+                );
+            }
+            current.insert(source_key(&node.reference), keys);
+        }
+        let mut q = self.queue.lock().map_err(|_| IndexError::Poisoned)?;
+        if let Some(error) = &q.storage_error {
+            return Err(IndexError::Storage(error.clone()));
+        }
+        let previous = q.sources.entry(namespace.clone()).or_default();
+        let mut removed = BTreeSet::new();
+        for (source, old_rows) in previous.iter() {
+            if let Some(new_rows) = current.get(source) {
+                removed.extend(old_rows.difference(new_rows).cloned());
+            } else if delta.base_revision.is_none() {
+                removed.extend(old_rows.iter().cloned());
             }
         }
-        for r in &delta.removals {
-            let kind = match r.kind {
-                RefKind::Entity => "gc_entity",
-                RefKind::Definition => "gc_definition",
-                RefKind::Region => "gc_region",
-                _ => {
-                    skipped += 1;
-                    continue;
+        for reference in &delta.removals {
+            let source = source_key(reference);
+            if let Some(old_rows) = previous.get(&source) {
+                removed.extend(old_rows.iter().cloned());
+            } else {
+                let kind = match reference.kind {
+                    RefKind::Entity => "gc_entity",
+                    RefKind::Definition => "gc_definition",
+                    RefKind::Region => "gc_region",
+                    _ => {
+                        skipped += 1;
+                        continue;
+                    }
+                };
+                if let Some(key) = key_of(kind, reference, "") {
+                    removed.insert((kind.to_string(), scoped(&key)));
                 }
-            };
-            let Some(key) = key_of(kind, r, "") else {
-                skipped += 1;
-                continue;
-            };
-            let mut v = Map::new();
-            v.insert("removed".into(), Value::Bool(true));
-            self.enqueue(kind, scoped(&key), v, "remove", corr.clone())?;
-            queued += 1;
+            }
         }
-        if let Ok(mut q) = self.queue.lock() {
-            q.revision = Some(q.revision.map_or(delta.revision, |r| r.max(delta.revision)));
+        // Upserts win if a source is both removed and reintroduced in a coalesced delta.
+        for row in removed {
+            changes.entry(row).or_insert_with(|| Pending {
+                values: Map::from_iter([("removed".into(), json!(true))]),
+                op: "remove".into(),
+                correlation: corr.clone(),
+            });
         }
+        let additional = changes
+            .keys()
+            .filter(|key| !q.rows.contains_key(*key))
+            .count();
+        if q.rows.len() + additional > MAX_PENDING {
+            return Err(IndexError::Backpressure(q.rows.len() + additional));
+        }
+        let sources = q.sources.entry(namespace).or_default();
+        if delta.base_revision.is_none() {
+            sources.clear();
+        }
+        for reference in &delta.removals {
+            sources.remove(&source_key(reference));
+        }
+        sources.extend(current);
+        let queued = changes.len();
+        q.rows.extend(changes);
+        q.revision = Some(q.revision.map_or(delta.revision, |r| r.max(delta.revision)));
+        self.save(&q)?;
         Ok(IndexDeltaAck {
             revision: delta.revision,
             queued,
@@ -683,6 +991,9 @@ mod tests {
             .rows
             .get(&("gc_entity".to_string(), "gone".to_string()))
             .unwrap();
-        assert_eq!((r.op, &r.values["removed"]), ("remove", &json!(true)));
+        assert_eq!(
+            (r.op.as_str(), &r.values["removed"]),
+            ("remove", &json!(true))
+        );
     }
 }

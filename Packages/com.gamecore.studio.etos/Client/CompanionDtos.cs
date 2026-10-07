@@ -420,7 +420,7 @@ namespace GameCore.Studio.Etos.Client
 
         public string PackageRef { get; }
 
-        /// <summary><c>queued | running | done | failed</c>.</summary>
+        /// <summary><c>queued | running | cancelling | cancelled | done | failed</c>.</summary>
         public string State { get; }
 
         public string? Slot { get; }

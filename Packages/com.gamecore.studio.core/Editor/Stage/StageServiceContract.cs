@@ -18,6 +18,12 @@ namespace GameCore.Studio.Edit
         Task<StageVerification> VerifyVerdict(string jobId, StageVerificationRequest request);
     }
 
+    /// <summary>Authenticated control of an existing companion job, separate from verdict authorization.</summary>
+    public interface IStageJobControl
+    {
+        Task<string> CancelStage(string jobId);
+    }
+
     [JsonObject(MemberSerialization.OptIn)]
     public sealed class SignedVerdict
     {

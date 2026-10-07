@@ -123,6 +123,7 @@ namespace GameCore.Studio.Etos
             Events.MaxPendingEvents = 256;
             Events.HandleAsync = (frame, token) => _queue.Run(() => OnEvent(frame), token);
             Events.StateChanged += (state, error) => _queue.Post(() => OnStreamState(state, error));
+            IndexPublication = new EtosIndexPublisher(client, runtime, queue, _log);
         }
 
         public async Task<JObject> StageCandidateAsync(StageCandidateRequest request, CancellationToken cancellationToken)
@@ -150,6 +151,8 @@ namespace GameCore.Studio.Etos
         public StudioRuntime Runtime { get; }
 
         public EventStream Events { get; }
+
+        public EtosIndexPublisher IndexPublication { get; }
 
         public EtosGatewayOptions Options => _options;
 
@@ -253,6 +256,7 @@ namespace GameCore.Studio.Etos
         /// <summary>Starts the event stream, the first status check and the recovery of this app's requests.</summary>
         public void Start()
         {
+            IndexPublication.Start();
             Events.Start();
             _ = RefreshStatusAsync();
             _ = RecoverAsync();
@@ -261,6 +265,7 @@ namespace GameCore.Studio.Etos
         /// <summary>Main-thread tick: polls the provider status every <see cref="EtosGatewayOptions.StatusInterval"/>.</summary>
         public void Tick()
         {
+            IndexPublication.Tick();
             if (Events.State != EventStreamState.Connected && (!_sinceRecovery.IsRunning || _sinceRecovery.Elapsed >= TimeSpan.FromSeconds(1)))
                 _ = RecoverAsync();
             if (!_sinceStatus.IsRunning || _sinceStatus.Elapsed >= _options.StatusInterval)
@@ -570,6 +575,7 @@ namespace GameCore.Studio.Etos
             }
 
             _disposed = true;
+            IndexPublication.Dispose();
             Events.Dispose();
             foreach (StagedChangeSet staged in _staged.Values.ToList())
             {

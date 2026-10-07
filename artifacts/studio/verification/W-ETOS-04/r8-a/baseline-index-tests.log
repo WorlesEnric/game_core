@@ -1,0 +1,42 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+   Compiling gamecore-studio v0.1.0 (/tmp/r8-a-baseline-7f5cacb/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.91s
+     Running tests/index_publication.rs (/tmp/r8-a-baseline-target/debug/deps/index_publication-7c5d8030c35785ed)
+
+running 3 tests
+test w_etos_04_graph_fields_publish_discoverable_owned_dialogue_nodes ... FAILED
+test w_etos_04_project_open_after_restart_removes_stale_graphs_only_for_owner ... FAILED
+test w_etos_04_graph_revisions_clear_removed_fields_shrink_undo_and_delete ... FAILED
+
+failures:
+
+---- w_etos_04_graph_fields_publish_discoverable_owned_dialogue_nodes stdout ----
+
+thread 'w_etos_04_graph_fields_publish_discoverable_owned_dialogue_nodes' (689944) panicked at tests/index_publication.rs:79:5:
+assertion `left == right` failed
+  left: Null
+ right: "c80e96f04e5d872a0323a1927494a9993385cdb922dab4a2f30b23881c60a4c3:graph-guid"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- w_etos_04_project_open_after_restart_removes_stale_graphs_only_for_owner stdout ----
+
+thread 'w_etos_04_project_open_after_restart_removes_stale_graphs_only_for_owner' (689946) panicked at tests/index_publication.rs:154:21:
+no entry found for key
+
+---- w_etos_04_graph_revisions_clear_removed_fields_shrink_undo_and_delete stdout ----
+
+thread 'w_etos_04_graph_revisions_clear_removed_fields_shrink_undo_and_delete' (689945) panicked at tests/index_publication.rs:119:22:
+no entry found for key
+
+
+failures:
+    w_etos_04_graph_fields_publish_discoverable_owned_dialogue_nodes
+    w_etos_04_graph_revisions_clear_removed_fields_shrink_undo_and_delete
+    w_etos_04_project_open_after_restart_removes_stale_graphs_only_for_owner
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+error: test failed, to rerun pass `--test index_publication`

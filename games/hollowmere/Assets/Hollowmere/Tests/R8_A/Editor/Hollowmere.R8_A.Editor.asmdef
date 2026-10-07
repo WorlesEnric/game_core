@@ -1,0 +1,28 @@
+{
+  "name": "Hollowmere.R8_A.Editor",
+  "rootNamespace": "Hollowmere.R8_A",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Dialogue",
+    "GameCore.Gameplay.Logic",
+    "GameCore.Gameplay.Npc",
+    "GameCore.Gameplay.World",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.Etos",
+    "GameCore.Studio.Etos.Client",
+    "GameCore.Studio.Model",
+    "GameCore.Studio.UI.Editor",
+    "Hollowmere.Boot"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

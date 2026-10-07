@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 namespace GameCore.Studio.Etos
 {
     /// <summary>Authenticated HTTP adapter. The wrapper retains the exact signed wire record for verification.</summary>
-    public sealed class CompanionStageService : IStageService
+    public sealed class CompanionStageService : IStageService, IStageJobControl
     {
         private readonly CompanionClient _client;
         private readonly Func<string, ChangeSet?>? _candidate;
@@ -75,12 +75,19 @@ namespace GameCore.Studio.Etos
                 request.SourceRevision, request.CatalogRevision, ct).ConfigureAwait(false);
         }
 
+        public async Task<string> CancelStage(string jobId)
+        {
+            StageJobInfo job = await _client.CancelStageAsync(jobId).ConfigureAwait(false);
+            if (job.JobId != jobId) throw EtosException.Protocol("stage_job_mismatch");
+            return job.State;
+        }
+
         public async Task<SignedVerdict> GetVerdict(string jobId)
         {
             // Cold-cache runs may legitimately exceed the warm budget; the companion owns that budget.
             // Poll only state. A terminal job still needs the authenticated issued-verdict route below.
             StageJobInfo job = await _client.GetStageAsync(jobId).ConfigureAwait(false);
-            while (job.State == "queued" || job.State == "running")
+            while (job.State == "queued" || job.State == "running" || job.State == "cancelling")
             {
                 await Task.Delay(1000).ConfigureAwait(false);
                 job = await _client.GetStageAsync(jobId).ConfigureAwait(false);

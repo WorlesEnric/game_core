@@ -23,7 +23,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-D graphical 1280\u00d7720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
+      "note": "R7-D graphical 1280×720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
       "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
@@ -42,7 +42,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-D graphical 1280\u00d7720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
+      "note": "R7-D graphical 1280×720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
       "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
@@ -64,7 +64,7 @@
       "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
       "command": "studio/tools/verify-all.sh memory",
       "row": "W-UI-04",
-      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
+      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10×",
       "requirement": "SR-8.2",
       "reportedAt": "2026-10-06T15:29:44.364423+00:00",
       "evidence": [
@@ -303,7 +303,7 @@
       "note": "P4.2h one real USD0.20 portrait passes current media import, normal History undo/redo and final undo. Generated/applied/redone PNG SHA256 is identical; all post-generation charge/producer checkpoints remain unchanged. An observer initially wrongly required optional jobId; its failure is retained and corrected without regenerating. Normal History continuation reuses the original Applied journal after reopening.",
       "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait --workflow-out artifacts/studio/verification/W-EDIT-03/p42h-portrait/workflow",
       "row": "W-EDIT-03",
-      "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
+      "scenario": "Generate portrait → apply → undo → redo: no second generation (usage unchanged)",
       "requirement": "SR-3.3",
       "reportedAt": "2026-10-07T01:31:38.711721+00:00",
       "evidence": [
@@ -378,7 +378,7 @@
         "GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests"
       ],
       "row": "W-EDIT-06",
-      "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
+      "scenario": "Runtime-only move → \"Apply to authored\" → persists after exiting Play",
       "requirement": "SR-1.8",
       "reportedAt": "2026-10-06T21:16:51.128079+00:00",
       "evidence": [
@@ -441,7 +441,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet\u2019s scope.",
+      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope.",
       "command": "studio/tools/verify-all.sh security",
       "row": "W-ETOS-01",
       "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
@@ -467,14 +467,17 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute.",
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py query --row W-ETOS-04 --method P42h.Tasks.TaskDriver.SelectedNpcQuery",
+      "status": "PASS",
+      "note": "R8-A product fccf3f8c: production lifecycle index publication expands real dialogue graphs. Actual scratch ETOS Docker worker etos query discovers Bram graph and returns 8 matching nodes, plus 53 owner-scoped nodes without graph filter. Exact tool trace/stdout retained; no seeded rows or external provider calls.",
+      "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R8_A/run.py run --companion <fresh-binary> --cache <verified-cache> --evidence <repo>/.evidence/r8-a/<fresh-run>",
       "row": "W-ETOS-04",
       "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
       "requirement": "SR-2.4, SR-4.3",
-      "reportedAt": "2026-10-07T01:31:38.711912+00:00",
+      "reportedAt": "2026-10-07T02:17:51.969586+00:00",
       "evidence": [
+        "W-ETOS-04/README.md",
+        "W-ETOS-04/r8-a/result.json.gz",
+        "W-ETOS-04/r8-a/worker-query-receipt.json.gz",
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
         "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
         "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json",
@@ -487,7 +490,7 @@
           "equals": false
         }
       ],
-      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "baseline": "fccf3f8c44e08bd3c6925ef99a8fcd15991d8703",
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
@@ -578,7 +581,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Removing the shared image provider and reloading the node would change concurrent users\u2019 provider service; that operator scenario is outside the permitted no-node-restart run.",
+      "note": "Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run.",
       "command": "studio/tools/verify-all.sh media",
       "row": "W-ETOS-08",
       "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
@@ -659,7 +662,7 @@
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
       "row": "W-AI-01",
       "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-07T01:31:38.713207+00:00",
       "evidence": [
         "W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md",
@@ -784,7 +787,7 @@
       "historical": "P4.2g installed qualification; earlier attempts remain retained as historical evidence. Other rows retain their own revision-specific evidence.",
       "row": "W-AI-02",
       "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T20:20:42.654114+00:00",
       "evidence": [
         "W-AI-02/p42f-text2-20261006T173140.444632Z",
@@ -813,7 +816,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.401563+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -830,7 +833,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-04",
       "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.403575+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -846,7 +849,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-05",
       "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T15:29:44.404795+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -867,7 +870,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
-      "requirement": "mandate \u00a710",
+      "requirement": "mandate §10",
       "reportedAt": "2026-10-06T21:13:46.407929+00:00",
       "evidence": [
         "W-AI-06/r7-a/README.md",
@@ -897,7 +900,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825\u20130.15878% of peak; both passing runs meet load \u22642 s/unload \u22641 s. Reloadable 702-byte clip descriptors remain included in the residual.",
+      "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825–0.15878% of peak; both passing runs meet load ≤2 s/unload ≤1 s. Reloadable 702-byte clip descriptors remain included in the residual.",
       "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'NativeMediaAcceptance' -force-glcore",
       "tests": [
         "TravelsVillageMarshBelfryVillage"
@@ -946,7 +949,7 @@
     },
     {
       "status": "PASS",
-      "note": "Fresh-boot restore retains the unloaded NPC\u2019s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
+      "note": "Fresh-boot restore retains the unloaded NPC’s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
       "command": "studio/tools/verify-all.sh unity",
       "tests": [
         "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
@@ -1060,7 +1063,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals \u22640.159%; no paid calls.",
+      "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals ≤0.159%; no paid calls.",
       "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record\nnode artifacts/studio/verification/W-PLUG-11/audio-identity.mjs",
       "row": "W-PLUG-11",
       "scenario": "Ambience crossfade, voice line, clip release",
@@ -1083,7 +1086,7 @@
         "OneFieldChange_ChangesOnlyThatDefinitionsRevision"
       ],
       "row": "W-PLUG-12",
-      "scenario": "Bake byte-identity; one line change \u2192 one revision change",
+      "scenario": "Bake byte-identity; one line change → one revision change",
       "requirement": "SR-5.3",
       "reportedAt": "2026-10-06T15:29:44.417891+00:00",
       "evidence": [
@@ -1100,7 +1103,7 @@
         "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
       ],
       "row": "W-KERNEL-01",
-      "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
+      "scenario": "Corrupted catalog → named failure, not an empty world",
       "requirement": "SR-7.1",
       "reportedAt": "2026-10-06T15:29:44.419407+00:00",
       "evidence": [
@@ -1176,14 +1179,17 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained.",
-      "command": "Read docs/studio/packets/P4.2h-live-rows.md Requests to other packets and W-REC-03/p42h-prerequisite/result.json",
+      "status": "PASS",
+      "note": "R8-A product fccf3f8c: real native region load cancelled mid-flight and unloaded. Actual attached Stage Cancel button cancels authenticated scratch companion Docker stage; durable cancelled survives restart, container gone, held stage slot released, no verdict, Admit disabled. Real dotnet container paused solely to serialize Editors; foreign app/project 404, unauthenticated proxy 401.",
+      "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R8_A/run.py run --companion <fresh-binary> --cache <verified-cache> --evidence <repo>/.evidence/r8-a/<fresh-run>",
       "row": "W-REC-03",
       "scenario": "Cancel region load mid-way; cancel staging job",
       "requirement": "SR-9.1",
-      "reportedAt": "2026-10-07T01:31:38.713401+00:00",
+      "reportedAt": "2026-10-07T02:17:51.969607+00:00",
       "evidence": [
+        "W-REC-03/README.md",
+        "W-REC-03/r8-a/result.json.gz",
+        "W-REC-03/r8-a/stage-resources.json.gz",
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
         "W-REC-03/p42h-prerequisite/result.json"
@@ -1195,7 +1201,7 @@
           "equals": false
         }
       ],
-      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "baseline": "fccf3f8c44e08bd3c6925ef99a8fcd15991d8703",
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
@@ -1473,7 +1479,7 @@
       ],
       "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
       "row": "W-GAME-05",
-      "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
+      "scenario": "Full flow menu→save→load→ending→restart in the player",
       "requirement": "SR-6.10",
       "reportedAt": "2026-10-06T22:09:06.546015+00:00",
       "evidence": [
@@ -1485,7 +1491,7 @@
     },
     {
       "status": "PASS",
-      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1\u20138 and resumed 9\u201311 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
+      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
       "command": "studio/tools/verify-all.sh build\nstudio/tools/verify-all.sh v1",
       "row": "W-GAME-06",
       "scenario": "Build log + sha256 + V1 gate transcript on the same revision",

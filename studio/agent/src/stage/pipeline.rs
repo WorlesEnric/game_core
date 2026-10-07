@@ -250,14 +250,7 @@ impl ChildOutcome {
 }
 
 fn kill_group(pid: u32, signal: &str) {
-    let _ = Command::new("/bin/kill")
-        .env_clear()
-        .envs(stage_env())
-        .args(["-s", signal, "--"])
-        .arg(format!("-{pid}"))
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status();
+    super::control::signal_group(pid, signal);
 }
 
 /// Run `cmd` (environment cleared to the stage allowlist plus `extra_env`, its own process
@@ -268,7 +261,7 @@ pub fn run_child(
     scratch: &Path,
     timeout: Duration,
 ) -> ChildOutcome {
-    run_child_controlled(cmd, extra_env, scratch, timeout, false, None)
+    run_child_controlled(cmd, extra_env, scratch, timeout, false, None, None)
 }
 
 // The Unity wrapper retains each attempt and forwards only already-redacted records.
@@ -279,6 +272,7 @@ pub(super) fn run_child_controlled(
     timeout: Duration,
     stream: bool,
     cancelled: Option<&std::sync::atomic::AtomicBool>,
+    control: Option<&super::control::Control>,
 ) -> ChildOutcome {
     use std::os::unix::process::CommandExt;
     let started = Instant::now();
@@ -288,6 +282,11 @@ pub(super) fn run_child_controlled(
         output: redact_all(&message),
         elapsed: started.elapsed(),
     };
+    if control.is_some_and(|control| control.cancelled())
+        || cancelled.is_some_and(|flag| flag.load(std::sync::atomic::Ordering::Relaxed))
+    {
+        return fail("stage_cancelled".into());
+    }
     let file = match File::create(scratch) {
         Ok(f) => f,
         Err(e) => return fail(format!("cannot create {}: {e}", scratch.display())),
@@ -306,6 +305,17 @@ pub(super) fn run_child_controlled(
     let mut child = match cmd.spawn() {
         Ok(c) => c,
         Err(e) => return fail(format!("cannot start {:?}: {e}", cmd.get_program())),
+    };
+    let _registration = match control
+        .map(|control| control.register(child.id()))
+        .transpose()
+    {
+        Ok(registration) => registration,
+        Err(error) => {
+            kill_group(child.id(), "KILL");
+            let _ = child.wait();
+            return fail(error);
+        }
     };
     let stdout = child.stdout.take();
     let stderr = child.stderr.take();
@@ -339,8 +349,9 @@ pub(super) fn run_child_controlled(
         }
         if started.elapsed() >= timeout
             || cancelled.is_some_and(|flag| flag.load(std::sync::atomic::Ordering::Relaxed))
+            || control.is_some_and(|control| control.cancelled())
         {
-            timed_out = true;
+            timed_out = started.elapsed() >= timeout;
             kill_group(pid, "TERM");
             let grace = Instant::now();
             while grace.elapsed() < Duration::from_secs(15) {
@@ -634,6 +645,10 @@ impl Run<'_> {
     }
 
     fn budget_gone(&mut self, id: &str) -> bool {
+        if self.opts.sandbox.control.cancelled() {
+            self.skip(id, "stage cancelled");
+            return true;
+        }
         if self.remaining().is_zero() {
             self.timed_out = true;
             self.steps.push(StepResult::new(
@@ -737,7 +752,7 @@ impl Run<'_> {
     fn step_checkers(&mut self) {
         let t = Instant::now();
         let mut log = StepLog::new();
-        let out = run_child(
+        let out = run_child_controlled(
             Command::new(&self.opts.tools.python)
                 .arg(&self.opts.tools.slot_checks)
                 .arg("--slot")
@@ -747,6 +762,9 @@ impl Run<'_> {
             &[],
             &self.scratch("checkers"),
             self.remaining(),
+            false,
+            None,
+            Some(&self.opts.sandbox.control),
         );
         log.child("slot-checks.py", &out);
         self.timed_out |= out.timed_out;
@@ -897,14 +915,19 @@ impl Run<'_> {
             let _ = slot::remove_slot(&target);
         }
         if !analyzer.is_dir()
-            || !Command::new("/bin/cp")
-                .env_clear()
-                .envs(stage_env())
-                .arg("-a")
-                .arg(&analyzer)
-                .arg(&target)
-                .status()
-                .is_ok_and(|s| s.success())
+            || !run_child_controlled(
+                Command::new("/bin/cp")
+                    .arg("-a")
+                    .arg(&analyzer)
+                    .arg(&target),
+                &[],
+                &self.scratch("copy-analyzer"),
+                self.remaining(),
+                false,
+                None,
+                Some(&self.opts.sandbox.control),
+            )
+            .ok()
         {
             return ChildOutcome {
                 code: Some(1),
@@ -1306,7 +1329,16 @@ pub fn prepare_slot(opts: &StageOptions, timeout: Duration) -> Result<Value, Str
         cmd.arg("--force");
     }
     std::fs::create_dir_all(&slot_dir).map_err(|e| format!("cannot create the slot: {e}"))?;
-    let out = run_child(&mut cmd, &[], &slot_dir.join(".make-slot.raw"), timeout);
+    let out = run_child_controlled(
+        &mut cmd,
+        &[],
+        &slot_dir.join(".make-slot.raw"),
+        timeout,
+        false,
+        None,
+        Some(&opts.sandbox.control),
+    );
+    opts.sandbox.control.check()?;
     let summary = out.last_json().unwrap_or(Value::Null);
     if out.ok() && summary["ok"] == true {
         Ok(summary)
@@ -1360,7 +1392,8 @@ pub fn cache_version(opts: &StageOptions) -> Result<String, String> {
 }
 
 /// Seed the warm Library cache from a slot that compiled (first successful stage only).
-fn seed_warm_library(root: &Path, project: &Path) {
+fn seed_warm_library(opts: &StageOptions, project: &Path) {
+    let root = &opts.sandbox.cache;
     let Ok(_cache_lock) = SlotLock::acquire(root, slot::MAX_SLOT_AGE) else {
         return;
     };
@@ -1374,16 +1407,16 @@ fn seed_warm_library(root: &Path, project: &Path) {
         return;
     }
     let tmp = warm.join(format!("Library.{}.tmp", std::process::id()));
-    let ok = Command::new("/bin/cp")
-        .env_clear()
-        .envs(stage_env())
-        .arg("-a")
-        .arg(&library)
-        .arg(&tmp)
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status()
-        .is_ok_and(|s| s.success());
+    let ok = run_child_controlled(
+        Command::new("/bin/cp").arg("-a").arg(&library).arg(&tmp),
+        &[],
+        &opts.slot_dir().join(".seed-cache.raw"),
+        opts.budget,
+        false,
+        None,
+        Some(&opts.sandbox.control),
+    )
+    .ok();
     if ok {
         if target.exists() {
             let _ = std::fs::remove_dir_all(&target);
@@ -1417,6 +1450,7 @@ fn cold_budget(cache: &Path, warm: Duration) -> Result<(bool, Duration), String>
 /// Run one stage. `Err` only when no verdict can be made (bad slot, slot busy, the candidate
 /// cannot be staged); every step outcome, timeouts included, is a verdict.
 pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
+    opts.sandbox.control.check()?;
     let mut effective = opts.clone();
     // The CLI also permits relative/dotted source paths; compare the same canonical
     // identity that the trusted Python preflight records for registered projects.
@@ -1471,6 +1505,7 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     }
     // Probe only after validating project pins. No fallback on confinement failure.
     opts.sandbox.probe()?;
+    opts.sandbox.control.check()?;
     if let SlotSource::PackageDir { change_set_id, .. } = &opts.source {
         if record["changeSetId"].as_str() != Some(change_set_id.as_str()) {
             return Err("the slot holds another change set".into());
@@ -1644,10 +1679,12 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
         created_at: now_ms(),
     };
     verdict.settle();
-    let _ = std::fs::write(slot_dir.join("out").join("verdict.json"), verdict.bytes());
+    opts.sandbox.control.check()?;
     if editmode_ok {
-        seed_warm_library(&opts.sandbox.cache, &slot_dir.join("project"));
+        seed_warm_library(opts, &slot_dir.join("project"));
     }
+    opts.sandbox.control.check()?;
+    let _ = std::fs::write(slot_dir.join("out").join("verdict.json"), verdict.bytes());
     Ok(verdict)
 }
 

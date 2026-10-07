@@ -1053,10 +1053,36 @@ impl Ledger {
         {
             let conn = self.lock()?;
             conn.execute(
-                "UPDATE stage_jobs SET state = ?2, slot = COALESCE(?3, slot), verdict = COALESCE(?4, verdict), updated_at = ?5 WHERE job_id = ?1",
+                "UPDATE stage_jobs SET state = ?2, slot = COALESCE(?3, slot), verdict = COALESCE(?4, verdict), updated_at = ?5 WHERE job_id = ?1 AND state NOT IN ('cancelling', 'cancelled')",
                 params![job_id, state, slot, verdict.map(Value::to_string), now_ms()],
             )?;
         }
+        self.stage(job_id)
+    }
+
+    /// Linearize cancellation against completion. Terminal jobs are unchanged.
+    pub fn cancel_stage(&self, job_id: &str) -> LedgerResult<StageJobView> {
+        self.lock()?.execute(
+            "UPDATE stage_jobs SET state = 'cancelling', verdict = NULL, updated_at = ?2 WHERE job_id = ?1 AND state IN ('queued', 'running')",
+            params![job_id, now_ms()],
+        )?;
+        self.stage(job_id)
+    }
+
+    /// Publish only after the pipeline and cleanup return. A committed cancellation wins
+    /// even if compilation finished or signing raced its request; it never stores authority.
+    pub fn complete_stage(
+        &self,
+        job_id: &str,
+        state: &str,
+        verdict: Option<&Value>,
+    ) -> LedgerResult<StageJobView> {
+        self.lock()?.execute(
+            "UPDATE stage_jobs SET state = CASE WHEN state = 'cancelling' THEN 'cancelled' ELSE ?2 END,
+             verdict = CASE WHEN state = 'cancelling' THEN NULL ELSE ?3 END, updated_at = ?4
+             WHERE job_id = ?1 AND state IN ('queued', 'running', 'cancelling')",
+            params![job_id, state, verdict.map(Value::to_string), now_ms()],
+        )?;
         self.stage(job_id)
     }
 
@@ -1094,11 +1120,12 @@ impl Ledger {
         })
     }
 
-    /// Stage jobs left `queued` or `running` by a previous process.
+    /// Stage jobs interrupted before completion or cancellation cleanup was acknowledged.
     pub fn unfinished_stages(&self) -> LedgerResult<Vec<String>> {
         let conn = self.lock()?;
-        let mut stmt =
-            conn.prepare("SELECT job_id FROM stage_jobs WHERE state IN ('queued', 'running')")?;
+        let mut stmt = conn.prepare(
+            "SELECT job_id FROM stage_jobs WHERE state IN ('queued', 'running', 'cancelling')",
+        )?;
         let rows = stmt.query_map([], |r| r.get(0))?;
         Ok(rows.collect::<rusqlite::Result<_>>()?)
     }
@@ -1548,5 +1575,97 @@ mod tests {
             .unwrap();
         assert_eq!(j.verdict, Some(json!({"ok": true})));
         assert_eq!(j.slot.as_deref(), Some("1"));
+    }
+
+    #[test]
+    fn w_rec_03_completion_cannot_overwrite_cancellation() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("ledger.db");
+        let ledger = std::sync::Arc::new(Ledger::open(&path).unwrap());
+        for state in ["cancelling", "cancelled"] {
+            ledger
+                .insert_stage(&StageJobView {
+                    job_id: state.into(),
+                    change_set_id: "cs1".into(),
+                    package_ref: "a".repeat(64),
+                    state: state.into(),
+                    slot: Some("slot".into()),
+                    verdict: None,
+                    created_at: 1,
+                    updated_at: 1,
+                })
+                .unwrap();
+            let late = ledger.clone();
+            std::thread::spawn(move || {
+                late.update_stage(
+                    state,
+                    "done",
+                    None,
+                    Some(&json!({"pass": true, "signature": "late-authority"})),
+                )
+                .unwrap();
+            })
+            .join()
+            .unwrap();
+            let row = Ledger::open(&path).unwrap().stage(state).unwrap();
+            assert_eq!(row.state, state);
+            assert!(row.verdict.is_none());
+        }
+        assert_eq!(
+            ledger.unfinished_stages().unwrap(),
+            vec!["cancelling".to_string()]
+        );
+    }
+
+    #[test]
+    fn w_rec_03_cancel_and_completion_have_one_durable_winner() {
+        let dir = tempfile::tempdir().unwrap();
+        let ledger = std::sync::Arc::new(Ledger::open(&dir.path().join("ledger.db")).unwrap());
+        for sequence in 0..16 {
+            let id = sequence.to_string();
+            ledger
+                .insert_stage(&StageJobView {
+                    job_id: id.clone(),
+                    change_set_id: "cs1".into(),
+                    package_ref: "a".repeat(64),
+                    state: "running".into(),
+                    slot: None,
+                    verdict: None,
+                    created_at: 1,
+                    updated_at: 1,
+                })
+                .unwrap();
+            let barrier = std::sync::Arc::new(std::sync::Barrier::new(2));
+            let done = {
+                let ledger = ledger.clone();
+                let barrier = barrier.clone();
+                let id = id.clone();
+                std::thread::spawn(move || {
+                    barrier.wait();
+                    ledger
+                        .update_stage(&id, "done", None, Some(&json!({"pass": true})))
+                        .unwrap();
+                })
+            };
+            barrier.wait();
+            ledger.cancel_stage(&id).unwrap();
+            done.join().unwrap();
+            let row = ledger.stage(&id).unwrap();
+            match row.state.as_str() {
+                "done" => {
+                    assert_eq!(row.verdict, Some(json!({"pass": true})));
+                    assert_eq!(ledger.cancel_stage(&id).unwrap().state, "done");
+                }
+                "cancelling" => {
+                    assert!(row.verdict.is_none());
+                    let settled = ledger
+                        .complete_stage(&id, "failed", Some(&json!({"pass": true})))
+                        .unwrap();
+                    assert_eq!(settled.state, "cancelled");
+                    assert!(settled.verdict.is_none());
+                }
+                other => panic!("unexpected race result {other}"),
+            }
+        }
     }
 }

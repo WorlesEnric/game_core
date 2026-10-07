@@ -11,6 +11,7 @@
 
 pub mod app_candidate;
 pub mod cli;
+pub mod control;
 pub mod env;
 pub mod pipeline;
 pub mod sandbox;
@@ -21,7 +22,7 @@ pub mod verdict;
 
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 use axum::http::StatusCode;
@@ -101,6 +102,7 @@ pub struct StageRunner {
     state_dir: PathBuf,
     root: PathBuf,
     repo: Option<PathBuf>,
+    active: Mutex<BTreeSet<String>>,
 }
 
 impl std::fmt::Debug for StageRunner {
@@ -110,6 +112,19 @@ impl std::fmt::Debug for StageRunner {
             .field("root", &self.root)
             .field("repo", &self.repo)
             .finish_non_exhaustive()
+    }
+}
+
+struct ActiveStage {
+    runner: Arc<StageRunner>,
+    id: String,
+}
+
+impl Drop for ActiveStage {
+    fn drop(&mut self) {
+        if let Ok(mut active) = self.runner.active.lock() {
+            active.remove(&self.id);
+        }
     }
 }
 
@@ -161,6 +176,7 @@ impl StageRunner {
             state_dir: state_dir.to_path_buf(),
             root,
             repo,
+            active: Mutex::new(BTreeSet::new()),
         })
     }
 
@@ -188,26 +204,85 @@ impl StageRunner {
         });
     }
 
-    /// Mark jobs a previous process left unfinished as failed.
+    /// Interrupted cancellations remain cancellations; no recovery path can issue a verdict.
     pub fn settle_interrupted(&self) {
         if let Ok(ids) = self.ledger.unfinished_stages() {
             for id in ids {
-                if let Some((job, repo)) = self.ledger.stage(&id).ok().zip(self.repo.as_ref()) {
-                    let dir = job
-                        .slot
-                        .as_ref()
-                        .filter(|slot| slot::valid_slot_id(slot))
-                        .map(|slot| self.owner_root(&job.change_set_id).join(slot));
-                    if let Some(dir) = dir {
-                        sandbox::Sandbox::defaults(&dir, &self.root.join("_warm"), repo)
-                            .stop_container();
-                    }
+                let result = (|| -> ApiResult<()> {
+                    let job = self.ledger.stage(&id)?;
+                    self.cleanup_job(&job)?;
+                    let verdict = json!({"code": STAGE_FAILED, "message": "interrupted by a companion restart",
+                        "hint": "stage the package again"});
+                    let job = self.ledger.complete_stage(&id, "failed", Some(&verdict))?;
+                    self.emit(&job);
+                    Ok(())
+                })();
+                if let Err(error) = result {
+                    tracing::error!(job = id, error = %error, "interrupted stage cleanup refused");
                 }
-                let v = json!({"code": STAGE_FAILED, "message": "interrupted by a companion restart",
-                               "hint": "stage the package again"});
-                let _ = self.ledger.update_stage(&id, "failed", None, Some(&v));
             }
         }
+    }
+
+    /// Cancel the same authenticated (app, project) that owns the source request.
+    /// Run on the blocking pool; dropping an HTTP wait never aborts teardown.
+    pub fn cancel_owned(&self, id: &str, owner: &str) -> ApiResult<StageJobView> {
+        let row = self.ledger.stage(id)?;
+        if self.ledger.request(&row.change_set_id)?.app != owner {
+            return Err(ApiError::not_found("no stage job"));
+        }
+        let row = self.ledger.cancel_stage(id)?;
+        if row.state != "cancelling" {
+            return Ok(row);
+        }
+        control::job_control(&self.state_dir, id)
+            .cancel()
+            .map_err(ApiError::internal)?;
+        self.emit(&row);
+        loop {
+            let active = self
+                .active
+                .lock()
+                .map_err(|_| ApiError::internal("stage registry poisoned"))?;
+            if !active.contains(id) {
+                let row = self.ledger.stage(id)?;
+                if row.state != "cancelling" {
+                    return Ok(row);
+                }
+                self.cleanup_job(&row)?;
+                let row = self.ledger.complete_stage(id, "cancelled", None)?;
+                self.emit(&row);
+                return Ok(row);
+            }
+            drop(active);
+            std::thread::sleep(Duration::from_millis(50));
+        }
+    }
+
+    fn cleanup_job(&self, job: &StageJobView) -> ApiResult<()> {
+        let control = control::job_control(&self.state_dir, &job.job_id);
+        let children = control.stop_children().map_err(ApiError::stage_failed);
+        if let Some(slot) = job.slot.as_ref().filter(|id| slot::valid_slot_id(id)) {
+            let dir = self.owner_root(&job.change_set_id).join(slot);
+            let mut sandbox =
+                sandbox::Sandbox::defaults(&dir, &self.root.join("_warm"), &self.repo()?);
+            sandbox.mode = self.cfg.confinement;
+            sandbox.control = control;
+            sandbox
+                .stop_job_containers()
+                .map_err(ApiError::stage_failed)?;
+            let _lock = slot::SlotLock::acquire(&dir, slot::MAX_SLOT_AGE)
+                .map_err(ApiError::stage_failed)?;
+            if job.state == "cancelling" {
+                let verdict = dir.join("out/verdict.json");
+                match std::fs::remove_file(verdict) {
+                    Ok(()) => {}
+                    Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+                    Err(error) => return Err(ApiError::internal(error.to_string())),
+                }
+            }
+        }
+        children
     }
 
     /// Typed authenticated stage request. Source paths and compiler overrides are never
@@ -291,6 +366,9 @@ impl StageRunner {
     /// Retrieve the issued record only. Partial and failed jobs have no attestation.
     pub fn signed_verdict(&self, job: &str) -> ApiResult<Value> {
         let row = self.ledger.stage(job)?;
+        if row.state != "done" {
+            return Err(ApiError::not_found("no issued verdict"));
+        }
         let record = row
             .verdict
             .ok_or_else(|| ApiError::not_found("no issued verdict"))?;
@@ -415,6 +493,20 @@ impl StageRunner {
         }
         let slot_id = slot::resolve_slot(&root, &req.change_set_id, req.slot.as_deref())
             .map_err(ApiError::ledger_conflict)?;
+        let mut active = self
+            .active
+            .lock()
+            .map_err(|_| ApiError::internal("stage registry poisoned"))?;
+        for id in self.ledger.unfinished_stages()? {
+            let job = self.ledger.stage(&id)?;
+            if job.slot.as_deref() == Some(slot_id.as_str())
+                && self.owner_root(&job.change_set_id) == root
+            {
+                return Err(ApiError::ledger_conflict(format!(
+                    "slot {slot_id} is being staged or cancelled"
+                )));
+            }
+        }
         if slot::is_locked(&root.join(&slot_id)) {
             return Err(ApiError::ledger_conflict(format!(
                 "slot {slot_id} is being staged; one stage per slot"
@@ -461,12 +553,21 @@ impl StageRunner {
             updated_at: now,
         };
         self.ledger.insert_stage(&job)?;
+        active.insert(job.job_id.clone());
+        drop(active);
+        opts.sandbox.control = control::job_control(&self.state_dir, &job.job_id);
         self.emit(&job);
         let me = self.clone();
         let id = job.job_id.clone();
         let change_set = candidate.change_set;
         let artifacts = candidate.artifacts;
-        tokio::task::spawn_blocking(move || me.run_lane(&id, opts, &change_set, &artifacts));
+        tokio::task::spawn_blocking(move || {
+            let _active = ActiveStage {
+                runner: me.clone(),
+                id: id.clone(),
+            };
+            me.run_lane(&id, opts, &change_set, &artifacts);
+        });
         Ok(StageAnswer {
             status: StatusCode::ACCEPTED,
             body: serde_json::to_value(job).unwrap_or(Value::Null),
@@ -501,6 +602,9 @@ impl StageRunner {
     ) {
         let incoming = self.root.join(".incoming").join(id);
         if let Ok(job) = self.ledger.update_stage(id, "running", None, None) {
+            if job.state == "cancelling" || job.state == "cancelled" {
+                return;
+            }
             self.emit(&job);
         }
         let outcome = self
@@ -510,6 +614,13 @@ impl StageRunner {
                 pipeline::run_stage(&opts)
             });
         let _ = std::fs::remove_dir_all(&incoming);
+        if self
+            .ledger
+            .stage(id)
+            .is_ok_and(|job| matches!(job.state.as_str(), "cancelling" | "cancelled"))
+        {
+            return;
+        }
         let (state, value) = match outcome {
             Ok(v) => {
                 let mut record = v.to_value();
@@ -652,6 +763,7 @@ impl StageRunner {
             }
         }
         match self.ledger.update_stage(id, state, None, Some(&record)) {
+            Ok(job) if matches!(job.state.as_str(), "cancelling" | "cancelled") => {}
             Ok(job) => self.emit(&job),
             Err(e) => tracing::error!(job = id, error = %e, "cannot record the stage verdict"),
         }
@@ -723,5 +835,137 @@ mod tests {
             }))
             .is_err()
         );
+    }
+
+    fn cancellation_fixture(dir: &Path) -> Arc<StageRunner> {
+        let ledger = Arc::new(Ledger::open(&dir.join("ledger.db")).unwrap());
+        let owner = json!(["gamecore-unity", "a".repeat(64)]).to_string();
+        ledger
+            .insert_request(&crate::ledger::NewRequest {
+                change_set_id: "cs_cancel".into(),
+                digest: "fixture".into(),
+                body: json!({}),
+                app: owner,
+                worker: "app".into(),
+                etos_request_id: "cs_cancel".into(),
+                topic: String::new(),
+            })
+            .unwrap();
+        ledger
+            .insert_stage(&StageJobView {
+                job_id: "stg_cancel".into(),
+                change_set_id: "cs_cancel".into(),
+                package_ref: "a".repeat(64),
+                state: "running".into(),
+                slot: Some("cancel-slot".into()),
+                verdict: None,
+                created_at: 1,
+                updated_at: 1,
+            })
+            .unwrap();
+        let hub = EventHub::new(ledger.clone()).unwrap();
+        let cfg = crate::config::Config::defaults("gamecore-studio", dir).stage;
+        StageRunner::with_paths(
+            StageConfig {
+                confinement: sandbox::Confinement::Host,
+                ..cfg
+            },
+            ledger,
+            hub,
+            ArtifactStore::new(dir.join("store")),
+            dir,
+            dir.join("slots"),
+            Some(dir.to_path_buf()),
+        )
+    }
+
+    #[test]
+    fn w_rec_03_cancel_waits_for_child_teardown_and_releases_slot() {
+        let dir = tempfile::tempdir().unwrap();
+        let runner = cancellation_fixture(dir.path());
+        let owner = json!(["gamecore-unity", "a".repeat(64)]).to_string();
+        let slot_dir = runner.owner_root("cs_cancel").join("cancel-slot");
+        let ready = dir.path().join("child.pid");
+        runner.active.lock().unwrap().insert("stg_cancel".into());
+        let worker = {
+            let runner = runner.clone();
+            let slot_dir = slot_dir.clone();
+            let ready = ready.clone();
+            let dir = dir.path().to_path_buf();
+            std::thread::spawn(move || {
+                let _active = ActiveStage {
+                    runner: runner.clone(),
+                    id: "stg_cancel".into(),
+                };
+                let _slot = slot::SlotLock::acquire(&slot_dir, slot::MAX_SLOT_AGE).unwrap();
+                let control = control::job_control(&dir, "stg_cancel");
+                let out = pipeline::run_child_controlled(
+                    std::process::Command::new("/bin/sh")
+                        .args(["-c", "sleep 30 & echo $! > \"$1\"; wait", "sh"])
+                        .arg(ready),
+                    &[],
+                    &dir.join("child.log"),
+                    Duration::from_secs(40),
+                    false,
+                    None,
+                    Some(&control),
+                );
+                assert!(!out.ok());
+                // Completion arrives late, after the cancellation intent: no record is issued.
+                runner.finish(
+                    "stg_cancel",
+                    "done",
+                    &json!({"pass": true, "signature": "late"}),
+                );
+            })
+        };
+        let deadline = std::time::Instant::now() + Duration::from_secs(5);
+        while !ready.exists() {
+            assert!(std::time::Instant::now() < deadline, "child did not start");
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        assert!(slot::is_locked(&slot_dir));
+        let child = std::fs::read_to_string(&ready).unwrap();
+        let result = runner.cancel_owned("stg_cancel", &owner).unwrap();
+        worker.join().unwrap();
+        assert_eq!(result.state, "cancelled");
+        assert!(result.verdict.is_none());
+        assert!(!slot::is_locked(&slot_dir));
+        let child_stat =
+            std::fs::read_to_string(format!("/proc/{}/stat", child.trim())).unwrap_or_default();
+        assert!(
+            child_stat.is_empty()
+                || child_stat
+                    .rsplit_once(") ")
+                    .is_some_and(|(_, rest)| rest.starts_with("Z "))
+        );
+        assert!(runner.signed_verdict("stg_cancel").is_err());
+        let reopened = Ledger::open(&dir.path().join("ledger.db")).unwrap();
+        assert_eq!(reopened.stage("stg_cancel").unwrap().state, "cancelled");
+    }
+
+    #[test]
+    fn w_rec_03_restart_finishes_requested_cancel_and_kills_recorded_child() {
+        use std::os::unix::process::CommandExt;
+        let dir = tempfile::tempdir().unwrap();
+        let runner = cancellation_fixture(dir.path());
+        let mut child = std::process::Command::new("/bin/sleep")
+            .arg("30")
+            .process_group(0)
+            .spawn()
+            .unwrap();
+        let control = control::job_control(dir.path(), "stg_cancel");
+        let _record = control.register(child.id()).unwrap();
+        runner.ledger.cancel_stage("stg_cancel").unwrap();
+        // Recovery sees the SQLite intent even if the original process died before writing
+        // the cancellation marker or signalling its child.
+        runner.settle_interrupted();
+        assert!(!child.wait().unwrap().success());
+        let result = runner.ledger.stage("stg_cancel").unwrap();
+        assert_eq!(result.state, "cancelled");
+        assert!(result.verdict.is_none());
+        assert!(!slot::is_locked(
+            &runner.owner_root("cs_cancel").join("cancel-slot")
+        ));
     }
 }

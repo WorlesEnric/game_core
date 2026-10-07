@@ -1800,6 +1800,93 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
 }
 
 #[tokio::test]
+async fn w_rec_03_cancel_is_authenticated_owner_scoped_and_durable() {
+    use gamecore_studio::ledger::NewRequest;
+    use gamecore_studio::model::StageJobView;
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| {
+        c.allowed_apps.push("second-app".into())
+    })
+    .await;
+    let api = Api::new(&running, &node);
+    let owner = json!([api.app, api.project]).to_string();
+    let cs = "cs_01J9ZQ00000000000000000097";
+    running
+        .state
+        .ledger
+        .insert_request(&NewRequest {
+            change_set_id: cs.into(),
+            digest: "cancel-fixture".into(),
+            body: edit_request(cs),
+            app: owner,
+            worker: "app".into(),
+            etos_request_id: cs.into(),
+            topic: String::new(),
+        })
+        .unwrap();
+    for (id, state) in [
+        ("stg_cancel", "running"),
+        ("stg_recover_cancel", "cancelling"),
+        ("stg_completed", "done"),
+    ] {
+        running
+            .state
+            .ledger
+            .insert_stage(&StageJobView {
+                job_id: id.into(),
+                change_set_id: cs.into(),
+                package_ref: "a".repeat(64),
+                state: state.into(),
+                slot: None,
+                verdict: None,
+                created_at: 0,
+                updated_at: 0,
+            })
+            .unwrap();
+    }
+    let route = "/v1/stage/stg_cancel/cancel";
+    let unauthenticated = reqwest::Client::new()
+        .post(format!("{}{route}", running.url))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(unauthenticated.status(), 403);
+    let mut foreign_project = api.clone();
+    foreign_project.project = "b".repeat(64);
+    for foreign in [api.as_app("second-app"), foreign_project] {
+        assert_eq!(foreign.post(route, json!({})).await.0, 404);
+        assert_eq!(
+            running.state.ledger.stage("stg_cancel").unwrap().state,
+            "running"
+        );
+    }
+    let (status, cancelled) = api.call(reqwest::Method::POST, route, None).await;
+    assert_eq!(status, 200, "{cancelled}");
+    assert_eq!(cancelled["state"], "cancelled");
+    assert!(cancelled.get("verdict").is_none());
+    assert_eq!(api.post(route, json!({})).await.1, cancelled);
+    assert_eq!(api.get("/v1/stage/stg_cancel/verdict").await.0, 404);
+    assert_eq!(
+        api.post("/v1/stage/stg_completed/cancel", json!({}))
+            .await
+            .1["state"],
+        "done"
+    );
+    running.shutdown().await;
+    let reopened = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&reopened, &node);
+    for id in ["stg_cancel", "stg_recover_cancel"] {
+        let (status, job) = api.get(&format!("/v1/stage/{id}")).await;
+        assert_eq!(status, 200, "{job}");
+        assert_eq!(job["state"], "cancelled");
+        assert!(job.get("verdict").is_none());
+        assert_eq!(api.get(&format!("/v1/stage/{id}/verdict")).await.0, 404);
+    }
+    reopened.shutdown().await;
+}
+
+#[tokio::test]
 async fn r3_d14_retained_budget_refuses_unpriced_before_provider_call() {
     let retained: Value = serde_json::from_str(include_str!("../../../artifacts/studio/workflows/P3.2/runs/honesty-20261005T095503Z/budget/generate.json")).unwrap();
     assert_eq!(retained["ok"], true);
