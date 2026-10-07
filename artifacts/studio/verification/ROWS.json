@@ -633,8 +633,8 @@
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
-      "status": "BLOCKED",
-      "note": "The unchanged R6-B driver now passes both readiness-gated real takes: move and destructive final transcripts arrive after proper Stop/drain. Destructive tray/request/journal counts remain exactly 8/11/122, and the field holds the destructive text without Send. Both provider traces contain only revision 1 with final=true; no partial speech revision is observed. Full-row partial-revision visibility remains unqualified despite the passing driver.",
+      "status": "PASS",
+      "note": "PASS under owner decision 2026-10-07 (SADR-055: row judged on SR-4.8 wording; partial-revision visibility not required). R6-B/P4.2e readiness-gated real takes: move and destructive final transcripts arrive after Stop/drain; destructive tray/request/journal counts 8/11/122 unchanged with the text held and never sent; provider traces contain one final revision each.",
       "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py voice2",
       "tests": [
         "R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains",
@@ -645,7 +645,7 @@
       "row": "W-VOICE-01",
       "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial revisions visible",
       "requirement": "SR-4.8",
-      "reportedAt": "2026-10-06T15:29:44.395031+00:00",
+      "reportedAt": "2026-10-07",
       "evidence": [
         "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/result.json",
         "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/workflow/voice/move-transcript.json",
@@ -1433,14 +1433,14 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "P4.2h current-source release Linux IL2CPP, real RTX4060Ti on :1 at 1080p: four actual >600-second recordings. VSync OFF literal B-FRAME PASS twice: p95 3.461/3.552 ms, zero frames >100 ms outside transition windows. VSync ON FAIL twice: p95 17.375/17.314 ms; outside-transition >100 ms counts 2/0. All full routes, saves and recordings pass; transition hitches <=122.590 ms. Owner VSync definition remains open; no blended or relaxed verdict. Failed recorder setup attempts remain retained.",
+      "status": "PASS",
+      "note": "PASS under owner decision 2026-10-07 (SADR-054: B-FRAME measured with VSync OFF). P4.2h current-source Linux IL2CPP on RTX 4060 Ti :1 1080p: VSync OFF p95 3.461 / 3.552 ms, zero frames >100 ms outside transition windows, hitches <= 122.590 ms, four >600 s recordings. VSync ON (p95 17.375 / 17.314 ms) retained as informational only.",
       "command": "python3 artifacts/studio/verification/TOOLS/P42hPlayer/player.py run --output \"$PWD/.evidence/P42hPlayer-qualified\"",
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
       "row": "W-GAME-01",
       "scenario": "10-minute graphical playthrough recording with frame log",
       "requirement": "SR-8.1, B-FRAME",
-      "reportedAt": "2026-10-07T01:31:38.713547+00:00",
+      "reportedAt": "2026-10-07",
       "evidence": [
         "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
         "W-GAME-01/p42h-player/result.json",
