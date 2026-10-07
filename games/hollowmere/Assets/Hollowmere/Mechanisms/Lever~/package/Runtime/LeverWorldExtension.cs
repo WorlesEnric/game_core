@@ -48,6 +48,16 @@ namespace Hollowmere.Mechanism.Lever
                     LeverDeclarations.Target, LeverDeclarations.ToggleCommand, null, LeverToggleCommand.Encode())).Admitted;
         }
 
+        /// <summary>Initializes only an absent row after target creation; never overwrites restored state.</summary>
+        public bool InitializeNewTarget()
+        {
+            if (root == null || slots == null) return false;
+            if (slots.TryRead(LeverDeclarations.Target, LeverDeclarations.Owner, LeverDeclarations.StateSlot, out int state))
+                return state == 0 || state == 1;
+            return root.Seeder.TrySeedSlot(LeverDeclarations.Target, LeverDeclarations.Owner,
+                LeverDeclarations.StateSlot, LeverDeclarations.SlotSchemaVersion, 0, out _, out _);
+        }
+
         public void BindReaders(CommandPayloadReaders readers) => LeverReaders.BindInto(readers);
         public IReadOnlyList<SpawnRecipe> Recipes() => new[] { LeverRecipes.Create() };
         public IReadOnlyList<GameplayExtensionTarget> Targets(RegionManifest manifest) => new[]
@@ -63,7 +73,8 @@ namespace Hollowmere.Mechanism.Lever
         public void Attach(GameplayWorld world, bool seedSlots)
         {
             AttachRoot(world.Root);
-            // Applier seeds only newly created targets. Never overwrite a restored slot, including Attach(false).
+            if (seedSlots && !InitializeNewTarget())
+                throw new InvalidOperationException("The new lever target could not initialize its state");
             binder = new LeverBinder(Toggle);
             world.AddBinder(binder);
         }

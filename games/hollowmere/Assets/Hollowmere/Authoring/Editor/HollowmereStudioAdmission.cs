@@ -272,7 +272,7 @@ namespace Hollowmere.Authoring
             if (root.State != GameApplicationState.Running) return "the lever needs the running game's normal pump";
             if (registration.LeverPhase == 0)
             {
-                string? failure = InstallRestoredExtension(root, lever.Extension);
+                string? failure = InstallRestoredExtension(root, lever);
                 if (failure != null) return failure;
                 registration.LeverPhase = 1;
                 // A rebind may observe a previously committed on-state. Normalize it on a real frame before the proof.
@@ -319,16 +319,19 @@ namespace Hollowmere.Authoring
             return state == 0 ? null : "the lever left its final off state";
         }
 
-        private string? InstallRestoredExtension(GameApplicationRoot root, IGameplayWorldExtension extension)
+        private string? InstallRestoredExtension(GameApplicationRoot root, HollowmereExtensionRegistry.LeverAccess lever)
         {
             // Restore deliberately omits boot steps. Reapply only the reviewed extension's additive targets/mounts,
             // after the old checkpoint was witnessed. Never seed an existing target or overwrite a restored slot.
+            IGameplayWorldExtension extension = lever.Extension;
+            bool created = false;
             if (!(extension is IGameplayWorldTargets targets)) return "the trusted lever has no declared session target";
             foreach (GameplayExtensionTarget target in targets.Targets(boot.World!.Manifest))
             {
                 if (root.Targets.Contains(target.Target)) continue;
                 if (!root.Seeder.TrySeed(target.Target, root.Definition.RootScope, target.Recipe, out _, out DiagnosticCode code, out string detail))
                     return "seeding the admitted extension was refused: " + code + ": " + detail;
+                created = true;
             }
             foreach (GameplayPluginMount mount in extension.Plugins)
             {
@@ -349,6 +352,8 @@ namespace Hollowmere.Authoring
                     || installed.State != InstallationState.Active)
                     return "the admitted extension was not published as an active matching world-scope mount";
             }
+            if (created && !lever.InitializeNewTarget())
+                return "the new admitted lever target could not initialize its state";
             return null;
         }
 

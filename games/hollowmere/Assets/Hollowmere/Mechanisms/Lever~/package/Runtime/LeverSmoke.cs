@@ -56,6 +56,8 @@ namespace Hollowmere.Mechanism.Lever
             try
             {
                 extension.AttachRoot(root);
+                if (!extension.InitializeNewTarget())
+                    throw new InvalidOperationException("The sandbox lever target could not initialize its state");
                 root.Start();
                 return new LeverSmokeSession(root, extension);
             }
@@ -88,8 +90,12 @@ namespace Hollowmere.Mechanism.Lever
 
             if ((frame == 20 || frame == 90) && lever.State != 1)
             {
-                throw new InvalidOperationException("sandbox lever did not latch on");
+                throw new InvalidOperationException("sandbox lever did not latch on: state=" + lever.State
+                    + ", committed=" + lever.Module?.Committed + ", refusal=" + lever.Module?.LastRefusal
+                    + ", step=" + Root.Host.CurrentStep.Value + ", root=" + Root.State);
             }
+            if (frame == 20 && (!lever.InitializeNewTarget() || lever.State != 1))
+                throw new InvalidOperationException("initialization overwrote the committed on-state");
 
             if (frame == 60 && lever.State != 0)
             {

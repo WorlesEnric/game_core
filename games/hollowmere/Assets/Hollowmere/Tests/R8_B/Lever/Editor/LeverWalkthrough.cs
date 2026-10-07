@@ -395,6 +395,7 @@ namespace Hollowmere.R8_B
                         || smoke.Transitions[0] != "Pending" || smoke.Transitions[1] != "Passed"
                         || smoke.MechanismStates.Count != 3 || smoke.MechanismStates[0] != 0
                         || smoke.MechanismStates[1] != 1 || smoke.MechanismStates[2] != 0
+                        || !smoke.CheckpointRoundTripsEqual || smoke.RestoredCheckpointSlotHash.Length != 64
                         || boot.GetComponent<HollowmereGame>().Director!.ItemCount("OldCoin") != 9
                         || string.IsNullOrEmpty(result.Predicted) || result.Live != result.Predicted
                         || result.Confinement != "docker" || result.Milliseconds > AdmissionBudgetMs || wallMs > AdmissionBudgetMs
@@ -406,6 +407,10 @@ namespace Hollowmere.R8_B
                     witness["smokeTransitions"] = new JArray(smoke.Transitions);
                     witness["smokeReport"] = smoke.LastReport;
                     witness["mechanismStates"] = new JArray(smoke.MechanismStates);
+                    witness["restoredCheckpointSlotHash"] = smoke.RestoredCheckpointSlotHash;
+                    witness["initialSlotHash"] = smoke.InitialSlotHash;
+                    witness["finalSlotHash"] = smoke.FinalSlotHash;
+                    witness["checkpointRoundTripsEqual"] = smoke.CheckpointRoundTripsEqual;
                     witness["coins"] = 9;
                     witness["admissionWallMs"] = wallMs;
                     witness["admissionBudgetMs"] = AdmissionBudgetMs;

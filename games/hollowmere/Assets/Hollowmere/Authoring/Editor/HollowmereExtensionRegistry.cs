@@ -167,6 +167,7 @@ namespace Hollowmere.Authoring
         {
             private readonly Func<int> state;
             private readonly Func<bool> toggle;
+            private readonly Func<bool> initialize;
 
             internal LeverAccess(IGameplayWorldExtension extension)
             {
@@ -176,16 +177,20 @@ namespace Hollowmere.Authoring
                 PropertyInfo? property = type.GetProperty("State", flags);
                 MethodInfo? getter = property?.GetGetMethod();
                 MethodInfo? method = type.GetMethod("Toggle", flags, null, Type.EmptyTypes, null);
+                MethodInfo? initializer = type.GetMethod("InitializeNewTarget", flags, null, Type.EmptyTypes, null);
                 if (property == null || property.PropertyType != typeof(int) || getter == null || property.GetIndexParameters().Length != 0
-                    || method == null || method.ReturnType != typeof(bool))
-                    throw new InvalidOperationException("The trusted lever requires public int State { get; } and public bool Toggle()");
+                    || method == null || method.ReturnType != typeof(bool)
+                    || initializer == null || initializer.ReturnType != typeof(bool))
+                    throw new InvalidOperationException("The trusted lever requires State, Toggle and InitializeNewTarget with their reviewed signatures");
                 state = (Func<int>)Delegate.CreateDelegate(typeof(Func<int>), extension, getter);
                 toggle = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), extension, method);
+                initialize = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), extension, initializer);
             }
 
             internal IGameplayWorldExtension Extension { get; }
             internal int State => state();
             internal bool Toggle() => toggle();
+            internal bool InitializeNewTarget() => initialize();
         }
     }
 }
