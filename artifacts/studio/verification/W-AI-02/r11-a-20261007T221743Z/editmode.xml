@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="8" result="Failed(Child)" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.9112499">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="623" result="Failed" site="Child" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.911250" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1700" name="Hollowmere.P4_2.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.899772" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+      <properties>
+        <property name="_PID" value="284793" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1701" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.899259" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1702" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.899017" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1686" name="CatalogLiveTests" fullname="Hollowmere.P4_2.CatalogLiveTests" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.025701" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1687" name="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" fullname="Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" methodname="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Explicit" seed="337068226" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.010577" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Fetches the retained real worker candidate; no new task or paid operation" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1688" name="DirectMediaTests" fullname="Hollowmere.P4_2.DirectMediaTests" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Runnable" testcasecount="2" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.002823" total="2" passed="0" failed="0" inconclusive="0" skipped="2" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1689" name="R2_38_DirectImagePriceRefusalIsRecorded" fullname="Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded" methodname="R2_38_DirectImagePriceRefusalIsRecorded" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Explicit" seed="1209738088" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.001370" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="One direct image request against the installed operator pricing policy" />
+                <property name="Timeout" value="360000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+            <test-case id="1690" name="R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" fullname="Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" methodname="R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Explicit" seed="22340325" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.000395" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Installed companion direct app-owned media; one priced TTS, no ledger request id invented" />
+                <property name="Timeout" value="360000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1691" name="LayoutAcceptanceTests" fullname="Hollowmere.P4_2.LayoutAcceptanceTests" classname="Hollowmere.P4_2.LayoutAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.008287" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1692" name="R2_30_1280By720WorkspaceContainsEveryStudioPanel" fullname="Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel" methodname="R2_30_1280By720WorkspaceContainsEveryStudioPanel" classname="Hollowmere.P4_2.LayoutAcceptanceTests" runstate="Explicit" seed="1238420717" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.007678" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Physical 1280x720 Studio workspace qualification" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[P4.2 physical layout requires a graphical Editor; run the layout qualification command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1693" name="MemoryAndPumpAcceptanceTests" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.003344" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1694" name="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" methodname="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Explicit" seed="619018481" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.002666" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 graphical ten-cycle acceptance with real native/managed snapshots" />
+                <property name="Timeout" value="1200000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[P4.2 ten-cycle viewport acceptance requires a graphics device.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1695" name="RetainedCandidateTests" fullname="Hollowmere.P4_2.RetainedCandidateTests" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.856021" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1697" name="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" methodname="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="529110653" result="Passed" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:28Z" duration="0.199901" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1696" name="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" methodname="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="796312549" result="Failed" label="Error" start-time="2026-10-07 22:25:28Z" end-time="2026-10-07 22:25:29Z" duration="0.654952" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.ArgumentException : Invalid SceneManagerSetup:
+ No loaded scene found.
+ One active scene is required. Number of active scenes: 0]]></message>
+                <stack-trace><![CDATA[  at (wrapper managed-to-native) UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(UnityEditor.SceneManagement.SceneSetup[])
+  at Hollowmere.P4_2.RetainedCandidateTests+<R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes>d__6.<>m__Finally1 () [0x000a5] in /home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/RetainedCandidateTests.cs:185 
+  at Hollowmere.P4_2.RetainedCandidateTests+<R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes>d__6.System.IDisposable.Dispose () [0x00052] in <a13359ced16d4e9ca800039d2bdf2df0>:0 
+  at Hollowmere.P4_2.RetainedCandidateTests+<R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes>d__6.MoveNext () [0x00b1c] in /home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/RetainedCandidateTests.cs:189 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1698" name="VoiceAcceptanceTests" fullname="Hollowmere.P4_2.VoiceAcceptanceTests" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:29Z" end-time="2026-10-07 22:25:29Z" duration="0.001316" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1699" name="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" fullname="Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" methodname="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Explicit" seed="1382680941" result="Skipped" label="Ignored" start-time="2026-10-07 22:25:29Z" end-time="2026-10-07 22:25:29Z" duration="0.000552" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 real PipeWire microphone and installed companion; reuses recorded WAV" />
+                <property name="Timeout" value="180000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

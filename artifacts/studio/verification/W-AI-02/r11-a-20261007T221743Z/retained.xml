@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.7995008">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="623" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.799501" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1700" name="Hollowmere.P4_2.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.784171" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="318548" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1701" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.783663" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1702" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.783387" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1695" name="RetainedCandidateTests" fullname="Hollowmere.P4_2.RetainedCandidateTests" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.782151" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1697" name="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" methodname="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="179710514" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:14Z" duration="0.171797" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1696" name="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" methodname="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="1059344287" result="Passed" start-time="2026-10-07 22:31:14Z" end-time="2026-10-07 22:31:17Z" duration="2.598667" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] candidate cs_01M4BWN4KVG9T8HHCPRYQH10PE staged in 226 ms (0 artifact(s) verified)
+[GameCore.Studio/engine] applied cs_01M4BWN4KVG9T8HHCPRYQH10PE -> Applied (7 op(s), 322.5 ms)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u2)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u5)
+[GameCore.Studio/engine] history apply cs_01M4C7W3CD5SGDA2JAP1N87663 -> Applied (7 op(s), 368.8 ms)
+[GameCore.Studio/history] undid cs_01M4BWN4KVG9T8HHCPRYQH10PE (7 inverse op(s))
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,1173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="150" result="Failed(Child)" total="150" passed="143" failed="1" inconclusive="0" skipped="6" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:58Z" duration="42.4941586">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="623" result="Failed" site="Child" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:58Z" duration="42.494159" total="150" passed="143" failed="1" inconclusive="0" skipped="6" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1138" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:57Z" duration="41.472157" total="116" passed="116" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="308425" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1139" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:57Z" duration="41.471584" total="116" passed="116" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1140" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:57Z" duration="41.471139" total="116" passed="116" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1141" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:57Z" duration="41.470731" total="116" passed="116" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1142" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:57Z" duration="41.470176" total="116" passed="116" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="AuthoringRefResolverTests" fullname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" classname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:16Z" duration="1.012094" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1002" name="BuildAndResolve_RoundTripsAssetsAndSceneObjects" fullname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests.BuildAndResolve_RoundTripsAssetsAndSceneObjects" methodname="BuildAndResolve_RoundTripsAssetsAndSceneObjects" classname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" runstate="Runnable" seed="2036810043" result="Passed" start-time="2026-10-07 22:27:15Z" end-time="2026-10-07 22:27:16Z" duration="0.394233" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1003" name="Destroyed_IsStaleTarget" fullname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests.Destroyed_IsStaleTarget" methodname="Destroyed_IsStaleTarget" classname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" runstate="Runnable" seed="1174947303" result="Passed" start-time="2026-10-07 22:27:16Z" end-time="2026-10-07 22:27:16Z" duration="0.211933" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1004" name="Renamed_ResolvesAndReportsANonBlockingMove" fullname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests.Renamed_ResolvesAndReportsANonBlockingMove" methodname="Renamed_ResolvesAndReportsANonBlockingMove" classname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" runstate="Runnable" seed="1168965893" result="Passed" start-time="2026-10-07 22:27:16Z" end-time="2026-10-07 22:27:16Z" duration="0.211498" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1005" name="StampChange_IsConflictWithExpectedAndActual" fullname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests.StampChange_IsConflictWithExpectedAndActual" methodname="StampChange_IsConflictWithExpectedAndActual" classname="GameCore.Studio.Edit.Tests.AuthoringRefResolverTests" runstate="Runnable" seed="937352958" result="Passed" start-time="2026-10-07 22:27:16Z" end-time="2026-10-07 22:27:16Z" duration="0.182953" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1006" name="ChangeSetEngineTests" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 22:27:16Z" end-time="2026-10-07 22:27:22Z" duration="5.745266" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1022" name="AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows" methodname="AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1662884878" result="Passed" start-time="2026-10-07 22:27:16Z" end-time="2026-10-07 22:27:17Z" duration="0.708553" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                </test-case>
+                <test-case id="1023" name="Conflict_RebaseReplansAgainstTheCurrentStamp" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Conflict_RebaseReplansAgainstTheCurrentStamp" methodname="Conflict_RebaseReplansAgainstTheCurrentStamp" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="567380309" result="Passed" start-time="2026-10-07 22:27:17Z" end-time="2026-10-07 22:27:17Z" duration="0.366700" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1024" name="Journal_EntryLivesUnderYearAndMonthOfItsId" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Journal_EntryLivesUnderYearAndMonthOfItsId" methodname="Journal_EntryLivesUnderYearAndMonthOfItsId" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1782755596" result="Passed" start-time="2026-10-07 22:27:17Z" end-time="2026-10-07 22:27:18Z" duration="0.398803" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1025" name="Queue_SerializesAsyncApplies" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Queue_SerializesAsyncApplies" methodname="Queue_SerializesAsyncApplies" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1587446713" result="Passed" start-time="2026-10-07 22:27:18Z" end-time="2026-10-07 22:27:18Z" duration="0.391204" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1009" name="R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:18Z" end-time="2026-10-07 22:27:19Z" duration="0.881438" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1007" name="R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment(&quot;items&quot;)" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment(&quot;items&quot;)" methodname="R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="2085917059" result="Passed" start-time="2026-10-07 22:27:18Z" end-time="2026-10-07 22:27:19Z" duration="0.478879" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1008" name="R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment(&quot;ManagedItems&quot;)" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment(&quot;ManagedItems&quot;)" methodname="R11A_AlreadyListedAppendDoesNotUndoLaterEnrollment" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="144226302" result="Passed" start-time="2026-10-07 22:27:19Z" end-time="2026-10-07 22:27:19Z" duration="0.398704" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1011" name="R6_G_Request1_AbsentCreationAdapterRefusesPrecisely" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R6_G_Request1_AbsentCreationAdapterRefusesPrecisely" methodname="R6_G_Request1_AbsentCreationAdapterRefusesPrecisely" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1311824250" result="Passed" start-time="2026-10-07 22:27:19Z" end-time="2026-10-07 22:27:19Z" duration="0.185185" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1010" name="R6_G_Request1_GenericDialogueUsesTrustedPreparation" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R6_G_Request1_GenericDialogueUsesTrustedPreparation" methodname="R6_G_Request1_GenericDialogueUsesTrustedPreparation" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1352967213" result="Passed" start-time="2026-10-07 22:27:19Z" end-time="2026-10-07 22:27:19Z" duration="0.179206" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1018" name="R7E_AssignCollectionValidatesAppendAndSubsequentIndexRepair" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_AssignCollectionValidatesAppendAndSubsequentIndexRepair" methodname="R7E_AssignCollectionValidatesAppendAndSubsequentIndexRepair" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1928494086" result="Passed" start-time="2026-10-07 22:27:19Z" end-time="2026-10-07 22:27:20Z" duration="0.296397" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1019" name="R7E_HistoryCanUndoARepairBackToInvalidDefinition" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_HistoryCanUndoARepairBackToInvalidDefinition" methodname="R7E_HistoryCanUndoARepairBackToInvalidDefinition" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="663867712" result="Passed" start-time="2026-10-07 22:27:20Z" end-time="2026-10-07 22:27:20Z" duration="0.292668" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1012" name="R7E_MissingPrefabCandidatePreservesCanonicalDiagnosticWithoutMutation" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_MissingPrefabCandidatePreservesCanonicalDiagnosticWithoutMutation" methodname="R7E_MissingPrefabCandidatePreservesCanonicalDiagnosticWithoutMutation" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1638074449" result="Passed" start-time="2026-10-07 22:27:20Z" end-time="2026-10-07 22:27:20Z" duration="0.217917" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1017" name="R7E_MultipleOperationsValidateFinalDependencyOrderedState" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_MultipleOperationsValidateFinalDependencyOrderedState" methodname="R7E_MultipleOperationsValidateFinalDependencyOrderedState" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1150433035" result="Passed" start-time="2026-10-07 22:27:20Z" end-time="2026-10-07 22:27:20Z" duration="0.303941" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1016" name="R7E_ProposedInvalidStateBlocksEveryContributorUnderBestEffort" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_ProposedInvalidStateBlocksEveryContributorUnderBestEffort" methodname="R7E_ProposedInvalidStateBlocksEveryContributorUnderBestEffort" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="509001139" result="Passed" start-time="2026-10-07 22:27:20Z" end-time="2026-10-07 22:27:21Z" duration="0.259005" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1015" name="R7E_ProposedPrefabRepairStagesWithoutWritingAsset" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_ProposedPrefabRepairStagesWithoutWritingAsset" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:21Z" end-time="2026-10-07 22:27:21Z" duration="0.478503" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1013" name="R7E_ProposedPrefabRepairStagesWithoutWritingAsset(&quot;set&quot;)" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_ProposedPrefabRepairStagesWithoutWritingAsset(&quot;set&quot;)" methodname="R7E_ProposedPrefabRepairStagesWithoutWritingAsset" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="183952425" result="Passed" start-time="2026-10-07 22:27:21Z" end-time="2026-10-07 22:27:21Z" duration="0.239994" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1014" name="R7E_ProposedPrefabRepairStagesWithoutWritingAsset(&quot;assign&quot;)" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.R7E_ProposedPrefabRepairStagesWithoutWritingAsset(&quot;assign&quot;)" methodname="R7E_ProposedPrefabRepairStagesWithoutWritingAsset" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="1499182416" result="Passed" start-time="2026-10-07 22:27:21Z" end-time="2026-10-07 22:27:21Z" duration="0.236960" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1020" name="WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing" methodname="WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="358746087" result="Passed" start-time="2026-10-07 22:27:21Z" end-time="2026-10-07 22:27:22Z" duration="0.368148" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] W-EDIT-02 AllOrNothing apply (5 ops): 12.4 ms
+]]></output>
+                </test-case>
+                <test-case id="1021" name="WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes" fullname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes" methodname="WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes" classname="GameCore.Studio.Edit.Tests.ChangeSetEngineTests" runstate="Runnable" seed="128916386" result="Passed" start-time="2026-10-07 22:27:22Z" end-time="2026-10-07 22:27:22Z" duration="0.414020" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] W-EDIT-02 BestEffort apply (5 ops): 56.1 ms
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1026" name="CorePickRegressionTests" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-07 22:27:22Z" end-time="2026-10-07 22:27:24Z" duration="1.695946" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1031" name="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" methodname="R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="713717841" result="Passed" start-time="2026-10-07 22:27:22Z" end-time="2026-10-07 22:27:23Z" duration="0.712360" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[CORE-PICK] N=21 median=1.7876ms max=105.2833ms rendererSum=42.0780ms resolveSum=99.3814ms
+]]></output>
+                </test-case>
+                <test-case id="1030" name="R2_38_CORE_PICK_CameraViewportAndExplicitInvalidation" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_CameraViewportAndExplicitInvalidation" methodname="R2_38_CORE_PICK_CameraViewportAndExplicitInvalidation" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="1328266660" result="Passed" start-time="2026-10-07 22:27:23Z" end-time="2026-10-07 22:27:23Z" duration="0.220894" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1029" name="R2_38_CORE_PICK_EditorChangesInvalidateGeometryIdentityAndStamp" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_EditorChangesInvalidateGeometryIdentityAndStamp" methodname="R2_38_CORE_PICK_EditorChangesInvalidateGeometryIdentityAndStamp" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="66791275" result="Passed" start-time="2026-10-07 22:27:23Z" end-time="2026-10-07 22:27:23Z" duration="0.272555" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1028" name="R2_38_CORE_PICK_ReusesStampedRefsAndImmutableCandidates" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_ReusesStampedRefsAndImmutableCandidates" methodname="R2_38_CORE_PICK_ReusesStampedRefsAndImmutableCandidates" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="1856540932" result="Passed" start-time="2026-10-07 22:27:23Z" end-time="2026-10-07 22:27:23Z" duration="0.222719" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1027" name="R2_38_CORE_PICK_SeededMarqueeMatchesNaiveBothContainmentModes" fullname="GameCore.Studio.Edit.Tests.CorePickRegressionTests.R2_38_CORE_PICK_SeededMarqueeMatchesNaiveBothContainmentModes" methodname="R2_38_CORE_PICK_SeededMarqueeMatchesNaiveBothContainmentModes" classname="GameCore.Studio.Edit.Tests.CorePickRegressionTests" runstate="Runnable" seed="1925218646" result="Passed" start-time="2026-10-07 22:27:23Z" end-time="2026-10-07 22:27:24Z" duration="0.264444" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1032" name="DefinitionProjectionTests" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:27:24Z" end-time="2026-10-07 22:27:26Z" duration="1.927710" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1034" name="R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" methodname="R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="98219336" result="Passed" start-time="2026-10-07 22:27:24Z" end-time="2026-10-07 22:27:24Z" duration="0.369911" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1033" name="R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" methodname="R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1117734571" result="Passed" start-time="2026-10-07 22:27:24Z" end-time="2026-10-07 22:27:24Z" duration="0.397951" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" methodname="R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1300709425" result="Passed" start-time="2026-10-07 22:27:24Z" end-time="2026-10-07 22:27:25Z" duration="0.180410" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1036" name="R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" methodname="R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="614563478" result="Passed" start-time="2026-10-07 22:27:25Z" end-time="2026-10-07 22:27:25Z" duration="0.444135" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1037" name="R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" methodname="R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="619332594" result="Passed" start-time="2026-10-07 22:27:25Z" end-time="2026-10-07 22:27:25Z" duration="0.297560" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1038" name="R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" methodname="R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="324132008" result="Passed" start-time="2026-10-07 22:27:25Z" end-time="2026-10-07 22:27:26Z" duration="0.235644" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1039" name="HistoryTests" fullname="GameCore.Studio.Edit.Tests.HistoryTests" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:27:26Z" end-time="2026-10-07 22:27:28Z" duration="2.243506" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1045" name="Crash_InterruptedEntryCanBeResumed" fullname="GameCore.Studio.Edit.Tests.HistoryTests.Crash_InterruptedEntryCanBeResumed" methodname="Crash_InterruptedEntryCanBeResumed" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="357547326" result="Passed" start-time="2026-10-07 22:27:26Z" end-time="2026-10-07 22:27:26Z" duration="0.248918" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1044" name="Crash_LeavesAnInterruptedEntryThatCanBeRolledBack" fullname="GameCore.Studio.Edit.Tests.HistoryTests.Crash_LeavesAnInterruptedEntryThatCanBeRolledBack" methodname="Crash_LeavesAnInterruptedEntryThatCanBeRolledBack" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="1226981684" result="Passed" start-time="2026-10-07 22:27:26Z" end-time="2026-10-07 22:27:26Z" duration="0.389128" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="JournalAndRedoStack_SurviveARuntimeRebuild" fullname="GameCore.Studio.Edit.Tests.HistoryTests.JournalAndRedoStack_SurviveARuntimeRebuild" methodname="JournalAndRedoStack_SurviveARuntimeRebuild" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="1769694912" result="Passed" start-time="2026-10-07 22:27:26Z" end-time="2026-10-07 22:27:27Z" duration="0.509145" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1041" name="Redo_DoesNotRepeatAgentRequests" fullname="GameCore.Studio.Edit.Tests.HistoryTests.Redo_DoesNotRepeatAgentRequests" methodname="Redo_DoesNotRepeatAgentRequests" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="1913056114" result="Passed" start-time="2026-10-07 22:27:27Z" end-time="2026-10-07 22:27:27Z" duration="0.346617" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1042" name="Undo_RefusesWithConflictWhenTheObjectChangedSince" fullname="GameCore.Studio.Edit.Tests.HistoryTests.Undo_RefusesWithConflictWhenTheObjectChangedSince" methodname="Undo_RefusesWithConflictWhenTheObjectChangedSince" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="1587355165" result="Passed" start-time="2026-10-07 22:27:27Z" end-time="2026-10-07 22:27:27Z" duration="0.281795" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1040" name="UndoRedo_ReusesRetainedArtifactsAndNeverCallsTheGateway" fullname="GameCore.Studio.Edit.Tests.HistoryTests.UndoRedo_ReusesRetainedArtifactsAndNeverCallsTheGateway" methodname="UndoRedo_ReusesRetainedArtifactsAndNeverCallsTheGateway" classname="GameCore.Studio.Edit.Tests.HistoryTests" runstate="Runnable" seed="746347035" result="Passed" start-time="2026-10-07 22:27:27Z" end-time="2026-10-07 22:27:28Z" duration="0.465395" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] journal undo (import + set): 77.2 ms
+[P1.6] journal redo (import + set): 79.6 ms
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1046" name="LiveEditTests" fullname="GameCore.Studio.Edit.Tests.LiveEditTests" classname="GameCore.Studio.Edit.Tests.LiveEditTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:28Z" end-time="2026-10-07 22:27:28Z" duration="0.543982" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1047" name="Executed_RecordsTheOperationIdAndAdvancesTheExpectedRevision" fullname="GameCore.Studio.Edit.Tests.LiveEditTests.Executed_RecordsTheOperationIdAndAdvancesTheExpectedRevision" methodname="Executed_RecordsTheOperationIdAndAdvancesTheExpectedRevision" classname="GameCore.Studio.Edit.Tests.LiveEditTests" runstate="Runnable" seed="1993242355" result="Passed" start-time="2026-10-07 22:27:28Z" end-time="2026-10-07 22:27:28Z" duration="0.204104" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1048" name="StalePlan_IsConflict" fullname="GameCore.Studio.Edit.Tests.LiveEditTests.StalePlan_IsConflict" methodname="StalePlan_IsConflict" classname="GameCore.Studio.Edit.Tests.LiveEditTests" runstate="Runnable" seed="827460624" result="Passed" start-time="2026-10-07 22:27:28Z" end-time="2026-10-07 22:27:28Z" duration="0.337876" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1049" name="ManualEditTests" fullname="GameCore.Studio.Edit.Tests.ManualEditTests" classname="GameCore.Studio.Edit.Tests.ManualEditTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 22:27:28Z" end-time="2026-10-07 22:27:29Z" duration="1.040364" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1053" name="InspectorBuilder_GeneratesOneRowPerAuthorableMember" fullname="GameCore.Studio.Edit.Tests.ManualEditTests.InspectorBuilder_GeneratesOneRowPerAuthorableMember" methodname="InspectorBuilder_GeneratesOneRowPerAuthorableMember" classname="GameCore.Studio.Edit.Tests.ManualEditTests" runstate="Runnable" seed="512464015" result="Passed" start-time="2026-10-07 22:27:28Z" end-time="2026-10-07 22:27:29Z" duration="0.250342" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1051" name="InspectorCommit_IsAJournaledSetAndInvalidValuesAreRejectedInline" fullname="GameCore.Studio.Edit.Tests.ManualEditTests.InspectorCommit_IsAJournaledSetAndInvalidValuesAreRejectedInline" methodname="InspectorCommit_IsAJournaledSetAndInvalidValuesAreRejectedInline" classname="GameCore.Studio.Edit.Tests.ManualEditTests" runstate="Runnable" seed="1113196283" result="Passed" start-time="2026-10-07 22:27:29Z" end-time="2026-10-07 22:27:29Z" duration="0.226632" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1052" name="InspectorCommit_ReferencesGoThroughAssign" fullname="GameCore.Studio.Edit.Tests.ManualEditTests.InspectorCommit_ReferencesGoThroughAssign" methodname="InspectorCommit_ReferencesGoThroughAssign" classname="GameCore.Studio.Edit.Tests.ManualEditTests" runstate="Runnable" seed="1865379894" result="Passed" start-time="2026-10-07 22:27:29Z" end-time="2026-10-07 22:27:29Z" duration="0.239736" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1050" name="WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries" fullname="GameCore.Studio.Edit.Tests.ManualEditTests.WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries" methodname="WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries" classname="GameCore.Studio.Edit.Tests.ManualEditTests" runstate="Runnable" seed="1594027348" result="Passed" start-time="2026-10-07 22:27:29Z" end-time="2026-10-07 22:27:29Z" duration="0.321634" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1054" name="PickingServiceTests" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:27:29Z" end-time="2026-10-07 22:27:31Z" duration="1.540460" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1057" name="Marquee_SelectsContainedOwners" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.Marquee_SelectsContainedOwners" methodname="Marquee_SelectsContainedOwners" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="2140212937" result="Passed" start-time="2026-10-07 22:27:29Z" end-time="2026-10-07 22:27:30Z" duration="0.242543" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] marquee timings: total=0.455ms ui=0.000 physics=0.000 renderer=0.285 ground=0.000 resolve=0.170
+]]></output>
+                </test-case>
+                <test-case id="1056" name="Pick_CoincidentObjectsShareAnOverlapGroup" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.Pick_CoincidentObjectsShareAnOverlapGroup" methodname="Pick_CoincidentObjectsShareAnOverlapGroup" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="1074133347" result="Passed" start-time="2026-10-07 22:27:30Z" end-time="2026-10-07 22:27:30Z" duration="0.243295" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] overlap pick timings: total=4.606ms ui=1.169 physics=1.480 renderer=0.377 ground=0.002 resolve=1.573
+]]></output>
+                </test-case>
+                <test-case id="1055" name="Pick_OrdersByDepthMarksOcclusionAndAppendsTheGround" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.Pick_OrdersByDepthMarksOcclusionAndAppendsTheGround" methodname="Pick_OrdersByDepthMarksOcclusionAndAppendsTheGround" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="54488475" result="Passed" start-time="2026-10-07 22:27:30Z" end-time="2026-10-07 22:27:30Z" duration="0.228057" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] pick timings: total=2.207ms ui=0.017 physics=0.055 renderer=0.014 ground=1.692 resolve=0.429
+]]></output>
+                </test-case>
+                <test-case id="1060" name="Pick_UiElementsComeFirst" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.Pick_UiElementsComeFirst" methodname="Pick_UiElementsComeFirst" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="896350269" result="Passed" start-time="2026-10-07 22:27:30Z" end-time="2026-10-07 22:27:30Z" duration="0.324670" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] UI pick timings: total=4.938ms ui=3.657 physics=0.029 renderer=0.013 ground=0.013 resolve=1.226
+]]></output>
+                </test-case>
+                <test-case id="1058" name="PointAt_ReturnsALocationOnTheSurfaceOrTheGroundPlane" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.PointAt_ReturnsALocationOnTheSurfaceOrTheGroundPlane" methodname="PointAt_ReturnsALocationOnTheSurfaceOrTheGroundPlane" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="2082577054" result="Passed" start-time="2026-10-07 22:27:30Z" end-time="2026-10-07 22:27:31Z" duration="0.260371" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] point-at timings: total=0.744ms ui=0.000 physics=0.000 renderer=0.000 ground=0.718 resolve=0.000
+]]></output>
+                </test-case>
+                <test-case id="1059" name="Validate_ReportsTargetsThatNoLongerExist" fullname="GameCore.Studio.Edit.Tests.PickingServiceTests.Validate_ReportsTargetsThatNoLongerExist" methodname="Validate_ReportsTargetsThatNoLongerExist" classname="GameCore.Studio.Edit.Tests.PickingServiceTests" runstate="Runnable" seed="1342874716" result="Passed" start-time="2026-10-07 22:27:31Z" end-time="2026-10-07 22:27:31Z" duration="0.239041" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1061" name="R10CatalogFreshnessTests" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 22:27:31Z" end-time="2026-10-07 22:27:40Z" duration="9.415289" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1064" name="R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" methodname="R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="422102743" result="Passed" start-time="2026-10-07 22:27:31Z" end-time="2026-10-07 22:27:31Z" duration="0.097387" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1062" name="R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" methodname="R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="707134940" result="Passed" start-time="2026-10-07 22:27:31Z" end-time="2026-10-07 22:27:36Z" duration="5.246722" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1063" name="R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" methodname="R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="1314999324" result="Passed" start-time="2026-10-07 22:27:36Z" end-time="2026-10-07 22:27:40Z" duration="4.069531" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1065" name="R2CoreRegressionTests" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" testcasecount="30" result="Passed" start-time="2026-10-07 22:27:40Z" end-time="2026-10-07 22:27:47Z" duration="6.986509" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1083" name="R2_01_SaveAndReloadDuringDragPreserveRealTransform" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_01_SaveAndReloadDuringDragPreserveRealTransform" methodname="R2_01_SaveAndReloadDuringDragPreserveRealTransform" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="2069613390" result="Passed" start-time="2026-10-07 22:27:40Z" end-time="2026-10-07 22:27:41Z" duration="0.273065" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1078" name="R2_02_InvalidImporterLeavesExistingBytesAndMetaUnchanged" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_02_InvalidImporterLeavesExistingBytesAndMetaUnchanged" methodname="R2_02_InvalidImporterLeavesExistingBytesAndMetaUnchanged" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="717733752" result="Passed" start-time="2026-10-07 22:27:41Z" end-time="2026-10-07 22:27:41Z" duration="0.238287" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1079" name="R2_03_CrashInsideFileWriteHasDurablePreimage" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_03_CrashInsideFileWriteHasDurablePreimage" methodname="R2_03_CrashInsideFileWriteHasDurablePreimage" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1781989504" result="Passed" start-time="2026-10-07 22:27:41Z" end-time="2026-10-07 22:27:41Z" duration="0.349568" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1080" name="R2_03_RecoveryKeepsTransitionUntilJournalCheckpoint" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_03_RecoveryKeepsTransitionUntilJournalCheckpoint" methodname="R2_03_RecoveryKeepsTransitionUntilJournalCheckpoint" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1179548540" result="Passed" start-time="2026-10-07 22:27:41Z" end-time="2026-10-07 22:27:42Z" duration="0.258310" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1090" name="R2_03_RedoResumeRetainsOriginalCreationIdentity" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_03_RedoResumeRetainsOriginalCreationIdentity" methodname="R2_03_RedoResumeRetainsOriginalCreationIdentity" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="963782169" result="Passed" start-time="2026-10-07 22:27:42Z" end-time="2026-10-07 22:27:42Z" duration="0.515691" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1089" name="R2_03_UndoCrashCheckpointsBeforeInverseMutation" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_03_UndoCrashCheckpointsBeforeInverseMutation" methodname="R2_03_UndoCrashCheckpointsBeforeInverseMutation" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1542711448" result="Passed" start-time="2026-10-07 22:27:42Z" end-time="2026-10-07 22:27:42Z" duration="0.286939" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1081" name="R2_04_FailedInverseRemainsInterruptedWithEvidence" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_04_FailedInverseRemainsInterruptedWithEvidence" methodname="R2_04_FailedInverseRemainsInterruptedWithEvidence" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="34632011" result="Passed" start-time="2026-10-07 22:27:42Z" end-time="2026-10-07 22:27:42Z" duration="0.191348" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1088" name="R2_04_ResumeDoesNotDropFailedDependency" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_04_ResumeDoesNotDropFailedDependency" methodname="R2_04_ResumeDoesNotDropFailedDependency" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1292146336" result="Passed" start-time="2026-10-07 22:27:42Z" end-time="2026-10-07 22:27:43Z" duration="0.210430" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1091" name="R2_04_ResumeFailureRollsBackEarlierAtomicSuccess" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_04_ResumeFailureRollsBackEarlierAtomicSuccess" methodname="R2_04_ResumeFailureRollsBackEarlierAtomicSuccess" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="844514424" result="Passed" start-time="2026-10-07 22:27:43Z" end-time="2026-10-07 22:27:43Z" duration="0.521205" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                </test-case>
+                <test-case id="1087" name="R2_05_CatalogChangedAfterStageRefusesApply" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_05_CatalogChangedAfterStageRefusesApply" methodname="R2_05_CatalogChangedAfterStageRefusesApply" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="412601912" result="Passed" start-time="2026-10-07 22:27:43Z" end-time="2026-10-07 22:27:43Z" duration="0.198531" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1082" name="R2_05_ReadDependencyChangedAfterStageRefusesApply" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_05_ReadDependencyChangedAfterStageRefusesApply" methodname="R2_05_ReadDependencyChangedAfterStageRefusesApply" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="496557022" result="Passed" start-time="2026-10-07 22:27:43Z" end-time="2026-10-07 22:27:44Z" duration="0.222444" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1092" name="R2_06_AtomicRuntimeMixIsRefusedBeforeWorldSubmit" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_06_AtomicRuntimeMixIsRefusedBeforeWorldSubmit" methodname="R2_06_AtomicRuntimeMixIsRefusedBeforeWorldSubmit" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1010209893" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:44Z" duration="0.206148" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1084" name="R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo" methodname="R2_06_RuntimeActionsDoNotWriteAuthoredDataAndCannotUndo" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1997965895" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:44Z" duration="0.197794" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1076" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:46Z" duration="1.840633" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1066" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;Editor/Evil.cs&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;Editor/Evil.cs&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="755785585" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:44Z" duration="0.180755" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1067" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.dll&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.dll&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="975569511" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:44Z" duration="0.181866" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1068" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.so&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.so&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1405364229" result="Passed" start-time="2026-10-07 22:27:44Z" end-time="2026-10-07 22:27:45Z" duration="0.187729" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1069" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.asmdef&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.asmdef&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1049257185" result="Passed" start-time="2026-10-07 22:27:45Z" end-time="2026-10-07 22:27:45Z" duration="0.180878" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1070" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.asmref&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;plugin.asmref&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1671013208" result="Passed" start-time="2026-10-07 22:27:45Z" end-time="2026-10-07 22:27:45Z" duration="0.187499" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1071" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;compiler.rsp&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;compiler.rsp&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="715429295" result="Passed" start-time="2026-10-07 22:27:45Z" end-time="2026-10-07 22:27:45Z" duration="0.186677" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1072" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.prefab&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.prefab&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1028046991" result="Passed" start-time="2026-10-07 22:27:45Z" end-time="2026-10-07 22:27:45Z" duration="0.181656" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1073" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.controller&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.controller&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1811334078" result="Passed" start-time="2026-10-07 22:27:45Z" end-time="2026-10-07 22:27:46Z" duration="0.185828" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1074" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.mat&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;thing.mat&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1209668744" result="Passed" start-time="2026-10-07 22:27:46Z" end-time="2026-10-07 22:27:46Z" duration="0.180245" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1075" name="R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;Editor/data.txt&quot;)" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_07_ExecutableAndHookPathsRefusedBeforeWrite(&quot;Editor/data.txt&quot;)" methodname="R2_07_ExecutableAndHookPathsRefusedBeforeWrite" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="977120925" result="Passed" start-time="2026-10-07 22:27:46Z" end-time="2026-10-07 22:27:46Z" duration="0.184753" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1077" name="R2_08_SourcePathNeverReadAndAbsentFromCatalog" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_08_SourcePathNeverReadAndAbsentFromCatalog" methodname="R2_08_SourcePathNeverReadAndAbsentFromCatalog" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="92515380" result="Passed" start-time="2026-10-07 22:27:46Z" end-time="2026-10-07 22:27:46Z" duration="0.178242" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="R2_13_TypedStageRequestRetainsCandidateAndProjectContext" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_13_TypedStageRequestRetainsCandidateAndProjectContext" methodname="R2_13_TypedStageRequestRetainsCandidateAndProjectContext" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1152387163" result="Passed" start-time="2026-10-07 22:27:46Z" end-time="2026-10-07 22:27:46Z" duration="0.201694" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="R2_15_AllHistoryActionsUseTypedAdmissionHandler" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_15_AllHistoryActionsUseTypedAdmissionHandler" methodname="R2_15_AllHistoryActionsUseTypedAdmissionHandler" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1737158562" result="Passed" start-time="2026-10-07 22:27:46Z" end-time="2026-10-07 22:27:47Z" duration="0.225956" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1085" name="R2_22_SharedRedactorMasksNestedJsonAndSplitChildOutput" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_22_SharedRedactorMasksNestedJsonAndSplitChildOutput" methodname="R2_22_SharedRedactorMasksNestedJsonAndSplitChildOutput" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1289609561" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:47Z" duration="0.186854" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1086" name="R2_33_ReadOnlyMetadataFlowsThroughRegistry" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_33_ReadOnlyMetadataFlowsThroughRegistry" methodname="R2_33_ReadOnlyMetadataFlowsThroughRegistry" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1886941711" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:47Z" duration="0.189246" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1096" name="R2_36_CoreReferencesInstalledBeforeAnyView" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_36_CoreReferencesInstalledBeforeAnyView" methodname="R2_36_CoreReferencesInstalledBeforeAnyView" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="1858448532" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:47Z" duration="0.281342" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1095" name="R2_39_ProductionDiscoveryExcludesFixtures" fullname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests.R2_39_ProductionDiscoveryExcludesFixtures" methodname="R2_39_ProductionDiscoveryExcludesFixtures" classname="GameCore.Studio.Edit.Tests.R2CoreRegressionTests" runstate="Runnable" seed="796624765" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:47Z" duration="0.206693" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1097" name="R3CoreRegressionTests" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:52Z" duration="4.225522" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1109" name="D1_ChangedDeletedAndMovedAssetsInvalidateOnlyTheirCachedSources" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D1_ChangedDeletedAndMovedAssetsInvalidateOnlyTheirCachedSources" methodname="D1_ChangedDeletedAndMovedAssetsInvalidateOnlyTheirCachedSources" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1181816462" result="Passed" start-time="2026-10-07 22:27:47Z" end-time="2026-10-07 22:27:48Z" duration="0.339561" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1098" name="D1_DefinitionAddedAfterCacheAppearsWithoutManualRebuild" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D1_DefinitionAddedAfterCacheAppearsWithoutManualRebuild" methodname="D1_DefinitionAddedAfterCacheAppearsWithoutManualRebuild" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="824765897" result="Passed" start-time="2026-10-07 22:27:48Z" end-time="2026-10-07 22:27:48Z" duration="0.271757" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1108" name="D20_BestEffortRefusesStaleTargetAndAppliesIndependentOperations" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D20_BestEffortRefusesStaleTargetAndAppliesIndependentOperations" methodname="D20_BestEffortRefusesStaleTargetAndAppliesIndependentOperations" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="718788265" result="Passed" start-time="2026-10-07 22:27:48Z" end-time="2026-10-07 22:27:48Z" duration="0.297577" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1107" name="D20_RebaseRefreshesOnlySuccessfullyReplannedBaseVersions" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D20_RebaseRefreshesOnlySuccessfullyReplannedBaseVersions" methodname="D20_RebaseRefreshesOnlySuccessfullyReplannedBaseVersions" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1217281546" result="Passed" start-time="2026-10-07 22:27:48Z" end-time="2026-10-07 22:27:49Z" duration="0.341163" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1111" name="D20_SelectiveRebaseLeavesOtherStaleTargetsRefused" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D20_SelectiveRebaseLeavesOtherStaleTargetsRefused" methodname="D20_SelectiveRebaseLeavesOtherStaleTargetsRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1959080128" result="Passed" start-time="2026-10-07 22:27:49Z" end-time="2026-10-07 22:27:49Z" duration="0.326468" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1113" name="D20_StaleArgumentReadRefusesItsReaderButKeepsIndependentWork" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D20_StaleArgumentReadRefusesItsReaderButKeepsIndependentWork" methodname="D20_StaleArgumentReadRefusesItsReaderButKeepsIndependentWork" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="968809541" result="Passed" start-time="2026-10-07 22:27:49Z" end-time="2026-10-07 22:27:49Z" duration="0.377072" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1110" name="D20_UnselectedSharedReadStillRefusesBestEffort" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D20_UnselectedSharedReadStillRefusesBestEffort" methodname="D20_UnselectedSharedReadStillRefusesBestEffort" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="572201324" result="Passed" start-time="2026-10-07 22:27:49Z" end-time="2026-10-07 22:27:50Z" duration="0.278223" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1114" name="D21_CoreProvidesBoundedPromptReferenceResolver" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D21_CoreProvidesBoundedPromptReferenceResolver" methodname="D21_CoreProvidesBoundedPromptReferenceResolver" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="418888264" result="Passed" start-time="2026-10-07 22:27:50Z" end-time="2026-10-07 22:27:50Z" duration="0.277499" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1112" name="D21_DisplayNamesAndDuplicateNamesRemainExplicit" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D21_DisplayNamesAndDuplicateNamesRemainExplicit" methodname="D21_DisplayNamesAndDuplicateNamesRemainExplicit" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="736346485" result="Passed" start-time="2026-10-07 22:27:50Z" end-time="2026-10-07 22:27:50Z" duration="0.311439" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1106" name="D8_InvalidSpriteSettingsRemainRefused" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:27:50Z" end-time="2026-10-07 22:27:51Z" duration="1.188314" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1100" name="D8_InvalidSpriteSettingsRemainRefused(&quot;spritePixelsPerUnit&quot;,&quot;0&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;spritePixelsPerUnit&quot;,&quot;0&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1439416962" result="Passed" start-time="2026-10-07 22:27:50Z" end-time="2026-10-07 22:27:50Z" duration="0.189486" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1101" name="D8_InvalidSpriteSettingsRemainRefused(&quot;spritePixelsPerUnit&quot;,&quot;16385&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;spritePixelsPerUnit&quot;,&quot;16385&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="730382197" result="Passed" start-time="2026-10-07 22:27:50Z" end-time="2026-10-07 22:27:51Z" duration="0.185282" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1102" name="D8_InvalidSpriteSettingsRemainRefused(&quot;maxTextureSize&quot;,&quot;33&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;maxTextureSize&quot;,&quot;33&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="2042083442" result="Passed" start-time="2026-10-07 22:27:51Z" end-time="2026-10-07 22:27:51Z" duration="0.193586" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1103" name="D8_InvalidSpriteSettingsRemainRefused(&quot;maxTextureSize&quot;,&quot;32768&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;maxTextureSize&quot;,&quot;32768&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1977642467" result="Passed" start-time="2026-10-07 22:27:51Z" end-time="2026-10-07 22:27:51Z" duration="0.195028" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1104" name="D8_InvalidSpriteSettingsRemainRefused(&quot;spriteImportMode&quot;,&quot;1&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;spriteImportMode&quot;,&quot;1&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1022098713" result="Passed" start-time="2026-10-07 22:27:51Z" end-time="2026-10-07 22:27:51Z" duration="0.189377" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1105" name="D8_InvalidSpriteSettingsRemainRefused(&quot;filterMode&quot;,&quot;\&quot;Execute\&quot;&quot;)" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_InvalidSpriteSettingsRemainRefused(&quot;filterMode&quot;,&quot;\&quot;Execute\&quot;&quot;)" methodname="D8_InvalidSpriteSettingsRemainRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="1648140752" result="Passed" start-time="2026-10-07 22:27:51Z" end-time="2026-10-07 22:27:51Z" duration="0.233284" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1099" name="D8_SafeSpriteSettingsAcceptedAndUnsafeSettingsRefused" fullname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests.D8_SafeSpriteSettingsAcceptedAndUnsafeSettingsRefused" methodname="D8_SafeSpriteSettingsAcceptedAndUnsafeSettingsRefused" classname="GameCore.Studio.Edit.Tests.R3CoreRegressionTests" runstate="Runnable" seed="389872964" result="Passed" start-time="2026-10-07 22:27:51Z" end-time="2026-10-07 22:27:52Z" duration="0.211941" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1115" name="R8StageCancellationTests" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:52Z" duration="0.474202" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1117" name="W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests.W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" methodname="W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" seed="851217117" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:52Z" duration="0.231223" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1116" name="W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests.W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" methodname="W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" seed="708079559" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:52Z" duration="0.237846" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1118" name="RuntimeMovePromotionTests" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:54Z" duration="1.914174" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="ParameterizedMethod" id="1122" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:53Z" duration="0.657717" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1120" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(False,&quot;Conflict&quot;)" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(False,&quot;Conflict&quot;)" methodname="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="720474970" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:52Z" duration="0.332206" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1121" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(True,&quot;StaleTarget&quot;)" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(True,&quot;StaleTarget&quot;)" methodname="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1666246560" result="Passed" start-time="2026-10-07 22:27:52Z" end-time="2026-10-07 22:27:53Z" duration="0.325044" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1119" name="W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" methodname="W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="797182078" result="Passed" start-time="2026-10-07 22:27:53Z" end-time="2026-10-07 22:27:53Z" duration="0.390196" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1125" name="W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" methodname="W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="639052343" result="Passed" start-time="2026-10-07 22:27:53Z" end-time="2026-10-07 22:27:53Z" duration="0.230123" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1124" name="W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" methodname="W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1642598860" result="Passed" start-time="2026-10-07 22:27:53Z" end-time="2026-10-07 22:27:54Z" duration="0.364396" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                </test-case>
+                <test-case id="1123" name="W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" methodname="W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="2033084323" result="Passed" start-time="2026-10-07 22:27:54Z" end-time="2026-10-07 22:27:54Z" duration="0.270450" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1126" name="SemanticIndexTests" fullname="GameCore.Studio.Edit.Tests.SemanticIndexTests" classname="GameCore.Studio.Edit.Tests.SemanticIndexTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 22:27:54Z" end-time="2026-10-07 22:27:56Z" duration="1.539857" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1130" name="Cache_RoundTripsAcrossRuntimes" fullname="GameCore.Studio.Edit.Tests.SemanticIndexTests.Cache_RoundTripsAcrossRuntimes" methodname="Cache_RoundTripsAcrossRuntimes" classname="GameCore.Studio.Edit.Tests.SemanticIndexTests" runstate="Runnable" seed="944738509" result="Passed" start-time="2026-10-07 22:27:54Z" end-time="2026-10-07 22:27:54Z" duration="0.225702" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1129" name="Incremental_ChangeIsOneRevisionAndUpdatesTheStamp" fullname="GameCore.Studio.Edit.Tests.SemanticIndexTests.Incremental_ChangeIsOneRevisionAndUpdatesTheStamp" methodname="Incremental_ChangeIsOneRevisionAndUpdatesTheStamp" classname="GameCore.Studio.Edit.Tests.SemanticIndexTests" runstate="Runnable" seed="138126961" result="Passed" start-time="2026-10-07 22:27:54Z" end-time="2026-10-07 22:27:54Z" duration="0.253163" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] index incremental flush (1 asset): 2.8 ms
+]]></output>
+                </test-case>
+                <test-case id="1127" name="Rebuild_ProjectsNodesReferencesAndContainment" fullname="GameCore.Studio.Edit.Tests.SemanticIndexTests.Rebuild_ProjectsNodesReferencesAndContainment" methodname="Rebuild_ProjectsNodesReferencesAndContainment" classname="GameCore.Studio.Edit.Tests.SemanticIndexTests" runstate="Runnable" seed="974414928" result="Passed" start-time="2026-10-07 22:27:54Z" end-time="2026-10-07 22:27:55Z" duration="0.288475" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] index rebuild (6 objects): 6.7 ms
+]]></output>
+                </test-case>
+                <test-case id="1128" name="Slice_IsCutAtTheByteCapWithAnExplicitFlag" fullname="GameCore.Studio.Edit.Tests.SemanticIndexTests.Slice_IsCutAtTheByteCapWithAnExplicitFlag" methodname="Slice_IsCutAtTheByteCapWithAnExplicitFlag" classname="GameCore.Studio.Edit.Tests.SemanticIndexTests" runstate="Runnable" seed="1158110311" result="Passed" start-time="2026-10-07 22:27:55Z" end-time="2026-10-07 22:27:56Z" duration="0.770339" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P1.6] index slice (31 nodes, 2 KiB cap): 0.5 ms
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1131" name="ToolRegistryTests" fullname="GameCore.Studio.Edit.Tests.ToolRegistryTests" classname="GameCore.Studio.Edit.Tests.ToolRegistryTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:56Z" duration="0.419079" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1134" name="Candidate_WithAnotherCatalogRevision_IsStaleContext" fullname="GameCore.Studio.Edit.Tests.ToolRegistryTests.Candidate_WithAnotherCatalogRevision_IsStaleContext" methodname="Candidate_WithAnotherCatalogRevision_IsStaleContext" classname="GameCore.Studio.Edit.Tests.ToolRegistryTests" runstate="Runnable" seed="1189229468" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:56Z" duration="0.171618" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1132" name="Export_ContainsBuiltInsFixtureToolsAndObjectTypesWithARevision" fullname="GameCore.Studio.Edit.Tests.ToolRegistryTests.Export_ContainsBuiltInsFixtureToolsAndObjectTypesWithARevision" methodname="Export_ContainsBuiltInsFixtureToolsAndObjectTypesWithARevision" classname="GameCore.Studio.Edit.Tests.ToolRegistryTests" runstate="Runnable" seed="1032806403" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:56Z" duration="0.114811" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1133" name="Invoke_RunsReadOnlyToolsAndRefusesMutatingOnes" fullname="GameCore.Studio.Edit.Tests.ToolRegistryTests.Invoke_RunsReadOnlyToolsAndRefusesMutatingOnes" methodname="Invoke_RunsReadOnlyToolsAndRefusesMutatingOnes" classname="GameCore.Studio.Edit.Tests.ToolRegistryTests" runstate="Runnable" seed="873885027" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:56Z" duration="0.130826" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1135" name="ValueTypeTests" fullname="GameCore.Studio.Edit.Tests.ValueTypeTests" classname="GameCore.Studio.Edit.Tests.ValueTypeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:57Z" duration="0.742935" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1136" name="AuthoringIdValueType_IsCatalogedValidatedCreatableAndIndexed" fullname="GameCore.Studio.Edit.Tests.ValueTypeTests.AuthoringIdValueType_IsCatalogedValidatedCreatableAndIndexed" methodname="AuthoringIdValueType_IsCatalogedValidatedCreatableAndIndexed" classname="GameCore.Studio.Edit.Tests.ValueTypeTests" runstate="Runnable" seed="1456568420" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:56Z" duration="0.334206" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1137" name="SetOnListMembers_UndoRestoresTheExactElements" fullname="GameCore.Studio.Edit.Tests.ValueTypeTests.SetOnListMembers_UndoRestoresTheExactElements" methodname="SetOnListMembers_UndoRestoresTheExactElements" classname="GameCore.Studio.Edit.Tests.ValueTypeTests" runstate="Runnable" seed="1926608260" result="Passed" start-time="2026-10-07 22:27:56Z" end-time="2026-10-07 22:27:57Z" duration="0.407762" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1317" name="GameCore.Studio.Views.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Editor.Tests.dll" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.520206" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="308425" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1318" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.518975" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1319" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.518725" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1320" name="Views" fullname="GameCore.Studio.Views" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.518535" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1321" name="Tests" fullname="GameCore.Studio.Views.Tests" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.518317" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1286" name="EditBuilderTests" fullname="GameCore.Studio.Views.Tests.EditBuilderTests" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.019541" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1290" name="Dialogue_AddLineUsesTheToolWithAfter" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_AddLineUsesTheToolWithAfter" methodname="Dialogue_AddLineUsesTheToolWithAfter" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1998482390" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002970" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1287" name="Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" methodname="Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="679926450" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001211" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1289" name="Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" methodname="Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1166903979" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000665" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1288" name="Dialogue_TextAndRenameArePartialElementSets" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_TextAndRenameArePartialElementSets" methodname="Dialogue_TextAndRenameArePartialElementSets" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="846416430" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000633" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1295" name="PackageGraph_ReportsDependencyAndKernelProblems" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.PackageGraph_ReportsDependencyAndKernelProblems" methodname="PackageGraph_ReportsDependencyAndKernelProblems" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1118810583" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.004100" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1291" name="Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" methodname="Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1355937496" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.003594" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1292" name="Quest_SimulationParsesStatusFactsInventoryAndRewards" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Quest_SimulationParsesStatusFactsInventoryAndRewards" methodname="Quest_SimulationParsesStatusFactsInventoryAndRewards" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="2094407555" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001378" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1294" name="Table_CsvQuotesPerRfc4180" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Table_CsvQuotesPerRfc4180" methodname="Table_CsvQuotesPerRfc4180" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1287096581" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001053" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1293" name="Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" methodname="Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="290084194" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002626" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1296" name="R2ViewsRegressionTests" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.412489" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1297" name="R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" methodname="R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1884296450" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.003831" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1305" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.004980" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1303" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld(False)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld(False)" methodname="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="2118509109" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.003365" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1304" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld(True)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld(True)" methodname="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1444602323" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000163" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1302" name="R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" methodname="R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="87292288" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001406" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1301" name="R2_32_TravelUsesTypedReceiptAndExactOverload" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001822" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1298" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Accepted,Submitted)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Accepted,Submitted)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1037118221" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000999" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1299" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Committed,Submitted)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Committed,Submitted)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="348264266" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000154" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1300" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Refused,Refused)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Refused,Refused)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="362100456" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000128" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1307" name="R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" methodname="R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1786713571" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.392079" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1306" name="R2_35_CheckerResultRetainsRulesOutsideLocalGraph" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_CheckerResultRetainsRulesOutsideLocalGraph" methodname="R2_35_CheckerResultRetainsRulesOutsideLocalGraph" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1381612941" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000654" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1308" name="R2_36_ContextDoesNotInstallContributorOrRebuildIndex" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_36_ContextDoesNotInstallContributorOrRebuildIndex" methodname="R2_36_ContextDoesNotInstallContributorOrRebuildIndex" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1442417976" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002434" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1309" name="R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" methodname="R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1200706962" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002221" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1310" name="SelectionSoftBindingPropagatesFocusChangesAndDetaches" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.SelectionSoftBindingPropagatesFocusChangesAndDetaches" methodname="SelectionSoftBindingPropagatesFocusChangesAndDetaches" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="943647223" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001431" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1311" name="RelationshipsModelTests" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.085756" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1315" name="Export_WritesJsonAndMermaid" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Export_WritesJsonAndMermaid" methodname="Export_WritesJsonAndMermaid" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1278673134" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.005607" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1314" name="Impact_ListsReferrersTransitivelyWithCountsByType" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Impact_ListsReferrersTransitivelyWithCountsByType" methodname="Impact_ListsReferrersTransitivelyWithCountsByType" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1402089804" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.003958" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1312" name="IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" methodname="IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1158255188" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001426" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1313" name="Neighbourhood_FollowsDepthAndEdgeKinds" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Neighbourhood_FollowsDepthAndEdgeKinds" methodname="Neighbourhood_FollowsDepthAndEdgeKinds" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="153775992" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001005" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1316" name="R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" methodname="R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="148197169" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.071174" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P2.3] 2000-node relationships: index graph 6.9 ms, neighbourhood 2.1 ms, SetGraph 7.1 ms, layout 2 slices max 9.49 ms, whole layout frame max 9.91 ms total 12.8 ms, refresh max 0.26 ms, warm zoom bytes/frame 0.0, edge regroup bytes/frame 0.0, cards framed-all 0 (compact True), cards at root 36 (compact False)
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1700" name="Hollowmere.P4_2.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:58Z" duration="0.491005" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+      <properties>
+        <property name="_PID" value="308425" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1701" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:58Z" duration="0.490228" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1702" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:58Z" duration="0.489994" total="8" passed="1" failed="1" inconclusive="0" skipped="6" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1686" name="CatalogLiveTests" fullname="Hollowmere.P4_2.CatalogLiveTests" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.004113" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1687" name="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" fullname="Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" methodname="R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext" classname="Hollowmere.P4_2.CatalogLiveTests" runstate="Explicit" seed="35183974" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002462" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Fetches the retained real worker candidate; no new task or paid operation" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1688" name="DirectMediaTests" fullname="Hollowmere.P4_2.DirectMediaTests" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Runnable" testcasecount="2" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002380" total="2" passed="0" failed="0" inconclusive="0" skipped="2" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1689" name="R2_38_DirectImagePriceRefusalIsRecorded" fullname="Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded" methodname="R2_38_DirectImagePriceRefusalIsRecorded" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Explicit" seed="557099024" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001248" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="One direct image request against the installed operator pricing policy" />
+                <property name="Timeout" value="360000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+            <test-case id="1690" name="R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" fullname="Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" methodname="R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes" classname="Hollowmere.P4_2.DirectMediaTests" runstate="Explicit" seed="1956285179" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.000353" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Installed companion direct app-owned media; one priced TTS, no ledger request id invented" />
+                <property name="Timeout" value="360000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1691" name="LayoutAcceptanceTests" fullname="Hollowmere.P4_2.LayoutAcceptanceTests" classname="Hollowmere.P4_2.LayoutAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002380" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1692" name="R2_30_1280By720WorkspaceContainsEveryStudioPanel" fullname="Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel" methodname="R2_30_1280By720WorkspaceContainsEveryStudioPanel" classname="Hollowmere.P4_2.LayoutAcceptanceTests" runstate="Explicit" seed="953942063" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.001898" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="Physical 1280x720 Studio workspace qualification" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[P4.2 physical layout requires a graphical Editor; run the layout qualification command.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1693" name="MemoryAndPumpAcceptanceTests" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002702" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1694" name="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" fullname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" methodname="R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump" classname="Hollowmere.P4_2.MemoryAndPumpAcceptanceTests" runstate="Explicit" seed="1074018589" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.002179" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 graphical ten-cycle acceptance with real native/managed snapshots" />
+                <property name="Timeout" value="1200000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[P4.2 ten-cycle viewport acceptance requires a graphics device.]]></message>
+              </reason>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1695" name="RetainedCandidateTests" fullname="Hollowmere.P4_2.RetainedCandidateTests" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:58Z" duration="0.476799" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1697" name="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" methodname="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="1519573725" result="Passed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:57Z" duration="0.135276" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1696" name="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" methodname="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="827817370" result="Failed" start-time="2026-10-07 22:27:57Z" end-time="2026-10-07 22:27:58Z" duration="0.340667" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  retained fixture starts with the authored twenty-NPC roster
+  Expected: 20
+  But was:  6
+]]></message>
+                <stack-trace><![CDATA[at Hollowmere.P4_2.RetainedCandidateTests+<R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes>d__6.MoveNext () [0x00332] in /home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Assets/Hollowmere/Tests/P4_2/EditMode/RetainedCandidateTests.cs:78
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1698" name="VoiceAcceptanceTests" fullname="Hollowmere.P4_2.VoiceAcceptanceTests" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Runnable" testcasecount="1" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:58Z" end-time="2026-10-07 22:27:58Z" duration="0.001093" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <test-case id="1699" name="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" fullname="Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" methodname="R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits" classname="Hollowmere.P4_2.VoiceAcceptanceTests" runstate="Explicit" seed="2133027220" result="Skipped" label="Ignored" start-time="2026-10-07 22:27:58Z" end-time="2026-10-07 22:27:58Z" duration="0.000488" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="_SKIPREASON" value="P4.2 real PipeWire microphone and installed companion; reuses recorded WAV" />
+                <property name="Timeout" value="180000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <reason>
+                <message><![CDATA[SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.]]></message>
+              </reason>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

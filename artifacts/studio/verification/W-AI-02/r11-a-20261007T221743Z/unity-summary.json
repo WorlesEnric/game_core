@@ -1,0 +1,92 @@
+{
+  "final": {
+    "result": "Skipped:Ignored",
+    "total": "150",
+    "passed": "144",
+    "failed": "0",
+    "skipped": "6"
+  },
+  "assemblies": [
+    {
+      "type": "Assembly",
+      "id": "1138",
+      "name": "GameCore.Studio.Core.Editor.Tests.dll",
+      "fullname": "/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll",
+      "runstate": "Runnable",
+      "testcasecount": "116",
+      "result": "Passed",
+      "start-time": "2026-10-07 22:33:34Z",
+      "end-time": "2026-10-07 22:34:16Z",
+      "duration": "41.539725",
+      "total": "116",
+      "passed": "116",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0"
+    },
+    {
+      "type": "Assembly",
+      "id": "1317",
+      "name": "GameCore.Studio.Views.Editor.Tests.dll",
+      "fullname": "/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Editor.Tests.dll",
+      "runstate": "Runnable",
+      "testcasecount": "26",
+      "result": "Passed",
+      "start-time": "2026-10-07 22:34:16Z",
+      "end-time": "2026-10-07 22:34:16Z",
+      "duration": "0.485247",
+      "total": "26",
+      "passed": "26",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0"
+    },
+    {
+      "type": "Assembly",
+      "id": "1700",
+      "name": "Hollowmere.P4_2.Tests.dll",
+      "fullname": "/home/worlesenric/wkspace/gc-studio/r11-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll",
+      "runstate": "Runnable",
+      "testcasecount": "8",
+      "result": "Skipped",
+      "label": "Ignored",
+      "start-time": "2026-10-07 22:34:16Z",
+      "end-time": "2026-10-07 22:34:19Z",
+      "duration": "2.337259",
+      "total": "8",
+      "passed": "2",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "6",
+      "asserts": "0"
+    }
+  ],
+  "skips": [
+    {
+      "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "name": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+      "reason": "P4.2 physical layout requires a graphical Editor; run the layout qualification command."
+    },
+    {
+      "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+      "reason": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+    },
+    {
+      "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    }
+  ]
+}
