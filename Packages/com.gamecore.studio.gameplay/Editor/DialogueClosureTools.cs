@@ -15,6 +15,22 @@ namespace GameCore.Studio.Gameplay
     /// <summary>Trusted dialogue creation and candidate closure checks, without a runtime gameplay dependency.</summary>
     public static class DialogueClosureTools
     {
+        /// <summary>Trusted operations whose only mutation is to their supplied detached definition target.</summary>
+        public static bool CanProjectDefinitionOperation(string tool)
+        {
+            switch (tool)
+            {
+                case "dialogue.addLine":
+                case "dialogue.addChoice":
+                case "dialogue.linkCondition":
+                case "dialogue.setFactCondition":
+                case "dialogue.setConsequence":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         [AuthorOperation("dialogue.createGraph", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(DialogueClosureValidator), Doc = "Creates a dialogue graph and enrolls it in the active region world's narrative content set, with durable undo.")]
         public static OperationResult CreateGraph(EditContext context,
@@ -81,6 +97,68 @@ namespace GameCore.Studio.Gameplay
             });
         }
 
+        /// <summary>
+        /// Validates final NPC bindings after all definition writes and graph enrollments have been projected.
+        /// The projection maps originals to their final copies, leaves unchanged/copy objects alone, and returns null for deletions.
+        /// </summary>
+        public static IReadOnlyList<Diagnostic> ValidateProposed(StudioRuntime runtime,
+            IReadOnlyList<ScriptableObject> definitions, Func<UnityEngine.Object, UnityEngine.Object?> projectReference)
+        {
+            if (runtime == null) throw new ArgumentNullException(nameof(runtime));
+            if (definitions == null) throw new ArgumentNullException(nameof(definitions));
+            if (projectReference == null) throw new ArgumentNullException(nameof(projectReference));
+            var diagnostics = new List<Diagnostic>();
+            UnityEngine.Object? set = null;
+            string setPath = string.Empty;
+            string? setProblem = null;
+            bool resolvedSet = false;
+            MethodInfo? contains = null;
+            foreach (ScriptableObject definition in definitions)
+            {
+                AuthoringTypeInfo? info = runtime.Identity.Describe(definition);
+                if (info?.TypeId != "npc.definition") continue;
+                UnityEngine.Object? graph = definition.GetType().GetProperty("Dialogue")?.GetValue(definition) as UnityEngine.Object;
+                string legacy = graph == null
+                    ? definition.GetType().GetProperty("LegacyDialogueGraph")?.GetValue(definition) as string ?? string.Empty
+                    : string.Empty;
+                if (graph == null && legacy.Length == 0) continue;
+                string graphName = graph == null ? legacy : graph.name;
+                if (graph == null)
+                    graph = runtime.Resolver.Codec.Refs.ReadRef(new JValue(legacy), typeof(ScriptableObject), out _);
+                if (!resolvedSet)
+                {
+                    resolvedSet = true;
+                    try
+                    {
+                        UnityEngine.Object original = ResolveSet();
+                        setPath = AssetDatabase.GetAssetPath(original);
+                        set = projectReference(original);
+                        if (set == null)
+                            setProblem = "npc_dialogue_content_set_missing: the owning world's GameplayContentSet is absent from the final proposal.";
+                    }
+                    catch (ArgumentException error) { setProblem = error.Message; }
+                }
+                string? problem = setProblem;
+                if (problem == null)
+                {
+                    contains ??= ClosureMethod("ContainsProposed");
+                    bool enrolled = graph != null && (bool)contains.Invoke(null, new object[] { set!, graph, projectReference })!;
+                    if (!enrolled)
+                        problem = "npc_dialogue_not_enrolled: NPC dialogue " + graphName
+                            + " is not in the owning world's final GameplayContentSet closure (" + setPath + ").";
+                }
+                if (problem == null) continue;
+                AuthoringRef? subject = runtime.Resolver.BuildRef(definition, includeStamp: false);
+                string? id = info.ReadId(definition);
+                if (subject == null && !string.IsNullOrEmpty(id))
+                    subject = new AuthoringRef(AuthoringKind.Definition, authoringId: id, scope: AuthorScope.Definition);
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.InvalidArgs, problem,
+                    "Enroll the graph in that content set, or create it with dialogue.createGraph before binding the NPC.",
+                    subject == null ? null : DiagnosticWhere.At(subject)));
+            }
+            return diagnostics;
+        }
+
         /// <summary>Run before any candidate writes, including operations whose NPC or graph does not exist yet.</summary>
         public static IReadOnlyList<Diagnostic> ValidateCandidate(StudioRuntime runtime, ChangeSet changeSet)
         {
@@ -143,7 +221,7 @@ namespace GameCore.Studio.Gameplay
             return false;
         }
 
-        internal static UnityEngine.Object ResolveSet()
+        public static UnityEngine.Object ResolveSet()
         {
             try { return (UnityEngine.Object)ClosureMethod("ResolveForActiveScene").Invoke(null, null)!; }
             catch (TargetInvocationException error) when (error.InnerException is ArgumentException argument) { throw argument; }
@@ -161,7 +239,6 @@ namespace GameCore.Studio.Gameplay
         public IEnumerable<Diagnostic> Validate(EditContext context)
         {
             var diagnostics = new List<Diagnostic>();
-            diagnostics.AddRange(DialogueClosureTools.ValidateCandidate(context.Runtime, context.ChangeSet));
             if (!ToolSupport.IsSafeAssetPath(context.StringArg("path")) || string.IsNullOrWhiteSpace(context.StringArg("name")))
                 diagnostics.Add(context.Problem(DiagnosticCodes.InvalidArgs, "A graph name and a safe Assets path are required."));
             try { DialogueClosureTools.ResolveSet(); }
