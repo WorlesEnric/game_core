@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import re
 import tempfile
 import time
 
@@ -35,7 +36,8 @@ def main():
                    "--project", str(PROJECT), "--log-dir", str(evidence / "logs"),
                    "--label", "r8-b-lever", "--", "-force-glcore", "-executeMethod",
                    "Hollowmere.R8_B.LeverAdmissionProbe.Run", "-gcR8BReport", str(report)]
-        with subprocess.Popen(command, cwd=REPO, env=env) as process:
+        process = subprocess.Popen(command, cwd=REPO, env=env)
+        try:
             deadline = time.monotonic() + 1500
             while not report.exists():
                 if process.poll() is not None or time.monotonic() >= deadline:
@@ -45,11 +47,25 @@ def main():
             if result["isBatchMode"] or result["display"] != ":1":
                 raise RuntimeError("Graphical prerequisite was not exercised")
             time.sleep(3)
-            subprocess.run(["import", "-display", ":1", "-window", "root", str(evidence / "probe.png")], check=True)
+            deadline = time.monotonic() + 60
+            while True:
+                tree = subprocess.check_output(["xwininfo", "-display", ":1", "-root", "-tree"], text=True)
+                windows = re.findall(r'(0x[0-9a-f]+) "R8-B lever prerequisite[^"\n]*": \("Unity" "Unity"\)', tree)
+                if len(windows) == 1 or time.monotonic() >= deadline:
+                    break
+                time.sleep(1)
+            if len(windows) != 1:
+                raise RuntimeError("Cannot uniquely identify the owned probe window")
+            subprocess.run(["ffmpeg", "-y", "-f", "x11grab", "-window_id", windows[0],
+                            "-i", ":1", "-frames:v", "1", "-update", "1", str(evidence / "probe.png")], check=True)
             Path(str(report) + ".quit").touch()
             code = process.wait(timeout=120)
             if code != 0:
                 raise RuntimeError("Owned Editor did not exit successfully")
+        finally:
+            if process.poll() is None:
+                process.terminate()  # unity-batch forwards TERM to this owned Editor.
+                process.wait(timeout=60)
     print("Prerequisite refusal captured; W-DOC-02 is not a pass")
 
 

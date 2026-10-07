@@ -33,12 +33,13 @@ namespace Hollowmere.R8_B
             string path = Path.GetFullPath(args[index + 1]);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, result.ToString());
-            LeverAdmissionProbe window = GetWindow<LeverAdmissionProbe>();
+            LeverAdmissionProbe window = CreateInstance<LeverAdmissionProbe>();
             window.quitSignal = path + ".quit";
             window.titleContent = new GUIContent("R8-B lever prerequisite");
             window.report = result.ToString();
+            window.minSize = new Vector2(1000, 650);
+            window.ShowUtility();
             window.position = new Rect(140, 140, 1000, 650);
-            window.Show();
             Debug.Log("[R8-B] " + result);
         }
 
