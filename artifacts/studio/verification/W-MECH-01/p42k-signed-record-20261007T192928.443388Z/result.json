@@ -1,0 +1,33 @@
+{
+  "label": "p42k-signed-record",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T19:29:28.445227+00:00",
+  "command": "dotnet test ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/TOOLS/P42jReceipt/P42jReceipt.csproj --filter 'FullyQualifiedName~R2_09_13_P42i' --logger trx --results-directory ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-MECH-01/p42k-signed-record-20261007T192928.443388Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/p42k-signed-record-20261007T192928.443388Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T19:29:28.447101+00:00",
+  "sourceDiffSha256": "f010f252ab6f1caf66ae26a8d1dccf7d98d5efeffcc531c538e6d9572275b20e",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-07T19:29:31.405421+00:00",
+  "seconds": 2.9619561519939452,
+  "suites": {
+    "trx/_worlesenric_2026-10-08_03_29_31.trx": {
+      "total": 1,
+      "counts": {
+        "Failed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "R2_09_13_P42i_InstalledSignedRecordBindsCurrentMain",
+          "result": "Failed",
+          "detail": "GameCore.Studio.Etos.Client.EtosException : not_found: no issued verdict [HTTP 404] \n              at GameCore.Studio.Etos.Client.CompanionClient.SendObjectAsync(HttpMethod method, String path, JObject body, TimeSpan timeout, CancellationToken ct, Boolean absolute, Boolean stageKey) in ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Client/CompanionClient.cs:line 489\n   at P42i.Receipt.ReceiptTests.R2_09_13_P42i_InstalledSignedRecordBindsCurrentMain() in ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/TOOLS/P42jReceipt/StageReceiptTests.cs:line 21\n   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.BlockUntilCompleted()\n   at NUnit.Framework.Internal.MessagePumpStrategy.NoMessagePumpStrategy.WaitForCompletion(AwaitAdapter awaiter)\n   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)\n   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)\n   at NUnit.Framework.Internal.Execution.SimpleWorkItem.<>c__DisplayClass4_0.<PerformWork>b__0()\n   at NUnit.Framework.Internal.ContextUtils.<>c__DisplayClass1_0`1.<DoIsolated>b__0(Object _)\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\n--- End of stack trace from previous location ---\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\n   at NUnit.Framework.Internal.ContextUtils.DoIsolated(ContextCallback callback, Object state)\n   at NUnit.Framework.Internal.ContextUtils.DoIsolated[T](Func`1 func)\n   at NUnit.Framework.Internal.Execution.SimpleWorkItem.PerformWork()"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

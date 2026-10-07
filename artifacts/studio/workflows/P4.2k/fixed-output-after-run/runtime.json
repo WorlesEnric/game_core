@@ -1,0 +1,51 @@
+{
+  "id": "cs_01M4BSJW7HC7P0CEK3EZ9FMWJY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "W-EDIT-06 runtime move",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "runtime",
+      "tool": "runtime.move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "scope": "Instance",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      },
+      "args": {
+        "position": [
+          1.0,
+          0.0,
+          -1.9
+        ],
+        "yaw": 0
+      }
+    }
+  ],
+  "links": {
+    "gameCoreOps": [
+      "w:cafbc917383afe3a2fa850847c7dd8ab/i:c696b9df8c15685712fcd173f2864320/s:17"
+    ]
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "runtime",
+      "status": "Applied",
+      "detail": "Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+      "gameCoreOps": [
+        "w:cafbc917383afe3a2fa850847c7dd8ab/i:c696b9df8c15685712fcd173f2864320/s:17"
+      ]
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T18:21:34.868Z",
+    "applied": "2026-10-07T18:21:34.915Z"
+  }
+}

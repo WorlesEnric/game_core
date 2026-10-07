@@ -1,0 +1,128 @@
+{
+  "id": "cs_01M458911C80SV6FKW4QW23FHH",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.bram-definition] Create Bram the innkeeper: entity, idle behaviour, NPC definition",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "entity",
+      "tool": "create",
+      "args": {
+        "type": "entity.definition",
+        "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset",
+        "name": "BramEntity",
+        "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+        "fields": {
+          "prefab": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab",
+          "defaultScaleMilli": 1000,
+          "startsVisible": true,
+          "startsAlive": true,
+          "overridableFields": [
+            "scaleMilli",
+            "visible",
+            "tint"
+          ]
+        }
+      }
+    },
+    {
+      "opId": "behaviour",
+      "tool": "create",
+      "args": {
+        "type": "npc.behaviour",
+        "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset",
+        "name": "BramBehaviour",
+        "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+        "fields": {
+          "kind": "Idle",
+          "waitSeconds": 1.5
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "entity",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+                "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+                "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+              },
+              "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+            }
+          ],
+          "replay": {
+            "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "behaviour",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+                "global": "GlobalObjectId_V1-3-6eedddac9e7ef3ffe804ba27629e1bc5-11400000-0",
+                "assetGuid": "6eedddac9e7ef3ffe804ba27629e1bc5",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+              },
+              "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+            }
+          ],
+          "replay": {
+            "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.188Z",
+    "applied": "2026-10-05T05:23:39.228Z"
+  }
+}

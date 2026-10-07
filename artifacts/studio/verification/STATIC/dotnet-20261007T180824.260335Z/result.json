@@ -1,0 +1,211 @@
+{
+  "label": "dotnet",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:08:24.263187+00:00",
+  "command": "dotnet test dotnet/GameCore.sln --logger trx --results-directory ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/STATIC/dotnet-20261007T180824.260335Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/STATIC/dotnet-20261007T180824.260335Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:08:24.266124+00:00",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exitCode": 0,
+  "status": "BLOCKED",
+  "ended": "2026-10-07T18:09:47.155840+00:00",
+  "seconds": 82.89535704487935,
+  "suites": {
+    "trx/_worlesenric_2026-10-08_02_08_34[3].trx": {
+      "total": 178,
+      "counts": {
+        "Passed": 178
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_36[2].trx": {
+      "total": 173,
+      "counts": {
+        "Passed": 173
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_35.trx": {
+      "total": 27,
+      "counts": {
+        "Passed": 27
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_39[1].trx": {
+      "total": 113,
+      "counts": {
+        "Passed": 113
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_38[1].trx": {
+      "total": 118,
+      "counts": {
+        "Passed": 118
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_34[4].trx": {
+      "total": 189,
+      "counts": {
+        "Passed": 189
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_35[1].trx": {
+      "total": 49,
+      "counts": {
+        "Passed": 49
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_33.trx": {
+      "total": 10,
+      "counts": {
+        "Passed": 10
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_38.trx": {
+      "total": 118,
+      "counts": {
+        "Passed": 118
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_39[2].trx": {
+      "total": 57,
+      "counts": {
+        "Passed": 57
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_09_01.trx": {
+      "total": 75,
+      "counts": {
+        "Passed": 69,
+        "NotExecuted": 6
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "L01_HelloThroughTheProxyReportsProviderStates",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "L02_TheAppKeyReachesNothingButItsOwnAgent",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "L04_VoiceTranscribesARealSpokenPromptThroughTheNode",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "L06_CandidateStageFetchesAndVerifiesTheSignedRecord",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused",
+          "result": "NotExecuted",
+          "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        }
+      ]
+    },
+    "trx/_worlesenric_2026-10-08_02_08_33[1].trx": {
+      "total": 26,
+      "counts": {
+        "Passed": 26
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_34.trx": {
+      "total": 23,
+      "counts": {
+        "Passed": 23
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_34[1].trx": {
+      "total": 47,
+      "counts": {
+        "Passed": 47
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_34[2].trx": {
+      "total": 163,
+      "counts": {
+        "Passed": 163
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_37.trx": {
+      "total": 10,
+      "counts": {
+        "Passed": 10
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_36[1].trx": {
+      "total": 42,
+      "counts": {
+        "Passed": 42
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_40.trx": {
+      "total": 90,
+      "counts": {
+        "Passed": 90
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_39.trx": {
+      "total": 309,
+      "counts": {
+        "Passed": 309
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    },
+    "trx/_worlesenric_2026-10-08_02_08_36.trx": {
+      "total": 21,
+      "counts": {
+        "Passed": 21
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

@@ -1,0 +1,26 @@
+{
+  "label": "native-memory-and-pumps",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:27:23.903540+00:00",
+  "command": "bash -c 'set -euo pipefail\npgrep -af '\"'\"'Unity|ffmpeg|xvfb'\"'\"' || true\nwhile pgrep -x Unity >/dev/null || pgrep -x ffmpeg >/dev/null; do\n  echo '\"'\"'Waiting for other Editors/recorders before graphical qualification'\"'\"'; sleep 5\ndone\nunity_tools_dir=\"$PWD/studio/tools\"\nsource \"$unity_tools_dir/unity-slot.sh\"\nunity_slot_acquire\ntrap unity_slot_release EXIT\npython3 studio/stage/run-redacted.py --log \"$1/editor.log\" --timeout 1500 --silence 600 -- env GAMECORE_ETOS_KEY_FILE=/nonexistent/p42-offline   \"$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity\" -projectPath \"$PWD/games/hollowmere\"   -logFile - -runTests -testPlatform EditMode -testFilter \"$2\" -testResults \"$1/results.xml\"\n' p42-graphical ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:27:23.905391+00:00",
+  "sourceDiffSha256": "c15884f4fbdcd0405e53b81aaf7909688abf289ef8d820c10f7e698add9c393b",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:29:48.151614+00:00",
+  "seconds": 144.24984805192798,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

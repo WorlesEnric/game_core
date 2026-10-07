@@ -1,0 +1,135 @@
+{
+  "id": "cs_01M4589144SD5ME0VHKDA9DMZV",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.odd-behaviour] Odd stands at the jetty (idle behaviour without patrol points)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "odd",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "fe1e2693-bf69-4db6-b2dd-02255ae5ff98",
+        "global": "GlobalObjectId_V1-3-32e55272ca8b6609cb80675b342f4401-11400000-0",
+        "assetGuid": "32e55272ca8b6609cb80675b342f4401",
+        "path": "Assets/Hollowmere/Npcs/Definitions/OddBehaviour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+      },
+      "args": {
+        "fields": {
+          "kind": "Idle",
+          "patrolPoints": []
+        }
+      }
+    },
+    {
+      "opId": "hale",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "63b0096d-625a-4bd5-bda6-4397fb98f039",
+        "global": "GlobalObjectId_V1-3-8e3681212e040ec439d6a09318cfc9fd-11400000-0",
+        "assetGuid": "8e3681212e040ec439d6a09318cfc9fd",
+        "path": "Assets/Hollowmere/Npcs/Definitions/HaleBehaviour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+      },
+      "args": {
+        "fields": {
+          "kind": "Idle",
+          "patrolPoints": []
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "odd",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "fe1e2693-bf69-4db6-b2dd-02255ae5ff98",
+                "global": "GlobalObjectId_V1-3-32e55272ca8b6609cb80675b342f4401-11400000-0",
+                "assetGuid": "32e55272ca8b6609cb80675b342f4401",
+                "path": "Assets/Hollowmere/Npcs/Definitions/OddBehaviour.asset"
+              },
+              "args": {
+                "fields": {
+                  "kind": "Idle",
+                  "patrolPoints": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "fe1e2693-bf69-4db6-b2dd-02255ae5ff98",
+                "global": "GlobalObjectId_V1-3-32e55272ca8b6609cb80675b342f4401-11400000-0",
+                "assetGuid": "32e55272ca8b6609cb80675b342f4401",
+                "path": "Assets/Hollowmere/Npcs/Definitions/OddBehaviour.asset"
+              },
+              "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "hale",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "63b0096d-625a-4bd5-bda6-4397fb98f039",
+                "global": "GlobalObjectId_V1-3-8e3681212e040ec439d6a09318cfc9fd-11400000-0",
+                "assetGuid": "8e3681212e040ec439d6a09318cfc9fd",
+                "path": "Assets/Hollowmere/Npcs/Definitions/HaleBehaviour.asset"
+              },
+              "args": {
+                "fields": {
+                  "kind": "Idle",
+                  "patrolPoints": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "63b0096d-625a-4bd5-bda6-4397fb98f039",
+                "global": "GlobalObjectId_V1-3-8e3681212e040ec439d6a09318cfc9fd-11400000-0",
+                "assetGuid": "8e3681212e040ec439d6a09318cfc9fd",
+                "path": "Assets/Hollowmere/Npcs/Definitions/HaleBehaviour.asset"
+              },
+              "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.276Z",
+    "applied": "2026-10-05T05:23:39.279Z"
+  }
+}

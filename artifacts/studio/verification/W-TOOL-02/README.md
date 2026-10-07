@@ -1,8 +1,8 @@
 # W-TOOL-02: `check_package_metadata.py` passes with all new packages
 
-Verdict: **PASS**. Current exact package metadata/dependency checker passes: 42 packages, 92 assemblies, four engine pins, six game pins and three lock sources.
+Verdict: **PASS**. Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.
 
-P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
+P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
@@ -13,4 +13,4 @@ python3 tools/check_package_metadata.py
 
 ## Current-run evidence
 
-- [W-TOOL-02/metadata-20261007T113207.870567Z/result.json](../W-TOOL-02/metadata-20261007T113207.870567Z/result.json)
+- [W-TOOL-02/metadata-20261007T180650.868229Z/result.json](../W-TOOL-02/metadata-20261007T180650.868229Z/result.json)

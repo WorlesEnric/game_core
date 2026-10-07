@@ -1,36 +1,36 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
+    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json"
+  ],
   "checks": [
     {
-      "file": "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/hud/apply-report.json",
+      "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42j-reopen-20261007T125251.086788Z/workflow/reopen/after-reopen.json",
+      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
       "pointer": "/hashesMatchSaved",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42j-reopen-20261007T125251.086788Z/workflow/reopen/final.json",
+      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
       "pointer": "/backToBefore",
       "equals": true
     }
   ],
-  "evidence": [
-    "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/hud/apply-report.json",
-    "W-AI-06/p42j-reopen-20261007T125251.086788Z/workflow/reopen/after-reopen.json",
-    "W-AI-06/p42j-reopen-20261007T125251.086788Z/workflow/reopen/final.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42j.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative; then reopen workflow",
-  "note": "Fresh unchanged worker HUD candidate applies and saves; a separate Editor reopens the matching complete bytes, and normal undo/redo/final undo restores the original HUD.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative; then reopen workflow",
+  "status": "PASS",
+  "note": "Current-run Edit the HUD objective label and rebind it to the quest stage name is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-AI-04",
   "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/hud/apply-report.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

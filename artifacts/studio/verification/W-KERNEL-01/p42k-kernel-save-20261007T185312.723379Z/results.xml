@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:09Z" duration="1.6466749">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="1318" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:09Z" duration="1.646675" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1012" name="GameCore.App.Tests.dll" fullname="~/wkspace/gc-studio/p4.2k/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.App.Tests.dll" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.113380" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3843001" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1013" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.112682" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1014" name="App" fullname="GameCore.App" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.112357" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1015" name="Tests" fullname="GameCore.App.Tests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.111985" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="GameApplicationRootTests" fullname="GameCore.App.Tests.GameApplicationRootTests" classname="GameCore.App.Tests.GameApplicationRootTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.110834" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld" fullname="GameCore.App.Tests.GameApplicationRootTests.Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld" methodname="Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld" classname="GameCore.App.Tests.GameApplicationRootTests" runstate="Runnable" seed="1037120013" result="Passed" start-time="2026-10-07 18:54:07Z" end-time="2026-10-07 18:54:08Z" duration="0.083553" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[GameCore] GameApplicationBootFailed{code=CatalogFingerprintMismatch, diagnostic=UnsupportedVersion, stage=catalog, detail=the catalog's fingerprint c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e differs from the declared 45c796111f46d98281eb1bed252e3772a10ec9ded9682370cd310d1278d89f5f: the catalog is corrupted or substituted (P-028, P-053)}
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1784" name="GameCore.Persistence.Tests.dll" fullname="~/wkspace/gc-studio/p4.2k/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Persistence.Tests.dll" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.374390" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3843001" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1785" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.372633" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1786" name="Persistence" fullname="GameCore.Persistence" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.371410" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1787" name="Tests" fullname="GameCore.Persistence.Tests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.369647" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1766" name="SaveRestoreTests" fullname="GameCore.Persistence.Tests.SaveRestoreTests" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.367626" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1771" name="AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" methodname="AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="2066387346" result="Passed" start-time="2026-10-07 18:54:08Z" end-time="2026-10-07 18:54:09Z" duration="1.183038" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1770" name="AV1SaveIsMigratedToV2OnRestore" fullname="GameCore.Persistence.Tests.SaveRestoreTests.AV1SaveIsMigratedToV2OnRestore" methodname="AV1SaveIsMigratedToV2OnRestore" classname="GameCore.Persistence.Tests.SaveRestoreTests" runstate="Runnable" seed="951484348" result="Passed" start-time="2026-10-07 18:54:09Z" end-time="2026-10-07 18:54:09Z" duration="0.159593" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

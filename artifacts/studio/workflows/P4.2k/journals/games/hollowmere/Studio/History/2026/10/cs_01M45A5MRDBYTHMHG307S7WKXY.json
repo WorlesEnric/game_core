@@ -1,0 +1,61 @@
+{
+  "id": "cs_01M45A5MRDBYTHMHG307S7WKXY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.npc-animator-states] Complete the NPC Animator's state machine on the imported controller",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "anim",
+      "tool": "hollowmere.generateNpcAnimator",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+      },
+      "args": {
+        "folder": "Assets/Hollowmere/Npcs/Animators",
+        "bodyChild": "Body"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "anim",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:56:45.465Z",
+    "applied": "2026-10-05T05:56:45.719Z"
+  }
+}

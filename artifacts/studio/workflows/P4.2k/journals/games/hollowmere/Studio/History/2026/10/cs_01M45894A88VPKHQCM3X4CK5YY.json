@@ -1,0 +1,142 @@
+{
+  "id": "cs_01M45894A88VPKHQCM3X4CK5YY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.belfry-skin] Texture the belfry ground and retire the primitive tower and floor",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "k0",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "objectName": "Ground",
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/GroundBelfry.mat"
+        ],
+        "hide": false
+      }
+    },
+    {
+      "opId": "k1",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "objectName": "Tower",
+        "materials": [],
+        "hide": true
+      }
+    },
+    {
+      "opId": "k2",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "objectName": "Flooded Floor",
+        "materials": [],
+        "hide": true
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "k0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "k1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "k2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.544Z",
+    "applied": "2026-10-05T05:23:42.547Z"
+  }
+}

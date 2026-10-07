@@ -1,0 +1,376 @@
+{
+  "id": "cs_01M4588ZTEECCRDRV86D8EJSGG",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:media.sfx-import] Import the P3.1 procedural sound effects (pickup, shrine, splash, quest sting, shrine ambience)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "a0",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_pickup.wav",
+        "artifact": {
+          "artifact": "sha256:e19988971ba4336ed4166b5f9ff3b318b292a645d04fa4b5a81d1209cddaafef"
+        }
+      }
+    },
+    {
+      "opId": "a1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_shrine_light.wav",
+        "artifact": {
+          "artifact": "sha256:3f01411449f79b73e0486043a2c8c308f027a2e294a63baaaf4c3af2dbc17bea"
+        }
+      }
+    },
+    {
+      "opId": "a2",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_splash.wav",
+        "artifact": {
+          "artifact": "sha256:12630b502970ad0a19c13a43b2934aeb06645bf105a3af6f3386f8a6c890170d"
+        }
+      }
+    },
+    {
+      "opId": "a3",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sting_quest_complete.wav",
+        "artifact": {
+          "artifact": "sha256:9e1a654c7606f40f1a0ea4a6d9fb8a23c143e3012929840a319b41ec09237ae0"
+        }
+      }
+    },
+    {
+      "opId": "a4",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_gate_creak.wav",
+        "artifact": {
+          "artifact": "sha256:d727e345fa65ba0afd91aa02455b746802bb90625536b355c584d1499f4d1446"
+        }
+      }
+    },
+    {
+      "opId": "a5",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_bell_toll.wav",
+        "artifact": {
+          "artifact": "sha256:dc72619c144c192ef7b05a01ab3919718a22e01fca07e5ccbc0df7e2f6d32b3f"
+        }
+      }
+    },
+    {
+      "opId": "a6",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Audio/Generated/P3_1/ambience_shrine.wav",
+        "artifact": {
+          "artifact": "sha256:a5e222adc4cf685d24b11d6ab52744a0755bb196b2864cb8045876f5776a13da"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "e19988971ba4336ed4166b5f9ff3b318b292a645d04fa4b5a81d1209cddaafef",
+      "name": "sfx_pickup.wav",
+      "mediaType": "audio/wav",
+      "bytes": 7100,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "3f01411449f79b73e0486043a2c8c308f027a2e294a63baaaf4c3af2dbc17bea",
+      "name": "sfx_shrine_light.wav",
+      "mediaType": "audio/wav",
+      "bytes": 110294,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "12630b502970ad0a19c13a43b2934aeb06645bf105a3af6f3386f8a6c890170d",
+      "name": "sfx_splash.wav",
+      "mediaType": "audio/wav",
+      "bytes": 30914,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "9e1a654c7606f40f1a0ea4a6d9fb8a23c143e3012929840a319b41ec09237ae0",
+      "name": "sting_quest_complete.wav",
+      "mediaType": "audio/wav",
+      "bytes": 132344,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "d727e345fa65ba0afd91aa02455b746802bb90625536b355c584d1499f4d1446",
+      "name": "sfx_gate_creak.wav",
+      "mediaType": "audio/wav",
+      "bytes": 39734,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "dc72619c144c192ef7b05a01ab3919718a22e01fca07e5ccbc0df7e2f6d32b3f",
+      "name": "sfx_bell_toll.wav",
+      "mediaType": "audio/wav",
+      "bytes": 220544,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    },
+    {
+      "sha256": "a5e222adc4cf685d24b11d6ab52744a0755bb196b2864cb8045876f5776a13da",
+      "name": "ambience_shrine.wav",
+      "mediaType": "audio/wav",
+      "bytes": 441044,
+      "producer": {
+        "op": "procedural.audio",
+        "provider": "procedural"
+      },
+      "role": "sfx"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "a0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_pickup.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-14fb7e16f040d8b789bbce6b485d1c59-8300000-0",
+                "assetGuid": "14fb7e16f040d8b789bbce6b485d1c59",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_pickup.wav"
+              },
+              "stamp": "sha256:e19988971ba4336ed4166b5f9ff3b318b292a645d04fa4b5a81d1209cddaafef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_shrine_light.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-4c5c5cd48511c15d6a0aac63c97ab1e4-8300000-0",
+                "assetGuid": "4c5c5cd48511c15d6a0aac63c97ab1e4",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_shrine_light.wav"
+              },
+              "stamp": "sha256:3f01411449f79b73e0486043a2c8c308f027a2e294a63baaaf4c3af2dbc17bea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_splash.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-de1b2452fba916b3698f1010a37d1142-8300000-0",
+                "assetGuid": "de1b2452fba916b3698f1010a37d1142",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_splash.wav"
+              },
+              "stamp": "sha256:12630b502970ad0a19c13a43b2934aeb06645bf105a3af6f3386f8a6c890170d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sting_quest_complete.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-b7bd05fc857bb4f21a949264e3e81eb2-8300000-0",
+                "assetGuid": "b7bd05fc857bb4f21a949264e3e81eb2",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sting_quest_complete.wav"
+              },
+              "stamp": "sha256:9e1a654c7606f40f1a0ea4a6d9fb8a23c143e3012929840a319b41ec09237ae0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_gate_creak.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-f731a69d4e8a37cc2924303ec17093d3-8300000-0",
+                "assetGuid": "f731a69d4e8a37cc2924303ec17093d3",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_gate_creak.wav"
+              },
+              "stamp": "sha256:d727e345fa65ba0afd91aa02455b746802bb90625536b355c584d1499f4d1446"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_bell_toll.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-33495d48ea20a7d0fad800bcd54cebbb-8300000-0",
+                "assetGuid": "33495d48ea20a7d0fad800bcd54cebbb",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/sfx_bell_toll.wav"
+              },
+              "stamp": "sha256:dc72619c144c192ef7b05a01ab3919718a22e01fca07e5ccbc0df7e2f6d32b3f"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "a6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/ambience_shrine.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-0f7181b64665913c2ad8e0c574a8db35-8300000-0",
+                "assetGuid": "0f7181b64665913c2ad8e0c574a8db35",
+                "path": "Assets/Hollowmere/Audio/Generated/P3_1/ambience_shrine.wav"
+              },
+              "stamp": "sha256:a5e222adc4cf685d24b11d6ab52744a0755bb196b2864cb8045876f5776a13da"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:37.935Z",
+    "applied": "2026-10-05T05:23:38.545Z"
+  }
+}

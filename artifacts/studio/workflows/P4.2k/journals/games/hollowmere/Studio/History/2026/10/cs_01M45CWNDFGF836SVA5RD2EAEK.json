@@ -1,0 +1,71 @@
+{
+  "id": "cs_01M45CWNDFGF836SVA5RD2EAEK",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.bram-graph] Create Bram's conversation asset (answers to dialogue.bram)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "create",
+      "args": {
+        "type": "dialogue.graph",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset",
+        "name": "Bram",
+        "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+        "fields": {
+          "speaker": "Bram"
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+                "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+                "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+              },
+              "stamp": "sha256:91eb0c84d2d29a721c9ec740c3d5ce778fed3bb80e055d650a95d233fcb2490b"
+            }
+          ],
+          "replay": {
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "assetPath": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:17.476Z",
+    "applied": "2026-10-05T06:44:18.140Z"
+  }
+}

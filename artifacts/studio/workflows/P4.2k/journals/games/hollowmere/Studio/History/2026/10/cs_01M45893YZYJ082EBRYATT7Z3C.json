@@ -1,0 +1,278 @@
+{
+  "id": "cs_01M45893YZYJ082EBRYATT7Z3C",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.village-lights] Lantern light in the village (road, gate and inn windows)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "l0",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "name": "Road Lantern 1 Light",
+        "position": [
+          9.0,
+          2.5,
+          -3.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.5,
+        "range": 9.0,
+        "shadows": false
+      }
+    },
+    {
+      "opId": "l1",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "name": "Road Lantern 2 Light",
+        "position": [
+          21.0,
+          2.5,
+          -3.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.5,
+        "range": 9.0,
+        "shadows": false
+      }
+    },
+    {
+      "opId": "l2",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "name": "Gate Light",
+        "position": [
+          31.0,
+          2.6,
+          0.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 3.0,
+        "range": 10.0,
+        "shadows": false
+      }
+    },
+    {
+      "opId": "l3",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "name": "Inn Window Light",
+        "position": [
+          11.5,
+          2.2,
+          -14.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 3.5,
+        "range": 9.0,
+        "shadows": true
+      }
+    },
+    {
+      "opId": "l4",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "name": "Cottage Window Light",
+        "position": [
+          -14.0,
+          2.0,
+          6.5
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.0,
+        "range": 7.0,
+        "shadows": false
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "l0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.184Z",
+    "applied": "2026-10-05T05:23:42.194Z"
+  }
+}

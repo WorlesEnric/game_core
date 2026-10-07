@@ -1,0 +1,76 @@
+{
+  "id": "cs_01M45894PFP63DTRRT2A74Q9R5",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:closure.run-action] Add the Run action (left shift, left stick press) to the player input actions",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "actions",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Input/Player.inputactions",
+        "artifact": {
+          "artifact": "sha256:9a8f2377df45bc3320ba1ba1b38fea7adcf3d8d60588e86e8836489d7058d1a6"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "9a8f2377df45bc3320ba1ba1b38fea7adcf3d8d60588e86e8836489d7058d1a6",
+      "name": "Player.inputactions",
+      "mediaType": "application/json",
+      "bytes": 15169,
+      "producer": {
+        "op": "edit.inputActions",
+        "provider": "procedural"
+      },
+      "role": "inputActions"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "actions",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.restoreAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Input/Player.inputactions",
+                "artifact": {
+                  "artifact": "sha256:07b24505f5d9b5ad59f4a90ee80142c1700d2ba981b7cebef96747dc2ef8aa7c"
+                },
+                "meta": {
+                  "artifact": "sha256:dc5321cd96336fb5cd4d1107d29d6cbf527e05e7c8cc99142795d9ac81a25f8c"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-4121b93fef22f6ff49ddab5192b0761b-17502115434096073164-0",
+                "assetGuid": "4121b93fef22f6ff49ddab5192b0761b",
+                "path": "Assets/Hollowmere/Input/Player.inputactions"
+              },
+              "stamp": "sha256:9a8f2377df45bc3320ba1ba1b38fea7adcf3d8d60588e86e8836489d7058d1a6"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.936Z",
+    "applied": "2026-10-05T05:23:42.980Z"
+  }
+}

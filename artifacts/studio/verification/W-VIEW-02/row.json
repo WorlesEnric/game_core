@@ -1,41 +1,41 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+    "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+  ],
   "checks": [
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
       "xmlCase": "Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
       "xmlCase": "Dialogue_UndoOnMarenKeepsTheConditionReferences"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
       "xmlCase": "Dialogue_PreviewDiffersByFact"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
       "xmlCase": "R2_32_RealPlayDialogueTravelAndDestroyedOwner"
     },
     {
-      "file": "W-VIEW-01/captures-20261007T121149Z/visual-review.json",
+      "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "evidence": [
-    "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
-    "W-VIEW-01/captures-20261007T121149Z/visual-review.json"
-  ],
   "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
-  "note": "Current creator AddLine/Connect/Rename and full-byte Undo pass in the 42/42 Views suite, alongside condition preview and real-Play bridge cases. Actual graph/preview controls are visibly captured.",
+  "status": "PASS",
+  "note": "Current-run Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-VIEW-02",
   "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

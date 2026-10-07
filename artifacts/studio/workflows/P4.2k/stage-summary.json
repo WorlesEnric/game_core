@@ -1,0 +1,84 @@
+[
+  {
+    "run": "cold",
+    "status": "PASS",
+    "jobId": "stg_1a117dd3026fbb9215da3d6",
+    "durationMs": 163483,
+    "admitMs": 46292.456000000006,
+    "coldCache": true,
+    "checks": {
+      "signedServiceVerifies": true,
+      "mandatoryStepsPass": true,
+      "stageWithin360Seconds": true,
+      "admitWithin90Seconds": true,
+      "restoredCoins": true,
+      "playResumed": true,
+      "smoke120Frames": true,
+      "undoVerified": true,
+      "currentRevision": true,
+      "docker": true
+    },
+    "suites": {
+      "editmode.xml": {
+        "total": 36,
+        "counts": {
+          "Passed": 36
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "playmode.xml": {
+        "total": 2,
+        "counts": {
+          "Passed": 2
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      }
+    },
+    "request": "W-MECH-01/p42k-stage-submit-cold-20261007T193451.830925Z/stage-request.json",
+    "review": "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z",
+    "verified": "W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json"
+  },
+  {
+    "run": "warm",
+    "status": "PASS",
+    "jobId": "stg_1a117e263c484d67072d316",
+    "durationMs": 81506,
+    "admitMs": 44906.335,
+    "coldCache": false,
+    "checks": {
+      "signedServiceVerifies": true,
+      "mandatoryStepsPass": true,
+      "stageWithin360Seconds": true,
+      "admitWithin90Seconds": true,
+      "restoredCoins": true,
+      "playResumed": true,
+      "smoke120Frames": true,
+      "undoVerified": true,
+      "currentRevision": true,
+      "docker": true
+    },
+    "suites": {
+      "editmode.xml": {
+        "total": 36,
+        "counts": {
+          "Passed": 36
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "playmode.xml": {
+        "total": 2,
+        "counts": {
+          "Passed": 2
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      }
+    },
+    "request": "W-MECH-01/p42k-stage-submit-warm-20261007T194035.029967Z/stage-request.json",
+    "review": "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z",
+    "verified": "W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json"
+  }
+]

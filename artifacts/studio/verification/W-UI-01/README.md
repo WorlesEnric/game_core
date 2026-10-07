@@ -1,17 +1,17 @@
 # W-UI-01: Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition
 
-Verdict: **PASS**. Current ordinary Open Studio connects and the walking driver passes; actual Select capture shows Maren and MarenEntity in the readable context card.
+Verdict: **PASS**. Current-run Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.
 
-P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
+P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/rows-p42j.py editor
+python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor
 ```
 
 ## Current-run evidence
 
-- [W-UI-01/p42j-open-play-20261007T120519.948523Z/workflow/result.json](../W-UI-01/p42j-open-play-20261007T120519.948523Z/workflow/result.json)
-- [W-UI-01/p42j-open-play-20261007T120519.948523Z/visual-review.json](../W-UI-01/p42j-open-play-20261007T120519.948523Z/visual-review.json)
+- [W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json](../W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json)
+- [W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json](../W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json)

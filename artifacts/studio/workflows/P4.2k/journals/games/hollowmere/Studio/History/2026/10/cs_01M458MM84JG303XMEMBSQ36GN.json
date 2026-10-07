@@ -1,0 +1,79 @@
+{
+  "id": "cs_01M458MM84JG303XMEMBSQ36GN",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:media.portraits-1] Show the 1 generated speaker portraits in the dialogue panel",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "portraits",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+        "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+        "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+        "path": "Assets/Hollowmere/Game/HollowmereDirector.asset",
+        "scope": "Definition",
+        "stamp": "sha256:5b3073c95348d1022a5c61dee7c6676fd37249cbfd0fb78c9402257bc8a00a82"
+      },
+      "args": {
+        "fields": {
+          "portraits": [
+            {
+              "speaker": "Maren",
+              "portrait": "Assets/Hollowmere/Media/Portraits/Maren.png"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "portraits",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "args": {
+                "fields": {
+                  "portraits": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "stamp": "sha256:17435fa0ad1bd65657eaa37e45f2f106f63343bff548ed3751380caf96d86de5"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:29:59.311Z",
+    "applied": "2026-10-05T05:29:59.319Z"
+  }
+}

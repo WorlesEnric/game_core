@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B1WY7J556FMS44J94VMTQ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: Painterly portrait of Pip, a curious freckled village child with messy straw-coloured hair and a yellow scarf, bright eyes, cottage background, storybook fantasy style, head and shoulders",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Portraits/Pip.png",
+        "artifact": {
+          "artifact": "sha256:7eb09241c9d155bf0463c0c0a4ecffe07644356432f250be738ed2a5fb9327e7"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "7eb09241c9d155bf0463c0c0a4ecffe07644356432f250be738ed2a5fb9327e7",
+      "name": "Pip.png",
+      "mediaType": "image/png",
+      "bytes": 158254,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Portraits/Pip.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-a4a666a3a0cbe704c905a147afc9ff59-2800000-0",
+                "assetGuid": "a4a666a3a0cbe704c905a147afc9ff59",
+                "path": "Assets/Hollowmere/Media/Portraits/Pip.png"
+              },
+              "stamp": "sha256:7eb09241c9d155bf0463c0c0a4ecffe07644356432f250be738ed2a5fb9327e7"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:11.344Z",
+    "applied": "2026-10-05T06:12:11.379Z"
+  }
+}

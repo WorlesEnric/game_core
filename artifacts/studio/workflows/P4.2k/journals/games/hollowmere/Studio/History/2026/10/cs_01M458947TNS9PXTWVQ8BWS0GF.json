@@ -1,0 +1,925 @@
+{
+  "id": "cs_01M458947TNS9PXTWVQ8BWS0GF",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.belfry-scenery] Dress the Drowned Belfry: tower, bell frame, flooded nave, ruined walls, landing",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "s0",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "tower",
+        "position": [
+          100.0,
+          0.0,
+          208.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          8.0,
+          16.0,
+          8.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat",
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Drowned Belfry Tower"
+      }
+    },
+    {
+      "opId": "s1",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          100.0,
+          0.03,
+          198.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          20.0,
+          0.0,
+          14.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Water.mat"
+        ],
+        "collider": false,
+        "name": "Flooded Nave"
+      }
+    },
+    {
+      "opId": "s2",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          100.0,
+          0.02,
+          170.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          40.0,
+          0.0,
+          14.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/BlackWater.mat"
+        ],
+        "collider": false,
+        "name": "Belfry Shallows"
+      }
+    },
+    {
+      "opId": "s3",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "bellFrame",
+        "position": [
+          100.0,
+          0.0,
+          198.6
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Bell Frame"
+      }
+    },
+    {
+      "opId": "s4",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "jetty",
+        "position": [
+          100.0,
+          0.0,
+          179.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          3.0,
+          0.5,
+          8.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": false,
+        "name": "Belfry Landing"
+      }
+    },
+    {
+      "opId": "s5",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          88.0,
+          0.0,
+          203.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Nave Wall West"
+      }
+    },
+    {
+      "opId": "s6",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          112.0,
+          0.0,
+          203.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Nave Wall East"
+      }
+    },
+    {
+      "opId": "s7",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          91.0,
+          0.0,
+          213.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          5.0,
+          4.0,
+          0.8
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Apse Wall West"
+      }
+    },
+    {
+      "opId": "s8",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          109.0,
+          0.0,
+          213.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          5.0,
+          4.0,
+          0.8
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Apse Wall East"
+      }
+    },
+    {
+      "opId": "s9",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          86.0,
+          0.0,
+          190.0
+        ],
+        "yaw": 20.0,
+        "size": [
+          5.0,
+          2.4,
+          0.8
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Broken Wall South West"
+      }
+    },
+    {
+      "opId": "s10",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "ruinWall",
+        "position": [
+          114.0,
+          0.0,
+          191.0
+        ],
+        "yaw": -15.0,
+        "size": [
+          5.0,
+          2.0,
+          0.8
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Broken Wall South East"
+      }
+    },
+    {
+      "opId": "s11",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          80.0,
+          0.0,
+          182.0
+        ],
+        "yaw": 30.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Drowned Tree 1"
+      }
+    },
+    {
+      "opId": "s12",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          121.0,
+          0.0,
+          221.0
+        ],
+        "yaw": 160.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Drowned Tree 2"
+      }
+    },
+    {
+      "opId": "s13",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          91.0,
+          0.0,
+          185.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Belfry Reeds 1"
+      }
+    },
+    {
+      "opId": "s14",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          110.0,
+          0.0,
+          184.0
+        ],
+        "yaw": 45.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Belfry Reeds 2"
+      }
+    },
+    {
+      "opId": "s15",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          118.0,
+          0.0,
+          200.0
+        ],
+        "yaw": 10.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Fallen Stone 1"
+      }
+    },
+    {
+      "opId": "s16",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          83.0,
+          0.0,
+          208.0
+        ],
+        "yaw": 80.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Fallen Stone 2"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "s0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s7",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s8",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s9",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s10",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s11",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s12",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s13",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s14",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s15",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s16",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.468Z",
+    "applied": "2026-10-05T05:23:42.533Z"
+  }
+}

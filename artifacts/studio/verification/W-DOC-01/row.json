@@ -1,34 +1,34 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
+    "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json"
+  ],
   "checks": [
     {
-      "file": "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/results.xml",
+      "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
       "xmlCase": "R2_38_Guide_NpcAndDialogueContextToolsUndo"
     },
     {
-      "file": "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/guide.json",
+      "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
       "pointer": "/dialogueUndoOk",
       "equals": true
     },
     {
-      "file": "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/guide.json",
+      "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
       "pointer": "/npcUndoOk",
       "equals": true
     }
   ],
-  "evidence": [
-    "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/results.xml",
-    "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/guide.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py guide",
-  "note": "Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py guide",
+  "status": "PASS",
+  "note": "Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-DOC-01",
   "scenario": "New user adds an NPC with dialogue from the creator guide",
   "requirement": "SR-12.1",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/results.xml",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

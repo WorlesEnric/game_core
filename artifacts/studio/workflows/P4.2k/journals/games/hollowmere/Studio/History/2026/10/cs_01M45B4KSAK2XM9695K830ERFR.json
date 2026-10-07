@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B4KSAK2XM9695K830ERFR",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Chew them when your legs give out.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav",
+        "artifact": {
+          "artifact": "sha256:56d50c19d56a16c0e91c12a475f1683f2fc7c7282d82066fc0c634408319d7a2"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "56d50c19d56a16c0e91c12a475f1683f2fc7c7282d82066fc0c634408319d7a2",
+      "name": "Bram_herbs.wav",
+      "mediaType": "audio/wav",
+      "bytes": 80684,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-389505aa044c01657a030c60c3bb6f10-8300000-0",
+                "assetGuid": "389505aa044c01657a030c60c3bb6f10",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav"
+              },
+              "stamp": "sha256:56d50c19d56a16c0e91c12a475f1683f2fc7c7282d82066fc0c634408319d7a2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:40.277Z",
+    "applied": "2026-10-05T06:13:40.388Z"
+  }
+}

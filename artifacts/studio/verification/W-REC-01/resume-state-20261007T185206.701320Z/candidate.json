@@ -1,0 +1,38 @@
+{
+  "id": "cs_01M4BVBSY7DV94N2QTE29CPZKV",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "P4.2 real Editor death resume",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/data.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/second.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47",
+      "name": "data.txt",
+      "mediaType": "text/plain",
+      "bytes": 11
+    }
+  ]
+}

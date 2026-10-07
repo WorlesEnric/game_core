@@ -1,0 +1,34 @@
+{
+  "id": "cs_01M45894J3ZQXGNZXV92EHD277",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.boot-presentation] Boot presentation: global post-processing volume, camera post and FXAA, soft sun shadows",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "boot",
+      "tool": "hollowmere.configureBootPresentation",
+      "args": {
+        "volumeProfilePath": "Assets/Hollowmere/Scenery/HollowmerePostProcessing.asset"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "boot",
+      "status": "Applied"
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.794Z",
+    "applied": "2026-10-05T05:23:42.819Z"
+  }
+}

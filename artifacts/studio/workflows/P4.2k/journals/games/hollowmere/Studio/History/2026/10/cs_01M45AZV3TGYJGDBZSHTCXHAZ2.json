@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AZV3TGYJGDBZSHTCXHAZ2",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Halt. Blackmere eats folk who walk it dark. Come back with a lantern and I will open the gate.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Hale_halt.wav",
+        "artifact": {
+          "artifact": "sha256:df37d2efbfa8d4d5ee561bd0683615ece5d6e334468fa71593d155a53126dc4f"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "df37d2efbfa8d4d5ee561bd0683615ece5d6e334468fa71593d155a53126dc4f",
+      "name": "Hale_halt.wav",
+      "mediaType": "audio/wav",
+      "bytes": 353324,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Hale_halt.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d7588b358ad8ad43091865a2b5dc1783-8300000-0",
+                "assetGuid": "d7588b358ad8ad43091865a2b5dc1783",
+                "path": "Assets/Hollowmere/Media/Voices/Hale_halt.wav"
+              },
+              "stamp": "sha256:df37d2efbfa8d4d5ee561bd0683615ece5d6e334468fa71593d155a53126dc4f"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:03.943Z",
+    "applied": "2026-10-05T06:11:04.085Z"
+  }
+}

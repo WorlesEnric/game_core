@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYPTSNC1KAGS07W7N2EB6",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Warden Hale keeps the causeway gate and lets no one into Blackmere without a light. Past it, Odd's ferry, or the old punt by the jetty.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_cross.wav",
+        "artifact": {
+          "artifact": "sha256:7303ae17ed42876cf56bb6085b9a0800e389390607aa67e17cfdd1a270029b99"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "7303ae17ed42876cf56bb6085b9a0800e389390607aa67e17cfdd1a270029b99",
+      "name": "Maren_cross.wav",
+      "mediaType": "audio/wav",
+      "bytes": 445484,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_cross.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-926ffe37e1bd19903a03bddf3bc329d3-8300000-0",
+                "assetGuid": "926ffe37e1bd19903a03bddf3bc329d3",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_cross.wav"
+              },
+              "stamp": "sha256:7303ae17ed42876cf56bb6085b9a0800e389390607aa67e17cfdd1a270029b99"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:26.788Z",
+    "applied": "2026-10-05T06:10:26.928Z"
+  }
+}

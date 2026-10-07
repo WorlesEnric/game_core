@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "state": "Applied",
+  "diagnostics": [],
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "args": {
+                "fields": {
+                  "materialTextures": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "stamp": "sha256:0c861cd2dde971d69f58bfa5b0b10b506e2d530071f8b0f0d4048604230fa42b"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

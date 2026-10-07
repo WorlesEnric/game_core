@@ -1,0 +1,74 @@
+{
+  "app": "gamecore-unity",
+  "capabilities": [
+    "requests",
+    "candidates",
+    "artifacts",
+    "index",
+    "ops",
+    "events",
+    "voice",
+    "stage",
+    "stage.cancel/1",
+    "stage.app-candidate.signed/1"
+  ],
+  "connected": true,
+  "minimumClientContract": 2,
+  "minimumClientRevision": "4635746",
+  "node": "studio",
+  "protocol": 1,
+  "providers": {
+    "3d": "not_configured",
+    "describe": "live",
+    "image": "live",
+    "tts": "live",
+    "voice": "unknown"
+  },
+  "providersCheckedAt": 1791396372214,
+  "sdk": "1.0.0",
+  "service": "gamecore-studio",
+  "tariffs": [
+    {
+      "op": "image",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      }
+    },
+    {
+      "op": "tts",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682E-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      }
+    },
+    {
+      "op": "describe",
+      "tariff": {
+        "kind": "operator",
+        "model": "echo/gpt-5.6-sol",
+        "note": "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models",
+        "perUnitUsd": 0.01,
+        "provider": "echo-describe",
+        "unit": "call",
+        "url": ""
+      }
+    }
+  ],
+  "toolCatalogRevisions": [],
+  "version": "0.1.0",
+  "workers": [
+    "gc-designer",
+    "gc-mechanic"
+  ]
+}

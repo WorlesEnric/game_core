@@ -1,0 +1,80 @@
+{
+  "id": "cs_01M45891DEETE34TNVZPNT2YTJ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:game.boot-component] Add HollowmereGame (saves, director, command line) next to GameBoot in Boot.unity",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "game",
+      "tool": "addComponent",
+      "target": {
+        "kind": "SceneObject",
+        "global": "GlobalObjectId_V1-2-cf82d8712b916763a82cdd5a8a1cdb90-81626894-0",
+        "assetGuid": "cf82d8712b916763a82cdd5a8a1cdb90",
+        "path": "Assets/Hollowmere/Boot/Boot.unity#/GameBoot",
+        "scope": "Instance",
+        "stamp": "sha256:cae5efae5e6587a4c7d73ebee41a373c6994407828f8515ed4207ab1724c81ef"
+      },
+      "args": {
+        "type": "hollowmere.game",
+        "fields": {
+          "director": "Assets/Hollowmere/Game/HollowmereDirector.asset",
+          "gameId": "hollowmere"
+        },
+        "authoringId": "5cccca55-4008-4fc2-baf5-e92f9f28d657"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "game",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "removeComponent",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "5cccca55-4008-4fc2-baf5-e92f9f28d657",
+                "global": "GlobalObjectId_V1-2-cf82d8712b916763a82cdd5a8a1cdb90-81626898-0",
+                "assetGuid": "cf82d8712b916763a82cdd5a8a1cdb90",
+                "path": "Assets/Hollowmere/Boot/Boot.unity#/GameBoot"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "5cccca55-4008-4fc2-baf5-e92f9f28d657",
+                "global": "GlobalObjectId_V1-2-cf82d8712b916763a82cdd5a8a1cdb90-81626898-0",
+                "assetGuid": "cf82d8712b916763a82cdd5a8a1cdb90",
+                "path": "Assets/Hollowmere/Boot/Boot.unity#/GameBoot"
+              },
+              "stamp": "sha256:921cea385e561c91576ee693505cc916ad6c15e40519b911b725930e0be5f763"
+            }
+          ],
+          "replay": {
+            "authoringId": "5cccca55-4008-4fc2-baf5-e92f9f28d657"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.575Z",
+    "applied": "2026-10-05T05:23:39.578Z"
+  }
+}

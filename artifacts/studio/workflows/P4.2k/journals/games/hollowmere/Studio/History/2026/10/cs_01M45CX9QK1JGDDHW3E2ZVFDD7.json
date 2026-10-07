@@ -1,0 +1,410 @@
+{
+  "id": "cs_01M45CX9QK1JGDDHW3E2ZVFDD7",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:media.voices-28.Odd] Attach the generated voice lines of Odd",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+        "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+        "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset",
+        "scope": "Definition",
+        "stamp": "sha256:983f0b286b45cdff5c2f69c574083bd59252c5ea75b595ba204f0f08f40769c0"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Odd",
+          "speakerEntityId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Branch",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset",
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Odd_refuse.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "You lit the old shrine. My mother tended it. I owe you a crossing.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Odd_thanks.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset",
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "The black water is calm tonight.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "Take me to the belfry.",
+                  "condition": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset",
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Not yet.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset",
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "I will be here. The water is patient.",
+              "voiceClip": "Assets/Hollowmere/Media/Voices/Odd_wait.wav",
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Else",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Else",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 1,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 3,
+              "port": "Next",
+              "option": 0,
+              "to": 4
+            },
+            {
+              "from": 4,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 5
+            },
+            {
+              "from": 5,
+              "port": "Option",
+              "option": 0,
+              "to": 6
+            },
+            {
+              "from": 5,
+              "port": "Option",
+              "option": 1,
+              "to": 7
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+                "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+                "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Odd",
+                  "speakerEntityId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                  "entry": 0,
+                  "nodes": [
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "a6f7c2a5-47b1-4fe9-a6fb-a5946f443f67",
+                        "global": "GlobalObjectId_V1-3-5dc4b5ce6affc78bc94dd2031bc52e2d-11400000-0",
+                        "assetGuid": "5dc4b5ce6affc78bc94dd2031bc52e2d",
+                        "path": "Assets/Hollowmere/Rules/Conditions/OddFavour.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+                        "global": "GlobalObjectId_V1-3-850520e0be842c7e9830bf255c4a9069-11400000-0",
+                        "assetGuid": "850520e0be842c7e9830bf255c4a9069",
+                        "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "You lit the old shrine. My mother tended it. I owe you a crossing.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "d2a1a116-34a6-4f16-bd03-7575628b11d9",
+                        "global": "GlobalObjectId_V1-3-e952c26493555ce73964aef5c959145a-11400000-0",
+                        "assetGuid": "e952c26493555ce73964aef5c959145a",
+                        "path": "Assets/Hollowmere/Rules/Actions/OddGrantsFavour.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Choice",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The black water is calm tonight.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": [
+                        {
+                          "text": "Take me to the belfry.",
+                          "condition": {
+                            "kind": "Definition",
+                            "authoringId": "78eeeedd-9917-460a-8d0e-71d128dc7246",
+                            "global": "GlobalObjectId_V1-3-abc1982dda435320caeb533fec290a89-11400000-0",
+                            "assetGuid": "abc1982dda435320caeb533fec290a89",
+                            "path": "Assets/Hollowmere/Rules/Conditions/HasLantern.asset"
+                          },
+                          "hideWhenUnavailable": false
+                        },
+                        {
+                          "text": "Not yet.",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "421c017e-2867-4d58-821a-67045e416c1b",
+                        "global": "GlobalObjectId_V1-3-a352f18a1dcae618b83742479b4bbcc5-11400000-0",
+                        "assetGuid": "a352f18a1dcae618b83742479b4bbcc5",
+                        "path": "Assets/Hollowmere/Rules/Actions/FerryCrossing.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "I will be here. The water is patient.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 0,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 1,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 1,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 3
+                    },
+                    {
+                      "from": 3,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 4
+                    },
+                    {
+                      "from": 4,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 5
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 5
+                    },
+                    {
+                      "from": 5,
+                      "port": "Option",
+                      "option": 0,
+                      "to": 6
+                    },
+                    {
+                      "from": 5,
+                      "port": "Option",
+                      "option": 1,
+                      "to": 7
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+                "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+                "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+              },
+              "stamp": "sha256:7109950a3db1bf17eedade058d30f1818a77701528b168bd5cd0556e0e4d07e1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:37.768Z",
+    "applied": "2026-10-05T06:44:38.587Z"
+  }
+}

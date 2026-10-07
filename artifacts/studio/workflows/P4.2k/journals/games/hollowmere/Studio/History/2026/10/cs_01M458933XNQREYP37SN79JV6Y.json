@@ -1,0 +1,835 @@
+{
+  "id": "cs_01M458933XNQREYP37SN79JV6Y",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.textures] Import 16 procedural tiling textures (labelled procedural in the media manifest)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "t0",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/grass.png",
+        "artifact": {
+          "artifact": "sha256:4ffb506de7b67439e00fea58a4576e8622eae81ea3a0421a331fbf4ee9e7e003"
+        }
+      }
+    },
+    {
+      "opId": "t1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/mud.png",
+        "artifact": {
+          "artifact": "sha256:89bbb66305c319fd59d7531cd229dcdae67ebae44e33f2d428040f51bd40efd3"
+        }
+      }
+    },
+    {
+      "opId": "t2",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/mossStone.png",
+        "artifact": {
+          "artifact": "sha256:86b970ed2c86d461a71534a4cde8b558c628a09aca37923d588bde03f9c1a22c"
+        }
+      }
+    },
+    {
+      "opId": "t3",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/plaster.png",
+        "artifact": {
+          "artifact": "sha256:aa4fc2e597c5104256a52e731ceb1b9675cde5d242f2aad44ebc85a340baeaa4"
+        }
+      }
+    },
+    {
+      "opId": "t4",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/thatch.png",
+        "artifact": {
+          "artifact": "sha256:f0d47e051ea66b48effb21bc2663afd743c02da03edb7a98a0f7af65611dd2ab"
+        }
+      }
+    },
+    {
+      "opId": "t5",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/timber.png",
+        "artifact": {
+          "artifact": "sha256:349426739c3d99fc97c7f5ce5544f5eed3790ec563fb15456a6e1770489c1565"
+        }
+      }
+    },
+    {
+      "opId": "t6",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/stone.png",
+        "artifact": {
+          "artifact": "sha256:d2bacb447326d80d1a5304f5cab0b42efaf2cb0db698e95842e318903c12d406"
+        }
+      }
+    },
+    {
+      "opId": "t7",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/planks.png",
+        "artifact": {
+          "artifact": "sha256:9c455eb9fe63d72bb17ad55fc4c32aa99dfb74b54b45ecde566c9988635ed87b"
+        }
+      }
+    },
+    {
+      "opId": "t8",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/cobble.png",
+        "artifact": {
+          "artifact": "sha256:aac24907772ee124e466631f4e5ce96e079b04853f27888a0e351aef370b35f3"
+        }
+      }
+    },
+    {
+      "opId": "t9",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/bark.png",
+        "artifact": {
+          "artifact": "sha256:73a0d424984228886954e1097940d2dedf8e3d012054686f56fb4948d7658087"
+        }
+      }
+    },
+    {
+      "opId": "t10",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/leaves.png",
+        "artifact": {
+          "artifact": "sha256:00ecae51afd294731665413cb450366050a26782d3d0b0a7e26f31b88ee160b9"
+        }
+      }
+    },
+    {
+      "opId": "t11",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/reed.png",
+        "artifact": {
+          "artifact": "sha256:bfd8e2479f40fbe9cf417a64bd30613b45ac582fcbfaeb0451aca467a76b726c"
+        }
+      }
+    },
+    {
+      "opId": "t12",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/cloth.png",
+        "artifact": {
+          "artifact": "sha256:08fdfdc338a29c3802a3f2b19a78bd5053ca7b12d542475ec04ed2964a96b813"
+        }
+      }
+    },
+    {
+      "opId": "t13",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/bronze.png",
+        "artifact": {
+          "artifact": "sha256:a755e2c52cae83ff26452de2cfd11b1beda9f74c41e96eb63df3096aabc74fdf"
+        }
+      }
+    },
+    {
+      "opId": "t14",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/water.png",
+        "artifact": {
+          "artifact": "sha256:6cabe933f6e24e433eb1c666ed2f16104af02fef36394c3981de8063ee2f87fd"
+        }
+      }
+    },
+    {
+      "opId": "t15",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Textures/glow.png",
+        "artifact": {
+          "artifact": "sha256:c27d2446574af3242d7ccb5f59bc0c57ab1ee2207877df1f1bba1c7fbdb24730"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4ffb506de7b67439e00fea58a4576e8622eae81ea3a0421a331fbf4ee9e7e003",
+      "name": "grass.png",
+      "mediaType": "image/png",
+      "bytes": 74251,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "89bbb66305c319fd59d7531cd229dcdae67ebae44e33f2d428040f51bd40efd3",
+      "name": "mud.png",
+      "mediaType": "image/png",
+      "bytes": 40775,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "86b970ed2c86d461a71534a4cde8b558c628a09aca37923d588bde03f9c1a22c",
+      "name": "mossStone.png",
+      "mediaType": "image/png",
+      "bytes": 85664,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "aa4fc2e597c5104256a52e731ceb1b9675cde5d242f2aad44ebc85a340baeaa4",
+      "name": "plaster.png",
+      "mediaType": "image/png",
+      "bytes": 72297,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "f0d47e051ea66b48effb21bc2663afd743c02da03edb7a98a0f7af65611dd2ab",
+      "name": "thatch.png",
+      "mediaType": "image/png",
+      "bytes": 85295,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "349426739c3d99fc97c7f5ce5544f5eed3790ec563fb15456a6e1770489c1565",
+      "name": "timber.png",
+      "mediaType": "image/png",
+      "bytes": 47431,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "d2bacb447326d80d1a5304f5cab0b42efaf2cb0db698e95842e318903c12d406",
+      "name": "stone.png",
+      "mediaType": "image/png",
+      "bytes": 58229,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "9c455eb9fe63d72bb17ad55fc4c32aa99dfb74b54b45ecde566c9988635ed87b",
+      "name": "planks.png",
+      "mediaType": "image/png",
+      "bytes": 63283,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "aac24907772ee124e466631f4e5ce96e079b04853f27888a0e351aef370b35f3",
+      "name": "cobble.png",
+      "mediaType": "image/png",
+      "bytes": 96691,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "73a0d424984228886954e1097940d2dedf8e3d012054686f56fb4948d7658087",
+      "name": "bark.png",
+      "mediaType": "image/png",
+      "bytes": 23897,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "00ecae51afd294731665413cb450366050a26782d3d0b0a7e26f31b88ee160b9",
+      "name": "leaves.png",
+      "mediaType": "image/png",
+      "bytes": 61227,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "bfd8e2479f40fbe9cf417a64bd30613b45ac582fcbfaeb0451aca467a76b726c",
+      "name": "reed.png",
+      "mediaType": "image/png",
+      "bytes": 88922,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "08fdfdc338a29c3802a3f2b19a78bd5053ca7b12d542475ec04ed2964a96b813",
+      "name": "cloth.png",
+      "mediaType": "image/png",
+      "bytes": 61792,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "a755e2c52cae83ff26452de2cfd11b1beda9f74c41e96eb63df3096aabc74fdf",
+      "name": "bronze.png",
+      "mediaType": "image/png",
+      "bytes": 52424,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "6cabe933f6e24e433eb1c666ed2f16104af02fef36394c3981de8063ee2f87fd",
+      "name": "water.png",
+      "mediaType": "image/png",
+      "bytes": 55022,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    },
+    {
+      "sha256": "c27d2446574af3242d7ccb5f59bc0c57ab1ee2207877df1f1bba1c7fbdb24730",
+      "name": "glow.png",
+      "mediaType": "image/png",
+      "bytes": 74430,
+      "producer": {
+        "op": "procedural.texture",
+        "provider": "procedural"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "t0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/grass.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-187131d2f1dc1d91fb6c4c796bb1df52-2800000-0",
+                "assetGuid": "187131d2f1dc1d91fb6c4c796bb1df52",
+                "path": "Assets/Hollowmere/Scenery/Textures/grass.png"
+              },
+              "stamp": "sha256:4ffb506de7b67439e00fea58a4576e8622eae81ea3a0421a331fbf4ee9e7e003"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/mud.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-161f14d01adffe9adadfb371e49fd2c4-2800000-0",
+                "assetGuid": "161f14d01adffe9adadfb371e49fd2c4",
+                "path": "Assets/Hollowmere/Scenery/Textures/mud.png"
+              },
+              "stamp": "sha256:89bbb66305c319fd59d7531cd229dcdae67ebae44e33f2d428040f51bd40efd3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/mossStone.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-c6a86f7cbee934f46aaae8bd59c20322-2800000-0",
+                "assetGuid": "c6a86f7cbee934f46aaae8bd59c20322",
+                "path": "Assets/Hollowmere/Scenery/Textures/mossStone.png"
+              },
+              "stamp": "sha256:86b970ed2c86d461a71534a4cde8b558c628a09aca37923d588bde03f9c1a22c"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/plaster.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-ed16b3db4a643b30eb98c76effc508fb-2800000-0",
+                "assetGuid": "ed16b3db4a643b30eb98c76effc508fb",
+                "path": "Assets/Hollowmere/Scenery/Textures/plaster.png"
+              },
+              "stamp": "sha256:aa4fc2e597c5104256a52e731ceb1b9675cde5d242f2aad44ebc85a340baeaa4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/thatch.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-0e57a025b208ed48ea1ab818bcfcb513-2800000-0",
+                "assetGuid": "0e57a025b208ed48ea1ab818bcfcb513",
+                "path": "Assets/Hollowmere/Scenery/Textures/thatch.png"
+              },
+              "stamp": "sha256:f0d47e051ea66b48effb21bc2663afd743c02da03edb7a98a0f7af65611dd2ab"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/timber.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-c26b96576cd39b9c185a51b8ccc9ea3b-2800000-0",
+                "assetGuid": "c26b96576cd39b9c185a51b8ccc9ea3b",
+                "path": "Assets/Hollowmere/Scenery/Textures/timber.png"
+              },
+              "stamp": "sha256:349426739c3d99fc97c7f5ce5544f5eed3790ec563fb15456a6e1770489c1565"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/stone.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d32bd7d13a21ebcda812f42dbef83f12-2800000-0",
+                "assetGuid": "d32bd7d13a21ebcda812f42dbef83f12",
+                "path": "Assets/Hollowmere/Scenery/Textures/stone.png"
+              },
+              "stamp": "sha256:d2bacb447326d80d1a5304f5cab0b42efaf2cb0db698e95842e318903c12d406"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t7",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/planks.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-0aec2a2908a58b5ceb768578ce8e977d-2800000-0",
+                "assetGuid": "0aec2a2908a58b5ceb768578ce8e977d",
+                "path": "Assets/Hollowmere/Scenery/Textures/planks.png"
+              },
+              "stamp": "sha256:9c455eb9fe63d72bb17ad55fc4c32aa99dfb74b54b45ecde566c9988635ed87b"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t8",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/cobble.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-76502c2484979a29186642f2f86f0f7a-2800000-0",
+                "assetGuid": "76502c2484979a29186642f2f86f0f7a",
+                "path": "Assets/Hollowmere/Scenery/Textures/cobble.png"
+              },
+              "stamp": "sha256:aac24907772ee124e466631f4e5ce96e079b04853f27888a0e351aef370b35f3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t9",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/bark.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-47056943a485097e2898745d4e59569a-2800000-0",
+                "assetGuid": "47056943a485097e2898745d4e59569a",
+                "path": "Assets/Hollowmere/Scenery/Textures/bark.png"
+              },
+              "stamp": "sha256:73a0d424984228886954e1097940d2dedf8e3d012054686f56fb4948d7658087"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t10",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/leaves.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-2d1408e6b9d38defe8a44957774834fb-2800000-0",
+                "assetGuid": "2d1408e6b9d38defe8a44957774834fb",
+                "path": "Assets/Hollowmere/Scenery/Textures/leaves.png"
+              },
+              "stamp": "sha256:00ecae51afd294731665413cb450366050a26782d3d0b0a7e26f31b88ee160b9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t11",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/reed.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-6e8e84f28edd2adee97632db78844a35-2800000-0",
+                "assetGuid": "6e8e84f28edd2adee97632db78844a35",
+                "path": "Assets/Hollowmere/Scenery/Textures/reed.png"
+              },
+              "stamp": "sha256:bfd8e2479f40fbe9cf417a64bd30613b45ac582fcbfaeb0451aca467a76b726c"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t12",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/cloth.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-9322c755f28b15388b2c288788d2c2bb-2800000-0",
+                "assetGuid": "9322c755f28b15388b2c288788d2c2bb",
+                "path": "Assets/Hollowmere/Scenery/Textures/cloth.png"
+              },
+              "stamp": "sha256:08fdfdc338a29c3802a3f2b19a78bd5053ca7b12d542475ec04ed2964a96b813"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t13",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/bronze.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-3ab9904a3bb31e692bfc2f189a8825e6-2800000-0",
+                "assetGuid": "3ab9904a3bb31e692bfc2f189a8825e6",
+                "path": "Assets/Hollowmere/Scenery/Textures/bronze.png"
+              },
+              "stamp": "sha256:a755e2c52cae83ff26452de2cfd11b1beda9f74c41e96eb63df3096aabc74fdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t14",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/water.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d42cf9f2ddcc64d598224203b9136d91-2800000-0",
+                "assetGuid": "d42cf9f2ddcc64d598224203b9136d91",
+                "path": "Assets/Hollowmere/Scenery/Textures/water.png"
+              },
+              "stamp": "sha256:6cabe933f6e24e433eb1c666ed2f16104af02fef36394c3981de8063ee2f87fd"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "t15",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Scenery/Textures/glow.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-906cfeb62e72c6591bbec381f1883cef-2800000-0",
+                "assetGuid": "906cfeb62e72c6591bbec381f1883cef",
+                "path": "Assets/Hollowmere/Scenery/Textures/glow.png"
+              },
+              "stamp": "sha256:c27d2446574af3242d7ccb5f59bc0c57ab1ee2207877df1f1bba1c7fbdb24730"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:41.318Z",
+    "applied": "2026-10-05T05:23:41.878Z"
+  }
+}

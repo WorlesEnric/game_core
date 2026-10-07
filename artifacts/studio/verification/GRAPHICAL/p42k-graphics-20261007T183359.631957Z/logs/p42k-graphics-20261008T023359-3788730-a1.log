@@ -1,0 +1,941 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              NO
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-07T18:33:59.800145Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              b3e7b40d1d144e02a0598cb9eb546e32
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 4595015846876173258
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-07T18:33:59.800776Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+The selected window backend is (null)
+Desktop is 1920 x 1080 @ 60 Hz
+Initialize udev device monitor.
+
+COMMAND LINE ARGUMENTS:
+~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-projectPath
+~/wkspace/gc-studio/p4.2k/games/hollowmere
+-logFile
+-
+-testResults
+~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z/results.xml
+-runTests
+-testPlatform
+EditMode
+-testFilter
+R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless
+-upmLogFile
+~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z/upm.log
+Successfully changed project path to: ~/wkspace/gc-studio/p4.2k/games/hollowmere
+~/wkspace/gc-studio/p4.2k/games/hollowmere
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+Player connection [123393684604224]  Target information:
+
+Player connection [123393684604224]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 172.19.0.1 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224]  * "[IP] 172.20.0.1 [Port] 55504 [Flags] 2 [Guid] 2030535064 [EditorId] 2030535064 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123393684604224] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [123393684604224] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-3788779" after 0.2 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path ~/wkspace/gc-studio/p4.2k/games/hollowmere/Assets
+kGfxThreadingModeNonThreaded is not supported on OpenGL Core. Reverting to kGfxThreadingModeDirect instead.
+GfxDevice: creating device client; kGfxThreadingModeDirect
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Renderer: NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2
+Vendor:   NVIDIA Corporation
+Version:  4.5.0 NVIDIA 595.84
+GLES:     0
+ GL_AMD_multi_draw_indirect GL_AMD_seamless_cubemap_per_texture GL_AMD_vertex_shader_viewport_index GL_AMD_vertex_shader_layer GL_ARB_arrays_of_arrays GL_ARB_base_instance GL_ARB_bindless_texture GL_ARB_blend_func_extended GL_ARB_buffer_storage GL_ARB_clear_buffer_object GL_ARB_clear_texture GL_ARB_clip_control GL_ARB_color_buffer_float GL_ARB_compressed_texture_pixel_storage GL_ARB_conservative_depth GL_ARB_compute_shader GL_ARB_compute_variable_group_size GL_ARB_conditional_render_inverted GL_ARB_copy_buffer GL_ARB_copy_image GL_ARB_cull_distance GL_ARB_debug_output GL_ARB_depth_buffer_float GL_ARB_depth_clamp GL_ARB_depth_texture GL_ARB_derivative_control GL_ARB_direct_state_access GL_ARB_draw_buffers GL_ARB_draw_buffers_blend GL_ARB_draw_indirect GL_ARB_draw_elements_base_vertex GL_ARB_draw_instanced GL_ARB_enhanced_layouts GL_ARB_ES2_compatibility GL_ARB_ES3_compatibility GL_ARB_ES3_1_compatibility GL_ARB_ES3_2_compatibility GL_ARB_explicit_attrib_location GL_ARB_explicit_uniform_location GL_ARB_fragmen
+t_coord_conventions GL_ARB_fragment_layer_viewport GL_ARB_fragment_program GL_ARB_fragment_program_shadow GL_ARB_fragment_shader GL_ARB_fragment_shader_interlock GL_ARB_framebuffer_no_attachments GL_ARB_framebuffer_object GL_ARB_framebuffer_sRGB GL_ARB_geometry_shader4 GL_ARB_get_program_binary GL_ARB_get_texture_sub_image GL_ARB_gl_spirv GL_ARB_gpu_shader5 GL_ARB_gpu_shader_fp64 GL_ARB_gpu_shader_int64 GL_ARB_half_float_pixel GL_ARB_half_float_vertex GL_ARB_imaging GL_ARB_indirect_parameters GL_ARB_instanced_arrays GL_ARB_internalformat_query GL_ARB_internalformat_query2 GL_ARB_invalidate_subdata GL_ARB_map_buffer_alignment GL_ARB_map_buffer_range GL_ARB_multi_bind GL_ARB_multi_draw_indirect GL_ARB_multisample GL_ARB_multitexture GL_ARB_occlusion_query GL_ARB_occlusion_query2 GL_ARB_parallel_shader_compile GL_ARB_pipeline_statistics_query GL_ARB_pixel_buffer_object GL_ARB_point_parameters GL_ARB_point_sprite GL_ARB_polygon_offset_clamp GL_ARB_post_depth_coverage GL_ARB_program_interface_query GL_ARB_provoki
+ng_vertex GL_ARB_query_buffer_object GL_ARB_robust_buffer_access_behavior GL_ARB_robustness GL_ARB_sample_locations GL_ARB_sample_shading GL_ARB_sampler_objects GL_ARB_seamless_cube_map GL_ARB_seamless_cubemap_per_texture GL_ARB_separate_shader_objects GL_ARB_shader_atomic_counter_ops GL_ARB_shader_atomic_counters GL_ARB_shader_ballot GL_ARB_shader_bit_encoding GL_ARB_shader_clock GL_ARB_shader_draw_parameters GL_ARB_shader_group_vote GL_ARB_shader_image_load_store GL_ARB_shader_image_size GL_ARB_shader_objects GL_ARB_shader_precision GL_ARB_shader_storage_buffer_object GL_ARB_shader_subroutine GL_ARB_shader_texture_image_samples GL_ARB_shader_texture_lod GL_ARB_shading_language_100 GL_ARB_shader_viewport_layer_array GL_ARB_shading_language_420pack GL_ARB_shading_language_include GL_ARB_shading_language_packing GL_ARB_shadow GL_ARB_sparse_buffer GL_ARB_sparse_texture GL_ARB_sparse_texture2 GL_ARB_sparse_texture_clamp GL_ARB_spirv_extensions GL_ARB_stencil_texturing GL_ARB_sync GL_ARB_tessellation_shader GL_A
+RB_texture_barrier GL_ARB_texture_border_clamp GL_ARB_texture_buffer_object GL_ARB_texture_buffer_object_rgb32 GL_ARB_texture_buffer_range GL_ARB_texture_compression GL_ARB_texture_compression_bptc GL_ARB_texture_compression_rgtc GL_ARB_texture_cube_map GL_ARB_texture_cube_map_array GL_ARB_texture_env_add GL_ARB_texture_env_combine GL_ARB_texture_env_crossbar GL_ARB_texture_env_dot3 GL_ARB_texture_filter_anisotropic GL_ARB_texture_filter_minmax GL_ARB_texture_float GL_ARB_texture_gather GL_ARB_texture_mirror_clamp_to_edge GL_ARB_texture_mirrored_repeat GL_ARB_texture_multisample GL_ARB_texture_non_power_of_two GL_ARB_texture_query_levels GL_ARB_texture_query_lod GL_ARB_texture_rectangle GL_ARB_texture_rg GL_ARB_texture_rgb10_a2ui GL_ARB_texture_stencil8 GL_ARB_texture_storage GL_ARB_texture_storage_multisample GL_ARB_texture_swizzle GL_ARB_texture_view GL_ARB_timer_query GL_ARB_transform_feedback2 GL_ARB_transform_feedback3 GL_ARB_transform_feedback_instanced GL_ARB_transform_feedback_overflow_query GL_ARB_t
+ranspose_matrix GL_ARB_uniform_buffer_object GL_ARB_vertex_array_bgra GL_ARB_vertex_array_object GL_ARB_vertex_attrib_64bit GL_ARB_vertex_attrib_binding GL_ARB_vertex_buffer_object GL_ARB_vertex_program GL_ARB_vertex_shader GL_ARB_vertex_type_10f_11f_11f_rev GL_ARB_vertex_type_2_10_10_10_rev GL_ARB_viewport_array GL_ARB_window_pos GL_ATI_draw_buffers GL_ATI_texture_float GL_ATI_texture_mirror_once GL_S3_s3tc GL_EXT_texture_env_add GL_EXT_abgr GL_EXT_bgra GL_EXT_bindable_uniform GL_EXT_blend_color GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_compiled_vertex_array GL_EXT_Cg_shader GL_EXT_depth_bounds_test GL_EXT_direct_state_access GL_EXT_draw_buffers2 GL_EXT_draw_instanced GL_EXT_draw_range_elements GL_EXT_fog_coord GL_EXT_framebuffer_blit GL_EXT_framebuffer_multisample GL_EXTX_framebuffer_mixed_formats GL_EXT_framebuffer_multisample_blit_scaled GL_EXT_framebuffer_object GL_EXT_framebuffer_sRGB GL_EXT_geometry_shader4 GL_EXT_gpu_program_parameters
+GL_EXT_gpu_shader4 GL_EXT_multi_draw_arrays GL_EXT_multiview_texture_multisample GL_EXT_multiview_timer_query GL_EXT_packed_depth_stencil GL_EXT_packed_float GL_EXT_packed_pixels GL_EXT_pixel_buffer_object GL_EXT_point_parameters GL_EXT_polygon_offset_clamp GL_EXT_post_depth_coverage GL_EXT_provoking_vertex GL_EXT_raster_multisample GL_EXT_rescale_normal GL_EXT_secondary_color GL_EXT_separate_shader_objects GL_EXT_separate_specular_color GL_EXT_shader_image_load_formatted GL_EXT_shader_image_load_store GL_EXT_shader_integer_mix GL_EXT_shadow_funcs GL_EXT_sparse_texture2 GL_EXT_stencil_two_side GL_EXT_stencil_wrap GL_EXT_texture3D GL_EXT_texture_array GL_EXT_texture_buffer_object GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_latc GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_cube_map GL_EXT_texture_edge_clamp GL_EXT_texture_env_combine GL_EXT_texture_env_dot3 GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_integer GL_EXT_texture_lod G
+L_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp GL_EXT_texture_object GL_EXT_texture_shadow_lod GL_EXT_texture_shared_exponent GL_EXT_texture_sRGB GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_decode GL_EXT_texture_storage GL_EXT_texture_swizzle GL_EXT_timer_query GL_EXT_transform_feedback2 GL_EXT_vertex_array GL_EXT_vertex_array_bgra GL_EXT_vertex_attrib_64bit GL_EXT_window_rectangles GL_EXT_x11_sync_object GL_EXT_import_sync_object GL_NV_robustness_video_memory_purge GL_IBM_rasterpos_clip GL_IBM_texture_mirrored_repeat GL_KHR_context_flush_control GL_KHR_debug GL_EXT_memory_object GL_EXT_memory_object_fd GL_NV_memory_object_sparse GL_KHR_parallel_shader_compile GL_KHR_no_error GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_EXT_semaphore GL_EXT_semaphore_fd GL_NV_timeline_semaphore GL_KHR_shader_subgroup GL_KTX_buffer_region GL_NV_alpha_to_coverage_dither_control GL_NV_bindless_multi_draw_indirect GL_NV_bindless_multi_draw_indirect_count GL_NV_bindless_texture GL_NV_blend_equation_advanced GL_NV_
+blend_equation_advanced_coherent GL_NVX_blend_equation_advanced_multi_draw_buffers GL_NV_blend_minmax_factor GL_NV_blend_square GL_NV_clip_space_w_scaling GL_NV_command_list GL_NV_compute_program5 GL_NV_compute_shader_derivatives GL_NV_conditional_render GL_NV_conservative_raster GL_NV_conservative_raster_dilate GL_NV_conservative_raster_pre_snap GL_NV_conservative_raster_pre_snap_triangles GL_NV_conservative_raster_underestimation GL_NV_copy_depth_to_color GL_NV_copy_image GL_NV_depth_buffer_float GL_NV_depth_clamp GL_NV_draw_texture GL_NV_draw_vulkan_image GL_NV_ES1_1_compatibility GL_NV_ES3_1_compatibility GL_NV_explicit_multisample GL_NV_feature_query GL_NV_fence GL_NV_fill_rectangle GL_NV_float_buffer GL_NV_fog_distance GL_NV_fragment_coverage_to_color GL_NV_fragment_program GL_NV_fragment_program_option GL_NV_fragment_program2 GL_NV_fragment_shader_barycentric GL_NV_fragment_shader_interlock GL_NV_framebuffer_mixed_samples GL_NV_framebuffer_multisample_coverage GL_NV_geometry_shader4 GL_NV_geometry_sha
+der_passthrough GL_NV_gpu_program4 GL_NV_internalformat_sample_query GL_NV_gpu_program4_1 GL_NV_gpu_program5 GL_NV_gpu_program5_mem_extended GL_NV_gpu_program_fp64 GL_NV_gpu_program_multiview GL_NV_gpu_shader5 GL_NV_half_float GL_NV_light_max_exponent GL_NV_memory_attachment GL_NV_mesh_shader GL_NV_multisample_coverage GL_NV_multisample_filter_hint GL_NV_occlusion_query GL_NV_packed_depth_stencil GL_NV_parameter_buffer_object GL_NV_parameter_buffer_object2 GL_NV_path_rendering GL_NV_path_rendering_shared_edge GL_NV_pixel_data_range GL_NV_point_sprite GL_NV_primitive_restart GL_NV_primitive_shading_rate GL_NV_query_resource GL_NV_query_resource_tag GL_NV_register_combiners GL_NV_register_combiners2 GL_NV_representative_fragment_test GL_NV_sample_locations GL_NV_sample_mask_override_coverage GL_NV_scissor_exclusive GL_NV_shader_atomic_counters GL_NV_shader_atomic_float GL_NV_shader_atomic_float64 GL_NV_shader_atomic_fp16_vector GL_NV_shader_atomic_int64 GL_NV_shader_buffer_load GL_NV_shader_storage_buffer_obje
+ct GL_NV_shader_subgroup_partitioned GL_NV_shader_texture_footprint GL_NV_shading_rate_image GL_NV_stereo_view_rendering GL_NV_texgen_reflection GL_NV_texture_barrier GL_NV_texture_compression_vtc GL_NV_texture_dirty_tile_map GL_NV_texture_env_combine4 GL_NV_texture_multisample GL_NV_texture_rectangle GL_NV_texture_rectangle_compressed GL_NV_texture_shader GL_NV_texture_shader2 GL_NV_texture_shader3 GL_NV_transform_feedback GL_NV_transform_feedback2 GL_NV_uniform_buffer_unified_memory GL_NV_uniform_buffer_std430_layout GL_NV_vdpau_interop GL_NV_vdpau_interop2 GL_NV_vertex_array_range GL_NV_vertex_array_range2 GL_NV_vertex_attrib_integer_64bit GL_NV_vertex_buffer_unified_memory GL_NV_vertex_program GL_NV_vertex_program1_1 GL_NV_vertex_program2 GL_NV_vertex_program2_option GL_NV_vertex_program3 GL_NV_viewport_array2 GL_NV_viewport_swizzle GL_NVX_conditional_render GL_NV_gpu_multicast GL_NVX_progress_fence GL_NVX_gpu_memory_info GL_NVX_nvenc_interop GL_NV_shader_thread_group GL_NV_shader_thread_shuffle GL_KHR_b
+lend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_OVR_multiview GL_OVR_multiview2 GL_SGIS_generate_mipmap GL_SGIS_texture_lod GL_SGIX_depth_texture GL_SGIX_shadow GL_SUN_slice_accum
+OPENGL LOG: Creating OpenGL 4.5 graphics device ; Context level  <OpenGL 4.5> ; Context handle 1540015144
+Initialize mono
+Mono path[0] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56779
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001364 seconds.
+- Loaded All Assemblies, in  0.295 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in 18.871 seconds
+Domain Reload Profiling: 19167ms
+	BeginReloadAssembly (67ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (51ms)
+	LoadAllAssembliesAndSetupDomain (135ms)
+		LoadAssemblies (66ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (132ms)
+			TypeCache.Refresh (131ms)
+				TypeCache.ScanAssembly (119ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (18872ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (18828ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (18451ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (82ms)
+			ProcessInitializeOnLoadAttributes (191ms)
+			ProcessInitializeOnLoadMethodAttributes (96ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 76 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Local packages:
+    com.gamecore.composition@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.composition (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.content.compiler (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.contracts (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.derivation (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.audio@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.audio (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.audio)
+    com.gamecore.gameplay.cards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.cards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.compile (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.contracts (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.dialogue@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.dialogue (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.dialogue)
+    com.gamecore.gameplay.entities@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.entities (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.integration (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.interaction@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.interaction (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.interaction)
+    com.gamecore.gameplay.inventory@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.inventory (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.inventory)
+    com.gamecore.gameplay.logic@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.logic (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.logic)
+    com.gamecore.gameplay.narrative@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.narrative (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.npc@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.npc (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.npc)
+    com.gamecore.gameplay.player@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.player (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.player)
+    com.gamecore.gameplay.quest@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.quest (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.quest)
+    com.gamecore.gameplay.rewards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.rewards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.save@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.save (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.save)
+    com.gamecore.gameplay.traversal@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.traversal (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.ui@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.ui (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.ui)
+    com.gamecore.gameplay.world@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.world (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.planning (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.cards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.gameplay (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.narrative (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.traversal (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core)
+    com.gamecore.studio.etos@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos)
+    com.gamecore.studio.gameplay@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.gameplay (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.gameplay)
+    com.gamecore.studio.ui@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui)
+    com.gamecore.studio.views@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.views (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.views)
+    com.gamecore.unity.adapters@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.adapters (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.app (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.runtime (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-c000b5a258c79717074bacdf4e532ab0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: ~/wkspace/gc-studio/p4.2k/games/hollowmere/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 61.4564ms
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: ~/wkspace/gc-studio/p4.2k/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 61.2031ms
+ExitCode: 0 Duration: 0s514ms
+[1496/2133  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.48 seconds), 1 items updated, 2133 evaluated
+AssetDatabase: script compilation time: 1.223757s
+Total cache size 268249197
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Total cache size after purge 268249197, took 00:00:00.2487351
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.922 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 133ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  4.667 seconds
+Domain Reload Profiling: 5579ms
+	BeginReloadAssembly (187ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (33ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (43ms)
+	RebuildCommonClasses (41ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (34ms)
+	LoadAllAssembliesAndSetupDomain (639ms)
+		LoadAssemblies (355ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (357ms)
+			TypeCache.Refresh (241ms)
+				TypeCache.ScanAssembly (217ms)
+			BuildScriptInfoCaches (99ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (4668ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (4381ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (63ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (206ms)
+			ProcessInitializeOnLoadAttributes (3875ms)
+			ProcessInitializeOnLoadMethodAttributes (225ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (8ms)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=c30a74fe556559252849ae31188b1ab5): Total: 8.311 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=6001 ms
+		Asset DB Callback time: managed=44 ms, native=10 ms
+		Scripting: domain reloads=1, domain reload time=927 ms, compile time=1226 ms, other=100 ms
+		Project Asset Count: scripts=1863, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.005ms
+	InvokePackagesCallback: 16.079ms
+	ApplyChangesToAssetFolders: 0.826ms
+	Scan: 923.843ms
+	OnSourceAssetsModified: 0.004ms
+	CategorizeAssetsWithTransientArtifact: 54.158ms
+	ProcessAssetsWithTransientArtifactChanges: 79.863ms
+	CategorizeAssets: 60.101ms
+	ImportOutOfDateAssets: 4679.003ms (3448.964ms without children)
+		CompileScripts: 1225.591ms
+		ReloadNativeAssets: 0.028ms
+		UnloadImportedAssets: 2.377ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.054ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.989ms
+	PostProcessAllAssets: 44.781ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.001ms
+	UnloadStreamsBegin: 0.696ms
+	PersistCurrentRevisions: 0.302ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.993ms
+	Untracked: 2451.428ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.594ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Hollowmere
+Unloading 272 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Boot/Boot.unity'
+	Deserialize:            98.020 ms
+	Integration:            285.182 ms
+	Integration of assets:  8.001 ms
+	Thread Wait Time:       -0.086 ms
+	Total Operation Time:   391.116 ms
+Unloading 6191 unused Assets / (9.8 MB). Loaded Objects now: 7126.
+Memory consumption went from 184.2 MB to 174.4 MB.
+Total: 27.635182 ms (FindLiveObjects: 0.543872 ms CreateObjectMapping: 0.588033 ms MarkObjects: 16.012324 ms  DeleteObjects: 10.489628 ms)
+
+[LAYOUT] About to load UserSettings/Layouts/default-6000.dwlt, keepMainWindow=False
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 306 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 399 milliseconds to respond to SetGtkWindowSizePosition
+[MODES] ModeService[default].InitializeCurrentMode
+[MODES] ModeService[default].RaiseModeChanged(default, default)
+Disable old input system
+[Project] Loading completed in 31.445 seconds
+	Project init time: 				28.350 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.162 seconds
+		Asset Database init time: 		0.064 seconds
+		Global illumination init time: 	0.003 seconds
+		Assemblies load time: 			19.185 seconds
+		Unity extensions init time: 	0.065 seconds
+		Asset Database refresh time: 	8.317 seconds
+	Scene opening time: 			2.797 seconds
+##utp:{"type": "ProjectInfo", "version": 2, "phase": "Immediate", "time": 1791398071231, "processId": 3788779, "projectLoad": 31.444572276, "projectInit": 28.3499032, "templateInit": 0.0, "packageManagerInit": 0.161755578, "assetDatabaseInit": 0.064026576, "globalIlluminationInit": 0.002546382, "assembliesLoad": 19.18481397, "unityExtensionsInit": 0.064788744, "assetDatabaseRefresh": 8.317265833, "sceneOpening": 2.7966287}
+##utp:{"type": "EditorInfo", "version": 2, "phase": "Immediate", "time": 1791398071231, "processId": 3788779, "editorVersion": "6000.0.75f1 (26349cd2a5c8)", "branch": "6000.0/staging", "buildType": "Release", "platform": "Linux"}
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=03f7d6da130c3d92f9ebb7d91e36d3b0): Total: 0.390 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=388 ms
+		Asset DB Callback time: managed=0 ms, native=0 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1863, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.853ms
+	ApplyChangesToAssetFolders: 0.283ms
+	Scan: 341.701ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 0.148ms
+	CategorizeAssets: 35.715ms
+	ImportOutOfDateAssets: 1.728ms (0.292ms without children)
+		CompileScripts: 0.045ms
+		ReloadNativeAssets: 0.238ms
+		UnloadImportedAssets: 0.112ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.575ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.466ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.343ms
+	UnloadStreamsBegin: 1.414ms
+	PersistCurrentRevisions: 0.226ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 6.252ms
+
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=e50d4d06063bbe65f9ed07e8f1c8a84d): Total: 0.225 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+AutoLocale: current locale expects 'C' but got 'en_US.UTF-8'Launched and connected shader compiler UnityShaderCompiler after 0.04 seconds
+Running tests for ExecutionSettings with details:
+targetPlatform =
+playerHeartbeatTimeout = 600
+filters[0] =
+   Filter with settings:
+   testMode = EditMode
+   targetPlatform =
+   testNames = null
+   groupNames = R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:188)
+GameCore.Studio.Etos.EtosStudioSession:EnsureStarted (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:85)
+GameCore.Studio.Etos.EtosStudioSession:EnsureStarted () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:76)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:318)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Created GICache directory at ~/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [31.457 - 31.458]
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass64_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:323)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:263)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated access token: "_8HUAScT"... (expires: 2027-10-07T18:34:34Z)
+Unloading 8 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 355 unused Assets / (14.7 MB). Loaded Objects now: 8067.
+Memory consumption went from 367.8 MB to 353.0 MB.
+Total: 32.797220 ms (FindLiveObjects: 0.348320 ms CreateObjectMapping: 0.211891 ms MarkObjects: 28.094491 ms  DeleteObjects: 4.141376 ms)
+
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated access token: "_8HUAScT"... (expires: 2027-10-07T18:34:35Z)
+Start importing Assets/GameCoreStudioUiTests using Guid(931417ecec6275517816298bf5789480) (DefaultImporter) -> (artifact id: 'ad3c66acfcbed2687821eaba90c68c21') in 0.003902851 seconds
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6e7757c40f948b0e9b6990bc8f38e3f8): Total: 0.141 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/GameCoreStudioUiTests/c982b88f9e using Guid(f121fedbeb3ad6929941bb469f9b499b) (DefaultImporter) -> (artifact id: '97fec62738c4cfbc05a364af9df28776') in 0.000790664 seconds
+Refreshing native plugins compatible for Editor in 0.27 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e3b3e2c76571a183093d9b48f09eef89): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 4 unused Assets / (0 B). Loaded Objects now: 8087.
+Memory consumption went from 363.8 MB to 363.8 MB.
+Total: 24.493081 ms (FindLiveObjects: 0.308478 ms CreateObjectMapping: 0.191567 ms MarkObjects: 23.966037 ms  DeleteObjects: 0.026125 ms)
+
+Start importing Assets/GameCoreStudioUiTests/c982b88f9e/Test.unity using Guid(01c16c36bf54c009881dfb3cd30fc552) (DefaultImporter) -> (artifact id: '3e99768d8064ad4ba69027c6619bb212') in 0.000711567 seconds
+Refreshing native plugins compatible for Editor in 0.20 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=aa4586d2f15f09a0dbfd186f50759717): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 349 milliseconds to respond to ShowGtkWidget
+[R4-B key delivery] prompt-input down=1 up=1 imageDowns=0 imageUps=0 promptBubbleDowns=0 mode=Select focusAfterTab=prompt-input
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.UI.Tests.R2UiRegressionTests/<R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers>d__15:MoveNext () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:284)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs Line: 284)
+
+[R4-B key delivery] mode-select down=1 up=1 imageDowns=0 imageUps=0 promptBubbleDowns=0 mode=Select focusAfterTab=mode-inspect
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.UI.Tests.R2UiRegressionTests/<R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers>d__15:MoveNext () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:284)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs Line: 284)
+
+[R4-B key delivery] viewport-image down=1 up=1 imageDowns=2 imageUps=1 promptBubbleDowns=0 mode=Inspect focusAfterTab=voice-button
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.UI.Tests.R2UiRegressionTests/<R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers>d__15:MoveNext () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:284)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs Line: 284)
+
+Unloading 14 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 20 unused Assets / (54.2 KB). Loaded Objects now: 8118.
+Memory consumption went from 375.7 MB to 375.7 MB.
+Total: 24.604083 ms (FindLiveObjects: 0.315093 ms CreateObjectMapping: 0.200908 ms MarkObjects: 23.977008 ms  DeleteObjects: 0.110070 ms)
+
+Refreshing native plugins compatible for Editor in 0.27 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=389d5ddfdc58f1fecb5fa1cf8f500b65): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Refreshing native plugins compatible for Editor in 0.28 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f18c10ff03a047bc1a1df7c16a78c269): Total: 0.030 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 365 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 319 milliseconds to respond to SetGtkWindowSizePosition
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 389 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 331 milliseconds to respond to SetMinMaxSizes
+Warning: X server took longer than 400 milliseconds to respond to SetGtkWindowSizePosition
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 302 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 301 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 329 milliseconds to respond to SetGtkWindowSizePosition
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 302 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 400 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 377 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 379 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 366 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 399 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 328 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 399 milliseconds to respond to SetGtkWindowSizePosition
+Warning: X server took longer than 373 milliseconds to respond to SetGtkWindowSizePosition
+[R4-B layout settled] requested=(x:20.00, y:100.00, width:1048.00, height:694.00) creator=(x:60.00, y:140.00, width:900.00, height:700.00)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.UI.Tests.R3UiRegressionTests/<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__3:MoveNext () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:93)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs Line: 93)
+
+Start importing Assets/GameCoreStudioUiTests using Guid(931417ecec6275517816298bf5789480) (DefaultImporter) -> (artifact id: 'ad3c66acfcbed2687821eaba90c68c21') in 0.000716918 seconds
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6d3d18ceb75dd5cbd999209c114b664d): Total: 0.044 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/GameCoreStudioUiTests/2478ba7fc8 using Guid(6dfc4c84944b37040839bb7635ab640a) (DefaultImporter) -> (artifact id: '490234d360e8a42d2878760dc3df36bc') in 0.000862257 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=2fb629ec59f5e9315bfe408a44c450d3): Total: 0.027 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 5 unused Assets / (0.5 KB). Loaded Objects now: 8131.
+Memory consumption went from 357.9 MB to 357.9 MB.
+Total: 30.140257 ms (FindLiveObjects: 0.339636 ms CreateObjectMapping: 0.214623 ms MarkObjects: 29.551845 ms  DeleteObjects: 0.033283 ms)
+
+Start importing Assets/GameCoreStudioUiTests/2478ba7fc8/Test.unity using Guid(8fde32ed0b97b5981896894210cb1be0) (DefaultImporter) -> (artifact id: '59a52f6a064205d351525eb203c8a69d') in 0.000720142 seconds
+Refreshing native plugins compatible for Editor in 0.21 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6a44e9b32c0376f64921a8874970730b): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 382 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 400 milliseconds to respond to SetGtkWindowSizePosition
+[P2.1] viewport render 900x589 in 0.73 ms
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.UI.Tests.ViewportWindowTests/<Render_TargetMatchesTheViewportArea>d__9:MoveNext () (at ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/ViewportWindowTests.cs:222)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui/Tests/Editor/ViewportWindowTests.cs Line: 222)
+
+Unloading 14 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 21 unused Assets / (18.9 KB). Loaded Objects now: 8157.
+Memory consumption went from 369.1 MB to 369.0 MB.
+Total: 22.729119 ms (FindLiveObjects: 0.276277 ms CreateObjectMapping: 0.172280 ms MarkObjects: 22.181796 ms  DeleteObjects: 0.098043 ms)
+
+Refreshing native plugins compatible for Editor in 0.17 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=662a131bd37bb44048f6783d2fcc797f): Total: 0.024 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=15a2825bc3b524a9187f8fc48fe9e0ca): Total: 0.022 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+Saving results to: ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z/results.xml
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Unloading 279 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Boot/Boot.unity'
+	Deserialize:            18.170 ms
+	Integration:            204.554 ms
+	Integration of assets:  0.774 ms
+	Thread Wait Time:       -0.006 ms
+	Total Operation Time:   223.492 ms
+Unloading 45 unused Assets / (44.5 KB). Loaded Objects now: 8485.
+Memory consumption went from 366.8 MB to 366.8 MB.
+Total: 28.639094 ms (FindLiveObjects: 0.317749 ms CreateObjectMapping: 0.180315 ms MarkObjects: 28.033449 ms  DeleteObjects: 0.106878 ms)
+
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 1 unused Assets / (0.6 KB). Loaded Objects now: 8447.
+Memory consumption went from 371.2 MB to 371.2 MB.
+Total: 28.225184 ms (FindLiveObjects: 0.306445 ms CreateObjectMapping: 0.193318 ms MarkObjects: 27.677105 ms  DeleteObjects: 0.047353 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 68
+[Package Manager] Server process was shutdown
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type": "MemoryLeaks", "version": 2, "phase": "Immediate", "time": 1791398091164, "processId": 3788779, "allocatedMemory": 14466317, "memoryLabels": [{"Default": 13965}, {"Permanent": 16147}, {"Thread": 1084616}, {"Manager": 2818897}, {"VertexData": 8}, {"Geometry": 408}, {"VFX": -104}, {"Texture": 568}, {"Shader": 79299}, {"Material": 24}, {"GfxDevice": 36552}, {"Animation": 456}, {"Audio": 4032}, {"FontEngine": 320}, {"Physics": 2081}, {"Serialization": 376}, {"Input": 26752}, {"JobScheduler": 33024}, {"TextLib": 160}, {"Mono": 32}, {"MonoCode": 96}, {"ScriptingNativeRuntime": 155096}, {"BaseObject": 1622832}, {"Resource": 1032}, {"Renderer": 2928}, {"Transform": 4678}, {"File": 9587}, {"WebCam": 80}, {"Culling": 32}, {"Terrain": 11298}, {"Wind": 24}, {"String": 34847}, {"DynamicArray": 106245}, {"HashMap": 126906}, {"Utility": 2665104}, {"PoolAlloc": 3968}, {"AI": 72}, {"TypeTree": 5005}, {"ScriptManager": 512}, {"RuntimeInitializeOnLoadManager": 64}, {"SpriteAtlas": 112}, {"GI": 7448}, {"Director": 8208}, {"WebRequest": 808}, {"VR": 45689}, {"SceneManager": 528}, {"Video": 64}, {"LazyScriptCache": 32}, {"NativeArray": 540}, {"Camera": 17}, {"Secure": 265}, {"SerializationCache": 1576}, {"APIUpdating": 10320}, {"Subsystems": 336}, {"VirtualTexturing": 57552}, {"StaticSafetyDebugInfo": 278528}, {"Analytics": 256}, {"Hierarchy": 832}, {"CoreStats": 12456}, {"Identifiers": 12384}, {"Gui": 268184}, {"EditorUtility": 104233}, {"VersionControl": 4}, {"Undo": 979}, {"AssetDatabase": 4739714}, {"EditorGi": 328}, {"UnityConnect": 25736}, {"Upm": 1852}, {"DrivenProperties": 72}, {"HubClient": 6115}, {"LocalIPC": 266}, {"ProfilerEditor": 9746}, {"CoreBusinessMetrics": 2366}, {"Licensing": 688}, {"AssetReference": 32}, {"IPCStream": 32}]}

@@ -1,0 +1,42 @@
+{
+  "label": "playmode",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:21:56.796625+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/logs --label playmode --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml -- -runTests -testPlatform PlayMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:21:56.798374+00:00",
+  "sourceDiffSha256": "c15884f4fbdcd0405e53b81aaf7909688abf289ef8d820c10f7e698add9c393b",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-07T18:23:00.196801+00:00",
+  "seconds": 63.40196155291051,
+  "suites": {
+    "results.xml": {
+      "total": 25,
+      "counts": {
+        "Passed": 24,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.PlayMode.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P3_1",
+        "Hollowmere.P3_1.PlayMode",
+        "Hollowmere.P3_1.PlayMode.Tests",
+        "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip",
+          "result": "Failed",
+          "detail": "the native playback assertion requires graphics-enabled batch PlayMode\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless+<R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip>d__41.MoveNext () [0x000d2] in ~/wkspace/gc-studio/p4.2k/games/hollowmere/Assets/Hollowmere/Tests/P3_1/PlayMode/R7VoicePlayback.cs:24\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

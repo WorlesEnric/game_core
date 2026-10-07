@@ -1,0 +1,30 @@
+{
+  "id": "cs_01M4BSPF6V5TF299GCPERFEKKZ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Saltmarsh: bake (procedural placeholder content)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "author-bake",
+      "tool": "saltmarsh.author",
+      "args": {
+        "phase": "bake"
+      },
+      "preconditions": "none"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "author-bake",
+      "status": "Applied",
+      "detail": "Created paths: "
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T18:23:32.061Z",
+    "applied": "2026-10-07T18:23:32.101Z"
+  }
+}

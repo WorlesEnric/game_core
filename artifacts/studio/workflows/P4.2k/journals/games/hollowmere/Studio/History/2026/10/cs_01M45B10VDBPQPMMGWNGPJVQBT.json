@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B10VDBPQPMMGWNGPJVQBT",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The belfry? I ferry no strangers over that water. Light the sunken shrine, west to east, and we will talk. Or patch the old punt yourself; it wants pitch from an oil flask.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Odd_refuse.wav",
+        "artifact": {
+          "artifact": "sha256:5003397b8a729cda737dce53ba2ced015ca560a10ea680e5332d7fd4bb3c2684"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "5003397b8a729cda737dce53ba2ced015ca560a10ea680e5332d7fd4bb3c2684",
+      "name": "Odd_refuse.wav",
+      "mediaType": "audio/wav",
+      "bytes": 625964,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Odd_refuse.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-5fdc82ba185d091d09bf83838a024617-8300000-0",
+                "assetGuid": "5fdc82ba185d091d09bf83838a024617",
+                "path": "Assets/Hollowmere/Media/Voices/Odd_refuse.wav"
+              },
+              "stamp": "sha256:5003397b8a729cda737dce53ba2ced015ca560a10ea680e5332d7fd4bb3c2684"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:42.584Z",
+    "applied": "2026-10-05T06:11:42.737Z"
+  }
+}

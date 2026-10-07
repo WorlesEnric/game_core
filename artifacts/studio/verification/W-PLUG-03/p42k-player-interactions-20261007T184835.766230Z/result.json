@@ -1,0 +1,26 @@
+{
+  "label": "p42k-player-interactions",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:48:35.767430+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/logs --label p42k-player-interactions --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml -- -runTests -testPlatform PlayMode -testFilter 'LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels|R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern|R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip'",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:48:35.768792+00:00",
+  "sourceDiffSha256": "f010f252ab6f1caf66ae26a8d1dccf7d98d5efeffcc531c538e6d9572275b20e",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:49:48.771917+00:00",
+  "seconds": 73.00563989696093,
+  "suites": {
+    "results.xml": {
+      "total": 4,
+      "counts": {
+        "Passed": 4
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

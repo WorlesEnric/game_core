@@ -1,0 +1,131 @@
+{
+  "id": "cs_01M45CWM292V55XHXRBWV7X2XA",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.existing-world-items] The village coins and the marsh clapper now show through their pickups",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "OldCoins_Village",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "16b73b9b-6003-42ad-982c-d85426d1dc64",
+        "global": "GlobalObjectId_V1-3-252b835b5a28412e9b34c2e136517819-11400000-0",
+        "assetGuid": "252b835b5a28412e9b34c2e136517819",
+        "path": "Assets/Hollowmere/Items/OldCoins_Village.asset",
+        "scope": "Definition",
+        "stamp": "sha256:8dd5b600fc3a2360da62a64fd206ec79f291fdf49141d411ca37e2ebbb84752e"
+      },
+      "args": {
+        "fields": {
+          "entityId": "3eff1dd9-d229-4733-aad4-d5cc22c0fd96"
+        }
+      }
+    },
+    {
+      "opId": "BellClapper_Marsh",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "43793255-287c-42c9-998b-fd8c45b448a2",
+        "global": "GlobalObjectId_V1-3-cf357e406505d1167a6d4209b9853177-11400000-0",
+        "assetGuid": "cf357e406505d1167a6d4209b9853177",
+        "path": "Assets/Hollowmere/Items/BellClapper_Marsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:cd8439755424a94c36f1f6168da0a0c3d4c514f8e57b297699e9b39a86e87e27"
+      },
+      "args": {
+        "fields": {
+          "entityId": "435ac6cc-d279-4249-891c-fa754873ee93"
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "OldCoins_Village",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "16b73b9b-6003-42ad-982c-d85426d1dc64",
+                "global": "GlobalObjectId_V1-3-252b835b5a28412e9b34c2e136517819-11400000-0",
+                "assetGuid": "252b835b5a28412e9b34c2e136517819",
+                "path": "Assets/Hollowmere/Items/OldCoins_Village.asset"
+              },
+              "args": {
+                "fields": {
+                  "entityId": ""
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "16b73b9b-6003-42ad-982c-d85426d1dc64",
+                "global": "GlobalObjectId_V1-3-252b835b5a28412e9b34c2e136517819-11400000-0",
+                "assetGuid": "252b835b5a28412e9b34c2e136517819",
+                "path": "Assets/Hollowmere/Items/OldCoins_Village.asset"
+              },
+              "stamp": "sha256:b3e09eaae8a1d2bad8d795bcbbe380d405499595761eb083135541228cda0c2f"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "BellClapper_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "43793255-287c-42c9-998b-fd8c45b448a2",
+                "global": "GlobalObjectId_V1-3-cf357e406505d1167a6d4209b9853177-11400000-0",
+                "assetGuid": "cf357e406505d1167a6d4209b9853177",
+                "path": "Assets/Hollowmere/Items/BellClapper_Marsh.asset"
+              },
+              "args": {
+                "fields": {
+                  "entityId": ""
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "43793255-287c-42c9-998b-fd8c45b448a2",
+                "global": "GlobalObjectId_V1-3-cf357e406505d1167a6d4209b9853177-11400000-0",
+                "assetGuid": "cf357e406505d1167a6d4209b9853177",
+                "path": "Assets/Hollowmere/Items/BellClapper_Marsh.asset"
+              },
+              "stamp": "sha256:d9429c728a4245d0bff3489ea4f748381be25ca5ee62226383d626eb6136bde0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:15.615Z",
+    "applied": "2026-10-05T06:44:16.148Z"
+  }
+}

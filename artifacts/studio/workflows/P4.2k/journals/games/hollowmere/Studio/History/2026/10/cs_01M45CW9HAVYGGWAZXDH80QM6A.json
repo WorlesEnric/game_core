@@ -1,0 +1,96 @@
+{
+  "id": "cs_01M45CW9HAVYGGWAZXDH80QM6A",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.inn-vendor] Create Bram's stock at the Drowned Lantern inn (lantern 4, oil flask 2, marsh herbs 1 coin)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "vendor",
+      "tool": "create",
+      "args": {
+        "type": "inventory.vendor",
+        "path": "Assets/Hollowmere/Items/InnStock.asset",
+        "name": "InnStock",
+        "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+        "fields": {
+          "displayName": "The Drowned Lantern",
+          "paymentItem": "Assets/Hollowmere/Items/OldCoin.asset",
+          "stockSlots": 8,
+          "stock": [
+            {
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "stock": 1,
+              "buyPrice": 4,
+              "sellPrice": 2,
+              "unlimited": false
+            },
+            {
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "stock": 3,
+              "buyPrice": 2,
+              "sellPrice": 1,
+              "unlimited": false
+            },
+            {
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "stock": 1,
+              "buyPrice": 1,
+              "sellPrice": 0,
+              "unlimited": true
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "vendor",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              },
+              "stamp": "sha256:03006e4a42ec6e9a99bf38a1de8d04c2ece035219174151c6f698867be75a438"
+            }
+          ],
+          "replay": {
+            "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+            "assetPath": "Assets/Hollowmere/Items/InnStock.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:04.790Z",
+    "applied": "2026-10-05T06:44:06.649Z"
+  }
+}

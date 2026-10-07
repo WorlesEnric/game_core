@@ -1,0 +1,1874 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-07T18:25:52.473447Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              ccff7bbfd7b74f9bbce3bac03bf5e26f
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 2331984134446996622
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+
+COMMAND LINE ARGUMENTS:
+~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-batchmode
+-nographics
+-projectPath
+~/wkspace/gc-studio/p4.2k/games/hollowmere
+-logFile
+-
+-testResults
+~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T182552.282623Z/results.xml
+-runTests
+-testPlatform
+EditMode
+-testFilter
+Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+Successfully changed project path to: ~/wkspace/gc-studio/p4.2k/games/hollowmere
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-07T18:25:52.475941Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+
+(process:3765268): Gtk-CRITICAL **: 02:25:52.476: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+(process:3765268): Gtk-CRITICAL **: 02:25:52.477: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+~/wkspace/gc-studio/p4.2k/games/hollowmere
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+Player connection [136619862058304]  Target information:
+
+Player connection [136619862058304]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 172.19.0.1 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304]  * "[IP] 172.20.0.1 [Port] 55504 [Flags] 2 [Guid] 346345623 [EditorId] 346345623 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [136619862058304] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [136619862058304] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-3765268" after 0.2 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.12 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path ~/wkspace/gc-studio/p4.2k/games/hollowmere/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56268
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001507 seconds.
+- Loaded All Assemblies, in  0.315 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in 19.357 seconds
+Domain Reload Profiling: 19673ms
+	BeginReloadAssembly (75ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (37ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (55ms)
+	LoadAllAssembliesAndSetupDomain (140ms)
+		LoadAssemblies (75ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (137ms)
+			TypeCache.Refresh (136ms)
+				TypeCache.ScanAssembly (124ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (19358ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (19311ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (19002ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (70ms)
+			ProcessInitializeOnLoadAttributes (163ms)
+			ProcessInitializeOnLoadMethodAttributes (70ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 76 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: ~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Local packages:
+    com.gamecore.composition@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.composition (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.content.compiler (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.contracts (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.derivation (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.audio@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.audio (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.audio)
+    com.gamecore.gameplay.cards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.cards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.compile (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.contracts (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.dialogue@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.dialogue (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.dialogue)
+    com.gamecore.gameplay.entities@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.entities (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.integration (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.interaction@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.interaction (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.interaction)
+    com.gamecore.gameplay.inventory@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.inventory (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.inventory)
+    com.gamecore.gameplay.logic@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.logic (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.logic)
+    com.gamecore.gameplay.narrative@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.narrative (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.npc@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.npc (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.npc)
+    com.gamecore.gameplay.player@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.player (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.player)
+    com.gamecore.gameplay.quest@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.quest (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.quest)
+    com.gamecore.gameplay.rewards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.rewards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.save@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.save (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.save)
+    com.gamecore.gameplay.traversal@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.traversal (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.ui@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.ui (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.ui)
+    com.gamecore.gameplay.world@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.world (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.planning (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.cards (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.gameplay (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.narrative (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.traversal (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.core)
+    com.gamecore.studio.etos@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.etos)
+    com.gamecore.studio.gameplay@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.gameplay (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.gameplay)
+    com.gamecore.studio.ui@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.ui)
+    com.gamecore.studio.views@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.views (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.studio.views)
+    com.gamecore.unity.adapters@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.adapters (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.app (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.runtime (location: ~/wkspace/gc-studio/p4.2k/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-c000b5a258c79717074bacdf4e532ab0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: ~/wkspace/gc-studio/p4.2k/games/hollowmere/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 49.1306ms
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: ~/wkspace/gc-studio/p4.2k/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 38.3856ms
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s339ms
+[1460/2079  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.32 seconds), 1 items updated, 2079 evaluated
+AssetDatabase: script compilation time: 0.887092s
+Total cache size 268249197
+Total cache size after purge 268249197, took 00:00:00.2708549
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.722 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 146ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.190 seconds
+Domain Reload Profiling: 3905ms
+	BeginReloadAssembly (171ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (44ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (34ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (479ms)
+		LoadAssemblies (275ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (262ms)
+			TypeCache.Refresh (178ms)
+				TypeCache.ScanAssembly (159ms)
+			BuildScriptInfoCaches (74ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (3191ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2961ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (55ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (164ms)
+			ProcessInitializeOnLoadAttributes (2373ms)
+			ProcessInitializeOnLoadMethodAttributes (360ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=e97453cd53bfe7d6887e17991f450987): Total: 6.086 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=4350 ms
+		Asset DB Callback time: managed=31 ms, native=9 ms
+		Scripting: domain reloads=1, domain reload time=723 ms, compile time=889 ms, other=82 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.004ms
+	InvokePackagesCallback: 12.121ms
+	ApplyChangesToAssetFolders: 0.566ms
+	Scan: 819.308ms
+	OnSourceAssetsModified: 0.004ms
+	CategorizeAssetsWithTransientArtifact: 48.063ms
+	ProcessAssetsWithTransientArtifactChanges: 58.056ms
+	CategorizeAssets: 68.864ms
+	ImportOutOfDateAssets: 3200.946ms (2307.353ms without children)
+		CompileScripts: 889.417ms
+		ReloadNativeAssets: 0.032ms
+		UnloadImportedAssets: 2.159ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.013ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.972ms
+	PostProcessAllAssets: 31.185ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 0.336ms
+	PersistCurrentRevisions: 0.227ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 6.979ms
+	Untracked: 1846.748ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.237ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Hollowmere
+Unloading 48 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6181 unused Assets / (7.5 MB). Loaded Objects now: 6793.
+Memory consumption went from 190.0 MB to 182.5 MB.
+Total: 17.734922 ms (FindLiveObjects: 0.462979 ms CreateObjectMapping: 0.493315 ms MarkObjects: 10.629999 ms  DeleteObjects: 6.147451 ms)
+
+
+(process:3765268): GLib-GObject-CRITICAL **: 02:26:19.060: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3765268): GLib-GObject-CRITICAL **: 02:26:19.060: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3765268): GLib-GObject-CRITICAL **: 02:26:19.060: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3765268): Gtk-CRITICAL **: 02:26:19.060: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+Disable old input system
+[Project] Loading completed in 26.599 seconds
+	Project init time: 				26.270 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.180 seconds
+		Asset Database init time: 		0.058 seconds
+		Global illumination init time: 	0.003 seconds
+		Assemblies load time: 			19.690 seconds
+		Unity extensions init time: 	0.036 seconds
+		Asset Database refresh time: 	6.087 seconds
+	Scene opening time: 			0.317 seconds
+##utp:{"type": "ProjectInfo", "version": 2, "phase": "Immediate", "time": 1791397579061, "processId": 3765268, "projectLoad": 26.599027186, "projectInit": 26.269897158, "templateInit": 0.0, "packageManagerInit": 0.180225064, "assetDatabaseInit": 0.057774119, "globalIlluminationInit": 0.00292646, "assembliesLoad": 19.690044971, "unityExtensionsInit": 0.036490972, "assetDatabaseRefresh": 6.086504988, "sceneOpening": 0.316910035}
+##utp:{"type": "EditorInfo", "version": 2, "phase": "Immediate", "time": 1791397579061, "processId": 3765268, "editorVersion": "6000.0.75f1 (26349cd2a5c8)", "branch": "6000.0/staging", "buildType": "Release", "platform": "Linux"}
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=a1dd4a65a7f12bfa99ca6dd63ce15077): Total: 0.502 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=498 ms
+		Asset DB Callback time: managed=0 ms, native=0 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=3 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.751ms
+	ApplyChangesToAssetFolders: 0.221ms
+	Scan: 448.707ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 0.163ms
+	CategorizeAssets: 39.037ms
+	ImportOutOfDateAssets: 1.377ms (-2.450ms without children)
+		CompileScripts: 2.750ms
+		ReloadNativeAssets: 0.031ms
+		UnloadImportedAssets: 0.105ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.542ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.399ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.189ms
+	UnloadStreamsBegin: 0.049ms
+	PersistCurrentRevisions: 0.198ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 10.263ms
+
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=4f87bb1bc92c9e14e892102a7ad32097): Total: 0.231 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Running tests for ExecutionSettings with details:
+targetPlatform =
+playerHeartbeatTimeout = 600
+filters[0] =
+   Filter with settings:
+   testMode = EditMode
+   targetPlatform =
+   testNames = null
+   groupNames = Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+DisplayProgressbar: Material Upgrader re-import
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Decal.mat using Guid(31d0dcc6f2dd4e4408d18036a2c93862) (NativeFormatImporter) -> (artifact id: '8f3d32c29394a79b41f28a25b53defe8') in 0.009788773 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat using Guid(31321ba15b8f8eb4c954353edc038b1d) (NativeFormatImporter) -> (artifact id: '960643f9fe6857c5d72b0d2fd2085c0e') in 0.001054834 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundVillage.mat using Guid(713e4a8c856d6875c9df6859f6a4f960) (NativeFormatImporter) -> (artifact id: '8e8a8a3575acbe896ce8b57cf9ab38cd') in 0.000948465 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Lantern.mat using Guid(911842b1b2bff39c88a5577d4380b74c) (NativeFormatImporter) -> (artifact id: '1189a75c8e8613e1fd25f0baffdf7c87') in 0.000929433 seconds
+Start importing Assets/Hollowmere/Interactables/Prefabs/CausewayGate.mat using Guid(e1273d4abee0663cdb97dec74f5ff31d) (NativeFormatImporter) -> (artifact id: 'd38245b469119e5904a38e035a221d4d') in 0.000865115 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Reed.mat using Guid(2209f72f758962a97822bc22c61ba1d2) (NativeFormatImporter) -> (artifact id: '750f6e096e6cfa91e4be05da2390118f') in 0.000866722 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Gold.mat using Guid(c2e40fa84d53ccd428f640eac126b1fb) (NativeFormatImporter) -> (artifact id: '9a75d51d1e747d94c5fd36e74b0d88c1') in 0.000891585 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/MossStone.mat using Guid(63bdb57a54a47419d8773aa27705ac1d) (NativeFormatImporter) -> (artifact id: '7dff20719302b067f182e280b595e5df') in 0.000851328 seconds
+Start importing Assets/Hollowmere/Interactables/Prefabs/WellBucket.mat using Guid(837be9b6dcc2c8e65aab00060bded8fc) (NativeFormatImporter) -> (artifact id: '423d739197c6a127b57bbf3079523e67') in 0.000961821 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Thatch.mat using Guid(e3dcd598da5abcf9fbf9fb1fe11dd238) (NativeFormatImporter) -> (artifact id: '8d7d382d63fef3b824386e654c884ec0') in 0.000853335 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpriteMask-Default.mat using Guid(15d0c3709176029428a0da2f8cecf0b5) (NativeFormatImporter) -> (artifact id: '9b9123c1145efbdb38e316f85cad951e') in 0.000656393 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/ShrineGlow.mat using Guid(554bce7dabc8d758e8fff4f11d9fe04d) (NativeFormatImporter) -> (artifact id: '9bcf4f36fcfd4edc66aed7aac3393662') in 0.000746875 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/BlackWater.mat using Guid(a50f9ee368d97c86fb2dbc0f180491e6) (NativeFormatImporter) -> (artifact id: '9908b7eb58864d6e48c7525f9a48c218') in 0.000735606 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingOcclusion.mat using Guid(b51db210fe78df745a372851b3db949e) (NativeFormatImporter) -> (artifact id: 'e725b235a682e6bf286c10ab07552b74') in 0.002104145 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Bark.mat using Guid(c5881decd396e19dc85d4745df923580) (NativeFormatImporter) -> (artifact id: '4ca0c3913b740a495c4839533aa55e18') in 0.000768709 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Ground.mat using Guid(761d8e1f988ed2345a28312145c79c6e) (NativeFormatImporter) -> (artifact id: '97be10e07c1f855859a62635d45b8539') in 0.00083395 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Crate.mat using Guid(28346a61812b63be2b91a3f072f4ac60) (NativeFormatImporter) -> (artifact id: '9d74e66a6f26e5e612fb92c405a7463b') in 0.000792069 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/FullscreenInvertColors.mat using Guid(78a08787ca30045abb69f6f7dd878e09) (NativeFormatImporter) -> (artifact id: 'ee24d1240c4d3093a35a8ce9cd6a6123') in 0.001316984 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingWireframe.mat using Guid(9875a245ac49007498213638a307faa1) (NativeFormatImporter) -> (artifact id: '40a3a03ad30c23572795ee7951b74454') in 0.001652153 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ParticlesUnlit.mat using Guid(e823cd5b5d27c0f4b8256e7c12ee3e6d) (NativeFormatImporter) -> (artifact id: 'aa862bff269d59d834f13819255630e6') in 0.001044632 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Cloth.mat using Guid(59d591d89c6969fb8ac5ae64a174d032) (NativeFormatImporter) -> (artifact id: 'ce2a7ffa3d789f66f6b8125cad84313f') in 0.000996205 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/TerrainLit.mat using Guid(594ea882c5a793440b60ff72d896021e) (NativeFormatImporter) -> (artifact id: '32c0756065a4c99773d8b19abfdb7370') in 0.000964133 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Traveller.mat using Guid(695cafc4cebe0be4683c45c1e428a8d1) (NativeFormatImporter) -> (artifact id: '9b7da67280074084b8dbe69179ae9e08') in 0.001010104 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Lit-Default.mat using Guid(a97c105638bdf8b4a8650670310a4cd3) (NativeFormatImporter) -> (artifact id: 'b2cd4e4a5173cb188e255112e4a6b285') in 0.000853801 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Bronze.mat using Guid(f9267e7c7f3858a14b2cfa7d1290c7b4) (NativeFormatImporter) -> (artifact id: '9ba1f274c1e4be21a68c24f3f5ca63da') in 0.001106564 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/White.mat using Guid(f96821bbefeea864b9b418af4b8615ac) (NativeFormatImporter) -> (artifact id: 'b0a10ce88eba78cadb227317064359ad') in 0.001129254 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SimpleLit.mat using Guid(6a1143ee683302f4aa628c052723efc1) (NativeFormatImporter) -> (artifact id: '4e947c4ad6c49ec8c3dbccd89f2ba9c5') in 0.002293045 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Leaves.mat using Guid(9a635606b8e14ca43b0f5d8d8420903f) (NativeFormatImporter) -> (artifact id: '369124a2a052d970839d238b15d313ae') in 0.001092636 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/LanternGlow.mat using Guid(9ad989929e3f6abf0939545b2ac6d29c) (NativeFormatImporter) -> (artifact id: 'aa797f76b84657e8986ea776daec4c35') in 0.001058939 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Reed.mat using Guid(ea9ec61735f711a46a411ddbf2fb0835) (NativeFormatImporter) -> (artifact id: '05ffedc826e5082cba6374b28117dceb') in 0.001136137 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Stone.mat using Guid(0bbb6a2ec62dbd6ed99c9b2d5e8fda27) (NativeFormatImporter) -> (artifact id: '0a7c37d53cf442810a25da33197eeb4b') in 0.00119903 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundBelfry.mat using Guid(8bb53dd8bab3b475bbda1320015ea2f0) (NativeFormatImporter) -> (artifact id: '7b76881adca40df080d4d1fefc820c14') in 0.001174772 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Cobble.mat using Guid(cbeca43ae13579776b757e82404e62ec) (NativeFormatImporter) -> (artifact id: '98a4fd518a5e8f1a29dae894b6a9fa48') in 0.001249459 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/GroundMarsh.mat using Guid(eb73391a1a25ca478a6a0195766dd3d3) (NativeFormatImporter) -> (artifact id: '1ada639a8dc4ed1028f377fb942505ab') in 0.001102017 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Plaster.mat using Guid(2ce0e9a342a4df461b3ef8fc8f5c687b) (NativeFormatImporter) -> (artifact id: 'ecf084c9fe40c85ebf17681d77f570bc') in 0.001069441 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Water.mat using Guid(4c360173c4bb7adc3b7daa94c2cf5a70) (NativeFormatImporter) -> (artifact id: 'b61ba6cdc9e8abf7717c4165aaa72bc1') in 0.001197793 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Timber.mat using Guid(3d3223d30e9f476bebc6b5a69364b197) (NativeFormatImporter) -> (artifact id: '667f4c1c8011f2140e175fd42f6c4458') in 0.001244317 seconds
+Start importing Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.mat using Guid(6db5381322a108024b1b8a91e0405e12) (NativeFormatImporter) -> (artifact id: 'ea77e7c2fe06713b0c0706a8a9af1cba') in 0.001094 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Unlit-Default.mat using Guid(9dfc825aed78fcd4ba02077103263b40) (NativeFormatImporter) -> (artifact id: '3535407266e63a704ebed07394e8e29d') in 0.00103089 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Signpost.mat using Guid(ad46b0c010e025b1ba7850de65835bb8) (NativeFormatImporter) -> (artifact id: '9a629eeaf2b1aa04aafd0c2a63d91dc4') in 0.001049164 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Planks.mat using Guid(4f16c6b7dc318c98c84ac4ee8b4c7941) (NativeFormatImporter) -> (artifact id: '32a698a0560c6e385b28d7b08a583061') in 0.001169298 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Standard/Materials/Black.mat using Guid(4f1ef37ae953c484bbc5d5e4049147e5) (NativeFormatImporter) -> (artifact id: 'c073248664ba5268b69bc9cf80293393') in 0.001280694 seconds
+Start importing Assets/Hollowmere/World/Prefabs/Bell.mat using Guid(5f4092027bf0baedaa554561a3810e7c) (NativeFormatImporter) -> (artifact id: '6297ada650afc4aed2fcdc63d4528fb6') in 0.00116138 seconds
+Start importing Assets/Hollowmere/Scenery/Materials/Stone.mat using Guid(9fa5037e7fefc39bfaa0b68144e64ef4) (NativeFormatImporter) -> (artifact id: 'a38a9a417d67ab6163981f3d2fb24b66') in 0.001277027 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Black.ttf using Guid(1062c701058745940ae5dca6219c64c8) (TrueTypeFontImporter) -> (artifact id: '3d2ca9ae18e896f9e515bb462bac0909') in 0.005960327 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Regular.ttf using Guid(30dc370b164eefc43b95744fc796dad0) (TrueTypeFontImporter) -> (artifact id: '7832638d633eff303fcf3ed8f8c85e78') in 0.001870667 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-ThinItalic.ttf using Guid(b2ea3b3f1765e544b9eb5bd1a93a91ce) (TrueTypeFontImporter) -> (artifact id: '4f6c2aa7215fb21f189270f0bbe3b50e') in 0.001888862 seconds
+Start importing Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf using Guid(74a5091d8707f334b9a5c31ef71a64ba) (TrueTypeFontImporter) -> (artifact id: 'b1e2b4726236af250e8a9e0edefa19ad') in 0.001519263 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Medium.ttf using Guid(a51a3aebb43ac044989270407476b208) (TrueTypeFontImporter) -> (artifact id: 'e7322fcc653770ceff992dbaffdc342c') in 0.001794068 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Bold.ttf using Guid(3750c318f40cab44a97d3a81beaefeb3) (TrueTypeFontImporter) -> (artifact id: '111caa903ed7225ec6078e61ef9fb671') in 0.001821877 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Italic.ttf using Guid(c839255fc8f6b4b4d90bf8c1af9f9bd1) (TrueTypeFontImporter) -> (artifact id: '8fb74d7c7a155d1ca255c69a209f86ab') in 0.001834408 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Thin.ttf using Guid(19a9abb883540be48b75b951a927ae03) (TrueTypeFontImporter) -> (artifact id: 'b0f726bd0974874e2c0598b808b85eed') in 0.001802667 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-MediumItalic.ttf using Guid(d93c1bc57fdf1ac4dad1bf04fac05464) (TrueTypeFontImporter) -> (artifact id: 'e37e57e9981fdfe39977ebf001f95a35') in 0.001882463 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BlackItalic.ttf using Guid(f95147a9bab9fe649b8070170fa7ebd2) (TrueTypeFontImporter) -> (artifact id: '7352c0e7207c5b52e94f2677e4fad37a') in 0.001947041 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Light.ttf using Guid(2a29e27936eb547458f646f71125b264) (TrueTypeFontImporter) -> (artifact id: '030c3049eebc0c442f157756287951d7') in 0.00190295 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-LightItalic.ttf using Guid(5e63515167650a541b309ba3bfd4db3d) (TrueTypeFontImporter) -> (artifact id: '2acb95d6e05d7756b0e095214c4bf8e6') in 0.001747081 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BoldItalic.ttf using Guid(dfb97a9307a577a41bcacba34b9a7e32) (TrueTypeFontImporter) -> (artifact id: '51a36f17beac0bd54da540106340b9d8') in 0.00173642 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurfaceTransparent.shadergraph using Guid(30fa68ce467463643a86b839ca0eb195) (ScriptedImporter)Launched and connected shader compiler UnityShaderCompiler after 0.05 seconds
+ -> (artifact id: '8fc0ff3f85a90c5130bf3270e7243190') in 0.714358361 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveMasked.shadergraph using Guid(80aa867ac363ac043847b06ad71604cd) (ScriptedImporter) -> (artifact id: '1710ad3feff674f0fdd404dca67d30af') in 0.219698755 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteLit.shadergraph using Guid(24a73dccd7b6fad4798be282f96a21f4) (ScriptedImporter) -> (artifact id: '5c800554f4918d2481e16be201c8c76e') in 0.112672979 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMax.shadergraph using Guid(44245ab89240f51459a5077d7145c452) (ScriptedImporter) -> (artifact id: '07436cb67b88c78c816edac04e26a215') in 0.152857842 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurface.shadergraph using Guid(3739e562a03fc0b4982d8aa66cc50865) (ScriptedImporter) -> (artifact id: '2da4cada6b181800187a91f1f3d6c72a') in 0.097250368 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteUnlit.shadergraph using Guid(d7288f66e4fb0634c9afef98c31b722a) (ScriptedImporter) -> (artifact id: 'f857dd8b113cb04ea68882fc5378ac39') in 0.055941626 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree8_PBRLit.shadergraph using Guid(9920c1f1781549a46ba081a2a15a16ec) (ScriptedImporter) -> (artifact id: '0e262520feb8c53edda491304a51ecd9') in 0.980788679 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMaxTransparent.shadergraph using Guid(1a207e3bee00db44b940e6f362a8e148) (ScriptedImporter) -> (artifact id: '324b0866b974ffc32393ff8c001a69ec') in 0.09803148 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Decal.shadergraph using Guid(9b4e681081e2b4c469111bb649e2f7ee) (ScriptedImporter) -> (artifact id: '6acad91e000775ea9efb37a2bfba7973') in 0.083690637 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree9_URP.shadergraph using Guid(cbd3e1cc4ae141c42a30e33b4d666a61) (ScriptedImporter) -> (artifact id: 'b7b91e002f57a0067e0e06cdcce3ba6e') in 0.728062582 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/FullscreenInvertColors.shadergraph using Guid(fb6390f650ca44a5ba3246d8dda47927) (ScriptedImporter) -> (artifact id: '7a53917a475e82f1e66f413fdc68f9d8') in 0.056529806 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveTransparent.shadergraph using Guid(5c81372d981403744adbdda4433c9c11) (ScriptedImporter) -> (artifact id: '96d27a6638f6898a0494ad4dd56ac7b8') in 0.090317115 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractive.shadergraph using Guid(0e9d5a909a1f7e84882a534d0d11e49f) (ScriptedImporter) -> (artifact id: 'bb1d157d4f06a2a75f92ef82e7b2fd4c') in 0.085887721 seconds
+Start importing Assets/Hollowmere/UI/Theme/HollowmereTheme.tss using Guid(90e0f2de55b54915a87cde66f14e0b4a) (ScriptedImporter) -> (artifact id: 'f580981d8f0316befd780a9e709ed224') in 0.035863859 seconds
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Refreshing native plugins compatible for Editor in 0.20 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=830b0e7f6c86b05a0b11900e8cebbe17): Total: 3.908 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=71 (actual=71, local cache=0, cache server=0)
+		Asset DB Process Time: managed=8 ms, native=3801 ms
+		Asset DB Callback time: managed=77 ms, native=20 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 106
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.000ms
+	ApplyChangesToAssetFolders: 0.150ms
+	Scan: 7.957ms
+	OnSourceAssetsModified: 0.000ms
+	CategorizeAssetsWithTransientArtifact: 0.078ms
+	ProcessAssetsWithTransientArtifactChanges: 0.067ms
+	CategorizeAssets: 1.669ms
+	ImportOutOfDateAssets: 3797.444ms (-5.698ms without children)
+		ImportManagerImport: 3795.074ms (183.220ms without children)
+			ImportInProcess: 3609.506ms
+			UpdateCategorizedAssets: 2.348ms
+		ReloadNativeAssets: 0.031ms
+		UnloadImportedAssets: 0.911ms
+		ReloadImportedAssets: 6.043ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.634ms
+		InitializingProgressBar: 0.005ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.444ms
+	PostProcessAllAssets: 97.195ms
+	Hotreload: 0.402ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.199ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.147ms
+	UnloadStreamsEnd: 0.031ms
+	Untracked: 2.380ms
+
+[UnityConnectServicesConfig] config is NOT valid, switching to default
+Created GICache directory at ~/.cache/unity3d/GiCache. Took: 0.002s, timestamps: [26.613 - 26.615]
+Unloading 114 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 192 unused Assets / (3.7 MB). Loaded Objects now: 6865.
+Memory consumption went from 272.2 MB to 268.5 MB.
+Total: 13.626367 ms (FindLiveObjects: 0.219879 ms CreateObjectMapping: 0.139239 ms MarkObjects: 12.384420 ms  DeleteObjects: 0.881497 ms)
+
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Opening scene 'Assets/Hollowmere/Boot/Boot.unity'
+Unloading 225 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Boot/Boot.unity'
+	Deserialize:            29.174 ms
+	Integration:            176.544 ms
+	Integration of assets:  2.005 ms
+	Thread Wait Time:       -0.003 ms
+	Total Operation Time:   207.719 ms
+Unloading 1 unused Assets / (0.5 KB). Loaded Objects now: 7177.
+Memory consumption went from 254.8 MB to 254.8 MB.
+Total: 11.970414 ms (FindLiveObjects: 0.253819 ms CreateObjectMapping: 0.194116 ms MarkObjects: 11.495740 ms  DeleteObjects: 0.025566 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.741 seconds
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 118ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.374 seconds
+Domain Reload Profiling: 2110ms
+	BeginReloadAssembly (451ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (267ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (220ms)
+		LoadAssemblies (92ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (177ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (157ms)
+			ResolveRequiredComponents (11ms)
+	FinalizeReload (1375ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (984ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (77ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (158ms)
+			ProcessInitializeOnLoadAttributes (521ms)
+			ProcessInitializeOnLoadMethodAttributes (217ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (31ms)
+Asset Pipeline Refresh (id=fead4bcc64225d1f4b94884c0b833617): Total: 2.241 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1465 ms
+		Asset DB Callback time: managed=21 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=751 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.412ms
+	ApplyChangesToAssetFolders: 0.352ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 0.004ms
+	ProcessAssetsWithTransientArtifactChanges: 3.477ms
+	CategorizeAssets: 48.072ms
+	ImportOutOfDateAssets: 1381.026ms (1374.395ms without children)
+		CompileScripts: 1.182ms
+		CollectScriptTypesHashes: 3.003ms
+		ReloadNativeAssets: 1.305ms
+		UnloadImportedAssets: 0.038ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.704ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.400ms
+	PostProcessAllAssets: 21.662ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.162ms
+	UnloadStreamsBegin: 0.032ms
+	PersistCurrentRevisions: 0.171ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 4.558ms
+	Untracked: 783.706ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.212 ms
+	Integration:            396.743 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   397.961 ms
+Refreshing native plugins compatible for Editor in 0.26 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            13.865 ms
+	Integration:            45.326 ms
+	Integration of assets:  0.304 ms
+	Thread Wait Time:       10.127 ms
+	Total Operation Time:   69.623 ms
+Unloading 109 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.005 ms
+	Integration:            203.832 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   204.844 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7315.
+Memory consumption went from 274.0 MB to 190.4 MB.
+Total: 15.149855 ms (FindLiveObjects: 0.274050 ms CreateObjectMapping: 0.213255 ms MarkObjects: 14.185243 ms  DeleteObjects: 0.476395 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 189.6 MB to 189.6 MB.
+Total: 10.293003 ms (FindLiveObjects: 0.269941 ms CreateObjectMapping: 0.206370 ms MarkObjects: 9.803219 ms  DeleteObjects: 0.012096 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.834 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 114ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.467 seconds
+Domain Reload Profiling: 2296ms
+	BeginReloadAssembly (532ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (49ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (294ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (29ms)
+	LoadAllAssembliesAndSetupDomain (223ms)
+		LoadAssemblies (100ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (173ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (153ms)
+			ResolveRequiredComponents (11ms)
+	FinalizeReload (1468ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (980ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (88ms)
+			SetLoadedEditorAssemblies (10ms)
+			BeforeProcessingInitializeOnLoad (169ms)
+			ProcessInitializeOnLoadAttributes (492ms)
+			ProcessInitializeOnLoadMethodAttributes (218ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (98ms)
+Asset Pipeline Refresh (id=c3b6dd8c3ee31b4e5879ce98bc9ad285): Total: 2.419 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1554 ms
+		Asset DB Callback time: managed=18 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=844 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.451ms
+	ApplyChangesToAssetFolders: 0.376ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.663ms
+	CategorizeAssets: 44.310ms
+	ImportOutOfDateAssets: 1474.200ms (1468.419ms without children)
+		CompileScripts: 1.214ms
+		CollectScriptTypesHashes: 2.321ms
+		ReloadNativeAssets: 1.224ms
+		UnloadImportedAssets: 0.047ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.622ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.353ms
+	PostProcessAllAssets: 18.672ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.188ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.143ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.191ms
+	Untracked: 875.127ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.143 ms
+	Integration:            333.741 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   334.889 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            10.642 ms
+	Integration:            10.645 ms
+	Integration of assets:  0.172 ms
+	Thread Wait Time:       9.666 ms
+	Total Operation Time:   31.126 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.933 ms
+	Integration:            174.414 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   175.355 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7318.
+Memory consumption went from 349.8 MB to 266.2 MB.
+Total: 13.808358 ms (FindLiveObjects: 0.251050 ms CreateObjectMapping: 0.197202 ms MarkObjects: 12.945735 ms  DeleteObjects: 0.413402 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7319.
+Memory consumption went from 265.6 MB to 265.6 MB.
+Total: 9.796559 ms (FindLiveObjects: 0.250037 ms CreateObjectMapping: 0.178821 ms MarkObjects: 9.354096 ms  DeleteObjects: 0.012655 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.760 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 131ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.480 seconds
+Domain Reload Profiling: 2237ms
+	BeginReloadAssembly (488ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (42ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (278ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (207ms)
+		LoadAssemblies (89ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (165ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (145ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1481ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1063ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (80ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (153ms)
+			ProcessInitializeOnLoadAttributes (580ms)
+			ProcessInitializeOnLoadMethodAttributes (237ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (34ms)
+Asset Pipeline Refresh (id=b2d829553e7c565f489c7c30fa44a56b): Total: 2.365 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1570 ms
+		Asset DB Callback time: managed=22 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=770 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.401ms
+	ApplyChangesToAssetFolders: 0.396ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.471ms
+	CategorizeAssets: 47.774ms
+	ImportOutOfDateAssets: 1488.030ms (1482.260ms without children)
+		CompileScripts: 1.226ms
+		CollectScriptTypesHashes: 2.058ms
+		ReloadNativeAssets: 1.410ms
+		UnloadImportedAssets: 0.044ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.688ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.345ms
+	PostProcessAllAssets: 22.350ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.179ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.173ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.340ms
+	Untracked: 800.364ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.978 ms
+	Integration:            377.082 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   378.067 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            11.598 ms
+	Integration:            11.844 ms
+	Integration of assets:  0.211 ms
+	Thread Wait Time:       12.385 ms
+	Total Operation Time:   36.039 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.815 ms
+	Integration:            186.988 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.017 ms
+	Total Operation Time:   187.822 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.0 MB to 189.5 MB.
+Total: 13.330906 ms (FindLiveObjects: 0.269792 ms CreateObjectMapping: 0.205792 ms MarkObjects: 12.174961 ms  DeleteObjects: 0.679351 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 10.754891 ms (FindLiveObjects: 0.279834 ms CreateObjectMapping: 0.205432 ms MarkObjects: 10.252219 ms  DeleteObjects: 0.016186 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.767 seconds
+Refreshing native plugins compatible for Editor in 0.21 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 114ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.292 seconds
+Domain Reload Profiling: 2054ms
+	BeginReloadAssembly (484ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (19ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (279ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (208ms)
+		LoadAssemblies (96ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (165ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (145ms)
+			ResolveRequiredComponents (11ms)
+	FinalizeReload (1293ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (914ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (79ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (149ms)
+			ProcessInitializeOnLoadAttributes (472ms)
+			ProcessInitializeOnLoadMethodAttributes (202ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (34ms)
+Asset Pipeline Refresh (id=a6e2c57ec0c00563a9df40a21d31ccd1): Total: 2.176 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1378 ms
+		Asset DB Callback time: managed=19 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=777 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.282ms
+	ApplyChangesToAssetFolders: 0.359ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 4.551ms
+	CategorizeAssets: 44.808ms
+	ImportOutOfDateAssets: 1298.471ms (1293.151ms without children)
+		CompileScripts: 1.028ms
+		CollectScriptTypesHashes: 1.878ms
+		ReloadNativeAssets: 1.369ms
+		UnloadImportedAssets: 0.046ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.644ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.354ms
+	PostProcessAllAssets: 19.468ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.157ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.157ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.005ms
+	Untracked: 805.994ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.084 ms
+	Integration:            382.900 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.049 ms
+	Total Operation Time:   384.035 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.407 ms
+	Integration:            10.672 ms
+	Integration of assets:  0.174 ms
+	Thread Wait Time:       9.437 ms
+	Total Operation Time:   29.690 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.871 ms
+	Integration:            167.671 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   168.549 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.0 MB to 189.5 MB.
+Total: 13.767866 ms (FindLiveObjects: 0.264317 ms CreateObjectMapping: 0.188280 ms MarkObjects: 12.867852 ms  DeleteObjects: 0.446526 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 8.890670 ms (FindLiveObjects: 0.241549 ms CreateObjectMapping: 0.199935 ms MarkObjects: 8.436912 ms  DeleteObjects: 0.011061 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.772 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 121ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.505 seconds
+Domain Reload Profiling: 2273ms
+	BeginReloadAssembly (468ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (24ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (274ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (27ms)
+	LoadAllAssembliesAndSetupDomain (229ms)
+		LoadAssemblies (95ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (182ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (160ms)
+			ResolveRequiredComponents (12ms)
+	FinalizeReload (1506ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1045ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (81ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (168ms)
+			ProcessInitializeOnLoadAttributes (542ms)
+			ProcessInitializeOnLoadMethodAttributes (242ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (39ms)
+Asset Pipeline Refresh (id=da09e11e682642d1cbfb0cc9574c1340): Total: 2.413 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1606 ms
+		Asset DB Callback time: managed=22 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=782 ms, compile time=2 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.472ms
+	ApplyChangesToAssetFolders: 0.386ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.004ms
+	ProcessAssetsWithTransientArtifactChanges: 3.973ms
+	CategorizeAssets: 54.778ms
+	ImportOutOfDateAssets: 1513.455ms (1507.372ms without children)
+		CompileScripts: 1.598ms
+		CollectScriptTypesHashes: 1.778ms
+		ReloadNativeAssets: 1.545ms
+		UnloadImportedAssets: 0.046ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.718ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.397ms
+	PostProcessAllAssets: 22.724ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.161ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.183ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 4.005ms
+	Untracked: 814.863ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.897 ms
+	Integration:            399.591 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.012 ms
+	Total Operation Time:   400.502 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            11.353 ms
+	Integration:            11.207 ms
+	Integration of assets:  0.215 ms
+	Thread Wait Time:       11.497 ms
+	Total Operation Time:   34.271 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.884 ms
+	Integration:            183.684 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.024 ms
+	Total Operation Time:   184.594 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.0 MB to 189.5 MB.
+Total: 12.977799 ms (FindLiveObjects: 0.251646 ms CreateObjectMapping: 0.189555 ms MarkObjects: 12.130965 ms  DeleteObjects: 0.404934 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 9.361041 ms (FindLiveObjects: 0.261703 ms CreateObjectMapping: 0.192765 ms MarkObjects: 8.893514 ms  DeleteObjects: 0.011761 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.750 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 114ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.389 seconds
+Domain Reload Profiling: 2134ms
+	BeginReloadAssembly (457ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (19ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (263ms)
+	RebuildCommonClasses (34ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (213ms)
+		LoadAssemblies (98ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (166ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (147ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1390ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (999ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (73ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (155ms)
+			ProcessInitializeOnLoadAttributes (500ms)
+			ProcessInitializeOnLoadMethodAttributes (259ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (36ms)
+Asset Pipeline Refresh (id=eb13d05b7ff110f2c8da1cac0fe4ead6): Total: 2.254 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1471 ms
+		Asset DB Callback time: managed=21 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=759 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.235ms
+	ApplyChangesToAssetFolders: 0.342ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.373ms
+	CategorizeAssets: 43.979ms
+	ImportOutOfDateAssets: 1395.592ms (1390.330ms without children)
+		CompileScripts: 1.059ms
+		CollectScriptTypesHashes: 1.829ms
+		ReloadNativeAssets: 1.336ms
+		UnloadImportedAssets: 0.049ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.638ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.350ms
+	PostProcessAllAssets: 21.566ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.158ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.153ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.018ms
+	Untracked: 787.033ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.215 ms
+	Integration:            361.801 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   363.022 ms
+TrimDiskCacheJob: Current cache size 0mb
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            11.011 ms
+	Integration:            9.999 ms
+	Integration of assets:  0.201 ms
+	Thread Wait Time:       7.995 ms
+	Total Operation Time:   29.206 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.841 ms
+	Integration:            179.154 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   180.002 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.0 MB to 189.5 MB.
+Total: 15.360657 ms (FindLiveObjects: 0.285197 ms CreateObjectMapping: 0.214733 ms MarkObjects: 14.388673 ms  DeleteObjects: 0.471250 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 9.524559 ms (FindLiveObjects: 0.257202 ms CreateObjectMapping: 0.200123 ms MarkObjects: 9.053865 ms  DeleteObjects: 0.012032 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.879 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 124ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.550 seconds
+Domain Reload Profiling: 2425ms
+	BeginReloadAssembly (564ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (58ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (309ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (28ms)
+	LoadAllAssembliesAndSetupDomain (237ms)
+		LoadAssemblies (108ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (189ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (168ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1551ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1118ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (89ms)
+			SetLoadedEditorAssemblies (11ms)
+			BeforeProcessingInitializeOnLoad (205ms)
+			ProcessInitializeOnLoadAttributes (577ms)
+			ProcessInitializeOnLoadMethodAttributes (233ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (36ms)
+Asset Pipeline Refresh (id=42fe9addc90d9a79cb9f5447373adf12): Total: 2.560 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1644 ms
+		Asset DB Callback time: managed=23 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=890 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.458ms
+	ApplyChangesToAssetFolders: 0.372ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.472ms
+	CategorizeAssets: 51.743ms
+	ImportOutOfDateAssets: 1557.951ms (1551.914ms without children)
+		CompileScripts: 1.289ms
+		CollectScriptTypesHashes: 1.982ms
+		ReloadNativeAssets: 1.581ms
+		UnloadImportedAssets: 0.046ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.718ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.422ms
+	PostProcessAllAssets: 23.792ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.163ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.181ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.699ms
+	Untracked: 920.056ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.156 ms
+	Integration:            375.325 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   376.485 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.915 ms
+	Integration:            11.937 ms
+	Integration of assets:  0.217 ms
+	Thread Wait Time:       10.875 ms
+	Total Operation Time:   32.944 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.928 ms
+	Integration:            172.902 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   173.836 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.1 MB to 189.5 MB.
+Total: 13.616054 ms (FindLiveObjects: 0.388701 ms CreateObjectMapping: 0.348591 ms MarkObjects: 12.415260 ms  DeleteObjects: 0.462560 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 12.882738 ms (FindLiveObjects: 0.243845 ms CreateObjectMapping: 0.195072 ms MarkObjects: 12.428867 ms  DeleteObjects: 0.013722 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.746 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 113ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.380 seconds
+Domain Reload Profiling: 2123ms
+	BeginReloadAssembly (463ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (31ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (267ms)
+	RebuildCommonClasses (34ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (210ms)
+		LoadAssemblies (91ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (166ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (147ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1381ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (993ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (76ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (143ms)
+			ProcessInitializeOnLoadAttributes (485ms)
+			ProcessInitializeOnLoadMethodAttributes (278ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (32ms)
+Asset Pipeline Refresh (id=5834c998bf7468e3cb8e36fb7d5d7088): Total: 2.253 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1471 ms
+		Asset DB Callback time: managed=23 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=756 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.331ms
+	ApplyChangesToAssetFolders: 0.363ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.795ms
+	CategorizeAssets: 49.863ms
+	ImportOutOfDateAssets: 1387.065ms (1381.416ms without children)
+		CompileScripts: 1.263ms
+		CollectScriptTypesHashes: 1.852ms
+		ReloadNativeAssets: 1.443ms
+		UnloadImportedAssets: 0.050ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.674ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.368ms
+	PostProcessAllAssets: 23.419ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.158ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.167ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.459ms
+	Untracked: 785.509ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.194 ms
+	Integration:            335.959 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   337.159 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            10.827 ms
+	Integration:            11.852 ms
+	Integration of assets:  0.217 ms
+	Thread Wait Time:       10.699 ms
+	Total Operation Time:   33.595 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.001 ms
+	Integration:            209.350 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   210.358 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.1 MB to 189.5 MB.
+Total: 15.608398 ms (FindLiveObjects: 0.283164 ms CreateObjectMapping: 0.210424 ms MarkObjects: 14.654342 ms  DeleteObjects: 0.459469 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 10.429454 ms (FindLiveObjects: 0.263584 ms CreateObjectMapping: 0.220339 ms MarkObjects: 9.930410 ms  DeleteObjects: 0.013892 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.882 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 130ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.522 seconds
+Domain Reload Profiling: 2399ms
+	BeginReloadAssembly (544ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (65ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (295ms)
+	RebuildCommonClasses (37ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (256ms)
+		LoadAssemblies (99ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (208ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (185ms)
+			ResolveRequiredComponents (12ms)
+	FinalizeReload (1522ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1069ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (86ms)
+			SetLoadedEditorAssemblies (10ms)
+			BeforeProcessingInitializeOnLoad (166ms)
+			ProcessInitializeOnLoadAttributes (567ms)
+			ProcessInitializeOnLoadMethodAttributes (237ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (39ms)
+Asset Pipeline Refresh (id=d308ec02ea2b369c58c7b264fc4cfc82): Total: 2.532 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1613 ms
+		Asset DB Callback time: managed=23 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=893 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.462ms
+	ApplyChangesToAssetFolders: 0.377ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.762ms
+	CategorizeAssets: 48.401ms
+	ImportOutOfDateAssets: 1528.793ms (1522.954ms without children)
+		CompileScripts: 1.247ms
+		CollectScriptTypesHashes: 1.989ms
+		ReloadNativeAssets: 1.477ms
+		UnloadImportedAssets: 0.047ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.696ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.384ms
+	PostProcessAllAssets: 23.833ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.166ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.178ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.357ms
+	Untracked: 923.696ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.038 ms
+	Integration:            399.078 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   400.121 ms
+[Licensing::Client] Successfully resolved entitlement details
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.462 ms
+	Integration:            11.443 ms
+	Integration of assets:  0.208 ms
+	Thread Wait Time:       10.098 ms
+	Total Operation Time:   31.211 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.927 ms
+	Integration:            175.293 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   176.227 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.1 MB to 189.5 MB.
+Total: 13.604303 ms (FindLiveObjects: 0.259098 ms CreateObjectMapping: 0.197831 ms MarkObjects: 12.692926 ms  DeleteObjects: 0.453515 ms)
+
+[Licensing::Client] Successfully resolved entitlement details
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7316.
+Memory consumption went from 188.9 MB to 188.9 MB.
+Total: 10.014380 ms (FindLiveObjects: 0.256972 ms CreateObjectMapping: 0.204659 ms MarkObjects: 9.538706 ms  DeleteObjects: 0.012959 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.788 seconds
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 115ms
+Mono: successfully reloaded assembly
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+- Finished resetting the current domain, in  1.429 seconds
+Domain Reload Profiling: 2213ms
+	BeginReloadAssembly (505ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (53ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (276ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (209ms)
+		LoadAssemblies (96ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (165ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (146ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (1430ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1019ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (75ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (188ms)
+			ProcessInitializeOnLoadAttributes (529ms)
+			ProcessInitializeOnLoadMethodAttributes (215ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (36ms)
+Asset Pipeline Refresh (id=f9c63d73a4469e08fbb880cf48852360): Total: 2.332 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1512 ms
+		Asset DB Callback time: managed=20 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=797 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1849, non-scripts=2661
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.315ms
+	ApplyChangesToAssetFolders: 0.355ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 3.316ms
+	CategorizeAssets: 43.989ms
+	ImportOutOfDateAssets: 1435.692ms (1430.282ms without children)
+		CompileScripts: 1.089ms
+		CollectScriptTypesHashes: 1.951ms
+		ReloadNativeAssets: 1.332ms
+		UnloadImportedAssets: 0.046ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.640ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.351ms
+	PostProcessAllAssets: 20.610ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.168ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.158ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.012ms
+	Untracked: 825.537ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.124 ms
+	Integration:            385.718 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   386.848 ms
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            11.274 ms
+	Integration:            11.573 ms
+	Integration of assets:  0.212 ms
+	Thread Wait Time:       11.470 ms
+	Total Operation Time:   34.530 ms
+Unloading 33 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.970 ms
+	Integration:            192.845 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.017 ms
+	Total Operation Time:   193.834 ms
+Unloading 39 unused Assets / (83.6 MB). Loaded Objects now: 7316.
+Memory consumption went from 273.1 MB to 189.5 MB.
+Total: 13.028672 ms (FindLiveObjects: 0.269746 ms CreateObjectMapping: 0.207633 ms MarkObjects: 12.099072 ms  DeleteObjects: 0.451306 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0.6 KB). Loaded Objects now: 7316.
+Memory consumption went from 189.0 MB to 189.0 MB.
+Total: 10.881305 ms (FindLiveObjects: 0.288591 ms CreateObjectMapping: 0.215499 ms MarkObjects: 10.360832 ms  DeleteObjects: 0.015311 ms)
+
+[P3.1] memory-cycles.json {"what": "W-GAME-08: Boot.unity Play/Edit cycles in the Editor; memory sampled after each exit (GC + UnloadUnusedAssetsImmediate)", "revision": "editor", "unity": "6000.0.75f1", "cycles": [{"cycle": 1, "playAllocated": 373387198, "allocated": 198763879, "reserved": 637763584, "managed": 728096768, "ms": 6290, "allocatedGrowthPct": 0.0, "reservedGrowthPct": 0.0}, {"cycle": 2, "playAllocated": 449160231, "allocated": 278534697, "reserved": 683900928, "managed": 730660864, "ms": 5436, "allocatedGrowthPct": 40.13, "reservedGrowthPct": 7.23}, {"cycle": 3, "playAllocated": 368692708, "allocated": 198046310, "reserved": 683900928, "managed": 730521600, "ms": 5442, "allocatedGrowthPct": -0.36, "reservedGrowthPct": 7.23}, {"cycle": 4, "playAllocated": 368672268, "allocated": 198047462, "reserved": 650346496, "managed": 731070464, "ms": 5079, "allocatedGrowthPct": -0.36, "reservedGrowthPct": 1.97}, {"cycle": 5, "playAllocated": 368682402, "allocated": 198050694, "reserved": 650346496, "managed": 730619904, "ms": 5596, "allocatedGrowthPct": -0.36, "reservedGrowthPct": 1.97}, {"cycle": 6, "playAllocated": 368689074, "allocated": 198050774, "reserved": 637763584, "managed": 731291648, "ms": 5216, "allocatedGrowthPct": -0.36, "reservedGrowthPct": 0.0}, {"cycle": 7, "playAllocated": 368727460, "allocated": 198073910, "reserved": 633569280, "managed": 730861568, "ms": 5661, "allocatedGrowthPct": -0.35, "reservedGrowthPct": -0.66}, {"cycle": 8, "playAllocated": 368692940, "allocated": 198076318, "reserved": 633569280, "managed": 731402240, "ms": 5259, "allocatedGrowthPct": -0.35, "reservedGrowthPct": -0.66}, {"cycle": 9, "playAllocated": 368700372, "allocated": 198105478, "reserved": 633569280, "managed": 730996736, "ms": 5594, "allocatedGrowthPct": -0.33, "reservedGrowthPct": -0.66}, {"cycle": 10, "playAllocated": 368733096, "allocated": 198134449, "reserved": 633569280, "managed": 731398144, "ms": 5474, "allocatedGrowthPct": -0.32, "reservedGrowthPct": -0.66}], "allocatedGrowthPctCycle10": -0.32, "reservedGrowthPctCycle10": -0.66}
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests/<TenPlayEditCycles>d__4:MoveNext () (at Assets/Hollowmere/Tests/P3_1/EditMode/P31PlayModeHooksTests.cs:178)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.EnumerableApplyChangesToContextCommand/<ExecuteEnumerable>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableApplyChangesToContextCommand.cs:23)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: Assets/Hollowmere/Tests/P3_1/EditMode/P31PlayModeHooksTests.cs Line: 178)
+
+[P3.1] memory cycles: allocated +-0.32%, reserved +-0.66% at cycle 10 (~/wkspace/gc-studio/p4.2k/artifacts/studio/evidence/P3.1/memory-cycles.json)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests/<TenPlayEditCycles>d__4:MoveNext () (at Assets/Hollowmere/Tests/P3_1/EditMode/P31PlayModeHooksTests.cs:179)
+UnityEngine.TestTools.TestEnumerator/<Execute>d__7:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerableAndRecordExceptions>d__4:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:79)
+UnityEngine.TestTools.EnumerableTestMethodCommand:AdvanceEnumerator (System.Collections.IEnumerator) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:64)
+UnityEngine.TestTools.EnumerableTestMethodCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs:47)
+UnityEngine.TestRunner.NUnitExtensions.Runner.UnityLogCheckDelegatingCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/UnityLogCheckDelegatingCommand.cs:48)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<NUnit.Framework.ITestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<System.Reflection.MethodInfo>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.BeforeAfterTestCommandBase`1/<ExecuteEnumerable>d__16<UnityEngine.TestTools.IOuterUnityTestAction>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/BeforeAfterTestCommandBase.cs:212)
+UnityEngine.TestTools.RetryCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RetryCommand.cs:37)
+UnityEngine.TestTools.RepeatCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/RepeatCommand.cs:36)
+UnityEngine.TestTools.EnumerableApplyChangesToContextCommand/<ExecuteEnumerable>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableApplyChangesToContextCommand.cs:23)
+UnityEngine.TestTools.IgnoreTestCommand/<ExecuteEnumerable>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/IgnoreTestCommand.cs:42)
+UnityEngine.TestTools.StrictCheckCommand/<ExecuteEnumerable>d__2:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Commands/StrictCheckCommand.cs:29)
+UnityEditor.TestTools.TestRunner.EditorEnumeratorTestWorkItem/<PerformWork>d__3:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditorEnumeratorTestWorkItem.cs:97)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<RunChildren>d__17:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:207)
+UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Runner/CompositeWorkItem.cs:82)
+UnityEditor.TestTools.TestRunner.EditModeRunner:MoveNextAndUpdateYieldObject () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:167)
+UnityEditor.TestTools.TestRunner.EditModeRunner:TestConsumer (UnityEditor.TestTools.TestRunner.TestRunnerStateSerializer) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs:200)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.EditModeRunTask/<Execute>d__1:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/EditModeRunTask.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: Assets/Hollowmere/Tests/P3_1/EditMode/P31PlayModeHooksTests.cs Line: 179)
+
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+Saving results to: ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T182552.282623Z/results.xml
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 5 unused Assets / (2.8 KB). Loaded Objects now: 7302.
+Memory consumption went from 189.0 MB to 189.0 MB.
+Total: 11.361096 ms (FindLiveObjects: 0.250895 ms CreateObjectMapping: 0.185202 ms MarkObjects: 10.184515 ms  DeleteObjects: 0.739444 ms)
+
+DisplayProgressbar: Undo
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Start importing Assets/Hollowmere/UI/Theme/HollowmerePanelSettings.asset using Guid(b90fff993fc6f94c49bc2b03d2512844) (NativeFormatImporter) -> (artifact id: '0a210f3fc6608e91f5427242957f9fce') in 0.005034173 seconds
+Refreshing native plugins compatible for Editor in 0.30 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=3899c9fc48b6fbd6e9922317301e436b): Total: 0.076 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Unloading 433 unused Assets / (1.3 MB). Loaded Objects now: 6874.
+Memory consumption went from 206.4 MB to 205.0 MB.
+Total: 16.428929 ms (FindLiveObjects: 0.339376 ms CreateObjectMapping: 0.227296 ms MarkObjects: 14.764744 ms  DeleteObjects: 1.096391 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 41
+[Package Manager] Server process was shutdown
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type": "MemoryLeaks", "version": 2, "phase": "Immediate", "time": 1791397643636, "processId": 3765268, "allocatedMemory": 16206180, "memoryLabels": [{"Default": 13965}, {"Permanent": 16147}, {"Thread": 1084656}, {"Manager": 3081329}, {"VertexData": 8}, {"Geometry": 408}, {"VFX": -104}, {"Texture": 296}, {"Shader": 79299}, {"Material": 24}, {"GfxDevice": 35976}, {"Animation": 456}, {"Audio": 4032}, {"Font": 1782565}, {"FreeType": 63500}, {"FontEngine": 320}, {"Physics": 2081}, {"Serialization": 376}, {"Input": 26752}, {"JobScheduler": 33024}, {"TextLib": 160}, {"Mono": 32}, {"MonoCode": 96}, {"ScriptingNativeRuntime": 155096}, {"BaseObject": 1622832}, {"Resource": 1032}, {"Renderer": 2928}, {"Transform": 4678}, {"File": 6674}, {"WebCam": 80}, {"Culling": 32}, {"Terrain": 11298}, {"Wind": 24}, {"String": 12928}, {"DynamicArray": 105897}, {"HashMap": 136778}, {"Utility": 2665104}, {"PoolAlloc": 4112}, {"AI": 72}, {"TypeTree": 5005}, {"ScriptManager": 512}, {"RuntimeInitializeOnLoadManager": 64}, {"SpriteAtlas": 112}, {"GI": 7448}, {"Director": 8208}, {"WebRequest": 848}, {"VR": 45689}, {"SceneManager": 528}, {"Video": 64}, {"LazyScriptCache": 32}, {"NativeArray": 5940}, {"Camera": 17}, {"Secure": 8401}, {"SerializationCache": 1576}, {"APIUpdating": 10320}, {"Subsystems": 336}, {"VirtualTexturing": 57552}, {"StaticSafetyDebugInfo": 278528}, {"Analytics": 256}, {"Hierarchy": 832}, {"CoreStats": 12456}, {"Identifiers": 12384}, {"Gui": 112}, {"EditorUtility": 36191}, {"VersionControl": 4}, {"Undo": 979}, {"AssetDatabase": 4716658}, {"EditorGi": 328}, {"UnityConnect": 24816}, {"Upm": 1852}, {"DrivenProperties": 72}, {"LocalIPC": 210}, {"ProfilerEditor": 9746}, {"CoreBusinessMetrics": 2389}, {"Licensing": 688}, {"AssetReference": 32}, {"IPCStream": 32}]}

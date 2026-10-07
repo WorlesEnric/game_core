@@ -1,0 +1,75 @@
+[autoplay] script with 52 commands, quitAfterFrames=0 frame=1
+[autoplay] 2 waituntil ready timeout 120 frame=4
+[autoplay] 2 reached 'ready' after 0.00 s (Running)
+[autoplay] 3 waituntil lifecycle menu-relaunched timeout 30 frame=4
+[autoplay] 3 reached 'lifecycle menu-relaunched' after 0.00 s (menu-relaunched screen=Menu state={"region":"11e8dd95-6622-43d0-8b48-5e17b72f0bb8","position":{"x":0.0,"y":0.0,"z":-12.0},"quest":0,"stage":0,"branch":0,"outcome":0,"lantern":0,"clapper":0,"coins":2,"rumour":0,"gate":0,"shrine":0,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 4 wait 8 frame=4
+[autoplay] 5 ui open.load frame=4002
+[autoplay] 6 waituntil screen Load timeout 10 frame=4002
+[autoplay] 6 reached 'screen Load' after 0.00 s (screen Load)
+[autoplay] 7 wait 4 frame=4003
+[autoplay] 8 ui load.1 frame=5855
+[autoplay] 9 waituntil lifecycle loaded timeout 60 frame=5855
+[autoplay] 9 reached 'lifecycle loaded' after 0.15 s (loaded screen=Hud state={"region":"7f21b99a-8e74-412f-a1da-5f7d60843080","position":{"x":194.72799682617188,"y":0.0,"z":7.806000232696533},"quest":1,"stage":2,"branch":0,"outcome":0,"lantern":1,"clapper":1,"coins":1,"rumour":1,"gate":1,"shrine":1,"bell":0,"ending":0} attaches=1 restores=1)
+[autoplay] 10 wait 8 frame=5857
+[autoplay] 13 walk 190 -6 frame=8711
+[autoplay] 13 arrived at (190.31, -5.05) after 5.44 s
+[autoplay] 14 walk 192 0 frame=10593
+[autoplay] 14 arrived at (191.72, -0.95) after 1.73 s
+[autoplay] 15 walk 200 16 frame=11215
+[autoplay] 15 arrived at (199.56, 15.12) after 7.19 s
+[autoplay] 16 walk 212 19.5 frame=14069
+[autoplay] 16 arrived at (211.05, 19.19) after 4.87 s
+[autoplay] 17 mark odd frame=16077
+[autoplay] 18 approach Odd within 1.8 timeout 40 frame=16077
+[autoplay] 18 reached Odd at (219.21, 19.86), 1.80 m, facing 85.43 after 3.28 s
+[autoplay] 19 waituntil prompt Odd timeout 15 frame=17304
+[autoplay] 19 reached 'prompt Odd' after 0.00 s (prompt Talk to Odd)
+[autoplay] 20 interact frame=17304
+[autoplay] 21 waituntil dialogue active timeout 10 frame=17304
+[autoplay] 21 reached 'dialogue active' after 0.01 s (dialogue active)
+[autoplay] 22 wait 8 frame=17306
+[autoplay] 23 advance frame=20643
+[autoplay] 24 wait 3 frame=20643
+[autoplay] 25 choose 0 frame=21860
+[autoplay] 26 waituntil region Belfry timeout 30 frame=21860
+[autoplay] 26 reached 'region Belfry' after 0.01 s (region Drowned Belfry)
+[autoplay] 27 mark belfry frame=21862
+[autoplay] 28 wait 8 frame=21862
+[autoplay] 29 face 0 frame=25869
+[autoplay] 30 approach "Belfry Echo" within 1.8 timeout 30 frame=25869
+[autoplay] 30 reached Belfry Echo at (101.04, 189.54), 1.79 m, facing -35.64 after 9.23 s
+[autoplay] 31 waituntil prompt Echo timeout 15 frame=30155
+[autoplay] 31 reached 'prompt Echo' after 0.00 s (prompt Talk to Belfry Echo)
+[autoplay] 32 interact frame=30155
+[autoplay] 33 waituntil dialogue active timeout 10 frame=30155
+[autoplay] 33 reached 'dialogue active' after 0.00 s (dialogue active)
+[autoplay] 34 wait 8 frame=30157
+[autoplay] 35 advance frame=34009
+[autoplay] 36 wait 4 frame=34009
+[autoplay] 37 choose 0 frame=36125
+[autoplay] 38 wait 8 frame=36125
+[autoplay] 39 advance frame=40516
+[autoplay] 40 waituntil dialogue none timeout 10 frame=40516
+[autoplay] 40 reached 'dialogue none' after 0.00 s (dialogue none)
+[autoplay] 41 approach "Drowned Bell" within 1.8 timeout 30 frame=40517
+[autoplay] 41 reached Drowned Bell at (100.21, 196.21), 1.80 m, facing -6.80 after 2.69 s
+[autoplay] 42 waituntil prompt bell timeout 15 frame=41839
+[autoplay] 42 reached 'prompt bell' after 0.00 s (prompt Ring the bell)
+[autoplay] 43 mark ring frame=41839
+[autoplay] 44 interact frame=41839
+[autoplay] 45 waituntil fact bell_rung == 1 timeout 10 frame=41839
+[autoplay] 45 reached 'fact bell_rung == 1' after 0.01 s (fact bell_rung=1)
+[autoplay] 46 waituntil lifecycle ending timeout 30 frame=41843
+[autoplay] 46 reached 'lifecycle ending' after 3.02 s (ending screen=Ending state={"region":"1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18","position":{"x":100.21299743652344,"y":0.0,"z":196.21299743652345},"quest":2,"stage":3,"branch":3,"outcome":3,"lantern":1,"clapper":1,"coins":1,"rumour":1,"gate":1,"shrine":1,"bell":1,"ending":1} attaches=1 restores=1)
+[autoplay] 47 wait 15 frame=43243
+[autoplay] 48 ui restart frame=51368
+[autoplay] 50 waituntil lifecycle restarted timeout 120 frame=51368
+[autoplay] 50 reached 'lifecycle restarted' after 0.08 s (restarted screen=Hud state={"region":"11e8dd95-6622-43d0-8b48-5e17b72f0bb8","position":{"x":0.0,"y":0.0,"z":-12.0},"quest":0,"stage":0,"branch":0,"outcome":0,"lantern":0,"clapper":0,"coins":2,"rumour":0,"gate":0,"shrine":0,"bell":0,"ending":0} attaches=2 restores=0)
+[autoplay] 51 wait 10 frame=51370
+[autoplay] 52 ui open.pause frame=56286
+[autoplay] 53 waituntil screen Pause timeout 10 frame=56286
+[autoplay] 53 reached 'screen Pause' after 0.00 s (screen Pause)
+[autoplay] 54 wait 4 frame=56287
+[autoplay] 55 ui quit frame=58091
+[autoplay] 56 waituntil lifecycle unexpected-surviving-quit timeout 15 frame=58091

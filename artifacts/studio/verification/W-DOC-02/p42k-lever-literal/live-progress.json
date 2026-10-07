@@ -1,0 +1,77 @@
+{
+  "phase": "complete",
+  "startedMs": 1791402883087,
+  "domains": [
+    {
+      "domain": "e7cce9cdc23042b7ad5ae8fa618281a9",
+      "phase": "start",
+      "atMs": 1791402883497,
+      "runtimeReloads": 81
+    },
+    {
+      "domain": "b76ec079052d4674b585c78d3834c157",
+      "phase": "play",
+      "atMs": 1791402891878,
+      "runtimeReloads": 82
+    },
+    {
+      "domain": "7eb26a29803a49ad972cac82dd8570d1",
+      "phase": "admission",
+      "atMs": 1791402916710,
+      "runtimeReloads": 83
+    },
+    {
+      "domain": "7d6a6a02b30745189ebe8821cab53839",
+      "phase": "admission",
+      "atMs": 1791402924198,
+      "runtimeReloads": 84
+    },
+    {
+      "domain": "5e2c30d69d4648efb914ebf1229fc543",
+      "phase": "undo",
+      "atMs": 1791402964023,
+      "runtimeReloads": 85
+    }
+  ],
+  "reloads": [
+    {
+      "phase": "play",
+      "pendingPhase": null,
+      "packageInstalled": false,
+      "domain": "e7cce9cdc23042b7ad5ae8fa618281a9",
+      "atMs": 1791402884870
+    },
+    {
+      "phase": "admission",
+      "pendingPhase": "compile",
+      "packageInstalled": true,
+      "domain": "b76ec079052d4674b585c78d3834c157",
+      "atMs": 1791402911194
+    },
+    {
+      "phase": "admission",
+      "pendingPhase": "restore-play",
+      "packageInstalled": true,
+      "domain": "7eb26a29803a49ad972cac82dd8570d1",
+      "atMs": 1791402918686
+    },
+    {
+      "phase": "undo",
+      "pendingPhase": "undo-compile",
+      "packageInstalled": false,
+      "domain": "7d6a6a02b30745189ebe8821cab53839",
+      "atMs": 1791402958474
+    }
+  ],
+  "newGame": true,
+  "coins": 9,
+  "initialVerifiedJobId": "stg_1a117ed076fda9226f8342a",
+  "reviewStartedMs": 1791402893922,
+  "admissionStartedMs": 1791402895506,
+  "admissionDomain": "b76ec079052d4674b585c78d3834c157",
+  "admittedMs": 1791402928001,
+  "interactionStartedMs": 1791402930062,
+  "visibleMs": 1791402930174,
+  "undoStartedMs": 1791402932250,
+  "completedMs": 1791402964962
+}

@@ -1,23 +1,23 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml"
+  ],
   "checks": [
     {
-      "file": "W-PLUG-10/p42j-validator-parity-20261007T122659.130516Z/results.xml",
+      "file": "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml",
       "xmlCase": "Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts"
     }
   ],
-  "evidence": [
-    "W-PLUG-10/p42j-validator-parity-20261007T122659.130516Z/results.xml"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py native",
-  "note": "Current-run Definition validator parity (inspector, validator, agent) is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+  "status": "PASS",
+  "note": "Current-run Definition validator parity (inspector, validator, agent) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-PLUG-10",
   "scenario": "Definition validator parity (inspector, validator, agent)",
   "requirement": "SR-5.2",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-PLUG-10/p42j-validator-parity-20261007T122659.130516Z/results.xml",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }
