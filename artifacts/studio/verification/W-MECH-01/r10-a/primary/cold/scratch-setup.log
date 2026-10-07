@@ -1,0 +1,12 @@
+$ /home/worlesenric/.local/opt/etos/bin/etosd init --profile local --root /tmp/r10-a-creator-primary/node --name r8-c-lever --owner r8-c
+created /tmp/r10-a-creator-primary/node/etos.toml
+next: `etosd run`, then open http://127.0.0.1:7400/ to choose a model
+$ python3 /home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/cache.py --stage-root /tmp/r10-a-creator-primary/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a --repo /home/worlesenric/wkspace/gc-studio/r10-a --source-project /home/worlesenric/wkspace/gc-studio/r10-a/games/hollowmere --binary /home/worlesenric/wkspace/gc-studio/r10-a/studio/agent/target/debug/gamecore-studio --offline-from /home/worlesenric/.nuget/packages --unity-library /home/worlesenric/.cache/gamecore-studio/stage/_warm/Library --upm-from /home/worlesenric/.cache/gamecore-studio/stage/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22/upm
+stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/r10-a-creator-primary/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22
+$ /home/worlesenric/.local/opt/etos/bin/etos agent install /tmp/r10-a-creator-primary/agent
+installed gamecore-studio 0.1.0 (R8-C scratch stage companion)
+$ /home/worlesenric/.local/opt/etos/bin/etos app install /home/worlesenric/wkspace/gc-studio/r10-a/studio/etos/app
+installed gamecore-unity (GameCore Studio (Unity))
+no extension ids in the manifest: no native messaging host registered
+$ /home/worlesenric/.local/opt/etos/bin/etos app pair gamecore-unity --approve --out /tmp/r10-a-creator-primary/pairing.json
+wrote the key of gamecore-unity to /tmp/r10-a-creator-primary/pairing.json

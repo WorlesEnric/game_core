@@ -1,0 +1,70 @@
+$ Roslyn semantic analyzer  (exit Some(0), 10410 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+$ dotnet build Rules.csproj  (exit Some(0), 2404 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.57
+$ dotnet test Rules.Tests.csproj  (exit Some(0), 4510 ms)
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.131
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, view the instructions: https://aka.ms/dotnet-https-linux
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+  Determining projects to restore...
+  Restored /tmp/r10-a-creator-qualified/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a/cs-01m4bnqsp0k4ehx1bz9c3xvs7f/dotnet/Rules.Tests/Rules.Tests.csproj (in 182 ms).
+  1 of 2 projects are up-to-date for restore.
+  Rules -> /tmp/r10-a-creator-qualified/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a/cs-01m4bnqsp0k4ehx1bz9c3xvs7f/dotnet/Rules/bin/Debug/netstandard2.1/Hollowmere.Mechanism.PressurePlate.Rules.dll
+  Rules.Tests -> /tmp/r10-a-creator-qualified/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a/cs-01m4bnqsp0k4ehx1bz9c3xvs7f/dotnet/Rules.Tests/bin/Debug/net8.0/Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll
+Test run for /tmp/r10-a-creator-qualified/stage/6c53f5ba4ecbc2b50b73d737d9141b61e4b5e1038a68984f3c61b20f17b5239a/cs-01m4bnqsp0k4ehx1bz9c3xvs7f/dotnet/Rules.Tests/bin/Debug/net8.0/Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.8.0 (x64)
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    15, Skipped:     0, Total:    15, Duration: 22 ms - Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll (net8.0)

@@ -1,0 +1,32 @@
+{
+  "id": "cs_01M4BNSP9E9AF33V3YSG65E861",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "R10_A_01 retained worker structural edit before mechanism Stage",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "bdecb271-eb2c-4fd8-94d5-c47c158b9a6d",
+        "global": "GlobalObjectId_V1-3-e070a9213e4093001b7fab85bdaa52e4-11400000-0",
+        "assetGuid": "e070a9213e4093001b7fab85bdaa52e4",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoinsEntity.asset",
+        "stamp": "sha256:1ab219f0449af96de32ddb8cbfd685c40743aa4cbedb388e0c234853b99f5786"
+      },
+      "args": {
+        "field": "interactionKind",
+        "value": "r10-a-freshness"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Live",
+    "worldRebuild": false,
+    "compile": false,
+    "build": false
+  }
+}

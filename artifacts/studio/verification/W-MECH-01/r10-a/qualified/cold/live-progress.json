@@ -1,0 +1,61 @@
+{
+  "phase": "undo",
+  "startedMs": 1791393534588,
+  "domains": [
+    {
+      "domain": "c97cb5c41bba48e5a440319423e3109f",
+      "phase": "start",
+      "atMs": 1791393534863,
+      "runtimeReloads": 0
+    },
+    {
+      "domain": "415569ca9ba04b4084dc346e57d623a5",
+      "phase": "play",
+      "atMs": 1791393543394,
+      "runtimeReloads": 1
+    },
+    {
+      "domain": "62925655fb2d4e8a94054b4d02d7d3b9",
+      "phase": "admission",
+      "atMs": 1791393575151,
+      "runtimeReloads": 2
+    },
+    {
+      "domain": "2444f4966716443192f5666c1da3cae2",
+      "phase": "admission",
+      "atMs": 1791393583098,
+      "runtimeReloads": 3
+    }
+  ],
+  "reloads": [
+    {
+      "phase": "play",
+      "pendingPhase": null,
+      "packageInstalled": false,
+      "domain": "c97cb5c41bba48e5a440319423e3109f",
+      "atMs": 1791393536662
+    },
+    {
+      "phase": "admission",
+      "pendingPhase": "compile",
+      "packageInstalled": true,
+      "domain": "415569ca9ba04b4084dc346e57d623a5",
+      "atMs": 1791393568397
+    },
+    {
+      "phase": "admission",
+      "pendingPhase": "restore-play",
+      "packageInstalled": true,
+      "domain": "62925655fb2d4e8a94054b4d02d7d3b9",
+      "atMs": 1791393576942
+    }
+  ],
+  "newGame": true,
+  "coins": 9,
+  "initialVerifiedJobId": "stg_1a1175d097c89373eabd33d",
+  "reviewStartedMs": 1791393545498,
+  "admissionStartedMs": 1791393547081,
+  "admissionDomain": "415569ca9ba04b4084dc346e57d623a5",
+  "admittedMs": 1791393587513,
+  "undoStartedMs": 1791393589516
+}

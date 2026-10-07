@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="89" result="Passed" total="89" passed="89" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:06:09Z" duration="23.0583536">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="616" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:06:09Z" duration="23.058354" total="89" passed="89" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1135" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="114" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:58Z" duration="11.840429" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3482162" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1136" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="114" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:58Z" duration="11.838160" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1137" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="114" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:58Z" duration="11.836154" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1138" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="114" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:58Z" duration="11.834141" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1139" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="114" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:58Z" duration="11.832097" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1058" name="R10CatalogFreshnessTests" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:57Z" duration="11.250849" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1061" name="R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" methodname="R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="908919772" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:46Z" duration="0.158854" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1059" name="R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" methodname="R10_A_W_MECH_01_StaleDescriptionExportsCurrentWorldWithoutRebake" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="1830964558" result="Passed" start-time="2026-10-07 17:05:46Z" end-time="2026-10-07 17:05:52Z" duration="6.219625" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1060" name="R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" fullname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests.R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" methodname="R10_A_W_MECH_01_StaleGeneratedRuntimeRefusesBeforeSnapshotPublication" classname="GameCore.Studio.Edit.Tests.R10CatalogFreshnessTests" runstate="Runnable" seed="1170005192" result="Passed" start-time="2026-10-07 17:05:52Z" end-time="2026-10-07 17:05:57Z" duration="4.858779" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1112" name="R8StageCancellationTests" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 17:05:57Z" end-time="2026-10-07 17:05:58Z" duration="0.573964" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1114" name="W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests.W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" methodname="W_REC_03_AlreadyFinishedJobIsNotReportedAsCancelled" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" seed="293115724" result="Passed" start-time="2026-10-07 17:05:57Z" end-time="2026-10-07 17:05:57Z" duration="0.347101" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1113" name="W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" fullname="GameCore.Studio.Edit.Tests.R8StageCancellationTests.W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" methodname="W_REC_03_CancellationDoesNotCompleteBeforeServiceTeardownAcknowledgment" classname="GameCore.Studio.Edit.Tests.R8StageCancellationTests" runstate="Runnable" seed="1092631485" result="Passed" start-time="2026-10-07 17:05:57Z" end-time="2026-10-07 17:05:58Z" duration="0.223931" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1622" name="Hollowmere.P2_4.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P2_4.EditMode.Tests.dll" runstate="Runnable" testcasecount="83" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:06:08Z" duration="10.783328" total="83" passed="83" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3482162" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1623" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="83" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:06:08Z" duration="10.783034" total="83" passed="83" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1627" name="P2_4" fullname="Hollowmere.P2_4" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:59Z" duration="1.714824" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1628" name="EditMode" fullname="Hollowmere.P2_4.EditMode" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:59Z" duration="1.714561" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1629" name="Tests" fullname="Hollowmere.P2_4.EditMode.Tests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:59Z" duration="1.714377" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1613" name="StageAdmissionTests" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:59Z" duration="1.714041" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1617" name="ACompileFailureRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.ACompileFailureRollsTheAdmissionBack" methodname="ACompileFailureRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1205305380" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:58Z" duration="0.230710" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1616" name="AdmissionIsRefusedWithATamperedArtifact" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionIsRefusedWithATamperedArtifact" methodname="AdmissionIsRefusedWithATamperedArtifact" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="2127532687" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:58Z" duration="0.081758" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1614" name="AdmissionIsRefusedWithoutAVerdict" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionIsRefusedWithoutAVerdict" methodname="AdmissionIsRefusedWithoutAVerdict" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="95613003" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:58Z" duration="0.053394" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1615" name="AdmissionSucceedsWithAMatchingVerdict" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionSucceedsWithAMatchingVerdict" methodname="AdmissionSucceedsWithAMatchingVerdict" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1237877594" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:58Z" duration="0.174929" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1618" name="AFaultAfterTheCompileRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AFaultAfterTheCompileRollsTheAdmissionBack" methodname="AFaultAfterTheCompileRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1121352641" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:58Z" duration="0.189014" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1619" name="AMismatchedLiveCatalogRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AMismatchedLiveCatalogRollsTheAdmissionBack" methodname="AMismatchedLiveCatalogRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="648681311" result="Passed" start-time="2026-10-07 17:05:58Z" end-time="2026-10-07 17:05:59Z" duration="0.193780" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1620" name="PlayModeMustStopOrBeCapturedFirst" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.PlayModeMustStopOrBeCapturedFirst" methodname="PlayModeMustStopOrBeCapturedFirst" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="572326283" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:05:59Z" duration="0.280697" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1621" name="UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" methodname="UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="430024362" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:05:59Z" duration="0.506784" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+        <test-suite type="TestSuite" id="1625" name="R2_B" fullname="Hollowmere.R2_B" runstate="Runnable" testcasecount="71" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:06:08Z" duration="8.927858" total="71" passed="71" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1626" name="Tests" fullname="Hollowmere.R2_B.Tests" runstate="Runnable" testcasecount="71" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:06:08Z" duration="8.925613" total="71" passed="71" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1530" name="AdmissionSmokeTests" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:06:03Z" duration="3.740527" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1541" name="R2_14_PendingSmokeExceptionFailsClosed" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PendingSmokeExceptionFailsClosed" methodname="R2_14_PendingSmokeExceptionFailsClosed" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="799622740" result="Passed" start-time="2026-10-07 17:05:59Z" end-time="2026-10-07 17:06:00Z" duration="0.428678" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1532" name="R2_14_PendingSmokeFailureRollsBack" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PendingSmokeFailureRollsBack" methodname="R2_14_PendingSmokeFailureRollsBack" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1812109206" result="Passed" start-time="2026-10-07 17:06:00Z" end-time="2026-10-07 17:06:00Z" duration="0.420603" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1533" name="R2_14_PendingSmokeFrameBudgetExhaustion" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PendingSmokeFrameBudgetExhaustion" methodname="R2_14_PendingSmokeFrameBudgetExhaustion" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1755177398" result="Passed" start-time="2026-10-07 17:06:00Z" end-time="2026-10-07 17:06:01Z" duration="0.414373" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1531" name="R2_14_PendingSmokePassesAcrossEditorFrames" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PendingSmokePassesAcrossEditorFrames" methodname="R2_14_PendingSmokePassesAcrossEditorFrames" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="2100362416" result="Passed" start-time="2026-10-07 17:06:01Z" end-time="2026-10-07 17:06:01Z" duration="0.308584" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1534" name="R2_14_PendingSmokeWallBudgetSurvivesReloadWithoutTrust" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PendingSmokeWallBudgetSurvivesReloadWithoutTrust" methodname="R2_14_PendingSmokeWallBudgetSurvivesReloadWithoutTrust" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1257103553" result="Passed" start-time="2026-10-07 17:06:01Z" end-time="2026-10-07 17:06:01Z" duration="0.339487" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1540" name="R2_14_PollOnlySmokeNeedsNoSynchronousAdapter" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_PollOnlySmokeNeedsNoSynchronousAdapter" methodname="R2_14_PollOnlySmokeNeedsNoSynchronousAdapter" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1993905514" result="Passed" start-time="2026-10-07 17:06:01Z" end-time="2026-10-07 17:06:02Z" duration="0.290182" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1535" name="R2_14_ReloadDuringPendingSmokeResumesWithRetainedBudget" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_ReloadDuringPendingSmokeResumesWithRetainedBudget" methodname="R2_14_ReloadDuringPendingSmokeResumesWithRetainedBudget" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1718819471" result="Passed" start-time="2026-10-07 17:06:02Z" end-time="2026-10-07 17:06:02Z" duration="0.326491" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1536" name="R2_14_ReloadWithoutSmokeAdapterFailsClosed" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_ReloadWithoutSmokeAdapterFailsClosed" methodname="R2_14_ReloadWithoutSmokeAdapterFailsClosed" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1010095914" result="Passed" start-time="2026-10-07 17:06:02Z" end-time="2026-10-07 17:06:02Z" duration="0.371409" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1542" name="R2_14_SynchronousSmokeFailureStillRollsBackImmediately" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_14_SynchronousSmokeFailureStillRollsBackImmediately" methodname="R2_14_SynchronousSmokeFailureStillRollsBackImmediately" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="981735896" result="Passed" start-time="2026-10-07 17:06:02Z" end-time="2026-10-07 17:06:03Z" duration="0.324151" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1539" name="R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.512134" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1537" name="R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing(False)" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing(False)" methodname="R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="242572128" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.267983" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1538" name="R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing(True)" fullname="Hollowmere.R2_B.Tests.AdmissionSmokeTests.R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing(True)" methodname="R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing" classname="Hollowmere.R2_B.Tests.AdmissionSmokeTests" runstate="Runnable" seed="1274604626" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.242519" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1543" name="AdmissionTrustTests" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="60" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:08Z" duration="5.184294" total="60" passed="60" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1586" name="R2_08_ArtifactNameCannotReadOutsideCandidate" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_ArtifactNameCannotReadOutsideCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.051566" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1582" name="R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;../outside.txt&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;../outside.txt&quot;)" methodname="R2_08_ArtifactNameCannotReadOutsideCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1972290452" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.013942" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1583" name="R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;/tmp/outside.txt&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;/tmp/outside.txt&quot;)" methodname="R2_08_ArtifactNameCannotReadOutsideCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="194327253" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.012978" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1584" name="R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;folder/outside.txt&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;folder/outside.txt&quot;)" methodname="R2_08_ArtifactNameCannotReadOutsideCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="960469027" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.012301" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1585" name="R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;folder\\outside.txt&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_ArtifactNameCannotReadOutsideCandidate(&quot;folder\\outside.txt&quot;)" methodname="R2_08_ArtifactNameCannotReadOutsideCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2103177388" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.011489" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1587" name="R2_08_SymlinkedCandidateArtifactRefusesBeforeRead" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_08_SymlinkedCandidateArtifactRefusesBeforeRead" methodname="R2_08_SymlinkedCandidateArtifactRefusesBeforeRead" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="135336467" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.068546" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1549" name="R2_09_CompanionRejectsForgedSignature" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_CompanionRejectsForgedSignature" methodname="R2_09_CompanionRejectsForgedSignature" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="655258375" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.016363" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1563" name="R2_09_ContextBindingRefusesMismatch" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_ContextBindingRefusesMismatch" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.062987" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1559" name="R2_09_ContextBindingRefusesMismatch(&quot;projectId&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_ContextBindingRefusesMismatch(&quot;projectId&quot;)" methodname="R2_09_ContextBindingRefusesMismatch" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="938374432" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.014879" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1560" name="R2_09_ContextBindingRefusesMismatch(&quot;sourceRevision&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_ContextBindingRefusesMismatch(&quot;sourceRevision&quot;)" methodname="R2_09_ContextBindingRefusesMismatch" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="518426481" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.014193" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1561" name="R2_09_ContextBindingRefusesMismatch(&quot;catalogRevision&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_ContextBindingRefusesMismatch(&quot;catalogRevision&quot;)" methodname="R2_09_ContextBindingRefusesMismatch" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1772400080" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.017778" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1562" name="R2_09_ContextBindingRefusesMismatch(&quot;jobId&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_ContextBindingRefusesMismatch(&quot;jobId&quot;)" methodname="R2_09_ContextBindingRefusesMismatch" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="261925267" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.014871" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1564" name="R2_09_CurrentRevisionRecheckedBeforeInstall" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_CurrentRevisionRecheckedBeforeInstall" methodname="R2_09_CurrentRevisionRecheckedBeforeInstall" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2008355759" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.071178" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1558" name="R2_09_HostConfinementRequiresOperatorOptIn" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_HostConfinementRequiresOperatorOptIn" methodname="R2_09_HostConfinementRequiresOperatorOptIn" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2108728690" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.082497" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1557" name="R2_09_IncompleteVerdictRefuses" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:04Z" duration="0.117485" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1550" name="R2_09_IncompleteVerdictRefuses(&quot;partial&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;partial&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="855499256" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:03Z" duration="0.018033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1551" name="R2_09_IncompleteVerdictRefuses(&quot;missing-step&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;missing-step&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1843809604" result="Passed" start-time="2026-10-07 17:06:03Z" end-time="2026-10-07 17:06:04Z" duration="0.015089" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1552" name="R2_09_IncompleteVerdictRefuses(&quot;skipped-step&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;skipped-step&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="870113179" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.018144" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1553" name="R2_09_IncompleteVerdictRefuses(&quot;duplicate-step&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;duplicate-step&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2111642950" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.016313" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1554" name="R2_09_IncompleteVerdictRefuses(&quot;forbidden&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;forbidden&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1371052539" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.014545" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1555" name="R2_09_IncompleteVerdictRefuses(&quot;warm-budget&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;warm-budget&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="232813103" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.018024" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1556" name="R2_09_IncompleteVerdictRefuses(&quot;missing-cold-cache&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_IncompleteVerdictRefuses(&quot;missing-cold-cache&quot;)" methodname="R2_09_IncompleteVerdictRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="514480039" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.015612" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1545" name="R2_09_SelfAuthoredVerdictBytesNeverAuthorize" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_SelfAuthoredVerdictBytesNeverAuthorize" methodname="R2_09_SelfAuthoredVerdictBytesNeverAuthorize" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2121054544" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.074208" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1548" name="R2_09_UnsignedOrMismatchedJobRefuses" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_UnsignedOrMismatchedJobRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.035962" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1546" name="R2_09_UnsignedOrMismatchedJobRefuses(&quot;&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_UnsignedOrMismatchedJobRefuses(&quot;&quot;)" methodname="R2_09_UnsignedOrMismatchedJobRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="367143673" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.018025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1547" name="R2_09_UnsignedOrMismatchedJobRefuses(&quot;wrong-job&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_UnsignedOrMismatchedJobRefuses(&quot;wrong-job&quot;)" methodname="R2_09_UnsignedOrMismatchedJobRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="985149835" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.016491" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1544" name="R2_09_VerdictAndAdmissionDiagnosticsUseSharedRedactor" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_09_VerdictAndAdmissionDiagnosticsUseSharedRedactor" methodname="R2_09_VerdictAndAdmissionDiagnosticsUseSharedRedactor" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="531053288" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.017959" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1565" name="R2_10_MutationToolsAbsentFromCatalogAndDirectApplyRefuses" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_10_MutationToolsAbsentFromCatalogAndDirectApplyRefuses" methodname="R2_10_MutationToolsAbsentFromCatalogAndDirectApplyRefuses" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1942060072" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.109696" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1580" name="R2_12_ProposalPathsContained" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_ProposalPathsContained" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.044803" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1577" name="R2_12_ProposalPathsContained(&quot;../Rules&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_ProposalPathsContained(&quot;../Rules&quot;)" methodname="R2_12_ProposalPathsContained" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1671218263" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.015147" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1578" name="R2_12_ProposalPathsContained(&quot;/Rules&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_ProposalPathsContained(&quot;/Rules&quot;)" methodname="R2_12_ProposalPathsContained" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1024741099" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.013489" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1579" name="R2_12_ProposalPathsContained(&quot;Editor/Rules&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_ProposalPathsContained(&quot;Editor/Rules&quot;)" methodname="R2_12_ProposalPathsContained" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2129838569" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.015174" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1576" name="R2_12_StageInputDataOnly" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.149478" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1566" name="R2_12_StageInputDataOnly(&quot;Assets/Editor/code.cs&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/Editor/code.cs&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1484310620" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.013972" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1567" name="R2_12_StageInputDataOnly(&quot;Assets/data.dll&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.dll&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1416653141" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.014440" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1568" name="R2_12_StageInputDataOnly(&quot;Assets/data.asmdef&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.asmdef&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="287952658" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.015090" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1569" name="R2_12_StageInputDataOnly(&quot;Assets/data.rsp&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.rsp&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1956209216" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.013168" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1570" name="R2_12_StageInputDataOnly(&quot;Assets/data.prefab&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.prefab&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="136814793" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.017733" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1571" name="R2_12_StageInputDataOnly(&quot;Assets/data.controller&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.controller&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1223172508" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.016364" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1572" name="R2_12_StageInputDataOnly(&quot;Assets/data.mat&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/data.mat&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1649753471" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.013103" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1573" name="R2_12_StageInputDataOnly(&quot;Assets/World&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/World&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="43337516" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.016517" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1574" name="R2_12_StageInputDataOnly(&quot;Assets/../outside.json&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;Assets/../outside.json&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2105438092" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.013115" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1575" name="R2_12_StageInputDataOnly(&quot;/tmp/outside.json&quot;)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_12_StageInputDataOnly(&quot;/tmp/outside.json&quot;)" methodname="R2_12_StageInputDataOnly" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="565315131" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.014114" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1581" name="R2_13_TypedRequestPreservesCandidateAndBinding" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_13_TypedRequestPreservesCandidateAndBinding" methodname="R2_13_TypedRequestPreservesCandidateAndBinding" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1576168795" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.016206" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1608" name="R2_14_AsyncStopAutomaticallyResumesFullCandidate" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_AsyncStopAutomaticallyResumesFullCandidate" methodname="R2_14_AsyncStopAutomaticallyResumesFullCandidate" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1662692114" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:04Z" duration="0.410943" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1607" name="R2_14_CaptureStopAndRestoreResumeAfterCrash" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:06Z" duration="1.540483" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1602" name="R2_14_CaptureStopAndRestoreResumeAfterCrash(Capture)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash(Capture)" methodname="R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="392531886" result="Passed" start-time="2026-10-07 17:06:04Z" end-time="2026-10-07 17:06:05Z" duration="0.405134" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1603" name="R2_14_CaptureStopAndRestoreResumeAfterCrash(AfterCapture)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash(AfterCapture)" methodname="R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1512706896" result="Passed" start-time="2026-10-07 17:06:05Z" end-time="2026-10-07 17:06:05Z" duration="0.377011" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1604" name="R2_14_CaptureStopAndRestoreResumeAfterCrash(StopPlay)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash(StopPlay)" methodname="R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1230836941" result="Passed" start-time="2026-10-07 17:06:05Z" end-time="2026-10-07 17:06:05Z" duration="0.250880" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1605" name="R2_14_CaptureStopAndRestoreResumeAfterCrash(RestorePlay)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash(RestorePlay)" methodname="R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="150302550" result="Passed" start-time="2026-10-07 17:06:05Z" end-time="2026-10-07 17:06:06Z" duration="0.255559" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1606" name="R2_14_CaptureStopAndRestoreResumeAfterCrash(RestoreCapture)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CaptureStopAndRestoreResumeAfterCrash(RestoreCapture)" methodname="R2_14_CaptureStopAndRestoreResumeAfterCrash" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="188088179" result="Passed" start-time="2026-10-07 17:06:06Z" end-time="2026-10-07 17:06:06Z" duration="0.249280" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1596" name="R2_14_CrashAtEachTransitionResumes" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 17:06:06Z" end-time="2026-10-07 17:06:07Z" duration="1.116494" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1588" name="R2_14_CrashAtEachTransitionResumes(Pending)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Pending)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="212713141" result="Passed" start-time="2026-10-07 17:06:06Z" end-time="2026-10-07 17:06:06Z" duration="0.182919" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1589" name="R2_14_CrashAtEachTransitionResumes(AfterApply)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(AfterApply)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1802563471" result="Passed" start-time="2026-10-07 17:06:06Z" end-time="2026-10-07 17:06:06Z" duration="0.184618" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1590" name="R2_14_CrashAtEachTransitionResumes(Compile)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Compile)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="473034730" result="Passed" start-time="2026-10-07 17:06:06Z" end-time="2026-10-07 17:06:07Z" duration="0.194154" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1591" name="R2_14_CrashAtEachTransitionResumes(Reload)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Reload)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1295747134" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.161821" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1592" name="R2_14_CrashAtEachTransitionResumes(Rebake)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Rebake)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="582865885" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.101223" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1593" name="R2_14_CrashAtEachTransitionResumes(Verify)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Verify)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="2062796277" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.096573" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1594" name="R2_14_CrashAtEachTransitionResumes(Smoke)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Smoke)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1446337465" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.095344" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1595" name="R2_14_CrashAtEachTransitionResumes(Applied)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashAtEachTransitionResumes(Applied)" methodname="R2_14_CrashAtEachTransitionResumes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="375755508" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.097112" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1601" name="R2_14_CrashDuringUndoRetainsRecovery" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashDuringUndoRetainsRecovery" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:08Z" duration="0.617377" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1597" name="R2_14_CrashDuringUndoRetainsRecovery(UndoPending)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashDuringUndoRetainsRecovery(UndoPending)" methodname="R2_14_CrashDuringUndoRetainsRecovery" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="245715385" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.144994" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1598" name="R2_14_CrashDuringUndoRetainsRecovery(UndoCompile)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashDuringUndoRetainsRecovery(UndoCompile)" methodname="R2_14_CrashDuringUndoRetainsRecovery" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1384025796" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:07Z" duration="0.138805" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1599" name="R2_14_CrashDuringUndoRetainsRecovery(Reload)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashDuringUndoRetainsRecovery(Reload)" methodname="R2_14_CrashDuringUndoRetainsRecovery" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1451564986" result="Passed" start-time="2026-10-07 17:06:07Z" end-time="2026-10-07 17:06:08Z" duration="0.146673" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1600" name="R2_14_CrashDuringUndoRetainsRecovery(UndoVerify)" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_CrashDuringUndoRetainsRecovery(UndoVerify)" methodname="R2_14_CrashDuringUndoRetainsRecovery" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1618201713" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.185316" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1609" name="R2_14_FailedUndoKeepsInterruptedRecordAndPreimages" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_FailedUndoKeepsInterruptedRecordAndPreimages" methodname="R2_14_FailedUndoKeepsInterruptedRecordAndPreimages" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="298488060" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.138385" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1610" name="R2_14_LegacyAfterPlayRecordIsDetectedAndRefused" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_14_LegacyAfterPlayRecordIsDetectedAndRefused" methodname="R2_14_LegacyAfterPlayRecordIsDetectedAndRefused" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="873071299" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.008224" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1612" name="R2_15_HistoryHandlerDispatchesUndoAndRedoWithExactPreimages" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_15_HistoryHandlerDispatchesUndoAndRedoWithExactPreimages" methodname="R2_15_HistoryHandlerDispatchesUndoAndRedoWithExactPreimages" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="1651875947" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.223242" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1611" name="R2_15_HistoryRetainsRedoUntilDeferredCompileCompletes" fullname="Hollowmere.R2_B.Tests.AdmissionTrustTests.R2_15_HistoryRetainsRedoUntilDeferredCompileCompletes" methodname="R2_15_HistoryRetainsRedoUntilDeferredCompileCompletes" classname="Hollowmere.R2_B.Tests.AdmissionTrustTests" runstate="Runnable" seed="428786245" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.204984" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+        <test-suite type="TestSuite" id="1624" name="R6_A" fullname="Hollowmere.R6_A" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.139840" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1523" name="AdmissionLifecycleTests" fullname="Hollowmere.R6_A.AdmissionLifecycleTests" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.138385" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1526" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.013392" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1524" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;world&quot;)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;world&quot;)" methodname="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="1671083060" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.006684" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1525" name="R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;predicted&quot;)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_01_P42dMissingDeltaRefusedBeforeInstall(&quot;predicted&quot;)" methodname="R6_A_01_P42dMissingDeltaRefusedBeforeInstall" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="725656175" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.006221" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1529" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.124408" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1527" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(False)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(False)" methodname="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="1834911294" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.063408" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1528" name="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(True)" fullname="Hollowmere.R6_A.AdmissionLifecycleTests.R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout(True)" methodname="R6_A_02_ExpiredDurableCompileDoesNotReenterAndRetainsTimeout" classname="Hollowmere.R6_A.AdmissionLifecycleTests" runstate="Runnable" seed="1004393278" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:08Z" duration="0.060423" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1876" name="Hollowmere.R6_E.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_E.EditMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.404869" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3482162" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1877" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.404194" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1878" name="R6_E" fullname="Hollowmere.R6_E" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.403854" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1879" name="Tests" fullname="Hollowmere.R6_E.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.403556" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1874" name="AdmissionRebindingTests" fullname="Hollowmere.R6_E.Tests.AdmissionRebindingTests" classname="Hollowmere.R6_E.Tests.AdmissionRebindingTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.403361" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1875" name="R6_E_PendingReloadRefreshStartsAuthenticatedSessionBeforeFirstPump" fullname="Hollowmere.R6_E.Tests.AdmissionRebindingTests.R6_E_PendingReloadRefreshStartsAuthenticatedSessionBeforeFirstPump" methodname="R6_E_PendingReloadRefreshStartsAuthenticatedSessionBeforeFirstPump" classname="Hollowmere.R6_E.Tests.AdmissionRebindingTests" runstate="Runnable" seed="1136952456" result="Passed" start-time="2026-10-07 17:06:08Z" end-time="2026-10-07 17:06:09Z" duration="0.402590" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

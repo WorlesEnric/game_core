@@ -1,0 +1,91 @@
+test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt) ... FAIL
+test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot) ... FAIL
+test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export) ... FAIL
+test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot) ... FAIL
+test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot) ... FAIL
+test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse) ... FAIL
+test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed) ... FAIL
+test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early) ... FAIL
+test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake) ... FAIL
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 160, in test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt
+    with self.assertRaisesRegex(ValueError, 'bake_stale'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 186, in test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot
+    with self.assertRaisesRegex(ValueError, 'bake_stale:.*config.bytes'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 207, in test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export
+    with self.assertRaisesRegex(ValueError, 'stage_path_link'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 133, in test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot
+    with self.assertRaisesRegex(ValueError, 'bake_stale:.*new-definition.asset'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 150, in test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot
+    with self.assertRaisesRegex(ValueError, 'bake_stale:.*Contributor.cs'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 168, in test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse
+    with self.assertRaisesRegex(ValueError, 'bake_stale:.*source revision'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 123, in test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed
+    with self.assertRaisesRegex(ValueError, 'bake_stale:.*definition.asset'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 95, in test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early
+    with self.assertRaisesRegex(ValueError, 'bake_stale: Assets/World/world.catalog.json'):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/worlesenric/wkspace/gc-studio/r10-a/studio/stage/tests/test_world_snapshot.py", line 111, in test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake
+    self.assertEqual(Path(record['path']).read_text(), computed)
+AssertionError: '{"de[21 chars]mecore.catalog-description/1", "recipes": ["committed-stale"]}' != '{"de[21 chars]mecore.catalog-description/1", "recipes": ["worker-edit"]}'
+- {"descriptionFormat": "gamecore.catalog-description/1", "recipes": ["committed-stale"]}
+?                                                                      ^ ^^  ---------
++ {"descriptionFormat": "gamecore.catalog-description/1", "recipes": ["worker-edit"]}
+?                                                                      ^ ^^^^^^^
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.079s
+
+FAILED (failures=9)

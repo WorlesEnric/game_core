@@ -1,0 +1,36 @@
+{
+  "python-stage": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "studio/stage/tests",
+      "-v"
+    ],
+    "exitCode": 0
+  },
+  "package-metadata": {
+    "command": [
+      "python3",
+      "tools/check_package_metadata.py"
+    ],
+    "exitCode": 0
+  },
+  "csharp-policy": {
+    "command": [
+      "python3",
+      "tools/check_game_core_csharp.py"
+    ],
+    "exitCode": 0
+  },
+  "slot-policy": {
+    "command": [
+      "python3",
+      "tools/check_stage_slot.py",
+      "--self-test"
+    ],
+    "exitCode": 0
+  }
+}
