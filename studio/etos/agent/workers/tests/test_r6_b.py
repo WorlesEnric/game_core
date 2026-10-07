@@ -92,3 +92,12 @@ def test_R6_C_ferryman_prompt_answer_carries_patrol_and_dialogue_prerequisites()
     for operation in operations:
         assert set(operation['dependsOn']) <= emitted
         emitted.add(operation['opId'])
+
+
+def test_R11_A_npc_prompt_requires_one_enrollment_per_definition():
+    instruction = (WORKERS / 'gc-designer.md').read_text()
+    contract = instruction.split('## NPC patrol and dialogue prerequisites (W-AI-02)', 1)[1]
+    rules = ' '.join(contract.split('### Ferryman answer example', 1)[0].split())
+    assert '`dialogue.createGraph` and `create` with `type: "dialogue.graph"` both auto-enroll' in rules
+    assert "the new graph in the owning world's content set; do not also append it to `definitions`" in rules
+    assert 'Append the NPC definition to `npcs` exactly once' in rules
