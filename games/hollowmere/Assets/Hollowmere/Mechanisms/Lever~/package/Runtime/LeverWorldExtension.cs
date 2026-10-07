@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;

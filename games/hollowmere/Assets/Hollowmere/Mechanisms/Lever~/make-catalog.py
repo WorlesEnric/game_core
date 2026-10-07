@@ -75,7 +75,7 @@ def outputs() -> dict[Path, bytes]:
     marker = catalog.index(emitter.HASH_DECLARATION)
     digest = emitter.sha256_hex(catalog[:marker])
     catalog = re.sub(r'(public const string CatalogFileHash = ")[a-f0-9]+', r'\g<1>' + digest, catalog)
-    result = {PACKAGE / "Catalog/LeverCatalog.catalog.json": (json.dumps(doc, indent=2) + "\n").encode(),
+    result = {PACKAGE / "Catalog/LeverCatalog.description.json": (json.dumps(doc, indent=2) + "\n").encode(),
               GENERATED: catalog.encode(), emitter.coverage_path_for(GENERATED): coverage.encode()}
     all_paths = set(PACKAGE.rglob("*")) | set(result) | {CONTENT}
     for path in tuple(all_paths):
