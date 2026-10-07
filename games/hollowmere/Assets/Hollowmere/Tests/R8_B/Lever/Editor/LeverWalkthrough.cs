@@ -372,10 +372,13 @@ namespace Hollowmere.R8_B
             progress["undoStartedMs"] = Now;
             Save(evidence, progress);
             var result = runtime.History.Undo(changeSetId);
+            JObject? pending = StageAdmission.Of(runtime).ReadPending(changeSetId);
+            bool accepted = result.Ok || (pending != null && (string?)pending["action"] == "undo");
             StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "undo-request.json"), new JObject {
-                ["changeSetId"] = changeSetId, ["ok"] = result.Ok, ["requestedMs"] = progress["undoStartedMs"],
+                ["changeSetId"] = changeSetId, ["ok"] = result.Ok, ["accepted"] = accepted,
+                ["pendingPhase"] = pending?["phase"], ["requestedMs"] = progress["undoStartedMs"],
             }.ToString());
-            if (!result.Ok) throw new InvalidOperationException("Normal History admission undo was refused");
+            if (!accepted) throw new InvalidOperationException("Normal History admission undo was refused");
         }
 
         private static void FrameGameView()

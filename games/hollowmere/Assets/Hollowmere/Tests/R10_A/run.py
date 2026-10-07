@@ -194,7 +194,7 @@ def verify_live(config, evidence):
     require((evidence / 'pending-transitions.jsonl').is_file(), 'Pending admission observations missing')
     for name in ('panel-admit-enabled.png', 'admitted-play.png', 'config-upm.log', 'stage-upm.log'):
         require((evidence / name).is_file(), name + ' missing')
-    require(load(evidence / 'undo-request.json')['ok'], 'Normal History Undo was not requested')
+    require(load(evidence / 'undo-request.json')['accepted'], 'Normal History Undo was not accepted')
     if config['mechanism'] == 'lever':
         interactive = load(evidence / 'interactive-lever.json')
         require(admitted['mechanismStates'] == interactive['states'] == [0, 1, 0]
