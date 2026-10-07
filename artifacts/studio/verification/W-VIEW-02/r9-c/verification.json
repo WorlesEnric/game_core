@@ -1,0 +1,55 @@
+{
+  "revision": "a89f55bbbdd90986fdaa8a9040aba2e1601fd65f",
+  "xml": {
+    "id": "2",
+    "testcasecount": "63",
+    "result": "Passed",
+    "total": "63",
+    "passed": "63",
+    "failed": "0",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 11:18:24Z",
+    "end-time": "2026-10-07 11:18:32Z",
+    "duration": "8.0669484"
+  },
+  "registryCounts": {
+    "PASS": 60,
+    "BLOCKED": 6,
+    "FAIL": 2
+  },
+  "changedRows": [
+    "W-VIEW-02"
+  ],
+  "sourceSha256": {
+    "Packages/com.gamecore.studio.views/Editor/Dialogue/DialogueView.cs": "e528ba9a99c4e2bc8fb2710658f996dd8f66f23379b3ecb148ffcd3993e16247",
+    "games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode/HollowmereEditingViewsTests.cs": "f8c33dff393b5e14e300c085061598ce03e5fac5be7b0f8e8051e197c456b78b"
+  },
+  "firstRun": {
+    "passed": 62,
+    "failed": 1,
+    "failure": "Unchanged layout frame budget: 18.7479 ms >= 16 ms"
+  },
+  "baselineControl": {
+    "passed": 0,
+    "failed": 1,
+    "failure": "Selected Choice Option 0 has no target with old AddChoice handler"
+  },
+  "staticChecks": [
+    {
+      "command": "python3 tools/check_package_metadata.py",
+      "exitCode": 0,
+      "stdout": "packages inspected: 42; assemblies defined by packages: 92; engine pins: 4\nrelease version expected: 1.0.0; kernel packages: 8\nallowlisted engine pins from games/*: 6; lock sources: 3\npackage metadata and asmdef-derived dependencies agree.\nNo Unity resolve, no compilation and no player build was executed by this check.\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 tools/check_game_core_csharp.py",
+      "exitCode": 0,
+      "stdout": "checked 1278 C# file(s)\nok\n",
+      "stderr": ""
+    }
+  ]
+}
