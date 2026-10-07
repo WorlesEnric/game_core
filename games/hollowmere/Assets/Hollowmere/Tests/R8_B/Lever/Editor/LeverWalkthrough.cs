@@ -311,8 +311,16 @@ namespace Hollowmere.R8_B
         private static void FrameGameView()
         {
             Type type = typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView", true)!;
-            EditorWindow view = EditorWindow.GetWindow(type);
-            view.maximized = true;
+            foreach (UnityEngine.Object existing in Resources.FindObjectsOfTypeAll(type))
+                ((EditorWindow)existing).Close();
+            EditorWindow view = (EditorWindow)ScriptableObject.CreateInstance(type);
+            view.titleContent = new GUIContent("R8-C Play");
+            view.minSize = new Vector2(1280, 720);
+            view.ShowUtility();
+            view.position = new Rect(40, 40, 1280, 760);
+            PropertyInfo? size = type.GetProperty("selectedSizeIndex", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (size == null) throw new InvalidOperationException("Game View free-aspect selection is unavailable");
+            size.SetValue(view, 0);
             view.Focus();
         }
 

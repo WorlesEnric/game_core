@@ -58,8 +58,11 @@ def walkthrough(work, candidate, companion, library, upm):
         evidence = work / 'evidence'
         config = json.loads((evidence / 'config.json').read_text())
         undo = evidence / 'live-undo.json'
-        if (evidence / 'live-admit.json').exists() and (not undo.exists()
-                or json.loads(undo.read_text()).get('outcome') != 'Undone'):
+        if not undo.exists():
+            undo = evidence / 'recovery-undo.json'
+        undone = json.loads(undo.read_text()) if undo.exists() else {}
+        if (evidence / 'live-admit.json').exists() and (undone.get('outcome') != 'Undone'
+                or undone.get('changeSetId') != config.get('request', {}).get('changeSetId')):
             raise RuntimeError('Admitted runs require normal History recovery before another candidate')
         count = 1
         while (work / ('evidence-attempt-' + str(count))).exists():
@@ -74,7 +77,7 @@ def walkthrough(work, candidate, companion, library, upm):
         config.pop('request', None)
         for name in ('live-progress.json', 'live-failure.txt', 'stage-job.json', 'live-admit.json',
                      'live-undo.json', 'interactive-lever.json', 'automatic-refresh.json', 'last-pending.json',
-                     'signed-verdict.json', 'no-paid-ops.json'):
+                     'signed-verdict.json', 'no-paid-ops.json', 'recovery-undo.json'):
             (evidence / name).unlink(missing_ok=True)
         for image in evidence.glob('*.png'):
             image.unlink()
