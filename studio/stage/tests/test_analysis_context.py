@@ -8,6 +8,7 @@ from unittest.mock import patch
 import sys
 sys.path.insert(0, str(Path(__file__).parents[1]))
 import analysis_context as context
+import world_fixture
 
 
 class AnalysisContextTests(unittest.TestCase):
@@ -52,12 +53,13 @@ class AnalysisContextTests(unittest.TestCase):
         spec.loader.exec_module(module)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            project = world_fixture.create(root / 'source')
             warm = root / 'cache/Library'
             warm.mkdir(parents=True)
             (warm / 'Unity.Core.Editor.dll').write_bytes(b'pinned')
             manifest = root / 'manifest.json'
             manifest.write_text(json.dumps({'Unity.Core.Editor.dll': hashlib.sha256(b'pinned').hexdigest()}))
-            args = argparse.Namespace(slot='pressure', source_project=repo / 'games/hollowmere',
+            args = argparse.Namespace(slot='pressure', source_project=project,
                                       slot_root=root / 'slots', candidate=repo / 'samples/mechanisms/pressure-plate/candidate',
                                       force=False, warm_library=warm)
             with patch.object(context, 'MANIFEST', manifest):

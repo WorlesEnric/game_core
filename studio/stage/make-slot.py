@@ -507,7 +507,10 @@ def make_slot(args) -> dict:
     inputs += settings_inputs
 
     import world_snapshot
-    snapshot = world_snapshot.export(source_project, slot / "world-snapshot", cand["changeSetId"], git_head(repo))
+    snapshot = world_snapshot.export(source_project, slot / "world-snapshot", cand["changeSetId"],
+                                     git_head(repo), repo / "Packages")
+    if snapshot.get("error"):
+        raise SlotError(f"{snapshot['error']}: expected one tracked source-world description, found {snapshot['count']}")
 
     smoke = (proposal or {}).get("smokeTest")
     if isinstance(smoke, str):
