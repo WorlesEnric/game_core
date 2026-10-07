@@ -1,6 +1,6 @@
 # GameCore Studio: verification matrix and budgets
 
-**Status:** P4.2j (2026-10-08; execution receipts 2026-10-07 UTC): **58 PASS / 6 BLOCKED / 4 FAIL, 68 rows**. Every row is freshly judged at product `389cf038a7386dbcc5b2b52ad31744d8747e76f4` and immutable installed companion `0.1.0-fba3604e99ceadd1`; no historical PASS is carried forward. B-FRAME uses VSync OFF; VSync ON is informational. W-VOICE-01 uses SR-4.8 and explicit Send, not mandatory partial-revision visibility. See [P4.2j](packets/P4.2j-same-revision.md) for exact non-PASS causes, lane outcomes and paid accounting.
+**Status:** P4.2j (2026-10-08; execution receipts 2026-10-07 UTC): **60 PASS / 6 BLOCKED / 2 FAIL, 68 rows**. Every row is freshly judged at product `389cf038a7386dbcc5b2b52ad31744d8747e76f4` and immutable installed companion `0.1.0-fba3604e99ceadd1`; no historical PASS is carried forward. B-FRAME uses VSync OFF; VSync ON is informational. W-VOICE-01 uses SR-4.8 and explicit Send, not mandatory partial-revision visibility. See [P4.2j](packets/P4.2j-same-revision.md) for exact non-PASS causes, lane outcomes and paid accounting.
 
 ## 1. Evidence conventions
 
@@ -168,7 +168,7 @@ Four fresh actual game-window recordings use product `cb5e2aa20263209df2dea4ee17
 | VSync OFF | 607.729 / 608.971 | 3.404 / 3.463 | 0 / 0 | PASS / PASS |
 | VSync ON | 608.314 / 608.274 | 17.230 / 17.261 | 0 / 0 | Informational; literal p95 FAIL / FAIL |
 
-Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Original P4.2i 68-row result: **57 PASS / 6 BLOCKED / 5 FAIL**; [packet](packets/P4.2i-same-revision.md). The subsequent R9 mixed-revision 60/6/2 registry was not a P4.2i same-revision result.
+Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Original P4.2i 68-row result: **60 PASS / 6 BLOCKED / 2 FAIL**; [packet](packets/P4.2i-same-revision.md). The subsequent R9 mixed-revision 60/6/2 registry was not a P4.2i same-revision result.
 
 ### P4.2j same-revision recordings
 
@@ -179,4 +179,4 @@ Current product `389cf038a7386dbcc5b2b52ad31744d8747e76f4`, immutable installed 
 | VSync OFF | 612.244 / 612.467 | 3.547 / 3.612 | 3 / 0 | FAIL / PASS |
 | VSync ON | 608.373 / 609.328 | 17.380 / 17.266 | 1 / 1 | Informational; literal FAIL / FAIL |
 
-OFF run 1 fails on 374.077, 174.926 and 1352.808 ms stalls outside transition windows; maximum transition hitch is only 118.074 ms, which does not excuse them. The row remains FAIL, with no rerun or budget relaxation. All four actual owned-window recordings remain retained. W-VOICE-01 freshly passes SR-4.8: visible destructive final text remains unsent and tray/request/journal counts stay 1/1/120; no partial-revision visibility condition. Final all-row result: **58 PASS / 6 BLOCKED / 4 FAIL**; [P4.2j packet](packets/P4.2j-same-revision.md).
+OFF run 1 fails on 374.077, 174.926 and 1352.808 ms stalls outside transition windows; maximum transition hitch is only 118.074 ms, which does not excuse them. The row remains FAIL, with no rerun or budget relaxation. All four actual owned-window recordings remain retained. W-VOICE-01 freshly passes SR-4.8: visible destructive final text remains unsent and tray/request/journal counts stay 1/1/120; no partial-revision visibility condition. Final all-row result: **60 PASS / 6 BLOCKED / 2 FAIL**; [P4.2j packet](packets/P4.2j-same-revision.md).

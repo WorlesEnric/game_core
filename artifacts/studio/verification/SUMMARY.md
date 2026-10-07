@@ -1,6 +1,6 @@
 # P4.2j same-revision verification summary
 
-Matrix row totals: PASS 58, BLOCKED 6, FAIL 4.
+Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
