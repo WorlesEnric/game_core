@@ -156,6 +156,10 @@ def run_service(config, evidence, node, log, install):
                 time.sleep(0.25)
             print('R8_C_SCRATCH_READY', evidence, flush=True)
             launch(config, 'Stage', log)
+            # The source Editor has exited and released its lease before any sandbox probe can start.
+            command([Path.home() / '.dotnet/dotnet', 'run', '--project',
+                     REPO / 'games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Submit~/LeverSubmit.csproj',
+                     '--', evidence / 'config.json'], log)
             config = json.loads((evidence / 'config.json').read_text())
             deadline = time.monotonic() + 2100
             while True:

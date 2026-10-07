@@ -2,8 +2,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Collections.Generic;
-using GameCore.Studio.Etos.Client;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
@@ -64,7 +62,7 @@ namespace Hollowmere.R8_B
 
         private static void StageTick() => instance.SubmitStage();
 
-        private async void SubmitStage()
+        private void SubmitStage()
         {
             if (busy || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
             EtosAgentGateway? gateway = EtosStudioSession.Gateway;
@@ -84,18 +82,10 @@ namespace Hollowmere.R8_B
                     throw new InvalidOperationException("The lever package is already installed");
                 string candidatePath = (string)config["candidate"]!;
                 ChangeSet candidate = StageAdmission.Of(runtime).RetainCandidate(candidatePath);
-                var artifacts = new List<byte[]>();
-                foreach (ArtifactRef artifact in candidate.Artifacts!)
-                    artifacts.Add(runtime.Artifacts.Read(artifact.Sha256));
-                string projectId = EtosProjectContext.LoadProjectId(Project);
-                string sourceRevision = EtosProjectContext.SourceRevision(Project);
-                string catalogRevision = runtime.Registry.Catalog.Revision ?? runtime.Registry.Catalog.ComputeRevision();
-                StageJobInfo job = await gateway.Client.StageAppCandidateAsync(candidate.Id, projectId, sourceRevision,
-                    catalogRevision, JObject.Parse(StudioJson.Serialize(candidate)),
-                    JObject.Parse(StudioJson.Serialize(runtime.Registry.Catalog)), artifacts);
-                config["jobId"] = job.JobId;
-                config["request"] = new JObject { ["changeSetId"] = candidate.Id, ["projectId"] = projectId,
-                    ["sourceRevision"] = sourceRevision, ["catalogRevision"] = catalogRevision };
+                StageCandidateRequest request = stage.BuildStageRequest(candidate, Project);
+                config["request"] = JObject.FromObject(request);
+                StudioPaths.WriteAllTextAtomic(Path.Combine((string)config["evidence"]!, "tool-catalog.json"),
+                    StudioJson.Serialize(runtime.Registry.Catalog));
                 StudioPaths.WriteAllTextAtomic(path, config.ToString());
                 EditorApplication.Exit(0);
             }
