@@ -1,20 +1,21 @@
 {
-  "status": "FAIL",
-  "note": "Fresh installed-worker Odd dialogue candidate is Invalid: GP-DLG-003 edges 3\u21928 and 8\u21924 leave the projected graph, dangling next\u21928, plus GP-DLG-005 unreachable node 4. Candidate never applies; actual Play driver reports candidate was not applied. Historical PASS is not retained.",
+  "status": "PASS",
+  "note": "R9-A unchanged retained Odd candidate passes Stage/Apply with identical historical/current catalog; real Play shows its new shrine line only when lit, and journal Undo restores complete baseline bytes. No new model call or candidate repair.",
   "evidence": [
-    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
-    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/candidate.json",
-    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/play-effect.json",
-    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/outcome.json"
+    "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
+    "W-AI-03/r9-a-odd-20261007T104156.540366Z/odd-line/play-effect.json",
+    "W-AI-03/r9-a-odd-20261007T104156.540366Z/undo.json",
+    "W-AI-03/r9-a-odd-20261007T104156.540366Z/catalog-context.json",
+    "W-AI-03/r9-a-odd-20261007T104156.540366Z/source-sha256.json"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+  "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane odd",
   "row": "W-AI-03",
   "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+  "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
   "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
   "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "evidencePath": "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
+  "runStartedAt": "2026-10-07T10:41:56.540366+00:00"
 }

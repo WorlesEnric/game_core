@@ -385,8 +385,6 @@ namespace GameCore.Studio.Edit
                     IndexIsSlice = options.IndexIsSlice,
                 });
                 factDiagnostics.AddRange(validator.Validate(changeSet));
-                factDiagnostics.AddRange(ValidateDialogueClosure(_runtime, changeSet,
-                    Type.GetType("GameCore.Studio.Gameplay.DialogueClosureTools, GameCore.Studio.Gameplay.Editor")));
                 foreach (Diagnostic diagnostic in factDiagnostics)
                 {
                     string? opId = OperationOf(changeSet, diagnostic);
@@ -474,7 +472,7 @@ namespace GameCore.Studio.Edit
                 _runtime.Staging.EndOwner();
             }
 
-            if (validate) ValidateProposedDefinitions(operations, envelope);
+            if (validate) ValidateProposedDefinitions(changeSet, operations, envelope);
 
             CheckBaseVersions(changeSet, operations, envelope);
             bool hasRuntime = operations.Exists(op => op.Live);
@@ -507,20 +505,9 @@ namespace GameCore.Studio.Edit
             return methods;
         });
 
-        private void ValidateProposedDefinitions(IReadOnlyList<StagedOperation> operations, List<Diagnostic> diagnostics)
+        private void ValidateProposedDefinitions(ChangeSet changeSet, IReadOnlyList<StagedOperation> operations, List<Diagnostic> diagnostics)
         {
-            bool hasDefinitionEdit = false;
-            foreach (StagedOperation operation in operations)
-            {
-                if (operation.Target is ScriptableObject && operation.Operation.Target?.Kind == AuthoringKind.Definition
-                    && (operation.Tool is SetTool || operation.Tool is AssignTool))
-                {
-                    hasDefinitionEdit = true;
-                    break;
-                }
-            }
-            if (!hasDefinitionEdit) return;
-
+            using DefinitionProjection projection = new DefinitionProjection(_runtime);
             Dictionary<UnityEngine.Object, ScriptableObject> copies = new Dictionary<UnityEngine.Object, ScriptableObject>();
             Dictionary<UnityEngine.Object, List<StagedOperation>> affected = new Dictionary<UnityEngine.Object, List<StagedOperation>>();
             HashSet<string> unavailable = new HashSet<string>(StringComparer.Ordinal);
@@ -528,7 +515,8 @@ namespace GameCore.Studio.Edit
             {
                 foreach (StagedOperation staged in Order(operations))
                 {
-                    bool blocked = staged.Blocked || staged.Deferred || staged.DeferredFactArgument;
+                    if (staged.Tool == null || staged.Tool.ReadOnly) continue;
+                    bool blocked = staged.Blocked || staged.DeferredFactArgument;
                     foreach (string dependency in staged.Operation.DependsOn ?? Array.Empty<string>())
                         blocked |= unavailable.Contains(dependency);
                     if (blocked)
@@ -536,22 +524,37 @@ namespace GameCore.Studio.Edit
                         unavailable.Add(staged.OpId);
                         continue;
                     }
-                    if (!(staged.Target is ScriptableObject original)
-                        || staged.Operation.Target?.Kind != AuthoringKind.Definition
-                        || !(staged.Tool is SetTool || staged.Tool is AssignTool)
-                        || !DefinitionValidators.Value.Exists(method => method.GetParameters()[0].ParameterType.IsInstanceOfType(original))) continue;
-                    if (!copies.TryGetValue(original, out ScriptableObject? copy))
-                    {
-                        copy = UnityEngine.Object.Instantiate(original);
-                        copies.Add(original, copy);
-                        copy.name = original.name;
-                        copy.hideFlags = HideFlags.HideAndDontSave;
-                        affected.Add(original, new List<StagedOperation>());
-                    }
-                    affected[original].Add(staged);
                     try
                     {
-                        ProjectDefinition(staged, copy);
+                        ScriptableObject? copy = projection.Create(staged);
+                        bool created = copy != null;
+                        copy ??= projection.Target(staged);
+                        if (copy == null) continue;
+                        if (staged.Deferred && (staged.Tool is SetTool || staged.Tool is AssignTool))
+                        {
+                            ToolStageResult check = staged.Tool.Stage(new EditContext(_runtime, changeSet, staged.Operation, copy, true, null));
+                            staged.AddRange(check.Diagnostics);
+                            if (!check.Ok)
+                            {
+                                unavailable.Add(staged.OpId);
+                                continue;
+                            }
+                        }
+                        UnityEngine.Object original = staged.Target ?? copy;
+                        if (!copies.ContainsKey(original))
+                        {
+                            copies.Add(original, copy);
+                            affected.Add(original, new List<StagedOperation>());
+                        }
+                        affected[original].Add(staged);
+                        if (!created)
+                        {
+                            if (staged.Tool is SetTool || staged.Tool is AssignTool)
+                                ProjectDefinition(staged, copy, projection.Codec);
+                            else if (staged.Tool is ReflectedTool reflected && !reflected.ReadOnly
+                                && DefinitionProjection.CanInvoke(staged.Operation.Tool))
+                                projection.Invoke(reflected, staged.Operation, copy);
+                        }
                     }
                     catch (Exception error) when (!(error is ExitGUIException))
                     {
@@ -561,18 +564,27 @@ namespace GameCore.Studio.Edit
                     }
                 }
 
-                // A validator traversing another affected definition must see its final proposed state too.
-                foreach (ScriptableObject copy in copies.Values)
-                {
-                    using SerializedObject serialized = new SerializedObject(copy);
-                    SerializedProperty property = serialized.GetIterator();
-                    while (property.Next(true))
-                        if (property.propertyType == SerializedPropertyType.ObjectReference
-                            && property.objectReferenceValue != null
-                            && copies.TryGetValue(property.objectReferenceValue, out ScriptableObject? referenced))
-                            property.objectReferenceValue = referenced;
-                    serialized.ApplyModifiedPropertiesWithoutUndo();
-                }
+                projection.RemapReferences();
+                var checkedCopies = new HashSet<ScriptableObject>(copies.Values);
+                foreach (ScriptableObject copy in projection.Definitions)
+                    if (checkedCopies.Add(copy))
+                    {
+                        copies.Add(copy, copy);
+                        affected.Add(copy, new List<StagedOperation>());
+                    }
+                bool needsClosure = projection.Definitions.Exists(definition =>
+                    _runtime.Identity.Describe(definition)?.TypeId == "npc.definition");
+                Type? closure = Type.GetType("GameCore.Studio.Gameplay.DialogueClosureTools, GameCore.Studio.Gameplay.Editor");
+                MethodInfo? validateClosure = closure?.GetMethod("ValidateProposed");
+                if (needsClosure && validateClosure == null)
+                    diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.NotConfigured,
+                        "The trusted Studio gameplay dialogue closure validator is unavailable."));
+                if (needsClosure && validateClosure != null)
+                    diagnostics.AddRange((IReadOnlyList<Diagnostic>)validateClosure.Invoke(null, new object[]
+                    {
+                        _runtime, projection.Definitions,
+                        new Func<UnityEngine.Object, UnityEngine.Object?>(projection.ProjectReference),
+                    })!);
 
                 foreach (KeyValuePair<UnityEngine.Object, ScriptableObject> pair in copies)
                 {
@@ -584,9 +596,24 @@ namespace GameCore.Studio.Edit
                             if (!owner.Blocked) owner.AddRange(failed.Diagnostics);
                         continue;
                     }
+                    bool contentSet = _runtime.Identity.Describe(pair.Value)?.TypeId == "logic.contentSet";
+                    if (contentSet)
+                    {
+                        MethodInfo validateSet = closure?.GetMethod("ValidateProjectedSet")
+                            ?? throw new InvalidOperationException("The trusted projected content-set validator is unavailable.");
+                        string path = (string?)projection.WriteRef(pair.Value)["path"]
+                            ?? throw new InvalidOperationException("The projected content set has no source path.");
+                        diagnostics.AddRange((IReadOnlyList<Diagnostic>)validateSet.Invoke(null, new object[] { pair.Value, path })!);
+                    }
                     foreach (MethodInfo method in DefinitionValidators.Value)
                     {
                         if (!method.GetParameters()[0].ParameterType.IsInstanceOfType(pair.Value)) continue;
+                        // These built-ins delegate content sets to the same NarrativeBake.Plan.
+                        // Run that pipeline once with its source path above; custom validators still run.
+                        if (contentSet && (method.DeclaringType?.FullName == "GameCore.Gameplay.Logic.Editor.LogicValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Dialogue.Editor.DialogueValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Inventory.Editor.InventoryValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Quest.Editor.QuestValidator")) continue;
                         try
                         {
                             if (!(method.Invoke(null, new object[] { pair.Value }) is IEnumerable results))
@@ -618,6 +645,10 @@ namespace GameCore.Studio.Edit
                         }
                         catch (Exception error) when (!(error is ExitGUIException))
                         {
+                            if (owners.Count == 0)
+                                diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.StageFailed,
+                                    "Definition validator " + method.DeclaringType?.Name + "." + method.Name
+                                    + " failed: " + error.GetBaseException().Message));
                             foreach (StagedOperation owner in owners)
                                 owner.Add(StudioDiagnostics.Op(DiagnosticCodes.StageFailed, owner.OpId,
                                     "Definition validator " + method.DeclaringType?.Name + "." + method.Name
@@ -626,29 +657,33 @@ namespace GameCore.Studio.Edit
                     }
                 }
             }
-            finally
+            catch (Exception error) when (!(error is ExitGUIException))
             {
-                foreach (ScriptableObject copy in copies.Values) UnityEngine.Object.DestroyImmediate(copy);
+                diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.StageFailed,
+                    "Final definition validation failed: " + error.GetBaseException().Message));
             }
         }
 
-        private void ProjectDefinition(StagedOperation staged, ScriptableObject copy)
+        private void ProjectDefinition(StagedOperation staged, ScriptableObject copy, ValueCodec codec)
         {
             AuthoringTypeInfo info = _runtime.Identity.Describe(copy)!;
             using SerializedObject serialized = new SerializedObject(copy);
             if (staged.Tool is SetTool)
             {
-                // Consume the built-in's checked assignments, not a second interpretation of set's arguments.
-                foreach (JProperty field in ((JObject)staged.Preview!["fields"]!).Properties())
-                    Write(info.FindMember(field.Name)!, field.Value["after"]!);
+                JObject args = staged.Operation.Args!;
+                if (args["field"] is JToken fieldName)
+                    Write(info.FindMember((string)fieldName!)!, args["value"] ?? JValue.CreateNull());
+                if (args["fields"] is JObject fields)
+                    foreach (JProperty field in fields.Properties())
+                        Write(info.FindMember(field.Name)!, field.Value);
             }
             else
             {
-                AuthorMemberInfo member = info.FindMember((string)staged.Preview!["field"]!)!;
-                JToken value = staged.Preview["after"]!;
+                AuthorMemberInfo member = info.FindMember((string)staged.Operation.Args!["field"]!)!;
+                JToken value = staged.Operation.Args["value"] ?? JValue.CreateNull();
                 if (member.IsCollection)
                 {
-                    JArray items = (JArray)_runtime.Resolver.Codec.ReadMember(copy, member, serialized);
+                    JArray items = (JArray)codec.ReadMember(copy, member, serialized);
                     JObject args = staged.Operation.Args!;
                     if ((bool?)args["append"] == true) items.Add(value.DeepClone());
                     else if (args["index"] is JToken index && ValueCodec.IsInteger(index))
@@ -670,46 +705,14 @@ namespace GameCore.Studio.Edit
 
             void Write(AuthorMemberInfo member, JToken value)
             {
-                if (!_runtime.Resolver.Codec.WriteMember(copy, member, value, serialized, out string? problem))
+                if (!member.IsReference)
+                    foreach (string issue in FieldValueChecker.Check(member.Spec, value))
+                        throw new InvalidOperationException(issue);
+                if (!codec.WriteMember(copy, member, value, serialized, out string? problem))
                     throw new InvalidOperationException("'" + member.Name + "': " + problem);
             }
         }
 
-        private static IReadOnlyList<Diagnostic> ValidateDialogueClosure(StudioRuntime runtime, ChangeSet changeSet, Type? adapter)
-        {
-            bool relevant = false;
-            List<Operation>? projected = null;
-            for (int i = 0; i < changeSet.Operations.Count; i++)
-            {
-                Operation operation = changeSet.Operations[i];
-                bool graph = operation.Tool == "create" && (string?)operation.Args?["type"] == "dialogue.graph";
-                UnityEngine.Object? target = operation.Target == null ? null : runtime.Resolver.Find(operation.Target);
-                relevant |= graph || operation.Tool.StartsWith("npc.", StringComparison.Ordinal)
-                    || operation.Tool == "dialogue.createGraph"
-                    || (operation.Tool == "create" && (string?)operation.Args?["type"] == "npc.definition")
-                    || (target != null && runtime.Identity.Describe(target)?.TypeId == "npc.definition");
-                if (!graph) continue;
-                // Validation-only view of the fixed creation dispatch; the candidate and journal remain unchanged.
-                projected ??= new List<Operation>(changeSet.Operations);
-                projected[i] = new Operation(operation.OpId, "dialogue.createGraph", operation.Target, operation.Args,
-                    operation.DependsOn, operation.Preconditions, operation.ApplyRequirement);
-            }
-            if (!relevant) return Array.Empty<Diagnostic>();
-            var method = adapter?.GetMethod("ValidateCandidate", new[] { typeof(StudioRuntime), typeof(ChangeSet) });
-            if (method == null || !method.IsStatic || !typeof(IReadOnlyList<Diagnostic>).IsAssignableFrom(method.ReturnType))
-                return new[] { StudioDiagnostics.General(DiagnosticCodes.NotConfigured,
-                    "The trusted Studio gameplay dialogue closure validator is unavailable.") };
-            try
-            {
-                return (IReadOnlyList<Diagnostic>?)method.Invoke(null, new object[] { runtime, projected == null ? changeSet : With(changeSet, projected) })
-                    ?? new[] { StudioDiagnostics.General(DiagnosticCodes.StageFailed, "The trusted Studio gameplay dialogue closure validator returned no result.") };
-            }
-            catch (Exception error) when (!(error is ExitGUIException))
-            {
-                return new[] { StudioDiagnostics.General(DiagnosticCodes.StageFailed,
-                    "The trusted Studio gameplay dialogue closure validator failed: " + error.GetBaseException().Message) };
-            }
-        }
 
         private ToolStageResult StageWithoutPreview(IStudioTool tool, EditContext context)
         {

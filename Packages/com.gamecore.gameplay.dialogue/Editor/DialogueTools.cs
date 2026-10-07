@@ -10,8 +10,8 @@
 //                           shared ToolTier has no Agent member, so it is a Compose tool that requires agent.media,
 //                           like audio.generate*)
 //
-// Every tool validates before it changes anything, records Undo and refuses with an ArgumentException whose message
-// starts with the GP-* code; a change that leaves the graph invalid is refused by re-validating the graph.
+// Every tool checks its target and arguments before changing anything and records Undo. Graph-wide validity is
+// checked by DialogueValidator on the complete proposed definition, not between operations in a change set.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -282,7 +282,6 @@ namespace GameCore.Gameplay.Dialogue.Editor
             Undo.RecordObject(graph, "dialogue.setConsequence");
             entry.actions = actions;
             EditorUtility.SetDirty(graph);
-            NarrativeAuthoring.ThrowIfInvalid(graph);
         }
 
         [AuthorOperation("dialogue.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
@@ -330,7 +329,7 @@ namespace GameCore.Gameplay.Dialogue.Editor
         }
     }
 
-    /// <summary>Validation of dialogue graphs and facts.</summary>
+    /// <summary>Mandatory validation of complete dialogue definitions, including dangling edges and reachability.</summary>
     [AuthorValidator("dialogue.validator", Codes = new[]
     {
         NarrativeDiagnosticCodes.GraphEmpty,

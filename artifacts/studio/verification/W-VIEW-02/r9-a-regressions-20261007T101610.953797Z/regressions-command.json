@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "bash",
+    "/home/worlesenric/wkspace/gc-studio/r9-a/studio/tools/unity-batch.sh",
+    "--project",
+    "/home/worlesenric/wkspace/gc-studio/r9-a/games/hollowmere",
+    "--log-dir",
+    "/home/worlesenric/wkspace/gc-studio/r9-a/artifacts/studio/verification/W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/logs",
+    "--label",
+    "r9-a-regressions",
+    "--results",
+    "/home/worlesenric/wkspace/gc-studio/r9-a/artifacts/studio/verification/W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/regressions.xml",
+    "--require-test",
+    "Hollowmere.R9_A.FinalDialogueWorkflowTests.Dialogue_AddLineConnectRename_OneFinalValidChangeSetAndUndoRestores",
+    "--require-test",
+    "Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness",
+    "--require-test",
+    "Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite",
+    "--require-test",
+    "Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_ValidatorRejectsExistingUnenrolledGraph",
+    "--",
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testFilter",
+    "Hollowmere.R9_A.FinalDialogueWorkflowTests.Dialogue_AddLineConnectRename_OneFinalValidChangeSetAndUndoRestores;Hollowmere.R6_B.DialogueCandidateTests.R6_Request6_RetainedFerrymanCandidateRefusesWithExactUnreachableWitness;Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineStageRejectsUnmodifiedFerrymanBeforeAnyWrite;Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_ValidatorRejectsExistingUnenrolledGraph"
+  ],
+  "mode": "regressions"
+}

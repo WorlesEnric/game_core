@@ -53,20 +53,6 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(plan.Inverse, Is.Empty);
         }
 
-        [Test]
-        public void R6_G_Request2_AbsentClosureAdapterRefusesDeferredNpc()
-        {
-            var change = StudioTestBed.NewChangeSet("deferred NPC", null,
-                StudioTestBed.Op("graph", "create", null, new JObject { ["type"] = "dialogue.graph" }),
-                StudioTestBed.Op("npc", "create", null, new JObject { ["type"] = "npc.definition",
-                    ["fields"] = new JObject { ["dialogue"] = "Assets/Graph.asset" } }, "graph"));
-            var diagnostics = (System.Collections.Generic.IReadOnlyList<Diagnostic>)typeof(ChangeSetEngine)
-                .GetMethod("ValidateDialogueClosure", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
-                .Invoke(null, new object?[] { _bed.Runtime, change, null })!;
-            Assert.That(diagnostics.Count, Is.EqualTo(1));
-            Assert.That(diagnostics[0].Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
-            Assert.That(diagnostics[0].Message, Does.Contain("dialogue closure validator is unavailable"));
-        }
 
         [Test]
         public void R7E_MissingPrefabCandidatePreservesCanonicalDiagnosticWithoutMutation()

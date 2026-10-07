@@ -1,0 +1,140 @@
+{
+  "tools": [
+    {
+      "id": "dialogue.start",
+      "before": {
+        "runtimeOnly": true,
+        "id": "dialogue.start",
+        "tier": "Configure",
+        "doc": "Revision-checked runtime action. No authored changes or inverse.",
+        "targetRequired": true,
+        "args": [
+          {
+            "name": "graphId",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "expectedRevision",
+            "type": "int",
+            "required": true,
+            "min": 0.0
+          }
+        ],
+        "runtimeApply": "Live"
+      },
+      "after": null
+    },
+    {
+      "id": "entity.despawn",
+      "before": {
+        "runtimeOnly": true,
+        "id": "entity.despawn",
+        "tier": "Configure",
+        "doc": "Revision-checked runtime action. No authored changes or inverse.",
+        "targetRequired": true,
+        "args": [
+          {
+            "name": "expectedRevision",
+            "type": "int",
+            "required": true,
+            "min": 0.0
+          }
+        ],
+        "runtimeApply": "Live"
+      },
+      "after": null
+    },
+    {
+      "id": "entity.spawn",
+      "before": {
+        "runtimeOnly": true,
+        "id": "entity.spawn",
+        "tier": "Configure",
+        "doc": "Revision-checked runtime action. No authored changes or inverse.",
+        "targetRequired": true,
+        "args": [
+          {
+            "name": "visible",
+            "type": "bool",
+            "required": false
+          },
+          {
+            "name": "expectedRevision",
+            "type": "int",
+            "required": true,
+            "min": 0.0
+          }
+        ],
+        "runtimeApply": "Live"
+      },
+      "after": null
+    },
+    {
+      "id": "npc.goTo",
+      "before": {
+        "runtimeOnly": true,
+        "id": "npc.goTo",
+        "tier": "Configure",
+        "doc": "Revision-checked runtime action. No authored changes or inverse.",
+        "targetRequired": true,
+        "args": [
+          {
+            "name": "x",
+            "type": "int",
+            "required": true
+          },
+          {
+            "name": "y",
+            "type": "int",
+            "required": true
+          },
+          {
+            "name": "z",
+            "type": "int",
+            "required": true
+          },
+          {
+            "name": "expectedRevision",
+            "type": "int",
+            "required": true,
+            "min": 0.0
+          }
+        ],
+        "runtimeApply": "Live"
+      },
+      "after": null
+    },
+    {
+      "id": "world.travel",
+      "before": {
+        "runtimeOnly": true,
+        "id": "world.travel",
+        "tier": "Configure",
+        "doc": "Revision-checked runtime action. No authored changes or inverse.",
+        "targetRequired": true,
+        "args": [
+          {
+            "name": "regionId",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "portalId",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "expectedRevision",
+            "type": "int",
+            "required": true,
+            "min": 0.0
+          }
+        ],
+        "runtimeApply": "Live"
+      },
+      "after": null
+    }
+  ],
+  "objectTypes": []
+}
