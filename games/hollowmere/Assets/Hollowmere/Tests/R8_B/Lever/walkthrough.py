@@ -48,12 +48,33 @@ def walkthrough(work, candidate, companion, library, upm):
     work = work.resolve()
     candidate = candidate.resolve()
     companion = companion.resolve()
-    if work.exists() or work.is_relative_to(REPO):
-        raise RuntimeError('Use a fresh work directory outside the checkout')
+    if work.is_relative_to(REPO):
+        raise RuntimeError('Use a work directory outside the checkout')
     if (PROJECT / 'UserSettings/GameCoreStudio.json').exists():
         raise RuntimeError('Existing ETOS settings are never read or overwritten')
     if not companion.is_file() or not (candidate / 'change-set.json').is_file():
         raise RuntimeError('Build the local companion and author the guide candidate first')
+    if work.exists():
+        evidence = work / 'evidence'
+        config = json.loads((evidence / 'config.json').read_text())
+        if (evidence / 'live-admit.json').exists():
+            raise RuntimeError('Admitted runs require normal History recovery, not a fresh candidate retry')
+        count = 1
+        while (work / ('evidence-attempt-' + str(count))).exists():
+            count += 1
+        shutil.copytree(evidence, work / ('evidence-attempt-' + str(count)))
+        old_id = config.get('request', {}).get('changeSetId')
+        new_id = json.loads((candidate / 'change-set.json').read_text())['id']
+        if old_id == new_id:
+            raise RuntimeError('A corrected candidate needs a fresh change-set id; retain previous job and cache')
+        config['candidate'] = str(candidate)
+        config.pop('jobId', None)
+        config.pop('request', None)
+        for name in ('live-progress.json', 'live-failure.txt', 'stage-job.json'):
+            (evidence / name).unlink(missing_ok=True)
+        save(evidence / 'config.json', config)
+        run_service(config, evidence, work / 'node', evidence / 'runner.log', install=False)
+        return
     work.mkdir(mode=0o700, parents=True)
     evidence = work / 'evidence'
     evidence.mkdir()
@@ -103,6 +124,11 @@ def walkthrough(work, candidate, companion, library, upm):
                   projectId=project_id, project=str(PROJECT), installedNodeUsed=False,
                   companionSha256=hashlib.sha256(companion.read_bytes()).hexdigest())
     save(evidence / 'config.json', config)
+    run_service(config, evidence, node, log, install=True)
+
+
+def run_service(config, evidence, node, log, install):
+    state = Path(config['state'])
     env = dict(os.environ, ETOS_ROOT=str(node))
     for key in ['ETOS_SOCKET', 'http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'all_proxy']:
         env.pop(key, None)
@@ -119,9 +145,10 @@ def walkthrough(work, candidate, companion, library, upm):
                 if process.poll() is not None or time.monotonic() > deadline:
                     raise RuntimeError('Scratch node readiness failed')
                 time.sleep(0.25)
-            command([BIN / 'etos', 'agent', 'install', agent], log, env)
-            command([BIN / 'etos', 'app', 'install', REPO / 'studio/etos/app'], log, env)
-            command([BIN / 'etos', 'app', 'pair', 'gamecore-unity', '--approve', '--out', config['pairing']], log, env)
+            if install:
+                command([BIN / 'etos', 'agent', 'install', node.parent / 'agent'], log, env)
+                command([BIN / 'etos', 'app', 'install', REPO / 'studio/etos/app'], log, env)
+                command([BIN / 'etos', 'app', 'pair', 'gamecore-unity', '--approve', '--out', config['pairing']], log, env)
             deadline = time.monotonic() + 60
             while not (state / 'ledger.db').exists():
                 if time.monotonic() > deadline:
@@ -136,7 +163,7 @@ def walkthrough(work, candidate, companion, library, upm):
                     row = db.execute('SELECT state, verdict FROM stage_jobs WHERE job_id=?', (config['jobId'],)).fetchone()
                 if row and row[0] in ('done', 'failed'):
                     save(evidence / 'stage-job.json', dict(jobId=config['jobId'], state=row[0], verdict=json.loads(row[1]) if row[1] else None))
-                    if row[0] != 'done':
+                    if row[0] != 'done' or not row[1] or json.loads(row[1]).get('pass') is not True:
                         raise RuntimeError('Stage failed; retain stage-job.json and slot outputs')
                     break
                 if time.monotonic() > deadline:
