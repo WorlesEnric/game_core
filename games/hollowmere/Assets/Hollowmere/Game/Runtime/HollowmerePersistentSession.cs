@@ -243,7 +243,10 @@ namespace Hollowmere.Game
 
         public void Log(string line)
         {
-            Debug.Log(line);
+            FrameLogRecorder? recorder = FrameLog;
+            using var measurement = recorder?.Attribution.Measure(Time.frameCount, FrameSubsystem.AutoplayLog) ?? default;
+            if (recorder != null && recorder.Recording) recorder.RecordDiagnostic(line);
+            else Debug.Log(line);
         }
 
         private void OnApplicationQuit()

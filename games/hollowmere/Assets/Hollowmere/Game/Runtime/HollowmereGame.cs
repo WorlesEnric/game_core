@@ -162,6 +162,7 @@ namespace Hollowmere.Game
 
         private void LateUpdate()
         {
+            using var measurement = Session?.FrameLog?.Attribution.Measure(Time.frameCount, FrameSubsystem.Presentation) ?? default;
             Director?.Tick();
             // The clapper is acquired before the ferry conversation. Preload through the streamer's legal residency
             // transitions during that preparation, then release the neighbours immediately on leaving the marsh.
