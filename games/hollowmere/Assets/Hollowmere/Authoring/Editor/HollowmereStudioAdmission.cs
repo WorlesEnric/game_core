@@ -16,20 +16,21 @@
 // instance event, so player builds reference no Editor assembly. Before binding, the admission's smoke poll budget is
 // raised to HollowmereAdmittedSmoke.FrameBudget (R2-B persists the budget when the smoke starts).
 //
-// HollowmereAdmittedSmoke is the live smoke registry. It runs only entries compiled into this assembly whose package is
-// the verdict's admitted package, never a type or method named by candidate data, and never the sandbox Begin()
-// harness (that would boot a second root and displace the restored game). An entry registers once per verdict digest
-// and active root, advances one step per normal game frame from the AdmissionSmokeFrames component's Frame event (never
-// from the poll, never by pumping), asserts the live world on every step and once more with a save round trip after
-// the last one: Pending until then, Passed only then, Failed on an assertion failure, a lost root or a missing entry.
-// The assertions only observe the world, so a registration that restarts after a reload is safe.
+// HollowmereExtensionRegistry owns the reviewed package/type identities and normal world composition. The live smoke
+// selects only those declarations: candidate smoke strings never become reflected callback names and sandbox Begin
+// never runs here. Polling registers/observes; only AdmissionSmokeFrames advances the smoke, after the normal pump.
+// A restored pre-admission checkpoint is witnessed before adding the new extension's targets/mounts through the
+// existing composition boundary. The lever then proves committed off/on/off transitions on distinct game frames.
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using GameCore.Contracts;
+using GameCore.Gameplay.World;
 using GameCore.Gameplay.World.Editor;
 using GameCore.Studio.Edit;
 using GameCore.Unity.App;
+using GameCore.Unity.Runtime.Integration;
 using Hollowmere.Boot;
 using UnityEditor;
 using UnityEngine;
@@ -97,7 +98,7 @@ namespace Hollowmere.Authoring
             }
 
             var smoke = new HollowmereAdmittedSmoke(boot, service);
-            frames.Frame += smoke.Step;
+            frames.Bind(smoke.Step);
 
             // R2-B charges one poll per Editor update against SmokeTestFrameBudget (default 120) and persists the budget
             // when the smoke starts: an entry's steps run on game frames, so the allowance covers them with slack.
@@ -122,255 +123,295 @@ namespace Hollowmere.Authoring
         private static void OnSavesInstalled(GameBoot boot, SaveService service) => Bind(StudioServices.Runtime, boot, service);
     }
 
-    /// <summary>The live smoke registry of admitted mechanisms (trusted entries compiled into the game's Editor assembly).</summary>
+    /// <summary>Game-owned live smoke drivers selected by the reload-stable trusted extension registry.</summary>
     public sealed class HollowmereAdmittedSmoke
     {
-        /// <summary>The pressure plate sample's smoke type (samples/mechanisms/pressure-plate, proposal.json smokeTest.type).</summary>
-        public const string PressurePlateType = "Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke";
-
-        /// <summary>The pressure plate sample's package.</summary>
-        public const string PressurePlatePackage = "com.hollowmere.mechanism.pressureplate";
-
-        /// <summary>The largest proposal step count a registered entry accepts (the sample's is 120).</summary>
+        public const string PressurePlateType = HollowmereExtensionRegistry.PressurePlateType;
+        public const string PressurePlatePackage = HollowmereExtensionRegistry.PressurePlatePackage;
+        public const string LeverType = HollowmereExtensionRegistry.LeverType;
+        public const string LeverPackage = HollowmereExtensionRegistry.LeverPackage;
         public const int MaxSteps = 120;
-
-        /// <summary>The poll allowance the binding asks R2-B for before admission begins: twice <see cref="MaxSteps"/>.</summary>
         public const int FrameBudget = 2 * MaxSteps;
-
-        private static readonly IReadOnlyList<Entry> Entries = Array.AsReadOnly(new[]
-        {
-            new Entry(PressurePlateType, "Begin", PressurePlatePackage),
-        });
 
         private readonly GameBoot boot;
         private readonly SaveService service;
+        private readonly HollowmereExtensionRegistry registry = new HollowmereExtensionRegistry();
         private readonly Dictionary<string, Registration> registrations = new Dictionary<string, Registration>(StringComparer.Ordinal);
+        private readonly List<int> mechanismStates = new List<int>();
+        private int lastFrame = -1;
 
         public HollowmereAdmittedSmoke(GameBoot boot, SaveService service)
         {
             this.boot = boot;
             this.service = service;
+            MechanismStates = mechanismStates.AsReadOnly();
         }
 
-        /// <summary>Polls answered (any status).</summary>
         public int Polls { get; private set; }
-
-        /// <summary>Registrations made (one per verdict digest and active root).</summary>
         public int Registrations { get; private set; }
-
-        /// <summary>Steps advanced from game frames, over all registrations.</summary>
         public int Steps { get; private set; }
-
-        /// <summary>The statuses the polls returned, in order of change ("Pending", "Passed", ...).</summary>
         public List<string> Transitions { get; } = new List<string>();
-
-        /// <summary>The last outcome line ("pass: ..." or "fail: ..."; empty while Pending).</summary>
         public string LastReport { get; private set; } = string.Empty;
+        public IReadOnlyList<HollowmereExtensionRegistry.Entry> Entries => registry.Entries;
 
-        /// <summary>
-        /// R2-G2's entry: registers the trusted entry for <paramref name="type"/>.<paramref name="method"/> once per verdict
-        /// digest and active root, then answers its status: Pending until <paramref name="steps"/> game frames and their
-        /// assertions completed, Passed only then, Failed on a failure, a lost root or no trusted registration.
-        /// </summary>
+        /// <summary>Committed lever observations of the most recent registration: off, on, off (never enqueue echoes).</summary>
+        public IReadOnlyList<int> MechanismStates { get; }
+
+        /// <summary>Equal round-trip hash at registration, before adding any absent extension target or mount.</summary>
+        public string RestoredCheckpointSlotHash { get; private set; } = string.Empty;
+        public string InitialSlotHash { get; private set; } = string.Empty;
+        public string FinalSlotHash { get; private set; } = string.Empty;
+        public bool CheckpointRoundTripsEqual { get; private set; }
+
+        /// <summary>Registers once per verified digest/root; polling never advances the world or invokes sandbox Begin.</summary>
         public AdmissionSmokeStatus RunAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)
         {
             Polls++;
-            AdmissionSmokeStatus status = Poll(verdict, type, method, steps);
-            if (Transitions.Count == 0 || Transitions[Transitions.Count - 1] != status.ToString())
+            AdmissionSmokeStatus status;
+            try
             {
-                Transitions.Add(status.ToString());
+                status = Poll(verdict, type, method, steps);
             }
-
+            catch (Exception error) when (!(error is OutOfMemoryException))
+            {
+                status = Refuse(error.Message);
+            }
+            if (Transitions.Count == 0 || Transitions[Transitions.Count - 1] != status.ToString())
+                Transitions.Add(status.ToString());
             return status;
         }
 
-        /// <summary>The per-frame callback (AdmissionSmokeFrames.Frame): advances every Pending registration one step.</summary>
+        /// <summary>One observation/command phase after each normal pump; repeated calls in a frame do not advance it.</summary>
         public void Step()
         {
+            if (lastFrame == Time.frameCount) return;
+            lastFrame = Time.frameCount;
             foreach (Registration registration in registrations.Values)
             {
-                if (registration.Status != AdmissionSmokeStatus.Pending)
+                if (registration.Status != AdmissionSmokeStatus.Pending) continue;
+                try
                 {
-                    continue;
+                    string? failure = LiveWorld(registration.Root, false, out _, out _);
+                    if (failure == null)
+                    {
+                        registration.Frames++;
+                        Steps++;
+                        if (registration.Lever != null) failure = AdvanceLever(registration);
+                    }
+                    if (failure != null)
+                    {
+                        Finish(registration, "fail: frame " + registration.Frames.ToString(CultureInfo.InvariantCulture) + ": " + failure, false);
+                        continue;
+                    }
+                    if (registration.Frames < registration.Steps) continue;
+                    if (registration.Lever != null && registration.LeverPhase != 4)
+                    {
+                        Finish(registration, "fail: the lever did not complete committed off/on/off transitions", false);
+                        continue;
+                    }
+                    failure = LiveWorld(registration.Root, true, out string detail, out string hash);
+                    FinalSlotHash = hash;
+                    CheckpointRoundTripsEqual = failure == null;
+                    Finish(registration, failure == null
+                        ? "pass: " + detail + "; " + registration.Frames.ToString(CultureInfo.InvariantCulture)
+                            + " game frame(s) stepped and asserted" + (registration.Lever != null ? "; lever off/on/off committed" : string.Empty)
+                        : "fail: final round trip: " + failure, failure == null);
                 }
-
-                string? failure = LiveWorld(registration.Root, false, out _);
-                if (failure != null)
+                catch (Exception error) when (!(error is OutOfMemoryException))
                 {
-                    Finish(registration, "fail: step " + (registration.Frames + 1).ToString(CultureInfo.InvariantCulture) + ": " + failure, false);
-                    continue;
+                    Finish(registration, "fail: " + error.Message, false);
                 }
-
-                registration.Frames++;
-                Steps++;
-                if (registration.Frames < registration.Steps)
-                {
-                    continue;
-                }
-
-                failure = LiveWorld(registration.Root, true, out string detail);
-                Finish(registration, failure == null
-                    ? "pass: " + detail + "; " + registration.Frames.ToString(CultureInfo.InvariantCulture) + " game frame(s) stepped and asserted"
-                    : "fail: after " + registration.Frames.ToString(CultureInfo.InvariantCulture) + " frame(s): " + failure, failure == null);
             }
         }
 
         private AdmissionSmokeStatus Poll(StageVerdict verdict, string type, string method, int steps)
         {
-            if (verdict == null)
-            {
-                return AdmissionSmokeStatus.Failed;
-            }
-
-            Entry? entry = null;
-            foreach (Entry candidate in Entries)
-            {
-                if (string.Equals(candidate.Type, type, StringComparison.Ordinal) && string.Equals(candidate.Method, method, StringComparison.Ordinal))
-                {
-                    entry = candidate;
-                }
-            }
-
+            if (verdict == null) return Refuse("there is no verified verdict");
+            HollowmereExtensionRegistry.Entry? entry = registry.Find(type, method);
             string? refusal = entry == null ? "no trusted smoke entry is registered for " + type + "." + method
                 : !string.Equals(verdict.Package, entry.Package, StringComparison.Ordinal) ? "the entry belongs to " + entry.Package + ", the verdict admits " + verdict.Package
                 : !verdict.Pass ? "the verdict did not pass"
-                : steps <= 0 || steps > MaxSteps ? "steps must be within 1.." + MaxSteps.ToString(CultureInfo.InvariantCulture)
+                : steps < entry.MinimumSteps || steps > MaxSteps ? "steps must be within " + entry.MinimumSteps + ".." + MaxSteps
                 : boot == null || boot.World == null ? "the game that was bound is gone"
                 : null;
-            if (refusal != null)
-            {
-                LastReport = "fail: " + refusal;
-                Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
-                return AdmissionSmokeStatus.Failed;
-            }
+            if (refusal != null) return Refuse(refusal);
 
             GameApplicationRoot root = boot!.World!.Root;
-            if (registrations.TryGetValue(verdict.Digest, out Registration? registration))
+            refusal = LiveWorld(root, false, out _, out _);
+            if (refusal != null) return Refuse(refusal);
+            if (entry!.ExtensionType != null && !string.Equals(root.CatalogHash.ToHex(), verdict.Predicted, StringComparison.Ordinal))
+                return Refuse("the running catalog does not match the signed admitted catalog set");
+            if (registrations.TryGetValue(verdict.Digest, out Registration? existing))
             {
-                if (!ReferenceEquals(registration.Root, root))
-                {
-                    Finish(registration, "fail: the active root was replaced during the smoke", false);
-                }
-
-                return registration.Status;
+                if (!ReferenceEquals(existing.Root, root))
+                    return Refuse("the active root was replaced during the smoke");
+                if (!ReferenceEquals(existing.Entry, entry) || existing.Steps != steps)
+                    return Refuse("the registered smoke descriptor changed");
+                return existing.Status;
             }
 
-            registration = new Registration(root, steps, type + "." + method);
-            registrations[verdict.Digest] = registration;
+            // Resolve the reviewed adapter and witness the checkpoint before creating a runnable registration.
+            // A missing/foreign/broken extension must never leave a Pending observer-only entry behind.
+            HollowmereExtensionRegistry.LeverAccess? lever = entry!.ExtensionType == null ? null : entry.BindLever(boot.World);
+            refusal = LiveWorld(root, true, out _, out string hash);
+            if (refusal != null) return Refuse("at registration: " + refusal);
+            var registration = new Registration(root, steps, entry) { Lever = lever };
+            registrations.Add(verdict.Digest, registration);
             Registrations++;
-            string? failure = LiveWorld(root, true, out _);
-            if (failure != null)
+            mechanismStates.Clear();
+            InitialSlotHash = FinalSlotHash = string.Empty;
+            RestoredCheckpointSlotHash = hash;
+            CheckpointRoundTripsEqual = false;
+            return registration.Status;
+        }
+
+        private string? AdvanceLever(Registration registration)
+        {
+            HollowmereExtensionRegistry.LeverAccess lever = registration.Lever!;
+            GameApplicationRoot root = registration.Root;
+            if (root.State != GameApplicationState.Running) return "the lever needs the running game's normal pump";
+            if (registration.LeverPhase == 0)
             {
-                Finish(registration, "fail: at registration: " + failure, false);
+                string? failure = InstallRestoredExtension(root, lever);
+                if (failure != null) return failure;
+                registration.LeverPhase = 1;
+                // A rebind may observe a previously committed on-state. Normalize it on a real frame before the proof.
+                if (lever.State == 1)
+                {
+                    if (!lever.Toggle()) return "the lever normalization command was refused";
+                    registration.CommandStep = root.Host.CurrentStep.Value;
+                    registration.Normalizing = true;
+                }
+                return null;
             }
 
-            return registration.Status;
+            int state = lever.State;
+            if (state != 0 && state != 1) return "the lever has no committed 0/1 state in the active root";
+            if (registration.LeverPhase == 1)
+            {
+                if (registration.Normalizing && root.Host.CurrentStep.Value <= registration.CommandStep) return null;
+                if (state != 0) return "the lever did not reach its initial off state";
+                string? failure = LiveWorld(root, true, out _, out string hash);
+                if (failure != null) return failure;
+                InitialSlotHash = hash;
+                mechanismStates.Add(state);
+                if (!lever.Toggle()) return "the off-to-on command was refused";
+                if (lever.State != 0) return "Toggle changed state outside the committed game step";
+                registration.CommandStep = root.Host.CurrentStep.Value;
+                registration.LeverPhase = 2;
+                return null;
+            }
+            if (registration.LeverPhase == 2 || registration.LeverPhase == 3)
+            {
+                if (root.Host.CurrentStep.Value <= registration.CommandStep) return null;
+                int expected = registration.LeverPhase == 2 ? 1 : 0;
+                if (state != expected) return "the lever committed " + state + " instead of " + expected;
+                mechanismStates.Add(state);
+                if (registration.LeverPhase == 2)
+                {
+                    if (!lever.Toggle()) return "the on-to-off command was refused";
+                    if (lever.State != 1) return "Toggle changed state outside the committed game step";
+                    registration.CommandStep = root.Host.CurrentStep.Value;
+                }
+                registration.LeverPhase++;
+                return null;
+            }
+            return state == 0 ? null : "the lever left its final off state";
+        }
+
+        private string? InstallRestoredExtension(GameApplicationRoot root, HollowmereExtensionRegistry.LeverAccess lever)
+        {
+            // Restore deliberately omits boot steps. Reapply only the reviewed extension's additive targets/mounts,
+            // after the old checkpoint was witnessed. Never seed an existing target or overwrite a restored slot.
+            IGameplayWorldExtension extension = lever.Extension;
+            bool created = false;
+            if (!(extension is IGameplayWorldTargets targets)) return "the trusted lever has no declared session target";
+            foreach (GameplayExtensionTarget target in targets.Targets(boot.World!.Manifest))
+            {
+                if (root.Targets.Contains(target.Target)) continue;
+                if (!root.Seeder.TrySeed(target.Target, root.Definition.RootScope, target.Recipe, out _, out DiagnosticCode code, out string detail))
+                    return "seeding the admitted extension was refused: " + code + ": " + detail;
+                created = true;
+            }
+            foreach (GameplayPluginMount mount in extension.Plugins)
+            {
+                if (root.Lane.Committed.TryGetInstall(mount.Instance, out var installed))
+                {
+                    if (installed == null || !installed.Scope.Equals(root.Definition.RootScope)
+                        || !installed.Record.PluginType.Equals(mount.Declaration.Manifest.PluginTypeId)
+                        || installed.State != InstallationState.Active)
+                        return "the admitted extension's instance is not an active matching world-scope mount";
+                    continue;
+                }
+                WorldAdmissionReport report = root.Submit(WorldBuilder.Mount(mount.Declaration, mount.Instance, root.Definition.RootScope));
+                if (report.Outcome != BridgeOutcome.Executed)
+                    return "mounting the admitted extension was refused: " + report.Outcome + ": " + report.RefusalDetail;
+                if (!root.Lane.Committed.TryGetInstall(mount.Instance, out installed) || installed == null
+                    || !installed.Scope.Equals(root.Definition.RootScope)
+                    || !installed.Record.PluginType.Equals(mount.Declaration.Manifest.PluginTypeId)
+                    || installed.State != InstallationState.Active)
+                    return "the admitted extension was not published as an active matching world-scope mount";
+            }
+            if (created && !lever.InitializeNewTarget())
+                return "the new admitted lever target could not initialize its state";
+            return null;
+        }
+
+        private AdmissionSmokeStatus Refuse(string reason)
+        {
+            LastReport = "fail: " + reason;
+            Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
+            return AdmissionSmokeStatus.Failed;
         }
 
         private void Finish(Registration registration, string report, bool passed)
         {
-            if (registration.Status != AdmissionSmokeStatus.Pending)
-            {
-                return;
-            }
-
             registration.Status = passed ? AdmissionSmokeStatus.Passed : AdmissionSmokeStatus.Failed;
-            LastReport = report + " [" + registration.Name + ", steps " + registration.Steps.ToString(CultureInfo.InvariantCulture) + "]";
-            if (passed)
-            {
-                Debug.Log("[Hollowmere] admitted smoke " + LastReport);
-            }
-            else
-            {
-                Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
-            }
+            LastReport = report + " [" + registration.Entry.SmokeType + "." + registration.Entry.SmokeMethod
+                + ", steps " + registration.Steps.ToString(CultureInfo.InvariantCulture) + "]";
+            if (passed) Debug.Log("[Hollowmere] admitted smoke " + LastReport);
+            else Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
         }
 
-        /// <summary>
-        /// The live assertions of an admitted mechanism in the active Hollowmere world: the session is ready (the restored
-        /// root is the save service's and the application's), the registered root is still the active one and runs, and -
-        /// when <paramref name="roundTrip"/> - the world round-trips through its save codecs with an equal canonical slot
-        /// hash. Observes only.
-        /// </summary>
-        private string? LiveWorld(GameApplicationRoot registered, bool roundTrip, out string detail)
+        private string? LiveWorld(GameApplicationRoot registered, bool roundTrip, out string detail, out string hash)
         {
-            detail = string.Empty;
-            if (boot == null)
-            {
-                return "the game that was bound is gone";
-            }
-
-            if (!boot.AdmissionReady(service))
-            {
-                return "the game session is not ready (world, narrative, active root)";
-            }
-
+            detail = hash = string.Empty;
+            if (boot == null) return "the game that was bound is gone";
+            if (!boot.AdmissionReady(service)) return "the game session is not ready (world, narrative, active root)";
             GameApplicationRoot root = boot.World!.Root;
-            if (!ReferenceEquals(root, registered))
-            {
-                return "the active root was replaced";
-            }
-
+            if (!ReferenceEquals(root, registered)) return "the active root was replaced";
             if (root.State != GameApplicationState.Running && root.State != GameApplicationState.Paused)
-            {
                 return "the active root is " + root.State;
-            }
-
             detail = "active root " + root.State + ", catalog " + root.CatalogHash.ToHex().Substring(0, 12);
-            if (!roundTrip)
-            {
-                return null;
-            }
-
+            if (!roundTrip) return null;
             SaveRoundTripReport report = service.TestRoundTrip();
-            if (report.Refusal != null)
-            {
-                return "the active world's round trip was refused: " + report;
-            }
-
-            if (!report.Equal)
-            {
-                return "the active world's round trip differs: " + report.Detail;
-            }
-
-            detail += ", round trip equal (slot hash " + report.SourceSlotHash.Substring(0, Math.Min(12, report.SourceSlotHash.Length)) + ")";
+            if (report.Refusal != null) return "the active world's round trip was refused: " + report;
+            if (!report.Equal) return "the active world's round trip differs: " + report.Detail;
+            if (!boot.AdmissionReady(service) || !ReferenceEquals(root, boot.World.Root))
+                return "the round trip displaced the running application root";
+            hash = report.SourceSlotHash;
+            detail += ", round trip equal (slot hash " + hash.Substring(0, Math.Min(12, hash.Length)) + ")";
             return null;
         }
 
         private sealed class Registration
         {
-            public Registration(GameApplicationRoot root, int steps, string name)
+            internal Registration(GameApplicationRoot root, int steps, HollowmereExtensionRegistry.Entry entry)
             {
                 Root = root;
                 Steps = steps;
-                Name = name;
+                Entry = entry;
             }
 
-            public GameApplicationRoot Root { get; }
-
-            public int Steps { get; }
-
-            public string Name { get; }
-
-            public int Frames { get; set; }
-
-            public AdmissionSmokeStatus Status { get; set; } = AdmissionSmokeStatus.Pending;
-        }
-
-        private sealed class Entry
-        {
-            public Entry(string type, string method, string package)
-            {
-                Type = type;
-                Method = method;
-                Package = package;
-            }
-
-            public string Type { get; }
-
-            public string Method { get; }
-
-            public string Package { get; }
+            internal GameApplicationRoot Root { get; }
+            internal int Steps { get; }
+            internal HollowmereExtensionRegistry.Entry Entry { get; }
+            internal HollowmereExtensionRegistry.LeverAccess? Lever { get; set; }
+            internal int Frames { get; set; }
+            internal int LeverPhase { get; set; }
+            internal ulong CommandStep { get; set; }
+            internal bool Normalizing { get; set; }
+            internal AdmissionSmokeStatus Status { get; set; } = AdmissionSmokeStatus.Pending;
         }
     }
 }

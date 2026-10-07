@@ -1,0 +1,76 @@
+{
+  "id": "cs_01K6R8CMECH00000000000000H",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Add a bistable lever whose position latches until the next bounded toggle.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "mechanism.admit",
+      "args": {
+        "package": {
+          "artifact": "sha256:96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15"
+        },
+        "proposal": {
+          "artifact": "sha256:5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336"
+        },
+        "verdict": {
+          "artifact": "sha256:9fd49939be8e270ef5a0bd3c84c528e03a6e1c3e799fe01eb410cccf640fc47b"
+        }
+      },
+      "applyRequirement": "Compile"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+      "name": "package.tgz",
+      "mediaType": "application/gzip",
+      "bytes": 16680,
+      "role": "package"
+    },
+    {
+      "sha256": "5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336",
+      "name": "proposal.json",
+      "mediaType": "application/json",
+      "bytes": 622,
+      "role": "proposal"
+    },
+    {
+      "sha256": "9fd49939be8e270ef5a0bd3c84c528e03a6e1c3e799fe01eb410cccf640fc47b",
+      "name": "verdict.json",
+      "mediaType": "application/vnd.gamecore.stage-verdict+json",
+      "bytes": 9405,
+      "role": "verdict"
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.verdict",
+      "status": "pass",
+      "detail": "pass verdict 9fd49939be8e slot cs-01k6r8cmech00000000000000h (75850 ms); sha256:9fd49939be8e270ef5a0bd3c84c528e03a6e1c3e799fe01eb410cccf640fc47b"
+    },
+    {
+      "scenario": "stage.admission",
+      "status": "pass",
+      "detail": "verified; confinement=docker; coldCache=False"
+    },
+    {
+      "scenario": "stage.undo",
+      "status": "pass",
+      "detail": "verified removal"
+    }
+  ],
+  "requirements": {
+    "max": "Compile",
+    "worldRebuild": false,
+    "compile": true,
+    "build": false
+  },
+  "state": "Undone",
+  "timestamps": {
+    "applied": "2026-10-07T03:46:37.863Z"
+  }
+}

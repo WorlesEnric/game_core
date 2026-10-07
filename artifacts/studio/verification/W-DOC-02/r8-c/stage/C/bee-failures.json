@@ -1,0 +1,16 @@
+[
+  {
+    "msg": "noderesult",
+    "processed_node_count": 926,
+    "number_of_nodes_ever_queued": 1350,
+    "annotation": "Csc Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.Lever.dll (+2 others)",
+    "index": 880,
+    "exitcode": 1,
+    "cmdline": "\"/u/Data/NetCoreRuntime/dotnet\" exec \"/u/Data/DotNetSdkRoslyn/csc.dll\" /nostdlib /noconfig /shared \"@Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.Lever.rsp\" \"@Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.Lever.rsp2\"",
+    "rsps": [
+      "Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.Lever.rsp"
+    ],
+    "outputfile": "Library/Bee/artifacts/2400b0aE.dag/Hollowmere.Mechanism.Lever.dll",
+    "stdout": "Packages/com.hollowmere.mechanism.lever/Runtime/LeverBinder.cs(2,1): error DC0061: Assembly Hollowmere.Mechanism.Lever relies on Unity.Entities which uses the Unity.Collections AllocatorHandle type but does not have a reference to Unity.Collections.  Please add an assembly reference to `Unity.Collections` in the asmdef for Hollowmere.Mechanism.Lever."
+  }
+]

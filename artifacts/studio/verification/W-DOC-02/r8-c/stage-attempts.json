@@ -1,0 +1,407 @@
+[
+  {
+    "candidate": "A",
+    "sourceRevision": "272f32b2198c717f867683dc9768c8e96e61259f",
+    "packageDigest": "abad8a4904c48ed9ce200beaf25e4c6911e923d51925f16f2dc2daf7ac73ab48",
+    "pass": false,
+    "confinement": "docker",
+    "durationMs": 30953,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "fail",
+        "detail": "semantic analyzer missing, failed, or reported forbidden code"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "skipped",
+        "detail": "skipped: dotnet failed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "skipped",
+        "detail": "skipped: dotnet failed"
+      },
+      {
+        "id": "determinism",
+        "status": "skipped",
+        "detail": "skipped: dotnet failed"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "30 s within B-STAGE 1800 s"
+      }
+    ]
+  },
+  {
+    "candidate": "B",
+    "sourceRevision": "c2b7efef9f718d1f1a0deb9ad1418aed6b62bd2a",
+    "packageDigest": "df588a3af1f12023be03806c82f281885f68bc4c63e455c11591178d3beb5f65",
+    "pass": false,
+    "confinement": "docker",
+    "durationMs": 72207,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "fail",
+        "detail": "compile failed: Packages/com.hollowmere.mechanism.lever/Runtime/LeverSmoke.cs(37,30): error CS0012: The type 'IDerivationValueSource' is defined in an assembly that is not referenced. You must add a reference to assembly 'GameCore.Derivation, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'."
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "skipped",
+        "detail": "skipped: unity-editmode failed"
+      },
+      {
+        "id": "determinism",
+        "status": "skipped",
+        "detail": "skipped: unity-editmode failed"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "72 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "C",
+    "sourceRevision": "f243e478ddf39913ccc62292169644855b21c361",
+    "packageDigest": "8df6e2d506fda772f01a9fd4025d7d63ab15d33128742a307a27381275609037",
+    "pass": false,
+    "confinement": "docker",
+    "durationMs": 78486,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "fail",
+        "detail": "no EditMode test results (unity-batch exit Some(1))"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "skipped",
+        "detail": "skipped: unity-editmode failed"
+      },
+      {
+        "id": "determinism",
+        "status": "skipped",
+        "detail": "skipped: unity-editmode failed"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "78 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "D",
+    "sourceRevision": "09921c8f87a0e4643db91ab484889ec28f8ea393",
+    "packageDigest": "54ba07d55f8d4a81df7e1b4ebfb3c7304bebe618102c09a9e4767a5a73581382",
+    "pass": false,
+    "confinement": "docker",
+    "durationMs": 166548,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "fail",
+        "detail": "2 PlayMode test(s) failed: GameCore.Stage.Harness.SmokeRunner.SmokeRun1"
+      },
+      {
+        "id": "determinism",
+        "status": "skipped",
+        "detail": "skipped: playmode-smoke failed"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "166 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "E",
+    "sourceRevision": "daf8f34806e91a37b404ad70da5f09dfc211cb91",
+    "packageDigest": "4b5688647e3063f6138bb1441a844c9a34673e3a8572a4c7667f7388ab697dce",
+    "pass": true,
+    "confinement": "docker",
+    "durationMs": 76747,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception"
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "detail": "both smoke runs end at slot hash 09dd4f662da2"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "76 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "F",
+    "sourceRevision": "a4e44954c44d95a739fa140e1ce7cb526cede891",
+    "packageDigest": "4b5688647e3063f6138bb1441a844c9a34673e3a8572a4c7667f7388ab697dce",
+    "pass": true,
+    "confinement": "docker",
+    "durationMs": 84418,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception"
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "detail": "both smoke runs end at slot hash 09dd4f662da2"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "84 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "G",
+    "sourceRevision": "bec7199eaa50f41228290eddb930c99f167d067c",
+    "packageDigest": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+    "pass": true,
+    "confinement": "docker",
+    "durationMs": 77055,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception"
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "detail": "both smoke runs end at slot hash 09dd4f662da2"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "77 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "H",
+    "sourceRevision": "ab23bc94a99fa136f8987b8586a4c75e286b6c07",
+    "packageDigest": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+    "pass": true,
+    "confinement": "docker",
+    "durationMs": 75850,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception"
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "detail": "both smoke runs end at slot hash 09dd4f662da2"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "75 s within B-STAGE 360 s"
+      }
+    ]
+  },
+  {
+    "candidate": "J",
+    "sourceRevision": "09430b3093b8b97cd4cb878f59d38ce7a8d37743",
+    "packageDigest": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+    "pass": true,
+    "confinement": "docker",
+    "durationMs": 76172,
+    "steps": [
+      {
+        "id": "scan",
+        "status": "pass",
+        "detail": "38 file(s) clean"
+      },
+      {
+        "id": "checkers",
+        "status": "pass",
+        "detail": "10 C# file(s), 4 asmdef(s), slot clean"
+      },
+      {
+        "id": "dotnet",
+        "status": "pass",
+        "detail": "6 dotnet test(s) passed"
+      },
+      {
+        "id": "unity-editmode",
+        "status": "pass",
+        "detail": "compiled; 16 EditMode test(s) passed"
+      },
+      {
+        "id": "playmode-smoke",
+        "status": "pass",
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception"
+      },
+      {
+        "id": "determinism",
+        "status": "pass",
+        "detail": "both smoke runs end at slot hash 09dd4f662da2"
+      },
+      {
+        "id": "budget",
+        "status": "pass",
+        "detail": "76 s within B-STAGE 360 s"
+      }
+    ]
+  }
+]

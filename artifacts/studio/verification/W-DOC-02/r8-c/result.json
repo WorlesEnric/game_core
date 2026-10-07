@@ -1,0 +1,71 @@
+{
+  "row": "W-DOC-02",
+  "status": "PASS",
+  "sourceRevision": "09430b3093b8b97cd4cb878f59d38ce7a8d37743",
+  "stageJob": "stg_1a1147d3f1628f4f06c9485",
+  "stageMs": 76172,
+  "admitMs": 40990,
+  "undoMs": 22911,
+  "packageDigest": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+  "proposalDigest": "5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336",
+  "mechanismStates": [
+    0,
+    1,
+    0
+  ],
+  "interactiveStates": [
+    0,
+    1,
+    0
+  ],
+  "coins": 9,
+  "checkpointRoundTripsEqual": true,
+  "stageSteps": {
+    "scan": "pass",
+    "checkers": "pass",
+    "dotnet": "pass",
+    "unity-editmode": "pass",
+    "playmode-smoke": "pass",
+    "determinism": "pass",
+    "budget": "pass"
+  },
+  "screenshots": {
+    "lever-on-play.png": [
+      1280,
+      739
+    ],
+    "lever-off-after-play.png": [
+      1280,
+      739
+    ],
+    "lever-off-after-world.png": [
+      960,
+      720
+    ],
+    "admitted-play.png": [
+      200,
+      179
+    ],
+    "lever-on-world.png": [
+      960,
+      720
+    ],
+    "lever-off-before-play.png": [
+      1280,
+      739
+    ],
+    "lever-off-before-world.png": [
+      960,
+      720
+    ]
+  },
+  "otherRowsUnchanged": 67,
+  "rowTotals": {
+    "PASS": 57,
+    "BLOCKED": 11,
+    "FAIL": 0
+  },
+  "credentialShapedFiles": 0,
+  "installedPackageAbsent": true,
+  "pendingAdmissionAbsent": true
+}

@@ -1,10 +1,10 @@
 // Hollowmere - GameBoot: boots the baked Hollowmere world with the player, NPC and interaction plugins (P1.3), the
 // narrative plugins (P1.4) and the UI and audio (P1.5).
 //
-// Boot.unity holds one GameBoot. On Start it builds the world options with the three P1.3 world extensions, lets
-// UiAudioBootstrap add the ui and audio extensions and create the UI/audio rig under its own transform, points P1.4's
-// presenters at that rig, and boots the narrative world (HollowmereNarrative.Boot = NarrativeComposer.Boot: the baked
-// world plan plus the logic, inventory, quest and dialogue plugins; the root is left Ready). It then creates the view
+// Boot.unity holds one GameBoot. On Start HollowmereComposition builds the base world, narrative, UI/audio and the
+// reviewed additive extensions. The original generated catalog must match the baked manifest before any additive
+// catalog set is composed. GameApplication.TryBoot creates the one root (left Ready), then NarrativeComposer.Attach
+// installs the world and narrative modules. It then creates the view
 // binders, installs the player loop (input adapter, locomotion, focus, portal probe, orbit camera), the NPC loop and the
 // interaction loop, hands P1.3's seams their P1.4 implementations (HollowmereNarrative.Wire) and their P1.5
 // presenters (UiAudioBootstrap.Wire), and starts the root. Streaming, input, narrative delivery and presentation then
@@ -13,12 +13,13 @@
 // The UI starts on the main menu, which pauses gameplay input; New Game shows the HUD. Saving needs Hollowmere's
 // checkpoint codecs (P3.1); until then the save and load screens answer GP-UI-014.
 //
-// P1.7a (A2/A11): the boot goes through NarrativeComposer.TryBoot, and a failure after the root booted (views, sessions,
+// P1.7a (A2/A11): shared composition and GameApplication.TryBoot refuse invalid worlds; a later failure (views, sessions,
 // wiring) shuts the narrative world down, which stops the root. Install is the per-root half (streaming options, views,
 // P1.3 sessions, P1.4/P1.5 wiring) and runs again for a restored root: UseSaves(service) connects the save service
 // (through the UI runtime's restore path when the UI rig exists, else RootChanged directly) and every restore re-attaches
 // the narrative layer on the restored root's delivery owner (NarrativeComposer.Attach) and reinstalls the sessions.
-// ConfigureSaves(options) sets SaveServiceOptions.DeliveryFactory to the narrative delivery's owner (one owner per world).
+// ConfigureSaves sets the narrative delivery owner and declares only the composed definition's exact base catalog
+// compatible for additive restore; it never adds an arbitrary capture fingerprint to the compatibility set.
 //
 // P3.1 (A11, additive): in the player, HollowmereApplication registers Hollowmere's definition at SubsystemRegistration,
 // so the application bootstrap composes the game root before this scene loads. Start then adopts that root (Adopted):
@@ -27,6 +28,8 @@
 // -noRegister, New Game / Restart reloads) GameBoot boots its own root as before.
 #nullable enable
 using System;
+using System.Collections.Generic;
+using GameCore.Contracts;
 using GameCore.Gameplay.Interaction;
 using GameCore.Gameplay.Logic;
 using GameCore.Gameplay.Npc;
@@ -43,6 +46,7 @@ namespace Hollowmere.Boot
     public sealed class GameBoot : MonoBehaviour
     {
         [SerializeField] private RegionManifest? manifest;
+        private HollowmereComposition? ownedComposition;
 
         [Tooltip("The baked narrative content (Rules/HollowmereContent.content.asset).")]
         [SerializeField] private GameplayContentManifest? content;
@@ -130,6 +134,13 @@ namespace Hollowmere.Boot
             }
 
             NarrativeDelivery.Configure(options, Narrative);
+            // Only the reviewed additive composition declares its exact unchanged base catalog compatible.
+            if (ownedComposition != null && !ownedComposition.BaseCatalogHash.Equals(Narrative.Root.CatalogHash))
+            {
+                var compatible = new List<ContentHash>(options.CompatibleCatalogs);
+                if (!compatible.Contains(ownedComposition.BaseCatalogHash)) compatible.Add(ownedComposition.BaseCatalogHash);
+                options.CompatibleCatalogs = compatible.AsReadOnly();
+            }
             return true;
         }
 
@@ -192,31 +203,30 @@ namespace Hollowmere.Boot
                 return;
             }
 
-            var playerExtension = new PlayerWorldExtension(player);
-            var npcExtension = new NpcWorldExtension(npcs);
-            var interactionExtension = new InteractionWorldExtension(interactions);
-            var build = new WorldBuildOptions { Name = "Hollowmere", MaxEventsPerStep = 64, MaxRetainedEvents = 1024 };
-            build.Extensions.Add(playerExtension);
-            build.Extensions.Add(npcExtension);
-            build.Extensions.Add(interactionExtension);
-            UiAudioBootstrap.Configure(build, gameObject);
-            var modules = new HollowmereNarrativeModules();
-            UiAudioBootstrap.AssignViews(UiAudioBootstrap.RigOf(gameObject), modules);
-
-            if (!NarrativeComposer.TryBoot(manifest, content, modules.All, new GameApplicationBootOptions(), build, false, out NarrativeWorld? booted, out string failure)
-                || booted == null)
+            if (!HollowmereComposition.TryCompose(manifest, content, player, npcs, interactions, gameObject,
+                out HollowmereComposition? composition, out string failure) || composition == null)
             {
                 Refuse(failure);
                 return;
             }
+            ownedComposition = composition;
+            if (!GameApplication.TryBoot(composition.Definition, new GameApplicationBootOptions { StartImmediately = false },
+                out GameApplicationRoot? root, out GameApplicationBootFailed? bootFailure) || root == null)
+            {
+                composition.ReleaseManifest();
+                ownedComposition = null;
+                Refuse("the Hollowmere world refused to boot: " + bootFailure);
+                return;
+            }
 
-            NarrativeWorld game = booted;
-            PlayerExtension = playerExtension;
-            NpcExtension = npcExtension;
-            InteractionExtension = interactionExtension;
-            Modules = modules;
+            NarrativeWorld? game = null;
+            PlayerExtension = composition.PlayerExtension;
+            NpcExtension = composition.NpcExtension;
+            InteractionExtension = composition.InteractionExtension;
+            Modules = composition.Modules;
             try
             {
+                game = NarrativeComposer.Attach(root, composition.Plan, content, composition.Modules.All, true);
                 Install(game);
             }
             catch (Exception refused) when (refused is InvalidOperationException || refused is ArgumentException)
@@ -225,7 +235,10 @@ namespace Hollowmere.Boot
                 Narrative = null;
                 World = null;
                 Player?.Dispose();
-                game.Shutdown();
+                if (game != null) game.Shutdown();
+                else root.Stop("Hollowmere attach failed");
+                composition.ReleaseManifest();
+                ownedComposition = null;
                 Refuse(refused.Message);
                 return;
             }
@@ -253,6 +266,7 @@ namespace Hollowmere.Boot
             }
 
             registered.HandOver(transform);
+            ownedComposition = composition;
             PlayerExtension = composition.PlayerExtension;
             NpcExtension = composition.NpcExtension;
             InteractionExtension = composition.InteractionExtension;
@@ -378,6 +392,8 @@ namespace Hollowmere.Boot
             Narrative = null;
             World = null;
             Player?.Dispose();
+            ownedComposition?.ReleaseManifest();
+            ownedComposition = null;
             if (game == null)
             {
                 return;

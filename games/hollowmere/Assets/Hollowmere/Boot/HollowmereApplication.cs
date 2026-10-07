@@ -33,9 +33,17 @@ using UnityEngine;
 
 namespace Hollowmere.Boot
 {
+    /// <summary>The fixed game-owned authoring provider supplies additive catalogs as well as world extensions.</summary>
+    public interface IHollowmereExtensionSource : IGameplayWorldExtensionSource
+    {
+        ICatalog ComposeCatalog(ICatalog world);
+    }
+
     /// <summary>Hollowmere's application definition and the instances it was composed from (one composition).</summary>
     public sealed class HollowmereComposition
     {
+        private RegionManifest? ownedManifest;
+
         internal HollowmereComposition(
             WorldBuildPlan plan,
             GameApplicationDefinition definition,
@@ -54,6 +62,22 @@ namespace Hollowmere.Boot
 
         public WorldBuildPlan Plan { get; }
 
+        public ContentHash BaseCatalogHash { get; internal set; }
+
+        /// <summary>Releases only the transient composed manifest; the authored manifest is never changed or destroyed.</summary>
+        internal void ReleaseManifest()
+        {
+            RegionManifest? owned = ownedManifest;
+            ownedManifest = null;
+            if (owned != null) DestroyManifest(owned);
+        }
+
+        private static void DestroyManifest(RegionManifest owned)
+        {
+            if (Application.isPlaying) UnityEngine.Object.Destroy(owned);
+            else UnityEngine.Object.DestroyImmediate(owned);
+        }
+
         /// <summary>The base plan extended with the narrative modules' declarations (what the root is composed from).</summary>
         public GameApplicationDefinition Definition { get; }
 
@@ -68,6 +92,18 @@ namespace Hollowmere.Boot
         /// <summary>The world build options GameBoot uses (one place, so a registered and a booted world compose alike).</summary>
         public static WorldBuildOptions BuildOptions() =>
             new WorldBuildOptions { Name = "Hollowmere", MaxEventsPerStep = 64, MaxRetainedEvents = 1024 };
+
+        private static IHollowmereExtensionSource? ExtensionSource()
+        {
+#if UNITY_EDITOR
+            Type? provider = Type.GetType("Hollowmere.Authoring.HollowmereExtensionRegistry, Hollowmere.Authoring.Editor", false);
+            if (provider == null || !(Activator.CreateInstance(provider) is IHollowmereExtensionSource source))
+                throw new InvalidOperationException("The trusted Hollowmere extension registry is unavailable");
+            return source;
+#else
+            return null;
+#endif
+        }
 
         /// <summary>
         /// Composes Hollowmere's definition without booting it: GameBoot's extensions and UI/audio rig (created under
@@ -104,12 +140,37 @@ namespace Hollowmere.Boot
                 return false;
             }
 
+            // A stale or foreign baked catalog is never legitimized by the additive composition below.
+            if (manifest.FormatId != RegionManifest.Format || manifest.CatalogFingerprint != fingerprint.ToHex())
+            {
+                failure = "The Hollowmere base manifest does not match its generated catalog";
+                return false;
+            }
+            ContentHash baseCatalogHash = fingerprint;
+            RegionManifest composedManifest = manifest;
+
             try
             {
                 var playerExtension = new PlayerWorldExtension(player);
                 var npcExtension = new NpcWorldExtension(npcs);
                 var interactionExtension = new InteractionWorldExtension(interactions);
                 WorldBuildOptions build = BuildOptions();
+                IHollowmereExtensionSource? extensions = ExtensionSource();
+                if (extensions != null)
+                {
+                    extensions.Contribute(build, host);
+                    catalog = extensions.ComposeCatalog(catalog);
+                    fingerprint = catalog.Fingerprint;
+                    if (!fingerprint.Equals(baseCatalogHash))
+                    {
+                        composedManifest = ScriptableObject.CreateInstance<RegionManifest>();
+                        composedManifest.hideFlags = HideFlags.HideAndDontSave;
+                        composedManifest.Assign(manifest.WorldId, manifest.WorldName, manifest.StartRegionId,
+                            manifest.FocusEntityId, manifest.PreloadNeighbours, fingerprint.ToHex(), manifest.CatalogTypeName,
+                            manifest.BakeReportHash, new List<ManifestRegion>(manifest.Regions), new List<ManifestPortal>(manifest.Portals),
+                            new List<ManifestDefinition>(manifest.Definitions), new List<ManifestEntity>(manifest.Entities));
+                    }
+                }
                 build.Extensions.Add(playerExtension);
                 build.Extensions.Add(npcExtension);
                 build.Extensions.Add(interactionExtension);
@@ -117,7 +178,7 @@ namespace Hollowmere.Boot
                 var modules = new HollowmereNarrativeModules();
                 UiAudioBootstrap.AssignViews(UiAudioBootstrap.RigOf(host), modules);
 
-                WorldBuildPlan plan = WorldBuilder.Build(manifest, catalog, fingerprint, build);
+                WorldBuildPlan plan = WorldBuilder.Build(composedManifest, catalog, fingerprint, build);
                 var converters = new List<INarrativeContentConverter>();
                 for (int i = 0; i < modules.All.Count; i++)
                 {
@@ -134,11 +195,16 @@ namespace Hollowmere.Boot
                     modules.All[i].Declare(narrative);
                 }
 
-                composition = new HollowmereComposition(plan, narrative.Extend(plan.Definition), modules, playerExtension, npcExtension, interactionExtension);
+                composition = new HollowmereComposition(plan, narrative.Extend(plan.Definition), modules, playerExtension, npcExtension, interactionExtension)
+                {
+                    BaseCatalogHash = baseCatalogHash,
+                    ownedManifest = ReferenceEquals(composedManifest, manifest) ? null : composedManifest,
+                };
                 return true;
             }
             catch (Exception refused) when (refused is InvalidOperationException || refused is ArgumentException)
             {
+                if (!ReferenceEquals(composedManifest, manifest)) DestroyManifest(composedManifest);
                 failure = refused.Message;
                 return false;
             }
@@ -261,6 +327,7 @@ namespace Hollowmere.Boot
             }
 
             Debug.LogWarning("[Hollowmere] the registered application root was not adopted: " + reason);
+            Composition?.ReleaseManifest();
             Composition = null;
             Destroy(gameObject);
         }

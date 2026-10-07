@@ -70,7 +70,7 @@ Matrix row totals: PASS 60, BLOCKED 7, FAIL 1.
 | W-CLEAN-01 | PASS | [Evidence](W-CLEAN-01/README.md): Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01. |
 | W-CLEAN-02 | PASS | [Evidence](W-CLEAN-02/README.md): After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/. |
 | W-DOC-01 | PASS | [Evidence](W-DOC-01/README.md): The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition. |
-| W-DOC-02 | FAIL | [Evidence](W-DOC-02/README.md): Fresh-root cache_invalid is fixed: exact versioned provisioning and all seven default-Docker guide sample steps pass in 169.481 s, with 36 EditMode and 2 PlayMode passes. The literal new-lever and authenticated Stage/creator Admit/restored-world/undo exercise remains unproven; an unsigned pressure-plate CLI pass does not close this unchanged row. |
+| [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
 | W-E2E-01 | BLOCKED | [Evidence](W-E2E-01/README.md): P4.2h fresh complete-row PASS at product a77cb38b: W-AI-01, W-EDIT-01, W-EDIT-03, W-ETOS-05, W-ETOS-09. W-ETOS-04 lacks real dialogue-node publication; W-REC-03 lacks running-stage cancellation; W-GAME-01 has separate OFF PASS/ON FAIL measurements with the owner rule open. The other 59 rows were not rerun as complete scenarios at this revision; inherited PASS is not current acceptance. Current retained-dialogue regressions are 35/37, with two projection failures, and eight transient empty-argv children leave strict host exclusivity unproven. All 68 exact dispositions are listed. |
 
 ## Retained attempts (including superseded and expected failures)
@@ -267,8 +267,8 @@ Matrix row totals: PASS 60, BLOCKED 7, FAIL 1.
 | [W-DOC-01/p42c-image-recovered-20261006T084302.391519Z](W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-01/p42c-image-recovered-20261006T084832.481069Z](W-DOC-01/p42c-image-recovered-20261006T084832.481069Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-01/p42d-guide-20261006T123449.140659Z](W-DOC-01/p42d-guide-20261006T123449.140659Z/README.md) | PASS | 369a0de1eb22 |
-| [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z](W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md) | FAIL | 8d1574e4326a |
-| [W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z](W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md) | FAIL | 53525c74d62c |
+| [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
+| [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
 | [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
 | [W-E2E-01/p42h-accounting](W-E2E-01/p42h-accounting/README.md) | BLOCKED | a77cb38ba4a2 |
 | [W-EDIT-01/p42h-history-capture-20261006T235319.527257Z](W-EDIT-01/p42h-history-capture-20261006T235319.527257Z/README.md) | FAIL | a77cb38ba4a2 |
