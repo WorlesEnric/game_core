@@ -1,0 +1,266 @@
+{
+  "id": "cs_01M45CWV0M6T674RZN7ZECWTG3",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.graph.Pip] Write the conversation of Pip",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "graph",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+        "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+        "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset",
+        "scope": "Definition",
+        "stamp": "sha256:b2abdf30610751d3cd0cee45b7a9f34d6cdc0d4ecb3ffe1156f7a321ee18b0d3"
+      },
+      "args": {
+        "fields": {
+          "speaker": "Pip",
+          "speakerEntityId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Did you ever hear the bell? Gran says it rang every dusk before the flood.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Choice",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": [
+                {
+                  "text": "Where is the clapper?",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Anything about the shrine?",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                },
+                {
+                  "text": "Bye, Pip.",
+                  "condition": null,
+                  "hideWhenUnavailable": false
+                }
+              ]
+            },
+            {
+              "kind": "Action",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": "Assets/Hollowmere/Rules/Actions/PipAsked.asset",
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "It fell in the marsh, by the dead willow. Hale will not let me look.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            },
+            {
+              "kind": "Line",
+              "speaker": "",
+              "speakerEntityId": "",
+              "text": "Gran says you light the shrine lanterns the way the sun walks: from the willow in the west to the water in the east.",
+              "voiceClip": null,
+              "portrait": null,
+              "condition": null,
+              "actions": null,
+              "options": []
+            }
+          ],
+          "edges": [
+            {
+              "from": 0,
+              "port": "Next",
+              "option": 0,
+              "to": 1
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 0,
+              "to": 2
+            },
+            {
+              "from": 2,
+              "port": "Next",
+              "option": 0,
+              "to": 3
+            },
+            {
+              "from": 1,
+              "port": "Option",
+              "option": 1,
+              "to": 4
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "graph",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+                "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+                "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset"
+              },
+              "args": {
+                "fields": {
+                  "speaker": "Pip",
+                  "speakerEntityId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+                  "entry": 0,
+                  "nodes": [
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Did you ever hear the bell? I never have.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Choice",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": [
+                        {
+                          "text": "Where is the clapper?",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        },
+                        {
+                          "text": "Bye, Pip.",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "ca415c6a-b951-4501-b70f-594d657bb5a9",
+                        "global": "GlobalObjectId_V1-3-608b1d37ab13b50eabfc835f39a42195-11400000-0",
+                        "assetGuid": "608b1d37ab13b50eabfc835f39a42195",
+                        "path": "Assets/Hollowmere/Rules/Actions/PipAsked.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Gran says it fell in the marsh, by the dead willow.",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 1,
+                      "port": "Option",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 1,
+                      "port": "Option",
+                      "option": 1,
+                      "to": -1
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 2,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 3
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+                "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+                "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset"
+              },
+              "stamp": "sha256:ea4fe60ef0ed81a31428849eb269bf07b7194cbd77e71b5ad2df2f9392f212b1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:22.709Z",
+    "applied": "2026-10-05T06:44:22.978Z"
+  }
+}

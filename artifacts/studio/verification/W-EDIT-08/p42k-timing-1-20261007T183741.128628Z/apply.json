@@ -1,0 +1,1713 @@
+{
+  "single": {
+    "name": "single-target",
+    "ms": [
+      23.198,
+      19.3805,
+      21.977800000000002,
+      20.7024,
+      19.572300000000002,
+      19.7241,
+      19.3246,
+      19.3121,
+      20.5872,
+      19.5241,
+      19.1266,
+      19.1689,
+      18.9601,
+      18.792,
+      19.4862,
+      20.610500000000002,
+      19.334,
+      19.9142,
+      25.926000000000002,
+      27.1721
+    ],
+    "count": 20,
+    "p95Ms": 25.926000000000002,
+    "budgetMs": 200.0,
+    "pass": true
+  },
+  "journal": [
+    {
+      "id": "cs_01M4BTHD8NGT2E34H28YNBVT62",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+          },
+          "args": {
+            "position": [
+              0.01,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.0,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:6d92c22e25c1931b43f5f5b955084e7313eea479d21b2a93650818837f849626"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:14.834Z",
+        "applied": "2026-10-07T18:38:14.852Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDAB1TYQ84SY0P297S74",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:6d92c22e25c1931b43f5f5b955084e7313eea479d21b2a93650818837f849626"
+          },
+          "args": {
+            "position": [
+              0.02,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.01,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:68c2ac815f06e4b6b71fb94387c69c97cc41de3579f2a9146dd336a8d94c5482"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:14.871Z",
+        "applied": "2026-10-07T18:38:14.886Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDBBKZE6ZTMEWNYFR9Q1",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:68c2ac815f06e4b6b71fb94387c69c97cc41de3579f2a9146dd336a8d94c5482"
+          },
+          "args": {
+            "position": [
+              0.03,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.02,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:e416dd2f9e210cc21a4bcadc8aabb4b85c0b17395516eb6bd7cfdadb94cdb4d9"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:14.903Z",
+        "applied": "2026-10-07T18:38:14.919Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDCD97FFQD1RR8Q0E52R",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:e416dd2f9e210cc21a4bcadc8aabb4b85c0b17395516eb6bd7cfdadb94cdb4d9"
+          },
+          "args": {
+            "position": [
+              0.04,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.03,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:375960dbcd6638c64567a832362f1957fc8f8b0357d4a1e6618431e8aeffbd4b"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:14.946Z",
+        "applied": "2026-10-07T18:38:14.961Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDDQTCP3WS7JBPC3TQGH",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:375960dbcd6638c64567a832362f1957fc8f8b0357d4a1e6618431e8aeffbd4b"
+          },
+          "args": {
+            "position": [
+              0.049999997,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.04,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:fe83297b963db226043b1e23206b06421713f1ede46dfacfd833dfa5779d49b2"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:14.981Z",
+        "applied": "2026-10-07T18:38:14.996Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDESTPQSMD3RXHMW4K3N",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:fe83297b963db226043b1e23206b06421713f1ede46dfacfd833dfa5779d49b2"
+          },
+          "args": {
+            "position": [
+              0.06,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.049999997,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:2a876d7444862502aff7b7c0e28d3c1fb62ebc1680333f9ea265fe1f2385e1c8"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.018Z",
+        "applied": "2026-10-07T18:38:15.033Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDFY0EDZYW7H13Z35EBA",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:2a876d7444862502aff7b7c0e28d3c1fb62ebc1680333f9ea265fe1f2385e1c8"
+          },
+          "args": {
+            "position": [
+              0.07,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.06,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:751e23047594fe133a01d15001df3174461df3e37b7ca835a5bc2cd4174b84e0"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.050Z",
+        "applied": "2026-10-07T18:38:15.065Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDGY0GFQGVQR5V6SHTY5",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:751e23047594fe133a01d15001df3174461df3e37b7ca835a5bc2cd4174b84e0"
+          },
+          "args": {
+            "position": [
+              0.08,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.07,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:f2fef3bd745525d0e9539e872d330689976b705a6fd850f4d156000fc17921ac"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.082Z",
+        "applied": "2026-10-07T18:38:15.096Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDHYKV3VSDGZ2SVDG0YN",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:f2fef3bd745525d0e9539e872d330689976b705a6fd850f4d156000fc17921ac"
+          },
+          "args": {
+            "position": [
+              0.0899999961,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.08,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:31a204b75031a11add559f70b372307c8942ef617021e68b5b862a6ee1c772ed"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.114Z",
+        "applied": "2026-10-07T18:38:15.129Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDJZVHNKZR6689ZM3900",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:31a204b75031a11add559f70b372307c8942ef617021e68b5b862a6ee1c772ed"
+          },
+          "args": {
+            "position": [
+              0.099999994,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.0899999961,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:c5c1b91eaaa5ffaf50acb47a07d87f59cc7bd965ed0e1335d9a4fb934652ecde"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.149Z",
+        "applied": "2026-10-07T18:38:15.163Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDM1HMFJ8XE0DJ1AQ99A",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:c5c1b91eaaa5ffaf50acb47a07d87f59cc7bd965ed0e1335d9a4fb934652ecde"
+          },
+          "args": {
+            "position": [
+              0.11,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.099999994,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:f275f5dcd6782f0023c81f3f47943ae45c1ea4821663d01bf36e58a3f1618838"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.182Z",
+        "applied": "2026-10-07T18:38:15.196Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDN156SBVKAPRH93MK45",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:f275f5dcd6782f0023c81f3f47943ae45c1ea4821663d01bf36e58a3f1618838"
+          },
+          "args": {
+            "position": [
+              0.12,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.11,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:ec56999c154a40fc4b2d141a5558350ba7d1151146d666c834ece68ed8a3ed0a"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.215Z",
+        "applied": "2026-10-07T18:38:15.229Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDP23NDABA73W90Y0QM8",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:ec56999c154a40fc4b2d141a5558350ba7d1151146d666c834ece68ed8a3ed0a"
+          },
+          "args": {
+            "position": [
+              0.13,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.12,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:b9500f5fc6a34d91a018c11e071d28e8d72cd1590f120b8597eead493b79de8d"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.246Z",
+        "applied": "2026-10-07T18:38:15.260Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDQ17607ZK3X2CRTRQR2",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:b9500f5fc6a34d91a018c11e071d28e8d72cd1590f120b8597eead493b79de8d"
+          },
+          "args": {
+            "position": [
+              0.14,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.13,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:f4f83544b217d5d562b45242345f6295aeb21062055b878c690f961705258e62"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.277Z",
+        "applied": "2026-10-07T18:38:15.291Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDR0JE7SFMJDX9W987HW",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:f4f83544b217d5d562b45242345f6295aeb21062055b878c690f961705258e62"
+          },
+          "args": {
+            "position": [
+              0.149999991,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.14,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:4ea285336a400d871381708fb622edb40c5481c9f0d224cd45aa56def8add514"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.308Z",
+        "applied": "2026-10-07T18:38:15.322Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDRZZ017EJA3Y74Z9C5J",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:4ea285336a400d871381708fb622edb40c5481c9f0d224cd45aa56def8add514"
+          },
+          "args": {
+            "position": [
+              0.16,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.149999991,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:1a48eb11159749c9bff8ebf7f2b7dccaa5877bdfd714f5c4fed4121557e26a50"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.346Z",
+        "applied": "2026-10-07T18:38:15.361Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDT72H1SHZ2XTBB18Z8C",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:1a48eb11159749c9bff8ebf7f2b7dccaa5877bdfd714f5c4fed4121557e26a50"
+          },
+          "args": {
+            "position": [
+              0.17,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.16,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:07e626dec64ae95b20bbbf7fd485f9b67eb31080cea2fa86f933cc02be0e0d49"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.413Z",
+        "applied": "2026-10-07T18:38:15.428Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDW9P0CETZGR11SNAT5X",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:07e626dec64ae95b20bbbf7fd485f9b67eb31080cea2fa86f933cc02be0e0d49"
+          },
+          "args": {
+            "position": [
+              0.179999992,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.17,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:e7679cf9654fe10d083ef8d2d5c173a08fa7f8f402cccd9fda69a217b3726de6"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.451Z",
+        "applied": "2026-10-07T18:38:15.466Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDXFWT0WQQWFZ6VET1CS",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:e7679cf9654fe10d083ef8d2d5c173a08fa7f8f402cccd9fda69a217b3726de6"
+          },
+          "args": {
+            "position": [
+              0.19,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.179999992,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:6d92d948cda69ff2c0a59c98bc71409b98eda267c56c931dbf08737ab619cd3d"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.486Z",
+        "applied": "2026-10-07T18:38:15.505Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTHDYSMZQK3TZP0W0BB87V",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move Village Well",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+            "scope": "Instance",
+            "stamp": "sha256:6d92d948cda69ff2c0a59c98bc71409b98eda267c56c931dbf08737ab619cd3d"
+          },
+          "args": {
+            "position": [
+              0.199999988,
+              0.0,
+              -1.9
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "op1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "args": {
+                    "position": [
+                      0.19,
+                      0.0,
+                      -1.9
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+                    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+                    "assetGuid": "6cba302899c45bb919b097ade959283c",
+                    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+                  },
+                  "stamp": "sha256:adbc3b79e4c66c52dfea4bc54a92ba8264c6cf9dabd3dfafb9f4a3839c8008bb"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:38:15.542Z",
+        "applied": "2026-10-07T18:38:15.561Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "taskId": "tee2ad6ed3374bd1432b5b978",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json && printf '\\n--- selection ---\\n' && cat /inputs/selection.json && printf '\\n--- index ---\\n' && cat /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4BWVPHT7CAPJZXNB3FM1ERN`\n\n- Change set id: `cs_01M4BWVPHT7CAPJZXNB3FM1ERN` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `179` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nMove only the selected live Bram instance in the running GameCore world, not authored content. Use exactly one catalog runtime.move operation, scope Instance, copied selected reference and stamp. The creator measured the live desired absolute world position as [11.5,0.0,-13.0] and yaw in degrees as 270. Copy selection mode Play. No ordinary authored move, prefab edits, assets, generation, dialogue or other operations. Do not claim a committed operation ID; the creator will apply the unchanged candidate and observe the real receipt.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT g\n[... 26308 bytes omitted ...]\nc45bb919b097ade959283c\",\n        \"authoringId\": \"5536e67e-9df5-48d1-8e4e-dde2fac37d97\",\n        \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1091886766-0\",\n        \"kind\": \"Entity\",\n        \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Crate 2\",\n        \"scope\": \"Instance\",\n        \"stamp\": \"sha256:832e85552f0ed0c777d04e50b5581e9bd6abd944568cdcbaed38d616efd1d540\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"definition\",\n          \"to\": {\n            \"assetGuid\": \"7904be7b2e80d2fb4b0a170cae2fcc57\",\n            \"authoringId\": \"58338d2c-5721-4ba3-8c6e-96f863268d8b\",\n            \"global\": \"GlobalObjectId_V1-3-7904be7b2e80d2fb4b0a170cae2fcc57-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/World/Definitions/Crate.asset\"\n          }\n        }\n      ],\n      \"type\": \"entity.instance\"\n    },\n    {\n      \"fields\": {\n        \"overrides\": {\n          \"type\": \"object\",\n          \"value\": {\n            \"entries\": []\n          }\n        },\n        \"variant\": {\n          \"type\": \"int\",\n          \"value\": 0\n        }\n      },\n      \"name\": \"Lantern East\",\n      \"provenance\": {\n        \"asset\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity\"\n      },\n      \"ref\": {\n        \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n        \"authoringId\": \"575fe140-5c48-49e0-8fdd-4ddd1344176f\",\n        \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-360754391-0\",\n        \"kind\": \"Entity\",\n        \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Lantern East\",\n        \"scope\": \"Instance\",\n        \"stamp\": \"sha256:a11beeabe1ba2421798e9a56952036e579bdcd0280abe3fb5ec7694dd177ec5e\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"definition\",\n          \"to\": {\n            \"assetGuid\": \"b2a9c9d308ca808c7968da017d5b089f\",\n            \"authoringId\": \"18779563-f74f-4223-947f-19f0502c5a63\",\n            \"global\": \"GlobalObjectId_V1-3-b2a9c9d308ca808c7968da017d5b089f-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/World/Definitions/Lantern.asset\"\n          }\n        }\n      ],\n      \"type\": \"entity.instance\"\n    }\n  ],\n  \"project\": \"hollowmere\",\n  \"revision\": 179\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 290410 bytes in total; full log: /tmp/etos/out/tee2ad6ed3374bd1432b5b978-1-0.log]"
+    }
+  },
+  {
+    "taskId": "tee2ad6ed3374bd1432b5b978",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'))\nprint('catalog keys',list(c))\nfor t in c.get('tools',[]):\n if t.get('id')=='runtime.move': print(json.dumps(t,indent=2))\ns=json.load(open('/inputs/selection.json')); print('selection',json.dumps(s,indent=2))\nPY\nls -l docs/studio/schemas/change-set.schema.json /inputs/scene-context.json 2>/dev/null || true",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1084,
+      "text": "catalog keys ['objectTypes', 'revision', 'schema', 'tools']\n{\n  \"args\": [\n    {\n      \"name\": \"position\",\n      \"required\": true,\n      \"type\": \"vector3\"\n    },\n    {\n      \"name\": \"yaw\",\n      \"required\": true,\n      \"type\": \"float\"\n    }\n  ],\n  \"id\": \"runtime.move\",\n  \"runtimeApply\": \"Live\",\n  \"runtimeOnly\": true,\n  \"scopes\": [\n    \"Instance\"\n  ],\n  \"targetRequired\": true,\n  \"tier\": \"Compose\"\n}\nselection {\n  \"id\": \"sel_01M4BWVPGQB56NSF5JWZZSZF67\",\n  \"indexRevision\": 179,\n  \"mode\": \"Play\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"2825db71-11a1-4155-b1db-9e7734111d9e\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram\",\n      \"scope\": \"Instance\",\n      \"stamp\": \"sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1\"\n    }\n  ]\n}\n-r--r--r-- 1 agent agent 674 Oct  7 19:18 /inputs/scene-context.json\n[exit code 0]\n[full log: /tmp/etos/out/tee2ad6ed3374bd1432b5b978-1-1.log]"
+    }
+  },
+  {
+    "taskId": "tee2ad6ed3374bd1432b5b978",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "pwd; ls -la /work | head; find /work -path '*/change-set.schema.json' -print | head; cat /inputs/scene-context.json; ls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 951,
+      "text": "/work\ntotal 8\ndrwxr-xr-x 1 agent agent 4096 Oct  4 18:09 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:18 ..\n{\"schema\":\"gamecore.studio.scenecontext/1\",\"units\":\"metres\",\"axes\":{\"north\":\"+z\",\"east\":\"+x\",\"up\":\"+y\"},\"objects\":[{\"ref\":{\"kind\":\"Entity\",\"authoringId\":\"2825db71-11a1-4155-b1db-9e7734111d9e\",\"global\":\"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0\",\"assetGuid\":\"6cba302899c45bb919b097ade959283c\",\"path\":\"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram\",\"scope\":\"Instance\",\"stamp\":\"sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1\"},\"name\":\"Bram\",\"path\":\"Bram\",\"scene\":\"Assets/Hollowmere/Regions/ThornwickVillage.unity\",\"position\":[11.0,0.0,-13.0],\"rotation\":[0.0,0.7071,0.0,-0.7071],\"scale\":[1.0,1.0,1.0]}],\"truncated\":true}total 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:18 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:18 ..\n[exit code 0]\n[full log: /tmp/etos/out/tee2ad6ed3374bd1432b5b978-1-2.log]"
+    }
+  },
+  {
+    "taskId": "tee2ad6ed3374bd1432b5b978",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nj=json.load(open('/inputs/index-slice.json')); print('index root keys',list(j)); t=json.load(open('/inputs/selection.json'))['targets'][0]; print('selected path present:',t['path'] in open('/inputs/index-slice.json').read())\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 159,
+      "text": "index root keys ['edges', 'nodes', 'project', 'revision']\nselected path present: True\n[exit code 0]\n[full log: /tmp/etos/out/tee2ad6ed3374bd1432b5b978-1-3.log]"
+    }
+  },
+  {
+    "taskId": "tee2ad6ed3374bd1432b5b978",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\ns=json.load(open('/inputs/selection.json')); ref=s['targets'][0]; c=json.load(open('/inputs/tool-catalog.json')); t=next(t for t in c['tools'] if t['id']=='runtime.move'); assert t['runtimeApply']=='Live' and t['scopes']==['Instance'] and {a['name'] for a in t['args'] if a['required']}=={'position','yaw'}\nd={'id':'cs_01M4BWVPHT7CAPJZXNB3FM1ERN','schema':'gamecore.studio.changeset/1','intent':{'text':'Move only the selected live Bram instance in the running GameCore world to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees, without changing authored content.','origin':'agent'},'selection':s,'baseVersions':[{'ref':ref,'stamp':ref['stamp']}],'operations':[{'opId':'op1','tool':'runtime.move','target':ref,'args':{'position':[11.5,0.0,-13.0],'yaw':270.0},'dependsOn':[],'preconditions':'stamp','applyRequirement':'Live'}],'artifacts':[],'requirements':{'max':'Live','worldRebuild':False,'compile':False,'build':False}}\nwith open('/outputs/changeset.json','w') as f: json.dump(d,f,indent=2); f.write('\\n')\nr=json.load(open('/outputs/changeset.json')); assert r['selection']==s and len(r['operations'])==1 and r['operations'][0]['target']==ref and r['operations'][0]['tool']=='runtime.move'; print('Verified valid JSON, copied selection and ref, one runtime.move, no artifacts; output bytes:',len(open('/outputs/changeset.json','rb').read()))\nPY\nls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 329,
+      "text": "Verified valid JSON, copied selection and ref, one runtime.move, no artifacts; output bytes: 2355\ntotal 12\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:19 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:18 ..\n-rw-r--r-- 1 agent agent 2355 Oct  7 19:19 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/tee2ad6ed3374bd1432b5b978-1-4.log]"
+    }
+  }
+]

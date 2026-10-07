@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B13QE40G0CKS61AEGB7K7",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: I will be here. The water is patient.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Odd_wait.wav",
+        "artifact": {
+          "artifact": "sha256:a8c0ec2ef3cccd44b0a0487d8c02d2a849acfd4499684cd7d675398e494379fc"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "a8c0ec2ef3cccd44b0a0487d8c02d2a849acfd4499684cd7d675398e494379fc",
+      "name": "Odd_wait.wav",
+      "mediaType": "audio/wav",
+      "bytes": 184364,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Odd_wait.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7650ef440c5863f3f8658e8e77831ae2-8300000-0",
+                "assetGuid": "7650ef440c5863f3f8658e8e77831ae2",
+                "path": "Assets/Hollowmere/Media/Voices/Odd_wait.wav"
+              },
+              "stamp": "sha256:a8c0ec2ef3cccd44b0a0487d8c02d2a849acfd4499684cd7d675398e494379fc"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:11:45.528Z",
+    "applied": "2026-10-05T06:11:45.631Z"
+  }
+}

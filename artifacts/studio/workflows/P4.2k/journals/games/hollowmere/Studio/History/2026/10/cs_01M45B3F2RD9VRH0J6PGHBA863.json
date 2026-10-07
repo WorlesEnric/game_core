@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B3F2RD9VRH0J6PGHBA863",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: ...silence... yes... rest... the marsh will forget us...",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_sleep.wav",
+        "artifact": {
+          "artifact": "sha256:f272fd7dccaa6f8f4cc4f92882ba13eab1ed0dd867108afe6a035920a6cd1c3e"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "f272fd7dccaa6f8f4cc4f92882ba13eab1ed0dd867108afe6a035920a6cd1c3e",
+      "name": "BelfryEcho_sleep.wav",
+      "mediaType": "audio/wav",
+      "bytes": 222764,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_sleep.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-06d697d926f774c859a7766b43403abf-8300000-0",
+                "assetGuid": "06d697d926f774c859a7766b43403abf",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_sleep.wav"
+              },
+              "stamp": "sha256:f272fd7dccaa6f8f4cc4f92882ba13eab1ed0dd867108afe6a035920a6cd1c3e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:02.688Z",
+    "applied": "2026-10-05T06:13:02.935Z"
+  }
+}

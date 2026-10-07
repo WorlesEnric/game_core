@@ -1,0 +1,181 @@
+{
+  "id": "cs_01M45893YDW8FYTB8R5SQMMG90",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.village-skin] Texture the village ground and retire the primitive stand-in blocks",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "k0",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "objectName": "Ground",
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/GroundVillage.mat"
+        ],
+        "hide": false
+      }
+    },
+    {
+      "opId": "k1",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "objectName": "Barn",
+        "materials": [],
+        "hide": true
+      }
+    },
+    {
+      "opId": "k2",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "objectName": "Cottage",
+        "materials": [],
+        "hide": true
+      }
+    },
+    {
+      "opId": "k3",
+      "tool": "hollowmere.skinSceneObject",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "objectName": "Well",
+        "materials": [],
+        "hide": true
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "k0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "k1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "k2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "k3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.168Z",
+    "applied": "2026-10-05T05:23:42.173Z"
+  }
+}

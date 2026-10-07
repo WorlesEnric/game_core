@@ -1,0 +1,20 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-07T19:29:32.007357+00:00",
+  "observation": "Generated, applied and redone pixels show the same brown-haired healer portrait with herbs and green-brown cloth. History screenshots are clipped by overlapping windows and do not visibly prove each entry state; normal panel receipts, retained journals, exact image hashes and unchanged ledger checkpoints establish replay. No readable-History-screenshot claim.",
+  "reviewAssertions": [
+    "The actual generated image depicts a portrait, not a pre-existing fixture or placeholder.",
+    "History captures show applied, undone and redone states; restored image is visibly the same portrait."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "4c78816949ba247c408f2cf28570a97db9a0e3dc8cdfb7a88b815c9400e80cb0",
+    "portrait-applied.png": "4c78816949ba247c408f2cf28570a97db9a0e3dc8cdfb7a88b815c9400e80cb0",
+    "portrait-redone.png": "4c78816949ba247c408f2cf28570a97db9a0e3dc8cdfb7a88b815c9400e80cb0",
+    "history-applied.png": "f31b292f43657fc2d09ebd7bd34164a82589fecc112abacb5beba856645479cc",
+    "history-undone.png": "ff94032cbec4fca4e38568ce722ec2fbd478e30c8528d90d2f867d4e9c2fe8ad",
+    "history-redone.png": "84de67f4b0c4d10788a2553fc2523712544df35be926e93bd8fbef3af18f1922"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

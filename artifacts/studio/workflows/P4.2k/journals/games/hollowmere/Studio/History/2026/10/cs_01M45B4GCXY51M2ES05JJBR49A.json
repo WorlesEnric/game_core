@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B4GCXY51M2ES05JJBR49A",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: Painterly portrait of Bram the innkeeper, a broad bearded man with rolled sleeves and a red apron, holding a tankard, warm tavern firelight, storybook fantasy style, head and shoulders",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Portraits/Bram.png",
+        "artifact": {
+          "artifact": "sha256:ab600a7a13b2999f672c4eace6a784cd66ff814f1ae7a8bf950998c929cb0960"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "ab600a7a13b2999f672c4eace6a784cd66ff814f1ae7a8bf950998c929cb0960",
+      "name": "Bram.png",
+      "mediaType": "image/png",
+      "bytes": 135118,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Portraits/Bram.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-bc2cd0e3ce15d1fb380e94db0341a071-2800000-0",
+                "assetGuid": "bc2cd0e3ce15d1fb380e94db0341a071",
+                "path": "Assets/Hollowmere/Media/Portraits/Bram.png"
+              },
+              "stamp": "sha256:ab600a7a13b2999f672c4eace6a784cd66ff814f1ae7a8bf950998c929cb0960"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:36.805Z",
+    "applied": "2026-10-05T06:13:36.831Z"
+  }
+}

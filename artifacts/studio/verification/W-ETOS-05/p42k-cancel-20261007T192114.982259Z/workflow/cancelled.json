@@ -1,0 +1,43 @@
+{
+  "request": {
+    "attempt": 0,
+    "changeSetId": "cs_01M4BX1CFQ8NDKV48373BX8F7M",
+    "createdAt": 1791400915478,
+    "hasCandidate": false,
+    "outcome": {
+      "code": "cancelled",
+      "message": "This task was cancelled (cancelled by the owner); I stopped working on it."
+    },
+    "requestId": "cs_01M4BX1CFQ8NDKV48373BX8F7M",
+    "seq": 994,
+    "state": "cancelled",
+    "taskId": "t16dfbc15bd774048e7f925bb",
+    "taskStatus": "cancelled",
+    "tasks": [
+      "t16dfbc15bd774048e7f925bb"
+    ],
+    "topic": "#agent/gamecore-studio/cs-01m4bx1cfq8ndkv48373bx8f7m",
+    "updatedAt": 1791400916633,
+    "worker": "gc-designer"
+  },
+  "tray": {
+    "changeSetId": "cs_01M4BX1CFQ8NDKV48373BX8F7M",
+    "requestId": "cs_01M4BX1CFQ8NDKV48373BX8F7M",
+    "state": "cancelled",
+    "etosStatus": "cancelled",
+    "taskIds": [
+      "t16dfbc15bd774048e7f925bb"
+    ],
+    "worker": "gc-designer",
+    "sequence": 994,
+    "localState": "",
+    "createdTicks": 639269977154598440,
+    "diagnostics": [
+      "{\"code\":\"cancelled\",\"message\":\"This task was cancelled (cancelled by the owner); I stopped working on it.\"}"
+    ],
+    "question": ""
+  },
+  "candidate": false,
+  "ackMs": 527,
+  "stableForMs": 3579
+}

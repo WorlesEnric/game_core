@@ -1,0 +1,30 @@
+{
+  "id": "cs_01M4BSPEGJKQYB4J5BRMBRH85R",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Saltmarsh: world (procedural placeholder content)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "author-world",
+      "tool": "saltmarsh.author",
+      "args": {
+        "phase": "world"
+      },
+      "preconditions": "none"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "author-world",
+      "status": "Applied",
+      "detail": "Created paths: "
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T18:23:31.591Z",
+    "applied": "2026-10-07T18:23:31.663Z"
+  }
+}

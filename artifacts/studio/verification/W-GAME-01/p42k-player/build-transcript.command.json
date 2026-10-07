@@ -1,0 +1,21 @@
+[
+  "bash",
+  "~/wkspace/gc-studio/p4.2k/studio/tools/unity-batch.sh",
+  "--project",
+  "~/wkspace/gc-studio/p4.2k/games/hollowmere",
+  "--log-dir",
+  "~/wkspace/gc-studio/p4.2k/.evidence/P42kPlayer/build-logs",
+  "--label",
+  "p42h-player",
+  "--timeout",
+  "3600",
+  "--attempts",
+  "1",
+  "--",
+  "-executeMethod",
+  "Hollowmere.Build.BuildLinuxPlayer",
+  "-buildOutput",
+  "~/wkspace/gc-studio/p4.2k/.evidence/P42kPlayer/player",
+  "-buildRevision",
+  "7a7ff0c0e5ec2332f360f521ff0467390d063491"
+]

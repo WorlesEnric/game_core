@@ -1,0 +1,535 @@
+{
+  "id": "cs_01M45CX37X1XFSRNRJ82EVPG82",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.declared-trade] Buy from Bram and restore stamina with herbs through the declared Buy / RestoreStamina actions (the interim bridge retires)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "lantern",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+        "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+        "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset",
+        "scope": "Definition",
+        "stamp": "sha256:d81f7e30824bcf29cac8ab61cfb22cedfadd1358c4930759303b91a81d9ddef7"
+      },
+      "args": {
+        "fields": {
+          "actions": [
+            {
+              "kind": "Buy",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/Lantern.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": "Assets/Hollowmere/Items/InnStock.asset",
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "oil",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+        "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+        "assetGuid": "749e4e68f4bec3647b34170983f99674",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset",
+        "scope": "Definition",
+        "stamp": "sha256:8be6f878f1b92681bb9f6d868d637db65cfda0ad01ea4debc219cde802616a83"
+      },
+      "args": {
+        "fields": {
+          "actions": [
+            {
+              "kind": "Buy",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/OilFlask.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": "Assets/Hollowmere/Items/InnStock.asset",
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "herbs",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+        "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+        "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+        "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset",
+        "scope": "Definition",
+        "stamp": "sha256:3f750bdd397c7cb3df279ec402623f5e01e584090cf0e012216e3523367d73bf"
+      },
+      "args": {
+        "fields": {
+          "actions": [
+            {
+              "kind": "Buy",
+              "fact": null,
+              "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": "Assets/Hollowmere/Items/InnStock.asset",
+              "inventory": null,
+              "value": 1,
+              "text": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "restore",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+        "global": "GlobalObjectId_V1-3-dfcd0a6b320da7905a54e537b7798e65-11400000-0",
+        "assetGuid": "dfcd0a6b320da7905a54e537b7798e65",
+        "path": "Assets/Hollowmere/Rules/HerbsRestore.asset",
+        "scope": "Definition",
+        "stamp": "sha256:de6bfd810b8246396dd9c4200ebfaae35f231ad9af581ddda83db1e172625e3f"
+      },
+      "args": {
+        "fields": {
+          "actions": [
+            {
+              "kind": "RestoreStamina",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 400,
+              "text": ""
+            },
+            {
+              "kind": "ShowMessage",
+              "fact": null,
+              "item": null,
+              "quest": null,
+              "region": null,
+              "graph": null,
+              "actionSet": null,
+              "worldItem": null,
+              "vendor": null,
+              "inventory": null,
+              "value": 1,
+              "text": "The bitter herbs ease your aching legs."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "bridge",
+      "tool": "set",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+        "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+        "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+        "path": "Assets/Hollowmere/Game/HollowmereDirector.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea6854e976314c26a18bdb2f61c0b50d550970bc1844f3c908d662e88204fe8c"
+      },
+      "args": {
+        "fields": {
+          "requests": [
+            {
+              "fact": "search_satchel",
+              "kind": "Loot",
+              "vendor": "",
+              "item": "",
+              "count": 1,
+              "lootTable": "Assets/Hollowmere/Items/MarshLoot.asset"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "lantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              },
+              "args": {
+                "fields": {
+                  "actions": [
+                    {
+                      "kind": "AddFact",
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "2f0d339d-0128-4606-9ec4-56b5db7227f3",
+                        "global": "GlobalObjectId_V1-3-8cc1f591f595f8382858cce72dce7e8e-11400000-0",
+                        "assetGuid": "8cc1f591f595f8382858cce72dce7e8e",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset"
+                      },
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": ""
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              },
+              "stamp": "sha256:48720e0c632b81e9551a18886b663b4e7d91569096e8d79f94006f9c765a63d3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "oil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              },
+              "args": {
+                "fields": {
+                  "actions": [
+                    {
+                      "kind": "AddFact",
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "5819ed7a-0135-4d61-bb8c-0e827650249b",
+                        "global": "GlobalObjectId_V1-3-1bdb7b5fb452d9ef3a3b01282bb1290f-11400000-0",
+                        "assetGuid": "1bdb7b5fb452d9ef3a3b01282bb1290f",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset"
+                      },
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": ""
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              },
+              "stamp": "sha256:991fdcc15a3310c73c5ce92d13ee211fd7ff8221de3ff0727e216e526f110390"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "herbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              },
+              "args": {
+                "fields": {
+                  "actions": [
+                    {
+                      "kind": "AddFact",
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "8bf93013-40dd-4068-be8f-81c89979cb64",
+                        "global": "GlobalObjectId_V1-3-87b64753fe33af75e8602d167ce8b77f-11400000-0",
+                        "assetGuid": "87b64753fe33af75e8602d167ce8b77f",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset"
+                      },
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": ""
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              },
+              "stamp": "sha256:1a603d92a0eecdcd7e31acc50f8e76bf364c489415ced3686df4d560382eb0bc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "restore",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+                "global": "GlobalObjectId_V1-3-dfcd0a6b320da7905a54e537b7798e65-11400000-0",
+                "assetGuid": "dfcd0a6b320da7905a54e537b7798e65",
+                "path": "Assets/Hollowmere/Rules/HerbsRestore.asset"
+              },
+              "args": {
+                "fields": {
+                  "actions": [
+                    {
+                      "kind": "AddFact",
+                      "fact": {
+                        "kind": "Definition",
+                        "authoringId": "cf2d32ee-b350-4674-ab69-039f072f620d",
+                        "global": "GlobalObjectId_V1-3-83ea109a7552440a5985e04a08dd6e08-11400000-0",
+                        "assetGuid": "83ea109a7552440a5985e04a08dd6e08",
+                        "path": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset"
+                      },
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": ""
+                    },
+                    {
+                      "kind": "ShowMessage",
+                      "fact": null,
+                      "item": null,
+                      "quest": null,
+                      "region": null,
+                      "graph": null,
+                      "actionSet": null,
+                      "worldItem": null,
+                      "vendor": null,
+                      "inventory": null,
+                      "entityId": "",
+                      "value": 1,
+                      "text": "The bitter herbs ease your aching legs."
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8d38ddea-1ae8-4d78-b7e6-3989b15f7865",
+                "global": "GlobalObjectId_V1-3-dfcd0a6b320da7905a54e537b7798e65-11400000-0",
+                "assetGuid": "dfcd0a6b320da7905a54e537b7798e65",
+                "path": "Assets/Hollowmere/Rules/HerbsRestore.asset"
+              },
+              "stamp": "sha256:55debfc09b51b3774c3d8d63d8f56804aa73fe87f4d4ffa71db47379b0d3b8af"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "bridge",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "args": {
+                "fields": {
+                  "requests": [
+                    {
+                      "fact": "buy_lantern",
+                      "kind": "Buy",
+                      "vendor": "InnStock",
+                      "item": "Lantern",
+                      "count": 1,
+                      "lootTable": null
+                    },
+                    {
+                      "fact": "buy_oil",
+                      "kind": "Buy",
+                      "vendor": "InnStock",
+                      "item": "OilFlask",
+                      "count": 1,
+                      "lootTable": null
+                    },
+                    {
+                      "fact": "buy_herbs",
+                      "kind": "Buy",
+                      "vendor": "InnStock",
+                      "item": "MarshHerbs",
+                      "count": 1,
+                      "lootTable": null
+                    },
+                    {
+                      "fact": "herbs_used",
+                      "kind": "RestoreStamina",
+                      "vendor": "",
+                      "item": "",
+                      "count": 400,
+                      "lootTable": null
+                    },
+                    {
+                      "fact": "search_satchel",
+                      "kind": "Loot",
+                      "vendor": "",
+                      "item": "",
+                      "count": 1,
+                      "lootTable": {
+                        "kind": "Definition",
+                        "authoringId": "5b597ed8-0d3c-4e49-9b96-578a988de75b",
+                        "global": "GlobalObjectId_V1-3-445637ba7c003e982be814e23a7fe908-11400000-0",
+                        "assetGuid": "445637ba7c003e982be814e23a7fe908",
+                        "path": "Assets/Hollowmere/Items/MarshLoot.asset"
+                      }
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "stamp": "sha256:d171ddc6322348fef1a9fce21866fc39aa9660dc7f813d0404b48051c7ea02c7"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:31.115Z",
+    "applied": "2026-10-05T06:44:31.391Z"
+  }
+}

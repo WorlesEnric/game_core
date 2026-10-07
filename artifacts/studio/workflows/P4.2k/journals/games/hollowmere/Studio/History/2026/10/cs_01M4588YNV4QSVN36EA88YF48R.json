@@ -1,0 +1,823 @@
+{
+  "id": "cs_01M4588YNV4QSVN36EA88YF48R",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.facts] Create the P3.1 facts of The Drowned Bell (shrine, crossing, endings, failure, interim requests)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "f_shrine_lit",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset",
+        "name": "shrine_lit",
+        "authoringId": "c8edbd8b-cab0-4244-9143-bba000f1c459",
+        "fields": {
+          "factName": "shrine_lit",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_1",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset",
+        "name": "shrine_post_1",
+        "authoringId": "e705f49f-eb1b-4892-a9e5-ff246148fb8e",
+        "fields": {
+          "factName": "shrine_post_1",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_2",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset",
+        "name": "shrine_post_2",
+        "authoringId": "c2c6ee13-0f3d-4c8b-8a17-2ec3cae697d5",
+        "fields": {
+          "factName": "shrine_post_2",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_3",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset",
+        "name": "shrine_post_3",
+        "authoringId": "d98ee0b1-549b-4b2e-9c35-494d94db84aa",
+        "fields": {
+          "factName": "shrine_post_3",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_odd_favour",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset",
+        "name": "odd_favour",
+        "authoringId": "86bd2049-bf48-4f72-8688-5874f12f25f3",
+        "fields": {
+          "factName": "odd_favour",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_punt_repaired",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset",
+        "name": "punt_repaired",
+        "authoringId": "ea221929-4990-4454-80b4-0b3c4826afff",
+        "fields": {
+          "factName": "punt_repaired",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_bell_silenced",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/bell_silenced.asset",
+        "name": "bell_silenced",
+        "authoringId": "b381de76-7931-4dc9-828c-eaa7b242f852",
+        "fields": {
+          "factName": "bell_silenced",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_lantern_lost",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset",
+        "name": "lantern_lost",
+        "authoringId": "ca798a3f-2c3a-4575-af00-d1478e1435fe",
+        "fields": {
+          "factName": "lantern_lost",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_ending_a",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset",
+        "name": "ending_a",
+        "authoringId": "c6a254c3-8968-480e-a748-e4e89a0bf8e2",
+        "fields": {
+          "factName": "ending_a",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_ending_b",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset",
+        "name": "ending_b",
+        "authoringId": "5b190264-aa11-4de8-9b67-ab793a7846f7",
+        "fields": {
+          "factName": "ending_b",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_ending_c",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset",
+        "name": "ending_c",
+        "authoringId": "91d867aa-ac86-4935-b1e9-d8c2a622f546",
+        "fields": {
+          "factName": "ending_c",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_buy_lantern",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset",
+        "name": "buy_lantern",
+        "authoringId": "2f0d339d-0128-4606-9ec4-56b5db7227f3",
+        "fields": {
+          "factName": "buy_lantern",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_buy_oil",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset",
+        "name": "buy_oil",
+        "authoringId": "5819ed7a-0135-4d61-bb8c-0e827650249b",
+        "fields": {
+          "factName": "buy_oil",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_buy_herbs",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset",
+        "name": "buy_herbs",
+        "authoringId": "8bf93013-40dd-4068-be8f-81c89979cb64",
+        "fields": {
+          "factName": "buy_herbs",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_herbs_used",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset",
+        "name": "herbs_used",
+        "authoringId": "cf2d32ee-b350-4674-ab69-039f072f620d",
+        "fields": {
+          "factName": "herbs_used",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    },
+    {
+      "opId": "f_search_satchel",
+      "tool": "create",
+      "args": {
+        "type": "narrative.fact",
+        "path": "Assets/Hollowmere/Dialogue/Facts/search_satchel.asset",
+        "name": "search_satchel",
+        "authoringId": "041d1483-8346-4fc7-aa4d-1bdb5376a879",
+        "fields": {
+          "factName": "search_satchel",
+          "initialValue": 0,
+          "persistent": true
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "f_shrine_lit",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c8edbd8b-cab0-4244-9143-bba000f1c459",
+                "global": "GlobalObjectId_V1-3-05ecf3f2a97fc647ab1aab76f0594786-11400000-0",
+                "assetGuid": "05ecf3f2a97fc647ab1aab76f0594786",
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset"
+              },
+              "stamp": "sha256:282e6cfcdf9e06242dbcfe90900c13c224918b0c3c5c85848b187044181a015d"
+            }
+          ],
+          "replay": {
+            "authoringId": "c8edbd8b-cab0-4244-9143-bba000f1c459",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/shrine_lit.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "e705f49f-eb1b-4892-a9e5-ff246148fb8e",
+                "global": "GlobalObjectId_V1-3-e3aebab10bb56eb48ae9a70ada17ff6e-11400000-0",
+                "assetGuid": "e3aebab10bb56eb48ae9a70ada17ff6e",
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset"
+              },
+              "stamp": "sha256:4779d0789a3bdd2b08c7d75429216b03950ef125d9f94fe3b160c24d417e7973"
+            }
+          ],
+          "replay": {
+            "authoringId": "e705f49f-eb1b-4892-a9e5-ff246148fb8e",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/shrine_post_1.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c2c6ee13-0f3d-4c8b-8a17-2ec3cae697d5",
+                "global": "GlobalObjectId_V1-3-c80f5e49569ea648bb40cb478cb3f5a9-11400000-0",
+                "assetGuid": "c80f5e49569ea648bb40cb478cb3f5a9",
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset"
+              },
+              "stamp": "sha256:107d44a538117d01bb0c28b1fe5048a026a2457cb48006de779c31ebe43b549a"
+            }
+          ],
+          "replay": {
+            "authoringId": "c2c6ee13-0f3d-4c8b-8a17-2ec3cae697d5",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/shrine_post_2.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_shrine_post_3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d98ee0b1-549b-4b2e-9c35-494d94db84aa",
+                "global": "GlobalObjectId_V1-3-8005deb973a85103fa0ea8e88018bdb5-11400000-0",
+                "assetGuid": "8005deb973a85103fa0ea8e88018bdb5",
+                "path": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset"
+              },
+              "stamp": "sha256:58e8dd5d2e8a21759a8b644ec8e0ace0e488bc3054d6ce8b30870e847d6e2d9a"
+            }
+          ],
+          "replay": {
+            "authoringId": "d98ee0b1-549b-4b2e-9c35-494d94db84aa",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/shrine_post_3.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_odd_favour",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "86bd2049-bf48-4f72-8688-5874f12f25f3",
+                "global": "GlobalObjectId_V1-3-b56d4b9070bc7ea3c996a197dc33ddae-11400000-0",
+                "assetGuid": "b56d4b9070bc7ea3c996a197dc33ddae",
+                "path": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset"
+              },
+              "stamp": "sha256:a946c9eb1f5746ccc32023f8c5541255fac3ef188f96391bf42300d0e3f8a0bd"
+            }
+          ],
+          "replay": {
+            "authoringId": "86bd2049-bf48-4f72-8688-5874f12f25f3",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/odd_favour.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_punt_repaired",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ea221929-4990-4454-80b4-0b3c4826afff",
+                "global": "GlobalObjectId_V1-3-8c3360ef591d03b089452f419e70a992-11400000-0",
+                "assetGuid": "8c3360ef591d03b089452f419e70a992",
+                "path": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset"
+              },
+              "stamp": "sha256:b30feeeb6b155272f78e69aca885d7c54b93dde853cfd1d55d96d66445050df4"
+            }
+          ],
+          "replay": {
+            "authoringId": "ea221929-4990-4454-80b4-0b3c4826afff",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/punt_repaired.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_bell_silenced",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/bell_silenced.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b381de76-7931-4dc9-828c-eaa7b242f852",
+                "global": "GlobalObjectId_V1-3-30f5a247f19d81235a4f16b1d00c69d7-11400000-0",
+                "assetGuid": "30f5a247f19d81235a4f16b1d00c69d7",
+                "path": "Assets/Hollowmere/Dialogue/Facts/bell_silenced.asset"
+              },
+              "stamp": "sha256:b6b5d11bee407cd452a8d8a917fe794fb524a201d6134c7054d6a5f944b7cb05"
+            }
+          ],
+          "replay": {
+            "authoringId": "b381de76-7931-4dc9-828c-eaa7b242f852",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/bell_silenced.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_lantern_lost",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ca798a3f-2c3a-4575-af00-d1478e1435fe",
+                "global": "GlobalObjectId_V1-3-45d85b0ef2c142a5a9b61522b674259b-11400000-0",
+                "assetGuid": "45d85b0ef2c142a5a9b61522b674259b",
+                "path": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset"
+              },
+              "stamp": "sha256:726ea525739fd6fd29f1abdb7354805990fda0939e1feb04cd38d0dfdcee3ff5"
+            }
+          ],
+          "replay": {
+            "authoringId": "ca798a3f-2c3a-4575-af00-d1478e1435fe",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_ending_a",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c6a254c3-8968-480e-a748-e4e89a0bf8e2",
+                "global": "GlobalObjectId_V1-3-fc5608aaa89ff5044be68348ead91db5-11400000-0",
+                "assetGuid": "fc5608aaa89ff5044be68348ead91db5",
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset"
+              },
+              "stamp": "sha256:a1a7262030066e15d838dee2d3defc29d262c5912cd16a2df5fc60ab567dbb1d"
+            }
+          ],
+          "replay": {
+            "authoringId": "c6a254c3-8968-480e-a748-e4e89a0bf8e2",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/ending_a.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_ending_b",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5b190264-aa11-4de8-9b67-ab793a7846f7",
+                "global": "GlobalObjectId_V1-3-5434300b245f3b8018f9a8e1acdaa8bd-11400000-0",
+                "assetGuid": "5434300b245f3b8018f9a8e1acdaa8bd",
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset"
+              },
+              "stamp": "sha256:234c0e28df5a7f61c199742938b5a96ff2a36c4c394d0f1d3dd12b698e56fa84"
+            }
+          ],
+          "replay": {
+            "authoringId": "5b190264-aa11-4de8-9b67-ab793a7846f7",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/ending_b.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_ending_c",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "91d867aa-ac86-4935-b1e9-d8c2a622f546",
+                "global": "GlobalObjectId_V1-3-3cd06f4ce798f222b91f9221eb7fb0d7-11400000-0",
+                "assetGuid": "3cd06f4ce798f222b91f9221eb7fb0d7",
+                "path": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset"
+              },
+              "stamp": "sha256:71cdf0269839bfd4d51520ac4a17da1b1ff2f7d17c8b885622ecea1c3e26b305"
+            }
+          ],
+          "replay": {
+            "authoringId": "91d867aa-ac86-4935-b1e9-d8c2a622f546",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/ending_c.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_buy_lantern",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "2f0d339d-0128-4606-9ec4-56b5db7227f3",
+                "global": "GlobalObjectId_V1-3-8cc1f591f595f8382858cce72dce7e8e-11400000-0",
+                "assetGuid": "8cc1f591f595f8382858cce72dce7e8e",
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset"
+              },
+              "stamp": "sha256:27f1c1488d4487d78358a8ad8c724e5a292ff4d45f919aef68c1e73e55828c5b"
+            }
+          ],
+          "replay": {
+            "authoringId": "2f0d339d-0128-4606-9ec4-56b5db7227f3",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/buy_lantern.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_buy_oil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5819ed7a-0135-4d61-bb8c-0e827650249b",
+                "global": "GlobalObjectId_V1-3-1bdb7b5fb452d9ef3a3b01282bb1290f-11400000-0",
+                "assetGuid": "1bdb7b5fb452d9ef3a3b01282bb1290f",
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset"
+              },
+              "stamp": "sha256:b8399d7407badca153a60ef92f3d458b65ca9aac332038ab55e82fa54cb277ca"
+            }
+          ],
+          "replay": {
+            "authoringId": "5819ed7a-0135-4d61-bb8c-0e827650249b",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/buy_oil.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_buy_herbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8bf93013-40dd-4068-be8f-81c89979cb64",
+                "global": "GlobalObjectId_V1-3-87b64753fe33af75e8602d167ce8b77f-11400000-0",
+                "assetGuid": "87b64753fe33af75e8602d167ce8b77f",
+                "path": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset"
+              },
+              "stamp": "sha256:9a9634b86b5e3e53ec915a16f08aa558dc64fde602228ac14e3b6edf2866d4ee"
+            }
+          ],
+          "replay": {
+            "authoringId": "8bf93013-40dd-4068-be8f-81c89979cb64",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/buy_herbs.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_herbs_used",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "cf2d32ee-b350-4674-ab69-039f072f620d",
+                "global": "GlobalObjectId_V1-3-83ea109a7552440a5985e04a08dd6e08-11400000-0",
+                "assetGuid": "83ea109a7552440a5985e04a08dd6e08",
+                "path": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset"
+              },
+              "stamp": "sha256:14a001c37886509b1c6b44320854fa6e1c0835beb2056061bebfcbcea6784748"
+            }
+          ],
+          "replay": {
+            "authoringId": "cf2d32ee-b350-4674-ab69-039f072f620d",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/herbs_used.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "f_search_satchel",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/Facts/search_satchel.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "041d1483-8346-4fc7-aa4d-1bdb5376a879",
+                "global": "GlobalObjectId_V1-3-12708adac64972adab88909d1dc1133c-11400000-0",
+                "assetGuid": "12708adac64972adab88909d1dc1133c",
+                "path": "Assets/Hollowmere/Dialogue/Facts/search_satchel.asset"
+              },
+              "stamp": "sha256:8e5869d8cbf49ac5f00c4a02d35600cf186adb3403b15d77299972ae45874621"
+            }
+          ],
+          "replay": {
+            "authoringId": "041d1483-8346-4fc7-aa4d-1bdb5376a879",
+            "assetPath": "Assets/Hollowmere/Dialogue/Facts/search_satchel.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:36.903Z",
+    "applied": "2026-10-05T05:23:37.238Z"
+  }
+}

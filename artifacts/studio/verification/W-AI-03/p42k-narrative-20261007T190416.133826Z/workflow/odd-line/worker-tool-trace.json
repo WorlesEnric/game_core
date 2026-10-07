@@ -1,0 +1,146 @@
+[
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json && printf '\\n--- selection ---\\n' && cat /inputs/selection.json && printf '\\n--- index ---\\n' && cat /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4BW2JZXX1K2KN34HFPX1SVH`\n\n- Change set id: `cs_01M4BW2JZXX1K2KN34HFPX1SVH` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `128` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nAdd a line Odd only says after the shrine is lit.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `tool\n[... 26308 bytes omitted ...]\n: \"0b44e6c8-4c3c-483f-9202-57dc00024a20\",\n        \"global\": \"GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-838184470-0\",\n        \"kind\": \"Entity\",\n        \"path\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Causeway Gate\",\n        \"scope\": \"Instance\",\n        \"stamp\": \"sha256:0ecb5041a9f1b014a5c1a372d06f4cc88dffa01e0d37a1d94b440b9394452f58\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"definition\",\n          \"to\": {\n            \"assetGuid\": \"e4e13730b5bfc49b5a30784b04d65ffa\",\n            \"authoringId\": \"ada7a792-63fb-480a-9445-3b61f5dece1b\",\n            \"global\": \"GlobalObjectId_V1-3-e4e13730b5bfc49b5a30784b04d65ffa-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Interactables/Definitions/CausewayGateEntity.asset\"\n          }\n        }\n      ],\n      \"type\": \"entity.instance\"\n    },\n    {\n      \"fields\": {\n        \"overrides\": {\n          \"type\": \"object\",\n          \"value\": {\n            \"entries\": []\n          }\n        },\n        \"variant\": {\n          \"type\": \"int\",\n          \"value\": 0\n        }\n      },\n      \"name\": \"Oil Flask (marsh)\",\n      \"provenance\": {\n        \"asset\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity\"\n      },\n      \"ref\": {\n        \"assetGuid\": \"b257f6aa8330ff40e817274b932b2dd1\",\n        \"authoringId\": \"1cc6ccc5-4575-41ac-8bf3-1446f594d70a\",\n        \"global\": \"GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-742764984-0\",\n        \"kind\": \"Entity\",\n        \"path\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Oil Flask (marsh)\",\n        \"scope\": \"Instance\",\n        \"stamp\": \"sha256:8835d76dd189080beac9abeea24b217f9cb80fd07f2ecc7149ec98c5955c8ba9\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"definition\",\n          \"to\": {\n            \"assetGuid\": \"064bebcc159e3c45a9519998e2926a7e\",\n            \"authoringId\": \"fafbedd0-6061-4883-93da-4c2a1e6b1a21\",\n            \"global\": \"GlobalObjectId_V1-3-064bebcc159e3c45a9519998e2926a7e-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Interactables/Definitions/PickupOilEntity.asset\"\n          }\n        }\n      ],\n      \"type\": \"entity.instance\"\n    }\n  ],\n  \"project\": \"hollowmere\",\n  \"revision\": 128\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 289759 bytes in total; full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-0.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('TOOLS');\nfor t in c.get('tools',[]):\n if 'dialogue' in t['id'].lower() or 'fact' in t['id'].lower():print(json.dumps(t,indent=2))\ns=json.load(open('/inputs/selection.json'));print('SELECTION',json.dumps(s,indent=2));i=json.load(open('/inputs/index-slice.json'));print('INDEX keys',i.keys());\nfor o in i.get('objects',[]):\n if 'Odd' in o.get('name','') or o.get('type')=='dialogue.graph':print(json.dumps(o,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 13089,
+      "text": "TOOLS\n{\n  \"args\": [\n    {\n      \"doc\": \"Option texts.\",\n      \"name\": \"options\",\n      \"required\": true,\n      \"type\": \"string[]\"\n    },\n    {\n      \"doc\": \"Node each option leads to (-1 = end); missing entries end.\",\n      \"name\": \"targets\",\n      \"required\": false,\n      \"type\": \"int[]\"\n    },\n    {\n      \"doc\": \"Node the choice continues (-1 = none).\",\n      \"name\": \"after\",\n      \"required\": false,\n      \"type\": \"int\"\n    },\n    {\n      \"doc\": \"Prompt shown with the options.\",\n      \"name\": \"prompt\",\n      \"required\": false,\n      \"type\": \"string\"\n    }\n  ],\n  \"doc\": \"Appends a choice node with up to 8 options; targets name the node each option leads to (-1 = end).\",\n  \"id\": \"dialogue.addChoice\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"dialogue.graph\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"dialogue.graph\",\n  \"tier\": \"Compose\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-DLG-001\",\n        \"GP-DLG-002\",\n        \"GP-DLG-003\",\n        \"GP-DLG-004\",\n        \"GP-DLG-005\",\n        \"GP-DLG-006\",\n        \"GP-DLG-020\",\n        \"GP-ID-002\",\n        \"GP-ID-003\",\n        \"GP-LOG-011\",\n        \"GP-LOG-012\",\n        \"GP-LOG-013\",\n        \"GP-REF-005\"\n      ],\n      \"id\": \"dialogue.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"doc\": \"The spoken line.\",\n      \"name\": \"text\",\n      \"required\": true,\n      \"type\": \"string\"\n    },\n    {\n      \"doc\": \"Speaker name (empty = the graph's speaker).\",\n      \"name\": \"speaker\",\n      \"required\": false,\n[... 9153 bytes omitted ...]\nve\",\n  \"runtimeOnly\": true,\n  \"targetRequired\": true,\n  \"tier\": \"Configure\"\n}\n{\n  \"args\": [\n    {\n      \"category\": \"dialogue.graph\",\n      \"doc\": \"The dialogue graph (a DialogueGraphDefinition).\",\n      \"name\": \"graph\",\n      \"required\": false,\n      \"type\": \"ref\"\n    }\n  ],\n  \"doc\": \"Assigns the dialogue graph a talk with the NPC starts; null removes it (the NPC has nothing to say).\",\n  \"id\": \"npc.setDialogue\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"npc.definition\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"npc.definition\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-NPC-001\",\n        \"GP-NPC-002\",\n        \"GP-NPC-003\",\n        \"GP-NPC-004\",\n        \"GP-NPC-006\",\n        \"GP-NPC-008\",\n        \"GP-REF-001\",\n        \"GP-REF-003\"\n      ],\n      \"id\": \"npc.validator\"\n    }\n  ]\n}\nSELECTION {\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7554438860971524,\n      \"fov\": 60.0,\n      \"position\": [\n        221.0,\n        0.75724995136261,\n        3.8932952880859375\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:65b4b2fdba9c66b71f7b8fbaf5258aa23251fe00628de240ab88adcfb0137eb7\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4BW2JYM0EYA40XK19Z62JZH\",\n  \"indexRevision\": 128,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"b257f6aa8330ff40e817274b932b2dd1\",\n      \"authoringId\": \"a8255407-3f1c-4aa5-b7e7-e6141e6d5534\",\n      \"global\": \"GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd\",\n      \"stamp\": \"sha256:dee6b8421c156d323d266a4bfd4a1787d78d1223f52ef43fe659b0e36fc6e89d\"\n    },\n    {\n      \"assetGuid\": \"b2bacaee2c3034819a57dae4f343b3ee\",\n      \"authoringId\": \"aa779457-076d-496c-84b5-72019a826681\",\n      \"global\": \"GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Dialogue/Graphs/Odd.asset\",\n      \"stamp\": \"sha256:7109950a3db1bf17eedade058d30f1818a77701528b168bd5cd0556e0e4d07e1\"\n    }\n  ]\n}\nINDEX keys dict_keys(['nodes', 'project', 'revision'])\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-1.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'))\nfor t in c['tools']:\n if any(x in t['id'] for x in ('node','Node','edge','Edge','branch','Branch','condition','Condition','authoring.set')):print(t['id'],t.get('doc'),[(a['name'],a.get('type'),a.get('required')) for a in t.get('args',[])])\ni=json.load(open('/inputs/index-slice.json'))\nfor n in i['nodes']:\n if any(x in n.get('name','').lower() for x in ('odd','shrine','condition','fact','content')):print(json.dumps(n,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30241,
+      "text": "dialogue.linkCondition Sets the condition of a branch node, or the availability condition of one option of a choice node. [('node', 'int', True), ('condition', 'ref', False), ('option', 'int', False)]\ndialogue.setFactCondition Replaces a condition set with one typed fact comparison. The fact AuthoringRef can name an earlier candidate output once the engine resolves dependency-ordered references; link this condition with dialogue.linkCondition. [('fact', 'ref', True), ('comparison', 'enum', False), ('value', 'int', False)]\ninteraction.linkCondition Sets an interactable's condition (unlocks a lock when it holds, refuses a use when it fails): a condition set, or a fact compared with a value; neither = always allowed. [('condition', 'ref', False), ('fact', 'ref', False), ('op', 'enum', False), ('value', 'int', False)]\nquest.setBranch Puts an objective on a branch (0 = always needed, n = an alternative way through its stage) and optionally names branch n. [('objective', 'int', True), ('branch', 'int', True), ('branchName', 'string', False)]\n{\n  \"fields\": {\n    \"overrides\": {\n      \"type\": \"object\",\n      \"value\": {\n        \"entries\": [\n          {\n            \"field\": \"tint\",\n            \"value\": \"#6e5b44\"\n          }\n        ]\n      }\n    },\n    \"variant\": {\n      \"type\": \"int\",\n      \"value\": 0\n    }\n  },\n  \"name\": \"Odd\",\n  \"provenance\": {\n    \"asset\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity\"\n  },\n  \"ref\": {\n    \"assetGuid\": \"b257f6aa8330ff40e817274b932b2dd1\",\n    \"authoringId\": \"a8255407-3f1c-4aa5-b7e7-e6141e6d5534\",\n    \"global\": \"GlobalObje\n[... 26305 bytes omitted ...]\n  \"assetGuid\": \"409814db78c3b5a03849bc634ecf2cda\",\n        \"authoringId\": \"6d8711cb-2145-4c94-96e5-b7f7ea1dcbb4\",\n        \"global\": \"GlobalObjectId_V1-3-409814db78c3b5a03849bc634ecf2cda-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Rules/EndingRing.asset\"\n      }\n    },\n    {\n      \"field\": \"definitions\",\n      \"to\": {\n        \"assetGuid\": \"04b624f430aace9d99cb14d137bf7aa9\",\n        \"authoringId\": \"fbb46c29-caa1-4cfa-8a1d-46acc1f773d9\",\n        \"global\": \"GlobalObjectId_V1-3-04b624f430aace9d99cb14d137bf7aa9-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Rules/EndingFree.asset\"\n      }\n    },\n    {\n      \"field\": \"definitions\",\n      \"to\": {\n        \"assetGuid\": \"e7ff9703a23afeb47b4a7596e1eb7493\",\n        \"authoringId\": \"4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf\",\n        \"global\": \"GlobalObjectId_V1-3-e7ff9703a23afeb47b4a7596e1eb7493-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Rules/LanternLost.asset\"\n      }\n    }\n  ],\n  \"type\": \"logic.contentSet\"\n}\n{\n  \"fields\": {\n    \"overrides\": {\n      \"type\": \"object\",\n      \"value\": {\n        \"entries\": []\n      }\n    },\n    \"variant\": {\n      \"type\": \"int\",\n      \"value\": 0\n    }\n  },\n  \"name\": \"Shrine Lantern East\",\n  \"provenance\": {\n    \"asset\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity\"\n  },\n  \"ref\": {\n    \"assetGuid\": \"b257f6aa8330ff40e817274b932b2dd1\",\n    \"authoringId\": \"0131f58d-bed5-4484-97f0-8e2ee2220399\",\n    \"global\": \"GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-708992485-0\",\n    \"kind\": \"Entity\",\n    \"path\": \"Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Shrine Lantern East\",\n    \"scope\": \"Instance\",\n    \"stamp\": \"sha256:f77baf57f24efd444813e72b8c6a56294d538547d096e4fbac9f3a41c82a21f4\"\n  },\n  \"refs\": [\n    {\n      \"field\": \"definition\",\n      \"to\": {\n        \"assetGuid\": \"1ab4d95d6ffe8caa29ad5a25a9ca9e74\",\n        \"authoringId\": \"3e5ad90c-f48f-43bc-aeeb-aa51360dc71d\",\n        \"global\": \"GlobalObjectId_V1-3-1ab4d95d6ffe8caa29ad5a25a9ca9e74-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Interactables/Definitions/ShrinePostEastEntity.asset\"\n      }\n    }\n  ],\n  \"type\": \"entity.instance\"\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 67255 bytes in total; full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-2.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nfor t in json.load(open('/inputs/tool-catalog.json'))['tools']:\n if t['id'].startswith('authoring.') or 'edges' in t['id'].lower():print(json.dumps(t,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 663,
+      "text": "{\n  \"args\": [\n    {\n      \"doc\": \"Asset folders to scan (empty: Assets).\",\n      \"name\": \"folders\",\n      \"required\": false,\n      \"type\": \"string[]\"\n    },\n    {\n      \"doc\": \"Rewrite (true) or only report (false).\",\n      \"name\": \"apply\",\n      \"required\": false,\n      \"type\": \"bool\"\n    }\n  ],\n  \"doc\": \"Finds legacy string and pseudo-category references (P1.3/P1.4 content) and, with apply, rewrites them as typed references; lists what it changed and what names nothing.\",\n  \"id\": \"authoring.migrateRefs\",\n  \"runtimeApply\": \"Rebuild\",\n  \"targetRequired\": false,\n  \"tier\": \"Compose\"\n}\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-3.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nfor t in json.load(open('/inputs/tool-catalog.json'))['tools']:\n print(t['id'],[(a['name'],a['type']) for a in t.get('args',[])])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 9329,
+      "text": "addComponent [('type', 'string'), ('fields', 'object'), ('authoringId', 'string')]\nasset.generate [('kind', 'string'), ('prompt', 'string'), ('options', 'object')]\nasset.import [('path', 'string'), ('artifact', 'artifact'), ('importer', 'object')]\nassign [('field', 'string'), ('value', 'ref'), ('index', 'int'), ('append', 'bool')]\naudio.assignClip [('clipId', 'string'), ('clip', 'ref'), ('group', 'enum'), ('volume', 'float'), ('loop', 'bool'), ('spatial', 'bool')]\naudio.generateSfx [('clipId', 'string'), ('description', 'string'), ('durationMs', 'int')]\naudio.generateVoice [('clipId', 'string'), ('text', 'string'), ('voice', 'string'), ('speakerId', 'string')]\naudio.setAmbience [('region', 'ref'), ('clipId', 'string'), ('volume', 'float'), ('fadeMs', 'int'), ('assetPath', 'string')]\naudio.setMusicState [('stateId', 'string'), ('clipId', 'string'), ('fadeMs', 'int'), ('stingerId', 'string'), ('start', 'bool'), ('assetPath', 'string')]\nauthoring.migrateRefs [('folders', 'string[]'), ('apply', 'bool')]\nbind [('field', 'string'), ('artifact', 'artifact'), ('path', 'string'), ('importer', 'object')]\ncreate [('type', 'string'), ('name', 'string'), ('path', 'string'), ('parent', 'ref'), ('position', 'vector3'), ('fields', 'object'), ('authoringId', 'string')]\ndelete [('componentOnly', 'bool')]\ndialogue.addChoice [('options', 'string[]'), ('targets', 'int[]'), ('after', 'int'), ('prompt', 'string')]\ndialogue.addLine [('text', 'string'), ('speaker', 'string'), ('after', 'int'), ('voiceClip', 'ref')]\ndialogue.createGraph [('name', 'string'), ('path', 'string\n[... 5393 bytes omitted ...]\nchangeSet', 'object'), ('candidate', 'bool'), ('toolCatalogRevision', 'string'), ('indexIsSlice', 'bool')]\nproject.build [('options', 'object')]\nproject.launch [('options', 'object')]\nproject.reload []\nproject.save [('scenes', 'bool')]\nquery.impact [('maxDepth', 'int')]\nquery.references []\nquest.addObjective [('stage', 'int'), ('kind', 'enum'), ('target', 'ref'), ('targetEntityId', 'string'), ('required', 'int'), ('branch', 'int'), ('text', 'string')]\nquest.addStage [('title', 'string'), ('description', 'string'), ('next', 'int')]\nquest.inspectRuntime [('state', 'string')]\nquest.linkReward [('kind', 'enum'), ('target', 'ref'), ('value', 'int'), ('branch', 'int')]\nquest.setBranch [('objective', 'int'), ('branch', 'int'), ('branchName', 'string')]\nquest.setConsequence [('onComplete', 'ref'), ('onFail', 'ref')]\nquest.setPrerequisites [('prerequisites', 'ref[]')]\nquest.simulate [('path', 'string')]\nremoveComponent [('type', 'string')]\nreplace [('with', 'ref')]\nruntime.move [('position', 'vector3'), ('yaw', 'float')]\nsave.inspect [('slot', 'string')]\nsave.testRoundTrip []\nset [('field', 'string'), ('value', 'fieldValue'), ('fields', 'object')]\nui.addScreen [('screen', 'enum'), ('uxmlPath', 'string'), ('layer', 'int'), ('assetPath', 'string')]\nui.bind [('element', 'string'), ('source', 'string'), ('property', 'string'), ('format', 'string')]\nui.previewScreen [('screen', 'enum'), ('state', 'string'), ('outputPath', 'string'), ('width', 'int'), ('height', 'int')]\nui.setCommand [('element', 'string'), ('command', 'string'), ('property', 'string')]\nui.setTheme [('theme', 'ref'), ('panelSettings', 'ref'), ('themeStyleSheet', 'ref'), ('styleSheets', 'ref[]')]\nworld.addPortal [('position', 'vector3'), ('yaw', 'float'), ('arrivalDistance', 'float'), ('region', 'ref')]\nworld.configurePortal [('condition', 'ref'), ('spawnPointA', 'string'), ('spawnPointB', 'string')]\nworld.connectRegions [('regionA', 'ref'), ('regionB', 'ref'), ('assetPath', 'string'), ('spawnPointA', 'string'), ('spawnPointB', 'string'), ('condition', 'ref')]\nworld.setRegionBounds [('center', 'vector3'), ('size', 'vector3')]\nworld.setSpawnPoint [('position', 'vector3'), ('yaw', 'float'), ('name', 'string')]\nworld.travel [('regionId', 'string'), ('portalId', 'string'), ('expectedRevision', 'int')]\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-4.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 5,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nfor t in json.load(open('/inputs/tool-catalog.json'))['tools']:\n if t['id']=='set':print(json.dumps(t,indent=2))\nPY\nls -la /work/docs/studio/schemas/change-set.schema.json /outputs 2>/dev/null || true\ncat /inputs/scene-context.json | head -c 1200",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1680,
+      "text": "{\n  \"args\": [\n    {\n      \"doc\": \"Field name (used with 'value').\",\n      \"name\": \"field\",\n      \"required\": false,\n      \"type\": \"string\"\n    },\n    {\n      \"doc\": \"New value of 'field' (its type is the field's catalog type; null clears).\",\n      \"name\": \"value\",\n      \"required\": false,\n      \"type\": \"fieldValue\"\n    },\n    {\n      \"doc\": \"Several fields at once: { name: value }.\",\n      \"name\": \"fields\",\n      \"required\": false,\n      \"type\": \"object\"\n    }\n  ],\n  \"doc\": \"Set or clear authorable fields of an existing object. Give {field, value} or {fields: {name: value}}; each value has the type the object type declares for that field (catalog objectTypes).\",\n  \"id\": \"set\",\n  \"runtimeApply\": \"Live\",\n  \"targetKinds\": [\n    \"Entity\",\n    \"Definition\",\n    \"Region\",\n    \"SceneObject\"\n  ],\n  \"targetRequired\": true,\n  \"tier\": \"Configure\"\n}\n/outputs:\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:05 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:05 ..\n{\"schema\":\"gamecore.studio.scenecontext/1\",\"units\":\"metres\",\"axes\":{\"north\":\"+z\",\"east\":\"+x\",\"up\":\"+y\"},\"objects\":[{\"ref\":{\"kind\":\"Entity\",\"authoringId\":\"a8255407-3f1c-4aa5-b7e7-e6141e6d5534\",\"global\":\"GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0\",\"assetGuid\":\"b257f6aa8330ff40e817274b932b2dd1\",\"path\":\"Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd\",\"stamp\":\"sha256:dee6b8421c156d323d266a4bfd4a1787d78d1223f52ef43fe659b0e36fc6e89d\"},\"name\":\"Odd\",\"path\":\"Odd\",\"scene\":\"Assets/Hollowmere/Regions/BlackmereMarsh.unity\",\"position\":[221.0,0.0,20.0],\"rotation\":[0.0,0.3827,0.0,0.9239],\"scale\":[1.0,1.0,1.0]}],\"truncated\":true}\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-5.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 6,
+    "name": "shell",
+    "args": {
+      "command": "pwd; ls -la /work | head; find /work -path '*change-set.schema.json' -o -name '*request6*' | head; python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json')); print('catalog keys',c.keys());\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 249,
+      "text": "/work\ntotal 8\ndrwxr-xr-x 1 agent agent 4096 Oct  4 18:09 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:05 ..\ncatalog keys dict_keys(['objectTypes', 'revision', 'schema', 'tools'])\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-6.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 7,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nidx=json.load(open('/inputs/index-slice.json'))\ng=next(n for n in idx['nodes'] if n.get('type')=='dialogue.graph' and n.get('name')=='Odd')\nedges=g['fields']['edges']['value']; nodes=g['fields']['nodes']['value']; assert len(nodes)==8 and {tuple((e['from'],e['to'],e['port'])) for e in edges} >= {(1,3,'Next'),(3,4,'Next'),(0,5,'Next')}; print('nodes',len(nodes),'edges',len(edges),'graph stamp',g['ref']['stamp']);print('updated edges',json.dumps([{**e,'to':8} if e['from']==3 and e['to']==4 and e['port']=='Next' else e for e in edges]+[{'from':8,'option':0,'port':'Next','to':4}],indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 851,
+      "text": "nodes 8 edges 8 graph stamp sha256:7109950a3db1bf17eedade058d30f1818a77701528b168bd5cd0556e0e4d07e1\nupdated edges [\n  {\n    \"from\": 0,\n    \"option\": 0,\n    \"port\": \"Else\",\n    \"to\": 1\n  },\n  {\n    \"from\": 1,\n    \"option\": 0,\n    \"port\": \"Else\",\n    \"to\": 2\n  },\n  {\n    \"from\": 1,\n    \"option\": 0,\n    \"port\": \"Next\",\n    \"to\": 3\n  },\n  {\n    \"from\": 3,\n    \"option\": 0,\n    \"port\": \"Next\",\n    \"to\": 8\n  },\n  {\n    \"from\": 4,\n    \"option\": 0,\n    \"port\": \"Next\",\n    \"to\": 5\n  },\n  {\n    \"from\": 0,\n    \"option\": 0,\n    \"port\": \"Next\",\n    \"to\": 5\n  },\n  {\n    \"from\": 5,\n    \"option\": 0,\n    \"port\": \"Option\",\n    \"to\": 6\n  },\n  {\n    \"from\": 5,\n    \"option\": 1,\n    \"port\": \"Option\",\n    \"to\": 7\n  },\n  {\n    \"from\": 8,\n    \"option\": 0,\n    \"port\": \"Next\",\n    \"to\": 4\n  }\n]\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-7.log]"
+    }
+  },
+  {
+    "taskId": "tba9d4c0656a8553c22973477",
+    "turn": 1,
+    "index": 8,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json,os\nidx=json.load(open('/inputs/index-slice.json'));g=next(n for n in idx['nodes'] if n.get('type')=='dialogue.graph' and n.get('name')=='Odd');r=g['ref'];sel=json.load(open('/inputs/selection.json')); edges=g['fields']['edges']['value']; assert len(g['fields']['nodes']['value'])==8\nnew_edges=[dict(e,to=8) if (e['from'],e['to'],e['port'])==(3,4,'Next') else e for e in edges]+[{'from':8,'option':0,'port':'Next','to':4}]\nassert sum(e['from']==3 and e['to']==8 for e in new_edges)==1\nseen={0};q=[0]\nwhile q:\n u=q.pop(0)\n for e in new_edges:\n  if e['from']==u and e['to'] not in seen:seen.add(e['to']);q.append(e['to'])\nassert seen==set(range(9)),seen\nops=[{'opId':'op1','tool':'dialogue.addLine','target':r,'args':{'text':'The shrine burns again. Its light will guide us across the black water.','speaker':'Odd','after':4},'dependsOn':[],'preconditions':'stamp','applyRequirement':'Rebuild'},{'opId':'op2','tool':'set','target':r,'args':{'field':'edges','value':new_edges},'dependsOn':['op1'],'preconditions':'stamp','applyRequirement':'Rebuild'}]\nselection={k:sel[k] for k in ('id','mode','indexRevision','targets')};doc={'id':'cs_01M4BW2JZXX1K2KN34HFPX1SVH','schema':'gamecore.studio.changeset/1','intent':{'text':'Add a line Odd only says after the shrine is lit.','origin':'agent'},'selection':selection,'baseVersions':[{'ref':r,'stamp':r['stamp']}],'operations':ops,'artifacts':[],'requirements':{'max':'Rebuild','worldRebuild':True,'compile':False,'build':False}}\nos.makedirs('/outputs',exist_ok=True)\nwith open('/outputs/changeset.json','w') as f:json.dump(doc,f,indent=2);f.write('\\n')\nprint('verified reachable nodes:',sorted(seen),'operations:',len(ops));print('file:',os.path.getsize('/outputs/changeset.json'))\nPY\npython -m json.tool /outputs/changeset.json >/dev/null && ls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 310,
+      "text": "verified reachable nodes: [0, 1, 2, 3, 4, 5, 6, 7, 8] operations: 2\nfile: 4423\ntotal 16\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:06 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:05 ..\n-rw-r--r-- 1 agent agent 4423 Oct  7 19:06 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/tba9d4c0656a8553c22973477-1-8.log]"
+    }
+  }
+]

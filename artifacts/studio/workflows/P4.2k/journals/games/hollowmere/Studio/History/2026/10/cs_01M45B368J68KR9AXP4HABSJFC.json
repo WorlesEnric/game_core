@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B368J68KR9AXP4HABSJFC",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: ...silence... yes... rest now...",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_rest.wav",
+        "artifact": {
+          "artifact": "sha256:effe267374bf039124c0473c4c47dde8c1a323a49ae8299fe26ce1700a1563d1"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "effe267374bf039124c0473c4c47dde8c1a323a49ae8299fe26ce1700a1563d1",
+      "name": "BelfryEcho_rest.wav",
+      "mediaType": "audio/wav",
+      "bytes": 130604,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_rest.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7feb1485e87f28dd985d8c5506a24293-8300000-0",
+                "assetGuid": "7feb1485e87f28dd985d8c5506a24293",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_rest.wav"
+              },
+              "stamp": "sha256:effe267374bf039124c0473c4c47dde8c1a323a49ae8299fe26ce1700a1563d1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:53.662Z",
+    "applied": "2026-10-05T06:12:53.757Z"
+  }
+}

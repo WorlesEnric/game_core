@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B4MGPNNGQQAGX3J5RH33X",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Suit yourself.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav",
+        "artifact": {
+          "artifact": "sha256:4b3d877a9f6ff8516b8a022dfc215620dd7417b7384952611a41646f7b1f8f1f"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4b3d877a9f6ff8516b8a022dfc215620dd7417b7384952611a41646f7b1f8f1f",
+      "name": "Bram_bye.wav",
+      "mediaType": "audio/wav",
+      "bytes": 38444,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-dd07c82afc3c10677a4374cd6bb9b926-8300000-0",
+                "assetGuid": "dd07c82afc3c10677a4374cd6bb9b926",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav"
+              },
+              "stamp": "sha256:4b3d877a9f6ff8516b8a022dfc215620dd7417b7384952611a41646f7b1f8f1f"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:13:41.038Z",
+    "applied": "2026-10-05T06:13:41.162Z"
+  }
+}

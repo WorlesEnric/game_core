@@ -1,0 +1,225 @@
+[
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4BW855QVHN00WY72DHMN6GH`\n\n- Change set id: `cs_01M4BW855QVHN00WY72DHMN6GH` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `140` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nChange the lantern quest to require two oil flasks.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `to\n[... 26308 bytes omitted ...]\n position (world space).\",\n          \"name\": \"position\",\n          \"required\": true,\n          \"type\": \"vector3\",\n          \"unit\": \"m\"\n        },\n        {\n          \"doc\": \"Spawn heading around +Y.\",\n          \"name\": \"yaw\",\n          \"required\": false,\n          \"type\": \"float\",\n          \"unit\": \"deg\"\n        },\n        {\n          \"doc\": \"Spawn point name (empty: default, the region's own spawn).\",\n          \"name\": \"name\",\n          \"required\": false,\n          \"type\": \"string\"\n        }\n      ],\n      \"doc\": \"Sets a spawn point of the target region: recorded as a named spawn point of the region definition; when the region scene is open, the default one also creates or moves the scene's SpawnPoint child (a named one its 'SpawnPoint <name>' marker).\",\n      \"id\": \"world.setSpawnPoint\",\n      \"prerequisites\": [\n        {\n          \"on\": \"Project\",\n          \"requires\": \"world.region\"\n        }\n      ],\n      \"runtimeApply\": \"Rebuild\",\n      \"scopes\": [\n        \"Definition\"\n      ],\n      \"targetRequired\": true,\n      \"targetType\": \"world.region\",\n      \"tier\": \"Compose\",\n      \"validators\": [\n        {\n          \"codes\": [\n            \"GP-ID-001\",\n            \"GP-ID-003\",\n            \"GP-REF-003\",\n            \"GP-WLD-001\",\n            \"GP-WLD-002\",\n            \"GP-WLD-003\",\n            \"GP-WLD-004\",\n            \"GP-WLD-005\",\n            \"GP-WLD-006\",\n            \"GP-WLD-007\",\n            \"GP-WLD-050\",\n            \"GP-WLD-051\",\n            \"GP-WLD-052\",\n            \"GP-WLD-053\",\n            \"GP-WLD-054\"\n          ],\n          \"id\": \"world.validator\"\n        }\n      ]\n    },\n    {\n      \"args\": [\n        {\n          \"name\": \"regionId\",\n          \"required\": true,\n          \"type\": \"string\"\n        },\n        {\n          \"name\": \"portalId\",\n          \"required\": false,\n          \"type\": \"string\"\n        },\n        {\n          \"min\": 0.0,\n          \"name\": \"expectedRevision\",\n          \"required\": true,\n          \"type\": \"int\"\n        }\n      ],\n      \"doc\": \"Revision-checked runtime action. No authored changes or inverse.\",\n      \"id\": \"world.travel\",\n      \"runtimeApply\": \"Live\",\n      \"runtimeOnly\": true,\n      \"targetRequired\": true,\n      \"tier\": \"Configure\"\n    }\n  ]\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 194143 bytes in total; full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-0.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/selection.json; cat /inputs/index-slice.json; cat /inputs/scene-context.json; python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'))\nfor t in c['tools']:\n if 'quest' in t['id'].lower() or 'objective' in t['id'].lower() or 'condition' in t['id'].lower(): print(json.dumps(t,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30242,
+      "text": "{\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7975986277873073,\n      \"fov\": 60.0,\n      \"position\": [\n        221.0,\n        0.75724995136261,\n        3.8932952880859375\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:65b4b2fdba9c66b71f7b8fbaf5258aa23251fe00628de240ab88adcfb0137eb7\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4BW854PMR8PMCY3DHGXNFA5\",\n  \"indexRevision\": 140,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n      \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n      \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n      \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n    },\n    {\n      \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n      \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n      \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Items/Lantern.asset\",\n      \"stamp\": \"sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e\"\n    }\n  ]\n}{\n  \"edges\": [\n    {\n      \"from\": {\n        \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n        \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n        \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"A\n[... 26306 bytes omitted ...]\nence\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"category\": \"quest.quest\",\n      \"doc\": \"The prerequisite quests (empty: none).\",\n      \"name\": \"prerequisites\",\n      \"required\": false,\n      \"type\": \"ref[]\"\n    }\n  ],\n  \"doc\": \"Sets the quests that must be completed before this one starts; a failed prerequisite closes this quest.\",\n  \"id\": \"quest.setPrerequisites\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"doc\": \"Steps separated by ';'.\",\n      \"name\": \"path\",\n      \"required\": true,\n      \"type\": \"string\"\n    }\n  ],\n  \"doc\": \"Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.\",\n  \"id\": \"quest.simulate\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"readOnly\": true,\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 107595 bytes in total; full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-1.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\ns=json.load(open('/inputs/index-slice.json')); print('truncated',s.get('truncated'));print('\\n'.join(f\"{x.get('name')} {x.get('type')} {x.get('ref',{}).get('path')}\" for x in s['nodes'])); c=json.load(open('/inputs/tool-catalog.json'));print('\\nTOOLS');print('\\n'.join(t['id']+' '+str([(a['name'],a['type'],a.get('required')) for a in t.get('args',[])]) for t in c['tools'] if ('setField' in t['id'] or 'setObjective' in t['id'] or 'field' in t['id'].lower() and 'authoring' in t['id'])))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1378,
+      "text": "truncated None\nDrownedBell quest.quest Assets/Hollowmere/Quests/DrownedBell.asset\nLantern inventory.item Assets/Hollowmere/Items/Lantern.asset\nDrownedBelfry world.region Assets/Hollowmere/World/Regions/DrownedBelfry.asset\nending_b narrative.fact Assets/Hollowmere/Dialogue/Facts/ending_b.asset\nLanternLostNoSpare logic.conditionSet Assets/Hollowmere/Rules/Conditions/LanternLostNoSpare.asset\nheard_rumour narrative.fact Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset\nending_c narrative.fact Assets/Hollowmere/Dialogue/Facts/ending_c.asset\nmaren_grateful narrative.fact Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset\nending_a narrative.fact Assets/Hollowmere/Dialogue/Facts/ending_a.asset\ngate_open narrative.fact Assets/Hollowmere/Dialogue/Facts/gate_open.asset\nMarenIntro logic.actionSet Assets/Hollowmere/Rules/Actions/MarenIntro.asset\nReturnToMaren logic.rule Assets/Hollowmere/Rules/ReturnToMaren.asset\nHollowmereContent logic.contentSet Assets/Hollowmere/Rules/HollowmereContent.asset\nInnStock inventory.vendor Assets/Hollowmere/Items/InnStock.asset\nShrinePost2Lit logic.conditionSet Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset\nLanternLost logic.rule Assets/Hollowmere/Rules/LanternLost.asset\nLantern entity.definition Assets/Hollowmere/World/Definitions/Lantern.asset\n\nTOOLS\n[exit code 0]\n[full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-2.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('\\n'.join(t['id'] for t in c['tools'] if t['id'].startswith(('authoring.','quest.','inventory.'))))\nPY\nls -la /outputs; ls /work/docs/studio/schemas/change-set.schema.json 2>/dev/null || true",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 441,
+      "text": "authoring.migrateRefs\ninventory.bindUse\ninventory.grantStarting\ninventory.placeItem\ninventory.setPrice\ninventory.setStock\nquest.addObjective\nquest.addStage\nquest.inspectRuntime\nquest.linkReward\nquest.setBranch\nquest.setConsequence\nquest.setPrerequisites\nquest.simulate\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:08 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:08 ..\n[exit code 0]\n[full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-3.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('\\n'.join(t['id'] for t in c['tools']))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1960,
+      "text": "addComponent\nasset.generate\nasset.import\nassign\naudio.assignClip\naudio.generateSfx\naudio.generateVoice\naudio.setAmbience\naudio.setMusicState\nauthoring.migrateRefs\nbind\ncreate\ndelete\ndialogue.addChoice\ndialogue.addLine\ndialogue.createGraph\ndialogue.generateVoice\ndialogue.linkCondition\ndialogue.preview\ndialogue.setConsequence\ndialogue.setFact\ndialogue.setFactCondition\ndialogue.start\nduplicate\nentity.applyOverride\nentity.despawn\nentity.duplicate\nentity.layoutLine\nentity.layoutRing\nentity.place\nentity.replaceDefinition\nentity.setMaterialTexture\nentity.setVariant\nentity.spawn\nhistory.redo\nhistory.undo\nhollowmere.addLight\nhollowmere.addScenery\nhollowmere.configureBootPresentation\nhollowmere.createMaterial\nhollowmere.generateNpcAnimator\nhollowmere.registerApplication\nhollowmere.setAtmosphere\nhollowmere.skinPrefab\nhollowmere.skinSceneObject\ninspect.describe\ninspect.explain\ninteraction.addDoor\ninteraction.addExaminable\ninteraction.addTrigger\ninteraction.explain\ninteraction.linkCondition\ninteraction.setActions\ninteraction.setStates\ninventory.bindUse\ninventory.grantStarting\ninventory.placeItem\ninventory.setPrice\ninventory.setStock\nlogic.addRule\nlogic.explain\nlogic.test\nlogic.whyNot\nmechanism.propose\nmove\nnpc.addAt\nnpc.goTo\nnpc.setAppearance\nnpc.setBehaviour\nnpc.setDialogue\nnpc.setPatrol\nnpc.setSchedule\nplace\nplayer.setCamera\nplayer.setSpawn\nplayer.tuneMovement\npreview.compare\npreview.stage\nproject.build\nproject.launch\nproject.reload\nproject.save\nquery.impact\nquery.references\nquest.addObjective\nquest.addStage\nquest.inspectRuntime\nquest.linkReward\nquest.setBranch\nquest.setConsequence\nquest.setPrerequisites\nquest.simulate\nremoveComponent\nreplace\nruntime.move\nsave.inspect\nsave.testRoundTrip\nset\nui.addScreen\nui.bind\nui.previewScreen\nui.setCommand\nui.setTheme\nworld.addPortal\nworld.configurePortal\nworld.connectRegions\nworld.setRegionBounds\nworld.setSpawnPoint\nworld.travel\n[exit code 0]\n[full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-4.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 5,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print(json.dumps([t for t in c['tools'] if t['id'] in ('set','replace')],indent=2));print(json.dumps([x for x in c['objectTypes'] if x['typeId']=='quest.quest'],indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 3542,
+      "text": "[\n  {\n    \"args\": [\n      {\n        \"doc\": \"The prefab asset to instantiate.\",\n        \"name\": \"with\",\n        \"required\": true,\n        \"type\": \"ref\"\n      }\n    ],\n    \"doc\": \"Replace a scene object with an instance of a prefab at the same parent, sibling index and placement. The replaced entity's authoring id moves to the new instance.\",\n    \"id\": \"replace\",\n    \"runtimeApply\": \"Rebuild\",\n    \"targetKinds\": [\n      \"Entity\",\n      \"SceneObject\",\n      \"Region\"\n    ],\n    \"targetRequired\": true,\n    \"tier\": \"Compose\"\n  },\n  {\n    \"args\": [\n      {\n        \"doc\": \"Field name (used with 'value').\",\n        \"name\": \"field\",\n        \"required\": false,\n        \"type\": \"string\"\n      },\n      {\n        \"doc\": \"New value of 'field' (its type is the field's catalog type; null clears).\",\n        \"name\": \"value\",\n        \"required\": false,\n        \"type\": \"fieldValue\"\n      },\n      {\n        \"doc\": \"Several fields at once: { name: value }.\",\n        \"name\": \"fields\",\n        \"required\": false,\n        \"type\": \"object\"\n      }\n    ],\n    \"doc\": \"Set or clear authorable fields of an existing object. Give {field, value} or {fields: {name: value}}; each value has the type the object type declares for that field (catalog objectTypes).\",\n    \"id\": \"set\",\n    \"runtimeApply\": \"Live\",\n    \"targetKinds\": [\n      \"Entity\",\n      \"Definition\",\n      \"Region\",\n      \"SceneObject\"\n    ],\n    \"targetRequired\": true,\n    \"tier\": \"Configure\"\n  }\n]\n[\n  {\n    \"displayName\": \"Quest\",\n    \"doc\": \"A quest: prerequisites, stages of objectives (with alternative branches), rewards granted exactly once, optional fail conditions, and the actions run on completion or failure.\",\n    \"fields\": [\n      {\n        \"doc\": \"Journal title.\",\n        \"name\": \"title\",\n        \"required\": false,\n        \"type\": \"string\"\n      },\n      {\n        \"doc\": \"The stages, in order.\",\n        \"name\": \"stages\",\n        \"required\": false,\n        \"type\": \"object[]\"\n      },\n      {\n        \"doc\": \"The objectives of every stage.\",\n        \"name\": \"objectives\",\n        \"required\": false,\n        \"type\": \"object[]\"\n      },\n      {\n        \"doc\": \"Rewards on completion.\",\n        \"name\": \"rewards\",\n        \"required\": false,\n        \"type\": \"object[]\"\n      },\n      {\n        \"category\": \"logic.conditionSet\",\n        \"doc\": \"While active, the quest fails as soon as these hold.\",\n        \"name\": \"failConditions\",\n        \"required\": false,\n        \"type\": \"ref\"\n      },\n      {\n        \"doc\": \"Names of branches 1..n (journal, simulate).\",\n        \"name\": \"branchNames\",\n        \"required\": false,\n        \"type\": \"string[]\"\n      },\n      {\n        \"category\": \"quest.quest\",\n        \"doc\": \"Quests that must be completed before this one can start; when one of them fails, this quest closes (fails without starting).\",\n        \"name\": \"prerequisites\",\n        \"required\": false,\n        \"type\": \"ref[]\"\n      },\n      {\n        \"category\": \"logic.actionSet\",\n        \"doc\": \"Actions run (once, through the outbox) when the quest completes, after its rewards.\",\n        \"name\": \"completionActions\",\n        \"required\": false,\n        \"type\": \"ref\"\n      },\n      {\n        \"category\": \"logic.actionSet\",\n        \"doc\": \"Actions run (once, through the outbox) when the quest fails.\",\n        \"name\": \"failActions\",\n        \"required\": false,\n        \"type\": \"ref\"\n      }\n    ],\n    \"runtimeApply\": \"Rebuild\",\n    \"scopes\": [\n      \"Definition\"\n    ],\n    \"typeId\": \"quest.quest\"\n  }\n]\n[exit code 0]\n[full log: /tmp/etos/out/t3afd2fe9c591be71d42d05b0-1-5.log]"
+    }
+  },
+  {
+    "taskId": "t3afd2fe9c591be71d42d05b0",
+    "turn": 1,
+    "index": 6,
+    "name": "write",
+    "args": {
+      "path": "/outputs/clarification.json",
+      "content": "{\"status\":\"needs-clarification\",\"question\":\"Should collecting two oil flasks replace the existing lantern objective or be an additional objective? Please select the oil-flask item as well, since it is absent from the supplied index.\"}\n"
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 55,
+      "text": "Wrote /outputs/clarification.json (235 bytes, 1 lines)."
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n---catalog---\\n' && cat /inputs/tool-catalog.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4BW9WRYVR6WZXSV4KFW1ZEB`\n\n- Change set id: `cs_01M4BW9WRYVR6WZXSV4KFW1ZEB` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `140` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nChange the lantern quest to require two oil flasks.\nAnswer to \"Should collecting two oil flasks replace the existing lantern objective or be an additional objective? Please select the oil-flask item as well, since it is absent from the supplied index.\": The quest is The Drowned Bell (the lantern is needed to cross the marsh). There is no oil flask item yet: add an Oil Flask item and an objective in stage 1 ('The marsh gate') to collect 2 oil flasks. Keep the other objectives as they are.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `30aaae0a97dbbea82ee3fb01e2d9ed34865e7efc33bc54d3a1c5eb1ae96a2368`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='30aaae0a\n[... 26308 bytes omitted ...]\n position (world space).\",\n          \"name\": \"position\",\n          \"required\": true,\n          \"type\": \"vector3\",\n          \"unit\": \"m\"\n        },\n        {\n          \"doc\": \"Spawn heading around +Y.\",\n          \"name\": \"yaw\",\n          \"required\": false,\n          \"type\": \"float\",\n          \"unit\": \"deg\"\n        },\n        {\n          \"doc\": \"Spawn point name (empty: default, the region's own spawn).\",\n          \"name\": \"name\",\n          \"required\": false,\n          \"type\": \"string\"\n        }\n      ],\n      \"doc\": \"Sets a spawn point of the target region: recorded as a named spawn point of the region definition; when the region scene is open, the default one also creates or moves the scene's SpawnPoint child (a named one its 'SpawnPoint <name>' marker).\",\n      \"id\": \"world.setSpawnPoint\",\n      \"prerequisites\": [\n        {\n          \"on\": \"Project\",\n          \"requires\": \"world.region\"\n        }\n      ],\n      \"runtimeApply\": \"Rebuild\",\n      \"scopes\": [\n        \"Definition\"\n      ],\n      \"targetRequired\": true,\n      \"targetType\": \"world.region\",\n      \"tier\": \"Compose\",\n      \"validators\": [\n        {\n          \"codes\": [\n            \"GP-ID-001\",\n            \"GP-ID-003\",\n            \"GP-REF-003\",\n            \"GP-WLD-001\",\n            \"GP-WLD-002\",\n            \"GP-WLD-003\",\n            \"GP-WLD-004\",\n            \"GP-WLD-005\",\n            \"GP-WLD-006\",\n            \"GP-WLD-007\",\n            \"GP-WLD-050\",\n            \"GP-WLD-051\",\n            \"GP-WLD-052\",\n            \"GP-WLD-053\",\n            \"GP-WLD-054\"\n          ],\n          \"id\": \"world.validator\"\n        }\n      ]\n    },\n    {\n      \"args\": [\n        {\n          \"name\": \"regionId\",\n          \"required\": true,\n          \"type\": \"string\"\n        },\n        {\n          \"name\": \"portalId\",\n          \"required\": false,\n          \"type\": \"string\"\n        },\n        {\n          \"min\": 0.0,\n          \"name\": \"expectedRevision\",\n          \"required\": true,\n          \"type\": \"int\"\n        }\n      ],\n      \"doc\": \"Revision-checked runtime action. No authored changes or inverse.\",\n      \"id\": \"world.travel\",\n      \"runtimeApply\": \"Live\",\n      \"runtimeOnly\": true,\n      \"targetRequired\": true,\n      \"tier\": \"Configure\"\n    }\n  ]\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 194582 bytes in total; full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-0.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/selection.json; cat /inputs/index-slice.json; cat /inputs/scene-context.json; python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'))\nfor t in c['tools']:\n if t['id'].startswith(('quest.','item.','inventory.')):\n  print(json.dumps(t,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30242,
+      "text": "{\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7975986277873073,\n      \"fov\": 60.0,\n      \"position\": [\n        221.0,\n        0.75724995136261,\n        3.8932952880859375\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:65b4b2fdba9c66b71f7b8fbaf5258aa23251fe00628de240ab88adcfb0137eb7\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4BW854PMR8PMCY3DHGXNFA5\",\n  \"indexRevision\": 140,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n      \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n      \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n      \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n    },\n    {\n      \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n      \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n      \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Items/Lantern.asset\",\n      \"stamp\": \"sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e\"\n    }\n  ]\n}{\n  \"edges\": [\n    {\n      \"from\": {\n        \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n        \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n        \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"A\n[... 26306 bytes omitted ...]\nence\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"category\": \"quest.quest\",\n      \"doc\": \"The prerequisite quests (empty: none).\",\n      \"name\": \"prerequisites\",\n      \"required\": false,\n      \"type\": \"ref[]\"\n    }\n  ],\n  \"doc\": \"Sets the quests that must be completed before this one starts; a failed prerequisite closes this quest.\",\n  \"id\": \"quest.setPrerequisites\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"doc\": \"Steps separated by ';'.\",\n      \"name\": \"path\",\n      \"required\": true,\n      \"type\": \"string\"\n    }\n  ],\n  \"doc\": \"Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.\",\n  \"id\": \"quest.simulate\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"readOnly\": true,\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 109514 bytes in total; full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-1.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nj=json.load(open('/inputs/index-slice.json'));print('nodes',len(j['nodes']));\nfor n in j['nodes']:\n print(n.get('name'),n.get('type'),n.get('ref'), {k:v.get('value') for k,v in n.get('fields',{}).items() if k in ('name','displayName','maxStack','stackLimit','stages')})\nc=json.load(open('/inputs/tool-catalog.json'));print('\\nCREATE TOOLS:');\nfor t in c['tools']:\n if any(w in t['id'].lower() for w in ['createitem','createobjective','additem','createinventory']):print(t['id'],t.get('doc'),t.get('args'))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 8286,
+      "text": "nodes 19\nDrownedBell quest.quest {'assetGuid': 'c0b53079e6e09fd8e94d904622330c55', 'authoringId': '0db698bb-d2d3-45b7-94cb-1bd81e90e6c2', 'global': 'GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Quests/DrownedBell.asset', 'scope': 'Definition', 'stamp': 'sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9'} {'stages': [{'description': 'Healer Maren speaks of the Drowned Bell, silent since the flood.', 'next': 1, 'title': 'Rumour'}, {'description': \"Blackmere is dark. Find a lantern, buy one at the inn, or craft one at the tinker's bench.\", 'next': 2, 'title': 'A light for the marsh'}, {'description': \"Get past Warden Hale's gate, then cross the black water: earn Odd's favour or mend the old punt.\", 'next': 3, 'title': 'The crossing'}, {'description': 'Ring the bell with its clapper, or let it sleep.', 'next': -1, 'title': 'The drowned belfry'}]}\nLantern inventory.item {'assetGuid': 'fffb111048bcd5d6ea31bc57defa7c6d', 'authoringId': '6bb88144-376c-4507-8429-e78247b14e66', 'global': 'GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Items/Lantern.asset', 'scope': 'Definition', 'stamp': 'sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e'} {'displayName': 'Lantern', 'maxStack': 2}\nDrownedBelfry world.region {'assetGuid': '832904035182b2712b3f6c244c515dea', 'authoringId': '1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18', 'global': 'GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-114000\n[... 4350 bytes omitted ...]\nGlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Items/InnStock.asset', 'scope': 'Definition', 'stamp': 'sha256:03006e4a42ec6e9a99bf38a1de8d04c2ece035219174151c6f698867be75a438'} {'displayName': 'The Drowned Lantern'}\nShrinePost2Lit logic.conditionSet {'assetGuid': '86c925c9e9ef805f897d990a3734a6a0', 'authoringId': '23b3180d-6b41-4b6b-a274-5d08a8ab4123', 'global': 'GlobalObjectId_V1-3-86c925c9e9ef805f897d990a3734a6a0-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Rules/Conditions/ShrinePost2Lit.asset', 'scope': 'Definition', 'stamp': 'sha256:d94d1c73c9f341da6571a967fcb91845e0a414e139ce6a86712e8a15c97bfb2b'} {}\nLanternLost logic.rule {'assetGuid': 'e7ff9703a23afeb47b4a7596e1eb7493', 'authoringId': '4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf', 'global': 'GlobalObjectId_V1-3-e7ff9703a23afeb47b4a7596e1eb7493-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Rules/LanternLost.asset', 'scope': 'Definition', 'stamp': 'sha256:c4198cf385f5dc875675551fbea7ff575a192f5203459c20d92ee4cec51f08da'} {}\nBell entity.definition {'assetGuid': '1d4b2e8101dbaea66a3fb54c1fc9e507', 'authoringId': '05b934c3-466a-4cbd-9ec5-e887ecf26794', 'global': 'GlobalObjectId_V1-3-1d4b2e8101dbaea66a3fb54c1fc9e507-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/World/Definitions/Bell.asset', 'scope': 'Definition', 'stamp': 'sha256:029d2699b943eb92ef7609f1dfd909bb02356a0d66fbcd1b5b9a900f9a51479b'} {}\nLantern entity.definition {'assetGuid': 'b2a9c9d308ca808c7968da017d5b089f', 'authoringId': '18779563-f74f-4223-947f-19f0502c5a63', 'global': 'GlobalObjectId_V1-3-b2a9c9d308ca808c7968da017d5b089f-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/World/Definitions/Lantern.asset', 'scope': 'Definition', 'stamp': 'sha256:5abb4524e7ad1fea844b3f7baff54d0c571235fc3e69e34a6af0240aca2b6113'} {}\nOil Flask inventory.item {'assetGuid': '344e1560f458dcce8b088aebc730d844', 'authoringId': 'bc9e0772-4981-4a2e-8e1b-03be5c839d18', 'global': 'GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0', 'kind': 'Definition', 'path': 'Assets/Hollowmere/Items/OilFlask.asset', 'scope': 'Definition', 'stamp': 'sha256:8c005e02b561411aa2b16fa0a4e303262f8ad8d1a49e54963b19e2661dac014c'} {}\n\nCREATE TOOLS:\n[exit code 0]\n[full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-2.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nj=json.load(open('/inputs/index-slice.json'))\nfor n in j['nodes']:\n if n.get('name')=='Oil Flask':print(json.dumps(n,indent=2))\nc=json.load(open('/inputs/tool-catalog.json'))\nfor t in c['tools']:\n if t['id'].startswith('authoring.') or 'create' in t['id'].lower() and 'item' in str(t).lower(): print(t['id'],t.get('doc'),t.get('args'))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 934,
+      "text": "{\n  \"name\": \"Oil Flask\",\n  \"ref\": {\n    \"assetGuid\": \"344e1560f458dcce8b088aebc730d844\",\n    \"authoringId\": \"bc9e0772-4981-4a2e-8e1b-03be5c839d18\",\n    \"global\": \"GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0\",\n    \"kind\": \"Definition\",\n    \"path\": \"Assets/Hollowmere/Items/OilFlask.asset\",\n    \"scope\": \"Definition\",\n    \"stamp\": \"sha256:8c005e02b561411aa2b16fa0a4e303262f8ad8d1a49e54963b19e2661dac014c\"\n  },\n  \"type\": \"inventory.item\"\n}\nauthoring.migrateRefs Finds legacy string and pseudo-category references (P1.3/P1.4 content) and, with apply, rewrites them as typed references; lists what it changed and what names nothing. [{'doc': 'Asset folders to scan (empty: Assets).', 'name': 'folders', 'required': False, 'type': 'string[]'}, {'doc': 'Rewrite (true) or only report (false).', 'name': 'apply', 'required': False, 'type': 'bool'}]\n[exit code 0]\n[full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-3.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'))\nfor t in c['tools']:\n if t['id'].startswith(('project.','content.','inventory.')): print(t['id'],t.get('doc','')[:140])\nPY\nls -la /outputs; ls /work/docs/studio/schemas/change-set.schema.json 2>/dev/null || true",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1270,
+      "text": "inventory.bindUse Sets what using an item does: an action set run through the outbox; null makes the item unusable.\ninventory.grantStarting Sets how many of an item an inventory starts with (0 removes the line).\ninventory.placeItem Places an item in a region as a world item the player can pick up once (action ref inventory.pickup).\ninventory.setPrice Sets an item's base price; with a vendor, sets that vendor's buy price for the item instead (-1 = the item's price).\ninventory.setStock Sets a vendor's stock line: count (or unlimited), the price the player pays and the price the vendor pays.\nproject.build Build a player through the build lane. NotConfigured until a build lane is registered.\nproject.launch Launch the last (or a named) build through the build lane. NotConfigured until a build lane is registered.\nproject.reload Refresh the AssetDatabase, forget cached types and tools, and rebuild the semantic index. Returns the new index and catalog revisions.\nproject.save Save dirty assets and every open scene (the journal is independent of saving: an entry can be Applied and unsaved).\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:09 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:09 ..\n[exit code 0]\n[full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-4.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 5,
+    "name": "shell",
+    "args": {
+      "command": "find /inputs -maxdepth 1 -type f -printf '%f\\n'; python - <<'PY'\nimport json\nj=json.load(open('/inputs/index-slice.json'));print(j.keys());print('truncated:',j.get('truncated'))\nPY\netos help >/dev/null && echo 'etos available'",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 237,
+      "text": "scene-context.json\nselection.json\nrequest.md\ntool-catalog.json\nindex-slice.json\ndict_keys(['edges', 'nodes', 'project', 'revision'])\ntruncated: None\netos available\n[exit code 0]\n[full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-5.log]"
+    }
+  },
+  {
+    "taskId": "tfdc101042e5470f60169c0c3",
+    "turn": 1,
+    "index": 6,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json,os\nsel=json.load(open('/inputs/selection.json')); ix=json.load(open('/inputs/index-slice.json')); catalog=json.load(open('/inputs/tool-catalog.json'))\nquest=next(n for n in ix['nodes'] if n.get('name')=='DrownedBell')['ref']; item=next(n for n in ix['nodes'] if n.get('name')=='Oil Flask')['ref']; tool=next(t for t in catalog['tools'] if t['id']=='quest.addObjective')\nassert ix['revision']==sel['indexRevision']==140\nassert ix['nodes'][0]['fields']['stages']['value'][1]['title']=='A light for the marsh'\nassert tool['runtimeApply']=='Rebuild' and 'Definition' in tool['scopes']\ncs={'id':'cs_01M4BW9WRYVR6WZXSV4KFW1ZEB','schema':'gamecore.studio.changeset/1','intent':{'text':'Change The Drowned Bell quest: in stage 1, add an objective to collect two Oil Flasks alongside the existing lantern objective; keep all other objectives unchanged.','origin':'agent'},'selection':{k:sel[k] for k in ('id','mode','indexRevision','targets')},'baseVersions':[{'ref':r,'stamp':r['stamp']} for r in (quest,item)],'operations':[{'opId':'op1','tool':'quest.addObjective','target':quest,'args':{'stage':1,'kind':'Collect','target':item,'required':2,'branch':0,'text':'Collect 2 oil flasks'},'dependsOn':[],'preconditions':'stamp','applyRequirement':'Rebuild'}],'artifacts':[],'requirements':{'max':'Rebuild','worldRebuild':True,'compile':False,'build':False}}\n# catalog and snapshot checks\nop=cs['operations'][0]; assert op['tool'] in {t['id'] for t in catalog['tools']}; assert set(op['args']) <= {a['name'] for a in tool['args']}; assert {a['name'] for a in tool['args'] if a['required']} <= set(op['args']); assert op['target']['kind']=='Definition' and op['target']['scope'] in tool['scopes']; assert op['target'] in [n['ref'] for n in ix['nodes']]; assert op['args']['target'] in [n['ref'] for n in ix['nodes']]; assert all(x['stamp'].startswith('sha256:') for x in cs['baseVersions']);os.makedirs('/outputs',exist_ok=True)\nwith open('/outputs/changeset.json','w') as f:json.dump(cs,f,indent=2,ensure_ascii=False);f.write('\\n')\nprint('Verified one catalog-compliant objective, existing item reference and stage index; wrote',os.stat('/outputs/changeset.json').st_size,'bytes')\nPY\npython -m json.tool /outputs/changeset.json >/dev/null && echo 'JSON parse PASS'; ls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 347,
+      "text": "Verified one catalog-compliant objective, existing item reference and stage index; wrote 3734 bytes\nJSON parse PASS\ntotal 12\ndrwxrwxr-x 2 agent agent 4096 Oct  7 19:10 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 19:09 ..\n-rw-r--r-- 1 agent agent 3734 Oct  7 19:10 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/tfdc101042e5470f60169c0c3-1-6.log]"
+    }
+  }
+]

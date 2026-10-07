@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="42" result="Passed" total="42" passed="42" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.4731687">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="624" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.473169" total="42" passed="42" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1314" name="GameCore.Studio.Views.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Editor.Tests.dll" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.507849" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3791323" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1315" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.506965" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1316" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.506571" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1317" name="Views" fullname="GameCore.Studio.Views" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.506233" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1318" name="Tests" fullname="GameCore.Studio.Views.Tests" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.505904" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1283" name="EditBuilderTests" fullname="GameCore.Studio.Views.Tests.EditBuilderTests" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.217112" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1287" name="Dialogue_AddLineUsesTheToolWithAfter" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_AddLineUsesTheToolWithAfter" methodname="Dialogue_AddLineUsesTheToolWithAfter" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="422055045" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.056864" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1284" name="Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" methodname="Dialogue_ConnectReplacesThePortAndSetsTheEdgeList" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="376537354" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.004789" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1286" name="Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" methodname="Dialogue_RemoveNodeShiftsNodesAndReindexesEdges" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="367574028" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.002290" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1285" name="Dialogue_TextAndRenameArePartialElementSets" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Dialogue_TextAndRenameArePartialElementSets" methodname="Dialogue_TextAndRenameArePartialElementSets" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="346276723" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.002079" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1292" name="PackageGraph_ReportsDependencyAndKernelProblems" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.PackageGraph_ReportsDependencyAndKernelProblems" methodname="PackageGraph_ReportsDependencyAndKernelProblems" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1748524866" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.039989" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1288" name="Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" methodname="Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1411360979" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.018136" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1289" name="Quest_SimulationParsesStatusFactsInventoryAndRewards" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Quest_SimulationParsesStatusFactsInventoryAndRewards" methodname="Quest_SimulationParsesStatusFactsInventoryAndRewards" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1821065758" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.004268" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1291" name="Table_CsvQuotesPerRfc4180" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Table_CsvQuotesPerRfc4180" methodname="Table_CsvQuotesPerRfc4180" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="1064463436" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.003707" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1290" name="Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" fullname="GameCore.Studio.Views.Tests.EditBuilderTests.Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" methodname="Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets" classname="GameCore.Studio.Views.Tests.EditBuilderTests" runstate="Runnable" seed="974139082" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.055247" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1293" name="R2ViewsRegressionTests" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="1.048773" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1294" name="R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" methodname="R2_30_StandaloneMinimumPersistsAfterReopenAndDockingUsesPanelMinimum" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1143953686" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.010351" asserts="0">
+                  <properties />
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1302" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.016583" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1300" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld(False)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld(False)" methodname="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="972935105" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.013034" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1301" name="R2_32_DialogueUsesStartedAndRebindsRestoredWorld(True)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_DialogueUsesStartedAndRebindsRestoredWorld(True)" methodname="R2_32_DialogueUsesStartedAndRebindsRestoredWorld" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="713438863" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.000354" asserts="0">
+                    <properties />
+                  </test-case>
+                </test-suite>
+                <test-case id="1299" name="R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" methodname="R2_32_MismatchedAndThrowingMembersRefuseWithDiagnostic" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="679461890" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.005401" asserts="0">
+                  <properties />
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1298" name="R2_32_TravelUsesTypedReceiptAndExactOverload" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.003736" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1295" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Accepted,Submitted)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Accepted,Submitted)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1103825515" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.002018" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1296" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Committed,Submitted)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Committed,Submitted)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1462802429" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.000277" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1297" name="R2_32_TravelUsesTypedReceiptAndExactOverload(Refused,Refused)" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_32_TravelUsesTypedReceiptAndExactOverload(Refused,Refused)" methodname="R2_32_TravelUsesTypedReceiptAndExactOverload" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="809313787" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:23Z" duration="0.000235" asserts="0">
+                    <properties />
+                  </test-case>
+                </test-suite>
+                <test-case id="1304" name="R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" methodname="R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="813400049" result="Passed" start-time="2026-10-07 18:35:23Z" end-time="2026-10-07 18:35:24Z" duration="0.948165" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  </properties>
+                </test-case>
+                <test-case id="1303" name="R2_35_CheckerResultRetainsRulesOutsideLocalGraph" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_CheckerResultRetainsRulesOutsideLocalGraph" methodname="R2_35_CheckerResultRetainsRulesOutsideLocalGraph" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="355589" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.001404" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1305" name="R2_36_ContextDoesNotInstallContributorOrRebuildIndex" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_36_ContextDoesNotInstallContributorOrRebuildIndex" methodname="R2_36_ContextDoesNotInstallContributorOrRebuildIndex" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1995180880" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.050432" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1306" name="R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" methodname="R2_36_NodeRefsLabelClassifiedEdgesWithoutViewsContributor" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="1096362087" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.004628" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1307" name="SelectionSoftBindingPropagatesFocusChangesAndDetaches" fullname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests.SelectionSoftBindingPropagatesFocusChangesAndDetaches" methodname="SelectionSoftBindingPropagatesFocusChangesAndDetaches" classname="GameCore.Studio.Views.Tests.R2ViewsRegressionTests" runstate="Runnable" seed="776507693" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.002531" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1308" name="RelationshipsModelTests" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.237277" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1312" name="Export_WritesJsonAndMermaid" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Export_WritesJsonAndMermaid" methodname="Export_WritesJsonAndMermaid" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1765688403" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.012329" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1311" name="Impact_ListsReferrersTransitivelyWithCountsByType" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Impact_ListsReferrersTransitivelyWithCountsByType" methodname="Impact_ListsReferrersTransitivelyWithCountsByType" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1910620119" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.006934" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1309" name="IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" methodname="IndexGraph_ResolvesNameReferencesAndKeepsFieldLabels" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1917858875" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.004249" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1310" name="Neighbourhood_FollowsDepthAndEdgeKinds" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.Neighbourhood_FollowsDepthAndEdgeKinds" methodname="Neighbourhood_FollowsDepthAndEdgeKinds" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="1998268315" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.004984" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1313" name="R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" fullname="GameCore.Studio.Views.Tests.RelationshipsModelTests.R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" methodname="R2_30_R2_31_TwoThousandNodesReuseBuffersWithinFrameBudget" classname="GameCore.Studio.Views.Tests.RelationshipsModelTests" runstate="Runnable" seed="494722836" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:24Z" duration="0.204191" asserts="0">
+                  <properties />
+                  <output><![CDATA[[P2.3] 2000-node relationships: index graph 10.9 ms, neighbourhood 3.4 ms, SetGraph 11.9 ms, layout 2 slices max 12.40 ms, whole layout frame max 12.94 ms total 17.1 ms, refresh max 0.39 ms, warm zoom bytes/frame 0.0, edge regroup bytes/frame 0.0, cards framed-all 0 (compact True), cards at root 36 (compact False)
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1339" name="GameCore.Studio.Views.Hollowmere.Tests.dll" fullname="~/wkspace/gc-studio/p4.2k/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Hollowmere.Tests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.357957" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3791323" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1340" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.355078" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1341" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.353401" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1342" name="Views" fullname="GameCore.Studio.Views" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.351922" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1343" name="Hollowmere" fullname="GameCore.Studio.Views.Hollowmere" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.350533" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1344" name="Tests" fullname="GameCore.Studio.Views.Hollowmere.Tests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:53Z" duration="5.348816" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1319" name="HollowmereEditingViewsTests" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:37Z" duration="13.153856" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1326" name="Changes_RendersACandidateWithAConflictDiagnostic" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Changes_RendersACandidateWithAConflictDiagnostic" methodname="Changes_RendersACandidateWithAConflictDiagnostic" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="1470289332" result="Passed" start-time="2026-10-07 18:35:24Z" end-time="2026-10-07 18:35:26Z" duration="2.047040" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] changes view inspection: ok=False conflicts=1
+Agent: cheaper lantern
+cs_01M4BTC7XZQMDVA268WDP9QWV3  Requested  policy AllOrNothing  origin Agent  1 diagnostic(s), 1 conflict(s)
+op1  set  ->  Lantern  (1 diagnostic(s))
+target auth:6bb88144-376c-4507-8429-e78247b14e66  stamp sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9
+current stamp sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e
+args {"field":"price","value":3}
+Conflict
+The target changed since it was selected (expected sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9, actual sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e).
+data {expected sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9, actual sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e}
+hint: Rebase: re-plan the operation against the current stamp, or skip it.
+op2  set  ->  OldCoin
+target auth:19942a74-dafe-4daf-a9d4-26bea7aad898  stamp sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9
+current stamp sha256:fb73b3aa7a5e5694ee338adf2ccc7bdc0628e72d192796a8e0d93fed257928a9
+dependsOn op1
+args {"field":"price","value":2}
+op1  set  ->  Lantern  (1 diagnostic(s))
+op2  set  ->  OldCoin
+
+]]></output>
+                  </test-case>
+                  <test-case id="1320" name="Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores" methodname="Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="1282218937" result="Passed" start-time="2026-10-07 18:35:26Z" end-time="2026-10-07 18:35:31Z" duration="4.788665" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1323" name="Dialogue_PreviewDiffersByFact" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_PreviewDiffersByFact" methodname="Dialogue_PreviewDiffersByFact" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="751032079" result="Passed" start-time="2026-10-07 18:35:31Z" end-time="2026-10-07 18:35:32Z" duration="1.022466" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] preview default:
+graph Maren (entry 0)
+  [0] branch fact bell_rung >= 1 -> no
+  [1] branch fact heard_rumour >= 1 -> no
+  [2] Maren: "Traveller, you look half drowned yourself. Sit a moment. I am Maren, the healer here."
+  [3] Maren: "Since the flood the bell in the old belfry has been silent, and the marsh has gone dark and hungry."
+  [4] action set fact heard_rumour = 1, start quest DrownedBell
+  [5] choice 0) "How do I cross the marsh?" 1) "Where would I find a lantern?" 2) "I will go."
+    choose 0 "How do I cross the marsh?":
+      [6] Maren: "Warden Hale keeps the causeway gate and lets no one into Blackmere without a light. Past it, Odd's ferry, or the old punt by the jetty."
+      (conversation ends)
+    choose 1 "Where would I find a lantern?":
+      [7] Maren: "Bram sells them at the inn. There was one in the barn once. And a clever hand can make one at the tinker's bench: an oil flask, and dried herbs for a wick."
+      (conversation ends)
+    choose 2 "I will go.":
+      [8] Maren: "Then go with care. The marsh keeps what it takes."
+      (conversation ends)
+preview bell_rung=1:
+graph Maren (entry 0)
+  [0] branch fact bell_rung >= 1 -> yes
+  [12] Maren: "The bell rang. Hollowmere can sleep again. Thank you, traveller."
+  (conversation ends)
+]]></output>
+                  </test-case>
+                  <test-case id="1322" name="Dialogue_UndoOnMarenKeepsTheConditionReferences" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_UndoOnMarenKeepsTheConditionReferences" methodname="Dialogue_UndoOnMarenKeepsTheConditionReferences" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="169104696" result="Passed" start-time="2026-10-07 18:35:32Z" end-time="2026-10-07 18:35:33Z" duration="1.345048" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] Maren set-text undo: True Undone
+]]></output>
+                  </test-case>
+                  <test-case id="1324" name="Quest_SimulatePassesOnBothBranches" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Quest_SimulatePassesOnBothBranches" methodname="Quest_SimulatePassesOnBothBranches" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="2113073982" result="Passed" start-time="2026-10-07 18:35:33Z" end-time="2026-10-07 18:35:34Z" duration="0.960477" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] simulate branch 1 (let it sleep): fact:heard_rumour=1; collect:6bb88144-376c-4507-8429-e78247b14e66=1; fact:gate_open=1; reach:1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18; fact:ending_a=1
+completed at stage 3 via let it sleep
+facts: heard_rumour=1, gate_open=1, ending_a=1
+inventory: 6bb88144-376c-4507-8429-e78247b14e66=1
+rewards: none
+[P2.3] simulate branch 2 (ring the bell): fact:heard_rumour=1; collect:6bb88144-376c-4507-8429-e78247b14e66=1; fact:gate_open=1; reach:1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18; fact:ending_b=1
+completed at stage 3 via ring the bell
+facts: heard_rumour=1, gate_open=1, ending_b=1, fact maren_grateful=1
+inventory: 6bb88144-376c-4507-8429-e78247b14e66=1
+rewards: fact fact maren_grateful = 1
+[P2.3] simulate branch 3 (free the echo): fact:heard_rumour=1; collect:6bb88144-376c-4507-8429-e78247b14e66=1; fact:gate_open=1; reach:1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18; fact:ending_c=1
+completed at stage 3 via free the echo
+facts: heard_rumour=1, gate_open=1, ending_c=1, fact maren_grateful=1
+inventory: 6bb88144-376c-4507-8429-e78247b14e66=1
+rewards: fact fact maren_grateful = 1
+]]></output>
+                  </test-case>
+                  <test-case id="1321" name="R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes" methodname="R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="1600662583" result="Passed" start-time="2026-10-07 18:35:34Z" end-time="2026-10-07 18:35:36Z" duration="1.476634" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1325" name="Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet" methodname="Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests" runstate="Runnable" seed="873755945" result="Passed" start-time="2026-10-07 18:35:36Z" end-time="2026-10-07 18:35:37Z" duration="1.509176" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] table csv:
+name,displayName,maxStack,weight,price,tags,useActions,icon
+OldCoin,Coin,20,10,1,[1],,
+Lantern,Lantern,2,900,4,[1],,
+MarshHerbs,Marsh Herbs,10,50,1,[2],,
+OilFlask,Oil Flask,5,300,2,[2],,
+GateKey,Gate Key,1,50,3,[1],,
+BellClapper,Bell Clapper,1,2500,0,[1],,
+
+]]></output>
+                  </test-case>
+                </test-suite>
+                <test-suite type="TestFixture" id="1327" name="HollowmereRelationshipsWorldTests" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 18:35:37Z" end-time="2026-10-07 18:35:42Z" duration="4.133675" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1329" name="LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock" methodname="LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" runstate="Runnable" seed="507408926" result="Passed" start-time="2026-10-07 18:35:37Z" end-time="2026-10-07 18:35:38Z" duration="0.882981" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] lantern impact: quest.quest DrownedBell (references objectives[1].item, depth 1); inventory.vendor InnStock (references stock[0].item, depth 1); logic.conditionSet ShrinePost2Lit (references conditions[0].item, depth 1); logic.rule LanternLost (references conditions[0].item, depth 1); logic.rule PuntRepair (references conditions[2].item, depth 1); logic.rule SinkholeDark (references conditions[0].item, depth 1); logic.conditionSet ShrinePost1Lit (references conditions[0].item, depth 1); logic.rule PuntNeedsLight (references conditions[2].item, depth 1); logic.conditionSet HasLantern (references conditions[0].item, depth 1); logic.conditionSet LanternLostNoSpare (references conditions[1].item, depth 1); logic.rule CraftLantern (references actions[2].item, depth 1); inventory.worldItem Lantern_Barn (references item, depth 1); logic.rule SinkholeTakesLantern (references conditions[0].item, depth 1); logic.actionSet BuyLantern (references actions[0].item, depth 1); logic.contentSet HollowmereContent (references definitions, depth 1); logic.actionSet MarenIntro (references actions[1].quest, depth 2); logic.rule ReturnToMaren (references triggerQuest, depth 2); logic.actionSet BuyOil (references actions[0].vendor, depth 2); logic.actionSet BuyHerbs (references actions[0].vendor, depth 2); interaction.interactable ShrinePostEast (references condition, depth 2); interaction.interactable ShrinePostMiddle (references condition, depth 2); dialogue.graph Hale (references nodes[1].condition, depth 2); dialogue.graph Odd (references nodes[5].options[0].condition, depth 2); interaction.interactable ShrinePostWest (references condition, depth 2); logic.rule Take_Lantern_Barn (references actions[0].worldItem, depth 2); dialogue.graph Bram (references nodes[3].actions, depth 2); dialogue.graph Maren (references nodes[4].actions, depth 3); interaction.roster InteractionRoster (references interactables, depth 3); npc.definition Hale (references dialogue, depth 3); npc.definition Odd (references dialogue, depth 3); npc.definition Bram (references dialogue, depth 3); npc.definition Maren (references dialogue, depth 4); npc.roster NpcRoster (references npcs, depth 4)
+[P2.3] oil flask impact: logic.actionSet BuyOil (references actions[0].item, depth 1); inventory.worldItem OilFlask_Marsh (references item, depth 1); inventory.vendor InnStock (references stock[1].item, depth 1); logic.rule BenchNeedsOil (references conditions[0].item, depth 1); logic.rule PuntLeaks (references conditions[1].item, depth 1); logic.rule PuntRepair (references conditions[1].item, depth 1); inventory.lootTable MarshLoot (references entries[2].item, depth 1); logic.rule PuntNeedsLight (references conditions[1].item, depth 1); logic.rule BenchNeedsHerbs (references conditions[0].item, depth 1); logic.rule CraftLantern (references conditions[0].item, depth 1); logic.contentSet HollowmereContent (references definitions, depth 1); dialogue.graph Bram (references nodes[4].actions, depth 2); logic.rule Take_OilFlask_Marsh (references actions[0].worldItem, depth 2); logic.actionSet BuyHerbs (references actions[0].vendor, depth 2); logic.actionSet BuyLantern (references actions[0].vendor, depth 2); hollowmere.director HollowmereDirector (references requests[0].lootTable, depth 2); npc.definition Bram (references dialogue, depth 3); npc.roster NpcRoster (references npcs, depth 4)
+[P2.3] gate key impact: inventory.vendor OddsStall (references stock[0].item, depth 1); logic.actionSet OddPersuaded (references actions[1].item, depth 1); logic.conditionSet HasGateKey (references conditions[0].item, depth 1); logic.rule GateKeyOpensGate (references triggerItem, depth 1); logic.contentSet HollowmereContent (references definitions, depth 1); logic.rule OddPaidOnTrade (references triggerVendor, depth 2)
+]]></output>
+                  </test-case>
+                  <test-case id="1328" name="Maren_ShowsHerDialogueGraphPatrolPointsAndRegion" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.Maren_ShowsHerDialogueGraphPatrolPointsAndRegion" methodname="Maren_ShowsHerDialogueGraphPatrolPointsAndRegion" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" runstate="Runnable" seed="816004677" result="Passed" start-time="2026-10-07 18:35:38Z" end-time="2026-10-07 18:35:39Z" duration="0.888243" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] Maren neighbourhood depth 2: 26 nodes, 31 links, view refresh 51 ms
+]]></output>
+                  </test-case>
+                  <test-case id="1331" name="R2_34_WorldAddPortalAndConnectAreSingleChangeSets" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.R2_34_WorldAddPortalAndConnectAreSingleChangeSets" methodname="R2_34_WorldAddPortalAndConnectAreSingleChangeSets" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" runstate="Runnable" seed="1768051084" result="Passed" start-time="2026-10-07 18:35:39Z" end-time="2026-10-07 18:35:41Z" duration="1.526058" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] world.addPortal: Applied cs_01M4BTCPK095HBWJ7WF83BXNJJ; unbound parameters:
+[P2.3] connect regions: Applied cs_01M4BTCPN2XV4NAMPBZ2KYNKYV [world.connectRegions]
+[P2.3] undo Connect Thornwick Village and Blackmere Marsh: True Undone
+]]></output>
+                  </test-case>
+                  <test-case id="1330" name="World_ListsThreeRegionsAndThePortalTriangle" fullname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.World_ListsThreeRegionsAndThePortalTriangle" methodname="World_ListsThreeRegionsAndThePortalTriangle" classname="GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests" runstate="Runnable" seed="569238903" result="Passed" start-time="2026-10-07 18:35:41Z" end-time="2026-10-07 18:35:42Z" duration="0.829858" asserts="0">
+                    <properties />
+                    <output><![CDATA[[P2.3] world Hollowmere: 3 regions, 3 portals, schedules 1
+]]></output>
+                  </test-case>
+                </test-suite>
+                <test-suite type="TestFixture" id="1332" name="R2GameplayPlayTests" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests" classname="GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 18:35:47Z" end-time="2026-10-07 18:35:49Z" duration="1.859095" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1333" name="R2_32_RealPlayDialogueTravelAndDestroyedOwner" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests.R2_32_RealPlayDialogueTravelAndDestroyedOwner" methodname="R2_32_RealPlayDialogueTravelAndDestroyedOwner" classname="GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests" runstate="Runnable" seed="1935466328" result="Passed" start-time="2026-10-07 18:35:42Z" end-time="2026-10-07 18:35:49Z" duration="7.652697" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-suite type="TestFixture" id="1334" name="R2ViewsIntegrationTests" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" classname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 18:35:49Z" end-time="2026-10-07 18:35:53Z" duration="3.483147" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1335" name="R2_15_ViewsUndoAndRedoUseAdmissionHistoryHandler" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_15_ViewsUndoAndRedoUseAdmissionHistoryHandler" methodname="R2_15_ViewsUndoAndRedoUseAdmissionHistoryHandler" classname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" runstate="Runnable" seed="937557007" result="Passed" start-time="2026-10-07 18:35:49Z" end-time="2026-10-07 18:35:50Z" duration="0.425419" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1336" name="R2_33_ViewsRespectRegistryAuthorityWhenPureToolIsReclassified" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_33_ViewsRespectRegistryAuthorityWhenPureToolIsReclassified" methodname="R2_33_ViewsRespectRegistryAuthorityWhenPureToolIsReclassified" classname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" runstate="Runnable" seed="1293457476" result="Passed" start-time="2026-10-07 18:35:50Z" end-time="2026-10-07 18:35:50Z" duration="0.778242" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1338" name="R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet" methodname="R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet" classname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" runstate="Runnable" seed="984153864" result="Passed" start-time="2026-10-07 18:35:50Z" end-time="2026-10-07 18:35:52Z" duration="1.493773" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                  </test-case>
+                  <test-case id="1337" name="R2_34_SpawnTargetsDefinitionAndPortalCarriesExplicitRegion" fullname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_34_SpawnTargetsDefinitionAndPortalCarriesExplicitRegion" methodname="R2_34_SpawnTargetsDefinitionAndPortalCarriesExplicitRegion" classname="GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests" runstate="Runnable" seed="1380864648" result="Passed" start-time="2026-10-07 18:35:52Z" end-time="2026-10-07 18:35:53Z" duration="0.783656" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

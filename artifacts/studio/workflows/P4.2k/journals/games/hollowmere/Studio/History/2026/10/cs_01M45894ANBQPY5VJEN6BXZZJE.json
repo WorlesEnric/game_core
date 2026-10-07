@@ -1,0 +1,125 @@
+{
+  "id": "cs_01M45894ANBQPY5VJEN6BXZZJE",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.belfry-lights] Belfry light: moonlight on the bell, the lantern by the crates",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "l0",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "name": "Moonlight on the Bell",
+        "position": [
+          100.0,
+          7.0,
+          196.0
+        ],
+        "color": [
+          0.6,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "intensity": 3.0,
+        "range": 18.0,
+        "shadows": true
+      }
+    },
+    {
+      "opId": "l1",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "name": "Belfry Lantern Light",
+        "position": [
+          92.0,
+          1.6,
+          190.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.5,
+        "range": 8.0,
+        "shadows": false
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "l0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.555Z",
+    "applied": "2026-10-05T05:23:42.559Z"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "label": "p42k-kernel-save",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:53:12.725139+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/unity/GameCore.Validation --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/logs --label p42k-kernel-save --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'GameCore.App.Tests.GameApplicationRootTests.Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld|GameCore.Persistence.Tests.SaveRestoreTests.AV1SaveIsMigratedToV2OnRestore|GameCore.Persistence.Tests.SaveRestoreTests.AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched'",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:53:12.726952+00:00",
+  "sourceDiffSha256": "f010f252ab6f1caf66ae26a8d1dccf7d98d5efeffcc531c538e6d9572275b20e",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:54:45.265305+00:00",
+  "seconds": 92.5418314661365,
+  "suites": {
+    "results.xml": {
+      "total": 3,
+      "counts": {
+        "Passed": 3
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

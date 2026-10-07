@@ -1,0 +1,26 @@
+{
+  "label": "p42k-animation",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:47:58.578664+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-PLUG-02/p42k-animation-20261007T184758.576913Z/logs --label p42k-animation --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml -- -runTests -testPlatform EditMode -testFilter AnimatorRespawnTests",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-PLUG-02/p42k-animation-20261007T184758.576913Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:47:58.580171+00:00",
+  "sourceDiffSha256": "f010f252ab6f1caf66ae26a8d1dccf7d98d5efeffcc531c538e6d9572275b20e",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:48:35.762512+00:00",
+  "seconds": 37.18550894409418,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

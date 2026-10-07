@@ -1,0 +1,247 @@
+{
+  "id": "cs_01M45CWFTQ0SWD7QD8MTKZT98C",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.world-items] Create the world items behind the new pickups (lantern in the barn, herbs, oil flask)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "w_Lantern_Barn",
+      "tool": "create",
+      "args": {
+        "type": "inventory.worldItem",
+        "path": "Assets/Hollowmere/Items/Lantern_Barn.asset",
+        "name": "Lantern_Barn",
+        "authoringId": "c57b57f6-1a0f-446d-8233-2e6256023d86",
+        "fields": {
+          "item": "Assets/Hollowmere/Items/Lantern.asset",
+          "count": 1,
+          "region": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+          "position": [
+            8.0,
+            0.0,
+            7.0
+          ],
+          "entityId": "837b3fc0-a424-4411-bc69-7ac040f8def0"
+        }
+      }
+    },
+    {
+      "opId": "w_MarshHerbs_Garden",
+      "tool": "create",
+      "args": {
+        "type": "inventory.worldItem",
+        "path": "Assets/Hollowmere/Items/MarshHerbs_Garden.asset",
+        "name": "MarshHerbs_Garden",
+        "authoringId": "395508b3-3f4b-4c45-9712-b82868c18466",
+        "fields": {
+          "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+          "count": 1,
+          "region": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+          "position": [
+            -9.0,
+            0.0,
+            15.0
+          ],
+          "entityId": "bcc77f89-ca7d-4197-8c86-a6efe61aba9a"
+        }
+      }
+    },
+    {
+      "opId": "w_OilFlask_Marsh",
+      "tool": "create",
+      "args": {
+        "type": "inventory.worldItem",
+        "path": "Assets/Hollowmere/Items/OilFlask_Marsh.asset",
+        "name": "OilFlask_Marsh",
+        "authoringId": "0b97f250-f3b8-41db-95a4-71e7bfad7e1c",
+        "fields": {
+          "item": "Assets/Hollowmere/Items/OilFlask.asset",
+          "count": 1,
+          "region": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+          "position": [
+            -10.0,
+            0.0,
+            -6.0
+          ],
+          "entityId": "1cc6ccc5-4575-41ac-8bf3-1446f594d70a"
+        }
+      }
+    },
+    {
+      "opId": "w_MarshHerbs_Marsh",
+      "tool": "create",
+      "args": {
+        "type": "inventory.worldItem",
+        "path": "Assets/Hollowmere/Items/MarshHerbs_Marsh.asset",
+        "name": "MarshHerbs_Marsh",
+        "authoringId": "eea651cb-d096-42c3-af2e-6c9125e17aca",
+        "fields": {
+          "item": "Assets/Hollowmere/Items/MarshHerbs.asset",
+          "count": 2,
+          "region": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+          "position": [
+            4.0,
+            0.0,
+            -14.0
+          ],
+          "entityId": "a0ec0302-146b-494d-9ef5-95812f441000"
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "w_Lantern_Barn",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/Lantern_Barn.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "c57b57f6-1a0f-446d-8233-2e6256023d86",
+                "global": "GlobalObjectId_V1-3-d34ee0be96e34d3f98b0c3287ba272e4-11400000-0",
+                "assetGuid": "d34ee0be96e34d3f98b0c3287ba272e4",
+                "path": "Assets/Hollowmere/Items/Lantern_Barn.asset"
+              },
+              "stamp": "sha256:c728eea5dc2f85e4d9878f53253d7d1a634f35363cc9dc0c8e8f913273aff374"
+            }
+          ],
+          "replay": {
+            "authoringId": "c57b57f6-1a0f-446d-8233-2e6256023d86",
+            "assetPath": "Assets/Hollowmere/Items/Lantern_Barn.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "w_MarshHerbs_Garden",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/MarshHerbs_Garden.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "395508b3-3f4b-4c45-9712-b82868c18466",
+                "global": "GlobalObjectId_V1-3-008eb8527cb778e9f92c83f42a70ce52-11400000-0",
+                "assetGuid": "008eb8527cb778e9f92c83f42a70ce52",
+                "path": "Assets/Hollowmere/Items/MarshHerbs_Garden.asset"
+              },
+              "stamp": "sha256:8519b94ecb356cacde8a438c65679e9e118f0a8ed2edb0ed2f56a9d05f8b85be"
+            }
+          ],
+          "replay": {
+            "authoringId": "395508b3-3f4b-4c45-9712-b82868c18466",
+            "assetPath": "Assets/Hollowmere/Items/MarshHerbs_Garden.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "w_OilFlask_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/OilFlask_Marsh.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "0b97f250-f3b8-41db-95a4-71e7bfad7e1c",
+                "global": "GlobalObjectId_V1-3-36b68ff2d6a69d907a0e5bffb7968d58-11400000-0",
+                "assetGuid": "36b68ff2d6a69d907a0e5bffb7968d58",
+                "path": "Assets/Hollowmere/Items/OilFlask_Marsh.asset"
+              },
+              "stamp": "sha256:71826430fa06271bf020a8dba7f8c4f05b3f24b8f57c2b0bf7ee842863cb6fbd"
+            }
+          ],
+          "replay": {
+            "authoringId": "0b97f250-f3b8-41db-95a4-71e7bfad7e1c",
+            "assetPath": "Assets/Hollowmere/Items/OilFlask_Marsh.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "w_MarshHerbs_Marsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/MarshHerbs_Marsh.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "eea651cb-d096-42c3-af2e-6c9125e17aca",
+                "global": "GlobalObjectId_V1-3-7b0777b6405b9fb05817761d55d24fd0-11400000-0",
+                "assetGuid": "7b0777b6405b9fb05817761d55d24fd0",
+                "path": "Assets/Hollowmere/Items/MarshHerbs_Marsh.asset"
+              },
+              "stamp": "sha256:40f668962938dce8300e29e5b41c52cd3febc3883c4e64655bfd679f84833f6b"
+            }
+          ],
+          "replay": {
+            "authoringId": "eea651cb-d096-42c3-af2e-6c9125e17aca",
+            "assetPath": "Assets/Hollowmere/Items/MarshHerbs_Marsh.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:44:11.582Z",
+    "applied": "2026-10-05T06:44:13.895Z"
+  }
+}

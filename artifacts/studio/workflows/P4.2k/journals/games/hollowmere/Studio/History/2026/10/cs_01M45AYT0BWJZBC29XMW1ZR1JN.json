@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45AYT0BWJZBC29XMW1ZR1JN",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: Bram sells them at the inn. There was one in the barn once. And a clever hand can make one at the tinker's bench: an oil flask, and dried herbs for a wick.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/Maren_lantern.wav",
+        "artifact": {
+          "artifact": "sha256:4b59a1fc84691b62f0d4a22cf6a1e2d3246b129f7f64fd060b5abb5fdc60fca2"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4b59a1fc84691b62f0d4a22cf6a1e2d3246b129f7f64fd060b5abb5fdc60fca2",
+      "name": "Maren_lantern.wav",
+      "mediaType": "audio/wav",
+      "bytes": 556844,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/Maren_lantern.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-4b759a6e7c9a46ae88cc058276c30f2c-8300000-0",
+                "assetGuid": "4b759a6e7c9a46ae88cc058276c30f2c",
+                "path": "Assets/Hollowmere/Media/Voices/Maren_lantern.wav"
+              },
+              "stamp": "sha256:4b59a1fc84691b62f0d4a22cf6a1e2d3246b129f7f64fd060b5abb5fdc60fca2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:10:30.041Z",
+    "applied": "2026-10-05T06:10:30.214Z"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "gamecore.studio.admission/2",
+  "changeSetId": "cs_01M4BY3HTH94A4ER81SH3PR7AF",
+  "phase": "applied",
+  "action": "admit",
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "directory": "Packages/com.hollowmere.mechanism.pressureplate",
+  "shared": false,
+  "verdict": "f4a30d7133cad31b9a882f3150305a865c522b0cc208223216eec2cd825e367d",
+  "startedMs": 1791402213620,
+  "candidate": {
+    "id": "cs_01M4BY3HTH94A4ER81SH3PR7AF",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "mechanism.propose",
+        "args": {
+          "description": "Pressure plate mechanism: a plate target with plate.pressed / plate.weight slots, pressed while the actors standing on it reach its threshold, refusing to go above its maximum weight or below zero; plate.press{actor} commits PlatePressed / PlateReleased.",
+          "package": {
+            "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+          },
+          "proposal": {
+            "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+          },
+          "stageInputs": []
+        },
+        "applyRequirement": "Compile"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+        "name": "package.tgz",
+        "mediaType": "application/gzip",
+        "bytes": 32839,
+        "role": "package"
+      },
+      {
+        "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+        "name": "proposal.json",
+        "mediaType": "application/json",
+        "bytes": 917,
+        "role": "proposal"
+      }
+    ],
+    "requirements": {
+      "max": "Compile",
+      "worldRebuild": false,
+      "compile": true,
+      "build": false
+    },
+    "state": "Candidate"
+  },
+  "catalogTypes": [
+    "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog"
+  ],
+  "restoreRemoved": false,
+  "captureSlot": "admit-cs_01m4by3hth94a4er81sh3pr7af",
+  "before": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "compileAction": "admit",
+  "compileDomain": "1528a6319c1a4651a15c848335fe75b6",
+  "compileDeadlineMs": 1791402307097,
+  "compileOutcome": "reloaded",
+  "world": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "live": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+  "smokeStartedMs": 1791402255104,
+  "smokeFrames": 123,
+  "smokeFrameBudget": 240,
+  "smokeTimeoutMs": 60000,
+  "smokeStatus": "Passed"
+}

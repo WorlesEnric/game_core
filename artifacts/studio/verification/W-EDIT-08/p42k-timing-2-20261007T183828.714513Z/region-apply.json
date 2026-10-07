@@ -1,0 +1,2937 @@
+{
+  "targets": [
+    "Hale",
+    "Odd"
+  ],
+  "region": {
+    "name": "Marsh-all-NPC",
+    "ms": [
+      101.3926,
+      31.4005,
+      31.297,
+      32.5152,
+      31.025000000000002,
+      30.876900000000003,
+      31.087600000000002,
+      31.8137,
+      30.709600000000002,
+      30.0379,
+      35.9275,
+      31.3806,
+      30.041500000000003,
+      31.0573,
+      35.6022,
+      30.838,
+      31.1594,
+      30.1853,
+      30.602300000000003,
+      33.144800000000004
+    ],
+    "count": 20,
+    "p95Ms": 35.9275,
+    "budgetMs": 1000.0,
+    "pass": true
+  },
+  "journal": [
+    {
+      "id": "cs_01M4BTMF73TVJDXVGXCP02BV9X",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:d3b368ce2bd89a33cbe86c2fedb73ceb407580c7c35c8a54b1b1ecd6134f9c27"
+          },
+          "args": {
+            "position": [
+              167.51,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:dee6b8421c156d323d266a4bfd4a1787d78d1223f52ef43fe659b0e36fc6e89d"
+          },
+          "args": {
+            "position": [
+              221.01,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.5,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:5c8e26129a3e74006fad73e40c1d1d59c00b1cd1e758c5ab52ce4b0ce28b4467"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.0,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:4f27ae931648ef9789eff2ac876be0a501712066f84f5a5e6e095747ce7f2e5b"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.289Z",
+        "applied": "2026-10-07T18:39:55.374Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFFVR5P11NHTDGJADSBZ",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:5c8e26129a3e74006fad73e40c1d1d59c00b1cd1e758c5ab52ce4b0ce28b4467"
+          },
+          "args": {
+            "position": [
+              167.52,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:4f27ae931648ef9789eff2ac876be0a501712066f84f5a5e6e095747ce7f2e5b"
+          },
+          "args": {
+            "position": [
+              221.02,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.51,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:0b9060bd3cc390345bfa533812ecdcf61190d55ddedd16dd9f6f4ba8059eabb7"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.01,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:25b605ef4be4ea69b56cf121c8509d3b26381b6902896a48e9e4227aa22ceb95"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.406Z",
+        "applied": "2026-10-07T18:39:55.432Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFHE0JJ6JWYC5GB8DW8P",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:0b9060bd3cc390345bfa533812ecdcf61190d55ddedd16dd9f6f4ba8059eabb7"
+          },
+          "args": {
+            "position": [
+              167.53,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:25b605ef4be4ea69b56cf121c8509d3b26381b6902896a48e9e4227aa22ceb95"
+          },
+          "args": {
+            "position": [
+              221.03,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.52,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:b2b2b995c0233f09be892cc2ae956af80b1c0449e56c2f1c8ddee8698ca76045"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.02,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:24fd216eac0052d086cf99a6a61454c2456f1974e2615343740f37f6afe0a6bd"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.456Z",
+        "applied": "2026-10-07T18:39:55.482Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFK0QB9B9R0XYBAEJM7R",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:b2b2b995c0233f09be892cc2ae956af80b1c0449e56c2f1c8ddee8698ca76045"
+          },
+          "args": {
+            "position": [
+              167.54,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:24fd216eac0052d086cf99a6a61454c2456f1974e2615343740f37f6afe0a6bd"
+          },
+          "args": {
+            "position": [
+              221.04,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.53,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:a7456e9f7acf8fb7b0c1a7db1eeb2ecb215e915fc48a4dff8c21e102679e183c"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.03,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:8d755a28fbd5ba9c6f0c5de8d168808bf3ce7e1994dce26b88ee2a91b961ec70"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.508Z",
+        "applied": "2026-10-07T18:39:55.535Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFMNQ9WTM13N6Q0HSS4W",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:a7456e9f7acf8fb7b0c1a7db1eeb2ecb215e915fc48a4dff8c21e102679e183c"
+          },
+          "args": {
+            "position": [
+              167.55,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:8d755a28fbd5ba9c6f0c5de8d168808bf3ce7e1994dce26b88ee2a91b961ec70"
+          },
+          "args": {
+            "position": [
+              221.05,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.54,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:70c17f837a1b5fae74d69989ab3f7f842a363b06a255f60fd6195f07ca9959d7"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.04,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:7b8b1b1f1a0a1a2092d459730d682a94488ef52b3c10b14057dda28e42ec28ad"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.557Z",
+        "applied": "2026-10-07T18:39:55.583Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFP5SZSRVSGX3YFR7HT5",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:70c17f837a1b5fae74d69989ab3f7f842a363b06a255f60fd6195f07ca9959d7"
+          },
+          "args": {
+            "position": [
+              167.56,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:7b8b1b1f1a0a1a2092d459730d682a94488ef52b3c10b14057dda28e42ec28ad"
+          },
+          "args": {
+            "position": [
+              221.06,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.55,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:923636ebcb08a91d96006104e9968c61affb1a1433dbac8c4335f19d4b9b2a05"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.05,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:07aed66cd31e1b2c7482854934a1d0642bc2b93c308b393dad0e215626c3f71e"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.605Z",
+        "applied": "2026-10-07T18:39:55.630Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFQMQVGYNQ6S1QBZKEW4",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:923636ebcb08a91d96006104e9968c61affb1a1433dbac8c4335f19d4b9b2a05"
+          },
+          "args": {
+            "position": [
+              167.57,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:07aed66cd31e1b2c7482854934a1d0642bc2b93c308b393dad0e215626c3f71e"
+          },
+          "args": {
+            "position": [
+              221.07,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.56,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:706d0ae042eef6b9e3f50293f9818a4a8d98cd0b846371d15c3eb4dbc71a5369"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.06,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:d90b77ebe640cd30eb712030b17a69d9ecfeca5e7c175eaab65c246960163a9b"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.654Z",
+        "applied": "2026-10-07T18:39:55.679Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFS52FAYQH1T2RVH535Z",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:706d0ae042eef6b9e3f50293f9818a4a8d98cd0b846371d15c3eb4dbc71a5369"
+          },
+          "args": {
+            "position": [
+              167.58,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:d90b77ebe640cd30eb712030b17a69d9ecfeca5e7c175eaab65c246960163a9b"
+          },
+          "args": {
+            "position": [
+              221.08,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.57,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:40c8ab8c40f452ab4130f996731f7178a672284f872f3889f26129d68e195a98"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.07,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:2abbfe99a985f1bfa380b46f3e85bd0117d701dee99f87c51bc5397482cd915c"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.702Z",
+        "applied": "2026-10-07T18:39:55.727Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFTP3XCQS2Z92WKSWH8T",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:40c8ab8c40f452ab4130f996731f7178a672284f872f3889f26129d68e195a98"
+          },
+          "args": {
+            "position": [
+              167.59,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:2abbfe99a985f1bfa380b46f3e85bd0117d701dee99f87c51bc5397482cd915c"
+          },
+          "args": {
+            "position": [
+              221.09,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.58,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:8801965f5b21f3605133249b04ea8a25b63e8d44dc91a8d7c6f70c2ba509e15b"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.08,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:0ab3a18ade43c3ea1a89474236cb155f2c5e16a55fb4b6b272a8ef20ca181caf"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.751Z",
+        "applied": "2026-10-07T18:39:55.776Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFW6PK7SDFB8KWQMHFKA",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:8801965f5b21f3605133249b04ea8a25b63e8d44dc91a8d7c6f70c2ba509e15b"
+          },
+          "args": {
+            "position": [
+              167.6,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:0ab3a18ade43c3ea1a89474236cb155f2c5e16a55fb4b6b272a8ef20ca181caf"
+          },
+          "args": {
+            "position": [
+              221.1,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.59,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:8d40d4313cfd2adb4533b864350790677d8f0f522519d615e4f44300b688212f"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.09,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:6f3d0cfe6aa64da0ca654db1b03240bf311f7f84fa05d0e7a27e765fe8225a9f"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.801Z",
+        "applied": "2026-10-07T18:39:55.826Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFXQ1ABKJ2YW09PY1R73",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:8d40d4313cfd2adb4533b864350790677d8f0f522519d615e4f44300b688212f"
+          },
+          "args": {
+            "position": [
+              167.61,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:6f3d0cfe6aa64da0ca654db1b03240bf311f7f84fa05d0e7a27e765fe8225a9f"
+          },
+          "args": {
+            "position": [
+              221.11,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.6,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:3c451247d5eb38c8bbbf8f22c86cffd842a89c14e3af461a6de6c9805ba4b226"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.1,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:b780e874e908823173bbb0c0670cd4a536a7e09f9bb6c270ffcccd32148e1c81"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.848Z",
+        "applied": "2026-10-07T18:39:55.877Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMFZDA6NQH1ZXBR0193MX",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:3c451247d5eb38c8bbbf8f22c86cffd842a89c14e3af461a6de6c9805ba4b226"
+          },
+          "args": {
+            "position": [
+              167.62,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:b780e874e908823173bbb0c0670cd4a536a7e09f9bb6c270ffcccd32148e1c81"
+          },
+          "args": {
+            "position": [
+              221.12,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.61,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:169c1017f7abc18e2e114a9a67b26f38001e4da4951e35bf2dcdd7ebd9b5d5e1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.11,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:bd73855b36c4ca71331d0da9eb234849941b0267ed548d70f6fb333c4a9849da"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.901Z",
+        "applied": "2026-10-07T18:39:55.926Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMG0X6T5SEQNXNXF06GJT",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:169c1017f7abc18e2e114a9a67b26f38001e4da4951e35bf2dcdd7ebd9b5d5e1"
+          },
+          "args": {
+            "position": [
+              167.63,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:bd73855b36c4ca71331d0da9eb234849941b0267ed548d70f6fb333c4a9849da"
+          },
+          "args": {
+            "position": [
+              221.13,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.62,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:e8b2c02435d3f21ae80b7025f8598e5c9bbc0fb6b3a3b2b16208596db4adf59a"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.12,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:2c3602867e7bd23d56f069b439e33f980608f9f5f71b047cbdd89c84251b6e00"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.949Z",
+        "applied": "2026-10-07T18:39:55.973Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMG2B71DE54QST0PX08FA",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:e8b2c02435d3f21ae80b7025f8598e5c9bbc0fb6b3a3b2b16208596db4adf59a"
+          },
+          "args": {
+            "position": [
+              167.64,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:2c3602867e7bd23d56f069b439e33f980608f9f5f71b047cbdd89c84251b6e00"
+          },
+          "args": {
+            "position": [
+              221.14,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.63,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:2e7c2b299f09b574fc9871d0321aefde45f070bbfdcfee062698802d8973adc3"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.13,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:c510380be654fdda224bd0fbab18becb2bb015d108acb902c5f62d65345bfb24"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:55.997Z",
+        "applied": "2026-10-07T18:39:56.023Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMG3X1B561AJF2HTS82SR",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:2e7c2b299f09b574fc9871d0321aefde45f070bbfdcfee062698802d8973adc3"
+          },
+          "args": {
+            "position": [
+              167.65,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:c510380be654fdda224bd0fbab18becb2bb015d108acb902c5f62d65345bfb24"
+          },
+          "args": {
+            "position": [
+              221.15,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.64,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:19ff17a827191bf9b0b9b8313890a03164e7b4824dd036d3bd7c38133572db23"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.14,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:dea46fb9ea1e2de8b46db3804b28369d92995ee2724e564fbef2c0e4f26b319d"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.056Z",
+        "applied": "2026-10-07T18:39:56.085Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMG5X6NBVMTT8CE6FMJ1K",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:19ff17a827191bf9b0b9b8313890a03164e7b4824dd036d3bd7c38133572db23"
+          },
+          "args": {
+            "position": [
+              167.66,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:dea46fb9ea1e2de8b46db3804b28369d92995ee2724e564fbef2c0e4f26b319d"
+          },
+          "args": {
+            "position": [
+              221.16,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.65,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:8064c135666f33836daeac1a5363fb70c0d53235b09ab54aa230843299141848"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.15,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:626a32361d5d9bd102d36a3a759351658b10c906b3badcfb2f672b8071aecd47"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.142Z",
+        "applied": "2026-10-07T18:39:56.167Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMG8D1FPKP483SVHSM4VX",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:8064c135666f33836daeac1a5363fb70c0d53235b09ab54aa230843299141848"
+          },
+          "args": {
+            "position": [
+              167.67,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:626a32361d5d9bd102d36a3a759351658b10c906b3badcfb2f672b8071aecd47"
+          },
+          "args": {
+            "position": [
+              221.17,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.66,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:cdefc24cbc518fa7d153ab3f2452f3d1d2863b4358afa8ce222cc405714f0d76"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.16,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:adfeaebdd69cb677c555fc16cd48ce77185820aa609f581136bc6ec8652f2c7f"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.193Z",
+        "applied": "2026-10-07T18:39:56.218Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMGA0X0V2F840WCY8RBK2",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:cdefc24cbc518fa7d153ab3f2452f3d1d2863b4358afa8ce222cc405714f0d76"
+          },
+          "args": {
+            "position": [
+              167.68,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:adfeaebdd69cb677c555fc16cd48ce77185820aa609f581136bc6ec8652f2c7f"
+          },
+          "args": {
+            "position": [
+              221.18,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.67,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:6ce6f449029f19a6ec95e08badd11ae9260043abe5674d8549e7fd3e973e1e1a"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.17,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:9d8ee421f0064786bd7a47f50208957881c309fff27ca152971e96f0cc233047"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.243Z",
+        "applied": "2026-10-07T18:39:56.268Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMGBH34GDGJ5D7QKAPVKW",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:6ce6f449029f19a6ec95e08badd11ae9260043abe5674d8549e7fd3e973e1e1a"
+          },
+          "args": {
+            "position": [
+              167.69,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:9d8ee421f0064786bd7a47f50208957881c309fff27ca152971e96f0cc233047"
+          },
+          "args": {
+            "position": [
+              221.19,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.68,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:b24a32f969e6ff486c8a2ffcce05913f8d3cfaf80e17fd9efb4838e04b4d79d3"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.18,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:84de2c2c31b85e0314676fb3ce94a155894d0fb315b1f11d3d6d9a85e362186c"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.289Z",
+        "applied": "2026-10-07T18:39:56.314Z"
+      }
+    },
+    {
+      "id": "cs_01M4BTMGD003J2T6Z2HPGZ13ZC",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Marsh all NPC timing",
+        "origin": "manual"
+      },
+      "operations": [
+        {
+          "opId": "npc0",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+            "scope": "Instance",
+            "stamp": "sha256:b24a32f969e6ff486c8a2ffcce05913f8d3cfaf80e17fd9efb4838e04b4d79d3"
+          },
+          "args": {
+            "position": [
+              167.7,
+              0.0,
+              4.5
+            ]
+          }
+        },
+        {
+          "opId": "npc1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+            "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+            "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+            "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd",
+            "scope": "Instance",
+            "stamp": "sha256:84de2c2c31b85e0314676fb3ce94a155894d0fb315b1f11d3d6d9a85e362186c"
+          },
+          "args": {
+            "position": [
+              221.2,
+              0.0,
+              20.0
+            ]
+          }
+        }
+      ],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "state": "Applied",
+      "outcomes": [
+        {
+          "opId": "npc0",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "args": {
+                    "position": [
+                      167.69,
+                      0.0,
+                      4.5
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+                  },
+                  "stamp": "sha256:043b190dff5b30527bc2f1211427d7915f68fa452266e5f3f389e1057561e437"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "opId": "npc1",
+          "status": "Applied",
+          "undo": {
+            "inverse": {
+              "operations": [
+                {
+                  "opId": "inverse",
+                  "tool": "move",
+                  "target": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "args": {
+                    "position": [
+                      221.19,
+                      0.0,
+                      20.0
+                    ]
+                  },
+                  "preconditions": "none"
+                }
+              ],
+              "after": [
+                {
+                  "ref": {
+                    "kind": "Entity",
+                    "authoringId": "a8255407-3f1c-4aa5-b7e7-e6141e6d5534",
+                    "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1087114180-0",
+                    "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                    "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Odd"
+                  },
+                  "stamp": "sha256:5a949899f9b1ef7db42219f1d3efc8dff1f69f34237ad485fa2f70c81635d554"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "timestamps": {
+        "requested": "2026-10-07T18:39:56.337Z",
+        "applied": "2026-10-07T18:39:56.364Z"
+      }
+    }
+  ]
+}

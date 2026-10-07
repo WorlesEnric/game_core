@@ -1,0 +1,26 @@
+{
+  "label": "p42k-timing-2",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:38:28.716906+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/logs --label p42k-timing-2 --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/results.xml -- -runTests -testPlatform EditMode -testFilter P42b.Acceptance.TimingTests",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/W-EDIT-08/p42k-timing-2-20261007T183828.714513Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:38:28.719313+00:00",
+  "sourceDiffSha256": "f010f252ab6f1caf66ae26a8d1dccf7d98d5efeffcc531c538e6d9572275b20e",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:40:13.107836+00:00",
+  "seconds": 104.39323877100833,
+  "suites": {
+    "results.xml": {
+      "total": 4,
+      "counts": {
+        "Passed": 4
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

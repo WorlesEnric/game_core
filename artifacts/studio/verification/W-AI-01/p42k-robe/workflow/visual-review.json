@@ -1,0 +1,22 @@
+{
+  "row": "W-AI-01",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-07T19:29:32.058460+00:00",
+  "observation": "Generated pixels show green woven cloth. Actual Maren body is visibly olive before, dark green with coarse weave after application, and olive again after normal Undo. All three viewport captures frame the complete body; Studio captures identify the workflow. Capsule geometry and distant magenta geometry are unchanged, not improved.",
+  "reviewAssertions": [
+    "The generated image is green robe cloth, not a tint or old texture.",
+    "The applied real healer body visibly uses the green texture; undo visibly restores the original body material.",
+    "All three captures frame the real healer body and are legible; a hidden/cropped body cannot pass."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "5e5950c6c17a04cc8860095cae1dc67dd6ea8c747cc3c2757b447bd8aaef5172",
+    "viewport-before.png": "a1c50343eb8667e5dcb18ee2ae61ef0d2897b2ef5adb9547a4484eb8f0d774e3",
+    "viewport-applied.png": "e3e30abb13bfa5f6bda342af0ebd67322dbb4915907cbf6d312266d395dabd28",
+    "viewport-undone.png": "ddb09d62570b14278b3cc71be90aa6e924da84a747177c9f90a59417df91225c",
+    "studio-before.png": "cb175680079d20bda4e254be99a7b45543ed23533d9ac1c8e1f356f3edb79082",
+    "studio-applied.png": "c5ccf66de4459f0b81f1ca4dacfeba3863d7bdb601e53b2c4456d20e65b43ce5",
+    "studio-undone.png": "4b40292dd5859333932b2e5a6d58bfab4d198e16d7e3bb38b3f334acda8d479c"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

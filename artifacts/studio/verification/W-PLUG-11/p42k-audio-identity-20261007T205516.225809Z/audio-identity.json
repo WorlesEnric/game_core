@@ -1,0 +1,61 @@
+{
+  "method": "Normalized sample cross-correlation, mono 2000 Hz ffmpeg decoding; current recording-marker-aligned windows (clock anchor estimate and margins retained). Threshold 0.2 plus mismatched-region control. No human-listening claim.",
+  "sampleRate": 2000,
+  "alignment": {
+    "voiceStart": 11.757353,
+    "beforeStart": 93.993853,
+    "afterStart": 108.631353,
+    "windowDuration": 10,
+    "estimatedFrameTimeAtCaptureStart": 3.311247,
+    "captureStartUtcEstimate": "2026-10-07T20:49:41.618647+00:00",
+    "frameLogHeaderUtc": "2026-10-07T20:49:41.046Z",
+    "voiceMarker": 17.0686,
+    "villageMarker": 95.6676,
+    "marshTransitionMarker": 108.9426,
+    "method": "Ten-second windows centered inside the marked pretransition interval and starting three seconds after transition; voice begins two seconds before its marker. Clock origin is estimated from the retained capture stopwatch/UTC receipt and first CSV sample. No audio-dependent window selection.",
+    "sourceMovie": "~/wkspace/gc-studio/p4.2k/.evidence/P42kLifecycleOwned/playthrough.mp4",
+    "frameLog": "~/wkspace/gc-studio/p4.2k/.evidence/P42kLifecycleOwned/save-quit-frames.csv"
+  },
+  "files": [
+    {
+      "file": "~/wkspace/gc-studio/p4.2k/.evidence/P42kLifecycleOwned/playthrough.mp4",
+      "sha256": "ae293f6f62ec30281c4cfa2b11d919dba43c1b3963bfee67b212e25b50cc28be"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Media/Voices/Maren_greet.wav",
+      "sha256": "bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Audio/Generated/ambience_village.wav",
+      "sha256": "41e22070e104cd52faa3c7f9ab1f6a6064c38f9ddcd7fe4d634dbf76f997d6bc"
+    },
+    {
+      "file": "games/hollowmere/Assets/Hollowmere/Audio/Generated/ambience_marsh.wav",
+      "sha256": "dbe12cc8cfe0f529ddab531bc863b2a81fd76f28a8a9878dc7e41db4966998ad"
+    }
+  ],
+  "voice": {
+    "correlation": 0.5774250366631686,
+    "offsetSeconds": 4.3395,
+    "searchStartSeconds": 11.757353
+  },
+  "villageBefore": {
+    "correlation": 0.5030883914901781,
+    "offsetSeconds": 5.5695,
+    "searchStartSeconds": 93.993853
+  },
+  "marshAfter": {
+    "correlation": 0.5036013148133498,
+    "offsetSeconds": 7.0445,
+    "searchStartSeconds": 108.631353
+  },
+  "wrongMarshBefore": {
+    "correlation": 0.05313286716633541,
+    "offsetSeconds": 1.172
+  },
+  "wrongVillageAfter": {
+    "correlation": 0.07156124350772385,
+    "offsetSeconds": 6.126
+  },
+  "status": "PASS"
+}

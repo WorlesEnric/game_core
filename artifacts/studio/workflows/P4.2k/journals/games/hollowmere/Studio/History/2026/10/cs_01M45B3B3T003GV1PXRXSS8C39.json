@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45B3B3T003GV1PXRXSS8C39",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: ...then find its tongue... the clapper the water stole...",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_ring.wav",
+        "artifact": {
+          "artifact": "sha256:9fe0e90dcf15bcf147ed7f7f4abb4c91dc2dbae9f93e891b0ce8868007a55ce6"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "9fe0e90dcf15bcf147ed7f7f4abb4c91dc2dbae9f93e891b0ce8868007a55ce6",
+      "name": "BelfryEcho_ring.wav",
+      "mediaType": "audio/wav",
+      "bytes": 165164,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_ring.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-595b2b7b7b126edad9fa73eebec8295a-8300000-0",
+                "assetGuid": "595b2b7b7b126edad9fa73eebec8295a",
+                "path": "Assets/Hollowmere/Media/Voices/BelfryEcho_ring.wav"
+              },
+              "stamp": "sha256:9fe0e90dcf15bcf147ed7f7f4abb4c91dc2dbae9f93e891b0ce8868007a55ce6"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:12:58.627Z",
+    "applied": "2026-10-05T06:12:58.845Z"
+  }
+}

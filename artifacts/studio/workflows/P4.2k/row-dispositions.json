@@ -1,0 +1,1537 @@
+{
+  "W-HOST-01": {
+    "evidence": [
+      "W-HOST-01/p42k-owner-rule/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
+    "status": "BLOCKED",
+    "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden."
+  },
+  "W-ETOS-01": {
+    "evidence": [
+      "W-ETOS-01/p42k-owner-rule/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
+    "status": "BLOCKED",
+    "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run."
+  },
+  "W-ETOS-02": {
+    "evidence": [
+      "W-ETOS-02/p42k-owner-rule/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
+    "status": "BLOCKED",
+    "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run."
+  },
+  "W-ETOS-06": {
+    "evidence": [
+      "W-ETOS-06/p42k-owner-rule/result.json",
+      "W-ETOS-06/p42k-companion-restart-20261007T195622.701526Z/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: never stop/restart etosd; node-death/reconnect part is not run. Companion-only restart cannot close this row.",
+    "status": "BLOCKED",
+    "note": "Companion-only portion PASS: permitted restart preserves the original task and cursor replay with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run."
+  },
+  "W-ETOS-08": {
+    "evidence": [
+      "W-ETOS-08/p42k-owner-rule/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
+    "status": "BLOCKED",
+    "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run."
+  },
+  "W-GAME-07": {
+    "evidence": [
+      "W-GAME-07/p42k-owner-rule/result.json"
+    ],
+    "checks": [],
+    "command": "Not run: Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
+    "status": "BLOCKED",
+    "note": "Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run."
+  },
+  "W-AI-07": {
+    "evidence": [
+      "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json"
+    ],
+    "checks": [
+      {
+        "file": "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json",
+        "pointer": "/code",
+        "equals": "not_configured"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py hello",
+    "status": "PASS",
+    "note": "Current-run 3D generation request: `not_configured`/blocked surfaced honestly is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-TOOL-02": {
+    "evidence": [
+      "W-TOOL-02/metadata-20261007T180650.868229Z/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-TOOL-02/metadata-20261007T180650.868229Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 tools/check_package_metadata.py",
+    "status": "PASS",
+    "note": "Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-UI-04": {
+    "evidence": [
+      "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+      "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json"
+    ],
+    "checks": [
+      {
+        "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json",
+        "pointer": "/cycles/9/cycle",
+        "equals": 10
+      }
+    ],
+    "command": "studio/tools/verify-all.sh memory",
+    "status": "PASS",
+    "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained."
+  },
+  "W-GAME-08": {
+    "evidence": [
+      "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+      "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json"
+    ],
+    "checks": [
+      {
+        "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json",
+        "pointer": "/cycles/9/cycle",
+        "equals": 10
+      }
+    ],
+    "command": "studio/tools/verify-all.sh memory",
+    "status": "PASS",
+    "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained."
+  },
+  "W-UI-01": {
+    "evidence": [
+      "W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json",
+      "W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json",
+        "pointer": "/passed",
+        "equals": true
+      },
+      {
+        "file": "W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
+    "status": "PASS",
+    "note": "Current-run Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-UI-02": {
+    "evidence": [
+      "W-UI-02/r7-d-20261007T183301570Z/receipt.json",
+      "W-UI-02/r7-d-20261007T183301570Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "W-UI-02/r7-d-20261007T183301570Z/receipt.json",
+        "pointer": "/verdict",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-UI-02/r7-d-20261007T183301570Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
+    "status": "PASS",
+    "note": "Current-run Box-select three NPCs behind a fence; overlap list; choose NPCs is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-UI-03": {
+    "evidence": [
+      "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
+      "W-UI-03/r7-d-20261007T183348335Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
+        "pointer": "/verdict",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-UI-03/r7-d-20261007T183348335Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
+    "status": "PASS",
+    "note": "Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-MODEL-02": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.R7_B.Model.ItemDeletionImpactTests.W_MODEL_02_DeleteItemListsReferencingDialogueLineAndObjective"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Delete an item asset; index lists every referencing dialogue line and objective is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-02": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run 5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-05": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.Edit.Tests.ManualEditTests.WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.UI.Tests.CandidateHistoryGizmoTests.WEdit05_ViewportGizmoDragEqualsTypedMove"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Gizmo drag and typed value produce identical History entries is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-07": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Conflict_RebaseReplansAgainstTheCurrentStamp"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-04": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_3.EditMode.Tests.P13KernelTests.NpcPatrol_CommitsWhatTheLogicalMoverComputes_AndRaisesNpcArrived"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Patrol index across unload/reload and save/load is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-05": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+      "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+      "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.APortalCondition_RefusesTravelWithAStableCode_UntilItHolds"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Locked door with key; explain refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-06": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_PreviewDiffersByFact"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Conditional choice and persisted fact is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-07": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Quest_SimulatePassesOnBothBranches"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Quest branches; failure closes dependents is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-09": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run \"Why didn't the gate open\" trace is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-12": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+      "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.BakeTwice_IsByteIdentical_AndVerifyPasses"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+        "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.OneFieldChange_ChangesOnlyThatDefinitionsRevision"
+      },
+      {
+        "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml",
+        "xmlCase": "Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Bake byte-identity; one line change \u2192 one revision change is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PERSIST-01": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+      "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+        "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Save in the Ruin with items; load: all restored; region re-entered is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-TOOL-01": {
+    "evidence": [
+      "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml",
+        "xmlCase": "Saltmarsh.P4_2.CatalogAcceptanceTests.R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh unity",
+    "status": "PASS",
+    "note": "Current-run Tool catalog of the clean project lists only installed plugins' tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-UI-05": {
+    "evidence": [
+      "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+        "pointer": "/candidateCount",
+        "equals": 500
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+        "pointer": "/picks/count",
+        "equals": 100
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+        "pointer": "/marquee/count",
+        "equals": 100
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+        "pointer": "/picks/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+        "pointer": "/marquee/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+        "pointer": "/candidateCount",
+        "equals": 500
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+        "pointer": "/picks/count",
+        "equals": 100
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+        "pointer": "/marquee/count",
+        "equals": 100
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+        "pointer": "/picks/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+        "pointer": "/marquee/pass",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
+    "status": "PASS",
+    "note": "Two current datasets contain 100 picks and 100 marquees over 500 candidates. Pick p95 is 1.499/0.881ms; marquee p95 0.4756/0.2362ms. Unchanged limits are 16/50ms."
+  },
+  "W-EDIT-08": {
+    "evidence": [
+      "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+      "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+      "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+      "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+      "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+      "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+        "pointer": "/single/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+        "pointer": "/single/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+        "pointer": "/region/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+        "pointer": "/region/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+        "pointer": "/prepare/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+        "pointer": "/prepare/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+        "pointer": "/single/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+        "pointer": "/single/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+        "pointer": "/region/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+        "pointer": "/region/pass",
+        "equals": true
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+        "pointer": "/prepare/count",
+        "equals": 20
+      },
+      {
+        "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+        "pointer": "/prepare/pass",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
+    "status": "PASS",
+    "note": "Two current 20-sample datasets pass: single-target p95 25.926/24.6934ms; Marsh-all-NPC p95 43.5722/35.9275ms; kernel prepare p95 9.8924/7.0972ms. Limits remain 200/1000/300ms."
+  },
+  "W-VIEW-01": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.Maren_ShowsHerDialogueGraphPatrolPointsAndRegion"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.RelationshipsModelTests.Export_WritesJsonAndMermaid"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.SelectionSoftBindingPropagatesFocusChangesAndDetaches"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
+    "status": "PASS",
+    "note": "Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VIEW-03": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Quest_SimulatePassesOnBothBranches"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Quest_SimulationParsesStatusFactsInventoryAndRewards"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
+    "status": "PASS",
+    "note": "Current-run Quests: Stage/objective graph, branches, reward/rule links, simulation and live state is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VIEW-04": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.World_ListsThreeRegionsAndThePortalTriangle"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.R2_34_WorldAddPortalAndConnectAreSingleChangeSets"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests.R2_32_RealPlayDialogueTravelAndDestroyedOwner"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
+    "status": "PASS",
+    "note": "Current-run World: Regions, portals, residency, spawn points and journaled world tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VIEW-05": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Table_CsvQuotesPerRfc4180"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
+    "status": "PASS",
+    "note": "Current-run Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VIEW-06": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Changes_RendersACandidateWithAConflictDiagnostic"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.PackageGraph_ReportsDependencyAndKernelProblems"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_15_ViewsUndoAndRedoUseAdmissionHistoryHandler"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
+    "status": "PASS",
+    "note": "Current-run Changes: Pending operations, diagnostics, dependencies and journal inspection is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-04": {
+    "evidence": [
+      "W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/workflow/edit-result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/workflow/edit-result.json",
+        "pointer": "/status",
+        "equals": "pass"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
+    "status": "PASS",
+    "note": "Current-run Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget` is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PERSIST-02": {
+    "evidence": [
+      "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json",
+        "pointer": "/status",
+        "equals": "pass"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
+    "status": "PASS",
+    "note": "Current-run Rename prefab, re-run: NPC keeps state in a save is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-06": {
+    "evidence": [
+      "W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/workflow/promotion.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/workflow/promotion.json",
+        "pointer": "/result",
+        "equals": "pass"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
+    "status": "PASS",
+    "note": "Current-run Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-01": {
+    "evidence": [
+      "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/results.xml",
+      "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/results.xml",
+      "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/native/retention.json",
+      "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/native/retention.json"
+    ],
+    "checks": [
+      {
+        "file": "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/results.xml",
+        "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
+      },
+      {
+        "file": "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/results.xml",
+        "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
+      },
+      {
+        "file": "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/native/retention.json",
+        "pointer": "/snapshotCount",
+        "equals": 6
+      },
+      {
+        "file": "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/native/retention.json",
+        "pointer": "/snapshotCount",
+        "equals": 6
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+    "status": "PASS",
+    "note": "Current-run Three-region loop, moved NPC stays, memory baseline, timings is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-02": {
+    "evidence": [
+      "W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml",
+        "xmlCase": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+    "status": "PASS",
+    "note": "Current-run Despawn/respawn keeps override; Animator bound is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-03": {
+    "evidence": [
+      "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+        "xmlCase": "Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding.WPLUG03_DeterministicJumpClearsSolidLedgeAndLands"
+      },
+      {
+        "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+        "xmlCase": "Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+    "status": "PASS",
+    "note": "Current-run Walk, jump a ledge, focus prompt, interact dispatch is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-08": {
+    "evidence": [
+      "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+        "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+    "status": "PASS",
+    "note": "Current-run Take spam + reload: exactly one lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PLUG-10": {
+    "evidence": [
+      "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml",
+        "xmlCase": "Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
+    "status": "PASS",
+    "note": "Current-run Definition validator parity (inspector, validator, agent) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-KERNEL-01": {
+    "evidence": [
+      "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+        "xmlCase": "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py validation",
+    "status": "PASS",
+    "note": "Current-run Corrupted catalog \u2192 named failure, not an empty world is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-PERSIST-03": {
+    "evidence": [
+      "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml"
+    ],
+    "checks": [
+      {
+        "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+        "xmlCase": "AV1SaveIsMigratedToV2OnRestore"
+      },
+      {
+        "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+        "xmlCase": "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py validation",
+    "status": "PASS",
+    "note": "Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-REC-01": {
+    "evidence": [
+      "W-REC-01/resume-state-20261007T185206.701320Z/recovery-result.json",
+      "W-REC-01/rollback-state-20261007T185026.180708Z/recovery-result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-REC-01/resume-state-20261007T185206.701320Z/recovery-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-REC-01/rollback-state-20261007T185026.180708Z/recovery-result.json",
+        "pointer": "/ok",
+        "equals": true
+      }
+    ],
+    "command": "studio/tools/verify-all.sh recovery",
+    "status": "PASS",
+    "note": "Current-run Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-DOC-01": {
+    "evidence": [
+      "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
+      "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json"
+    ],
+    "checks": [
+      {
+        "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
+        "xmlCase": "R2_38_Guide_NpcAndDialogueContextToolsUndo"
+      },
+      {
+        "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
+        "pointer": "/dialogueUndoOk",
+        "equals": true
+      },
+      {
+        "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
+        "pointer": "/npcUndoOk",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py guide",
+    "status": "PASS",
+    "note": "Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VOICE-01": {
+    "evidence": [
+      "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-check.json",
+      "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-transcript.json",
+      "W-VOICE-01/p42k-voice-20261007T185601.031912Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-check.json",
+        "pointer": "/unchanged",
+        "equals": true
+      },
+      {
+        "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-transcript.json",
+        "pointer": "/drainCompleted",
+        "equals": true
+      },
+      {
+        "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
+    "status": "PASS",
+    "note": "Current-run Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-03": {
+    "evidence": [
+      "W-EDIT-03/p42k-portrait/workflow/result.json",
+      "W-EDIT-03/p42k-portrait/workflow/ledger-final.json",
+      "W-EDIT-03/p42k-portrait-20261007T185846.087649Z/workflow/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-03/p42k-portrait/workflow/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-EDIT-03/p42k-portrait/workflow/ledger-final.json",
+        "pointer": "/usageUnchangedSinceGeneration",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait",
+    "status": "PASS",
+    "note": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone pixels show the same brown-haired healer portrait with herbs and green-brown cloth. History screenshots are clipped by overlapping windows and do not visibly prove each entry state; normal panel receipts, retained journals, exact image hashes and unchanged ledger checkpoints establish replay. No readable-History-screenshot claim. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers."
+  },
+  "W-AI-01": {
+    "evidence": [
+      "W-AI-01/p42k-robe/workflow/result.json",
+      "W-AI-01/p42k-robe/workflow/ledger-final.json",
+      "W-AI-01/p42k-robe-20261007T190127.927059Z/workflow/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-AI-01/p42k-robe/workflow/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-AI-01/p42k-robe/workflow/ledger-final.json",
+        "pointer": "/usageUnchangedSinceGeneration",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe",
+    "status": "PASS",
+    "note": "One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Generated pixels show green woven cloth. Actual Maren body is visibly olive before, dark green with coarse weave after application, and olive again after normal Undo. All three viewport captures frame the complete body; Studio captures identify the workflow. Capsule geometry and distant magenta geometry are unchanged, not improved. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers."
+  },
+  "W-ETOS-07": {
+    "evidence": [
+      "W-ETOS-07/p42k-tamper-20261007T192804.029366Z/tamper.json",
+      "W-ETOS-07/p42k-describe-20261007T192814.175198Z/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-ETOS-07/p42k-tamper-20261007T192804.029366Z/tamper.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-ETOS-07/p42k-describe-20261007T192814.175198Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/receipts-p42k.py tamper --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52; python3 artifacts/studio/verification/TOOLS/receipts-p42k.py describe --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52",
+    "status": "PASS",
+    "note": "Current-run Generated texture arrives with matching sha256; tampered file refused is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-AI-04": {
+    "evidence": [
+      "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json"
+    ],
+    "checks": [
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+        "pointer": "/hashesMatchSaved",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+        "pointer": "/backToBefore",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative; then reopen workflow",
+    "status": "PASS",
+    "note": "Current-run Edit the HUD objective label and rebind it to the quest stage name is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-AI-05": {
+    "evidence": [
+      "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json"
+    ],
+    "checks": [
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+        "pointer": "/status",
+        "equals": "pass"
+      },
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+        "pointer": "/stageAfterOne",
+        "equals": 1
+      },
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+        "pointer": "/stageAfterTwo",
+        "equals": 2
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+    "status": "PASS",
+    "note": "Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-EDIT-01": {
+    "evidence": [
+      "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
+    "status": "PASS",
+    "note": "Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-ETOS-05": {
+    "evidence": [
+      "W-ETOS-05/p42k-cancel-20261007T192114.982259Z/workflow/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-ETOS-05/p42k-cancel-20261007T192114.982259Z/workflow/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
+    "status": "PASS",
+    "note": "Current-run Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-ETOS-09": {
+    "evidence": [
+      "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
+    "status": "PASS",
+    "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-ETOS-04": {
+    "evidence": [
+      "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json"
+    ],
+    "checks": [
+      {
+        "file": "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json",
+        "pointer": "/nodeCount",
+        "equals": 8
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py; python3 artifacts/studio/verification/TOOLS/query-p42k.py --workflow <current query workflow>",
+    "status": "PASS",
+    "note": "Actual installed worker executes an owner-scoped query and returns all eight current Bram nodes with matching indices/kinds/texts. Initial observer rejected local variable cmd and colon-delimited output; unchanged independent trace and receipt pass the corrected observer without another worker call."
+  },
+  "W-AI-03": {
+    "evidence": [
+      "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/apply-report.json",
+      "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/play-effect.json"
+    ],
+    "checks": [
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/apply-report.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/play-effect.json",
+        "pointer": "/status",
+        "equals": "pass"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+    "status": "PASS",
+    "note": "Current-run \"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-AI-06": {
+    "evidence": [
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
+      "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json"
+    ],
+    "checks": [
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+        "pointer": "/hashesMatchSaved",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+        "pointer": "/backToBefore",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+        "pointer": "/journal/odd-line",
+        "equals": "Applied"
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+        "pointer": "/journal/hud",
+        "equals": "Applied"
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+        "pointer": "/journal/quest",
+        "equals": "Applied"
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      },
+      {
+        "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json",
+        "pointer": "/ok",
+        "equals": true
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
+    "status": "PASS",
+    "note": "Current-run Undo/redo the above, close and reopen the project, verify consistency is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-VIEW-02": {
+    "evidence": [
+      "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    ],
+    "checks": [
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "Dialogue_UndoOnMarenKeepsTheConditionReferences"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "Dialogue_PreviewDiffersByFact"
+      },
+      {
+        "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+        "xmlCase": "R2_32_RealPlayDialogueTravelAndDestroyedOwner"
+      },
+      {
+        "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
+    "status": "PASS",
+    "note": "Current-run Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-REC-03": {
+    "evidence": [
+      "W-REC-03/p42k-installed-cancellation/editor-result.json",
+      "W-REC-03/p42k-installed-cancellation/cancel-editor-result.json",
+      "W-REC-03/p42k-installed-cancellation/stage-resources.json",
+      "W-REC-03/p42k-cancelled-stage-20261007T195656.130261Z/cancelled-after-restart.json"
+    ],
+    "checks": [
+      {
+        "file": "W-REC-03/p42k-installed-cancellation/editor-result.json",
+        "pointer": "/regionCancellation",
+        "equals": true
+      },
+      {
+        "file": "W-REC-03/p42k-installed-cancellation/cancel-editor-result.json",
+        "pointer": "/stageCancellation",
+        "equals": true
+      },
+      {
+        "file": "W-REC-03/p42k-installed-cancellation/stage-resources.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-REC-03/p42k-cancelled-stage-20261007T195656.130261Z/cancelled-after-restart.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/stages-p42k.py cancel",
+    "status": "PASS",
+    "note": "Current-run Cancel region load mid-way; cancel staging job is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used."
+  },
+  "W-AI-02": {
+    "status": "FAIL",
+    "checks": [
+      {
+        "file": "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/staged.json",
+        "pointer": "/ok",
+        "equals": false
+      }
+    ],
+    "evidence": [
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/outcome.json",
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/staged.json",
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/candidate.json",
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/play-effect.json",
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/roster-before.json",
+      "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/roster-undone.json"
+    ],
+    "command": "GAMECORE_P42G_NPC_CREATION=1 GAMECORE_P42G_NPC_VIEW=artifacts/studio/verification/W-AI-02/p42k-npc-view-20261007T191235.565763Z/npc-view-prerequisite.json python3 artifacts/studio/verification/TOOLS/live-p42k.py npc --row W-AI-02 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow p42f-npc",
+    "note": "Fresh unchanged installed-worker Ferryman candidate is refused before apply: GP-LOG-002, FerrymanElian is listed twice in Assets/Hollowmere/Rules/HollowmereContent.asset. No NPC Play/nav/dialogue or successful admission is claimed; original roster remains 20. Candidate is not repaired or regenerated."
+  },
+  "W-MECH-01": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-MECH-01/p42k-acceptance/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "evidence": [
+      "W-MECH-01/p42k-acceptance/result.json",
+      "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json",
+      "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json",
+      "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json",
+      "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json",
+      "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json",
+      "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json",
+      "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json",
+      "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json",
+      "W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json",
+      "W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/stages-p42k.py mechanism --attempt provisioned",
+    "note": "Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission."
+  },
+  "W-DOC-02": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-DOC-02/p42k-lever-literal/live-admit.json",
+        "pointer": "/outcome",
+        "equals": "Admitted"
+      },
+      {
+        "file": "W-DOC-02/p42k-lever-literal/live-admit.json",
+        "pointer": "/checkpointRoundTripsEqual",
+        "equals": true
+      },
+      {
+        "file": "W-DOC-02/p42k-lever-literal/interactive-lever.json",
+        "pointer": "/states",
+        "equals": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "file": "W-DOC-02/p42k-lever-literal/live-undo.json",
+        "pointer": "/outcome",
+        "equals": "Undone"
+      }
+    ],
+    "evidence": [
+      "W-DOC-02/p42k-lever-literal/live-admit.json",
+      "W-DOC-02/p42k-lever-literal/interactive-lever.json",
+      "W-DOC-02/p42k-lever-literal/live-undo.json",
+      "W-DOC-02/p42k-lever-literal/signed-verdict.json",
+      "W-DOC-02/p42k-lever-literal/live-progress.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/lever-literal-p42k.py",
+    "note": "Literal current guide export/client-submit and signed Docker stage pass. Creator Admit completes in 32.253s within 90s, restores nine coins and checkpoint round-trip equality, passes 120-frame smoke, and actual Toggle lever control commits 0/1/0 on normal frames. Undo removes the package and restores the original catalog."
+  },
+  "W-GAME-01": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-GAME-01/p42k-player/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-01/p42k-player/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "evidence": [
+      "W-GAME-01/p42k-player/result.json",
+      "W-GAME-01/p42k-player/visual-review.json",
+      "W-GAME-01/p42k-player/retry-decision.json",
+      "W-GAME-01/p42k-player/external-artifacts.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
+    "note": "Current 1080p RTX4060Ti VSync OFF runs both pass: p95 3.502/3.565ms over 607.410/611.724s, zero outside-transition frames over 100ms and maximum transition 124.909ms. Neither run is eligible for a rerun. VSync ON p95 17.331/17.315ms is informational only. All four actual game-window movies are retained."
+  },
+  "W-GAME-05": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "evidence": [
+      "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
+      "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
+      "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
+      "W-GAME-05/p42k-owned-window-lifecycle/external-artifacts.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/lifecycle-p42k.py --player .evidence/P42kPlayer/player/Hollowmere.x86_64 --output .evidence/P42kLifecycleOwned",
+    "note": "Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed owned-window keyframes show both menus, Save UI and ending. The 320.3s movie explicitly concatenates two actual process segments."
+  },
+  "W-CLEAN-01": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json",
+        "pointer": "/playerProof/frames",
+        "equals": 600
+      },
+      {
+        "file": "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json",
+        "pointer": "/playerProof/violations",
+        "equals": 0
+      }
+    ],
+    "evidence": [
+      "W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/result.json",
+      "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
+    "note": "Current clean-project author/bake, 11 EditMode and three PlayMode cases, both rechecks, Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations."
+  },
+  "W-PLUG-11": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/audio-identity.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      }
+    ],
+    "evidence": [
+      "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/result.json",
+      "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/audio-identity.json",
+      "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/alignment.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/audio-p42k.py .evidence/P42kLifecycleOwned <fresh-output>",
+    "note": "Current native crossfade/release and actual Maren voice cases pass. Current lifecycle movie passes the unchanged normalized audio-identity metric using marker-derived ten-second windows, authored voice/Village/Marsh samples and wrong-region controls. No audio-search-selected windows or human-listening claim."
+  },
+  "W-CLEAN-02": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json",
+        "pointer": "/exitCode",
+        "equals": 0
+      }
+    ],
+    "evidence": [
+      "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json"
+    ],
+    "command": "git diff --exit-code origin/main -- Packages/",
+    "note": "After all clean-project/build/player exercises and owned-fixture cleanup, literal git diff --exit-code origin/main -- Packages/ exits zero with empty output. No kernel/package source changed."
+  },
+  "W-GAME-06": {
+    "status": "PASS",
+    "checks": [
+      {
+        "file": "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
+        "pointer": "/status",
+        "equals": "PASS"
+      },
+      {
+        "file": "W-GAME-01/p42k-player/player/build-report.json",
+        "pointer": "/result",
+        "equals": "Succeeded"
+      }
+    ],
+    "evidence": [
+      "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
+      "W-GAME-01/p42k-player/player/build-report.json",
+      "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/playmode-results.xml",
+      "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/editmode-results.xml"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
+    "note": "Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, prescribed probes and docs gates. B-FRAME is independently measured and passes under VSync OFF."
+  },
+  "W-E2E-01": {
+    "status": "FAIL",
+    "checks": [
+      {
+        "file": "W-E2E-01/p42k-accounting/accounting.json",
+        "pointer": "/allRowsJudged",
+        "equals": true
+      },
+      {
+        "file": "W-E2E-01/p42k-accounting/accounting.json",
+        "pointer": "/historicalPassCarriedForward",
+        "equals": false
+      }
+    ],
+    "evidence": [
+      "W-E2E-01/p42k-accounting/accounting.json"
+    ],
+    "command": "python3 artifacts/studio/verification/TOOLS/report-p42k.py && python3 artifacts/studio/verification/TOOLS/check-p42k.py",
+    "note": "All 68 rows are freshly judged at one product revision and installed companion release with strict host exclusivity; no historical PASS carries forward. End-to-end acceptance is FAIL because current W-AI-02 refuses the unchanged Ferryman candidate with GP-LOG-002 duplicate enrollment. Six exact owner-forbidden scenarios remain BLOCKED."
+  }
+}

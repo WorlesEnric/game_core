@@ -1,0 +1,26 @@
+{
+  "label": "p42k-graphics",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "host": "worlesenric",
+  "started": "2026-10-07T18:33:59.633254+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2k/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z/logs --label p42k-graphics --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2k/artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless'",
+  "cwd": "~/wkspace/gc-studio/p4.2k",
+  "evidencePath": "artifacts/studio/verification/GRAPHICAL/p42k-graphics-20261007T183359.631957Z",
+  "queuedAtRevision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "executionStarted": "2026-10-07T18:33:59.634463+00:00",
+  "sourceDiffSha256": "a6ffd4ca750c51dbb1c419fc05ac0b064245e7ec7b44bb80e1271e2fe12c5967",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T18:34:51.575004+00:00",
+  "seconds": 51.94299709890038,
+  "suites": {
+    "results.xml": {
+      "total": 4,
+      "counts": {
+        "Passed": 4
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}
