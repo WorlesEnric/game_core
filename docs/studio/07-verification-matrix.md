@@ -1,6 +1,6 @@
 # GameCore Studio: verification matrix and budgets
 
-**Status:** P4.2i (2026-10-07): **57 PASS / 6 BLOCKED / 5 FAIL, 68 rows**. Every row is freshly judged at product `cb5e2aa20263209df2dea4ee17aa23c50daec0e0` and immutable installed companion `0.1.0-debdab3072dbe1f8`; no historical PASS is carried forward. B-FRAME uses VSync OFF; VSync ON is informational. W-VOICE-01 uses SR-4.8 and explicit Send, not mandatory partial-revision visibility. See [P4.2i](packets/P4.2i-same-revision.md) for exact non-PASS causes, lane outcomes and paid accounting.
+**Status:** P4.2i (2026-10-07): **59 PASS / 6 BLOCKED / 3 FAIL, 68 rows**. Every row is freshly judged at product `cb5e2aa20263209df2dea4ee17aa23c50daec0e0` and immutable installed companion `0.1.0-debdab3072dbe1f8`; no historical PASS is carried forward. B-FRAME uses VSync OFF; VSync ON is informational. W-VOICE-01 uses SR-4.8 and explicit Send, not mandatory partial-revision visibility. See [P4.2i](packets/P4.2i-same-revision.md) for exact non-PASS causes, lane outcomes and paid accounting.
 
 ## 1. Evidence conventions
 
@@ -168,4 +168,4 @@ Four fresh actual game-window recordings use product `cb5e2aa20263209df2dea4ee17
 | VSync OFF | 607.729 / 608.971 | 3.404 / 3.463 | 0 / 0 | PASS / PASS |
 | VSync ON | 608.314 / 608.274 | 17.230 / 17.261 | 0 / 0 | Informational; literal p95 FAIL / FAIL |
 
-Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Full 68-row result: **57 PASS / 6 BLOCKED / 5 FAIL**; [packet](packets/P4.2i-same-revision.md).
+Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Full 68-row result: **59 PASS / 6 BLOCKED / 3 FAIL**; [packet](packets/P4.2i-same-revision.md).
