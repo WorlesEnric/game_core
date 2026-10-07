@@ -1,0 +1,254 @@
+{
+  "label": "B-MEMORY-15-percent",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T04:28:23.668532+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/logs --label editmode --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml -- -runTests -testPlatform EditMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T04:28:23.670471+00:00",
+  "sourceDiffSha256": "9881d2ceea1cf0a6c8db1f1214e677a4a22dc2bf452769034c46cb8bdc85b5ff",
+  "exitCode": 1,
+  "status": "BLOCKED",
+  "ended": "2026-10-07T04:34:23.875308+00:00",
+  "seconds": 360.20851642405614,
+  "suites": {
+    "results.xml": {
+      "total": 602,
+      "counts": {
+        "Passed": 567,
+        "Skipped": 21,
+        "Failed": 14
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Hollowmere.Tests.dll",
+        "GameCore",
+        "GameCore.Studio",
+        "GameCore.Studio.Views",
+        "GameCore.Studio.Views.Hollowmere",
+        "GameCore.Studio.Views.Hollowmere.Tests",
+        "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_7b.EditMode.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P1_7b",
+        "Hollowmere.P1_7b.EditMode",
+        "Hollowmere.P1_7b.EditMode.Tests",
+        "Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests",
+        "Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P3_2",
+        "Hollowmere.P3_2.Headless",
+        "Hollowmere.P3_2.Headless.DriverDryTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R5_A.Editor.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R5_A",
+        "Hollowmere.R5_A.HistoryReopenTests",
+        "Hollowmere.R5_A.UndoRegressionTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R5_B.EditMode.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R5_B",
+        "Hollowmere.R5_B.CandidateTests",
+        "Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_B.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R6_B",
+        "Hollowmere.R6_B.RealPathTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_F.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R6_F",
+        "Hollowmere.R6_F.ContentClosureTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Animation.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R7_C",
+        "Hollowmere.R7_C.Animation",
+        "Hollowmere.R7_C.Animation.Tests",
+        "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Media.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R7_C",
+        "Hollowmere.R7_C.NativeMediaAcceptance"
+      ],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+          "result": "Skipped",
+          "detail": "R2-29: window event delivery requires a graphical Editor."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+          "result": "Skipped",
+          "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_GraphicalClampedOriginReportsTimeout",
+          "result": "Skipped",
+          "detail": "P42-UI-02: native clamping requires the graphical :1 lane."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.R7_D_W_UI_02_MarqueeChooser_OnlyAmbiguityOpensAndFilteringPreservesOriginalOperation",
+          "result": "Skipped",
+          "detail": "W-UI-02 popup interaction requires a graphical editor panel; geometry classification is covered without graphics."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+          "result": "Skipped",
+          "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+        },
+        {
+          "name": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores",
+          "result": "Failed",
+          "detail": "Rejected cs_01M4AA0D2YTRXJKPWNM1G10MYZ - GP-DLG-005: ViewsTestGraph: GP-DLG-005: unreachable: node 1 @ Definition(auth:93613cad-cfc6-4306-8e71-4b89ca3309f9)\n  Expected: True\n  But was:  False\n \n                       at GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Expect (GameCore.Studio.Edit.ApplyReport report, System.String tool) [0x00010] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode/HollowmereEditingViewsTests.cs:223\nat GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores () [0x001b8] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode/HollowmereEditingViewsTests.cs:40"
+        },
+        {
+          "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+          "result": "Skipped",
+          "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+        },
+        {
+          "name": "Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine",
+          "result": "Failed",
+          "detail": "assign: state Rejected; StageFailed Definition validator DialogueValidator.Validate failed: Invalid path; StageFailed Definition validator InventoryValidator.Validate failed: Invalid path; StageFailed Definition validator LogicValidator.Validate failed: Invalid path; StageFailed Definition validator QuestValidator.Validate failed: Invalid path; op1 Refused StageFailed Definition validator DialogueValidator.Validate failed: Invalid path\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103\nat Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine () [0x00167] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/NarrativeRegistrationTests.cs:56"
+        },
+        {
+          "name": "Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.NpcTools_SetDialogueAndAppearance_AreJournaled",
+          "result": "Failed",
+          "detail": "npc.setAppearance: state Rejected; InvalidArgs npc_dialogue_world_ambiguous: the active scene must name exactly one authored region.; op1 Refused InvalidArgs npc_dialogue_world_ambiguous: the active scene must name exactly one authored region.\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103\nat Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.NpcTools_SetDialogueAndAppearance_AreJournaled () [0x0009b] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/ToolJournalTests.cs:85"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.DriverDryTests.R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects",
+          "result": "Failed",
+          "detail": "Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4\n  Expected: True\n  But was:  False\n \n                   at Hollowmere.P3_2.Headless.DriverDryTests+<R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects>d__10.MoveNext () [0x00182] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:186\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+          "result": "Skipped",
+          "detail": "P4.2 physical layout requires a graphical Editor; run the layout qualification command."
+        },
+        {
+          "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+          "result": "Skipped",
+          "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+        },
+        {
+          "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+          "result": "Skipped",
+          "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+        },
+        {
+          "name": "Hollowmere.R4_A.VirtualVoiceSelfTest.P42_VOICE_01_VirtualMicrophoneFixtureFinalContainsDelete",
+          "result": "Skipped",
+          "detail": "Requires explicit realtime-operation authorization and GAMECORE_R4A_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+        },
+        {
+          "name": "Hollowmere.R5_A.HistoryReopenTests.R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload",
+          "result": "Failed",
+          "detail": "GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681)\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R5_A.HistoryReopenTests.Prepare () [0x000a0] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_A/Editor/HistoryReopenTests.cs:41\nat Hollowmere.R5_A.HistoryReopenTests+<R5_02_OddWitness_UndoesAfterEditorReopenAndDomainReload>d__9.MoveNext () [0x0002e] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_A/Editor/HistoryReopenTests.cs:53\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.R5_A.UndoRegressionTests.R5_02_FinalPostimageStillRefusesLaterExternalEdit",
+          "result": "Failed",
+          "detail": "Expected: True\n  But was:  False\n \n                 at Hollowmere.R5_A.UndoRegressionTests.R5_02_FinalPostimageStillRefusesLaterExternalEdit () [0x00015] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_A/Editor/UndoRegressionTests.cs:355"
+        },
+        {
+          "name": "Hollowmere.R5_A.UndoRegressionTests.R5_02_OddWitness_FinalPostimageUndoesAfterRuntimeReopen",
+          "result": "Failed",
+          "detail": "GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 3 -> 8 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 4 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-003: Odd: GP-DLG-003: dangling: node 3 next -> 8 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681) | GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681)\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R5_A.UndoRegressionTests.R5_02_OddWitness_FinalPostimageUndoesAfterRuntimeReopen () [0x00028] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_A/Editor/UndoRegressionTests.cs:87"
+        },
+        {
+          "name": "Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(False)",
+          "result": "Failed",
+          "detail": "Expected: null\n  But was:  <StageFailed: verdict_failed: The signed world/predicted catalog delta is missing or inconsistent.>\n \n                   at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001cd] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:44"
+        },
+        {
+          "name": "Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(True)",
+          "result": "Failed",
+          "detail": "Expected: null\n  But was:  <StageFailed: verdict_failed: The signed world/predicted catalog delta is missing or inconsistent.>\n \n                   at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001cd] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:44"
+        },
+        {
+          "name": "Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe",
+          "result": "Skipped",
+          "detail": "Requires explicit realtime-operation authorization and GAMECORE_R5B_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+        },
+        {
+          "name": "Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting",
+          "result": "Failed",
+          "detail": "GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681)\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting () [0x0016b] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:65"
+        },
+        {
+          "name": "Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure",
+          "result": "Failed",
+          "detail": "Expected is <System.Byte[8418]>, actual is <System.Byte[8362]>\n  Values differ at index [8359]\n  Expected: 49\n  But was:  48\n \n                 at Hollowmere.R6_F.ContentClosureTests+<R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure>d__12.MoveNext () [0x00308] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R6_F/ContentClosureTests.cs:102\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/engine] applied cs_01M4AA72SC1A7PAGSPRRSSDSA8 -> Applied (1 op(s), 108.5 ms)\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.\nDialogueRunner.Start: True; reason=\nBell line presented; conversation ended; retainedCandidate=False\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u1)\n[GameCore.Studio/engine] history apply cs_01M4AA79JAE5VX2N7RM410BTEQ -> Applied (2 op(s), 189.0 ms)\n[GameCore.Studio/history] undid cs_01M4AA72SC1A7PAGSPRRSSDSA8 (2 inverse op(s))\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it."
+        },
+        {
+          "name": "Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20",
+          "result": "Failed",
+          "detail": "Projecting definition changes failed: 'npcs': [6] the reference \"Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset\" does not resolve\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R6_F.ContentClosureTests+<R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20>d__14.MoveNext () [0x000a0] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R6_F/ContentClosureTests.cs:154\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it."
+        },
+        {
+          "name": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides",
+          "result": "Failed",
+          "detail": "W-PLUG-02 requires a graphics-enabled Editor: omit -nographics; inactive binders are not acceptance evidence.\n  Expected: False\n  But was:  True\n \n                     at Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides () [0x0000d] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Animation/AnimatorRespawnTests.cs:75"
+        },
+        {
+          "name": "Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak",
+          "result": "Failed",
+          "detail": "Expected: True\n  But was:  False\n \n                 at Hollowmere.R7_C.NativeMediaAcceptance+<W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak>d__2.MoveNext () [0x001e8] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Media/NativeMediaAcceptance.cs:106\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        }
+      ]
+    }
+  },
+  "note": "Allocated growth 0.02%; budget 15%. Full Memory Profiler snapshots are absent."
+}

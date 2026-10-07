@@ -1,0 +1,15 @@
+process-start Editor/P42Negative/Execution.cs:2 using Launch = System.Diagnostics.Process;
+network Editor/P42Negative/Execution.cs:3 using Web = System.Net.Http.HttpClient;
+reflection-emit Editor/P42Negative/Execution.cs:4 using Emit = System.Reflection.Emit.DynamicMethod;
+dllimport Editor/P42Negative/Execution.cs:13 [System.Runtime.InteropServices.DllImport("forbidden")]
+dllimport Editor/P42Negative/Execution.cs:14 private static extern void Native();
+unsafe Editor/P42Negative/Execution.cs:15 public unsafe void Pointer() { int* pointer = null; }
+editor-hook Editor/P42Negative/Hooks.cs:5 public sealed class ImportHook : UnityEditor.AssetPostprocessor { }
+editor-hook Editor/P42Negative/Hooks.cs:6 public sealed class ModificationHook : UnityEditor.AssetModificationProcessor { }
+editor-hook Editor/P42Negative/Hooks.cs:9 [UnityEditor.InitializeOnLoadMethod]
+editor-hook Editor/P42Negative/Hooks.cs:11 [UnityEditor.Callbacks.DidReloadScripts]
+editor-hook Editor/P42Negative/Hooks.cs:13 [UnityEditor.MenuItem("Bad/Hook")]
+file-access Editor/P42Negative/StateAndPaths.cs:2 using Disk = System.IO.File;
+static-mutable Editor/P42Negative/StateAndPaths.cs:5 private static readonly int[] Shared = new int[1];
+resources-absolute Editor/P42Negative/StateAndPaths.cs:12 UnityEngine.Resources.Load("/absolute");
+scanned 59 file(s), 157413 byte(s): 14 hit(s)

@@ -1,17 +1,32 @@
 {
   "status": "PASS",
-  "note": "Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained.",
+  "note": "Both current real SIGKILL paths reopen in distinct Editor PIDs: uncertain in-operation rollback and completed-operation resume recover correctly. Intentional killed-Editor nonzero attempts are preserved, not product failures.",
+  "evidence": [
+    "W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json",
+    "W-REC-01/rollback-state-20261007T050623.898305Z/recovery-result.json",
+    "W-REC-01/resume-state-20261007T050804.537383Z/result.json",
+    "W-REC-01/rollback-state-20261007T050623.898305Z/result.json"
+  ],
   "command": "studio/tools/verify-all.sh recovery",
-  "tests": [
-    "R2-03-R2-38-rollback",
-    "R2-03-R2-38-resume"
+  "checks": [
+    {
+      "file": "W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json",
+      "pointer": "/ok",
+      "equals": true
+    },
+    {
+      "file": "W-REC-01/rollback-state-20261007T050623.898305Z/recovery-result.json",
+      "pointer": "/ok",
+      "equals": true
+    }
   ],
   "row": "W-REC-01",
   "scenario": "Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback",
   "requirement": "SR-3.3",
-  "reportedAt": "2026-10-06T15:29:44.422301+00:00",
-  "evidence": [
-    "W-REC-01/rollback-state-20261005T202208.950937Z/README.md",
-    "W-REC-01/resume-state-20261005T202307.744000Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

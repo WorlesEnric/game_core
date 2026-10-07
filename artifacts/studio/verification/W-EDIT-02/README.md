@@ -1,10 +1,9 @@
 # W-EDIT-02: 5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report
 
-Verdict: **PASS**. Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes.
+Verdict: **PASS**. Current five-op stale-member tests prove AllOrNothing refusal/unchanged fields and BestEffort per-op outcomes; throwing-operation rollback also passes.
 
-Report timestamp: 2026-10-06T15:29:44.379635+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
@@ -12,8 +11,6 @@ Acceptance baseline: merged main `e94f27aa`; every linked run records its exact 
 studio/tools/verify-all.sh unity
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md)
-
-Exact acceptance/component cases: `WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing`, `WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes`. Component cases do not close any missing external workflow.
+- [UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml](../UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml)

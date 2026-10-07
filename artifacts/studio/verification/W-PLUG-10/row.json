@@ -1,15 +1,24 @@
 {
   "status": "PASS",
-  "note": "R7-E real context inspector, validator console and live ETOS gateway with fake transport report identical GP-ENT-006 code/message/canonical subject for one missing-prefab definition; candidate refuses without writes. Full EditMode XML 181/181, Rules 309/309; generated voice bank enrollment and History inverses pass.",
-  "command": "DISPLAY=:1 bash artifacts/studio/verification/W-PLUG-10/run-r7-e.sh r7-e-final",
+  "note": "Current actual inspector, validator console and gateway-with-fake-transport report identical canonical GP-ENT-006 diagnostic; candidate refuses without writes.",
+  "evidence": [
+    "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/results.xml",
+    "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
+  "checks": [
+    {
+      "file": "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/results.xml",
+      "xmlCase": "Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts"
+    }
+  ],
   "row": "W-PLUG-10",
   "scenario": "Definition validator parity (inspector, validator, agent)",
   "requirement": "SR-5.2",
-  "reportedAt": "2026-10-07",
-  "evidence": [
-    "W-PLUG-10/r7-baseline/results.xml",
-    "W-PLUG-10/r7-e-final/results.xml",
-    "W-PLUG-10/r7-e-result.json",
-    "W-PLUG-10/r7-e-rules/r7-e-rules.trx"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

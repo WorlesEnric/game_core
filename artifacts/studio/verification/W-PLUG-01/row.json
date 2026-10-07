@@ -1,17 +1,44 @@
 {
   "status": "PASS",
-  "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825\u20130.15878% of peak; both passing runs meet load \u22642 s/unload \u22641 s. Reloadable 702-byte clip descriptors remain included in the residual.",
-  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'NativeMediaAcceptance' -force-glcore",
-  "tests": [
-    "NativeMediaAcceptance"
+  "note": "Two real graphical three-region loop runs preserve moved NPC state and release region views/media. Native residuals 0.08825\u20130.15878% of peak; all load/unload timings meet 2s/1s. Twelve full snapshots retained losslessly with raw/compressed hashes.",
+  "evidence": [
+    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/native-media.csv",
+    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/snapshot-manifest.json",
+    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/retention.json",
+    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/native-media.csv",
+    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/snapshot-manifest.json",
+    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/retention.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
+  "checks": [
+    {
+      "file": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+      "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
+    },
+    {
+      "file": "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+      "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
+    },
+    {
+      "file": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/retention.json",
+      "pointer": "/snapshotCount",
+      "equals": 6
+    },
+    {
+      "file": "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/retention.json",
+      "pointer": "/snapshotCount",
+      "equals": 6
+    }
   ],
   "row": "W-PLUG-01",
   "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
   "requirement": "SR-6.1, B-REGION",
-  "reportedAt": "2026-10-06T21:25:18.936154+00:00",
-  "evidence": [
-    "W-PLUG-01/r7-region-repeat/results.xml",
-    "W-PLUG-01/r7-region-repeat/external-snapshots.json",
-    "W-PLUG-01/r7-native-final/results.xml"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

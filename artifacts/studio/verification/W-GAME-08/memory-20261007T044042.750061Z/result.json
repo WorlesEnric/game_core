@@ -1,0 +1,27 @@
+{
+  "label": "B-MEMORY-15-percent",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T04:39:00.994606+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T043900.993187Z/logs --label memory-ten-cycles --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T043900.993187Z/results.xml -- -runTests -testPlatform EditMode -testFilter Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T043900.993187Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T04:39:00.996104+00:00",
+  "sourceDiffSha256": "0e4366d89b1c4e2155d898eb23e68d013999921475a2e97e3ab53acf018cdb85",
+  "exitCode": 0,
+  "status": "BLOCKED",
+  "ended": "2026-10-07T04:40:42.744197+00:00",
+  "seconds": 101.75094833085313,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  },
+  "note": "Allocated growth -0.31%; budget 15%. Full Memory Profiler snapshots are absent."
+}

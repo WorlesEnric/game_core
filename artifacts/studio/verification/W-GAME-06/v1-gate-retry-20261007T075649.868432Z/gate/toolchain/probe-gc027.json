@@ -1,0 +1,302 @@
+{
+  "task": "GC-027",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Recovery",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc027-source-world-captures-and-publishes-a-verified-checkpoint",
+      "status": "Pass",
+      "detail": "session=09716070107562600000000000000001; liveTargets=7; targetIndices=23,21,18,22,20,17,19; auxiliaryIndices=14..16; obligation=6887823c8478a459a1f636781ce04e89; headerOutboxCount=4; document=8835B/a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1; store=memory://gc027/narrative/checkpoint; envelope=stored(8835B,v1.0,docFnv=f87e051c447ada5d,envFnv=7bcafb0d462f657f,a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1); atCommittedBoundary=True; admittedSteps=0; engineSteps=0; idleSteps=0; lifecycle=Running; permittedResult=the committed boundary was copied and a verified document is stored with the world's one delivery obligation inside it (O-20, P-053)"
+    },
+    {
+      "name": "narrative/gc027-capture-copy-fault-produces-no-checkpoint",
+      "status": "Pass",
+      "detail": "faultPoint=capture-copy; code=ApplyFault; captured=False; published=False; faultStoreEmpty=True; sourceLifecycle=Running; sourceFaultCount=0; storedDocumentIntact=True; permittedResult=no checkpoint was produced and the world that was being captured keeps running (O-20, P-049)"
+    },
+    {
+      "name": "narrative/gc027-publication-fault-keeps-the-previous-document",
+      "status": "Pass",
+      "detail": "faultPoint=checkpoint-publication; code=ApplyFault; capturedButNotPublished=True; previousDocumentIntact=True; previousDocumentReadable=True; previousDocumentHash=a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1; sourceLifecycle=Running; permittedResult=the previous document is still the stored, verified one and no partial artifact exists (06 s7, O-20)"
+    },
+    {
+      "name": "narrative/gc027-reference-repair-fault-never-builds-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; attempts=1; builderAttempts=0; destination=never built; source=Faulted->Faulted; registry=2->2; transcript=transcript(lines=2/32,faults=1,loss=None,digest=fbb3056e91e959e7ca2cd75b1f57ffd404271d68eb3d47da62f9075ffd97e622); permittedResult=the destination was never built, so no incomplete world can become the running one, and the source stays faulted (P-049)"
+    },
+    {
+      "name": "narrative/gc027-postwrite-apply-fault-never-exposes-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=2->2; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "narrative/gc027-recovery-publication-fault-keeps-the-registry-unchanged",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault: the recovery-publication boundary was armed and fired: injected recovery-publication fault: about to publish the restored session 09716070107562600000000000000004 into the registry; the validated world was destroyed and never exposed, so the registry still holds exactly the worlds it held before the attempt (P-030, P-049).; stagingBuilt=True; stagingLifecycle=Disposed; registry=2->2; sourceFaultCount=1; permittedResult=the validated world was destroyed and never exposed, so the outcome is: registry unchanged, source untouched (P-030, P-049)"
+    },
+    {
+      "name": "narrative/gc027-recovery-publishes-a-new-session-with-the-captured-state",
+      "status": "Pass",
+      "detail": "source=09716070107562600000000000000001->Faulted/Disposed; destination=09716070107562600000000000000005; targets=7; slots=2 (dormant=1); recovery=Published/None: recovered Checkpoint into session 09716070107562600000000000000005 (O-22).; deliveryOwner=built; attempts=1; distinctIdentities=True; transcript=transcript(lines=6/64,faults=0,loss=None,digest=64c10477dbf42ede036b0e0d60294a97d1c31ca74b149870d9dfd1f3e2450810); permittedResult=a new session is published from the verified checkpoint with the captured state, and the old faulted world is stopped and never resumed (O-22, P-049)"
+    },
+    {
+      "name": "narrative/gc027-restored-world-uses-different-native-handles",
+      "status": "Pass",
+      "detail": "sourceIndices=23,21,18,22,20,17,19 (auxiliary 14..16); restoredIndices=30,31,32,33,34,35,36; overlappingIndices=<none>; sourceStillRegistered=False; recoveredRunning=True; equalIdentities=the two worlds carry the same number of targets with the same stable ids while each occupies a different native handle block (P-004, P-005)"
+    },
+    {
+      "name": "narrative/gc027-active-and-dormant-state-survive-the-recovery",
+      "status": "Pass",
+      "detail": "targets=7; slots=2 (dormant=1); outboxRows=4; restoreStage=Expose; permittedResult=the active rows and the dormant row both survive into the new session, and a dormant row stays dormant rather than being reactivated (P-032, P-053)"
+    },
+    {
+      "name": "narrative/gc027-outbox-rows-and-delivery-cursor-survive-the-recovery",
+      "status": "Pass",
+      "detail": "carriedRows=4 (open=1,cursors=1); reinstatedRows=4; provedRows=4; liveOpen=1; terminal=1; consistent=True; destinationAttempts=0; cursor=outbox-consistency label=recovered:09716070107562600000000000000005 carried=4(open=1,terminal=1,cursor=1) live=(2/1/1/pruned=0/adopted=2) cursors=1 consistent=1; permittedResult=the obligation and its delivery cursor are owned by the new session, the recovery delivered nothing, and the cursor is intact: no hidden external replay (P-045, P-049, P-053)"
+    },
+    {
+      "name": "narrative/gc027-outbox-append-fault-refuses-before-delivery",
+      "status": "Pass",
+      "detail": "boundary=before-append; crashed=True; journalFrames=0; trackedObligations=0; destinationAttempts=0; commitCode=None; crashDetail=delivery crashed at before-append: before appending Obligation de5ff11587b3b5775f0f5875c3114e49; permittedResult=an obligation is durable before it is handed over, so a fault before the append refuses the commit rather than delivering something no journal holds (P-045)"
+    },
+    {
+      "name": "narrative/gc027-outbox-delivery-fault-redelivers-with-one-destination-effect",
+      "status": "Pass",
+      "detail": "boundary=after-delivery; crashed=True; openAfterCrash=True; effectsAfterCrash=1; effectsAfterRedelivery=1; alreadyApplied=1; redelivery=Acknowledged/None; settledState=Acknowledged; crashDetail=delivery crashed at after-delivery: after asking the destination for obligation b2d208d35ee7c6e51792eeb8dd1f8605; redeliveryDetail=the destination already applied idempotency key 8961d8148a10b68ea72364668a085ff3; this attempt mutates nothing (P-045).; permittedResult=a redelivery reuses the obligation's idempotency key, so the destination effect is applied exactly once (P-045)"
+    },
+    {
+      "name": "narrative/gc027-outbox-acknowledgement-fault-records-or-redelivers-once",
+      "status": "Pass",
+      "detail": "beforeAcknowledge=before-acknowledge; crashed=True; stillRedeliverable=True; settledOutcome=Acknowledged/None; destinationEffects=1; afterAcknowledge=after-acknowledge; afterCrashed=True; afterSettled=True; afterCrashDestinationAttempts=0; crashDetail=delivery crashed at before-acknowledge: before persisting the acknowledgement of 6af25dfcc86804e4014176e8e4a0a7ea; settledDetail=the destination already applied idempotency key 573522fb17750e96f21dd04aa1a1ee30; this attempt mutates nothing (P-045).; permittedResult=an acknowledgement is persisted before it is applied, so a fault before it leaves the obligation redeliverable and a fault after it leaves it settled with exactly one destination effect (P-045)"
+    },
+    {
+      "name": "narrative/gc027-restart-from-the-store-recovers-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=09716070107562600000000000000001; restartedSession=09716070107562600000000000000006; outcome=Published/None; document=a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1; owedObligations=1; destinationAttempts=0; registry=2->3; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=560e98e4dfe665dcf05213fd9b5ba8d5d2c6f273019e8c7d8bb93fc42b811860); restartPoint=restart store=memory://gc027/narrative/restart present=1 document=a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1 was=09716070107562600000000000000001 now=09716070107562600000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "narrative/gc027-restart-without-a-document-or-incompatible-content-exposes-nothing",
+      "status": "Pass",
+      "detail": "absentDocument=Rejected/ResourceUnavailable (destination=never exposed, builderAttempts=0); incompatibleDocument=Rejected/UnsupportedVersion (destination=never exposed, builderAttempts=0); registry=3->3; permittedResult=an absent or incompatible document produces no world at all, so an incomplete destination is never exposed (P-049, P-054)"
+    },
+    {
+      "name": "narrative/gc027-transient-failure-is-retried-under-the-host-bound",
+      "status": "Pass",
+      "detail": "hostBound=3; transientRefusals=1; attempts=2 (retries=1); firstAttempt=attempt=0 kind=Initial source=Checkpoint session=09716070107562600000000000000009 op=OperationId(WorldId(09716070107562600000000000000009), b81f09fec8d46a3297ef2d5c62e91d01, 45) outcome=Rejected code=ResourceUnavailable detail=the store is transiently unavailable (refusal 1 of this run); a retryable transient failure under the host's bound (P-049).; distinctIdentities=True; classification=ResourceUnavailable:Retriable/RetrySameInput; boundedAttempts=1 attempts=1/ResourceUnavailable; boundedBuilderAttempts=0; transcript=transcript(lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=9c301f19efde4b438d0bf15d0d8d70f4f63b26ee7f306c467375e24790f577f4); permittedResult=a retryable transient failure is retried under the host's configured bound with a new session and a new operation id, and an exhausted bound makes it final (P-049, P-050)"
+    },
+    {
+      "name": "narrative/gc027-teardown-disposes-every-world",
+      "status": "Pass",
+      "detail": "registry=4->0; every world this run created is stopped and disposed, so no session outlives the run (P-035, P-048); transcript=transcript(lines=7/256,faults=2,loss=None,digest=9a9052650141526f4ec9ac67fd4be538d173f951104e7b7993f40bbe7a262522)"
+    },
+    {
+      "name": "gc027-narrative-digest",
+      "status": "Pass",
+      "detail": "digest=2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9; expectedDigest=2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9; observations=17; expectedObservations=17; digest=2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9; label=narrative; steps=17; failed=0"
+    },
+    {
+      "name": "cards/gc027-source-world-captures-and-publishes-a-verified-checkpoint",
+      "status": "Pass",
+      "detail": "session=04716070107562600000000000000001; liveTargets=6; targetIndices=7,10,12,11,8,9; auxiliaryIndices=4..6; obligation=c700afb52d4dd9655b8d7a010e1793a6; headerOutboxCount=4; document=9139B/4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869; store=memory://gc027/cards/checkpoint; envelope=stored(9139B,v1.0,docFnv=ed20347962790d3a,envFnv=21305cebdf4cfc57,4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869); atCommittedBoundary=True; admittedSteps=0; engineSteps=0; idleSteps=0; lifecycle=Running; permittedResult=the committed boundary was copied and a verified document is stored with the world's one delivery obligation inside it (O-20, P-053)"
+    },
+    {
+      "name": "cards/gc027-capture-copy-fault-produces-no-checkpoint",
+      "status": "Pass",
+      "detail": "faultPoint=capture-copy; code=ApplyFault; captured=False; published=False; faultStoreEmpty=True; sourceLifecycle=Running; sourceFaultCount=0; storedDocumentIntact=True; permittedResult=no checkpoint was produced and the world that was being captured keeps running (O-20, P-049)"
+    },
+    {
+      "name": "cards/gc027-publication-fault-keeps-the-previous-document",
+      "status": "Pass",
+      "detail": "faultPoint=checkpoint-publication; code=ApplyFault; capturedButNotPublished=True; previousDocumentIntact=True; previousDocumentReadable=True; previousDocumentHash=4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869; sourceLifecycle=Running; permittedResult=the previous document is still the stored, verified one and no partial artifact exists (06 s7, O-20)"
+    },
+    {
+      "name": "cards/gc027-reference-repair-fault-never-builds-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; attempts=1; builderAttempts=0; destination=never built; source=Faulted->Faulted; registry=1->1; transcript=transcript(lines=2/32,faults=1,loss=None,digest=1d6a05c1c0f3096a76c772d4fce362f7c59614354be36c82dc49da9446dc239b); permittedResult=the destination was never built, so no incomplete world can become the running one, and the source stays faulted (P-049)"
+    },
+    {
+      "name": "cards/gc027-postwrite-apply-fault-never-exposes-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=1->1; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "cards/gc027-recovery-publication-fault-keeps-the-registry-unchanged",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault: the recovery-publication boundary was armed and fired: injected recovery-publication fault: about to publish the restored session 04716070107562600000000000000004 into the registry; the validated world was destroyed and never exposed, so the registry still holds exactly the worlds it held before the attempt (P-030, P-049).; stagingBuilt=True; stagingLifecycle=Disposed; registry=1->1; sourceFaultCount=1; permittedResult=the validated world was destroyed and never exposed, so the outcome is: registry unchanged, source untouched (P-030, P-049)"
+    },
+    {
+      "name": "cards/gc027-recovery-publishes-a-new-session-with-the-captured-state",
+      "status": "Pass",
+      "detail": "source=04716070107562600000000000000001->Faulted/Disposed; destination=04716070107562600000000000000005; targets=6; slots=2 (dormant=1); recovery=Published/None: recovered Checkpoint into session 04716070107562600000000000000005 (O-22).; deliveryOwner=built; attempts=1; distinctIdentities=True; transcript=transcript(lines=6/64,faults=0,loss=None,digest=9556ebde6a25fed55715c5b15ff7eb44fb89f588c2b1c40161efce4eebaded3a); permittedResult=a new session is published from the verified checkpoint with the captured state, and the old faulted world is stopped and never resumed (O-22, P-049)"
+    },
+    {
+      "name": "cards/gc027-restored-world-uses-different-native-handles",
+      "status": "Pass",
+      "detail": "sourceIndices=7,10,12,11,8,9 (auxiliary 4..6); restoredIndices=17,18,19,20,21,22; overlappingIndices=<none>; sourceStillRegistered=False; recoveredRunning=True; equalIdentities=the two worlds carry the same number of targets with the same stable ids while each occupies a different native handle block (P-004, P-005)"
+    },
+    {
+      "name": "cards/gc027-active-and-dormant-state-survive-the-recovery",
+      "status": "Pass",
+      "detail": "targets=6; slots=2 (dormant=1); outboxRows=4; restoreStage=Expose; permittedResult=the active rows and the dormant row both survive into the new session, and a dormant row stays dormant rather than being reactivated (P-032, P-053)"
+    },
+    {
+      "name": "cards/gc027-outbox-rows-and-delivery-cursor-survive-the-recovery",
+      "status": "Pass",
+      "detail": "carriedRows=4 (open=1,cursors=1); reinstatedRows=4; provedRows=4; liveOpen=1; terminal=1; consistent=True; destinationAttempts=0; cursor=outbox-consistency label=recovered:04716070107562600000000000000005 carried=4(open=1,terminal=1,cursor=1) live=(2/1/1/pruned=0/adopted=2) cursors=1 consistent=1; permittedResult=the obligation and its delivery cursor are owned by the new session, the recovery delivered nothing, and the cursor is intact: no hidden external replay (P-045, P-049, P-053)"
+    },
+    {
+      "name": "cards/gc027-outbox-append-fault-refuses-before-delivery",
+      "status": "Pass",
+      "detail": "boundary=before-append; crashed=True; journalFrames=0; trackedObligations=0; destinationAttempts=0; commitCode=None; crashDetail=delivery crashed at before-append: before appending Obligation 417bcf3707b86b1e451f11700f965b9f; permittedResult=an obligation is durable before it is handed over, so a fault before the append refuses the commit rather than delivering something no journal holds (P-045)"
+    },
+    {
+      "name": "cards/gc027-outbox-delivery-fault-redelivers-with-one-destination-effect",
+      "status": "Pass",
+      "detail": "boundary=after-delivery; crashed=True; openAfterCrash=True; effectsAfterCrash=1; effectsAfterRedelivery=1; alreadyApplied=1; redelivery=Acknowledged/None; settledState=Acknowledged; crashDetail=delivery crashed at after-delivery: after asking the destination for obligation 69281eeaa44afc6dbd19c63310c78432; redeliveryDetail=the destination already applied idempotency key 19dfa1071b321de7f7d95dd874e07485; this attempt mutates nothing (P-045).; permittedResult=a redelivery reuses the obligation's idempotency key, so the destination effect is applied exactly once (P-045)"
+    },
+    {
+      "name": "cards/gc027-outbox-acknowledgement-fault-records-or-redelivers-once",
+      "status": "Pass",
+      "detail": "beforeAcknowledge=before-acknowledge; crashed=True; stillRedeliverable=True; settledOutcome=Acknowledged/None; destinationEffects=1; afterAcknowledge=after-acknowledge; afterCrashed=True; afterSettled=True; afterCrashDestinationAttempts=0; crashDetail=delivery crashed at before-acknowledge: before persisting the acknowledgement of ef713431e5882a0e488d61bb42e454ae; settledDetail=the destination already applied idempotency key f8bd62a8ae34db8ad6b6f65b6b6be05c; this attempt mutates nothing (P-045).; permittedResult=an acknowledgement is persisted before it is applied, so a fault before it leaves the obligation redeliverable and a fault after it leaves it settled with exactly one destination effect (P-045)"
+    },
+    {
+      "name": "cards/gc027-restart-from-the-store-recovers-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=04716070107562600000000000000001; restartedSession=04716070107562600000000000000006; outcome=Published/None; document=4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869; owedObligations=1; destinationAttempts=0; registry=1->2; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=790d44dfb8e7ecb31040eaaaf9dda8e46e0e6ed806d9439b5d2ec3752a2b08ac); restartPoint=restart store=memory://gc027/cards/restart present=1 document=4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869 was=04716070107562600000000000000001 now=04716070107562600000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "cards/gc027-restart-without-a-document-or-incompatible-content-exposes-nothing",
+      "status": "Pass",
+      "detail": "absentDocument=Rejected/ResourceUnavailable (destination=never exposed, builderAttempts=0); incompatibleDocument=Rejected/UnsupportedVersion (destination=never exposed, builderAttempts=0); registry=2->2; permittedResult=an absent or incompatible document produces no world at all, so an incomplete destination is never exposed (P-049, P-054)"
+    },
+    {
+      "name": "cards/gc027-transient-failure-is-retried-under-the-host-bound",
+      "status": "Pass",
+      "detail": "hostBound=3; transientRefusals=1; attempts=2 (retries=1); firstAttempt=attempt=0 kind=Initial source=Checkpoint session=04716070107562600000000000000009 op=OperationId(WorldId(04716070107562600000000000000009), c4d3f9becdf691d69ff6f056d4f2e274, 45) outcome=Rejected code=ResourceUnavailable detail=the store is transiently unavailable (refusal 1 of this run); a retryable transient failure under the host's bound (P-049).; distinctIdentities=True; classification=ResourceUnavailable:Retriable/RetrySameInput; boundedAttempts=1 attempts=1/ResourceUnavailable; boundedBuilderAttempts=0; transcript=transcript(lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=893a49765fa46334a5bc004709bfb7a938af5f64374c527451651084d65b4efb); permittedResult=a retryable transient failure is retried under the host's configured bound with a new session and a new operation id, and an exhausted bound makes it final (P-049, P-050)"
+    },
+    {
+      "name": "cards/gc027-teardown-disposes-every-world",
+      "status": "Pass",
+      "detail": "registry=3->0; every world this run created is stopped and disposed, so no session outlives the run (P-035, P-048); transcript=transcript(lines=7/256,faults=2,loss=None,digest=9d0b350b8bdbfc3a08b1fbd0ce1b435e4c858bbbaa3b8af58f7950bbfd96c088)"
+    },
+    {
+      "name": "gc027-cards-digest",
+      "status": "Pass",
+      "detail": "digest=3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c; expectedDigest=3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c; observations=17; expectedObservations=17; digest=3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c; label=cards; steps=17; failed=0"
+    },
+    {
+      "name": "traversal/gc027-source-world-captures-and-publishes-a-verified-checkpoint",
+      "status": "Pass",
+      "detail": "session=13627361161700120000000000000001; liveTargets=6; targetIndices=9,10,8,11,13,12; auxiliaryIndices=5..7; obligation=<none: genre declares none>; headerOutboxCount=0; document=17253B/5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5; store=memory://gc027/traversal/checkpoint; envelope=stored(17253B,v1.0,docFnv=fd6cf0cd31dd69fb,envFnv=7e6505c3e0f63120,5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5); atCommittedBoundary=True; admittedSteps=1; engineSteps=1; idleSteps=3; lifecycle=Running; permittedResult=the committed boundary was copied and a verified document is stored with the world's one delivery obligation inside it (O-20, P-053)"
+    },
+    {
+      "name": "traversal/gc027-capture-copy-fault-produces-no-checkpoint",
+      "status": "Pass",
+      "detail": "faultPoint=capture-copy; code=ApplyFault; captured=False; published=False; faultStoreEmpty=True; sourceLifecycle=Running; sourceFaultCount=0; storedDocumentIntact=True; permittedResult=no checkpoint was produced and the world that was being captured keeps running (O-20, P-049)"
+    },
+    {
+      "name": "traversal/gc027-publication-fault-keeps-the-previous-document",
+      "status": "Pass",
+      "detail": "faultPoint=checkpoint-publication; code=ApplyFault; capturedButNotPublished=True; previousDocumentIntact=True; previousDocumentReadable=True; previousDocumentHash=5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5; sourceLifecycle=Running; permittedResult=the previous document is still the stored, verified one and no partial artifact exists (06 s7, O-20)"
+    },
+    {
+      "name": "traversal/gc027-reference-repair-fault-never-builds-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; attempts=1; builderAttempts=0; destination=never built; source=Faulted->Faulted; registry=1->1; transcript=transcript(lines=2/32,faults=1,loss=None,digest=abfc9d75774890c5cfc3d7aa96ab1a8bc5a2c06b68470c98a99b11a2efb104da); permittedResult=the destination was never built, so no incomplete world can become the running one, and the source stays faulted (P-049)"
+    },
+    {
+      "name": "traversal/gc027-postwrite-apply-fault-never-exposes-a-destination",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=1->1; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "traversal/gc027-recovery-publication-fault-keeps-the-registry-unchanged",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault: the recovery-publication boundary was armed and fired: injected recovery-publication fault: about to publish the restored session 13627361161700120000000000000004 into the registry; the validated world was destroyed and never exposed, so the registry still holds exactly the worlds it held before the attempt (P-030, P-049).; stagingBuilt=True; stagingLifecycle=Disposed; registry=1->1; sourceFaultCount=1; permittedResult=the validated world was destroyed and never exposed, so the outcome is: registry unchanged, source untouched (P-030, P-049)"
+    },
+    {
+      "name": "traversal/gc027-recovery-publishes-a-new-session-with-the-captured-state",
+      "status": "Pass",
+      "detail": "source=13627361161700120000000000000001->Faulted/Disposed; destination=13627361161700120000000000000005; targets=6; slots=53 (dormant=52); recovery=Published/None: recovered Checkpoint into session 13627361161700120000000000000005 (O-22).; deliveryOwner=none; attempts=1; distinctIdentities=True; transcript=transcript(lines=6/64,faults=0,loss=None,digest=513267eeb89464c1a325191c15e509d429a582de45cf70c8546f4e2c9bb2872e); permittedResult=a new session is published from the verified checkpoint with the captured state, and the old faulted world is stopped and never resumed (O-22, P-049)"
+    },
+    {
+      "name": "traversal/gc027-restored-world-uses-different-native-handles",
+      "status": "Pass",
+      "detail": "sourceIndices=9,10,8,11,13,12 (auxiliary 5..7); restoredIndices=20,21,22,23,24,25; overlappingIndices=<none>; sourceStillRegistered=False; recoveredRunning=True; equalIdentities=the two worlds carry the same number of targets with the same stable ids while each occupies a different native handle block (P-004, P-005)"
+    },
+    {
+      "name": "traversal/gc027-active-and-dormant-state-survive-the-recovery",
+      "status": "Pass",
+      "detail": "targets=6; slots=53 (dormant=52); outboxRows=0; restoreStage=Expose; permittedResult=the active rows and the dormant row both survive into the new session, and a dormant row stays dormant rather than being reactivated (P-032, P-053)"
+    },
+    {
+      "name": "traversal/gc027-restart-from-the-store-recovers-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=13627361161700120000000000000001; restartedSession=13627361161700120000000000000006; outcome=Published/None; document=5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5; owedObligations=0; destinationAttempts=-1; registry=1->2; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=1939a85ae76dc67274c03dd5fbaaa12d2858affa98734297342e6a40ae6b936b); restartPoint=restart store=memory://gc027/traversal/restart present=1 document=5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5 was=13627361161700120000000000000001 now=13627361161700120000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "traversal/gc027-restart-without-a-document-or-incompatible-content-exposes-nothing",
+      "status": "Pass",
+      "detail": "absentDocument=Rejected/ResourceUnavailable (destination=never exposed, builderAttempts=0); incompatibleDocument=Rejected/UnsupportedVersion (destination=never exposed, builderAttempts=0); registry=2->2; permittedResult=an absent or incompatible document produces no world at all, so an incomplete destination is never exposed (P-049, P-054)"
+    },
+    {
+      "name": "traversal/gc027-transient-failure-is-retried-under-the-host-bound",
+      "status": "Pass",
+      "detail": "hostBound=3; transientRefusals=1; attempts=2 (retries=1); firstAttempt=attempt=0 kind=Initial source=Checkpoint session=13627361161700120000000000000009 op=OperationId(WorldId(13627361161700120000000000000009), e5dfef6528d4a05449665c7110773292, 45) outcome=Rejected code=ResourceUnavailable detail=the store is transiently unavailable (refusal 1 of this run); a retryable transient failure under the host's bound (P-049).; distinctIdentities=True; classification=ResourceUnavailable:Retriable/RetrySameInput; boundedAttempts=1 attempts=1/ResourceUnavailable; boundedBuilderAttempts=0; transcript=transcript(lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=46330917ffaec7f4a46eb5ca3b449b75d8071c134d9e55e01787266288a24e6f); permittedResult=a retryable transient failure is retried under the host's configured bound with a new session and a new operation id, and an exhausted bound makes it final (P-049, P-050)"
+    },
+    {
+      "name": "traversal/gc027-recovered-engine-physics-is-reseeded-not-continued",
+      "status": "Pass",
+      "detail": "sourceEngineSimulations=1; recoveredEngineSimulations=0; dedicatedLocalScene=True; bodies=3 (declared=3, enginePoseEqualsAuthoritative=3); TargetId(51cf5b27370ded93a091b2e9eb6e180c)=auth(20,0,0)v(1040,0,0)/engine(20,0,0)v(1040,0,0)=ok;TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=auth(200020,0,0)v(1000,0,0)/engine(200020,0,0)v(1000,0,0)=ok;TargetId(e57ba9f33193786c847033b85d6702fd)=auth(20020,0,0)v(1000,0,0)/engine(20020,0,0)v(1000,0,0)=ok;; permittedResult=the engine's state is re-derived from the authoritative ECS pose the checkpoint carried and its own counter starts fresh, so no solver state is continued across the recovery (P-054)"
+    },
+    {
+      "name": "traversal/gc027-source-authoritative-state-survives-the-recovery",
+      "status": "Pass",
+      "detail": "capturedState=TargetId(51cf5b27370ded93a091b2e9eb6e180c)=p20,0,0v1040,0,0;progress=1/TargetId(a024398b9672844d656025705196d8b8);TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=p200020,0,0v1000,0,0;TargetId(e57ba9f33193786c847033b85d6702fd)=p20020,0,0v1000,0,0;; recoveredState=TargetId(51cf5b27370ded93a091b2e9eb6e180c)=p20,0,0v1040,0,0;progress=1/TargetId(a024398b9672844d656025705196d8b8);TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=p200020,0,0v1000,0,0;TargetId(e57ba9f33193786c847033b85d6702fd)=p20020,0,0v1000,0,0;; identical=True; permittedResult=the recovered world's authoritative genre state equals the captured world's, so the checkpoint carried it and the recovery restored it (P-053, P-032)"
+    },
+    {
+      "name": "traversal/gc027-recovered-world-refuses-an-old-session-observation",
+      "status": "Pass",
+      "detail": "oldToken=13627361161700120000000000000001/epoch 4/step 1; refusal=ForeignWorld/StaleHandle; leaseGranted=False; recoveredImage=13627361161700120000000000000005/epoch 4/step 0; recoveredImageBelongsToTheNewSession=True; permittedResult=an observation stamped by the old session is refused as a stale handle, and the recovered world's own image is stamped with the new session (P-004, P-005, P-049)"
+    },
+    {
+      "name": "traversal/gc027-recovered-world-steps-its-engine-once-per-admitted-step",
+      "status": "Pass",
+      "detail": "committedSteps=0->1; engineSimulations=0->1; admittedOnce=1; duplicateAdmission=DuplicateStepRefused; permittedResult=the recovered world commits its own steps and its engine simulates exactly once per committed step, refusing a repeat, so no source step is replayed (REF-A06, P-036)"
+    },
+    {
+      "name": "traversal/gc027-teardown-disposes-every-world",
+      "status": "Pass",
+      "detail": "registry=3->0; every world this run created is stopped and disposed, so no session outlives the run (P-035, P-048); transcript=transcript(lines=7/256,faults=2,loss=None,digest=d386df1529054963112cb7f3fd27b0ef88a50eb0e256ec6b48ec8d1aad065c0c)"
+    },
+    {
+      "name": "gc027-traversal-digest",
+      "status": "Pass",
+      "detail": "digest=30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe; expectedDigest=30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe; observations=17; expectedObservations=17; digest=30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe; label=traversal; steps=17; failed=0"
+    }
+  ]
+}

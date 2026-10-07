@@ -1,0 +1,320 @@
+{
+  "accountingScope": "Binding tariff ledger, not an upstream invoice. All concurrent media would invalidate this isolated interval.",
+  "authority": "companion SQLite, mode=ro; no credentials or node operation",
+  "chargeCount": 18,
+  "chargedUsd": 1.2151950946,
+  "charges": [
+    {
+      "charge": {
+        "costUsd": 0.01,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "echo/gpt-5.6-sol",
+          "note": "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models",
+          "perUnitUsd": 0.01,
+          "provider": "echo-describe",
+          "unit": "call",
+          "url": ""
+        }
+      },
+      "createdAt": 1791297633318,
+      "key": "describe_1a111a8bc26dbc8a4332a1e"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0010665426,
+        "quantity": 93.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791271935416,
+      "key": "gc-5fa581e41366b06065211f13f0ed24f513cc6a23"
+    },
+    {
+      "charge": {
+        "costUsd": 3.44046e-05,
+        "quantity": 3.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791271053798,
+      "key": "gc-653c7c4e7f95ec0500d7597c460f06a2051b0c85"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791271894711,
+      "key": "gc-656f0ce79fa43c1928b9cd2da1a0b5696f78e277"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791329672167,
+      "key": "gc-66ad224daae13d1df715fdf8ea8cab99065641fd"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0003669824,
+        "quantity": 32.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791300248752,
+      "key": "gc-67d43c610f7793d396a9bfd831ea08a0b9f84ff1"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0004128552,
+        "quantity": 36.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791286199129,
+      "key": "gc-74fb8bcc4847800f4309361ef927a10a06edf441"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0004128552,
+        "quantity": 36.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791272706267,
+      "key": "gc-7cb38460bb2dd122b36b52fb5b371823290d843a"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0003669824,
+        "quantity": 32.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791286199126,
+      "key": "gc-99be1c47413505830ccefe739d6e79bd970d0256"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0004128552,
+        "quantity": 36.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791350106025,
+      "key": "gc-a600e25e116664b25501595df7dca7527d85e630"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0003669824,
+        "quantity": 32.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791350105991,
+      "key": "gc-bddef786ca6ff9131b7b805ef6cd21ad004c5bd0"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791297625305,
+      "key": "gc-c4ae9992437b7eb5788bf6f45bc4205ac15e3f44"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791350294493,
+      "key": "gc-df1697ff5bb17e3d23470a0ffa16adae552ac1ad"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791271925656,
+      "key": "gc-e2e5ed41fa1f6e7ed7f2029e523aee51bd74cfd0"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0003669824,
+        "quantity": 32.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791272706807,
+      "key": "gc-f21f771030aff5f78c1ea961ebcb9f4ff73694b7"
+    },
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "createdAt": 1791330546174,
+      "key": "gc-f4a2865c6659205372b2ae3a489d0374bcc37400"
+    },
+    {
+      "charge": {
+        "costUsd": 0.0004128552,
+        "quantity": 36.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791300248947,
+      "key": "gc-f9a9f57e8a258a9793fc8533cfcafe2d9b0e7ee3"
+    },
+    {
+      "charge": {
+        "costUsd": 0.000974797,
+        "quantity": 85.0,
+        "tariff": {
+          "kind": "published",
+          "model": "qwen3-tts-flash",
+          "note": "",
+          "perUnitUsd": 1.14682e-05,
+          "provider": "bailian-tts",
+          "unit": "bailian_character",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+        }
+      },
+      "createdAt": 1791271934698,
+      "key": "gc-fd91702cfec153cd115604db73cac2c74b7bd8bd"
+    }
+  ],
+  "label": "before",
+  "ledgerSha256": "5e232da0222574623da1798c17f866a3d7fe62c678e235641c74a0fea81c9776",
+  "observedUtc": "2026-10-07T05:20:07.325464+00:00",
+  "reason": "Baseline captured before the only allowed image submission",
+  "row": "W-AI-01",
+  "status": "PASS"
+}

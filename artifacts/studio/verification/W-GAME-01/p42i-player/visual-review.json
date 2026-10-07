@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "reviewer": "Main",
+  "reportedAt": "2026-10-07T08:54:22.882921+00:00",
+  "observations": "Owned-window proof and actual recordings are game pixels on NVIDIA at 1920x1080, not desktop captures. B-FRAME judged on OFF only; ON informational.",
+  "profiles": [
+    {
+      "profile": "vsync0",
+      "run": 1,
+      "proof": ".evidence/P42iPlayer/measurement/vsync0/run1/window-proof.png"
+    },
+    {
+      "profile": "vsync0",
+      "run": 2,
+      "proof": ".evidence/P42iPlayer/measurement/vsync0/run2/window-proof.png"
+    },
+    {
+      "profile": "vsync1",
+      "run": 1,
+      "proof": ".evidence/P42iPlayer/measurement/vsync1/run1/window-proof.png"
+    },
+    {
+      "profile": "vsync1",
+      "run": 2,
+      "proof": ".evidence/P42iPlayer/measurement/vsync1/run2/window-proof.png"
+    }
+  ]
+}

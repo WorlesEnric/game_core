@@ -1,19 +1,23 @@
 # W-EDIT-08: Apply timings (single and region-wide)
 
-Verdict: **PASS**. single: p95 [55.8581, 63.073600000000006] ms, median 59.4659 ms, budget 200.0 ms; region: p95 [157.6064, 79.8135] ms, median 118.7100 ms, budget 1000.0 ms; prepare: p95 [4.3048, 10.177200000000001] ms, median 7.2410 ms, budget 300.0 ms
+Verdict: **PASS**. Two current 20-sample datasets pass. Single/Marsh-all-NPC/kernel-prepare p95 ms: [[22.3321, 31.6321, 9.5897], [25.0379, 34.204100000000004, 10.7461]]; limits 200/1000/300 ms.
 
-Report timestamp: 2026-10-06T15:29:44.384140+00:00 UTC.
-
-Acceptance baseline: merged main `1752ca8a`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh final-timing
-studio/tools/verify-all.sh final-selection
+python3 artifacts/studio/verification/TOOLS/rows-p42i.py timing
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [B-EDIT/p42b-dataset-summary/README.md](../B-EDIT/p42b-dataset-summary/README.md)
-- [B-EDIT/p42b-dataset-summary/dataset.json](../B-EDIT/p42b-dataset-summary/dataset.json)
+- [W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json](../W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json)
+- [W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json](../W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json)
+- [W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json](../W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json)
+- [W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml](../W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml)
+- [W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json](../W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json)
+- [W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json](../W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json)
+- [W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json](../W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json)
+- [W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml](../W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml)

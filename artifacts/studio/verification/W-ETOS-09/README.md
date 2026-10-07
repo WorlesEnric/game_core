@@ -1,20 +1,25 @@
 # W-ETOS-09: Domain reload during a task: tray shows the same task afterwards
 
-Verdict: **PASS**. P4.2h real changed-source compilation/domain reload in the same Editor preserves running task tec77a34b9f6f55d58ed934f5 and one attached tray row with unchanged creation identity. Loaded source token and compilation/reload callbacks are retained; session starts 11-to-12. Durable cursor 760 continues with exact production/independent replay [761,762], no gap/duplicate and one terminal event; creator tray cancellation then bounds task lifetime.
+Verdict: **PASS**. Actual changed-source compilation/domain reload preserves the same running task and one attached tray row. Cursor continuation 819→821 matches independent authenticated replay; explicit Cancel then settles the original task without candidate.
 
-Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/live-p42h.py reload --row W-ETOS-09 --method P42h.Tasks.TaskDriver.SourceReload
+python3 artifacts/studio/verification/TOOLS/tasks-p42i.py
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md](../W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md)
-- [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md)
-- [W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json](../W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json)
-- [W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/cursor-replay.json](../W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/cursor-replay.json)
-- [W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/source-compilation-request.json](../W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/source-compilation-request.json)
-- [W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/reload-same-running-row.png](../W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/reload-same-running-row.png)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/request.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/request.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/latest-request.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/latest-request.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/started.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/started.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/submission.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/submission.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/source-compilation-request.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/source-compilation-request.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cursor-replay.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cursor-replay.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cancelled.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cancelled.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/reload-recovered.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/reload-recovered.json)
+- [W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/hello.json](../W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/hello.json)

@@ -1,16 +1,33 @@
 {
   "status": "PASS",
-  "note": "Ordinary graphical Open Studio connects automatically without pairing; HUD walking moves committed world.posX/posZ 7.636 m in 3.040 s. Runtime NPC view tags now override the authored GameBoot ancestor; Select shows Maren and MarenEntity in the actual definition card. Graphical R2-29 key delivery and focus-reset regressions pass.",
-  "command": "bash artifacts/studio/verification/W-UI-01/r7-a/run.sh",
+  "note": "Ordinary Open Studio automatically connects; real HUD walking moves committed world.posX/posZ 7.531 m. Actual Select capture shows Maren and MarenEntity in the readable context card; no pairing or paid request.",
+  "evidence": [
+    "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json",
+    "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/automatic-gateway.json",
+    "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/current-observations.json",
+    "W-UI-01/p42i-open-play-20261007T044622.194456Z/visual-review.json",
+    "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/03-npc-definition.png"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py editor",
+  "checks": [
+    {
+      "file": "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json",
+      "pointer": "/passed",
+      "equals": true
+    },
+    {
+      "file": "W-UI-01/p42i-open-play-20261007T044622.194456Z/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-UI-01",
   "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
   "requirement": "SR-1.1",
-  "reportedAt": "2026-10-06T21:13:46.405116+00:00",
-  "evidence": [
-    "W-UI-01/r7-a/README.md",
-    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
-    "W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md",
-    "GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md"
-  ],
-  "baseline": "1a462f88"
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,23 +1,21 @@
 # W-GAME-06: Build log + sha256 + V1 gate transcript on the same revision
 
-Verdict: **PASS**. Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.
+Verdict: **PASS**. Current-source release Hollowmere Linux IL2CPP build succeeds with retained full-file hashes. The complete unchanged V1 gate passes all phases, including 1318 EditMode and 84 PlayMode XML cases, qualification/release player probes, codegen byte identity and docs gate; no failed probe was repeated or budget relaxed.
 
-Report timestamp: 2026-10-06T15:29:44.429968+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh build
-studio/tools/verify-all.sh v1
+python3 artifacts/studio/verification/TOOLS/builds-p42i.py --resume-completed-builds
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md](../W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md)
-- [W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/binary.json](../W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/binary.json)
-- [W-GAME-06/v1-gate-retry-20261005T190359.447287Z/README.md](../W-GAME-06/v1-gate-retry-20261005T190359.447287Z/README.md)
-- [W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/README.md](../W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/README.md)
-- [W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/README.md](../W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/README.md)
-- [W-GAME-06/final-player-manifests-20261005T201815.687151Z/README.md](../W-GAME-06/final-player-manifests-20261005T201815.687151Z/README.md)
+- [W-GAME-06/v1-gate-retry-20261007T075649.868432Z/result.json](../W-GAME-06/v1-gate-retry-20261007T075649.868432Z/result.json)
+- [W-GAME-06/v1-gate-retry-20261007T075649.868432Z/command.log](../W-GAME-06/v1-gate-retry-20261007T075649.868432Z/command.log)
+- [W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/editmode-results.xml](../W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/editmode-results.xml)
+- [W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/playmode-results.xml](../W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/playmode-results.xml)
+- [W-GAME-01/p42i-player/player/build-report.json](../W-GAME-01/p42i-player/player/build-report.json)
+- [W-GAME-01/p42i-player/external-artifacts.json](../W-GAME-01/p42i-player/external-artifacts.json)

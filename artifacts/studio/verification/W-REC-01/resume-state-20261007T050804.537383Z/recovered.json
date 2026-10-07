@@ -1,0 +1,111 @@
+{
+  "id": "cs_01M4AC89JYQR7VQJGTF4PDE7HA",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "P4.2 real Editor death resume",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/data.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/second.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47",
+      "name": "data.txt",
+      "mediaType": "text/plain",
+      "bytes": 11
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.restoreAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Tests/P4_2/Fixture/data.txt",
+                "artifact": {
+                  "artifact": "sha256:0682c5f2076f099c34cfdd15a9e063849ed437a49677e6fcc5b4198c76575be5"
+                },
+                "meta": {
+                  "artifact": "sha256:88116366bf4239abd413de0530b950ef3daff2a71baad0b80356154251d07059"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d08feaebe2aa29a9ab42b706826d60aa-4900000-0",
+                "assetGuid": "d08feaebe2aa29a9ab42b706826d60aa",
+                "path": "Assets/Hollowmere/Tests/P4_2/Fixture/data.txt"
+              },
+              "stamp": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Tests/P4_2/Fixture/second.txt"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-ca2e201e543b3f9d08c463605ca545e0-4900000-0",
+                "assetGuid": "ca2e201e543b3f9d08c463605ca545e0",
+                "path": "Assets/Hollowmere/Tests/P4_2/Fixture/second.txt"
+              },
+              "stamp": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T05:09:22.051Z",
+    "applied": "2026-10-07T05:10:54.583Z"
+  }
+}

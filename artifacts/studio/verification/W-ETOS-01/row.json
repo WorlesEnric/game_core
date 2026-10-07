@@ -1,15 +1,17 @@
 {
   "status": "BLOCKED",
-  "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet\u2019s scope.",
-  "command": "studio/tools/verify-all.sh security",
+  "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
+  "evidence": [
+    "W-ETOS-01/p42i-owner-block/result.json"
+  ],
+  "command": "Not run: Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
   "row": "W-ETOS-01",
   "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
   "requirement": "SR-4.1",
-  "reportedAt": "2026-10-06T15:29:44.386938+00:00",
-  "evidence": [
-    "W-ETOS-01/security-scan-20261005T203045.679270Z/README.md",
-    "W-ETOS-01/proxy-missing-app-20261005T203050.874560Z/README.md",
-    "W-ETOS-01/proxy-wrong-token-20261005T203050.892383Z/README.md",
-    "MACHINE/final-index-security.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-ETOS-01/p42i-owner-block/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

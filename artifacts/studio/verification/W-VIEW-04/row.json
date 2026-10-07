@@ -1,18 +1,42 @@
 {
   "status": "PASS",
-  "baseline": "1752ca8a",
-  "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
-  "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
-  "historical": "P2.3 defines World at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+  "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+    "W-VIEW-01/captures-20261007T045200Z/capture.json",
+    "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py views",
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+      "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.World_ListsThreeRegionsAndThePortalTriangle"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+      "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.R2_34_WorldAddPortalAndConnectAreSingleChangeSets"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+      "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+      "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests.R2_32_RealPlayDialogueTravelAndDestroyedOwner"
+    },
+    {
+      "file": "W-VIEW-01/captures-20261007T045200Z/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-VIEW-04",
   "scenario": "World: Regions, portals, residency, spawn points and journaled world tools",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-06T15:29:44.372220+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
-    "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
-    "W-VIEW-01/captures-20261005T191314Z/capture.json",
-    "W-VIEW-04/p42-supplemental.md",
-    "W-VIEW-04/p42-supplemental/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,21 +1,72 @@
 {
   "status": "PASS",
-  "note": "CORE-PICK on main 40fb91fa passes both datasets: each has 100 picks and 100 marquees over 500 distinct candidates. Pick p95 1.2553/0.8460 ms; marquee p95 0.3410/0.1970 ms, against unchanged 16/50 ms budgets. The separate 21-update timing regression also passes; combined XML 3/3.",
-  "command": "studio/tools/verify-all.sh p42d selection\nstudio/tools/verify-all.sh p42d selection-repeat",
-  "tests": [
-    "R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
-    "R2_38_CORE_PICK_500CandidatesMedianAcrossEditorFramesBelow50Ms"
+  "note": "Two fresh 500-candidate datasets each contain 100 picks and 100 marquees. Pick/marquee p95 ms: [[1.0265, 0.27540000000000003], [0.9298000000000001, 0.23820000000000002]]; unchanged limits 16/50 ms.",
+  "evidence": [
+    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml",
+    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml"
   ],
-  "baseline": "40fb91fa",
-  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py timing",
+  "checks": [
+    {
+      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "pointer": "/candidateCount",
+      "equals": 500
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "pointer": "/picks/count",
+      "equals": 100
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "pointer": "/marquee/count",
+      "equals": 100
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "pointer": "/picks/pass",
+      "equals": true
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "pointer": "/marquee/pass",
+      "equals": true
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "pointer": "/candidateCount",
+      "equals": 500
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "pointer": "/picks/count",
+      "equals": 100
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "pointer": "/marquee/count",
+      "equals": 100
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "pointer": "/picks/pass",
+      "equals": true
+    },
+    {
+      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "pointer": "/marquee/pass",
+      "equals": true
+    }
+  ],
   "row": "W-UI-05",
   "scenario": "Selection/hover and marquee timings",
   "requirement": "B-SELECT",
-  "reportedAt": "2026-10-06T15:29:44.365842+00:00",
-  "evidence": [
-    "W-UI-05/p42d-selection-20261006T112100.063994Z/results.xml",
-    "W-UI-05/p42d-selection-20261006T112100.063994Z/selection.json",
-    "W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/results.xml",
-    "W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/selection.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,0 +1,30 @@
+{
+  "id": "cs_01M4A9WH337X82NYAN7PPM1X8C",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Saltmarsh: boot (procedural placeholder content)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "author-boot",
+      "tool": "saltmarsh.author",
+      "args": {
+        "phase": "boot"
+      },
+      "preconditions": "none"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "author-boot",
+      "status": "Applied",
+      "detail": "Created paths: "
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T04:27:58.955Z",
+    "applied": "2026-10-07T04:27:58.982Z"
+  }
+}

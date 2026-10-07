@@ -1,24 +1,22 @@
 # W-CLEAN-01: Clean project: install, author, run, build
 
-Verdict: **PASS**. Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01.
+Verdict: **PASS**. Current clean project AuthorAll, 11 EditMode+3 PlayMode cases and both rechecks pass. Fresh Linux IL2CPP build and standalone 600-frame autoplay pass real quest/save/restore/ending assertions with zero pump violations. Disk-reserve interruption was resolved by deleting only completed owned compiler caches; no workload bypassed the reserve.
 
-Report timestamp: 2026-10-06T15:29:44.434187+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh bake
-studio/tools/verify-all.sh clean
-studio/tools/verify-all.sh build
+studio/tools/verify-all.sh bake; studio/tools/verify-all.sh unity; python3 artifacts/studio/verification/TOOLS/builds-p42i.py --resume-completed-builds
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md](../W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md)
-- [UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z/README.md](../UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z/README.md)
-- [UNITY-CLEANPROOF/clean-recheck-playmode-20261005T202131.388822Z/README.md](../UNITY-CLEANPROOF/clean-recheck-playmode-20261005T202131.388822Z/README.md)
-- [W-CLEAN-01/cleanproof-fresh-build-cache-20261005T195625.655687Z/README.md](../W-CLEAN-01/cleanproof-fresh-build-cache-20261005T195625.655687Z/README.md)
-- [W-CLEAN-01/final-player-600-frames-20261005T201814.524176Z/README.md](../W-CLEAN-01/final-player-600-frames-20261005T201814.524176Z/README.md)
-- [W-GAME-06/final-player-manifests-20261005T201815.687151Z/cleanproof-player.sha256](../W-GAME-06/final-player-manifests-20261005T201815.687151Z/cleanproof-player.sha256)
+- [W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json](../W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json)
+- [W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json](../W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json)
+- [W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log](../W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log)
+- [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml](../UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml)
+- [UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/results.xml](../UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/results.xml)
+- [UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml](../UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml)
+- [UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/results.xml](../UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/results.xml)

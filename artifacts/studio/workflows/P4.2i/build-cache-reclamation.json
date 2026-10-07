@@ -1,0 +1,29 @@
+{
+  "reportedAt": "2026-10-07T07:46:10.485896+00:00",
+  "reason": "Required 40 GiB runner reserve refused clean player after successful builds; no acceptance run bypassed the reserve.",
+  "removed": [
+    "studio/agent/target/debug (cargo clean --profile dev, 3.4 GiB)",
+    "games/cleanproof/Library/Bee (only this run\u2019s completed disposable compiler cache)",
+    "games/hollowmere/Library/Bee (5.2 GiB completed native compiler cache; all Hollowmere Editor rows and player build complete)",
+    "unity/GameCore.ReleaseCheck/Library/Bee (completed V1 native compiler cache)",
+    "unity/GameCore.Validation/Library/Bee (completed V1 native compiler cache)"
+  ],
+  "noEditorActive": true,
+  "freeBytesBeforeBeeRemoval": 44223451136,
+  "freeBytesAfterBeeRemoval": 51336671232,
+  "hollowmereReclamation": {
+    "reportedAt": "2026-10-07T08:23:41.236569+00:00",
+    "activeHollowmereEditors": [],
+    "freeBefore": 46798708736,
+    "freeAfter": 52273733632,
+    "kept": "Immutable built player, scripts, original source, Library journal/cursor state, snapshots and all evidence"
+  },
+  "finalFreeBytes": 50352275456,
+  "keptAtInitialReclamation": [
+    "immutable installed companion",
+    "studio/agent/target/release",
+    "both completed players",
+    "all measurements and journals",
+    "Hollowmere admission compiler cache"
+  ]
+}

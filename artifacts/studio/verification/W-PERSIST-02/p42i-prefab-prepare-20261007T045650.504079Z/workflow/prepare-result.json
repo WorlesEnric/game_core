@@ -1,0 +1,100 @@
+{
+  "active": false,
+  "mode": "prepare",
+  "output": "~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-PERSIST-02/p42i-prefab-prepare-20261007T045650.504079Z/workflow",
+  "phase": "after-play",
+  "deadline": 1791349355227,
+  "process": 1299662,
+  "originalScene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+  "events": [
+    {
+      "npcId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+      "reference": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      },
+      "event": "authored-npc-baseline",
+      "utc": "2026-10-07T04:57:36.682127Z"
+    },
+    {
+      "npcId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+      "targetId": "TargetId(e01807d16bec380c75727b1e8397b6ef)",
+      "world": "WorldId(c8e0bd11435dd1a2a24ef32adc6de793)",
+      "isPlaying": true,
+      "event": "real-play-npc",
+      "utc": "2026-10-07T04:57:42.783256Z"
+    },
+    {
+      "mood": 1,
+      "event": "running-npc-edited",
+      "utc": "2026-10-07T04:57:42.794612Z"
+    },
+    {
+      "slotHash": "8038d62d6063ec96986d1c7b70a8e0ee3c075016253101987d5dd95f7a32ba92",
+      "npcState": {
+        "alive": 1,
+        "visible": 0,
+        "variant": 0,
+        "scaleMilli": 1000,
+        "mood": 1,
+        "patrolIndex": 0,
+        "posX": 11000,
+        "posZ": -13000
+      },
+      "documentHash": "1fd41765e13bfbd0f515d9debb372f368a989f4e983002ffea6f95cc5137569b",
+      "event": "checkpoint-captured-before-rename",
+      "utc": "2026-10-07T04:57:42.902449Z"
+    },
+    {
+      "from": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab",
+      "to": "Assets/Hollowmere/Npcs/Prefabs/R7B_RenamedNpc.prefab",
+      "guid": "596458344de352360aa8f29ac9a49551",
+      "event": "literal-prefab-renamed",
+      "utc": "2026-10-07T04:57:43.7932010Z"
+    }
+  ],
+  "npcId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+  "authoredRef": {
+    "kind": "Entity",
+    "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+    "assetGuid": "6cba302899c45bb919b097ade959283c",
+    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+    "scope": "Instance",
+    "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+  },
+  "definitionPath": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset",
+  "prefabOriginalPath": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab",
+  "prefabGuid": "596458344de352360aa8f29ac9a49551",
+  "sceneHash": "8e275d127aaa6213a285553c659d771c2281a4ef52af88c3554cbbf4af9939ed",
+  "cosmeticOverrides": [
+    {
+      "Field": "tint",
+      "Value": "#8e3d2f"
+    }
+  ],
+  "prefabBeforeHash": "239e95d69d1b157be28af09c31c36415e365a4c3b5d324e7bc1443eaa92b2e78",
+  "prefabMetaBeforeHash": "0ba4173ecc75c63e5b0911ec8d5d6952370e88d2a68a3edaf288519cc3b7df2c",
+  "savedNpcState": {
+    "alive": 1,
+    "visible": 0,
+    "variant": 0,
+    "scaleMilli": 1000,
+    "mood": 1,
+    "patrolIndex": 0,
+    "posX": 11000,
+    "posZ": -13000
+  },
+  "savedSlotHash": "8038d62d6063ec96986d1c7b70a8e0ee3c075016253101987d5dd95f7a32ba92",
+  "saveDocumentHash": "1fd41765e13bfbd0f515d9debb372f368a989f4e983002ffea6f95cc5137569b",
+  "prefabRenamedPath": "Assets/Hollowmere/Npcs/Prefabs/R7B_RenamedNpc.prefab",
+  "prepareProcess": 1299662,
+  "prepareStatus": "prepared",
+  "status": "prepared",
+  "finishedUtc": "2026-10-07T04:57:43.7936150Z"
+}

@@ -1,0 +1,56 @@
+# W-GAME-05 phase two: a NEW process, same isolated save directory, continuous external recording.
+waituntil ready timeout 120
+waituntil lifecycle menu-relaunched timeout 30
+wait 8
+ui open.load
+waituntil screen Load timeout 10
+wait 4
+ui load.1
+waituntil lifecycle loaded timeout 60
+wait 8
+
+# Continue the existing production route from the clapper through Odd's ferry.
+walk 190 -6
+walk 192 0
+walk 200 16
+walk 212 19.5
+mark odd
+approach Odd within 1.8 timeout 40
+waituntil prompt Odd timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 8
+advance
+wait 3
+choose 0
+waituntil region Belfry timeout 30
+mark belfry
+wait 8
+face 0
+approach "Belfry Echo" within 1.8 timeout 30
+waituntil prompt Echo timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 8
+advance
+wait 4
+choose 0
+wait 8
+advance
+waituntil dialogue none timeout 10
+approach "Drowned Bell" within 1.8 timeout 30
+waituntil prompt bell timeout 15
+mark ring
+interact
+waituntil fact bell_rung == 1 timeout 10
+waituntil lifecycle ending timeout 30
+wait 15
+ui restart
+# This waits for a different HollowmereGame attachment AND fresh committed world state, not just a HUD.
+waituntil lifecycle restarted timeout 120
+wait 10
+ui open.pause
+waituntil screen Pause timeout 10
+wait 4
+ui quit
+waituntil lifecycle unexpected-surviving-quit timeout 15

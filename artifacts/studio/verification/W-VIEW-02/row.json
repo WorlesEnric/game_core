@@ -1,18 +1,19 @@
 {
-  "status": "PASS",
-  "baseline": "1752ca8a",
-  "note": "Final-main view suite: 41/41 passed, zero skips. P4.2 graphical captures retained with their original revision; no new final-main display capture is claimed.",
-  "command": "studio/tools/verify-all.sh final-views-tests\nstudio/tools/verify-all.sh views",
-  "historical": "P2.3 defines Dialogue at docs/studio/packets/P2.3-studio-views.md:27-34. P4.2 graphical run is supplemental evidence.",
+  "status": "FAIL",
+  "note": "Current full-row dialogue edit test rejects AddLine/Connect/Rename with GP-DLG-005: ViewsTestGraph node 1 is unreachable. Reproduced in broad EditMode and current 40-pass/1-fail view suite; graphical preview does not replace failed editing/undo.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+    "W-VIEW-01/captures-20261007T045200Z/capture.json"
+  ],
+  "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
   "row": "W-VIEW-02",
   "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-06T15:29:44.369532+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/results.xml",
-    "W-VIEW-01/views-capture-20261005T191314.272300Z/README.md",
-    "W-VIEW-01/captures-20261005T191314Z/capture.json",
-    "W-VIEW-02/p42-supplemental.md",
-    "W-VIEW-02/p42-supplemental/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

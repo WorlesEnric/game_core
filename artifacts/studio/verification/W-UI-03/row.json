@@ -1,19 +1,31 @@
 {
   "status": "PASS",
-  "note": "R7-D graphical 1280\u00d7720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
-  "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
+  "note": "Real 1280x720 lantern chooser exposes and exercises Logical, Mesh:Body, Prefab and Instance-scope buttons; exact refs/scopes and parts reset pass.",
+  "evidence": [
+    "W-UI-03/r7-d-20261007T044913085Z/receipt.json",
+    "W-UI-03/r7-d-20261007T044913085Z/observations.json",
+    "W-UI-03/r7-d-20261007T044913085Z/visual-review.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py editor",
+  "checks": [
+    {
+      "file": "W-UI-03/r7-d-20261007T044913085Z/receipt.json",
+      "pointer": "/verdict",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-UI-03/r7-d-20261007T044913085Z/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-UI-03",
   "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
   "requirement": "SR-1.3",
-  "reportedAt": "2026-10-06T21:54:21.756633+00:00",
-  "evidence": [
-    "W-UI-03/r7-d-20261006T215104970Z/receipt.json",
-    "W-UI-03/r7-d-20261006T215104970Z/observations.json",
-    "W-UI-03/README.md",
-    "W-UI-02/r7-d/results.xml"
-  ],
-  "tests": [
-    "ScenariosR7Picking.RunLantern"
-  ],
-  "baseline": "b2717d03"
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-UI-03/r7-d-20261007T044913085Z/receipt.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

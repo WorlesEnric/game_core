@@ -1,17 +1,17 @@
 {
   "status": "BLOCKED",
-  "note": "P4.2e activates and checksum-verifies immutable main-built release 0.1.0-cac2f82c59be070b; the repeat installer is a no-op and authenticated hello reports the owner describe tariff. A full fresh node install remains unrun under the no-etosd-restart rule. Initial host inventory is idle, but the monitor later sees a brief second Unity PID during NPC asset import; its exited process cannot be classified retrospectively, so strict host exclusivity is not claimed.",
-  "command": "See TOOLS/README-P4.2e.md for immutable installation and receipt-hello.",
-  "baseline": "d140f748",
-  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
+  "evidence": [
+    "W-HOST-01/p42i-owner-block/result.json"
+  ],
+  "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
   "row": "W-HOST-01",
   "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
   "requirement": "SR-11.2",
-  "reportedAt": "2026-10-06T15:29:44.385103+00:00",
-  "evidence": [
-    "INSTALL-P4.2e/p42e-receipt-hello-20261006T143912.780456Z/result.json",
-    "../workflows/P4.2e/install.log",
-    "../workflows/P4.2e/installed-runtime.json",
-    "../workflows/P4.2e/editor-exclusivity-open.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-HOST-01/p42i-owner-block/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

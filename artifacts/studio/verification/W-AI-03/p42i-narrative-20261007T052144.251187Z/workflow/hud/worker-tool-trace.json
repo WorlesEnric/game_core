@@ -1,0 +1,81 @@
+[
+  {
+    "taskId": "t6b1c05a587f7b655563d1dc4",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json && printf '\\n--- selection ---\\n' && cat /inputs/selection.json && printf '\\n--- index ---\\n' && cat /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4AD58V954BYTMJZDAW3K1QP`\n\n- Change set id: `cs_01M4AD58V954BYTMJZDAW3K1QP` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `145` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nChange the HUD objective label and bind it to the current quest stage name.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n\n## Resource Graph queries\n\nYour app/project owner namespace is `fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `tool-catalog.json` \n[... 26308 bytes omitted ...]\n  \"stamp\": \"sha256:b691a2e77aa084efb37899a87f35cb37c1b7f59c51ba7e54b78040ba45d29435\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"uxml\",\n          \"to\": {\n            \"assetGuid\": \"51f87a66bdf942d09b3fb8d70e72a0d0\",\n            \"global\": \"GlobalObjectId_V1-1-51f87a66bdf942d09b3fb8d70e72a0d0-9197481963319205126-0\",\n            \"kind\": \"Asset\",\n            \"path\": \"Assets/Hollowmere/UI/Screens/Inventory.uxml\"\n          }\n        }\n      ],\n      \"type\": \"ui.document\"\n    },\n    {\n      \"name\": \"HollowmereTheme\",\n      \"provenance\": {\n        \"asset\": \"Assets/Hollowmere/UI/Theme/HollowmereTheme.asset\"\n      },\n      \"ref\": {\n        \"assetGuid\": \"607cfd3e74dd3c14a9f91a79c3bd525b\",\n        \"authoringId\": \"edf603d7-2c48-4fc9-b2dc-c467208ed59b\",\n        \"global\": \"GlobalObjectId_V1-3-607cfd3e74dd3c14a9f91a79c3bd525b-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/UI/Theme/HollowmereTheme.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:745baad4d6d6b85c6971324812893cbc3e38d7cda437e46a7611d74e8e5f7785\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"panelSettings\",\n          \"to\": {\n            \"assetGuid\": \"b90fff993fc6f94c49bc2b03d2512844\",\n            \"global\": \"GlobalObjectId_V1-3-b90fff993fc6f94c49bc2b03d2512844-11400000-0\",\n            \"kind\": \"Asset\",\n            \"path\": \"Assets/Hollowmere/UI/Theme/HollowmerePanelSettings.asset\"\n          }\n        },\n        {\n          \"field\": \"themeStyleSheet\",\n          \"to\": {\n            \"assetGuid\": \"90e0f2de55b54915a87cde66f14e0b4a\",\n            \"global\": \"GlobalObjectId_V1-1-90e0f2de55b54915a87cde66f14e0b4a-13713378445231594800-0\",\n            \"kind\": \"Asset\",\n            \"path\": \"Assets/Hollowmere/UI/Theme/HollowmereTheme.tss\"\n          }\n        },\n        {\n          \"field\": \"styleSheets\",\n          \"to\": {\n            \"assetGuid\": \"1130a4a1a58445628967b81a091beca8\",\n            \"global\": \"GlobalObjectId_V1-1-1130a4a1a58445628967b81a091beca8-7433441132597879392-0\",\n            \"kind\": \"Asset\",\n            \"path\": \"Assets/Hollowmere/UI/Theme/Hollowmere.uss\"\n          }\n        }\n      ],\n      \"type\": \"ui.theme\"\n    }\n  ],\n  \"project\": \"hollowmere\",\n  \"revision\": 145\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 250523 bytes in total; full log: /tmp/etos/out/t6b1c05a587f7b655563d1dc4-1-0.log]"
+    }
+  },
+  {
+    "taskId": "t6b1c05a587f7b655563d1dc4",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "python3 - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('keys',c.keys());\nfor t in c.get('tools',[]):\n if 'ui.' in t.get('id','') or 'uxml' in t.get('id','').lower(): print(json.dumps(t,indent=2))\ns=json.load(open('/inputs/selection.json'));print('SELECTION',json.dumps(s,indent=2));i=json.load(open('/inputs/index-slice.json'));print('INDEX KEYS',i.keys());\nfor k,v in i.items():\n if isinstance(v,list):\n  print(k,'len',len(v));\n  for x in v:\n   if 'hud' in str(x.get('name','')).lower() or 'objective' in str(x.get('name','')).lower():print(json.dumps(x,indent=2))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 10258,
+      "text": "keys dict_keys(['objectTypes', 'revision', 'schema', 'tools'])\n{\n  \"args\": [\n    {\n      \"doc\": \"The screen the document is shown on.\",\n      \"enumValues\": [\n        \"None\",\n        \"Hud\",\n        \"Menu\",\n        \"Pause\",\n        \"Settings\",\n        \"Save\",\n        \"Load\",\n        \"Ending\",\n        \"Journal\",\n        \"Inventory\"\n      ],\n      \"name\": \"screen\",\n      \"required\": true,\n      \"type\": \"enum\"\n    },\n    {\n      \"doc\": \"Project path of the UXML (created when missing).\",\n      \"name\": \"uxmlPath\",\n      \"required\": true,\n      \"type\": \"string\"\n    },\n    {\n      \"doc\": \"Draw layer.\",\n      \"max\": 100.0,\n      \"min\": 0.0,\n      \"name\": \"layer\",\n      \"required\": false,\n      \"type\": \"int\"\n    },\n    {\n      \"doc\": \"Asset path of the new definition; defaults next to the UXML.\",\n      \"name\": \"assetPath\",\n      \"required\": false,\n      \"type\": \"string\"\n    }\n  ],\n  \"doc\": \"Adds a screen document to a flow: creates the UiDocumentDefinition (and a minimal UXML when the path does not exist).\",\n  \"id\": \"ui.addScreen\",\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"ui.flow\",\n  \"tier\": \"Compose\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-UI-001\",\n        \"GP-UI-002\",\n        \"GP-UI-003\",\n        \"GP-UI-004\",\n        \"GP-UI-005\",\n        \"GP-UI-006\",\n        \"GP-UI-007\"\n      ],\n      \"id\": \"ui.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"doc\": \"Element name in the document's UXML.\",\n      \"name\": \"element\",\n      \"required\": true,\n      \"type\": \"string\"\n    },\n    {\n     \n[... 6322 bytes omitted ...]\n  },\n        {\n          \"element\": \"stamina-bar\",\n          \"format\": \"\",\n          \"property\": \"visible\",\n          \"source\": \"vm:hud.StaminaVisible\"\n        },\n        {\n          \"element\": \"region-banner\",\n          \"format\": \"\",\n          \"property\": \"visible\",\n          \"source\": \"vm:hud.RegionBannerVisible\"\n        },\n        {\n          \"element\": \"region-name\",\n          \"format\": \"\",\n          \"property\": \"text\",\n          \"source\": \"event:region-entered\"\n        },\n        {\n          \"element\": \"message\",\n          \"format\": \"\",\n          \"property\": \"text\",\n          \"source\": \"vm:screen.MessageText\"\n        },\n        {\n          \"element\": \"message\",\n          \"format\": \"\",\n          \"property\": \"visible\",\n          \"source\": \"vm:screen.MessageVisible\"\n        },\n        {\n          \"element\": \"prompt\",\n          \"format\": \"\",\n          \"property\": \"visible\",\n          \"source\": \"vm:prompt.Visible\"\n        },\n        {\n          \"element\": \"prompt-text\",\n          \"format\": \"\",\n          \"property\": \"text\",\n          \"source\": \"vm:prompt.Text\"\n        },\n        {\n          \"element\": \"prompt-text\",\n          \"format\": \"\",\n          \"property\": \"enabled\",\n          \"source\": \"vm:prompt.Enabled\"\n        }\n      ]\n    },\n    \"layer\": {\n      \"range\": [\n        0.0,\n        100.0\n      ],\n      \"type\": \"int\",\n      \"value\": 0\n    },\n    \"screen\": {\n      \"type\": \"enum\",\n      \"value\": \"Hud\"\n    }\n  },\n  \"name\": \"Doc_Hud\",\n  \"provenance\": {\n    \"asset\": \"Assets/Hollowmere/UI/Definitions/Doc_Hud.asset\"\n  },\n  \"ref\": {\n    \"assetGuid\": \"42910ef6c7c4d13f5a85ccbb2ef3b3f6\",\n    \"authoringId\": \"fec46a1a-6c42-4e2d-9617-ac365d913658\",\n    \"global\": \"GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0\",\n    \"kind\": \"Definition\",\n    \"path\": \"Assets/Hollowmere/UI/Definitions/Doc_Hud.asset\",\n    \"scope\": \"Definition\",\n    \"stamp\": \"sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b\"\n  },\n  \"refs\": [\n    {\n      \"field\": \"uxml\",\n      \"to\": {\n        \"assetGuid\": \"09fbfb94e03241d5a44fbb997bd20bee\",\n        \"global\": \"GlobalObjectId_V1-1-09fbfb94e03241d5a44fbb997bd20bee-9197481963319205126-0\",\n        \"kind\": \"Asset\",\n        \"path\": \"Assets/Hollowmere/UI/Screens/Hud.uxml\"\n      }\n    }\n  ],\n  \"type\": \"ui.document\"\n}\n[exit code 0]\n[full log: /tmp/etos/out/t6b1c05a587f7b655563d1dc4-1-1.log]"
+    }
+  },
+  {
+    "taskId": "t6b1c05a587f7b655563d1dc4",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python3 - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('\\n'.join(t['id']+' '+t.get('doc','')[:170] for t in c['tools'] if any(x in t['id'].lower() for x in ['element','text','label','asset.edit','uxml','field','bind'])))\nPY\nls -la /outputs; ls /work/docs/studio/schemas/change-set.schema.json 2>/dev/null || true",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 737,
+      "text": "bind Import a retained artifact (verified by sha256) at 'path' and assign the imported asset to an [AuthorRef] field.\nentity.setMaterialTexture Binds an imported Texture2D to a renderer material slot on every view of this definition. Omit texture to clear the binding. Changes content stamp, not recipe revision; r\ninventory.bindUse Sets what using an item does: an action set run through the outbox; null makes the item unusable.\nui.bind Binds an element property (text, value, visible, enabled, selected, items) of a UI document to a vm:, slot: or event: source.\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 05:25 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 05:25 ..\n[exit code 0]\n[full log: /tmp/etos/out/t6b1c05a587f7b655563d1dc4-1-2.log]"
+    }
+  },
+  {
+    "taskId": "t6b1c05a587f7b655563d1dc4",
+    "turn": 1,
+    "index": 3,
+    "name": "write",
+    "args": {
+      "path": "/outputs/changeset.json",
+      "content": "{\n  \"id\": \"cs_01M4AD58V954BYTMJZDAW3K1QP\",\n  \"schema\": \"gamecore.studio.changeset/1\",\n  \"intent\": {\n    \"text\": \"Change the HUD objective label and bind it to the current quest stage name.\",\n    \"origin\": \"agent\"\n  },\n  \"selection\": {\n    \"id\": \"sel_01M4AD58TBBHHT9S2ZDPT79BK4\",\n    \"mode\": \"Edit\",\n    \"indexRevision\": 145,\n    \"targets\": [\n      {\n        \"assetGuid\": \"42910ef6c7c4d13f5a85ccbb2ef3b3f6\",\n        \"authoringId\": \"fec46a1a-6c42-4e2d-9617-ac365d913658\",\n        \"global\": \"GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/UI/Definitions/Doc_Hud.asset\",\n        \"stamp\": \"sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b\"\n      }\n    ]\n  },\n  \"baseVersions\": [\n    {\n      \"ref\": {\n        \"assetGuid\": \"42910ef6c7c4d13f5a85ccbb2ef3b3f6\",\n        \"authoringId\": \"fec46a1a-6c42-4e2d-9617-ac365d913658\",\n        \"global\": \"GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/UI/Definitions/Doc_Hud.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b\"\n      },\n      \"stamp\": \"sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b\"\n    }\n  ],\n  \"operations\": [\n    {\n      \"opId\": \"bind-objective-stage-title\",\n      \"tool\": \"ui.bind\",\n      \"target\": {\n        \"assetGuid\": \"42910ef6c7c4d13f5a85ccbb2ef3b3f6\",\n        \"authoringId\": \"fec46a1a-6c42-4e2d-9617-ac365d913658\",\n        \"global\": \"GlobalObjectId_V1-3-42910ef6c7c4d13f5a85ccbb2ef3b3f6-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/UI/Definitions/Doc_Hud.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:155388a74029e9484192c4a5196a02efc5f7bd7962bf0504df2ca18e709f762b\"\n      },\n      \"args\": {\n        \"element\": \"objective-line\",\n        \"source\": \"vm:hud.QuestStageTitle\",\n        \"property\": \"text\"\n      },\n      \"dependsOn\": [],\n      \"preconditions\": \"stamp\",\n      \"applyRequirement\": \"Live\"\n    }\n  ],\n  \"artifacts\": [],\n  \"requirements\": {\n    \"max\": \"Live\",\n    \"worldRebuild\": false,\n    \"compile\": false,\n    \"build\": false\n  }\n}\n"
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 53,
+      "text": "Wrote /outputs/changeset.json (2241 bytes, 67 lines)."
+    }
+  },
+  {
+    "taskId": "t6b1c05a587f7b655563d1dc4",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "python3 - <<'PY'\nimport json\np=json.load(open('/outputs/changeset.json')); s=json.load(open('/inputs/selection.json')); c=json.load(open('/inputs/tool-catalog.json')); t=next(x for x in c['tools'] if x['id']=='ui.bind'); assert p['selection']=={k:s[k] for k in ['id','mode','indexRevision','targets']}; assert p['baseVersions'][0]['ref']==p['operations'][0]['target']; assert p['operations'][0]['tool']==t['id'];assert set(p['operations'][0]['args']).issubset({x['name'] for x in t['args']}); assert set(x['name'] for x in t['args'] if x['required']).issubset(p['operations'][0]['args']);assert p['operations'][0]['target']['kind'] in t['targetKinds']; assert p['operations'][0]['target']['scope'] in t['scopes'];assert p['operations'][0]['applyRequirement']==t['runtimeApply']; print('Validated selection, target, required args, catalog scope and runtime applicability')\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 157,
+      "text": "Validated selection, target, required args, catalog scope and runtime applicability\n[exit code 0]\n[full log: /tmp/etos/out/t6b1c05a587f7b655563d1dc4-1-4.log]"
+    }
+  }
+]

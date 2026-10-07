@@ -1,0 +1,20 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-07T05:20:08.270951+00:00",
+  "observation": "Generated and redone images show the same brown-haired healer portrait with muted green clothing and herb sprigs. History screenshot is partially occluded; byte-identity and undo/redo claims use the exact journals and ledger checkpoints, not screenshot legibility.",
+  "reviewAssertions": [
+    "The actual generated image depicts a portrait, not a pre-existing fixture or placeholder.",
+    "History captures show applied, undone and redone states; restored image is visibly the same portrait."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "0d00c9991e76dede94bbf4d3cbc51b8dcb0dfa700733608ea3a1debf484612e7",
+    "portrait-applied.png": "0d00c9991e76dede94bbf4d3cbc51b8dcb0dfa700733608ea3a1debf484612e7",
+    "portrait-redone.png": "0d00c9991e76dede94bbf4d3cbc51b8dcb0dfa700733608ea3a1debf484612e7",
+    "history-applied.png": "06b9ee9f7dc56be2267d1d756f407b6c6e8f1c066c612af1acd9f54634ffef0c",
+    "history-undone.png": "d5141f1610d0f6b8e2aa9d7a7e34ac355271dce40971d4d87a2dfbfe13c60ed5",
+    "history-redone.png": "2f1bf97f2a5ec9464a3a2b10eb471749cabb58a5621c7f5c6075efd4d56e6602"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

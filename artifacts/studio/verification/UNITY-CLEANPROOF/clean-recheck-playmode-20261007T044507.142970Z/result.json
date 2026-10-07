@@ -1,0 +1,26 @@
+{
+  "label": "clean-recheck-playmode",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T04:45:07.144159+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/cleanproof --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/logs --label clean-recheck-playmode --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml -- -runTests -testPlatform PlayMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T04:45:07.145514+00:00",
+  "sourceDiffSha256": "0a32420ad7425a7ba956c11ba6c19162b6aa22e05a5131872f734b183b6b8c80",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T04:45:52.797252+00:00",
+  "seconds": 45.65423408197239,
+  "suites": {
+    "results.xml": {
+      "total": 3,
+      "counts": {
+        "Passed": 3
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

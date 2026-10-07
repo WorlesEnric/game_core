@@ -1,0 +1,16 @@
+{
+  "label": "p42i-lever-review",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T06:18:12.949240+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-DOC-02/p42i-lever-review-20261007T061812.947804Z/logs --label p42i-lever-review --attempts 1 --timeout 1800 -- -executeMethod Hollowmere.R8_B.LeverWalkthrough.Run -gcR8CConfig ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-DOC-02/p42i-lever-workflow/config.json -force-glcore",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/W-DOC-02/p42i-lever-review-20261007T061812.947804Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T06:18:12.951044+00:00",
+  "sourceDiffSha256": "8501fe190c07aef9d1c741014e178b21b36b5dc57917e4860570fa7b6008fab7",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-07T06:19:19.456604+00:00",
+  "seconds": 66.50873638899066
+}

@@ -1,0 +1,45 @@
+{
+  "id": "cs_01M4ABH5HT6PFKRFY8D2QFAEK7",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "R7 W-EDIT-04 queued NPC costume edit",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "npc-tint",
+      "tool": "entity.applyOverride",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:729cf1581d99add34073c13d676e817d090bf9793f37a09ba99ea3b5817f2e24"
+      },
+      "args": {
+        "field": "tint",
+        "value": "#996633"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Rejected",
+  "outcomes": [
+    {
+      "opId": "npc-tint",
+      "status": "Refused",
+      "code": "StaleTarget",
+      "detail": "The target no longer exists."
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T04:56:44.133Z"
+  }
+}

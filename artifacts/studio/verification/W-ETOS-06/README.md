@@ -1,23 +1,20 @@
 # W-ETOS-06: Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly
 
-Verdict: **BLOCKED**. Companion portion PASS: actual etos agent restart, same task, one cancellation outcome and exact four-event cursor replay; reconnect 143.1 ms, cancel ack 188.0 ms. Node-death portion remains BLOCKED: etosd stop/restart is forbidden, and a companion restart cannot prove delayed attribution after node death.
+Verdict: **BLOCKED**. Companion-only portion PASS: actual etos agent restart preserves original task and exact cursor replay, with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run, so the complete row remains BLOCKED.
 
-Report timestamp: 2026-10-06T15:29:44.391002+00:00 UTC.
-
-Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42c restart
+Not run: Owner rule: never stop/restart etosd; node-death/reconnect part is not run. Companion-only restart cannot close this row.
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/result.json](../W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/result.json)
-- [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/live/dotnet-companion-restart.json](../W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/live/dotnet-companion-restart.json)
-- [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/live/dotnet-g-h-events-resume-cancel.json](../W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/live/dotnet-g-h-events-resume-cancel.json)
-
-Exact acceptance/component cases: `GameCore.Studio.Etos.Client.Tests.LiveTests.R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask`. Component cases do not close any missing external workflow.
-
-Historical references: Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.
+- [W-ETOS-06/p42i-owner-block/result.json](../W-ETOS-06/p42i-owner-block/result.json)
+- [W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/result.json](../W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/result.json)
+- [W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-g-h-events-resume-cancel.json](../W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-g-h-events-resume-cancel.json)
+- [W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-exchanges-R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask.json](../W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-exchanges-R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask.json)
+- [W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-companion-restart.json](../W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-companion-restart.json)

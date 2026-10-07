@@ -1,0 +1,60 @@
+{
+  "lane": "move",
+  "row": "W-EDIT-01",
+  "phase": 0,
+  "output": "~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow",
+  "startedMs": 1791351649767,
+  "processId": 1430826,
+  "requestId": "cs_01M4AE2DYAEFE50NA8FP6XGAJ8",
+  "taskIds": [
+    "tdef3aee235f61066c163cf35"
+  ],
+  "sourceProject": "~/wkspace/gc-studio/p4.2i/games/hollowmere",
+  "newGameMs": 1791351664662,
+  "worker": "gc-designer",
+  "positionBefore": [
+    11.0,
+    0.0,
+    -13.0
+  ],
+  "desiredPosition": [
+    11.5,
+    0.0,
+    -13.0
+  ],
+  "desiredYaw": 270.0,
+  "target": {
+    "kind": "Entity",
+    "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+    "assetGuid": "6cba302899c45bb919b097ade959283c",
+    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+    "scope": "Instance",
+    "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+  },
+  "sceneHashBefore": "8e275d127aaa6213a285553c659d771c2281a4ef52af88c3554cbbf4af9939ed",
+  "submittedMs": 1791351666637,
+  "lastTrayRow": {
+    "changeSetId": "cs_01M4AE2DYAEFE50NA8FP6XGAJ8",
+    "requestId": "cs_01M4AE2DYAEFE50NA8FP6XGAJ8",
+    "state": "candidate",
+    "etosStatus": "done",
+    "taskIds": [
+      "tdef3aee235f61066c163cf35"
+    ],
+    "worker": "gc-designer",
+    "sequence": 807,
+    "localState": "staged",
+    "createdTicks": 639269484666463050,
+    "diagnostics": [],
+    "question": ""
+  },
+  "candidateHash": "108ce46c6ccbc98006ecb99ab3fa66a9c90e88a2e3110549f6333ae9b99bb0cf",
+  "operationId": "w:c59c39cd9ab195c33aa8e0c7ebd7f6bb/i:c696b9df8c15685712fcd173f2864320/s:17",
+  "appliedMs": 1791351697556,
+  "historyShownMs": 1791351697692,
+  "phaseAtFinish": 12,
+  "status": "PASS",
+  "detail": "Installed-worker candidate applied without harness changes; attached History shows joined task and GameCore operation IDs, and the production bridge confirms that exact operation committed the requested live pose without changing authored scene bytes.",
+  "finishedMs": 1791351698822
+}

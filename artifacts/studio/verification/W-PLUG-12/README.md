@@ -1,22 +1,17 @@
 # W-PLUG-12: Bake byte-identity; one line change → one revision change
 
-Verdict: **PASS**. Both final-tree rebakes/Entry.Verify pass without output changes; byte identity and single-definition revision tests pass. Structural recipe revisions did not change, preserving existing save compatibility.
+Verdict: **PASS**. Both current project authoring/bake lanes pass. Exact byte-identity and single-definition revision tests pass; initial missing voice-bank authoring is retained, not hidden.
 
-Report timestamp: 2026-10-06T15:29:44.417891+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh bake
 studio/tools/verify-all.sh unity
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md)
-- [W-PLUG-12/bake-hollowmere-20261005T185517.764081Z/README.md](../W-PLUG-12/bake-hollowmere-20261005T185517.764081Z/README.md)
-- [W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md](../W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md)
-
-Exact acceptance/component cases: `BakeTwice_IsByteIdentical_AndVerifyPasses`, `OneFieldChange_ChangesOnlyThatDefinitionsRevision`. Component cases do not close any missing external workflow.
+- [UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml](../UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml)
+- [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml](../UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml)

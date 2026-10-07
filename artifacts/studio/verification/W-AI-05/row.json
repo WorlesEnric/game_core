@@ -1,17 +1,36 @@
 {
   "status": "PASS",
-  "note": "The fresh installed-worker candidate uses the indexed OilFlask identity. Actual Play holds quest stage 1 after one flask and advances to stage 2 after two; the driver records pass.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
-  "baseline": "d140f748",
-  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "note": "Fresh unchanged worker quest candidate uses indexed OilFlask. Actual Play stays at quest stage 1 after one flask and advances to stage 2 after two; saved History replay restores original bytes.",
+  "evidence": [
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/candidate.json",
+    "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/final.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+  "checks": [
+    {
+      "file": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+      "pointer": "/status",
+      "equals": "pass"
+    },
+    {
+      "file": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+      "pointer": "/stageAfterOne",
+      "equals": 1
+    },
+    {
+      "file": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+      "pointer": "/stageAfterTwo",
+      "equals": 2
+    }
+  ],
   "row": "W-AI-05",
   "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T15:29:44.404795+00:00",
-  "evidence": [
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/candidate.json",
-    "W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json",
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/quest/play-effect.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

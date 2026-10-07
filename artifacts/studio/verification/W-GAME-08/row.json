@@ -1,14 +1,31 @@
 {
   "status": "PASS",
-  "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
+  "note": "Ten current graphical Play/Edit cycles each record 60 frames and 60 sanctioned pumps. Combined native/managed growth is 1.6563%, below 15%; full cycle-1 and cycle-10 snapshots retained with hashes.",
+  "evidence": [
+    "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json",
+    "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json",
+    "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/snapshot-manifest.json"
+  ],
   "command": "studio/tools/verify-all.sh memory",
+  "checks": [
+    {
+      "file": "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json",
+      "pointer": "/cycles/9/cycle",
+      "equals": 10
+    }
+  ],
   "row": "W-GAME-08",
   "scenario": "Memory after 10 Play/Edit cycles",
   "requirement": "B-MEMORY",
-  "reportedAt": "2026-10-06T15:29:44.433185+00:00",
-  "evidence": [
-    "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md",
-    "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/memory-and-pumps.json",
-    "W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/snapshot-manifest.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

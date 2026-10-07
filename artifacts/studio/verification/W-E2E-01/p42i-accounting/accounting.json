@@ -1,0 +1,885 @@
+{
+  "status": "FAIL",
+  "sameRevisionAccountingComplete": true,
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "reportedAt": "2026-10-07T09:17:39.827134+00:00",
+  "counts": {
+    "PASS": 57,
+    "BLOCKED": 6,
+    "FAIL": 5
+  },
+  "rows": [
+    {
+      "row": "W-HOST-01",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-HOST-01/p42i-owner-block/result.json"
+      ],
+      "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden."
+    },
+    {
+      "row": "W-ETOS-01",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-01/p42i-owner-block/result.json"
+      ],
+      "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run."
+    },
+    {
+      "row": "W-ETOS-02",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-02/p42i-owner-block/result.json"
+      ],
+      "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run."
+    },
+    {
+      "row": "W-ETOS-06",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-06/p42i-owner-block/result.json",
+        "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/result.json",
+        "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-g-h-events-resume-cancel.json",
+        "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-exchanges-R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask.json",
+        "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-companion-restart.json"
+      ],
+      "note": "Companion-only portion PASS: actual etos agent restart preserves original task and exact cursor replay, with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run, so the complete row remains BLOCKED."
+    },
+    {
+      "row": "W-ETOS-08",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-08/p42i-owner-block/result.json"
+      ],
+      "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run."
+    },
+    {
+      "row": "W-GAME-07",
+      "status": "BLOCKED",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-07/p42i-owner-block/result.json"
+      ],
+      "note": "Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run."
+    },
+    {
+      "row": "W-AI-07",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "P4.2i/p42i-hello-20261007T041554.920808Z/3d-refusal.json",
+        "P4.2i/p42i-hello-20261007T041554.920808Z/result.json"
+      ],
+      "note": "Current installed companion refuses the unconfigured 3D operation with not_configured before any paid generation; authenticated receipt and TRX pass."
+    },
+    {
+      "row": "W-TOOL-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-TOOL-02/metadata-20261007T041606.827753Z/result.json",
+        "W-TOOL-02/metadata-20261007T041606.827753Z/command.log"
+      ],
+      "note": "Current-revision exact package metadata and dependency check passes; no historical checker receipt is reused."
+    },
+    {
+      "row": "W-UI-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/snapshot-manifest.json"
+      ],
+      "note": "Ten current graphical Play/Edit cycles each record 60 frames and 60 sanctioned pumps. Combined native/managed growth is 1.6563%, below 15%; full cycle-1 and cycle-10 snapshots retained with hashes."
+    },
+    {
+      "row": "W-GAME-08",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/snapshot-manifest.json"
+      ],
+      "note": "Ten current graphical Play/Edit cycles each record 60 frames and 60 sanctioned pumps. Combined native/managed growth is 1.6563%, below 15%; full cycle-1 and cycle-10 snapshots retained with hashes."
+    },
+    {
+      "row": "W-UI-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json",
+        "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/automatic-gateway.json",
+        "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/current-observations.json",
+        "W-UI-01/p42i-open-play-20261007T044622.194456Z/visual-review.json",
+        "W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/03-npc-definition.png"
+      ],
+      "note": "Ordinary Open Studio automatically connects; real HUD walking moves committed world.posX/posZ 7.531 m. Actual Select capture shows Maren and MarenEntity in the readable context card; no pairing or paid request."
+    },
+    {
+      "row": "W-UI-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-UI-02/r7-d-20261007T044823992Z/receipt.json",
+        "W-UI-02/r7-d-20261007T044823992Z/observations.json",
+        "W-UI-02/r7-d-20261007T044823992Z/visual-review.json"
+      ],
+      "note": "Real 1280x720 marquee chooser excludes all three fence entries and selects exactly Odd/Maren/Pip; attached overlap choices and retained regionRect pass."
+    },
+    {
+      "row": "W-UI-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-UI-03/r7-d-20261007T044913085Z/receipt.json",
+        "W-UI-03/r7-d-20261007T044913085Z/observations.json",
+        "W-UI-03/r7-d-20261007T044913085Z/visual-review.json"
+      ],
+      "note": "Real 1280x720 lantern chooser exposes and exercises Logical, Mesh:Body, Prefab and Instance-scope buttons; exact refs/scopes and parts reset pass."
+    },
+    {
+      "row": "W-MODEL-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Current exact item-deletion preview identifies referencing dialogue line and objective; engine deletion and ordinary History undo pass."
+    },
+    {
+      "row": "W-EDIT-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Current five-op stale-member tests prove AllOrNothing refusal/unchanged fields and BestEffort per-op outcomes; throwing-operation rollback also passes."
+    },
+    {
+      "row": "W-EDIT-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Both core and actual viewport gizmo paths produce the same journaled move semantics as typed input."
+    },
+    {
+      "row": "W-EDIT-07",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Current per-operation rename/conflict/rebase case preserves the concurrent rename and successfully applies the replanned intended field edit."
+    },
+    {
+      "row": "W-PLUG-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Fresh-boot production restore preserves unloaded NPC PatrolIndex; kernel patrol progression and committed arrival pass."
+    },
+    {
+      "row": "W-PLUG-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml"
+      ],
+      "note": "Actual gate explain names its failed condition; condition-controlled travel and full key/gate ending route pass."
+    },
+    {
+      "row": "W-PLUG-06",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml"
+      ],
+      "note": "Conditional Maren dialogue differs by fact; production fresh-boot restore preserves narrative facts and reattaches conversations."
+    },
+    {
+      "row": "W-PLUG-07",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml"
+      ],
+      "note": "Both quest branches, transitive dependent failure, cycle refusal and actual three endings/LanternLost failure pass at this revision."
+    },
+    {
+      "row": "W-PLUG-09",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+      ],
+      "note": "Actual Causeway Gate why-not trace names gate_open and the precise fact change that permits it."
+    },
+    {
+      "row": "W-PLUG-12",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml"
+      ],
+      "note": "Both current project authoring/bake lanes pass. Exact byte-identity and single-definition revision tests pass; initial missing voice-bank authoring is retained, not hidden."
+    },
+    {
+      "row": "W-PERSIST-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml"
+      ],
+      "note": "Production Belfry save/fresh boot restores canonical slots, items/facts, residency and in-flight work exactly once; midquest restore continues to ending C."
+    },
+    {
+      "row": "W-TOOL-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml",
+        "W-TOOL-01/20261007T0445027928280Z/tool-catalog.json",
+        "W-TOOL-01/20261007T0445027928280Z/installed-packages.json"
+      ],
+      "note": "Current clean-project catalog contains only installed production tools, excluding fixture/Hollowmere/internal admission tools; exact catalog and manifest retained."
+    },
+    {
+      "row": "W-UI-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml"
+      ],
+      "note": "Two fresh 500-candidate datasets each contain 100 picks and 100 marquees. Pick/marquee p95 ms: [[1.0265, 0.27540000000000003], [0.9298000000000001, 0.23820000000000002]]; unchanged limits 16/50 ms."
+    },
+    {
+      "row": "W-EDIT-08",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json",
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json",
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json",
+        "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json",
+        "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml"
+      ],
+      "note": "Two current 20-sample datasets pass. Single/Marsh-all-NPC/kernel-prepare p95 ms: [[22.3321, 31.6321, 9.5897], [25.0379, 34.204100000000004, 10.7461]]; limits 200/1000/300 ms."
+    },
+    {
+      "row": "W-VIEW-02",
+      "status": "FAIL",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json"
+      ],
+      "note": "Current full-row dialogue edit test rejects AddLine/Connect/Rename with GP-DLG-005: ViewsTestGraph node 1 is unreachable. Reproduced in broad EditMode and current 40-pass/1-fail view suite; graphical preview does not replace failed editing/undo."
+    },
+    {
+      "row": "W-VIEW-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json",
+        "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+      ],
+      "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02."
+    },
+    {
+      "row": "W-VIEW-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json",
+        "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+      ],
+      "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02."
+    },
+    {
+      "row": "W-VIEW-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json",
+        "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+      ],
+      "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02."
+    },
+    {
+      "row": "W-VIEW-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json",
+        "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+      ],
+      "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02."
+    },
+    {
+      "row": "W-VIEW-06",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json",
+        "W-VIEW-01/captures-20261007T045200Z/visual-review.json"
+      ],
+      "note": "Current named view behavior tests pass with fresh graphical window captures, real Play quest state/world residency and visible controls. Shared suite is 40 PASS/1 FAIL; its dialogue-edit failure is reported separately under W-VIEW-02."
+    },
+    {
+      "row": "W-EDIT-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z/workflow/edit-result.json"
+      ],
+      "note": "Current real Bram edit in Play, exit/apply, engine delete and second apply produce journaled StaleTarget without resurrection; normal History undo restores original scene and costume."
+    },
+    {
+      "row": "W-PERSIST-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PERSIST-02/p42i-prefab-prepare-20261007T045650.504079Z/workflow/reopen-result.json"
+      ],
+      "note": "Literal NPC prefab rename after checkpoint capture; separate Editor PIDs restore identical canonical slot hash/eight NPC fields and cosmetics. Original prefab/meta paths and bytes restore exactly."
+    },
+    {
+      "row": "W-EDIT-06",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-06/p42i-runtime-promotion-20261007T045843.133627Z/workflow/promotion.json"
+      ],
+      "note": "Current real runtime move leaves authored proxy untouched; creator Apply to authored produces a distinct durable candidate. Play exit, save/reopen and normal inverse/reopen preserve expected positions."
+    },
+    {
+      "row": "W-PLUG-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+        "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/native-media.csv",
+        "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/snapshot-manifest.json",
+        "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/retention.json",
+        "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+        "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/native-media.csv",
+        "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/snapshot-manifest.json",
+        "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/retention.json"
+      ],
+      "note": "Two real graphical three-region loop runs preserve moved NPC state and release region views/media. Native residuals 0.08825\u20130.15878% of peak; all load/unload timings meet 2s/1s. Twelve full snapshots retained losslessly with raw/compressed hashes."
+    },
+    {
+      "row": "W-PLUG-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-02/p42i-animation-20261007T050400.252886Z/results.xml",
+        "W-PLUG-02/p42i-animation-20261007T050400.252886Z/result.json"
+      ],
+      "note": "Graphics-enabled current Animator transitions/poses pass; despawn destroys the old Animator and respawn retains variant and 1.2 scale overrides."
+    },
+    {
+      "row": "W-PLUG-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+        "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/result.json"
+      ],
+      "note": "Actual walking/focus/interaction/travel and paired 110-frame solid-ledge traces pass; Jump clears the lip, descends and lands grounded."
+    },
+    {
+      "row": "W-PLUG-08",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+        "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/result.json"
+      ],
+      "note": "Thirty-two actual barn pickup submissions across cooldown and production save/restore retain exactly one lantern; replacement-world retries and canonical hash pass."
+    },
+    {
+      "row": "W-PLUG-10",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/results.xml",
+        "W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/result.json"
+      ],
+      "note": "Current actual inspector, validator console and gateway-with-fake-transport report identical canonical GP-ENT-006 diagnostic; candidate refuses without writes."
+    },
+    {
+      "row": "W-KERNEL-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+        "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/result.json"
+      ],
+      "note": "Current production corrupted-catalog boot returns named CatalogFingerprintMismatch and creates no world."
+    },
+    {
+      "row": "W-PERSIST-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+        "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/result.json"
+      ],
+      "note": "Production SaveService migrates V1 to V2; missing migration gives actionable refusal while preserving the same running world."
+    },
+    {
+      "row": "W-REC-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json",
+        "W-REC-01/rollback-state-20261007T050623.898305Z/recovery-result.json",
+        "W-REC-01/resume-state-20261007T050804.537383Z/result.json",
+        "W-REC-01/rollback-state-20261007T050623.898305Z/result.json"
+      ],
+      "note": "Both current real SIGKILL paths reopen in distinct Editor PIDs: uncertain in-operation rollback and completed-operation resume recover correctly. Intentional killed-Editor nonzero attempts are preserved, not product failures."
+    },
+    {
+      "row": "W-DOC-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/results.xml",
+        "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide.json",
+        "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide-applied.png"
+      ],
+      "note": "Current creator-guide existing-Maren-definition flow places an NPC, appends the bell dialogue line, saves, and ordinary History undo restores roster 20 and graph 13. Named XML passes. Auxiliary viewport screenshot is blank; no additional visual-layout claim."
+    },
+    {
+      "row": "W-VOICE-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-transcript.json",
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/move-transcript.json",
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice-move/undo-result.json",
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/visual-review.json",
+        "W-VOICE-01/p42i-voice-20261007T051405.333523Z/result.json"
+      ],
+      "note": "Both current readiness-gated real voice takes reach final transcript after Stop/drain. Destructive text is visibly unsent; tray/request/journal counts stay exactly 1/1/120. Earlier move becomes a prompt/task only on explicit Send, then ordinary undo succeeds. Judged on SR-4.8; no partial-revision visibility requirement."
+    },
+    {
+      "row": "W-EDIT-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-03/p42i-portrait/workflow/result.json",
+        "W-EDIT-03/p42i-portrait/workflow/generate.json",
+        "W-EDIT-03/p42i-portrait/workflow/ledger-final.json",
+        "W-EDIT-03/p42i-portrait/workflow/visual-review.json"
+      ],
+      "note": "One fresh USD0.20 portrait passes production import, normal History undo/redo and final undo; generated/applied/redone SHA256 remains identical and every charge checkpoint stays unchanged. Actual portrait pixels reviewed."
+    },
+    {
+      "row": "W-AI-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-01/p42i-robe/workflow/result.json",
+        "W-AI-01/p42i-robe/workflow/generate.json",
+        "W-AI-01/p42i-robe/workflow/ledger-final.json",
+        "W-AI-01/p42i-robe/workflow/visual-review.json"
+      ],
+      "note": "One fresh USD0.20 green cloth image is assigned through entity.setMaterialTexture in real Hollowmere Play. Actual olive-to-dark-green woven appearance and normal History restoration reviewed; behavior inputs/runtime profile stay unchanged."
+    },
+    {
+      "row": "W-ETOS-07",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-03/p42i-portrait/workflow/generate.json",
+        "W-ETOS-07/p42i-tamper-20261007T052130.875133Z/tamper.json",
+        "W-ETOS-07/p42i-tamper-20261007T052130.875133Z/result.json",
+        "W-ETOS-07/p42i-describe-20261007T052135.363495Z/describe.json",
+        "W-ETOS-07/p42i-describe-20261007T052135.363495Z/result.json"
+      ],
+      "note": "Current generated PNG imports with verified matching SHA256. Downloading that same owned artifact with one byte tampered refuses artifact_digest_mismatch; a clean reread equals the original bytes, with no regeneration. One priced describe call consumes the same digest for USD0.01."
+    },
+    {
+      "row": "W-AI-03",
+      "status": "FAIL",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/candidate.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/play-effect.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/outcome.json"
+      ],
+      "note": "Fresh installed-worker Odd dialogue candidate is Invalid: GP-DLG-003 edges 3\u21928 and 8\u21924 leave the projected graph, dangling next\u21928, plus GP-DLG-005 unreachable node 4. Candidate never applies; actual Play driver reports candidate was not applied. Historical PASS is not retained."
+    },
+    {
+      "row": "W-AI-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/hud/apply-report.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/hud/candidate.json",
+        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/after-reopen.json",
+        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/final.json"
+      ],
+      "note": "Fresh installed-worker ui.bind candidate rebinds objective-line.text to vm:hud.QuestStageTitle. It applies unchanged, saves, reopens with matching complete bytes, then normal undo/redo/final undo restores the original HUD bytes."
+    },
+    {
+      "row": "W-AI-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/play-effect.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/quest/candidate.json",
+        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/final.json"
+      ],
+      "note": "Fresh unchanged worker quest candidate uses indexed OilFlask. Actual Play stays at quest stage 1 after one flask and advances to stage 2 after two; saved History replay restores original bytes."
+    },
+    {
+      "row": "W-AI-06",
+      "status": "FAIL",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/after-reopen.json",
+        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/final.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/narrative/saved.json",
+        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json"
+      ],
+      "note": "Separate-Editor replay succeeds for the two applied HUD/quest candidates and final complete asset bytes equal baseline, but the fresh Odd edit never applied and reopens with journal missing. Full undo/redo of all preceding narrative edits is therefore not established; partial replay is not promoted to a complete-row PASS."
+    },
+    {
+      "row": "W-AI-02",
+      "status": "FAIL",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/staged.json",
+        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/play-effect.json",
+        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/candidate.json",
+        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/outcome.json"
+      ],
+      "note": "Fresh installed-worker six-operation NPC candidate is Invalid: StageFailed projecting npcs[6] because the same-change-set path Assets/Hollowmere/Npcs/Definitions/FerrymanElian.asset does not resolve. Candidate never applies; actual Play effect reports candidate was not applied. Current measured NavMesh/shared-prefab prerequisite passed."
+    },
+    {
+      "row": "W-EDIT-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/request.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/joined-history.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/latest-request.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-before-apply.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/started.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/submission.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-envelope.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/hello.json",
+        "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/apply-report.json"
+      ],
+      "note": "Fresh unchanged installed-worker runtime.move candidate applies in real Play. History joins the task to the exact committed GameCore operation and Bram pose; authored scene bytes remain unchanged."
+    },
+    {
+      "row": "W-ETOS-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/result.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/request.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/latest-request.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/started.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/submission.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/cancelled.json",
+        "W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/hello.json"
+      ],
+      "note": "Actual enabled attached tray Cancel is activated while original request/task/tray report running. The same task becomes cancelled after 429ms, no candidate or duplicate row after a three-second observation."
+    },
+    {
+      "row": "W-ETOS-09",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/request.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/latest-request.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/started.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/submission.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/source-compilation-request.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cursor-replay.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cancelled.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/reload-recovered.json",
+        "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/hello.json"
+      ],
+      "note": "Actual changed-source compilation/domain reload preserves the same running task and one attached tray row. Cursor continuation 819\u2192821 matches independent authenticated replay; explicit Cancel then settles the original task without candidate."
+    },
+    {
+      "row": "W-ETOS-04",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/current-query-verification.json",
+        "W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-query-receipt.json",
+        "W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-tool-trace.json",
+        "W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/request.json",
+        "W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/result.json"
+      ],
+      "note": "Actual installed Docker worker resolves selected Bram through owner-scoped gc_definition and executes etos query: all eight returned node indices/kinds/texts match the selected graph. Initial P42h observer wrongly compared authoringId to the R8 owner:asset-GUID graph key; corrected offline verification passes the unchanged current query and independent tool trace, with no repeated provider call."
+    },
+    {
+      "row": "W-MECH-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/outcome.json",
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/restored-world.json",
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/smoke-witness.json",
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/admission.json",
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/undo.json",
+        "W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/resumed-world.png",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/outcome.json",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/restored-world.json",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/smoke-witness.json",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/admission.json",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/undo.json",
+        "W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/resumed-world.png",
+        "W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/job.json",
+        "W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/editmode.xml",
+        "W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/playmode.xml",
+        "W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/job.json",
+        "W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/editmode.xml",
+        "W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/playmode.xml",
+        "W-MECH-01/p42i-signed-record-20261007T060145.901277Z/verified.json",
+        "W-MECH-01/p42i-signed-record-20261007T060628.146841Z/verified.json",
+        "W-MECH-01/p42i-stage-submit-cold-20261007T054655.315450Z/service/job.json",
+        "W-MECH-01/p42i-cache-provision/provision.json",
+        "W-MECH-01/p42i-stage-negative-review-20261007T061419.738746Z/panel-verdict.json",
+        "W-MECH-01/p42i-stage-submit-negative-20261007T061309.881587Z/service/job.json"
+      ],
+      "note": "Current installed signed Docker cold/warm stages pass in 158.107/78.663s, each 36 EditMode+2 PlayMode XML passes. Creator Admit resumes real Play with nine coins and 120 Pending\u2192Passed smoke frames in 56.613/33.879s; normal History undo succeeds twice. Initial cache_invalid setup failure is retained; exact owner-scoped pinned cache was provisioned without altering cold markers or budgets."
+    },
+    {
+      "row": "W-REC-03",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-REC-03/p42i-installed-cancellation/editor-result.json",
+        "W-REC-03/p42i-installed-cancellation/region-cancel-before.json",
+        "W-REC-03/p42i-installed-cancellation/region-cancel-after.json",
+        "W-REC-03/p42i-installed-cancellation/container-running.json",
+        "W-REC-03/p42i-installed-cancellation/stage-ui-before.json",
+        "W-REC-03/p42i-installed-cancellation/stage-ui-after.json",
+        "W-REC-03/p42i-installed-cancellation/cancel-editor-result.json",
+        "W-REC-03/p42i-installed-cancellation/stage-resources.json",
+        "W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/cancelled-after-restart.json"
+      ],
+      "note": "Actual unfinished native region load cancels and settles all regions Unloaded. Real installed Docker stage is cancelled through the attached Stage-panel button after pausing only its owned dotnet container to serialize Editors. Durable cancelled, no container, released slot, verdict 404 and Admit disabled are verified. Authenticated reread after the permitted companion restart still reports cancelled and verdict 404."
+    },
+    {
+      "row": "W-DOC-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-DOC-02/p42i-lever-literal/live-admit.json",
+        "W-DOC-02/p42i-lever-literal/live-undo.json",
+        "W-DOC-02/p42i-lever-literal/interactive-lever.json",
+        "W-DOC-02/p42i-lever-literal/automatic-refresh.json",
+        "W-DOC-02/p42i-lever-literal/service/job.json",
+        "W-DOC-02/p42i-lever-literal/visual-review.json",
+        "W-DOC-02/p42i-lever-literal/lever-on-play.png",
+        "W-DOC-02/p42i-lever-literal/lever-off-after-play.png",
+        "W-DOC-02/p42i-lever-literal/service/slot-out/editmode.xml",
+        "W-DOC-02/p42i-lever-literal/service/slot-out/playmode.xml",
+        "W-DOC-02/p42i-lever-workflow/live-failure.txt",
+        "W-DOC-02/p42i-stage-submit-lever-20261007T061548.119706Z/service/job.json",
+        "W-DOC-02/p42i-literal-signed-record-20261007T093519.093377Z/verified.json"
+      ],
+      "note": "Literal R8 guide export\u2192client-submit\u2192creator-review uses the installed companion: signed Docker stage 87.710s, 16 EditMode+2 PlayMode cases; Admit 32.592s restores nine coins and 120-frame 0/1/0 smoke. Actual lever On/Off controls and mesh reviewed; normal Undo 19.979s restores the original catalog. Initial generic panel-submit adaptation hit stage_context_changed and remains retained; no candidate or product code was repaired."
+    },
+    {
+      "row": "W-PLUG-11",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/audio-identity.json",
+        "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/result.json",
+        "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+        "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+        "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml"
+      ],
+      "note": "Current graphics-enabled native crossfade/release and actual Maren voice tests pass. Recorded player audio matches Maren/village/marsh WAVs with correlations 0.6108/0.4972/0.4242, exceeding 0.2 and wrong-region controls. Its initial desktop-only video remains rejected; this row uses that recording\u2019s real audio track, with no human-listening claim. A separate corrected owned-window recording closes W-GAME-05."
+    },
+    {
+      "row": "W-CLEAN-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
+        "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+        "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log",
+        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml",
+        "UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/results.xml",
+        "UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml",
+        "UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/results.xml"
+      ],
+      "note": "Current clean project AuthorAll, 11 EditMode+3 PlayMode cases and both rechecks pass. Fresh Linux IL2CPP build and standalone 600-frame autoplay pass real quest/save/restore/ending assertions with zero pump violations. Disk-reserve interruption was resolved by deleting only completed owned compiler caches; no workload bypassed the reserve."
+    },
+    {
+      "row": "W-CLEAN-02",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-CLEAN-02/p42i-final-kernel-diff/result.json"
+      ],
+      "note": "After the clean-project build/player exercise, literal git diff --exit-code origin/main -- Packages/ exits 0 with empty output. No kernel/package source changed."
+    },
+    {
+      "row": "W-GAME-01",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-01/p42i-player/result.json",
+        "W-GAME-01/p42i-player/player/build-report.json",
+        "W-GAME-01/p42i-player/visual-review.json",
+        "W-GAME-01/p42i-player/external-artifacts.json"
+      ],
+      "note": "Current release Linux IL2CPP on real RTX4060Ti/:1 at 1920x1080: VSync OFF p95 3.404/3.463ms over 607.729/608.971s, zero >100ms frames outside transitions, maximum transition 123.080ms. Both OFF recordings pass B-FRAME. ON p95 17.230/17.261ms is informational only; all four actual game-window recordings and routes pass their other checks."
+    },
+    {
+      "row": "W-GAME-05",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-05/p42i-owned-window-lifecycle/driver-summary.json",
+        "W-GAME-05/p42i-owned-window-lifecycle/save-quit-report.json",
+        "W-GAME-05/p42i-owned-window-lifecycle/load-ending-restart-report.json",
+        "W-GAME-05/p42i-owned-window-lifecycle/visual-review.json",
+        "W-GAME-05/p42i-owned-window-lifecycle/external-artifacts.json",
+        "W-GAME-05/p42i-player-lifecycle/visual-review.json"
+      ],
+      "note": "Same current IL2CPP binary completes the unchanged menu/save/UI-Quit and second-process load/Ending-C/Play-Again route. Corrected PID-owned-window capture visibly proves both menus, Save UI, ending and restart; 321.2s concatenated recording retains both actual process IDs and segments. Initial desktop-only movie is explicitly rejected, not counted as graphical proof."
+    },
+    {
+      "row": "W-GAME-06",
+      "status": "PASS",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-GAME-06/v1-gate-retry-20261007T075649.868432Z/result.json",
+        "W-GAME-06/v1-gate-retry-20261007T075649.868432Z/command.log",
+        "W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/editmode-results.xml",
+        "W-GAME-06/v1-gate-retry-20261007T075649.868432Z/gate/unity/playmode-results.xml",
+        "W-GAME-01/p42i-player/player/build-report.json",
+        "W-GAME-01/p42i-player/external-artifacts.json"
+      ],
+      "note": "Current-source release Hollowmere Linux IL2CPP build succeeds with retained full-file hashes. The complete unchanged V1 gate passes all phases, including 1318 EditMode and 84 PlayMode XML cases, qualification/release player probes, codegen byte identity and docs gate; no failed probe was repeated or budget relaxed."
+    },
+    {
+      "row": "W-E2E-01",
+      "status": "FAIL",
+      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "releaseId": "0.1.0-debdab3072dbe1f8",
+      "evidence": [
+        "W-E2E-01/p42i-accounting/accounting.json"
+      ],
+      "note": "All 68 rows are now judged at one product revision and one installed release, with no inherited PASS. End-to-end acceptance is FAIL because W-VIEW-02, W-AI-02, W-AI-03 and the complete W-AI-06 sequence fail; six exact owner-forbidden scenarios remain BLOCKED. Same-revision accounting is complete, not a claim that the product is accepted."
+    }
+  ]
+}

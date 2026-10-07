@@ -1,18 +1,25 @@
 # W-EDIT-01: Change set in History shows etos task id and GameCore operation ids
 
-Verdict: **PASS**. P4.2h fresh installed-worker Instance-scoped runtime.move candidate applies unchanged in real Play. History joins task t9450022d9a74ef2db96f895e with the exact committed GameCore operation; production receipt and pose confirm Bram moved to (11.5,0,-13), with authored scene bytes unchanged.
+Verdict: **PASS**. Fresh unchanged installed-worker runtime.move candidate applies in real Play. History joins the task to the exact committed GameCore operation and Bram pose; authored scene bytes remain unchanged.
 
-Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/live-p42h.py move --row W-EDIT-01 --method P42h.Tasks.TaskDriver.JoinedMove
+python3 artifacts/studio/verification/TOOLS/tasks-p42i.py
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-UI-01/ui-capture-20261005T192323.970290Z/README.md](../W-UI-01/ui-capture-20261005T192323.970290Z/README.md)
-- [W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json](../W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json)
-- [W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json](../W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json)
-- [W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-task-gamecore-history.png](../W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-task-gamecore-history.png)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/request.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/request.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/joined-history.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/joined-history.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/latest-request.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/latest-request.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-before-apply.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-before-apply.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/started.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/started.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/submission.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/submission.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-envelope.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-envelope.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/hello.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/hello.json)
+- [W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/apply-report.json](../W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/apply-report.json)

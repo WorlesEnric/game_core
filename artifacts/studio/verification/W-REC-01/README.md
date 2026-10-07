@@ -1,10 +1,9 @@
 # W-REC-01: Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback
 
-Verdict: **PASS**. Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained.
+Verdict: **PASS**. Both current real SIGKILL paths reopen in distinct Editor PIDs: uncertain in-operation rollback and completed-operation resume recover correctly. Intentional killed-Editor nonzero attempts are preserved, not product failures.
 
-Report timestamp: 2026-10-06T15:29:44.422301+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
@@ -12,9 +11,9 @@ Acceptance baseline: merged main `e94f27aa`; every linked run records its exact 
 studio/tools/verify-all.sh recovery
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-REC-01/rollback-state-20261005T202208.950937Z/README.md](../W-REC-01/rollback-state-20261005T202208.950937Z/README.md)
-- [W-REC-01/resume-state-20261005T202307.744000Z/README.md](../W-REC-01/resume-state-20261005T202307.744000Z/README.md)
-
-Exact acceptance/component cases: `R2-03-R2-38-rollback`, `R2-03-R2-38-resume`. Component cases do not close any missing external workflow.
+- [W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json](../W-REC-01/resume-state-20261007T050804.537383Z/recovery-result.json)
+- [W-REC-01/rollback-state-20261007T050623.898305Z/recovery-result.json](../W-REC-01/rollback-state-20261007T050623.898305Z/recovery-result.json)
+- [W-REC-01/resume-state-20261007T050804.537383Z/result.json](../W-REC-01/resume-state-20261007T050804.537383Z/result.json)
+- [W-REC-01/rollback-state-20261007T050623.898305Z/result.json](../W-REC-01/rollback-state-20261007T050623.898305Z/result.json)

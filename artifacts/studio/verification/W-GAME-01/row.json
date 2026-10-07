@@ -1,35 +1,37 @@
 {
-  "status": "BLOCKED",
-  "note": "P4.2h current-source release Linux IL2CPP, real RTX4060Ti on :1 at 1080p: four actual >600-second recordings. VSync OFF literal B-FRAME PASS twice: p95 3.461/3.552 ms, zero frames >100 ms outside transition windows. VSync ON FAIL twice: p95 17.375/17.314 ms; outside-transition >100 ms counts 2/0. All full routes, saves and recordings pass; transition hitches <=122.590 ms. Owner VSync definition remains open; no blended or relaxed verdict. Failed recorder setup attempts remain retained.",
-  "command": "python3 artifacts/studio/verification/TOOLS/P42hPlayer/player.py run --output \"$PWD/.evidence/P42hPlayer-qualified\"",
-  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
-  "row": "W-GAME-01",
-  "scenario": "10-minute graphical playthrough recording with frame log",
-  "requirement": "SR-8.1, B-FRAME",
-  "reportedAt": "2026-10-07T01:31:38.713547+00:00",
+  "status": "PASS",
+  "note": "Current release Linux IL2CPP on real RTX4060Ti/:1 at 1920x1080: VSync OFF p95 3.404/3.463ms over 607.729/608.971s, zero >100ms frames outside transitions, maximum transition 123.080ms. Both OFF recordings pass B-FRAME. ON p95 17.230/17.261ms is informational only; all four actual game-window recordings and routes pass their other checks.",
   "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
-    "W-GAME-01/p42h-player/result.json",
-    "W-GAME-01/p42h-player/visual-review.json",
-    "W-GAME-01/p42h-player/external-movies.json",
-    "W-GAME-01/p42h-player/player/build-report.json"
+    "W-GAME-01/p42i-player/result.json",
+    "W-GAME-01/p42i-player/player/build-report.json",
+    "W-GAME-01/p42i-player/visual-review.json",
+    "W-GAME-01/p42i-player/external-artifacts.json"
   ],
+  "command": "python3 artifacts/studio/verification/TOOLS/builds-p42i.py",
   "checks": [
     {
-      "file": "W-GAME-01/p42h-player/result.json",
+      "file": "W-GAME-01/p42i-player/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-GAME-01/p42i-player/result.json",
       "pointer": "/profiles/vsync0/status",
       "equals": "PASS"
     },
     {
-      "file": "W-GAME-01/p42h-player/result.json",
-      "pointer": "/profiles/vsync1/status",
-      "equals": "FAIL"
-    },
-    {
-      "file": "W-GAME-01/p42h-player/visual-review.json",
+      "file": "W-GAME-01/p42i-player/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914"
+  "row": "W-GAME-01",
+  "scenario": "10-minute graphical playthrough recording with frame log",
+  "requirement": "SR-8.1, B-FRAME",
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-GAME-01/p42i-player/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

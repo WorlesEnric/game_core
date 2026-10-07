@@ -1,0 +1,22 @@
+{
+  "label": "p42i-clean-player",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T07:56:38.274958+00:00",
+  "command": "timeout --signal=TERM --kill-after=10 180 ~/wkspace/gc-studio/p4.2i/games/cleanproof/Builds/Linux/Saltmarsh.x86_64 -batchmode -nographics -saltmarshAutoplay -logFile ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T07:56:38.276886+00:00",
+  "sourceDiffSha256": "42cd8be4cbca47dbec401a66e684cab9b71560f8304b3df8e4eaf0f7c1aca081",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T07:56:49.837029+00:00",
+  "seconds": 11.564056074013934,
+  "playerProof": {
+    "marker": true,
+    "frames": 600,
+    "violations": 0
+  },
+  "playerSha256": "aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70"
+}

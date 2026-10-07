@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.6171855">
+  <test-suite type="TestSuite" id="1000" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.617186" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1010" name="GameCore.Unity.App.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2i/games/cleanproof/Library/ScriptAssemblies/GameCore.Unity.App.Editor.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.374925" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1263729" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1011" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.374666" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1012" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.374575" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1013" name="App" fullname="GameCore.Unity.App" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.374498" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1014" name="Tests" fullname="GameCore.Unity.App.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.374402" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="RestoreAdoptionTests" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.373888" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1008" name="APP1_CurrentNeverNullDuringStartStopOrRootChanged" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_CurrentNeverNullDuringStartStopOrRootChanged" methodname="APP1_CurrentNeverNullDuringStartStopOrRootChanged" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="259368312" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.331784" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1007" name="APP1_NonCurrentRestoreLeavesCurrentUntouched" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.015240" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1005" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1543791957" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.008084" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1006" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1783527617" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.005597" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1009" name="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" methodname="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="342003222" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.005128" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1004" name="APP1_RestoreAdoptsCurrentAndPreservesRunState" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.012069" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1002" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="433644624" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.006421" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1003" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="511899249" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.005219" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1019" name="Saltmarsh.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/p4.2i/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.EditMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.153547" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1263729" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1020" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.153358" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1021" name="Tests" fullname="Saltmarsh.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.153255" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1015" name="CleanProofAuthoringTests" fullname="Saltmarsh.Tests.CleanProofAuthoringTests" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="1.153134" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1017" name="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AllTwelveGroupsAreDiscoverable" methodname="W_CLEAN_01_AllTwelveGroupsAreDiscoverable" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="741129722" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:01Z" duration="0.216054" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" methodname="W_CLEAN_01_AuthorAllIsIdempotentAndJournaled" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="2068015311" result="Passed" start-time="2026-10-07 04:45:01Z" end-time="2026-10-07 04:45:02Z" duration="0.857065" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4AAVR6H7W03BB8GMJH71FF7 -> Applied (1 op(s), 61.3 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRAEG7HDMKAPHEWEKY19 -> Applied (1 op(s), 11.1 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRAV3PXH6EX6AWF5583W -> Applied (1 op(s), 54.0 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRCK8AAFW3KNK8HDXTG4 -> Applied (1 op(s), 134.8 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRGWK5HV59CRFFC333C9 -> Applied (1 op(s), 10.8 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+[GameCore.Studio/engine] applied cs_01M4AAVRM5VHR970GJYNSEVXNS -> Applied (1 op(s), 17.7 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRNAXCTT7676XWAWSWEJ -> Applied (1 op(s), 10.3 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRNPC6RZRNC4TXE28PZA -> Applied (1 op(s), 12.5 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRP52YNZ76G9TXP70DZP -> Applied (1 op(s), 44.6 ms)
+[GameCore.Studio/engine] applied cs_01M4AAVRQMQAY2K8GKQZ9Q2TAS -> Applied (1 op(s), 11.1 ms)
+[Saltmarsh] AuthorAll + Entry.Verify passed: verified Assets/Saltmarsh/World/Saltmarsh.asset
+]]></output>
+            </test-case>
+            <test-case id="1018" name="W_CLEAN_02_BakeVerifyDetectsStaleOutput" fullname="Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_02_BakeVerifyDetectsStaleOutput" methodname="W_CLEAN_02_BakeVerifyDetectsStaleOutput" classname="Saltmarsh.Tests.CleanProofAuthoringTests" runstate="Runnable" seed="1391757973" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.079276" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1026" name="Saltmarsh.P4_2.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2i/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.P4_2.Editor.Tests.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.082294" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1263729" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1027" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.081611" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1028" name="P4_2" fullname="Saltmarsh.P4_2" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.081448" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1022" name="CatalogAcceptanceTests" fullname="Saltmarsh.P4_2.CatalogAcceptanceTests" classname="Saltmarsh.P4_2.CatalogAcceptanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.080189" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1023" name="R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools" fullname="Saltmarsh.P4_2.CatalogAcceptanceTests.R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools" methodname="R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools" classname="Saltmarsh.P4_2.CatalogAcceptanceTests" runstate="Runnable" seed="1862548347" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.079630" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[P4.2] W-TOOL-01 exported 96 production tools; no fixture, foreign-game, or internal admission tools.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1024" name="StageContractAcceptanceTests" fullname="Saltmarsh.P4_2.StageContractAcceptanceTests" classname="Saltmarsh.P4_2.StageContractAcceptanceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.001094" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1025" name="R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake" fullname="Saltmarsh.P4_2.StageContractAcceptanceTests.R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake" methodname="R2_13_R3_D23_AppOriginCandidateHasSignedClientIntake" classname="Saltmarsh.P4_2.StageContractAcceptanceTests" runstate="Runnable" seed="69158394" result="Passed" start-time="2026-10-07 04:45:02Z" end-time="2026-10-07 04:45:02Z" duration="0.000462" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Saltmarsh/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

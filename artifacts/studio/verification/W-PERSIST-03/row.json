@@ -1,16 +1,28 @@
 {
   "status": "PASS",
-  "note": "Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged.",
-  "command": "studio/tools/verify-all.sh v1",
-  "tests": [
-    "AV1SaveIsMigratedToV2OnRestore",
-    "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
+  "note": "Production SaveService migrates V1 to V2; missing migration gives actionable refusal while preserving the same running world.",
+  "evidence": [
+    "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+    "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py validation",
+  "checks": [
+    {
+      "file": "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+      "xmlCase": "AV1SaveIsMigratedToV2OnRestore"
+    },
+    {
+      "file": "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+      "xmlCase": "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
+    }
   ],
   "row": "W-PERSIST-03",
   "scenario": "Schema version bump with migration: restored; without: actionable refusal",
   "requirement": "SR-6.12",
-  "reportedAt": "2026-10-06T15:29:44.421665+00:00",
-  "evidence": [
-    "W-GAME-06/v1-gate-retry-20261005T190359.447287Z/gate/unity/editmode-results.xml"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,17 +1,16 @@
 # W-ETOS-02: Unity key against another agent: `forbidden`; shown in Studio log
 
-Verdict: **BLOCKED**. Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established.
+Verdict: **BLOCKED**. Owner rule: credential handling is forbidden; cross-agent credential probe is not run.
 
-Report timestamp: 2026-10-06T15:29:44.388794+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L02_
+Not run: Owner rule: credential handling is forbidden; cross-agent credential probe is not run.
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-HOST-01/installed-hello-authority-20261005T185555.694549Z/live/dotnet-w-etos-02-authority.json](../W-HOST-01/installed-hello-authority-20261005T185555.694549Z/live/dotnet-w-etos-02-authority.json)
+- [W-ETOS-02/p42i-owner-block/result.json](../W-ETOS-02/p42i-owner-block/result.json)

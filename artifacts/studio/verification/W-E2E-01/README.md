@@ -1,19 +1,16 @@
 # W-E2E-01: All rows resolved on one revision; completion report
 
-Verdict: **BLOCKED**. P4.2h fresh complete-row PASS at product a77cb38b: W-AI-01, W-EDIT-01, W-EDIT-03, W-ETOS-05, W-ETOS-09. W-ETOS-04 lacks real dialogue-node publication; W-REC-03 lacks running-stage cancellation; W-GAME-01 has separate OFF PASS/ON FAIL measurements with the owner rule open. The other 59 rows were not rerun as complete scenarios at this revision; inherited PASS is not current acceptance. Current retained-dialogue regressions are 35/37, with two projection failures, and eight transient empty-argv children leave strict host exclusivity unproven. All 68 exact dispositions are listed.
+Verdict: **FAIL**. All 68 rows are now judged at one product revision and one installed release, with no inherited PASS. End-to-end acceptance is FAIL because W-VIEW-02, W-AI-02, W-AI-03 and the complete W-AI-06 sequence fail; six exact owner-forbidden scenarios remain BLOCKED. Same-revision accounting is complete, not a claim that the product is accepted.
 
-Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/check_p42h.py
+python3 artifacts/studio/verification/TOOLS/report-p42i.py; python3 artifacts/studio/verification/TOOLS/check-p42i.py
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [../workflows/P4.2e/outcomes.json](../../workflows/P4.2e/outcomes.json)
-- [../workflows/P4.2e/paid-ledger.json](../../workflows/P4.2e/paid-ledger.json)
-- [../workflows/P4.2e/editor-exclusivity-open.json](../../workflows/P4.2e/editor-exclusivity-open.json)
-- [W-E2E-01/p42h-accounting/result.json](../W-E2E-01/p42h-accounting/result.json)
-- [W-E2E-01/p42h-accounting/README.md](../W-E2E-01/p42h-accounting/README.md)
+- [W-E2E-01/p42i-accounting/accounting.json](../W-E2E-01/p42i-accounting/accounting.json)

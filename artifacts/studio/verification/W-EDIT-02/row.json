@@ -1,16 +1,31 @@
 {
   "status": "PASS",
-  "note": "Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes.",
+  "note": "Current five-op stale-member tests prove AllOrNothing refusal/unchanged fields and BestEffort per-op outcomes; throwing-operation rollback also passes.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+  ],
   "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing",
-    "WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows"
+    }
   ],
   "row": "W-EDIT-02",
   "scenario": "5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report",
   "requirement": "SR-3.2",
-  "reportedAt": "2026-10-06T15:29:44.379635+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,0 +1,22 @@
+{
+  "row": "W-AI-01",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-07T05:22:36.468495+00:00",
+  "observation": "Maren changes from olive cloth to visibly dark green woven texture after assignment, then returns to the original olive appearance after normal History undo. The capsule silhouette, patrol label and surrounding scene stay unchanged; distant magenta geometry is pre-existing and not claimed fixed.",
+  "reviewAssertions": [
+    "The generated image is green robe cloth, not a tint or old texture.",
+    "The applied real healer body visibly uses the green texture; undo visibly restores the original body material.",
+    "All three captures frame the real healer body and are legible; a hidden/cropped body cannot pass."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "b1af6bb223ad6f42ec209d0532a8017fef0703a55df705a1736ca486c83fd905",
+    "viewport-before.png": "a84138913bb56361b2e3d048d721fc00c1e153c49ec520a566847f484d248ec8",
+    "viewport-applied.png": "7b22462a44bd756b596e5e5da92d777183c69bbf6e3187784b72c1926652d68d",
+    "viewport-undone.png": "5461d5a23272da9e4e5fbb5683c55da66fda080eb22cba4f045fb02757687f2b",
+    "studio-before.png": "f3631019d82979d17ab2904761487922bf0154fcf0e0913edf0ae1c222afae98",
+    "studio-applied.png": "df486481309a3445506cee9a35a26fabf4790405aceadf165aaf6525c3893392",
+    "studio-undone.png": "643cf1ca12d95dce4e7a0c801cbddd12a87e8c50109ea83b3ab7ed6d9536a4b3"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

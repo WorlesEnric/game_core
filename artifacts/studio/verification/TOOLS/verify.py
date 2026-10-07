@@ -373,7 +373,9 @@ def summary():
         except (ValueError, OSError):
             lines.append(f'| {p.parent.relative_to(OUT)} | BLOCKED (incomplete ENOSPC record retained) | unknown |')
             continue
-        lines.append(f"| [{p.parent.relative_to(OUT)}]({p.parent.relative_to(OUT)}/README.md) | {r['status']} | {r['revision'][:12]} |")
+        revision = r.get('revision', r.get('productRevision'))
+        revision_label = revision[:12] if isinstance(revision, str) and revision else 'unknown (receipt has no revision)'
+        lines.append(f"| [{p.parent.relative_to(OUT)}]({p.parent.relative_to(OUT)}/README.md) | {r['status']} | {revision_label} |")
     (OUT / 'SUMMARY.md').write_text('\n'.join(lines) + '\n')
 
 

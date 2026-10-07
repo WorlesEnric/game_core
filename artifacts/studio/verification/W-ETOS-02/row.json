@@ -1,12 +1,17 @@
 {
   "status": "BLOCKED",
-  "note": "Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established.",
-  "command": "GAMECORE_ETOS_LIVE=1 dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --filter FullyQualifiedName~L02_",
+  "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
+  "evidence": [
+    "W-ETOS-02/p42i-owner-block/result.json"
+  ],
+  "command": "Not run: Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
   "row": "W-ETOS-02",
   "scenario": "Unity key against another agent: `forbidden`; shown in Studio log",
   "requirement": "SR-4.2",
-  "reportedAt": "2026-10-06T15:29:44.388794+00:00",
-  "evidence": [
-    "W-HOST-01/installed-hello-authority-20261005T185555.694549Z/live/dotnet-w-etos-02-authority.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-ETOS-02/p42i-owner-block/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }
