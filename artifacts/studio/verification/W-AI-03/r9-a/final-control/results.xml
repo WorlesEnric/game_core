@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.6527281">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="608" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.652728" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1131" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r9-a/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.141892" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2346042" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1132" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.141216" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1133" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.140730" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1134" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.140300" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1135" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.139715" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1029" name="DefinitionProjectionTests" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:27Z" duration="2.136361" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1031" name="R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" methodname="R9A_CreatedDefinitionFieldsResolveAnEarlierCreatedReferenceWithoutLiveWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="540125269" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:25Z" duration="0.671946" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1030" name="R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" methodname="R9A_CreatedReferenceAndDependentSetAssignApplyInDependencyOrderAndUndo" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1471951916" result="Passed" start-time="2026-10-07 10:50:25Z" end-time="2026-10-07 10:50:26Z" duration="0.390518" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1032" name="R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" methodname="R9A_DeferredCreatedTargetStillRefusesOutOfRangeFieldsBeforeWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="227141694" result="Passed" start-time="2026-10-07 10:50:26Z" end-time="2026-10-07 10:50:26Z" duration="0.165643" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1033" name="R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" methodname="R9A_FinalValidatorTraversesRepairedFactThroughUnchangedCondition" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1294852217" result="Passed" start-time="2026-10-07 10:50:26Z" end-time="2026-10-07 10:50:26Z" duration="0.402882" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1034" name="R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" methodname="R9A_ReflectedCompositionThenConnectValidatesOnlyTheFinalGraphAndUndoRestores" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1537815883" result="Passed" start-time="2026-10-07 10:50:26Z" end-time="2026-10-07 10:50:27Z" duration="0.292258" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" fullname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests.R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" methodname="R9A_ReflectedCompositionWithFinalUnreachableNodeIsRefusedWithoutWrites" classname="GameCore.Studio.Edit.Tests.DefinitionProjectionTests" runstate="Runnable" seed="1165413283" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.201504" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1937" name="Hollowmere.R9_A.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r9-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R9_A.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.496430" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2346042" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1938" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.489685" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1939" name="R9_A" fullname="Hollowmere.R9_A" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.488919" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1935" name="FinalDialogueWorkflowTests" fullname="Hollowmere.R9_A.FinalDialogueWorkflowTests" classname="Hollowmere.R9_A.FinalDialogueWorkflowTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.488595" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1936" name="Dialogue_AddLineConnectRename_OneFinalValidChangeSetAndUndoRestores" fullname="Hollowmere.R9_A.FinalDialogueWorkflowTests.Dialogue_AddLineConnectRename_OneFinalValidChangeSetAndUndoRestores" methodname="Dialogue_AddLineConnectRename_OneFinalValidChangeSetAndUndoRestores" classname="Hollowmere.R9_A.FinalDialogueWorkflowTests" runstate="Runnable" seed="61591612" result="Passed" start-time="2026-10-07 10:50:27Z" end-time="2026-10-07 10:50:27Z" duration="0.487685" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4AZRVVEVRXZM76TY43BRMJZ -> Applied (3 op(s), 46.9 ms)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u2)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u3)
+[GameCore.Studio/engine] history apply cs_01M4AZRVZG2FEHJ0WZZDEKPHWM -> Applied (3 op(s), 59.8 ms)
+[GameCore.Studio/history] undid cs_01M4AZRVVEVRXZM76TY43BRMJZ (3 inverse op(s))
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

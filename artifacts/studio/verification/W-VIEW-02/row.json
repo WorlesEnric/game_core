@@ -1,19 +1,18 @@
 {
   "status": "FAIL",
-  "note": "Current full-row dialogue edit test rejects AddLine/Connect/Rename with GP-DLG-005: ViewsTestGraph node 1 is unreachable. Reproduced in broad EditMode and current 40-pass/1-fail view suite; graphical preview does not replace failed editing/undo.",
+  "note": "R9-A final suite: 161 PASS/1 FAIL, no skips. Owned combined AddLine/Connect/Rename workflow and retained orphan refusals pass. Exact P2_3 named test remains outside exclusive paths and now correctly refuses its empty graph creation with GP-DLG-001; its later separately committed orphan also needs fixture/workflow correction. No replacement-test promotion.",
   "evidence": [
-    "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
-    "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
-    "W-VIEW-01/captures-20261007T045200Z/capture.json"
+    "W-VIEW-02/r9-a-final-regressions/results.xml",
+    "W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/regressions.xml"
   ],
-  "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
+  "command": "studio/tools/unity-batch.sh --project <hollowmere> --log-dir <owned evidence> --label r9a-final-suites --results <results.xml> -- -runTests -testPlatform EditMode -testFilter <recorded final suite filter>",
   "row": "W-VIEW-02",
   "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+  "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
   "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
   "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "evidencePath": "W-VIEW-02/r9-a-final-regressions/results.xml",
+  "runStartedAt": "2026-10-07T10:44:25+00:00"
 }

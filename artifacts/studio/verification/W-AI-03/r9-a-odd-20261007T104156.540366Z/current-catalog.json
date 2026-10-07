@@ -1,0 +1,7094 @@
+{
+  "schema": "gamecore.studio.toolcatalog/1",
+  "revision": "8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e",
+  "objectTypes": [
+    {
+      "typeId": "audio.ambience",
+      "displayName": "Ambience",
+      "doc": "A region's ambience: the region, the bank clip it loops, its volume and the crossfade on entering the region.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "region",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "The region whose ambience this is."
+        },
+        {
+          "name": "clipId",
+          "type": "ref",
+          "required": true,
+          "category": "audio.clip",
+          "doc": "The loop: a clip id of the audio bank."
+        },
+        {
+          "name": "volume",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Loop volume (linear, before the mixer)."
+        },
+        {
+          "name": "fadeMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 20000.0,
+          "doc": "Crossfade when the region is entered."
+        }
+      ]
+    },
+    {
+      "typeId": "audio.bank",
+      "displayName": "Audio Bank",
+      "doc": "Clips by id (imported AudioClips) with their mixer group, volume, loop and 3D settings.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "entries",
+          "type": "object[]",
+          "required": false,
+          "doc": "The bank's clips."
+        },
+        {
+          "name": "mixer",
+          "type": "ref",
+          "required": false,
+          "category": "asset.audioMixer",
+          "doc": "The mixer whose groups and exposed volume parameters the bank plays through."
+        }
+      ]
+    },
+    {
+      "typeId": "audio.musicState",
+      "displayName": "Music State",
+      "doc": "A music state: its id, the bank clip it loops, the crossfade into it and an optional stinger played on entry.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "stateId",
+          "type": "string",
+          "required": false,
+          "doc": "Stable state id (e.g. music.explore); audio.musicState holds its key."
+        },
+        {
+          "name": "clipId",
+          "type": "ref",
+          "required": false,
+          "category": "audio.clip",
+          "doc": "The loop: a clip id of the audio bank (empty = silence while in this state)."
+        },
+        {
+          "name": "fadeMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 20000.0,
+          "doc": "Crossfade into this state."
+        },
+        {
+          "name": "stingerId",
+          "type": "ref",
+          "required": false,
+          "category": "audio.clip",
+          "doc": "Stinger played on entry: a clip id of the audio bank (empty = none)."
+        }
+      ]
+    },
+    {
+      "typeId": "audio.set",
+      "displayName": "Audio Set",
+      "doc": "The audio content of a game: bank, music states (with the start state), region ambiences and the mixer.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "bank",
+          "type": "ref",
+          "required": true,
+          "category": "audio.bank",
+          "doc": "The clip bank."
+        },
+        {
+          "name": "musicStates",
+          "type": "ref[]",
+          "required": true,
+          "category": "audio.musicState",
+          "doc": "Every music state."
+        },
+        {
+          "name": "startMusicState",
+          "type": "ref",
+          "required": false,
+          "category": "audio.musicState",
+          "doc": "The music state a new world starts in, by state id (empty = silence)."
+        },
+        {
+          "name": "ambiences",
+          "type": "ref[]",
+          "required": true,
+          "category": "audio.ambience",
+          "doc": "Every region ambience."
+        },
+        {
+          "name": "feedbackPrefix",
+          "type": "string",
+          "required": false,
+          "doc": "Feedback id -> bank clip id prefix for footsteps and other presentation-only cues (e.g. footstep -> sfx.footstep)."
+        }
+      ]
+    },
+    {
+      "typeId": "dialogue.graph",
+      "displayName": "Dialogue Graph",
+      "doc": "A conversation: line, choice, branch, action and end nodes joined by edges; conditions read facts and state.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "speaker",
+          "type": "string",
+          "required": false,
+          "doc": "Default speaker name of the graph's lines."
+        },
+        {
+          "name": "speakerEntityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Default speaker entity, by authoring id (optional)."
+        },
+        {
+          "name": "npcGraphRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        },
+        {
+          "name": "entry",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Entry node index."
+        },
+        {
+          "name": "nodes",
+          "type": "object[]",
+          "required": false,
+          "doc": "The nodes; an edge names them by index."
+        },
+        {
+          "name": "edges",
+          "type": "object[]",
+          "required": false,
+          "doc": "The edges."
+        }
+      ]
+    },
+    {
+      "typeId": "entity.definition",
+      "displayName": "Entity Definition",
+      "doc": "An entity definition: the prefab a placed entity presents, its defaults, variants and overridable fields.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "prefab",
+          "type": "ref",
+          "required": true,
+          "category": "asset.prefab",
+          "doc": "The view prefab instantiated for every placed entity."
+        },
+        {
+          "name": "defaultScaleMilli",
+          "type": "int",
+          "required": false,
+          "unit": "milli",
+          "min": 1.0,
+          "max": 100000.0,
+          "doc": "Uniform scale in thousandths."
+        },
+        {
+          "name": "startsVisible",
+          "type": "bool",
+          "required": false,
+          "doc": "Whether a placed entity starts visible."
+        },
+        {
+          "name": "startsAlive",
+          "type": "bool",
+          "required": false,
+          "doc": "Whether a placed entity starts alive (spawned)."
+        },
+        {
+          "structural": true,
+          "name": "variants",
+          "type": "ref[]",
+          "required": false,
+          "category": "entity.variant",
+          "doc": "Variants 1..n; variant 0 is the definition itself."
+        },
+        {
+          "structural": true,
+          "name": "overridableFields",
+          "type": "string[]",
+          "required": false,
+          "doc": "Fields a placed entity may override: scaleMilli, visible, alive, tint."
+        },
+        {
+          "name": "animatorBindings",
+          "type": "object[]",
+          "required": false,
+          "doc": "Animator integer parameters driven from entity slots."
+        },
+        {
+          "structural": true,
+          "name": "interactionKind",
+          "type": "string",
+          "required": false,
+          "doc": "Interaction kind exposed to interaction systems (empty = not interactable)."
+        },
+        {
+          "name": "materialTextures",
+          "type": "object[]",
+          "required": false,
+          "doc": "Texture bindings for renderer material slots; presentation content, not recipe structure."
+        }
+      ]
+    },
+    {
+      "typeId": "entity.instance",
+      "displayName": "Authored Entity",
+      "doc": "A placed entity: one kernel target with a definition, a variant and overrides.",
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "definition",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition",
+          "doc": "The definition this entity instantiates."
+        },
+        {
+          "name": "variant",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Variant index: 0 is the definition itself, 1..n its variants."
+        },
+        {
+          "name": "overrides",
+          "type": "object",
+          "required": false,
+          "doc": "Per-instance overrides of the definition's overridable fields."
+        }
+      ]
+    },
+    {
+      "typeId": "entity.variant",
+      "displayName": "Entity Variant",
+      "doc": "A variant of an entity definition (replacement prefab and tint).",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "prefab",
+          "type": "ref",
+          "required": false,
+          "category": "asset.prefab",
+          "doc": "Replaces the definition's prefab when set."
+        },
+        {
+          "name": "tint",
+          "type": "color",
+          "required": false,
+          "doc": "Tint applied to the view's renderers (white = none)."
+        }
+      ]
+    },
+    {
+      "typeId": "hollowmere.atmosphere",
+      "displayName": "Region Atmosphere",
+      "doc": "Fog, ambient light, sun and colour grading of a region; applied when the player enters the region.",
+      "scopes": [
+        "Instance"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "fogColor",
+          "type": "color",
+          "required": false,
+          "doc": "Fog colour."
+        },
+        {
+          "name": "fogDensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Exponential-squared fog density."
+        },
+        {
+          "name": "ambientSky",
+          "type": "color",
+          "required": false,
+          "doc": "Ambient sky colour (trilight)."
+        },
+        {
+          "name": "ambientEquator",
+          "type": "color",
+          "required": false,
+          "doc": "Ambient equator colour (trilight)."
+        },
+        {
+          "name": "ambientGround",
+          "type": "color",
+          "required": false,
+          "doc": "Ambient ground colour (trilight)."
+        },
+        {
+          "name": "sunColor",
+          "type": "color",
+          "required": false,
+          "doc": "Sun colour."
+        },
+        {
+          "name": "sunIntensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 8.0,
+          "doc": "Sun intensity."
+        },
+        {
+          "name": "sunEuler",
+          "type": "vector3",
+          "required": false,
+          "unit": "deg",
+          "doc": "Sun rotation (Euler angles)."
+        },
+        {
+          "name": "postExposure",
+          "type": "float",
+          "required": false,
+          "min": -5.0,
+          "max": 5.0,
+          "doc": "Post exposure (EV)."
+        },
+        {
+          "name": "saturation",
+          "type": "float",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Saturation offset."
+        },
+        {
+          "name": "contrast",
+          "type": "float",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Contrast offset."
+        },
+        {
+          "name": "bloomIntensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 10.0,
+          "doc": "Bloom intensity."
+        },
+        {
+          "name": "vignetteIntensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Vignette intensity."
+        },
+        {
+          "name": "colorFilter",
+          "type": "color",
+          "required": false,
+          "doc": "Colour filter (multiplied into the image)."
+        }
+      ]
+    },
+    {
+      "typeId": "hollowmere.director",
+      "displayName": "Hollowmere Director",
+      "doc": "How committed narrative state is presented in Hollowmere: endings, music, ambience layers, interim fact requests, portraits and world-item presence.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "quest",
+          "type": "string",
+          "required": false,
+          "doc": "The quest whose completion or failure ends the game (definition name)."
+        },
+        {
+          "name": "endings",
+          "type": "object[]",
+          "required": false,
+          "doc": "Endings by quest branch (-1 = failure)."
+        },
+        {
+          "name": "music",
+          "type": "object[]",
+          "required": false,
+          "doc": "Music states chosen by facts (later entries win)."
+        },
+        {
+          "name": "layers",
+          "type": "object[]",
+          "required": false,
+          "doc": "Consequence ambience layers."
+        },
+        {
+          "name": "requests",
+          "type": "object[]",
+          "required": false,
+          "doc": "Interim fact-request bridge (replaced by ActionKind.Buy / RestoreStamina)."
+        },
+        {
+          "name": "portraits",
+          "type": "object[]",
+          "required": false,
+          "doc": "Speaker portraits."
+        },
+        {
+          "name": "worldItems",
+          "type": "ref[]",
+          "required": true,
+          "category": "inventory.worldItem",
+          "doc": "World items whose placed entity hides once the item is taken."
+        }
+      ]
+    },
+    {
+      "typeId": "hollowmere.game",
+      "displayName": "Hollowmere Game",
+      "doc": "The game half next to GameBoot: saves and restore re-attach, the director, the player command line (frame log, autoplay).",
+      "scopes": [
+        "Instance"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "director",
+          "type": "ref",
+          "required": true,
+          "category": "hollowmere.director",
+          "doc": "The authored presentation data (Assets/Hollowmere/Game/HollowmereDirector.asset)."
+        },
+        {
+          "name": "gameId",
+          "type": "string",
+          "required": false,
+          "doc": "The save game id (slot headers and the save folder)."
+        }
+      ]
+    },
+    {
+      "typeId": "interaction.interactable",
+      "displayName": "Interactable",
+      "doc": "An interactable: its entity definition, kind, initial state, per-state prompts, condition and action references, uses, cooldown and range.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "entity",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition",
+          "doc": "The entity definition placed for this interactable."
+        },
+        {
+          "structural": true,
+          "name": "kind",
+          "type": "enum",
+          "required": false,
+          "doc": "Door, Gate, Examinable, Point or Switch.",
+          "enumValues": [
+            "Door",
+            "Gate",
+            "Examinable",
+            "Point",
+            "Switch"
+          ]
+        },
+        {
+          "name": "initialState",
+          "type": "string",
+          "required": false,
+          "doc": "Initial state name (empty: the kind's default; doors/gates may start locked)."
+        },
+        {
+          "name": "prompts",
+          "type": "object[]",
+          "required": false,
+          "doc": "Prompt per state."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Condition set: unlocks a locked door when it holds; refuses a use when it fails."
+        },
+        {
+          "name": "conditionFact",
+          "type": "ref",
+          "required": false,
+          "category": "narrative.fact",
+          "doc": "Fact condition (used when no condition set is given): the fact compared with conditionValue."
+        },
+        {
+          "name": "conditionOp",
+          "type": "enum",
+          "required": false,
+          "doc": "Comparison of the fact condition (default: the fact is not 0).",
+          "enumValues": [
+            "Equal",
+            "NotEqual",
+            "Less",
+            "LessOrEqual",
+            "Greater",
+            "GreaterOrEqual"
+          ]
+        },
+        {
+          "name": "conditionValue",
+          "type": "int",
+          "required": false,
+          "doc": "Value the fact condition compares with."
+        },
+        {
+          "name": "conditionRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        },
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Action set run after a committed success (through the outbox)."
+        },
+        {
+          "name": "builtInAction",
+          "type": "string",
+          "required": false,
+          "doc": "Built-in action used when no action set is given (inventory.pickup: pick up the subject world item)."
+        },
+        {
+          "name": "actionRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        },
+        {
+          "name": "maxUses",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Maximum uses (0 = unlimited)."
+        },
+        {
+          "name": "cooldownSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 0.0,
+          "max": 3600.0,
+          "doc": "Cooldown after a use."
+        },
+        {
+          "name": "range",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 20.0,
+          "doc": "Use range from the actor (0 = unlimited)."
+        },
+        {
+          "name": "focusPriority",
+          "type": "int",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Focus priority against other candidates."
+        },
+        {
+          "name": "focusHeight",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 10.0,
+          "doc": "Height of the focus point above the entity's origin."
+        },
+        {
+          "name": "cue",
+          "type": "ref",
+          "required": false,
+          "category": "audio.clip",
+          "doc": "Feedback cue prefix: a bank clip id prefix (default interaction.<kind>)."
+        }
+      ]
+    },
+    {
+      "typeId": "interaction.roster",
+      "displayName": "Interaction Roster",
+      "doc": "Every interactable and trigger definition of a game, each naming a distinct entity definition; the logical step length for cooldowns.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "interactables",
+          "type": "ref[]",
+          "required": true,
+          "category": "interaction.interactable",
+          "doc": "Interactable definitions."
+        },
+        {
+          "name": "triggers",
+          "type": "ref[]",
+          "required": true,
+          "category": "interaction.trigger",
+          "doc": "Trigger definitions."
+        },
+        {
+          "name": "stepMilliseconds",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 5.0,
+          "max": 100.0,
+          "doc": "Logical duration of one step (cooldowns)."
+        }
+      ]
+    },
+    {
+      "typeId": "interaction.trigger",
+      "displayName": "Trigger Volume",
+      "doc": "A trigger volume: box size around the placed entity, occupant limit, condition and action references.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "entity",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition",
+          "doc": "The entity definition placed for this trigger."
+        },
+        {
+          "name": "size",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "min": 0.1,
+          "max": 100.0,
+          "doc": "Box size (x, y, z) centred on the placement, rotated by its yaw."
+        },
+        {
+          "name": "maxOccupants",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 1000.0,
+          "doc": "Maximum occupants (0 = unlimited)."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Condition set: entries are ignored while it fails."
+        },
+        {
+          "name": "conditionFact",
+          "type": "ref",
+          "required": false,
+          "category": "narrative.fact",
+          "doc": "Fact condition (used when no condition set is given): the fact compared with conditionValue."
+        },
+        {
+          "name": "conditionOp",
+          "type": "enum",
+          "required": false,
+          "doc": "Comparison of the fact condition (default: the fact is not 0).",
+          "enumValues": [
+            "Equal",
+            "NotEqual",
+            "Less",
+            "LessOrEqual",
+            "Greater",
+            "GreaterOrEqual"
+          ]
+        },
+        {
+          "name": "conditionValue",
+          "type": "int",
+          "required": false,
+          "doc": "Value the fact condition compares with."
+        },
+        {
+          "name": "conditionRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        },
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Action set run on a committed first entry (through the outbox)."
+        },
+        {
+          "name": "builtInAction",
+          "type": "string",
+          "required": false,
+          "doc": "Built-in action used when no action set is given (inventory.pickup: pick up the subject world item)."
+        },
+        {
+          "name": "actionRef",
+          "type": "string",
+          "required": false,
+          "doc": "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it."
+        }
+      ]
+    },
+    {
+      "typeId": "inventory.inventory",
+      "displayName": "Inventory",
+      "doc": "An inventory: slots, weight limit, starting currency and items.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "slotCount",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "max": 64.0,
+          "doc": "Slot count (the inventory's slot layout)."
+        },
+        {
+          "name": "maxWeight",
+          "type": "int",
+          "required": false,
+          "unit": "g",
+          "min": 0.0,
+          "doc": "Weight limit (0 = unlimited)."
+        },
+        {
+          "name": "startingCurrency",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Starting currency."
+        },
+        {
+          "name": "starting",
+          "type": "object[]",
+          "required": false,
+          "doc": "Starting items."
+        },
+        {
+          "name": "ownerEntityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Owner entity, by authoring id (optional)."
+        },
+        {
+          "name": "isPlayer",
+          "type": "bool",
+          "required": false,
+          "doc": "The player's inventory (grants, pickups and purchases go here)."
+        }
+      ]
+    },
+    {
+      "typeId": "inventory.item",
+      "displayName": "Item",
+      "doc": "An item: stack size, weight, price, tags and what using it does.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false,
+          "doc": "Display name."
+        },
+        {
+          "name": "maxStack",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "doc": "Most items in one inventory slot."
+        },
+        {
+          "name": "weight",
+          "type": "int",
+          "required": false,
+          "unit": "g",
+          "min": 0.0,
+          "doc": "Weight of one item (grams)."
+        },
+        {
+          "name": "price",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Base price (vendors may override)."
+        },
+        {
+          "name": "tags",
+          "type": "string[]",
+          "required": false,
+          "doc": "Free tags (key, quest, currency...)."
+        },
+        {
+          "name": "useActions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "What using the item does (run through the outbox)."
+        },
+        {
+          "name": "icon",
+          "type": "ref",
+          "required": false,
+          "category": "texture.sprite",
+          "doc": "Inventory icon (presentation only)."
+        }
+      ]
+    },
+    {
+      "typeId": "inventory.lootTable",
+      "displayName": "Loot Table",
+      "doc": "Weighted loot rolled deterministically from a seed.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "rolls",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "doc": "Rolls per drop."
+        },
+        {
+          "name": "entries",
+          "type": "object[]",
+          "required": false,
+          "doc": "Entries."
+        }
+      ]
+    },
+    {
+      "typeId": "inventory.vendor",
+      "displayName": "Vendor",
+      "doc": "A vendor: stock, prices, and payment in currency or in an item (old coins).",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false,
+          "doc": "Display name."
+        },
+        {
+          "name": "stock",
+          "type": "object[]",
+          "required": false,
+          "doc": "Stock lines."
+        },
+        {
+          "name": "paymentItem",
+          "type": "ref",
+          "required": false,
+          "category": "inventory.item",
+          "doc": "Payment item (empty = currency)."
+        },
+        {
+          "structural": true,
+          "name": "stockSlots",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "max": 64.0,
+          "doc": "Stock slots (the vendor's slot layout)."
+        },
+        {
+          "name": "vendorEntityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Vendor entity, by authoring id (optional)."
+        }
+      ]
+    },
+    {
+      "typeId": "inventory.worldItem",
+      "displayName": "World Item",
+      "doc": "An item placed in a region; the interaction action ref inventory.pickup moves it into the player's inventory once.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "item",
+          "type": "ref",
+          "required": true,
+          "category": "inventory.item",
+          "doc": "The item."
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "doc": "How many."
+        },
+        {
+          "name": "region",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "The region it lies in."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "doc": "Position in the region."
+        },
+        {
+          "name": "entityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Placed scene entity that shows it, by authoring id (optional; P1.3's interactable)."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.actionSet",
+      "displayName": "Action Set",
+      "doc": "Actions run in order: set facts, grant items, advance quests, change interactables, play cues, travel, show messages.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "actions",
+          "type": "object[]",
+          "required": false,
+          "doc": "The actions, in order."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.conditionSet",
+      "displayName": "Condition Set",
+      "doc": "Conditions over facts, items, quests, regions and time, combined with all or any.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "mode",
+          "type": "enum",
+          "required": false,
+          "doc": "All conditions must hold, or any one.",
+          "enumValues": [
+            "All",
+            "Any"
+          ]
+        },
+        {
+          "name": "conditions",
+          "type": "object[]",
+          "required": false,
+          "doc": "The conditions, in evaluation order."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.contentSet",
+      "displayName": "Gameplay Content Set",
+      "doc": "Lists the narrative definitions (facts, graphs, quests, items, rules...) of one world; the bake writes its content manifest.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Compile",
+      "fields": [
+        {
+          "name": "world",
+          "type": "ref",
+          "required": true,
+          "category": "world.definition",
+          "doc": "The world this content belongs to."
+        },
+        {
+          "name": "definitions",
+          "type": "ref[]",
+          "required": true,
+          "category": "narrative.definition",
+          "doc": "Every narrative definition of the world (any type providing the narrative.definition capability)."
+        }
+      ]
+    },
+    {
+      "typeId": "logic.rule",
+      "displayName": "Rule",
+      "doc": "A reusable rule: trigger event and filter, conditions, actions, once/cooldown/limit.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "trigger",
+          "type": "enum",
+          "required": false,
+          "doc": "The event that triggers the rule.",
+          "enumValues": [
+            "Manual",
+            "FactSet",
+            "ItemGranted",
+            "ItemConsumed",
+            "TradeDone",
+            "QuestStarted",
+            "StageEntered",
+            "QuestCompleted",
+            "QuestFailed",
+            "DialogueEnded",
+            "ChoiceMade",
+            "RegionEntered",
+            "Interacted",
+            "RuleFired",
+            "ItemPickedUp"
+          ]
+        },
+        {
+          "name": "triggerFact",
+          "type": "ref",
+          "required": false,
+          "category": "narrative.fact",
+          "doc": "Filter of factSet: the fact."
+        },
+        {
+          "name": "triggerItem",
+          "type": "ref",
+          "required": false,
+          "category": "inventory.item",
+          "doc": "Filter of itemGranted / itemConsumed: the item."
+        },
+        {
+          "name": "triggerVendor",
+          "type": "ref",
+          "required": false,
+          "category": "inventory.vendor",
+          "doc": "Filter of tradeDone: the vendor."
+        },
+        {
+          "name": "triggerQuest",
+          "type": "ref",
+          "required": false,
+          "category": "quest.quest",
+          "doc": "Filter of questStarted / stageEntered / questCompleted / questFailed: the quest."
+        },
+        {
+          "name": "triggerGraph",
+          "type": "ref",
+          "required": false,
+          "category": "dialogue.graph",
+          "doc": "Filter of dialogueEnded / choiceMade: the dialogue graph."
+        },
+        {
+          "name": "triggerRegion",
+          "type": "ref",
+          "required": false,
+          "category": "world.region",
+          "doc": "Filter of regionEntered: the region."
+        },
+        {
+          "name": "triggerRule",
+          "type": "ref",
+          "required": false,
+          "category": "logic.rule",
+          "doc": "Filter of ruleFired: the other rule."
+        },
+        {
+          "name": "triggerWorldItem",
+          "type": "ref",
+          "required": false,
+          "category": "inventory.worldItem",
+          "doc": "Filter of itemPickedUp: the world item."
+        },
+        {
+          "name": "triggerEntityId",
+          "type": "ref",
+          "required": false,
+          "category": "entity.instance",
+          "doc": "Filter by entity (authoring id) for interacted / regionEntered when no subject asset applies."
+        },
+        {
+          "name": "triggerValue",
+          "type": "int",
+          "required": false,
+          "doc": "Match only this event value (see matchAnyValue)."
+        },
+        {
+          "name": "matchAnyValue",
+          "type": "bool",
+          "required": false,
+          "doc": "Ignore the event value."
+        },
+        {
+          "name": "conditionSet",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Shared conditions (used when no inline conditions are given)."
+        },
+        {
+          "name": "conditions",
+          "type": "object[]",
+          "required": false,
+          "doc": "Inline conditions (all must hold)."
+        },
+        {
+          "name": "actionSet",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Shared actions (used when no inline actions are given)."
+        },
+        {
+          "name": "actions",
+          "type": "object[]",
+          "required": false,
+          "doc": "Inline actions."
+        },
+        {
+          "name": "once",
+          "type": "bool",
+          "required": false,
+          "doc": "Fire at most once."
+        },
+        {
+          "name": "cooldownMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "doc": "Domain milliseconds after a fire during which the rule skips."
+        },
+        {
+          "name": "maxFires",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Most fires (0 = unlimited)."
+        },
+        {
+          "name": "priority",
+          "type": "int",
+          "required": false,
+          "doc": "Rules of one event run in ascending priority."
+        }
+      ]
+    },
+    {
+      "typeId": "narrative.fact",
+      "displayName": "Fact",
+      "doc": "A named int32 world fact (narrative.fact.<name>), set by dialogue, rules and quests and read by conditions.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "factName",
+          "type": "string",
+          "required": false,
+          "doc": "Fact name: lowercase letters, digits and underscores (the slot is narrative.fact.<name>)."
+        },
+        {
+          "name": "initialValue",
+          "type": "int",
+          "required": false,
+          "doc": "Value before anything sets it."
+        },
+        {
+          "name": "persistent",
+          "type": "bool",
+          "required": false,
+          "doc": "False = the fact returns to its initial value when a conversation ends (a conversation-local flag)."
+        }
+      ]
+    },
+    {
+      "typeId": "npc.behaviour",
+      "displayName": "NPC Behaviour",
+      "doc": "A standing NPC behaviour: idle, a looping patrol route (world-space points) with a wait at each point, or a custom behaviour id.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "kind",
+          "type": "enum",
+          "required": false,
+          "doc": "Idle, Patrol or Custom.",
+          "enumValues": [
+            "Idle",
+            "Patrol",
+            "Custom"
+          ]
+        },
+        {
+          "name": "patrolPoints",
+          "type": "vector3[]",
+          "required": false,
+          "unit": "m",
+          "doc": "Patrol points in world space, visited in order and looped."
+        },
+        {
+          "name": "waitSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 0.0,
+          "max": 600.0,
+          "doc": "Wait at each patrol point."
+        },
+        {
+          "name": "customId",
+          "type": "string",
+          "required": false,
+          "doc": "Custom behaviour id (Custom kind only)."
+        }
+      ]
+    },
+    {
+      "typeId": "npc.definition",
+      "displayName": "NPC",
+      "doc": "An NPC kind: the entity definition (prefab) it is placed as, its appearance variant, display name, speed, voice, dialogue graph, behaviour and schedule.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "entity",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition",
+          "doc": "The entity definition placed for this NPC (its prefab)."
+        },
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false,
+          "doc": "Name shown in the bubble and the talk prompt."
+        },
+        {
+          "name": "speed",
+          "type": "float",
+          "required": false,
+          "unit": "m/s",
+          "min": 0.1,
+          "max": 10.0,
+          "doc": "Walking speed."
+        },
+        {
+          "name": "converseSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 0.5,
+          "max": 600.0,
+          "doc": "How long a talk holds the NPC when no conversation system answers."
+        },
+        {
+          "name": "arriveRadius",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.01,
+          "max": 2.0,
+          "doc": "Arrival radius."
+        },
+        {
+          "name": "voiceId",
+          "type": "ref",
+          "required": false,
+          "category": "audio.clip",
+          "doc": "Voice: a clip id of the project's audio bank (presentation only)."
+        },
+        {
+          "name": "dialogue",
+          "type": "ref",
+          "required": false,
+          "category": "dialogue.graph",
+          "doc": "The dialogue graph a talk starts (a DialogueGraphDefinition)."
+        },
+        {
+          "name": "dialogueGraph",
+          "type": "ref",
+          "required": false,
+          "category": "dialogue.graph",
+          "doc": "Legacy (P1.3) graph id (a graph's npcGraphRef alias, authoring id or name), read only while `dialogue` is empty; authoring.migrateRefs moves it into `dialogue` and clears it."
+        },
+        {
+          "name": "appearance",
+          "type": "ref",
+          "required": false,
+          "category": "entity.variant",
+          "doc": "Appearance: one of the entity definition's variants (empty: the definition itself)."
+        },
+        {
+          "name": "behaviour",
+          "type": "ref",
+          "required": false,
+          "category": "npc.behaviour",
+          "doc": "Standing behaviour (idle when none)."
+        },
+        {
+          "name": "schedule",
+          "type": "ref",
+          "required": false,
+          "category": "npc.schedule",
+          "doc": "Day schedule (none: the behaviour always applies)."
+        },
+        {
+          "name": "mood",
+          "type": "int",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Initial mood."
+        },
+        {
+          "name": "focusPriority",
+          "type": "int",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Focus priority against other candidates."
+        },
+        {
+          "name": "talkRange",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.5,
+          "max": 5.0,
+          "doc": "Talk range."
+        }
+      ]
+    },
+    {
+      "typeId": "npc.roster",
+      "displayName": "NPC Roster",
+      "doc": "Every NPC definition of a game, the logical step length and the update stride of NPCs in unloaded regions.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "npcs",
+          "type": "ref[]",
+          "required": true,
+          "category": "npc.definition",
+          "doc": "NPC definitions; each names a distinct entity definition."
+        },
+        {
+          "name": "stepMilliseconds",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 5.0,
+          "max": 100.0,
+          "doc": "Logical duration of one step (NPC movement and world time)."
+        },
+        {
+          "name": "unloadedStride",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "max": 64.0,
+          "doc": "NPCs in unloaded regions update every N-th step (with N steps of time)."
+        }
+      ]
+    },
+    {
+      "typeId": "npc.schedule",
+      "displayName": "NPC Schedule",
+      "doc": "A repeating day of phases by world time; each phase sets the NPC's standing behaviour and may send it somewhere first.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "dayLengthSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 1.0,
+          "max": 86400.0,
+          "doc": "Length of one day."
+        },
+        {
+          "name": "startOffsetSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 0.0,
+          "max": 86400.0,
+          "doc": "World time of day at step 0."
+        },
+        {
+          "name": "phases",
+          "type": "object[]",
+          "required": false,
+          "doc": "Phases in ascending start order; the first starts at 0."
+        }
+      ]
+    },
+    {
+      "typeId": "player.definition",
+      "displayName": "Player",
+      "doc": "The player: which entity definition is the player, its speeds, stamina, CharacterController shape and camera rig.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "entity",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition",
+          "doc": "The entity definition of the placed player entity (its view prefab)."
+        },
+        {
+          "name": "input",
+          "type": "ref",
+          "required": false,
+          "category": "player.inputProfile",
+          "doc": "Input actions and sensitivities."
+        },
+        {
+          "structural": true,
+          "name": "rig",
+          "type": "ref",
+          "required": false,
+          "category": "asset.prefab",
+          "doc": "Player rig prefab: the CharacterController PlayerLocomotion resolves movement with."
+        },
+        {
+          "name": "walkSpeed",
+          "type": "float",
+          "required": false,
+          "unit": "m/s",
+          "min": 0.1,
+          "max": 20.0,
+          "doc": "Walking speed."
+        },
+        {
+          "name": "runSpeed",
+          "type": "float",
+          "required": false,
+          "unit": "m/s",
+          "min": 0.1,
+          "max": 30.0,
+          "doc": "Running speed (costs stamina)."
+        },
+        {
+          "name": "jumpHeight",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 5.0,
+          "doc": "Jump height."
+        },
+        {
+          "name": "gravity",
+          "type": "float",
+          "required": false,
+          "unit": "m/s2",
+          "min": 1.0,
+          "max": 50.0,
+          "doc": "Gravity applied by the locomotion."
+        },
+        {
+          "name": "stepMilliseconds",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 5.0,
+          "max": 100.0,
+          "doc": "Logical duration of one step (stamina accounting)."
+        },
+        {
+          "name": "moveWindowMilliseconds",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 20.0,
+          "max": 500.0,
+          "doc": "Longest frame one move may cover (anti-teleport clamp window)."
+        },
+        {
+          "name": "staminaMax",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "max": 100000.0,
+          "doc": "Maximum stamina."
+        },
+        {
+          "name": "staminaDrainPerSecond",
+          "type": "int",
+          "required": false,
+          "unit": "1/s",
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Stamina drained per second of running."
+        },
+        {
+          "name": "staminaRegenPerSecond",
+          "type": "int",
+          "required": false,
+          "unit": "1/s",
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Stamina regenerated per second of rest."
+        },
+        {
+          "name": "staminaRegenDelayMilliseconds",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 10000.0,
+          "doc": "Rest needed before stamina regenerates."
+        },
+        {
+          "name": "jumpCost",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Stamina one jump costs."
+        },
+        {
+          "name": "height",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.5,
+          "max": 4.0,
+          "doc": "CharacterController height."
+        },
+        {
+          "name": "radius",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.1,
+          "max": 1.5,
+          "doc": "CharacterController radius."
+        },
+        {
+          "name": "stepOffset",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Highest step the locomotion climbs."
+        },
+        {
+          "name": "slopeLimit",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": 0.0,
+          "max": 89.0,
+          "doc": "Steepest walkable slope."
+        },
+        {
+          "name": "interactRange",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.5,
+          "max": 10.0,
+          "doc": "Interaction focus range."
+        },
+        {
+          "name": "focusHalfAngle",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": 5.0,
+          "max": 180.0,
+          "doc": "Half angle of the focus cone."
+        },
+        {
+          "name": "strideLength",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.2,
+          "max": 3.0,
+          "doc": "Stride length between footsteps."
+        },
+        {
+          "name": "cameraDistance",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 1.0,
+          "max": 20.0,
+          "doc": "Camera distance behind the player."
+        },
+        {
+          "name": "cameraHeight",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 5.0,
+          "doc": "Camera pivot height above the player."
+        },
+        {
+          "name": "cameraPitchMin",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": -89.0,
+          "max": 0.0,
+          "doc": "Lowest camera pitch."
+        },
+        {
+          "name": "cameraPitchMax",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": 0.0,
+          "max": 89.0,
+          "doc": "Highest camera pitch."
+        },
+        {
+          "name": "cameraCollisionRadius",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.05,
+          "max": 1.0,
+          "doc": "Camera collision probe radius."
+        }
+      ]
+    },
+    {
+      "typeId": "player.inputProfile",
+      "displayName": "Input Profile",
+      "doc": "The Input System actions asset and action names the player samples, and the look sensitivity.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": true,
+          "category": "asset.inputActions",
+          "doc": "The actions asset (Move, Look, Jump, Interact, Pause, Journal, Inventory, Run)."
+        },
+        {
+          "name": "map",
+          "type": "string",
+          "required": false,
+          "doc": "Action map name."
+        },
+        {
+          "name": "lookSensitivity",
+          "type": "float",
+          "required": false,
+          "unit": "deg/unit",
+          "min": 0.01,
+          "max": 10.0,
+          "doc": "Look sensitivity (degrees per input unit)."
+        },
+        {
+          "name": "invertY",
+          "type": "bool",
+          "required": false,
+          "doc": "Invert vertical look."
+        }
+      ]
+    },
+    {
+      "typeId": "quest.quest",
+      "displayName": "Quest",
+      "doc": "A quest: prerequisites, stages of objectives (with alternative branches), rewards granted exactly once, optional fail conditions, and the actions run on completion or failure.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "doc": "Journal title."
+        },
+        {
+          "name": "stages",
+          "type": "object[]",
+          "required": false,
+          "doc": "The stages, in order."
+        },
+        {
+          "name": "objectives",
+          "type": "object[]",
+          "required": false,
+          "doc": "The objectives of every stage."
+        },
+        {
+          "name": "rewards",
+          "type": "object[]",
+          "required": false,
+          "doc": "Rewards on completion."
+        },
+        {
+          "name": "failConditions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "While active, the quest fails as soon as these hold."
+        },
+        {
+          "name": "branchNames",
+          "type": "string[]",
+          "required": false,
+          "doc": "Names of branches 1..n (journal, simulate)."
+        },
+        {
+          "name": "prerequisites",
+          "type": "ref[]",
+          "required": false,
+          "category": "quest.quest",
+          "doc": "Quests that must be completed before this one can start; when one of them fails, this quest closes (fails without starting)."
+        },
+        {
+          "name": "completionActions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Actions run (once, through the outbox) when the quest completes, after its rewards."
+        },
+        {
+          "name": "failActions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Actions run (once, through the outbox) when the quest fails."
+        }
+      ]
+    },
+    {
+      "typeId": "save.schema",
+      "displayName": "Save schema",
+      "doc": "Slot schemas a save carries, the version this build writes, the forward migration ids a save may need and the compatible catalogs.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "gameId",
+          "type": "string",
+          "required": false,
+          "doc": "The game id written to every save header; a save from another game id is refused."
+        },
+        {
+          "structural": true,
+          "name": "slotSchemas",
+          "type": "object[]",
+          "required": false,
+          "doc": "The slot schemas a save carries and the version this build writes of each."
+        },
+        {
+          "name": "migrations",
+          "type": "object[]",
+          "required": false,
+          "doc": "Forward migrations a save from an older build may need, by id."
+        },
+        {
+          "name": "compatibleCatalogs",
+          "type": "string[]",
+          "required": false,
+          "doc": "Lowercase hex fingerprints of earlier catalogs this build declares compatible through its migrations."
+        }
+      ]
+    },
+    {
+      "typeId": "ui.document",
+      "displayName": "UI Document",
+      "doc": "A runtime UI Toolkit document: UXML, style sheets, draw layer, the screen it belongs to and its binding map.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "screen",
+          "type": "enum",
+          "required": false,
+          "doc": "The screen (ui.screen value) the document is shown on; Hud documents also show under modal screens.",
+          "enumValues": [
+            "None",
+            "Hud",
+            "Menu",
+            "Pause",
+            "Settings",
+            "Save",
+            "Load",
+            "Ending",
+            "Journal",
+            "Inventory"
+          ]
+        },
+        {
+          "name": "layer",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 100.0,
+          "doc": "Draw order; larger is drawn above."
+        },
+        {
+          "structural": true,
+          "name": "uxml",
+          "type": "ref",
+          "required": true,
+          "category": "asset.uxml",
+          "doc": "The document's UXML (its element layout)."
+        },
+        {
+          "name": "styles",
+          "type": "ref[]",
+          "required": false,
+          "category": "asset.uss",
+          "doc": "Extra style sheets of this document."
+        },
+        {
+          "name": "bindings",
+          "type": "object[]",
+          "required": false,
+          "doc": "Binding map: element -> property <- source (vm:/slot:/event:/command:)."
+        }
+      ]
+    },
+    {
+      "typeId": "ui.flow",
+      "displayName": "Screen Flow",
+      "doc": "The game's UI: the screen a new world starts on, every screen document, the theme and the message table.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "gameTitle",
+          "type": "string",
+          "required": false,
+          "doc": "Game title shown on the main menu."
+        },
+        {
+          "name": "startScreen",
+          "type": "enum",
+          "required": false,
+          "doc": "The screen a freshly booted world starts on.",
+          "enumValues": [
+            "None",
+            "Hud",
+            "Menu",
+            "Pause",
+            "Settings",
+            "Save",
+            "Load",
+            "Ending",
+            "Journal",
+            "Inventory"
+          ]
+        },
+        {
+          "name": "theme",
+          "type": "ref",
+          "required": true,
+          "category": "ui.theme",
+          "doc": "Panel settings and styles."
+        },
+        {
+          "name": "documents",
+          "type": "ref[]",
+          "required": true,
+          "category": "ui.document",
+          "doc": "Every screen document."
+        },
+        {
+          "name": "messages",
+          "type": "object[]",
+          "required": false,
+          "doc": "Message table: id -> text (save outcomes, refusal codes, logic showMessage ids)."
+        },
+        {
+          "name": "regionBannerMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 20000.0,
+          "doc": "How long the region name banner stays on the HUD after a region change."
+        }
+      ]
+    },
+    {
+      "typeId": "ui.theme",
+      "displayName": "UI Theme",
+      "doc": "The PanelSettings asset, theme style sheet and shared style sheets every UI document uses.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Live",
+      "fields": [
+        {
+          "name": "panelSettings",
+          "type": "ref",
+          "required": true,
+          "category": "asset.panelSettings",
+          "doc": "The runtime panel settings (scale mode, reference resolution, theme)."
+        },
+        {
+          "name": "themeStyleSheet",
+          "type": "ref",
+          "required": false,
+          "category": "asset.tss",
+          "doc": "The theme style sheet (overrides the panel settings' theme when set)."
+        },
+        {
+          "name": "styleSheets",
+          "type": "ref[]",
+          "required": false,
+          "category": "asset.uss",
+          "doc": "Style sheets added to every document."
+        }
+      ]
+    },
+    {
+      "typeId": "world.definition",
+      "displayName": "World",
+      "doc": "A world: its regions, portals, start region and start point, and streaming options.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "regions",
+          "type": "ref[]",
+          "required": true,
+          "category": "world.region",
+          "doc": "Regions of the world."
+        },
+        {
+          "structural": true,
+          "name": "portals",
+          "type": "ref[]",
+          "required": false,
+          "category": "world.portal",
+          "doc": "Portal connections between regions."
+        },
+        {
+          "name": "startRegion",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "The region the game starts in."
+        },
+        {
+          "name": "preloadNeighbours",
+          "type": "bool",
+          "required": false,
+          "doc": "Keep the neighbours of the focus region resident as well."
+        },
+        {
+          "name": "startSpawnPoint",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of the start region the game starts at (empty: the region's default spawn)."
+        },
+        {
+          "name": "focusEntityId",
+          "type": "ref",
+          "required": true,
+          "category": "entity.instance",
+          "doc": "The placed entity the streamer follows (the traveller), by authoring id."
+        }
+      ]
+    },
+    {
+      "typeId": "world.portal",
+      "displayName": "Portal",
+      "doc": "An undirected connection between two regions (each region scene holds one RegionPortal end), the spawn point travellers arrive at on each side, and the condition travel needs.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "structural": true,
+          "name": "regionA",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "First region."
+        },
+        {
+          "structural": true,
+          "name": "regionB",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "Second region."
+        },
+        {
+          "name": "spawnPointA",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region A where travellers coming from B arrive (empty: the portal end's arrival pose)."
+        },
+        {
+          "name": "spawnPointB",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region B where travellers coming from A arrive (empty: the portal end's arrival pose)."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Travel through the portal needs these conditions (empty: always open)."
+        }
+      ]
+    },
+    {
+      "typeId": "world.region",
+      "displayName": "Region",
+      "doc": "A streamed region: one additive scene with its own composition scope, its bounds, neighbours, named spawn points and ambience.",
+      "scopes": [
+        "Definition"
+      ],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false,
+          "doc": "Display name."
+        },
+        {
+          "structural": true,
+          "name": "scenePath",
+          "type": "artifact",
+          "required": false,
+          "doc": "Project-relative path of the region scene (Assets/.../X.unity)."
+        },
+        {
+          "name": "boundsCenter",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "doc": "Centre of the region's bounds (world space)."
+        },
+        {
+          "name": "boundsSize",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "doc": "Size of the region's bounds; zero means the scene's RegionBounds component decides."
+        },
+        {
+          "name": "neighbours",
+          "type": "ref[]",
+          "required": false,
+          "category": "world.region",
+          "doc": "Regions reachable from this one (preloaded with it when the world preloads neighbours)."
+        },
+        {
+          "name": "spawnPoints",
+          "type": "object[]",
+          "required": false,
+          "doc": "Named arrival points (portal arrivals, the world start)."
+        },
+        {
+          "name": "ambience",
+          "type": "ref",
+          "required": false,
+          "category": "audio.ambience",
+          "doc": "The region's ambience (an AmbienceDefinition)."
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "addComponent",
+      "tier": "Compose",
+      "doc": "Add a component to a scene object. An [Authorable] component gets a fresh authoring id and optional initial field values.",
+      "targetKinds": [
+        "Entity",
+        "SceneObject",
+        "Region"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "doc": "[Authorable] type id or component type full name."
+        },
+        {
+          "name": "fields",
+          "type": "object",
+          "required": false,
+          "doc": "Initial authorable field values."
+        },
+        {
+          "name": "authoringId",
+          "type": "string",
+          "required": false,
+          "doc": "Restore a specific authoring id (journal undo/redo)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "asset.generate",
+      "tier": "Compose",
+      "doc": "Generate an asset (image, texture, voice line, mesh) through an etos task. Returns the task; the artifact arrives later in a candidate change set.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "kind",
+          "type": "string",
+          "required": true,
+          "doc": "What to generate: image, texture, portrait, voice, mesh, ..."
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "doc": "The generation prompt."
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "required": false,
+          "doc": "Provider/op options (size, voice, format)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "asset.import",
+      "tier": "Compose",
+      "doc": "Verified import: write a retained media artifact to 'path' under Assets/, import it with importer settings and re-check its sha256 on disk. The bytes are retained in Studio/Artifacts.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "doc": "Destination asset path under Assets/."
+        },
+        {
+          "name": "artifact",
+          "type": "artifact",
+          "required": true,
+          "doc": "A retained artifact: { \"artifact\": \"sha256:...\" }."
+        },
+        {
+          "name": "importer",
+          "type": "object",
+          "required": false,
+          "doc": "Importer settings (public importer properties by name)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "assign",
+      "tier": "Configure",
+      "doc": "Assign a reference ([AuthorRef] field) to another authored thing or an asset; null clears. For list fields, 'append' adds and 'index' replaces one element.",
+      "targetKinds": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "field",
+          "type": "string",
+          "required": true,
+          "doc": "The [AuthorRef] field."
+        },
+        {
+          "name": "value",
+          "type": "ref",
+          "required": false,
+          "doc": "The referenced thing: an AuthoringRef, an authoring id, name@revision or an asset path; null clears."
+        },
+        {
+          "name": "index",
+          "type": "int",
+          "required": false,
+          "doc": "List fields: the element to replace."
+        },
+        {
+          "name": "append",
+          "type": "bool",
+          "required": false,
+          "doc": "List fields: append instead of replacing the list."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "audio.assignClip",
+      "tier": "Configure",
+      "doc": "Puts an imported AudioClip into an audio bank under a stable id, with its mixer group, volume, loop and 3D settings.",
+      "targetType": "audio.bank",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "clipId",
+          "type": "string",
+          "required": true,
+          "doc": "Stable clip id (e.g. sfx.footstep, ambience.marsh)."
+        },
+        {
+          "name": "clip",
+          "type": "ref",
+          "required": true,
+          "category": "asset.audioClip",
+          "doc": "The imported clip."
+        },
+        {
+          "name": "group",
+          "type": "enum",
+          "required": false,
+          "doc": "Mixer group.",
+          "enumValues": [
+            "Music",
+            "Ambience",
+            "Sfx",
+            "Voice",
+            "Ui"
+          ]
+        },
+        {
+          "name": "volume",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Linear volume before the mixer."
+        },
+        {
+          "name": "loop",
+          "type": "bool",
+          "required": false,
+          "doc": "Loop (ambience and music beds)."
+        },
+        {
+          "name": "spatial",
+          "type": "bool",
+          "required": false,
+          "doc": "Positional (3D) playback."
+        }
+      ],
+      "runtimeApply": "Live",
+      "validators": [
+        {
+          "id": "audio.validator",
+          "codes": [
+            "GP-AUD-001",
+            "GP-AUD-002",
+            "GP-AUD-003",
+            "GP-AUD-004",
+            "GP-AUD-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "audio.generateSfx",
+      "tier": "Compose",
+      "doc": "Requests a sound effect through the registered optional sound-effect capability; otherwise answers NotConfigured (GP-AUD-020).",
+      "targetType": "audio.bank",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "clipId",
+          "type": "string",
+          "required": true,
+          "doc": "Bank clip id (e.g. sfx.door.creak)."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "doc": "What the sound is."
+        },
+        {
+          "name": "durationMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 30000.0,
+          "doc": "Length (0 = the gateway decides)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "audio.generateVoice",
+      "tier": "Compose",
+      "doc": "Requests a spoken line through the media gateway (etos op tts); the clip arrives later as a candidate for audio.assignClip. NotConfigured (GP-AUD-020) until a gateway exists.",
+      "targetType": "audio.bank",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "clipId",
+          "type": "string",
+          "required": true,
+          "doc": "Bank clip id the line is meant for (e.g. voice.warden.greeting)."
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "doc": "The line to speak."
+        },
+        {
+          "name": "voice",
+          "type": "string",
+          "required": false,
+          "doc": "Voice preset."
+        },
+        {
+          "name": "speakerId",
+          "type": "string",
+          "required": false,
+          "doc": "Speaker id (provenance)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "audio.setAmbience",
+      "tier": "Configure",
+      "doc": "Gives a region its ambience loop: creates or edits the region's AmbienceDefinition and adds it to the audio set.",
+      "targetType": "audio.set",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "region",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "The region."
+        },
+        {
+          "name": "clipId",
+          "type": "string",
+          "required": true,
+          "doc": "Bank clip id of the loop."
+        },
+        {
+          "name": "volume",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Loop volume."
+        },
+        {
+          "name": "fadeMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 20000.0,
+          "doc": "Crossfade on entering the region."
+        },
+        {
+          "name": "assetPath",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path of a new definition; defaults next to the set."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "audio.validator",
+          "codes": [
+            "GP-AUD-001",
+            "GP-AUD-002",
+            "GP-AUD-003",
+            "GP-AUD-004",
+            "GP-AUD-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "audio.setMusicState",
+      "tier": "Configure",
+      "doc": "Adds or edits a music state of an audio set: its loop clip, crossfade and stinger; optionally makes it the start state.",
+      "targetType": "audio.set",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "stateId",
+          "type": "string",
+          "required": true,
+          "doc": "Stable state id (e.g. music.explore)."
+        },
+        {
+          "name": "clipId",
+          "type": "string",
+          "required": false,
+          "doc": "Bank clip id of the loop (empty = silence)."
+        },
+        {
+          "name": "fadeMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "max": 20000.0,
+          "doc": "Crossfade into the state."
+        },
+        {
+          "name": "stingerId",
+          "type": "string",
+          "required": false,
+          "doc": "Bank clip id of a stinger played on entry."
+        },
+        {
+          "name": "start",
+          "type": "bool",
+          "required": false,
+          "doc": "Make it the state a new world starts in."
+        },
+        {
+          "name": "assetPath",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path of a new definition; defaults next to the set."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "audio.validator",
+          "codes": [
+            "GP-AUD-001",
+            "GP-AUD-002",
+            "GP-AUD-003",
+            "GP-AUD-004",
+            "GP-AUD-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "authoring.migrateRefs",
+      "tier": "Compose",
+      "doc": "Finds legacy string and pseudo-category references (P1.3/P1.4 content) and, with apply, rewrites them as typed references; lists what it changed and what names nothing.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "folders",
+          "type": "string[]",
+          "required": false,
+          "doc": "Asset folders to scan (empty: Assets)."
+        },
+        {
+          "name": "apply",
+          "type": "bool",
+          "required": false,
+          "doc": "Rewrite (true) or only report (false)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "bind",
+      "tier": "Configure",
+      "doc": "Import a retained artifact (verified by sha256) at 'path' and assign the imported asset to an [AuthorRef] field.",
+      "targetKinds": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "field",
+          "type": "string",
+          "required": true,
+          "doc": "The [AuthorRef] field receiving the asset."
+        },
+        {
+          "name": "artifact",
+          "type": "artifact",
+          "required": true,
+          "doc": "The retained artifact: { \"artifact\": \"sha256:...\" }."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "doc": "Destination asset path under Assets/."
+        },
+        {
+          "name": "importer",
+          "type": "object",
+          "required": false,
+          "doc": "Importer settings (public importer properties by name, e.g. { \"textureType\": \"Sprite\" })."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "create",
+      "tier": "Compose",
+      "doc": "Create a new authored object of an [Authorable] type: a definition asset (ScriptableObject types, at 'path') or a scene object carrying the component (MonoBehaviour types, under 'parent' or in the active scene). A fresh authoring id is minted.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "doc": "The [Authorable] type id (or CLR type name)."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "doc": "Definitions: the .asset path or a folder under Assets/."
+        },
+        {
+          "name": "parent",
+          "type": "ref",
+          "required": false,
+          "doc": "Scene objects: the parent object."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": false,
+          "doc": "Scene objects: world position."
+        },
+        {
+          "name": "fields",
+          "type": "object",
+          "required": false,
+          "doc": "Initial authorable field values."
+        },
+        {
+          "name": "authoringId",
+          "type": "string",
+          "required": false,
+          "doc": "Restore a specific authoring id (journal undo/redo)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "delete",
+      "tier": "Compose",
+      "doc": "Delete a scene object (its GameObject and children) or an asset. Staging lists everything that references the target (query.impact).",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "componentOnly",
+          "type": "bool",
+          "required": false,
+          "doc": "Scene objects: remove only the authored component, not the GameObject."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "dialogue.addChoice",
+      "tier": "Compose",
+      "doc": "Appends a choice node with up to 8 options; targets name the node each option leads to (-1 = end).",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "options",
+          "type": "string[]",
+          "required": true,
+          "doc": "Option texts."
+        },
+        {
+          "name": "targets",
+          "type": "int[]",
+          "required": false,
+          "doc": "Node each option leads to (-1 = end); missing entries end."
+        },
+        {
+          "name": "after",
+          "type": "int",
+          "required": false,
+          "doc": "Node the choice continues (-1 = none)."
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": false,
+          "doc": "Prompt shown with the options."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.addLine",
+      "tier": "Compose",
+      "doc": "Appends a line node to a dialogue graph; with 'after' the new line continues that node.",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "doc": "The spoken line."
+        },
+        {
+          "name": "speaker",
+          "type": "string",
+          "required": false,
+          "doc": "Speaker name (empty = the graph's speaker)."
+        },
+        {
+          "name": "after",
+          "type": "int",
+          "required": false,
+          "doc": "Node the line continues (-1 = none)."
+        },
+        {
+          "name": "voiceClip",
+          "type": "ref",
+          "required": false,
+          "category": "audio.clip",
+          "doc": "Voice clip."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.createGraph",
+      "tier": "Compose",
+      "doc": "Creates a dialogue graph and enrolls it in the active region world's narrative content set, with durable undo.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "fields",
+          "type": "object",
+          "required": false
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "GameCore.Studio.Gameplay.DialogueClosureValidator",
+          "codes": []
+        }
+      ]
+    },
+    {
+      "id": "dialogue.generateVoice",
+      "tier": "Compose",
+      "doc": "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (the paired Editor session supplies the provider).",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "node",
+          "type": "int",
+          "required": true,
+          "doc": "Line node index."
+        },
+        {
+          "name": "voice",
+          "type": "string",
+          "required": false,
+          "doc": "Voice name for the provider."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.linkCondition",
+      "tier": "Compose",
+      "doc": "Sets the condition of a branch node, or the availability condition of one option of a choice node.",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "node",
+          "type": "int",
+          "required": true,
+          "doc": "Node index."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "The condition (empty = none)."
+        },
+        {
+          "name": "option",
+          "type": "int",
+          "required": false,
+          "doc": "Option index of a choice node (-1 = the node itself, a branch)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "dialogue.preview",
+      "tier": "Configure",
+      "doc": "Walks the graph over the initial facts plus overrides ('bell_rung=1; odd_paid=1') and prints every reachable path.",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "facts",
+          "type": "string",
+          "required": false,
+          "doc": "Fact overrides: name=value separated by ';'."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.setConsequence",
+      "tier": "Configure",
+      "doc": "Sets the action set an action node runs (facts apply in the step, everything else through the outbox); null clears it.",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "node",
+          "type": "int",
+          "required": true,
+          "doc": "Action node index."
+        },
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "The actions (empty = none)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "dialogue.graph",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.setFact",
+      "tier": "Configure",
+      "doc": "Creates (or updates) a fact on a content set: name, initial value and whether it persists past a conversation.",
+      "targetType": "logic.contentSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "factName",
+          "type": "string",
+          "required": true,
+          "doc": "Fact name (lowercase letters, digits, underscores)."
+        },
+        {
+          "name": "initial",
+          "type": "int",
+          "required": false,
+          "doc": "Initial value."
+        },
+        {
+          "name": "persistent",
+          "type": "bool",
+          "required": false,
+          "doc": "False = reset when a conversation ends."
+        },
+        {
+          "name": "authoringId",
+          "type": "string",
+          "required": false,
+          "doc": "Optional canonical GUID for a newly created fact; later candidate refs use this authoringId. Existing facts cannot be re-identified."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.contentSet",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Compile",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue.setFactCondition",
+      "tier": "Configure",
+      "doc": "Replaces a condition set with one typed fact comparison. The fact AuthoringRef can name an earlier candidate output once the engine resolves dependency-ordered references; link this condition with dialogue.linkCondition.",
+      "targetType": "logic.conditionSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "fact",
+          "type": "ref",
+          "required": true,
+          "category": "narrative.fact",
+          "doc": "Fact AuthoringRef, including the output of an earlier dialogue.setFact operation."
+        },
+        {
+          "name": "comparison",
+          "type": "enum",
+          "required": false,
+          "enumValues": [
+            "Equal",
+            "NotEqual",
+            "Less",
+            "LessOrEqual",
+            "Greater",
+            "GreaterOrEqual"
+          ]
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "required": false
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "dialogue.validator",
+          "codes": [
+            "GP-DLG-001",
+            "GP-DLG-002",
+            "GP-DLG-003",
+            "GP-DLG-004",
+            "GP-DLG-005",
+            "GP-DLG-006",
+            "GP-DLG-020",
+            "GP-ID-002",
+            "GP-ID-003",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "runtimeOnly": true,
+      "id": "dialogue.start",
+      "tier": "Configure",
+      "doc": "Revision-checked runtime action. No authored changes or inverse.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "graphId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expectedRevision",
+          "type": "int",
+          "required": true,
+          "min": 0.0
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "duplicate",
+      "tier": "Compose",
+      "doc": "Duplicate a definition asset or a scene object. The copy is a new object with fresh authoring ids.",
+      "targetKinds": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Name of the copy."
+        },
+        {
+          "name": "offset",
+          "type": "vector3",
+          "required": false,
+          "doc": "Scene objects: offset from the original's position."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "doc": "Assets: destination path (default: next to the original)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "entity.applyOverride",
+      "tier": "Configure",
+      "doc": "Sets one overridable field (scaleMilli, visible, alive, tint); an empty value clears it.",
+      "targetType": "entity.instance",
+      "targetRequired": true,
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "args": [
+        {
+          "name": "field",
+          "type": "string",
+          "required": true,
+          "doc": "Overridable field name."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "doc": "Canonical value text; empty clears the override."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "runtimeOnly": true,
+      "id": "entity.despawn",
+      "tier": "Configure",
+      "doc": "Revision-checked runtime action. No authored changes or inverse.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "expectedRevision",
+          "type": "int",
+          "required": true,
+          "min": 0.0
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "entity.duplicate",
+      "tier": "Compose",
+      "doc": "Copies a placed entity (definition, variant, overrides) with a fresh authoring id.",
+      "targetType": "entity.instance",
+      "targetRequired": true,
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "args": [
+        {
+          "name": "offset",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "doc": "Offset of the copy."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "entity.layoutLine",
+      "tier": "Compose",
+      "doc": "Places count copies of a definition evenly from start to end, facing along the line.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "start",
+          "type": "vector3",
+          "required": true,
+          "unit": "m"
+        },
+        {
+          "name": "end",
+          "type": "vector3",
+          "required": true,
+          "unit": "m"
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": true,
+          "min": 1.0,
+          "max": 256.0
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "entity.layoutRing",
+      "tier": "Compose",
+      "doc": "Places count copies of a definition on a ring around a centre, each facing it.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "center",
+          "type": "vector3",
+          "required": true,
+          "unit": "m"
+        },
+        {
+          "name": "radius",
+          "type": "float",
+          "required": true,
+          "unit": "m",
+          "min": 0.1
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": true,
+          "min": 1.0,
+          "max": 256.0
+        },
+        {
+          "name": "startAngle",
+          "type": "float",
+          "required": false,
+          "unit": "deg"
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "entity.place",
+      "tier": "Compose",
+      "doc": "Places a definition in the active region scene at a position (m) and yaw (deg).",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name; defaults to the definition name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "entity.replaceDefinition",
+      "tier": "Configure",
+      "doc": "Replaces a placed entity's definition; id, pose and overrides are kept and the variant is clamped.",
+      "targetType": "entity.instance",
+      "targetRequired": true,
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "args": [
+        {
+          "name": "definition",
+          "type": "ref",
+          "required": true,
+          "category": "entity.definition"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "entity.setMaterialTexture",
+      "tier": "Configure",
+      "doc": "Binds an imported Texture2D to a renderer material slot on every view of this definition. Omit texture to clear the binding. Changes content stamp, not recipe revision; rebuild views to apply.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "texture",
+          "type": "ref",
+          "required": false,
+          "category": "texture.texture2d",
+          "doc": "Imported texture AuthoringRef; omit to clear."
+        },
+        {
+          "name": "renderer",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Renderer index in prefab depth-first order, including inactive children."
+        },
+        {
+          "name": "slot",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "Renderer material slot."
+        },
+        {
+          "name": "property",
+          "type": "string",
+          "required": false,
+          "doc": "Shader Texture2D property, for example _BaseMap or _MainTex."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "entity.setVariant",
+      "tier": "Configure",
+      "doc": "Selects variant 0..n of the entity's definition.",
+      "targetType": "entity.instance",
+      "targetRequired": true,
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "args": [
+        {
+          "name": "variant",
+          "type": "int",
+          "required": true,
+          "min": 0.0,
+          "doc": "Variant index."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "entity.validator",
+          "codes": [
+            "GP-ENT-001",
+            "GP-ENT-002",
+            "GP-ENT-003",
+            "GP-ENT-004",
+            "GP-ENT-006",
+            "GP-ENT-007",
+            "GP-ID-001",
+            "GP-ID-002",
+            "GP-ID-003"
+          ]
+        }
+      ]
+    },
+    {
+      "runtimeOnly": true,
+      "id": "entity.spawn",
+      "tier": "Configure",
+      "doc": "Revision-checked runtime action. No authored changes or inverse.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "visible",
+          "type": "bool",
+          "required": false
+        },
+        {
+          "name": "expectedRevision",
+          "type": "int",
+          "required": true,
+          "min": 0.0
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "history.redo",
+      "tier": "Configure",
+      "doc": "Redo the latest undone change set (or 'changeSetId'). Retained artifacts are reused; nothing is regenerated.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "changeSetId",
+          "type": "string",
+          "required": false,
+          "doc": "The change set to redo (default: the latest undone)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "history.undo",
+      "tier": "Configure",
+      "doc": "Undo the latest applied change set (or 'changeSetId') through its journaled inverse operations. Refused with Conflict when a touched object changed since, unless 'force'.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "changeSetId",
+          "type": "string",
+          "required": false,
+          "doc": "The change set to undo (default: the latest applied)."
+        },
+        {
+          "name": "force",
+          "type": "bool",
+          "required": false,
+          "doc": "Undo even when touched objects changed since."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.addLight",
+      "tier": "Compose",
+      "doc": "Adds (or updates, by name) a realtime point light under the region's 'Lights' object (lantern glow, shrine light). The region scene must be loaded.",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "doc": "Light object name."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position."
+        },
+        {
+          "name": "color",
+          "type": "color",
+          "required": true,
+          "doc": "Light colour."
+        },
+        {
+          "name": "intensity",
+          "type": "float",
+          "required": true,
+          "min": 0.0,
+          "max": 100.0,
+          "doc": "Intensity."
+        },
+        {
+          "name": "range",
+          "type": "float",
+          "required": true,
+          "unit": "m",
+          "min": 0.1,
+          "max": 200.0,
+          "doc": "Range."
+        },
+        {
+          "name": "shadows",
+          "type": "bool",
+          "required": false,
+          "doc": "Cast soft shadows."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.addScenery",
+      "tier": "Compose",
+      "doc": "Places (or updates, by name) a procedural scenery mesh in a region scene: kinds ground, house, inn, hut, well, tree, deadTree, reeds, rock, fence, jetty, punt, shrine, ruinWall, tower, bellFrame, water, causeway, lanternPost, stall, barrel. The region scene must be loaded.",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "kind",
+          "type": "string",
+          "required": true,
+          "doc": "Mesh kind."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position of the base centre."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "size",
+          "type": "vector3",
+          "required": false,
+          "unit": "m",
+          "doc": "Size (x width, y height, z depth); zero = the kind's default."
+        },
+        {
+          "name": "materials",
+          "type": "ref[]",
+          "required": false,
+          "category": "asset.material",
+          "doc": "Materials per submesh (missing entries reuse the last)."
+        },
+        {
+          "name": "collider",
+          "type": "bool",
+          "required": false,
+          "doc": "Add a static mesh collider."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name (default: the kind)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.configureBootPresentation",
+      "tier": "Configure",
+      "doc": "Configures Boot.unity's presentation (Boot.unity must be loaded): a global 'Post Processing' Volume with a profile asset (ACES tonemapping, bloom, colour adjustments, vignette), post-processing and FXAA on the main camera, soft shadows on the directional light.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "volumeProfilePath",
+          "type": "string",
+          "required": true,
+          "doc": "Volume profile asset path (Assets/.../X.asset)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.createMaterial",
+      "tier": "Compose",
+      "doc": "Creates (or updates in place, keeping its GUID) a URP Lit material asset: base map and colour, smoothness, metallic, tiling, emission and an optional transparent surface.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "doc": "Material asset path (Assets/.../X.mat)."
+        },
+        {
+          "name": "baseMap",
+          "type": "ref",
+          "required": false,
+          "category": "asset.texture",
+          "doc": "Base map."
+        },
+        {
+          "name": "baseColor",
+          "type": "color",
+          "required": false,
+          "doc": "Base colour (default white)."
+        },
+        {
+          "name": "smoothness",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Smoothness."
+        },
+        {
+          "name": "metallic",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Metallic."
+        },
+        {
+          "name": "tiling",
+          "type": "vector2",
+          "required": false,
+          "doc": "Base map tiling (default 1,1)."
+        },
+        {
+          "name": "emission",
+          "type": "color",
+          "required": false,
+          "doc": "Emission colour (black or empty = none)."
+        },
+        {
+          "name": "transparent",
+          "type": "bool",
+          "required": false,
+          "doc": "Transparent (alpha-blended) surface."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "hollowmere.generateNpcAnimator",
+      "tier": "Compose",
+      "doc": "Generates procedural Idle/Walk/Talk clips and an Animator Controller driven by the NPC animator binder's parameters (float Speed, int State: 0 idle, 1 patrol, 2 approach, 3 converse, 4 custom) and puts an Animator with it on the entity definition's view prefab.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "folder",
+          "type": "string",
+          "required": true,
+          "doc": "Folder for the clips and the controller (Assets/...)."
+        },
+        {
+          "name": "bodyChild",
+          "type": "string",
+          "required": false,
+          "doc": "Child transform the clips move (default 'Body')."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "entity.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.registerApplication",
+      "tier": "Configure",
+      "doc": "Writes the application's boot assets (Resources/Hollowmere/Application.asset) from the loaded Boot scene's GameBoot, so the player registers Hollowmere's definition at SubsystemRegistration (GameApplication.Register) before any scene loads.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path; must end with /Resources/Hollowmere/Application.asset."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.setAtmosphere",
+      "tier": "Configure",
+      "doc": "Sets a region's atmosphere (fog, trilight ambient, sun, colour grading) on its 'Atmosphere' object; applied when the player enters the region. The region scene must be loaded.",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "fogColor",
+          "type": "color",
+          "required": true,
+          "doc": "Fog colour."
+        },
+        {
+          "name": "fogDensity",
+          "type": "float",
+          "required": true,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Exponential-squared fog density."
+        },
+        {
+          "name": "ambientSky",
+          "type": "color",
+          "required": true,
+          "doc": "Ambient sky colour."
+        },
+        {
+          "name": "ambientEquator",
+          "type": "color",
+          "required": true,
+          "doc": "Ambient equator colour."
+        },
+        {
+          "name": "ambientGround",
+          "type": "color",
+          "required": true,
+          "doc": "Ambient ground colour."
+        },
+        {
+          "name": "sunColor",
+          "type": "color",
+          "required": true,
+          "doc": "Sun colour."
+        },
+        {
+          "name": "sunIntensity",
+          "type": "float",
+          "required": true,
+          "min": 0.0,
+          "max": 8.0,
+          "doc": "Sun intensity."
+        },
+        {
+          "name": "sunEuler",
+          "type": "vector3",
+          "required": true,
+          "unit": "deg",
+          "doc": "Sun rotation (Euler angles)."
+        },
+        {
+          "name": "postExposure",
+          "type": "float",
+          "required": false,
+          "min": -5.0,
+          "max": 5.0,
+          "doc": "Post exposure (EV)."
+        },
+        {
+          "name": "saturation",
+          "type": "float",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Saturation offset."
+        },
+        {
+          "name": "contrast",
+          "type": "float",
+          "required": false,
+          "min": -100.0,
+          "max": 100.0,
+          "doc": "Contrast offset."
+        },
+        {
+          "name": "bloomIntensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 10.0,
+          "doc": "Bloom intensity."
+        },
+        {
+          "name": "vignetteIntensity",
+          "type": "float",
+          "required": false,
+          "min": 0.0,
+          "max": 1.0,
+          "doc": "Vignette intensity."
+        },
+        {
+          "name": "colorFilter",
+          "type": "color",
+          "required": false,
+          "doc": "Colour filter (default white)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.skinPrefab",
+      "tier": "Configure",
+      "doc": "Assigns materials to the view prefab of an entity definition: the renderer of the named child (default 'Body'), or every renderer when the child name is empty.",
+      "targetType": "entity.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "materials",
+          "type": "ref[]",
+          "required": true,
+          "category": "asset.material",
+          "doc": "Materials per submesh (missing entries reuse the last)."
+        },
+        {
+          "name": "childName",
+          "type": "string",
+          "required": false,
+          "doc": "Child holding the renderer (empty = every renderer)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "entity.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "hollowmere.skinSceneObject",
+      "tier": "Configure",
+      "doc": "Assigns materials to a named object of a region scene (first match, depth first), or hides it (deactivates it, keeping it in the scene). The region scene must be loaded.",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "objectName",
+          "type": "string",
+          "required": true,
+          "doc": "Object name."
+        },
+        {
+          "name": "materials",
+          "type": "ref[]",
+          "required": true,
+          "category": "asset.material",
+          "doc": "Materials per submesh (missing entries reuse the last)."
+        },
+        {
+          "name": "hide",
+          "type": "bool",
+          "required": false,
+          "doc": "Hide the object instead."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "inspect.describe",
+      "tier": "Configure",
+      "doc": "Describe an authored thing: its type, name, current authorable values, outgoing references, capabilities and incoming references.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "includeReferrers",
+          "type": "bool",
+          "required": false,
+          "doc": "Also list who references it (default true)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "inspect.explain",
+      "tier": "Configure",
+      "doc": "Explain why a rule, condition or interaction on the target did or did not fire, from the traces of a registered explain source. NotConfigured when no source can explain the target.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "question",
+          "type": "string",
+          "required": false,
+          "doc": "What to explain (free text or a rule id)."
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false,
+          "doc": "A specific explain source id."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "interaction.addDoor",
+      "tier": "Compose",
+      "doc": "Places a door or gate interactable (its definition's entity) at a location (m) and heading (deg).",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "location",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "interaction.interactable",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.addExaminable",
+      "tier": "Compose",
+      "doc": "Places an examinable (or point/switch) interactable at a location (m) and heading (deg).",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "location",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "interaction.interactable",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.addTrigger",
+      "tier": "Compose",
+      "doc": "Places a trigger volume (its definition's entity) at a location (m) and heading (deg).",
+      "targetType": "interaction.trigger",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "location",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position (bottom centre of the box)."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "interaction.trigger",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "interaction.explain",
+      "tier": "Configure",
+      "doc": "Evaluates an interactable's condition over a state (logic.test terms; empty: the content's initial state) and names the first failed condition and the inputs it read.",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "doc": "State terms: fact.<name>=v; item.<item>=n; quest.<quest>.status=v ... (empty: initial state)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "interaction.interactable",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.linkCondition",
+      "tier": "Configure",
+      "doc": "Sets an interactable's condition (unlocks a lock when it holds, refuses a use when it fails): a condition set, or a fact compared with a value; neither = always allowed.",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Condition set (wins over the fact)."
+        },
+        {
+          "name": "fact",
+          "type": "ref",
+          "required": false,
+          "category": "narrative.fact",
+          "doc": "Fact condition (used when no condition set is given)."
+        },
+        {
+          "name": "op",
+          "type": "enum",
+          "required": false,
+          "doc": "Comparison of the fact condition (default: the fact is not 0).",
+          "enumValues": [
+            "Equal",
+            "NotEqual",
+            "Less",
+            "LessOrEqual",
+            "Greater",
+            "GreaterOrEqual"
+          ]
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "required": false,
+          "doc": "Value the fact is compared with."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "interaction.interactable",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.setActions",
+      "tier": "Configure",
+      "doc": "Sets what a committed successful use runs: an action set, or a built-in action (inventory.pickup); neither = nothing.",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Action set (wins over the built-in action)."
+        },
+        {
+          "name": "builtIn",
+          "type": "string",
+          "required": false,
+          "doc": "Built-in action: inventory.pickup (empty: none)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "interaction.interactable",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.setStates",
+      "tier": "Configure",
+      "doc": "Sets an interactable's initial state and its prompt per state (\"state=text\" entries).",
+      "targetType": "interaction.interactable",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "initialState",
+          "type": "string",
+          "required": true,
+          "doc": "Initial state name (idle, closed, open, locked, used, broken, off, on)."
+        },
+        {
+          "name": "prompts",
+          "type": "string[]",
+          "required": false,
+          "doc": "Prompts as \"state=text\"."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "interaction.interactable",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "interaction.validator",
+          "codes": [
+            "GP-INT-001",
+            "GP-INT-002",
+            "GP-INT-003",
+            "GP-INT-004",
+            "GP-INT-005",
+            "GP-INT-007",
+            "GP-INT-008",
+            "GP-REF-001",
+            "GP-REF-003",
+            "GP-REF-004"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory.bindUse",
+      "tier": "Configure",
+      "doc": "Sets what using an item does: an action set run through the outbox; null makes the item unusable.",
+      "targetType": "inventory.item",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "The actions using the item runs."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "inventory.item",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "inventory.validator",
+          "codes": [
+            "GP-INV-001",
+            "GP-INV-002",
+            "GP-INV-003",
+            "GP-INV-004",
+            "GP-INV-005",
+            "GP-INV-017",
+            "GP-INV-020",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory.grantStarting",
+      "tier": "Configure",
+      "doc": "Sets how many of an item an inventory starts with (0 removes the line).",
+      "targetType": "inventory.inventory",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "item",
+          "type": "ref",
+          "required": true,
+          "category": "inventory.item",
+          "doc": "The item."
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": true,
+          "min": 0.0,
+          "doc": "Starting count."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "inventory.inventory",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "inventory.validator",
+          "codes": [
+            "GP-INV-001",
+            "GP-INV-002",
+            "GP-INV-003",
+            "GP-INV-004",
+            "GP-INV-005",
+            "GP-INV-017",
+            "GP-INV-020",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory.placeItem",
+      "tier": "Compose",
+      "doc": "Places an item in a region as a world item the player can pick up once (action ref inventory.pickup).",
+      "targetType": "logic.contentSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "item",
+          "type": "ref",
+          "required": true,
+          "category": "inventory.item",
+          "doc": "The item."
+        },
+        {
+          "name": "region",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "The region."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Position in the region."
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "doc": "How many."
+        },
+        {
+          "name": "entityId",
+          "type": "string",
+          "required": false,
+          "doc": "Placed scene entity that shows it (optional)."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Asset name; defaults to the item name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.contentSet",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Compile",
+      "validators": [
+        {
+          "id": "inventory.validator",
+          "codes": [
+            "GP-INV-001",
+            "GP-INV-002",
+            "GP-INV-003",
+            "GP-INV-004",
+            "GP-INV-005",
+            "GP-INV-017",
+            "GP-INV-020",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory.setPrice",
+      "tier": "Configure",
+      "doc": "Sets an item's base price; with a vendor, sets that vendor's buy price for the item instead (-1 = the item's price).",
+      "targetType": "inventory.item",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "price",
+          "type": "int",
+          "required": true,
+          "min": -1.0,
+          "doc": "Price (currency units); -1 only with a vendor."
+        },
+        {
+          "name": "vendor",
+          "type": "ref",
+          "required": false,
+          "category": "inventory.vendor",
+          "doc": "Vendor whose stock line price to set (empty: the item's base price)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "inventory.item",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "inventory.validator",
+          "codes": [
+            "GP-INV-001",
+            "GP-INV-002",
+            "GP-INV-003",
+            "GP-INV-004",
+            "GP-INV-005",
+            "GP-INV-017",
+            "GP-INV-020",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory.setStock",
+      "tier": "Configure",
+      "doc": "Sets a vendor's stock line: count (or unlimited), the price the player pays and the price the vendor pays.",
+      "targetType": "inventory.vendor",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "item",
+          "type": "ref",
+          "required": true,
+          "category": "inventory.item",
+          "doc": "The item."
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "required": true,
+          "min": 0.0,
+          "doc": "Units in stock."
+        },
+        {
+          "name": "buyPrice",
+          "type": "int",
+          "required": false,
+          "min": -1.0,
+          "doc": "Buy price (-1 = the item's price)."
+        },
+        {
+          "name": "sellPrice",
+          "type": "int",
+          "required": false,
+          "min": -1.0,
+          "doc": "Sell price (-1 = half the item's price, 0 = not bought)."
+        },
+        {
+          "name": "unlimited",
+          "type": "bool",
+          "required": false,
+          "doc": "Never runs out."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "inventory.vendor",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "inventory.validator",
+          "codes": [
+            "GP-INV-001",
+            "GP-INV-002",
+            "GP-INV-003",
+            "GP-INV-004",
+            "GP-INV-005",
+            "GP-INV-017",
+            "GP-INV-020",
+            "GP-REF-005"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "logic.addRule",
+      "tier": "Mechanism",
+      "doc": "Creates a rule: when the trigger happens and the conditions hold, the actions run (through the outbox, exactly once).",
+      "targetType": "logic.contentSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "doc": "Rule name (asset name)."
+        },
+        {
+          "name": "trigger",
+          "type": "enum",
+          "required": true,
+          "doc": "The event that triggers the rule.",
+          "enumValues": [
+            "Manual",
+            "FactSet",
+            "ItemGranted",
+            "ItemConsumed",
+            "TradeDone",
+            "QuestStarted",
+            "StageEntered",
+            "QuestCompleted",
+            "QuestFailed",
+            "DialogueEnded",
+            "ChoiceMade",
+            "RegionEntered",
+            "Interacted",
+            "RuleFired",
+            "ItemPickedUp"
+          ]
+        },
+        {
+          "name": "triggerSubject",
+          "type": "ref",
+          "required": false,
+          "doc": "Trigger filter of the trigger's kind (fact, item, vendor, quest, graph, region, rule, world item); empty = any."
+        },
+        {
+          "name": "triggerValue",
+          "type": "int",
+          "required": false,
+          "doc": "Trigger value filter (e.g. the fact value); ignored when matchAnyValue."
+        },
+        {
+          "name": "matchAnyValue",
+          "type": "bool",
+          "required": false,
+          "doc": "Match any trigger value."
+        },
+        {
+          "name": "conditions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Shared conditions."
+        },
+        {
+          "name": "actions",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Shared actions."
+        },
+        {
+          "name": "once",
+          "type": "bool",
+          "required": false,
+          "doc": "Fire at most once."
+        },
+        {
+          "name": "cooldownMs",
+          "type": "int",
+          "required": false,
+          "unit": "ms",
+          "min": 0.0,
+          "doc": "Minimum time between fires."
+        },
+        {
+          "name": "triggerEntityId",
+          "type": "string",
+          "required": false,
+          "doc": "Entity authoring id filter for region/interaction triggers."
+        },
+        {
+          "name": "assetPath",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path; defaults to <content set dir>/Rules/<name>.asset."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.contentSet",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Compile",
+      "validators": [
+        {
+          "id": "logic.validator",
+          "codes": [
+            "GP-LOG-001",
+            "GP-LOG-002",
+            "GP-LOG-003",
+            "GP-LOG-004",
+            "GP-LOG-005",
+            "GP-LOG-010",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-LOG-014",
+            "GP-LOG-015",
+            "GP-LOG-016",
+            "GP-LOG-030",
+            "GP-LOG-031",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "logic.explain",
+      "tier": "Configure",
+      "doc": "Explains a rule over the content's initial state: trigger, gates, every condition and its inputs, and the actions it would run.",
+      "targetType": "logic.rule",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [],
+      "prerequisites": [
+        {
+          "requires": "logic.rule",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "logic.validator",
+          "codes": [
+            "GP-LOG-001",
+            "GP-LOG-002",
+            "GP-LOG-003",
+            "GP-LOG-004",
+            "GP-LOG-005",
+            "GP-LOG-010",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-LOG-014",
+            "GP-LOG-015",
+            "GP-LOG-016",
+            "GP-LOG-030",
+            "GP-LOG-031",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "logic.test",
+      "tier": "Configure",
+      "doc": "Decides a rule over a test state and reports fire/skip, the first failed condition and the inputs read.",
+      "targetType": "logic.rule",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "state",
+          "type": "string",
+          "required": true,
+          "doc": "State terms: fact.<name>=v; item.<item>=n; currency=n; quest.<quest>.status|stage|branch=v; visited.<graph>.<node>=0|1; now=ms; fired=n; cooldown=ms; counter=n."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.rule",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "logic.validator",
+          "codes": [
+            "GP-LOG-001",
+            "GP-LOG-002",
+            "GP-LOG-003",
+            "GP-LOG-004",
+            "GP-LOG-005",
+            "GP-LOG-010",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-LOG-014",
+            "GP-LOG-015",
+            "GP-LOG-016",
+            "GP-LOG-030",
+            "GP-LOG-031",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "logic.whyNot",
+      "tier": "Configure",
+      "doc": "Why does it not happen? For a gated subject (interactable, trigger, portal) or a rule: its condition over a state, the first failed condition, the inputs read, and the rules and action sets that would change what it reads.",
+      "targetType": "logic.contentSet",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "subject",
+          "type": "ref",
+          "required": true,
+          "doc": "The subject: an interactable, trigger or portal definition, or a rule."
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "doc": "State terms as logic.test (empty: the content's initial state)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "logic.contentSet",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Compile",
+      "validators": [
+        {
+          "id": "logic.validator",
+          "codes": [
+            "GP-LOG-001",
+            "GP-LOG-002",
+            "GP-LOG-003",
+            "GP-LOG-004",
+            "GP-LOG-005",
+            "GP-LOG-010",
+            "GP-LOG-011",
+            "GP-LOG-012",
+            "GP-LOG-013",
+            "GP-LOG-014",
+            "GP-LOG-015",
+            "GP-LOG-016",
+            "GP-LOG-030",
+            "GP-LOG-031",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mechanism.propose",
+      "tier": "Mechanism",
+      "doc": "Propose a new mechanism (a UPM package with rules, runtime and tests). Produces a staged package through the staging lane; only admission can install it.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "doc": "What the mechanism should do."
+        },
+        {
+          "name": "context",
+          "type": "ref[]",
+          "required": false,
+          "doc": "Authored things the mechanism relates to."
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "required": false,
+          "doc": "Worker options."
+        },
+        {
+          "name": "package",
+          "type": "artifact",
+          "required": false,
+          "doc": "The staged package archive (worker candidates; read by the staging lane)."
+        },
+        {
+          "name": "proposal",
+          "type": "artifact",
+          "required": false,
+          "doc": "The proposal.json artifact (worker candidates)."
+        },
+        {
+          "name": "stageInputs",
+          "type": "string[]",
+          "required": false,
+          "doc": "Project paths copied into the stage slot (worker candidates; P2.4)."
+        }
+      ],
+      "runtimeApply": "Compile"
+    },
+    {
+      "id": "move",
+      "tier": "Compose",
+      "doc": "Move a scene object: world position, world rotation (quaternion), local scale, parent and sibling index (any subset). Gizmo drags and typed values produce the same operation.",
+      "targetKinds": [
+        "Entity",
+        "SceneObject",
+        "Region"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": false,
+          "doc": "World position (metres)."
+        },
+        {
+          "name": "rotation",
+          "type": "quaternion",
+          "required": false,
+          "doc": "World rotation [x, y, z, w]."
+        },
+        {
+          "name": "scale",
+          "type": "vector3",
+          "required": false,
+          "doc": "Local scale."
+        },
+        {
+          "name": "parent",
+          "type": "ref",
+          "required": false,
+          "doc": "New parent (keeps the world position unless 'position' is given)."
+        },
+        {
+          "name": "unparent",
+          "type": "bool",
+          "required": false,
+          "doc": "Move to the scene root."
+        },
+        {
+          "name": "siblingIndex",
+          "type": "int",
+          "required": false,
+          "doc": "Sibling index under the parent."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "npc.addAt",
+      "tier": "Compose",
+      "doc": "Places an NPC (its definition's entity) at a location (m) and heading (deg) in the active region scene.",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "location",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "World position."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Object name; defaults to the NPC's display name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "npc.definition",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "runtimeOnly": true,
+      "id": "npc.goTo",
+      "tier": "Configure",
+      "doc": "Revision-checked runtime action. No authored changes or inverse.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "x",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "y",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "z",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "expectedRevision",
+          "type": "int",
+          "required": true,
+          "min": 0.0
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "npc.setAppearance",
+      "tier": "Configure",
+      "doc": "Selects the NPC's appearance: one of its entity definition's variants; null uses the definition itself.",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "variant",
+          "type": "ref",
+          "required": false,
+          "category": "entity.variant",
+          "doc": "A variant of the NPC's entity definition."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "npc.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc.setBehaviour",
+      "tier": "Configure",
+      "doc": "Assigns a standing behaviour (idle, patrol or custom) to an NPC; null makes it idle.",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "behaviour",
+          "type": "ref",
+          "required": false,
+          "category": "npc.behaviour"
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "npc.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc.setDialogue",
+      "tier": "Configure",
+      "doc": "Assigns the dialogue graph a talk with the NPC starts; null removes it (the NPC has nothing to say).",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "graph",
+          "type": "ref",
+          "required": false,
+          "category": "dialogue.graph",
+          "doc": "The dialogue graph (a DialogueGraphDefinition)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "npc.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc.setPatrol",
+      "tier": "Configure",
+      "doc": "Sets an NPC's patrol route (world-space points, looped); its behaviour becomes Patrol.",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "points",
+          "type": "vector3[]",
+          "required": true,
+          "unit": "m",
+          "doc": "Patrol points (at least one), world space."
+        },
+        {
+          "name": "waitSeconds",
+          "type": "float",
+          "required": false,
+          "unit": "s",
+          "min": 0.0,
+          "max": 600.0,
+          "doc": "Wait at each point."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "npc.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "npc.setSchedule",
+      "tier": "Configure",
+      "doc": "Assigns a day schedule (phases by world time) to an NPC; null removes it.",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "schedule",
+          "type": "ref",
+          "required": false,
+          "category": "npc.schedule"
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "npc.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "npc.validator",
+          "codes": [
+            "GP-NPC-001",
+            "GP-NPC-002",
+            "GP-NPC-003",
+            "GP-NPC-004",
+            "GP-NPC-006",
+            "GP-NPC-008",
+            "GP-REF-001",
+            "GP-REF-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "tier": "Compose",
+      "doc": "Place an instance of a prefab at a location (a Location ref from PointAt) or a position. Authored components of the instance get fresh authoring ids.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "prefab",
+          "type": "ref",
+          "required": true,
+          "doc": "The prefab asset."
+        },
+        {
+          "name": "location",
+          "type": "ref",
+          "required": false,
+          "doc": "A Location ref (region + position)."
+        },
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": false,
+          "doc": "World position (when no location is given)."
+        },
+        {
+          "name": "rotation",
+          "type": "quaternion",
+          "required": false,
+          "doc": "World rotation."
+        },
+        {
+          "name": "parent",
+          "type": "ref",
+          "required": false,
+          "doc": "Parent object."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Instance name."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "player.setCamera",
+      "tier": "Configure",
+      "doc": "Sets the third-person orbit camera: distance, pivot height and pitch limits.",
+      "targetType": "player.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "distance",
+          "type": "float",
+          "required": true,
+          "unit": "m",
+          "min": 1.0,
+          "max": 20.0,
+          "doc": "Distance behind the player."
+        },
+        {
+          "name": "pivotHeight",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 5.0,
+          "doc": "Pivot height above the player."
+        },
+        {
+          "name": "pitchMin",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": -89.0,
+          "max": 0.0,
+          "doc": "Lowest pitch."
+        },
+        {
+          "name": "pitchMax",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "min": 0.0,
+          "max": 89.0,
+          "doc": "Highest pitch."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "player.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "player.validator",
+          "codes": [
+            "GP-PLY-001",
+            "GP-PLY-003",
+            "GP-PLY-004",
+            "GP-PLY-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "player.setSpawn",
+      "tier": "Configure",
+      "doc": "Moves the placed player entity to a location inside its region; the bake makes it the player's spawn pose.",
+      "targetType": "entity.instance",
+      "targetRequired": true,
+      "scopes": [
+        "Instance",
+        "Prefab"
+      ],
+      "args": [
+        {
+          "name": "location",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Spawn location (world space)."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Spawn heading around +Y."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "entity.instance",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "player.validator",
+          "codes": [
+            "GP-PLY-001",
+            "GP-PLY-003",
+            "GP-PLY-004",
+            "GP-PLY-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "player.tuneMovement",
+      "tier": "Configure",
+      "doc": "Sets the player's walk/run speeds, jump height and stamina budget.",
+      "targetType": "player.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "walkSpeed",
+          "type": "float",
+          "required": true,
+          "unit": "m/s",
+          "min": 0.1,
+          "max": 20.0,
+          "doc": "Walking speed."
+        },
+        {
+          "name": "runSpeed",
+          "type": "float",
+          "required": true,
+          "unit": "m/s",
+          "min": 0.1,
+          "max": 30.0,
+          "doc": "Running speed (>= walking speed)."
+        },
+        {
+          "name": "jumpHeight",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "min": 0.0,
+          "max": 5.0,
+          "doc": "Jump height."
+        },
+        {
+          "name": "staminaMax",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "max": 100000.0,
+          "doc": "Maximum stamina."
+        },
+        {
+          "name": "drainPerSecond",
+          "type": "int",
+          "required": false,
+          "unit": "1/s",
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Stamina drained per second running."
+        },
+        {
+          "name": "regenPerSecond",
+          "type": "int",
+          "required": false,
+          "unit": "1/s",
+          "min": 0.0,
+          "max": 100000.0,
+          "doc": "Stamina regenerated per second resting."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "player.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "player.validator",
+          "codes": [
+            "GP-PLY-001",
+            "GP-PLY-003",
+            "GP-PLY-004",
+            "GP-PLY-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "preview.compare",
+      "tier": "Configure",
+      "doc": "Compare a staged change set with the project now (per operation: preview before/after, and whether the target changed since staging), or two staged change sets with each other.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "stagedId",
+          "type": "string",
+          "required": true,
+          "doc": "A change-set id staged by preview.stage."
+        },
+        {
+          "name": "other",
+          "type": "string",
+          "required": false,
+          "doc": "A second staged id to compare against."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "preview.stage",
+      "tier": "Configure",
+      "doc": "Stage a change set without applying it: prechecks, tool dry runs and preview ghosts. Returns the staged id, the findings and each operation's preview.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "changeSet",
+          "type": "object",
+          "required": true,
+          "doc": "The change set (gamecore.studio.changeset/1)."
+        },
+        {
+          "name": "candidate",
+          "type": "bool",
+          "required": false,
+          "doc": "Validate in candidate mode (agent change sets)."
+        },
+        {
+          "name": "toolCatalogRevision",
+          "type": "string",
+          "required": false,
+          "doc": "The catalog revision the candidate was planned against."
+        },
+        {
+          "name": "indexIsSlice",
+          "type": "bool",
+          "required": false,
+          "doc": "The planner saw a bounded index slice."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "project.build",
+      "tier": "Configure",
+      "doc": "Build a player through the build lane. NotConfigured until a build lane is registered.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "options",
+          "type": "object",
+          "required": false,
+          "doc": "Target, profile and output path."
+        }
+      ],
+      "runtimeApply": "Build"
+    },
+    {
+      "id": "project.launch",
+      "tier": "Configure",
+      "doc": "Launch the last (or a named) build through the build lane. NotConfigured until a build lane is registered.",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "options",
+          "type": "object",
+          "required": false,
+          "doc": "Which build and launch arguments."
+        }
+      ],
+      "runtimeApply": "Build"
+    },
+    {
+      "id": "project.reload",
+      "tier": "Configure",
+      "doc": "Refresh the AssetDatabase, forget cached types and tools, and rebuild the semantic index. Returns the new index and catalog revisions.",
+      "targetRequired": false,
+      "args": [],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "project.save",
+      "tier": "Configure",
+      "doc": "Save dirty assets and every open scene (the journal is independent of saving: an entry can be Applied and unsaved).",
+      "targetRequired": false,
+      "args": [
+        {
+          "name": "scenes",
+          "type": "bool",
+          "required": false,
+          "doc": "Also save open scenes (default true)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "query.impact",
+      "tier": "Configure",
+      "doc": "Everything deleting the target affects: its referrers, its contents and, transitively, their referrers.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "maxDepth",
+          "type": "int",
+          "required": false,
+          "doc": "Traversal depth (default 8)."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "query.references",
+      "tier": "Configure",
+      "doc": "List every authored thing that references the target, with the referencing field.",
+      "targetRequired": true,
+      "args": [],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "quest.addObjective",
+      "tier": "Compose",
+      "doc": "Adds an objective to a stage: talk (graph), collect (item), reach (region), interact (entity id) or fact (fact value).",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "stage",
+          "type": "int",
+          "required": true,
+          "doc": "Stage index."
+        },
+        {
+          "name": "kind",
+          "type": "enum",
+          "required": true,
+          "doc": "Objective kind.",
+          "enumValues": [
+            "Talk",
+            "Collect",
+            "Reach",
+            "Interact",
+            "Fact"
+          ]
+        },
+        {
+          "name": "target",
+          "type": "ref",
+          "required": false,
+          "doc": "The dialogue graph (talk), item (collect), region (reach) or fact (fact)."
+        },
+        {
+          "name": "targetEntityId",
+          "type": "string",
+          "required": false,
+          "doc": "Entity authoring id (interact)."
+        },
+        {
+          "name": "required",
+          "type": "int",
+          "required": false,
+          "min": 1.0,
+          "doc": "Count needed."
+        },
+        {
+          "name": "branch",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "0 = always needed; n = part of branch n."
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": false,
+          "doc": "Journal text."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest.addStage",
+      "tier": "Compose",
+      "doc": "Appends a stage to a quest; returns its index.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "doc": "Stage title."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "doc": "Stage description."
+        },
+        {
+          "name": "next",
+          "type": "int",
+          "required": false,
+          "doc": "Next stage index when satisfied (-1 = the following one)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "quest.inspectRuntime",
+      "tier": "Configure",
+      "doc": "Reports a quest's status, stage, branch, objectives and prerequisites over a state (logic.test terms; empty: the initial state).",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "doc": "State terms, e.g. quest.<quest>.status=1; quest.<quest>.stage=2; fact.<name>=v."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest.linkReward",
+      "tier": "Compose",
+      "doc": "Adds a completion reward (an item count or a fact value), granted exactly once through the outbox.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "kind",
+          "type": "enum",
+          "required": true,
+          "doc": "Item or fact.",
+          "enumValues": [
+            "Item",
+            "Fact"
+          ]
+        },
+        {
+          "name": "target",
+          "type": "ref",
+          "required": true,
+          "doc": "The item (item rewards) or the fact (fact rewards)."
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "required": false,
+          "doc": "Count or value."
+        },
+        {
+          "name": "branch",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "doc": "0 = always; n = only on branch n."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest.setBranch",
+      "tier": "Configure",
+      "doc": "Puts an objective on a branch (0 = always needed, n = an alternative way through its stage) and optionally names branch n.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "objective",
+          "type": "int",
+          "required": true,
+          "min": 0.0,
+          "doc": "Objective index."
+        },
+        {
+          "name": "branch",
+          "type": "int",
+          "required": true,
+          "min": 0.0,
+          "doc": "Branch number (0 = always needed)."
+        },
+        {
+          "name": "branchName",
+          "type": "string",
+          "required": false,
+          "doc": "Name of branch n (journal, simulate); empty keeps the current name."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest.setConsequence",
+      "tier": "Configure",
+      "doc": "Sets the action sets run once when the quest completes (after its rewards) and when it fails; null clears one.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "onComplete",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Run on completion."
+        },
+        {
+          "name": "onFail",
+          "type": "ref",
+          "required": false,
+          "category": "logic.actionSet",
+          "doc": "Run on failure."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest.setPrerequisites",
+      "tier": "Configure",
+      "doc": "Sets the quests that must be completed before this one starts; a failed prerequisite closes this quest.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "prerequisites",
+          "type": "ref[]",
+          "required": false,
+          "category": "quest.quest",
+          "doc": "The prerequisite quests (empty: none)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "readOnly": true,
+      "id": "quest.simulate",
+      "tier": "Configure",
+      "doc": "Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.",
+      "targetType": "quest.quest",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "doc": "Steps separated by ';'."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "quest.quest",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "quest.validator",
+          "codes": [
+            "GP-LOG-013",
+            "GP-QST-001",
+            "GP-QST-002",
+            "GP-QST-003",
+            "GP-QST-004",
+            "GP-QST-020",
+            "GP-QST-021",
+            "GP-REF-001"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "removeComponent",
+      "tier": "Compose",
+      "doc": "Remove a component from a scene object (the target component, or the component of 'type' on the target object).",
+      "targetKinds": [
+        "Entity",
+        "SceneObject",
+        "Region"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "doc": "Component type (when the target is the GameObject)."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "replace",
+      "tier": "Compose",
+      "doc": "Replace a scene object with an instance of a prefab at the same parent, sibling index and placement. The replaced entity's authoring id moves to the new instance.",
+      "targetKinds": [
+        "Entity",
+        "SceneObject",
+        "Region"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "with",
+          "type": "ref",
+          "required": true,
+          "doc": "The prefab asset to instantiate."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "runtimeOnly": true,
+      "id": "runtime.move",
+      "tier": "Compose",
+      "targetRequired": true,
+      "scopes": [
+        "Instance"
+      ],
+      "args": [
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": true
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "save.inspect",
+      "tier": "Configure",
+      "doc": "Read and verify one save slot (header, checksums, catalog compatibility) and preview the forward slot migration a restore would run.",
+      "targetType": "save.schema",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "slot",
+          "type": "string",
+          "required": true,
+          "doc": "The save slot name."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "save.validator",
+          "codes": [
+            "GP-SAV-001",
+            "GP-SAV-002"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "save.testRoundTrip",
+      "tier": "Configure",
+      "doc": "Capture the running world, restore it into a new world and compare canonical slot hashes and logical steps; writes nothing and keeps the running world.",
+      "targetType": "save.schema",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "save.validator",
+          "codes": [
+            "GP-SAV-001",
+            "GP-SAV-002"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set",
+      "tier": "Configure",
+      "doc": "Set or clear authorable fields of an existing object. Give {field, value} or {fields: {name: value}}; each value has the type the object type declares for that field (catalog objectTypes).",
+      "targetKinds": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject"
+      ],
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "field",
+          "type": "string",
+          "required": false,
+          "doc": "Field name (used with 'value')."
+        },
+        {
+          "name": "value",
+          "type": "fieldValue",
+          "required": false,
+          "doc": "New value of 'field' (its type is the field's catalog type; null clears)."
+        },
+        {
+          "name": "fields",
+          "type": "object",
+          "required": false,
+          "doc": "Several fields at once: { name: value }."
+        }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "ui.addScreen",
+      "tier": "Compose",
+      "doc": "Adds a screen document to a flow: creates the UiDocumentDefinition (and a minimal UXML when the path does not exist).",
+      "targetType": "ui.flow",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "screen",
+          "type": "enum",
+          "required": true,
+          "doc": "The screen the document is shown on.",
+          "enumValues": [
+            "None",
+            "Hud",
+            "Menu",
+            "Pause",
+            "Settings",
+            "Save",
+            "Load",
+            "Ending",
+            "Journal",
+            "Inventory"
+          ]
+        },
+        {
+          "name": "uxmlPath",
+          "type": "string",
+          "required": true,
+          "doc": "Project path of the UXML (created when missing)."
+        },
+        {
+          "name": "layer",
+          "type": "int",
+          "required": false,
+          "min": 0.0,
+          "max": 100.0,
+          "doc": "Draw layer."
+        },
+        {
+          "name": "assetPath",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path of the new definition; defaults next to the UXML."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "ui.validator",
+          "codes": [
+            "GP-UI-001",
+            "GP-UI-002",
+            "GP-UI-003",
+            "GP-UI-004",
+            "GP-UI-005",
+            "GP-UI-006",
+            "GP-UI-007"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui.bind",
+      "tier": "Configure",
+      "doc": "Binds an element property (text, value, visible, enabled, selected, items) of a UI document to a vm:, slot: or event: source.",
+      "targetType": "ui.document",
+      "targetKinds": [
+        "Definition",
+        "UiElement"
+      ],
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "element",
+          "type": "string",
+          "required": true,
+          "doc": "Element name in the document's UXML."
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": true,
+          "doc": "vm:<model>.<Property> (hud.QuestStageTitle = first active quest stage title; hud.ObjectiveText = first unfinished objective) | slot:<owner>/<domain>.<member>@<target> | event:<name>."
+        },
+        {
+          "name": "property",
+          "type": "string",
+          "required": false,
+          "doc": "text | value | visible | enabled | selected | items."
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "required": false,
+          "doc": "Format: a {0} pattern or percent:<max>; for items, command:<prefix>."
+        }
+      ],
+      "runtimeApply": "Live",
+      "validators": [
+        {
+          "id": "ui.validator",
+          "codes": [
+            "GP-UI-001",
+            "GP-UI-002",
+            "GP-UI-003",
+            "GP-UI-004",
+            "GP-UI-005",
+            "GP-UI-006",
+            "GP-UI-007"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui.previewScreen",
+      "tier": "Configure",
+      "doc": "Renders one screen of a flow with a view-model state (model.Property=value;...) into a PNG; graphical Editor only.",
+      "targetType": "ui.flow",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "screen",
+          "type": "enum",
+          "required": true,
+          "doc": "The screen to render.",
+          "enumValues": [
+            "None",
+            "Hud",
+            "Menu",
+            "Pause",
+            "Settings",
+            "Save",
+            "Load",
+            "Ending",
+            "Journal",
+            "Inventory"
+          ]
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "doc": "View-model state: model.Property=value pairs separated by ';' (arrays use '|')."
+        },
+        {
+          "name": "outputPath",
+          "type": "string",
+          "required": false,
+          "doc": "Output PNG path; defaults under Library/GameCoreStudio/UiPreview."
+        },
+        {
+          "name": "width",
+          "type": "int",
+          "required": false,
+          "min": 64.0,
+          "max": 4096.0,
+          "doc": "Width in pixels."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "required": false,
+          "min": 64.0,
+          "max": 4096.0,
+          "doc": "Height in pixels."
+        }
+      ],
+      "runtimeApply": "Rebuild"
+    },
+    {
+      "id": "ui.setCommand",
+      "tier": "Configure",
+      "doc": "Binds a button click (or a slider/toggle/dropdown change) to a UI command (open.<screen>, close, newgame, save.<n>, choose.<i>, volume.<channel>, ...).",
+      "targetType": "ui.document",
+      "targetKinds": [
+        "Definition",
+        "UiElement"
+      ],
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "element",
+          "type": "string",
+          "required": true,
+          "doc": "Element name in the document's UXML."
+        },
+        {
+          "name": "command",
+          "type": "string",
+          "required": true,
+          "doc": "The UI command name (CommandDispatcher)."
+        },
+        {
+          "name": "property",
+          "type": "string",
+          "required": false,
+          "doc": "clicked (buttons) or changed (value controls)."
+        }
+      ],
+      "runtimeApply": "Live",
+      "validators": [
+        {
+          "id": "ui.validator",
+          "codes": [
+            "GP-UI-001",
+            "GP-UI-002",
+            "GP-UI-003",
+            "GP-UI-004",
+            "GP-UI-005",
+            "GP-UI-006",
+            "GP-UI-007"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui.setTheme",
+      "tier": "Configure",
+      "doc": "Sets a flow's theme (panel settings, theme style sheet and shared style sheets).",
+      "targetType": "ui.flow",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "theme",
+          "type": "ref",
+          "required": true,
+          "category": "ui.theme",
+          "doc": "The theme to use."
+        },
+        {
+          "name": "panelSettings",
+          "type": "ref",
+          "required": false,
+          "category": "asset.panelSettings",
+          "doc": "Replace the theme's panel settings."
+        },
+        {
+          "name": "themeStyleSheet",
+          "type": "ref",
+          "required": false,
+          "category": "asset.tss",
+          "doc": "Replace the theme style sheet."
+        },
+        {
+          "name": "styleSheets",
+          "type": "ref[]",
+          "required": false,
+          "category": "asset.uss",
+          "doc": "Replace the shared style sheets."
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "ui.validator",
+          "codes": [
+            "GP-UI-001",
+            "GP-UI-002",
+            "GP-UI-003",
+            "GP-UI-004",
+            "GP-UI-005",
+            "GP-UI-006",
+            "GP-UI-007"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "world.addPortal",
+      "tier": "Compose",
+      "doc": "Places one end of the target portal in the open scene of one of the two regions it connects: a trigger volume whose forward axis points into the region.",
+      "targetType": "world.portal",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Position of the portal end."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Heading of the arrival direction around +Y."
+        },
+        {
+          "name": "arrivalDistance",
+          "type": "float",
+          "required": false,
+          "unit": "m",
+          "doc": "Arrival distance in front of the portal."
+        },
+        {
+          "name": "region",
+          "type": "ref",
+          "required": false,
+          "category": "world.region",
+          "doc": "Region whose scene receives the end (empty: the portal's region whose scene is open; when both are, the one whose bounds hold the position)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        },
+        {
+          "requires": "world.portal",
+          "on": "Target"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "world.validator",
+          "codes": [
+            "GP-ID-001",
+            "GP-ID-003",
+            "GP-REF-003",
+            "GP-WLD-001",
+            "GP-WLD-002",
+            "GP-WLD-003",
+            "GP-WLD-004",
+            "GP-WLD-005",
+            "GP-WLD-006",
+            "GP-WLD-007",
+            "GP-WLD-050",
+            "GP-WLD-051",
+            "GP-WLD-052",
+            "GP-WLD-053",
+            "GP-WLD-054"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "world.configurePortal",
+      "tier": "Configure",
+      "doc": "Sets the spawn point travellers arrive at on each side of a portal and the condition set travel needs (e.g. 'the ferryman's favour OR the repaired punt': an Any-mode condition set).",
+      "targetType": "world.portal",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Condition set travel needs (empty: always open)."
+        },
+        {
+          "name": "spawnPointA",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region A (empty: the portal end's arrival pose)."
+        },
+        {
+          "name": "spawnPointB",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region B (empty: the portal end's arrival pose)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.portal",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "world.validator",
+          "codes": [
+            "GP-ID-001",
+            "GP-ID-003",
+            "GP-REF-003",
+            "GP-WLD-001",
+            "GP-WLD-002",
+            "GP-WLD-003",
+            "GP-WLD-004",
+            "GP-WLD-005",
+            "GP-WLD-006",
+            "GP-WLD-007",
+            "GP-WLD-050",
+            "GP-WLD-051",
+            "GP-WLD-052",
+            "GP-WLD-053",
+            "GP-WLD-054"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "world.connectRegions",
+      "tier": "Compose",
+      "doc": "Creates a portal connection between two regions of a world (a PortalDefinition asset beside the world).",
+      "targetType": "world.definition",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "regionA",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "First region."
+        },
+        {
+          "name": "regionB",
+          "type": "ref",
+          "required": true,
+          "category": "world.region",
+          "doc": "Second region."
+        },
+        {
+          "name": "assetPath",
+          "type": "string",
+          "required": false,
+          "doc": "Asset path of the new portal; defaults to <world dir>/Portals/<A>_<B>.asset."
+        },
+        {
+          "name": "spawnPointA",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region A travellers arrive at (empty: the portal end's arrival pose)."
+        },
+        {
+          "name": "spawnPointB",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point of region B travellers arrive at (empty: the portal end's arrival pose)."
+        },
+        {
+          "name": "condition",
+          "type": "ref",
+          "required": false,
+          "category": "logic.conditionSet",
+          "doc": "Condition set travel needs (empty: always open)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.definition",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "world.validator",
+          "codes": [
+            "GP-ID-001",
+            "GP-ID-003",
+            "GP-REF-003",
+            "GP-WLD-001",
+            "GP-WLD-002",
+            "GP-WLD-003",
+            "GP-WLD-004",
+            "GP-WLD-005",
+            "GP-WLD-006",
+            "GP-WLD-007",
+            "GP-WLD-050",
+            "GP-WLD-051",
+            "GP-WLD-052",
+            "GP-WLD-053",
+            "GP-WLD-054"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "world.setRegionBounds",
+      "tier": "Configure",
+      "doc": "Sets a region definition's bounds (world space, m); a zero size hands the bounds back to the scene's RegionBounds.",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "center",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Centre."
+        },
+        {
+          "name": "size",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Size (all positive, or all zero)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "world.validator",
+          "codes": [
+            "GP-ID-001",
+            "GP-ID-003",
+            "GP-REF-003",
+            "GP-WLD-001",
+            "GP-WLD-002",
+            "GP-WLD-003",
+            "GP-WLD-004",
+            "GP-WLD-005",
+            "GP-WLD-006",
+            "GP-WLD-007",
+            "GP-WLD-050",
+            "GP-WLD-051",
+            "GP-WLD-052",
+            "GP-WLD-053",
+            "GP-WLD-054"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "world.setSpawnPoint",
+      "tier": "Compose",
+      "doc": "Sets a spawn point of the target region: recorded as a named spawn point of the region definition; when the region scene is open, the default one also creates or moves the scene's SpawnPoint child (a named one its 'SpawnPoint <name>' marker).",
+      "targetType": "world.region",
+      "targetRequired": true,
+      "scopes": [
+        "Definition"
+      ],
+      "args": [
+        {
+          "name": "position",
+          "type": "vector3",
+          "required": true,
+          "unit": "m",
+          "doc": "Spawn position (world space)."
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "required": false,
+          "unit": "deg",
+          "doc": "Spawn heading around +Y."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "doc": "Spawn point name (empty: default, the region's own spawn)."
+        }
+      ],
+      "prerequisites": [
+        {
+          "requires": "world.region",
+          "on": "Project"
+        }
+      ],
+      "runtimeApply": "Rebuild",
+      "validators": [
+        {
+          "id": "world.validator",
+          "codes": [
+            "GP-ID-001",
+            "GP-ID-003",
+            "GP-REF-003",
+            "GP-WLD-001",
+            "GP-WLD-002",
+            "GP-WLD-003",
+            "GP-WLD-004",
+            "GP-WLD-005",
+            "GP-WLD-006",
+            "GP-WLD-007",
+            "GP-WLD-050",
+            "GP-WLD-051",
+            "GP-WLD-052",
+            "GP-WLD-053",
+            "GP-WLD-054"
+          ]
+        }
+      ]
+    },
+    {
+      "runtimeOnly": true,
+      "id": "world.travel",
+      "tier": "Configure",
+      "doc": "Revision-checked runtime action. No authored changes or inverse.",
+      "targetRequired": true,
+      "args": [
+        {
+          "name": "regionId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "portalId",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expectedRevision",
+          "type": "int",
+          "required": true,
+          "min": 0.0
+        }
+      ],
+      "runtimeApply": "Live"
+    }
+  ]
+}

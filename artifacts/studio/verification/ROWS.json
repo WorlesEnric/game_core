@@ -1,8 +1,8 @@
 {
   "counts": {
-    "PASS": 57,
-    "BLOCKED": 6,
-    "FAIL": 5
+    "PASS": 59,
+    "FAIL": 3,
+    "BLOCKED": 6
   },
   "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
   "releaseId": "0.1.0-debdab3072dbe1f8",
@@ -250,22 +250,21 @@
     },
     {
       "status": "FAIL",
-      "note": "Current full-row dialogue edit test rejects AddLine/Connect/Rename with GP-DLG-005: ViewsTestGraph node 1 is unreachable. Reproduced in broad EditMode and current 40-pass/1-fail view suite; graphical preview does not replace failed editing/undo.",
+      "note": "R9-A final suite: 161 PASS/1 FAIL, no skips. Owned combined AddLine/Connect/Rename workflow and retained orphan refusals pass. Exact P2_3 named test remains outside exclusive paths and now correctly refuses its empty graph creation with GP-DLG-001; its later separately committed orphan also needs fixture/workflow correction. No replacement-test promotion.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml",
-        "W-VIEW-01/captures-20261007T045200Z/capture.json"
+        "W-VIEW-02/r9-a-final-regressions/results.xml",
+        "W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/regressions.xml"
       ],
-      "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
+      "command": "studio/tools/unity-batch.sh --project <hollowmere> --log-dir <owned evidence> --label r9a-final-suites --results <results.xml> -- -runTests -testPlatform EditMode -testFilter <recorded final suite filter>",
       "row": "W-VIEW-02",
       "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+      "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
       "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
       "releaseId": "0.1.0-debdab3072dbe1f8",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/result.json",
-      "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+      "evidencePath": "W-VIEW-02/r9-a-final-regressions/results.xml",
+      "runStartedAt": "2026-10-07T10:44:25+00:00"
     },
     {
       "status": "PASS",
@@ -1070,44 +1069,46 @@
       "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
     },
     {
-      "status": "FAIL",
-      "note": "Fresh installed-worker six-operation NPC candidate is Invalid: StageFailed projecting npcs[6] because the same-change-set path Assets/Hollowmere/Npcs/Definitions/FerrymanElian.asset does not resolve. Candidate never applies; actual Play effect reports candidate was not applied. Current measured NavMesh/shared-prefab prerequisite passed.",
+      "status": "PASS",
+      "note": "R9-A unchanged retained P4.2i candidate passes Stage/Apply with identical historical/current catalog, actual Play committed patrol motion/NavMesh/enrolled dialogue/conversation, and full-byte journal Undo. No new model call or candidate repair.",
       "evidence": [
-        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/staged.json",
-        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/play-effect.json",
-        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/candidate.json",
-        "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/outcome.json"
+        "W-AI-02/r9-a-npc-20261007T103755.217153Z/result.json",
+        "W-AI-02/r9-a-npc-20261007T103755.217153Z/ferryman2/play-effect.json",
+        "W-AI-02/r9-a-npc-20261007T103755.217153Z/undo.json",
+        "W-AI-02/r9-a-npc-20261007T103755.217153Z/catalog-context.json",
+        "W-AI-02/r9-a-npc-20261007T103755.217153Z/source-sha256.json"
       ],
-      "command": "GAMECORE_P42G_NPC_VIEW=<current prerequisite receipt> GAMECORE_P42G_NPC_CREATION=1 python3 artifacts/studio/verification/TOOLS/live-p42i.py npc --row W-AI-02 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow p42f-npc",
+      "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane npc",
       "row": "W-AI-02",
       "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+      "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
       "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
       "releaseId": "0.1.0-debdab3072dbe1f8",
-      "evidencePath": "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/staged.json",
-      "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+      "evidencePath": "W-AI-02/r9-a-npc-20261007T103755.217153Z/result.json",
+      "runStartedAt": "2026-10-07T10:37:55.217153+00:00"
     },
     {
-      "status": "FAIL",
-      "note": "Fresh installed-worker Odd dialogue candidate is Invalid: GP-DLG-003 edges 3\u21928 and 8\u21924 leave the projected graph, dangling next\u21928, plus GP-DLG-005 unreachable node 4. Candidate never applies; actual Play driver reports candidate was not applied. Historical PASS is not retained.",
+      "status": "PASS",
+      "note": "R9-A unchanged retained Odd candidate passes Stage/Apply with identical historical/current catalog; real Play shows its new shrine line only when lit, and journal Undo restores complete baseline bytes. No new model call or candidate repair.",
       "evidence": [
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/candidate.json",
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/play-effect.json",
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/outcome.json"
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/odd-line/play-effect.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/undo.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/catalog-context.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/source-sha256.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+      "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane odd",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+      "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
       "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
       "releaseId": "0.1.0-debdab3072dbe1f8",
-      "evidencePath": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
-      "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+      "evidencePath": "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
+      "runStartedAt": "2026-10-07T10:41:56.540366+00:00"
     },
     {
       "status": "PASS",
@@ -1184,23 +1185,24 @@
     },
     {
       "status": "FAIL",
-      "note": "Separate-Editor replay succeeds for the two applied HUD/quest candidates and final complete asset bytes equal baseline, but the fresh Odd edit never applied and reopens with journal missing. Full undo/redo of all preceding narrative edits is therefore not established; partial replay is not promoted to a complete-row PASS.",
+      "note": "R9-A Odd-edit portion PASS: freshly applied retained Odd edit reopens in a distinct Editor with Applied journal, then Undo/Redo/final Undo preserve complete bytes. Full row not promoted: unrelated prior HUD/quest workflows were not rerun at this revision.",
       "evidence": [
-        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/after-reopen.json",
-        "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/final.json",
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/narrative/saved.json",
-        "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json"
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopen-result.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopened.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopen-undo.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopen-redo.json",
+        "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopen-final-undo.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
+      "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane odd-reopen --odd-output artifacts/studio/verification/W-AI-03/r9-a-odd-20261007T104156.540366Z",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-      "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+      "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+      "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
       "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
       "releaseId": "0.1.0-debdab3072dbe1f8",
-      "evidencePath": "W-AI-06/p42i-reopen-20261007T052926.823205Z/workflow/reopen/after-reopen.json",
-      "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+      "evidencePath": "W-AI-03/r9-a-odd-20261007T104156.540366Z/reopen-result.json",
+      "runStartedAt": "2026-10-07T10:43:15.385095+00:00"
     },
     {
       "status": "PASS",

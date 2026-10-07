@@ -1,20 +1,21 @@
 {
-  "status": "FAIL",
-  "note": "Fresh installed-worker six-operation NPC candidate is Invalid: StageFailed projecting npcs[6] because the same-change-set path Assets/Hollowmere/Npcs/Definitions/FerrymanElian.asset does not resolve. Candidate never applies; actual Play effect reports candidate was not applied. Current measured NavMesh/shared-prefab prerequisite passed.",
+  "status": "PASS",
+  "note": "R9-A unchanged retained P4.2i candidate passes Stage/Apply with identical historical/current catalog, actual Play committed patrol motion/NavMesh/enrolled dialogue/conversation, and full-byte journal Undo. No new model call or candidate repair.",
   "evidence": [
-    "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/staged.json",
-    "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/play-effect.json",
-    "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/candidate.json",
-    "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/outcome.json"
+    "W-AI-02/r9-a-npc-20261007T103755.217153Z/result.json",
+    "W-AI-02/r9-a-npc-20261007T103755.217153Z/ferryman2/play-effect.json",
+    "W-AI-02/r9-a-npc-20261007T103755.217153Z/undo.json",
+    "W-AI-02/r9-a-npc-20261007T103755.217153Z/catalog-context.json",
+    "W-AI-02/r9-a-npc-20261007T103755.217153Z/source-sha256.json"
   ],
-  "command": "GAMECORE_P42G_NPC_VIEW=<current prerequisite receipt> GAMECORE_P42G_NPC_CREATION=1 python3 artifacts/studio/verification/TOOLS/live-p42i.py npc --row W-AI-02 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow p42f-npc",
+  "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane npc",
   "row": "W-AI-02",
   "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "reportedAt": "2026-10-07T10:48:11.700671+00:00",
+  "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
   "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
   "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-AI-02/p42i-npc-20261007T053414.703761Z/workflow/ferryman2/staged.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "evidencePath": "W-AI-02/r9-a-npc-20261007T103755.217153Z/result.json",
+  "runStartedAt": "2026-10-07T10:37:55.217153+00:00"
 }
