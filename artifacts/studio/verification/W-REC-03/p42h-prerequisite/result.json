@@ -1,0 +1,29 @@
+{
+  "row": "W-REC-03",
+  "status": "BLOCKED",
+  "productRevision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "reason": "Authenticated app-origin staging exists, but no running-stage cancellation route or client API exists. Stage action accepts only stage/discard; discard requires the slot lock and is not cancellation.",
+  "evidence": [
+    {
+      "path": "studio/agent/src/api.rs",
+      "sha256": "90e9c43d27dffc4b87370e6dee8023b745caf1f6926e7200e845a134ba1b27f2"
+    },
+    {
+      "path": "studio/agent/src/stage.rs",
+      "sha256": "3fb1e92594294a156fb867b7799b642b84413a8cab49c9e98f795c6e1ab07647"
+    },
+    {
+      "path": "Packages/com.gamecore.studio.etos/Client/CompanionClient.cs",
+      "sha256": "5728c353514650e4be952d9e0ee794a594465a479dc6dfca9e431508f6642046"
+    }
+  ],
+  "sourceLocations": [
+    "studio/agent/src/api.rs:112-119",
+    "studio/agent/src/stage.rs:233-237,283-287,347-372",
+    "Packages/com.gamecore.studio.etos/Client/CompanionClient.cs:155-207"
+  ],
+  "requestedSeam": "POST /v1/stage/{job}/cancel; CompanionClient.CancelStageAsync(string jobId, CancellationToken ct = default); durable cancelled job, process-group/container cleanup, allocator release, no passing verdict",
+  "runtimeCancellationAttempted": false,
+  "whyNot": "No implemented cancellation endpoint to invoke; unnecessary app-origin full stage would not establish cancellation.",
+  "revision": "a77cb38ba4a2265007fa40c38983e01a17bb0914"
+}

@@ -1,0 +1,182 @@
+{
+  "row": "W-GAME-01",
+  "source": ".evidence/P42hPlayer-recorded",
+  "retentionStatus": "PASS",
+  "qualification": "See retained result.json; retention is not qualification",
+  "policy": "Only sanitized logs/JSON/CSV/text copied. CSV >=1 MiB gzip-compressed deterministically. All movies remain external, including every movie >20 MiB. No player binaries copied.",
+  "files": [
+    {
+      "source": "measurement/display.txt",
+      "retained": "measurement/display.txt",
+      "sourceBytes": 34153,
+      "sourceSha256": "490797fc10ee140bd641cb3f96555dadb96efcf8a50621dba438af5c4ba7f64b",
+      "retainedSha256": "490797fc10ee140bd641cb3f96555dadb96efcf8a50621dba438af5c4ba7f64b",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/idle-before.json",
+      "retained": "measurement/idle-before.json",
+      "sourceBytes": 156,
+      "sourceSha256": "706cf614877c6080e2993b03c0d09b4e66c6d8d3e4d4367883c39815c4873509",
+      "retainedSha256": "706cf614877c6080e2993b03c0d09b4e66c6d8d3e4d4367883c39815c4873509",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/opengl.txt",
+      "retained": "measurement/opengl.txt",
+      "sourceBytes": 834,
+      "sourceSha256": "6ff9567ce06df96aab3fc662241fb6889240ced4e006f09e4f5c3f7218800ef4",
+      "retainedSha256": "6ff9567ce06df96aab3fc662241fb6889240ced4e006f09e4f5c3f7218800ef4",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/provenance.txt",
+      "retained": "measurement/provenance.txt",
+      "sourceBytes": 792,
+      "sourceSha256": "e54243abbc17f1354a88f9909e47a5a3451e476d4da720b3570d8cbc811bfdce",
+      "retainedSha256": "8342b99677d716d76380ce5e645a06851ca9b759a07439ab3608d80f67c8a057",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/unity-processes-at-start.txt",
+      "retained": "measurement/unity-processes-at-start.txt",
+      "sourceBytes": 318,
+      "sourceSha256": "11d45fd646113527671dd916e3b5a6168d8d42946aeadedb0481df9d1dd445e5",
+      "retainedSha256": "c92db11b6a1612a29538aa492da91290f88a7f651c547f6bad3cffa46fb73289",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/command.txt",
+      "retained": "measurement/vsync0/run1/command.txt",
+      "sourceBytes": 661,
+      "sourceSha256": "a1a002155985357c6ec762c8130b801f1906dee3a4fea64ece8f841a68b61bbc",
+      "retainedSha256": "b97bd413294f6ef03548539118927b087c43f7ed404e39d026c0776752b1df92",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/exit-code.txt",
+      "retained": "measurement/vsync0/run1/exit-code.txt",
+      "sourceBytes": 2,
+      "sourceSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "retainedSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/frame-log.csv",
+      "retained": "measurement/vsync0/run1/frame-log.csv.gz",
+      "sourceBytes": 1756315,
+      "sourceSha256": "99729f9e2a856e4ed4e12cde6fce93ef981235a17ded9dc30cd49bd9ef9d9348",
+      "retainedSha256": "7b78f1b08f0d34ebd520a4d665542de18b6e8e06dc69f856ffc0a69da1e8b7d2",
+      "homePathsSanitized": true,
+      "gzip": true
+    },
+    {
+      "source": "measurement/vsync0/run1/host-after.json",
+      "retained": "measurement/vsync0/run1/host-after.json",
+      "sourceBytes": 304,
+      "sourceSha256": "ed48c859614432f52470e3aece5e41b869f92edb64f3b5d952762c6d1be7b122",
+      "retainedSha256": "e412aa02510013b8971777852a5ed8e5b4318dd9d1742b27092d33c14a5040ee",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/host-before.json",
+      "retained": "measurement/vsync0/run1/host-before.json",
+      "sourceBytes": 156,
+      "sourceSha256": "f47c50b476739e7b2aa4616d3ec10b1a22660359a2def65375382b04523c6435",
+      "retainedSha256": "f47c50b476739e7b2aa4616d3ec10b1a22660359a2def65375382b04523c6435",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/player.log",
+      "retained": "measurement/vsync0/run1/player.log",
+      "sourceBytes": 29249,
+      "sourceSha256": "a1202499a40b33684d461ac559d3a066f5e73f15a986fb54482c3f6bde876c09",
+      "retainedSha256": "5e45fa0ce51719faf52d6d1842cffb2322514f678f3ce4104106c2974601d38f",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/vsync0/run1/stdout.txt",
+      "retained": "measurement/vsync0/run1/stdout.txt",
+      "sourceBytes": 1952,
+      "sourceSha256": "ac68968a9b37584ea76538177d5ec4138377bec9b08ef5c23b4639134b8eedba",
+      "retainedSha256": "ac68968a9b37584ea76538177d5ec4138377bec9b08ef5c23b4639134b8eedba",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/wait-seconds.txt",
+      "retained": "measurement/wait-seconds.txt",
+      "sourceBytes": 4,
+      "sourceSha256": "a737da4882749cf1706e40662641df964aeb7fb3311242782663c76ad8fb3593",
+      "retainedSha256": "a737da4882749cf1706e40662641df964aeb7fb3311242782663c76ad8fb3593",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement/wait-start.json",
+      "retained": "measurement/wait-start.json",
+      "sourceBytes": 296,
+      "sourceSha256": "9340c4003716b282b291a62522ea8ae2873ec7e2f2160c0c23bdefbe065108e1",
+      "retainedSha256": "e8939c46a30691e57fce7eba7e29137437ce01b0f29f12975e65ed1285483ea4",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement-transcript.command.json",
+      "retained": "measurement-transcript.command.json",
+      "sourceBytes": 114,
+      "sourceSha256": "af1687cec6d7a03d3e4fdc9ddf1a0a6ae14b619d49c88b61fc3c4567d658e963",
+      "retainedSha256": "e3a017234968c029af8c134881d3368bb02d8f3bfcdddb971271d5606ce1ca65",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "measurement-transcript.txt",
+      "retained": "measurement-transcript.txt",
+      "sourceBytes": 14564,
+      "sourceSha256": "dbb2c38addbab3d2f5c54d40e8304de522957f6d128521d9e994ea24a8d2b1c9",
+      "retainedSha256": "fb2d5acf1d082d567d0323fdf0a2ed9ce5d4e339351459ce972a4694da34b63f",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "player/build-report.json",
+      "retained": "player/build-report.json",
+      "sourceBytes": 6086,
+      "sourceSha256": "766833e9d326c867506eb5bd6f335f6ef84d6e16d6f8ab61565a85a30896bf70",
+      "retainedSha256": "239c60bc72fff89fb51371a67e362556d56161e66f80bc17d2d59019b894ce00",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "player/revision.txt",
+      "retained": "player/revision.txt",
+      "sourceBytes": 41,
+      "sourceSha256": "8a405b3af8e04381eae30375ff853db1dc8a5b96a0fc261661e13f609b4e6c0b",
+      "retainedSha256": "8a405b3af8e04381eae30375ff853db1dc8a5b96a0fc261661e13f609b4e6c0b",
+      "homePathsSanitized": true,
+      "gzip": false
+    },
+    {
+      "source": "result.json",
+      "retained": "result-original.json",
+      "sourceBytes": 1116,
+      "sourceSha256": "0dea2e4a39a5758810a717d3b6113f18f485ff3620612822a3f2351d60d39adc",
+      "retainedSha256": "0dea2e4a39a5758810a717d3b6113f18f485ff3620612822a3f2351d60d39adc",
+      "homePathsSanitized": true,
+      "gzip": false
+    }
+  ],
+  "externalMovies": [],
+  "skippedFiles": 871
+}

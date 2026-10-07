@@ -1,17 +1,18 @@
 # W-ETOS-04: Worker `etos query` returns the selected NPC's dialogue nodes
 
-Verdict: **BLOCKED**. The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task.
+Verdict: **BLOCKED**. P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute.
 
-Report timestamp: 2026-10-06T15:29:44.389718+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh ui
+python3 artifacts/studio/verification/TOOLS/live-p42h.py query --row W-ETOS-04 --method P42h.Tasks.TaskDriver.SelectedNpcQuery
 ```
 
 ## Retained evidence
 
 - [W-UI-01/ui-capture-20261005T192323.970290Z/README.md](../W-UI-01/ui-capture-20261005T192323.970290Z/README.md)
+- [W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json](../W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json)
+- [W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json](../W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json)
+- [W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-tool-trace.json](../W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-tool-trace.json)

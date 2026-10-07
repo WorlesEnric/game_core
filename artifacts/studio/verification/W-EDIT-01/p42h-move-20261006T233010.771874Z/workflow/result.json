@@ -1,0 +1,60 @@
+{
+  "lane": "move",
+  "row": "W-EDIT-01",
+  "phase": 0,
+  "output": "~/wkspace/gc-studio/p4.2h/artifacts/studio/verification/W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow",
+  "startedMs": 1791329445076,
+  "processId": 283729,
+  "requestId": "cs_01M49RWVXMYMBQB9X48D17F692",
+  "taskIds": [
+    "t9450022d9a74ef2db96f895e"
+  ],
+  "sourceProject": "~/wkspace/gc-studio/p4.2h/games/hollowmere",
+  "newGameMs": 1791329462222,
+  "worker": "gc-designer",
+  "positionBefore": [
+    11.0,
+    0.0,
+    -13.0
+  ],
+  "desiredPosition": [
+    11.5,
+    0.0,
+    -13.0
+  ],
+  "desiredYaw": 270.0,
+  "target": {
+    "kind": "Entity",
+    "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+    "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+    "assetGuid": "6cba302899c45bb919b097ade959283c",
+    "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+    "scope": "Instance",
+    "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+  },
+  "sceneHashBefore": "8e275d127aaa6213a285553c659d771c2281a4ef52af88c3554cbbf4af9939ed",
+  "submittedMs": 1791329464247,
+  "lastTrayRow": {
+    "changeSetId": "cs_01M49RWVXMYMBQB9X48D17F692",
+    "requestId": "cs_01M49RWVXMYMBQB9X48D17F692",
+    "state": "candidate",
+    "etosStatus": "done",
+    "taskIds": [
+      "t9450022d9a74ef2db96f895e"
+    ],
+    "worker": "gc-designer",
+    "sequence": 747,
+    "localState": "staged",
+    "createdTicks": 639269262642569940,
+    "diagnostics": [],
+    "question": ""
+  },
+  "candidateHash": "a6f22c6341ad57d10a2273eb0b841108c34365379c775499c4b0c018e082afd3",
+  "operationId": "w:c151bd01c2fe76451ad17df9fdb739b2/i:c696b9df8c15685712fcd173f2864320/s:17",
+  "appliedMs": 1791329517696,
+  "historyShownMs": 1791329517788,
+  "phaseAtFinish": 12,
+  "status": "PASS",
+  "detail": "Installed-worker candidate applied without harness changes; attached History shows joined task and GameCore operation IDs, and the production bridge confirms that exact operation committed the requested live pose without changing authored scene bytes.",
+  "finishedMs": 1791329518869
+}

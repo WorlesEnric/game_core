@@ -1,0 +1,21 @@
+{
+  "row": "W-EDIT-03",
+  "status": "BLOCKED",
+  "runtimeStatus": "BLOCKED",
+  "reason": "Ledger checkpoint generated: Artifact lacks actual generate.image jobId/etosRef authority",
+  "phase": 12,
+  "endedUtc": "2026-10-06T23:34:33.0990210Z",
+  "mode": "portrait",
+  "runtimeReason": "Ledger checkpoint generated: Artifact lacks actual generate.image jobId/etosRef authority",
+  "generationCalls": 1,
+  "maximumCostUsdPerImage": 0.2,
+  "requestId": null,
+  "taskIds": [],
+  "mediaIdentity": null,
+  "importChangeSetId": "cs_01M49S3764SDED9MR89Z1BFDM7",
+  "assignmentChangeSetId": "",
+  "identityNote": "No worker request/task exists for this app-owned direct-media route. Actual companion effect key and node jobId come only from the ledger; local journal IDs are not request authority.",
+  "accountingScope": "Binding companion tariff/charge ledger and original node-reported generation usage; no upstream provider invoice assertion.",
+  "visualEvidence": "generated.png; portrait-applied.png; portrait-redone.png; history-*.png",
+  "cleanup": "Do not repair candidate or repeat generation. Inspect saved journal IDs and use normal History recovery/undo."
+}

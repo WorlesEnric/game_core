@@ -1,0 +1,2278 @@
+{
+  "requestId": "cs_01M49SC9KRJS03WMHJEXC47ECD",
+  "intent": "Read-only creator inspection of selected NPC Bram. Execute an actual worker-side `etos query` of gc_dialogue_node (binding gamecore-studio) to return the selected NPC's dialogue nodes. Resolve his graph from the provided NPC selection/context; the creator identifies its authoring ID as 06d8cd36-a0a2-47ca-93d0-8ca0d21b611d. Inspect `etos query --help` if needed, then query the actual RG table. Do not substitute index-slice.json, /etos/rg files, invented rows or a local evaluator for the requested etos query. This is read-only: no changeset and no media. After the real query, ask the single follow-up 'Would you like any dialogue changes?' using /outputs/clarification.json with status needs-clarification. In its question string, before that question, retain exactly one receipt between P42H_QUERY_BEGIN and P42H_QUERY_END: JSON {command:<the exact executed etos query shell command>,exitCode:<actual integer>,stdout:<exact query stdout string>,stderr:<exact query stderr string>,graphId:<resolved graph ID>}. Preserve failures verbatim; never claim query success without executing it. Do not write unlisted extra output files.",
+  "selection": {
+    "id": "sel_01M49SC9HZXYMV02QVF5C66N17",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Definition",
+        "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+        "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+        "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+        "scope": "Definition",
+        "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+      }
+    ],
+    "indexRevision": 13
+  },
+  "request": {
+    "Intent": "Read-only creator inspection of selected NPC Bram. Execute an actual worker-side `etos query` of gc_dialogue_node (binding gamecore-studio) to return the selected NPC's dialogue nodes. Resolve his graph from the provided NPC selection/context; the creator identifies its authoring ID as 06d8cd36-a0a2-47ca-93d0-8ca0d21b611d. Inspect `etos query --help` if needed, then query the actual RG table. Do not substitute index-slice.json, /etos/rg files, invented rows or a local evaluator for the requested etos query. This is read-only: no changeset and no media. After the real query, ask the single follow-up 'Would you like any dialogue changes?' using /outputs/clarification.json with status needs-clarification. In its question string, before that question, retain exactly one receipt between P42H_QUERY_BEGIN and P42H_QUERY_END: JSON {command:<the exact executed etos query shell command>,exitCode:<actual integer>,stdout:<exact query stdout string>,stderr:<exact query stderr string>,graphId:<resolved graph ID>}. Preserve failures verbatim; never claim query success without executing it. Do not write unlisted extra output files.",
+    "Selection": {
+      "id": "sel_01M49SC9HZXYMV02QVF5C66N17",
+      "mode": "Edit",
+      "targets": [
+        {
+          "kind": "Definition",
+          "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+          "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+          "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+          "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+          "scope": "Definition",
+          "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+        }
+      ],
+      "indexRevision": 13
+    },
+    "ContextSlice": {
+      "revision": 13,
+      "project": "hollowmere",
+      "nodes": [
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+            "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+            "scope": "Definition",
+            "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+          },
+          "type": "npc.definition",
+          "name": "Bram",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Bram",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 1.6,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+                "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+                "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+                "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+                "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+                "global": "GlobalObjectId_V1-3-6eedddac9e7ef3ffe804ba27629e1bc5-11400000-0",
+                "assetGuid": "6eedddac9e7ef3ffe804ba27629e1bc5",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+            "scope": "Definition",
+            "stamp": "sha256:0bdbc906c2e42e4529da30a7151f748798a4df06c4fdf1117ee75897ba6dbf1b"
+          },
+          "type": "npc.roster",
+          "name": "NpcRoster",
+          "fields": {
+            "stepMilliseconds": {
+              "value": 20,
+              "unit": "ms",
+              "range": [
+                5.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "unloadedStride": {
+              "value": 8,
+              "range": [
+                1.0,
+                64.0
+              ],
+              "type": "int"
+            }
+          },
+          "refs": [
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+                "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+                "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+              }
+            },
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+                "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+                "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+              }
+            },
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+                "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+                "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+              }
+            },
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+                "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+                "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+              }
+            },
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+                "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+                "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+              }
+            },
+            {
+              "field": "npcs",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+                "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+                "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset",
+            "scope": "Definition",
+            "stamp": "sha256:4d3cb0f80dc812dae974eeb234383180e272f0db51b35fd2fc4a48e0c26839a6"
+          },
+          "type": "dialogue.graph",
+          "name": "Bram",
+          "fields": {
+            "edges": {
+              "value": [
+                {
+                  "from": 0,
+                  "port": "Next",
+                  "option": 0,
+                  "to": 1
+                },
+                {
+                  "from": 1,
+                  "port": "Option",
+                  "option": 0,
+                  "to": 3
+                },
+                {
+                  "from": 3,
+                  "port": "Next",
+                  "option": 0,
+                  "to": 2
+                },
+                {
+                  "from": 1,
+                  "port": "Option",
+                  "option": 1,
+                  "to": 4
+                },
+                {
+                  "from": 4,
+                  "port": "Next",
+                  "option": 0,
+                  "to": 2
+                },
+                {
+                  "from": 1,
+                  "port": "Option",
+                  "option": 2,
+                  "to": 5
+                },
+                {
+                  "from": 5,
+                  "port": "Next",
+                  "option": 0,
+                  "to": 6
+                },
+                {
+                  "from": 1,
+                  "port": "Option",
+                  "option": 3,
+                  "to": 7
+                }
+              ],
+              "type": "object[]"
+            },
+            "entry": {
+              "value": 0,
+              "type": "int"
+            },
+            "nodes": {
+              "value": [
+                {
+                  "kind": "Line",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "Welcome to the Drowned Lantern. Coin for goods, and no questions.",
+                  "voiceClip": {
+                    "kind": "Asset",
+                    "global": "GlobalObjectId_V1-1-86608ff42b86350c6a2afddfa71219de-8300000-0",
+                    "assetGuid": "86608ff42b86350c6a2afddfa71219de",
+                    "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav"
+                  },
+                  "portrait": null,
+                  "condition": null,
+                  "actions": null,
+                  "options": []
+                },
+                {
+                  "kind": "Choice",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "What will it be?",
+                  "voiceClip": null,
+                  "portrait": null,
+                  "condition": null,
+                  "actions": null,
+                  "options": [
+                    {
+                      "text": "A lantern (4 coins)",
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+                        "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+                        "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+                        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+                      },
+                      "hideWhenUnavailable": false
+                    },
+                    {
+                      "text": "An oil flask (2 coins)",
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+                        "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+                        "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+                        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+                      },
+                      "hideWhenUnavailable": false
+                    },
+                    {
+                      "text": "Marsh herbs (1 coin)",
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+                        "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+                        "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+                        "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+                      },
+                      "hideWhenUnavailable": false
+                    },
+                    {
+                      "text": "Nothing, thanks.",
+                      "condition": null,
+                      "hideWhenUnavailable": false
+                    }
+                  ]
+                },
+                {
+                  "kind": "Line",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "There you are. Keep it dry.",
+                  "voiceClip": {
+                    "kind": "Asset",
+                    "global": "GlobalObjectId_V1-1-7c4fab1eb2876608a9f0702064b57a7a-8300000-0",
+                    "assetGuid": "7c4fab1eb2876608a9f0702064b57a7a",
+                    "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav"
+                  },
+                  "portrait": null,
+                  "condition": null,
+                  "actions": null,
+                  "options": []
+                },
+                {
+                  "kind": "Action",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "",
+                  "voiceClip": null,
+                  "portrait": null,
+                  "condition": null,
+                  "actions": {
+                    "kind": "Definition",
+                    "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                    "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                    "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                    "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+                  },
+                  "options": []
+                },
+                {
+                  "kind": "Action",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "",
+                  "voiceClip": null,
+                  "portrait": null,
+                  "condition": null,
+                  "actions": {
+                    "kind": "Definition",
+                    "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                    "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                    "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                    "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+                  },
+                  "options": []
+                },
+                {
+                  "kind": "Action",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "",
+                  "voiceClip": null,
+                  "portrait": null,
+                  "condition": null,
+                  "actions": {
+                    "kind": "Definition",
+                    "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                    "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                    "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                    "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+                  },
+                  "options": []
+                },
+                {
+                  "kind": "Line",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "Chew them when your legs give out.",
+                  "voiceClip": {
+                    "kind": "Asset",
+                    "global": "GlobalObjectId_V1-1-389505aa044c01657a030c60c3bb6f10-8300000-0",
+                    "assetGuid": "389505aa044c01657a030c60c3bb6f10",
+                    "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav"
+                  },
+                  "portrait": null,
+                  "condition": null,
+                  "actions": null,
+                  "options": []
+                },
+                {
+                  "kind": "Line",
+                  "speaker": "",
+                  "speakerEntityId": "",
+                  "text": "Suit yourself.",
+                  "voiceClip": {
+                    "kind": "Asset",
+                    "global": "GlobalObjectId_V1-1-dd07c82afc3c10677a4374cd6bb9b926-8300000-0",
+                    "assetGuid": "dd07c82afc3c10677a4374cd6bb9b926",
+                    "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav"
+                  },
+                  "portrait": null,
+                  "condition": null,
+                  "actions": null,
+                  "options": []
+                }
+              ],
+              "type": "object[]"
+            },
+            "npcGraphRef": {
+              "value": "",
+              "type": "string"
+            },
+            "speaker": {
+              "value": "Bram",
+              "type": "string"
+            }
+          },
+          "refs": [
+            {
+              "field": "speakerEntityId",
+              "to": {
+                "kind": "Entity",
+                "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+              }
+            },
+            {
+              "field": "nodes[0].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-86608ff42b86350c6a2afddfa71219de-8300000-0",
+                "assetGuid": "86608ff42b86350c6a2afddfa71219de",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav"
+              }
+            },
+            {
+              "field": "nodes[1].options[0].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+                "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+                "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+              }
+            },
+            {
+              "field": "nodes[1].options[1].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+                "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+                "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+              }
+            },
+            {
+              "field": "nodes[1].options[2].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+                "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+                "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+              }
+            },
+            {
+              "field": "nodes[2].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7c4fab1eb2876608a9f0702064b57a7a-8300000-0",
+                "assetGuid": "7c4fab1eb2876608a9f0702064b57a7a",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav"
+              }
+            },
+            {
+              "field": "nodes[3].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              }
+            },
+            {
+              "field": "nodes[4].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              }
+            },
+            {
+              "field": "nodes[5].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              }
+            },
+            {
+              "field": "nodes[6].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-389505aa044c01657a030c60c3bb6f10-8300000-0",
+                "assetGuid": "389505aa044c01657a030c60c3bb6f10",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav"
+              }
+            },
+            {
+              "field": "nodes[7].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-dd07c82afc3c10677a4374cd6bb9b926-8300000-0",
+                "assetGuid": "dd07c82afc3c10677a4374cd6bb9b926",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav"
+              }
+            },
+            {
+              "field": "speakerEntityId",
+              "to": {
+                "kind": "Entity",
+                "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+              }
+            },
+            {
+              "field": "nodes[0].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-86608ff42b86350c6a2afddfa71219de-8300000-0",
+                "assetGuid": "86608ff42b86350c6a2afddfa71219de",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_hello.wav"
+              }
+            },
+            {
+              "field": "nodes[1].options[0].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+                "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+                "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+              }
+            },
+            {
+              "field": "nodes[1].options[1].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+                "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+                "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+              }
+            },
+            {
+              "field": "nodes[1].options[2].condition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+                "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+                "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+                "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+              }
+            },
+            {
+              "field": "nodes[2].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-7c4fab1eb2876608a9f0702064b57a7a-8300000-0",
+                "assetGuid": "7c4fab1eb2876608a9f0702064b57a7a",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_thanks.wav"
+              }
+            },
+            {
+              "field": "nodes[3].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+                "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+                "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+              }
+            },
+            {
+              "field": "nodes[4].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+                "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+                "assetGuid": "749e4e68f4bec3647b34170983f99674",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+              }
+            },
+            {
+              "field": "nodes[5].actions",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+                "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+                "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+                "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+              }
+            },
+            {
+              "field": "nodes[6].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-389505aa044c01657a030c60c3bb6f10-8300000-0",
+                "assetGuid": "389505aa044c01657a030c60c3bb6f10",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_herbs.wav"
+              }
+            },
+            {
+              "field": "nodes[7].voiceClip",
+              "to": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-dd07c82afc3c10677a4374cd6bb9b926-8300000-0",
+                "assetGuid": "dd07c82afc3c10677a4374cd6bb9b926",
+                "path": "Assets/Hollowmere/Media/Voices/Bram_bye.wav"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+            "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+            "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset",
+            "scope": "Definition",
+            "stamp": "sha256:9c5857942292165d5f966924d8ce5bd4454f07ba09b7c1cc0abe6659d1b14f53"
+          },
+          "type": "entity.definition",
+          "name": "BramEntity",
+          "fields": {
+            "animatorBindings": {
+              "value": [],
+              "type": "object[]"
+            },
+            "defaultScaleMilli": {
+              "value": 1000,
+              "unit": "milli",
+              "range": [
+                1.0,
+                100000.0
+              ],
+              "type": "int"
+            },
+            "interactionKind": {
+              "value": "",
+              "type": "string"
+            },
+            "materialTextures": {
+              "value": [],
+              "type": "object[]"
+            },
+            "overridableFields": {
+              "value": [
+                "scaleMilli",
+                "visible",
+                "tint"
+              ],
+              "type": "string[]"
+            },
+            "startsAlive": {
+              "value": true,
+              "type": "bool"
+            },
+            "startsVisible": {
+              "value": true,
+              "type": "bool"
+            }
+          },
+          "refs": [
+            {
+              "field": "prefab",
+              "to": {
+                "kind": "SceneObject",
+                "global": "GlobalObjectId_V1-1-596458344de352360aa8f29ac9a49551-6480318929854239657-0",
+                "assetGuid": "596458344de352360aa8f29ac9a49551",
+                "path": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab#/NpcCapsule"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+            "global": "GlobalObjectId_V1-3-6eedddac9e7ef3ffe804ba27629e1bc5-11400000-0",
+            "assetGuid": "6eedddac9e7ef3ffe804ba27629e1bc5",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset",
+            "scope": "Definition",
+            "stamp": "sha256:7fd0ed792c66073a45ae856bfb4ca7d6b5ef7aed2022e0935e6a24eb51beb888"
+          },
+          "type": "npc.behaviour",
+          "name": "BramBehaviour",
+          "fields": {
+            "customId": {
+              "value": "",
+              "type": "string"
+            },
+            "kind": {
+              "value": "Idle",
+              "type": "enum"
+            },
+            "patrolPoints": {
+              "value": [],
+              "unit": "m",
+              "type": "vector3[]"
+            },
+            "waitSeconds": {
+              "value": 1.5,
+              "unit": "s",
+              "range": [
+                0.0,
+                600.0
+              ],
+              "type": "float"
+            }
+          },
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+            "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+            "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+            "scope": "Definition",
+            "stamp": "sha256:634b0550b377f1530e4a6d6fc57d99e6cd9d38fef9d647bbf71db8778f4e3bde"
+          },
+          "type": "npc.definition",
+          "name": "Odd",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Odd",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 1.6,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+                "global": "GlobalObjectId_V1-3-c85061092bd3b67cc84cae5e7bd3a3bb-11400000-0",
+                "assetGuid": "c85061092bd3b67cc84cae5e7bd3a3bb",
+                "path": "Assets/Hollowmere/Npcs/Definitions/OddEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "aa779457-076d-496c-84b5-72019a826681",
+                "global": "GlobalObjectId_V1-3-b2bacaee2c3034819a57dae4f343b3ee-11400000-0",
+                "assetGuid": "b2bacaee2c3034819a57dae4f343b3ee",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Odd.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "fe1e2693-bf69-4db6-b2dd-02255ae5ff98",
+                "global": "GlobalObjectId_V1-3-32e55272ca8b6609cb80675b342f4401-11400000-0",
+                "assetGuid": "32e55272ca8b6609cb80675b342f4401",
+                "path": "Assets/Hollowmere/Npcs/Definitions/OddBehaviour.asset"
+              }
+            },
+            {
+              "field": "voiceId",
+              "to": {
+                "kind": "Definition",
+                "path": "byname:audio.clip:voice.odd"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+            "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+            "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset",
+            "scope": "Definition",
+            "stamp": "sha256:756dd3fa736772e73ab87ba3e835f35dfdc4e77e5645917852bc78221722accd"
+          },
+          "type": "npc.definition",
+          "name": "Hale",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Hale",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 1.5,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "68d2519f-2a40-439b-be2d-63d16581cd06",
+                "global": "GlobalObjectId_V1-3-8925e4c338fef6c91879d6e770181bdf-11400000-0",
+                "assetGuid": "8925e4c338fef6c91879d6e770181bdf",
+                "path": "Assets/Hollowmere/Npcs/Definitions/HaleEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "a82ac490-3bac-45c7-9e27-65a59d7cc6cf",
+                "global": "GlobalObjectId_V1-3-2d03a61afd0db492b95994c2c7890066-11400000-0",
+                "assetGuid": "2d03a61afd0db492b95994c2c7890066",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Hale.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "63b0096d-625a-4bd5-bda6-4397fb98f039",
+                "global": "GlobalObjectId_V1-3-8e3681212e040ec439d6a09318cfc9fd-11400000-0",
+                "assetGuid": "8e3681212e040ec439d6a09318cfc9fd",
+                "path": "Assets/Hollowmere/Npcs/Definitions/HaleBehaviour.asset"
+              }
+            },
+            {
+              "field": "voiceId",
+              "to": {
+                "kind": "Definition",
+                "path": "byname:audio.clip:voice.hale"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+            "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+            "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset",
+            "scope": "Definition",
+            "stamp": "sha256:81f8607a39e47ee18ceb8a6c495fa7f4594bb84d7f4c9ce730f64a737264945e"
+          },
+          "type": "npc.definition",
+          "name": "Pip",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Pip",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 2.2,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+                "global": "GlobalObjectId_V1-3-2970f8269becd59aea9228da6f3781cc-11400000-0",
+                "assetGuid": "2970f8269becd59aea9228da6f3781cc",
+                "path": "Assets/Hollowmere/Npcs/Definitions/PipEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "dc88c507-3b24-44ea-8eb8-fcb35dcf733e",
+                "global": "GlobalObjectId_V1-3-ff984e215500e2dd19b847e9b8cd1438-11400000-0",
+                "assetGuid": "ff984e215500e2dd19b847e9b8cd1438",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Pip.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "65001da5-9052-42fb-847c-3d60dff8cc23",
+                "global": "GlobalObjectId_V1-3-297603b250412e27da1c772965982384-11400000-0",
+                "assetGuid": "297603b250412e27da1c772965982384",
+                "path": "Assets/Hollowmere/Npcs/Definitions/PipBehaviour.asset"
+              }
+            },
+            {
+              "field": "schedule",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "7493b3f3-fd29-4b35-bc06-a59dddc36c99",
+                "global": "GlobalObjectId_V1-3-ba7502546006b2d77901c118a9717103-11400000-0",
+                "assetGuid": "ba7502546006b2d77901c118a9717103",
+                "path": "Assets/Hollowmere/Npcs/Definitions/PipDayNight.asset"
+              }
+            },
+            {
+              "field": "voiceId",
+              "to": {
+                "kind": "Definition",
+                "path": "byname:audio.clip:voice.pip"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+            "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+            "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+            "scope": "Definition",
+            "stamp": "sha256:5a601ec2ac991904e34bfda5bfa8b173300341b2c265054b69c03116921d933a"
+          },
+          "type": "npc.definition",
+          "name": "Maren",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Maren",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 1.8,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+                "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+                "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+                "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+                "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset"
+              }
+            },
+            {
+              "field": "voiceId",
+              "to": {
+                "kind": "Definition",
+                "path": "byname:audio.clip:voice.maren"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+            "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+            "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset",
+            "scope": "Definition",
+            "stamp": "sha256:29b99ff1934f37dc5e16221db6ba52192655a92e4890cdeba065d379aed3a179"
+          },
+          "type": "npc.definition",
+          "name": "BelfryEcho",
+          "fields": {
+            "arriveRadius": {
+              "value": 0.05,
+              "unit": "m",
+              "range": [
+                0.01,
+                2.0
+              ],
+              "type": "float"
+            },
+            "converseSeconds": {
+              "value": 4.0,
+              "unit": "s",
+              "range": [
+                0.5,
+                600.0
+              ],
+              "type": "float"
+            },
+            "displayName": {
+              "value": "Belfry Echo",
+              "type": "string"
+            },
+            "focusPriority": {
+              "value": 1,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "mood": {
+              "value": 0,
+              "range": [
+                -100.0,
+                100.0
+              ],
+              "type": "int"
+            },
+            "speed": {
+              "value": 1.2,
+              "unit": "m/s",
+              "range": [
+                0.1,
+                10.0
+              ],
+              "type": "float"
+            },
+            "talkRange": {
+              "value": 2.5,
+              "unit": "m",
+              "range": [
+                0.5,
+                5.0
+              ],
+              "type": "float"
+            }
+          },
+          "refs": [
+            {
+              "field": "entity",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+                "global": "GlobalObjectId_V1-3-da0512e079b8b8726926a321501301dd-11400000-0",
+                "assetGuid": "da0512e079b8b8726926a321501301dd",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEchoEntity.asset"
+              }
+            },
+            {
+              "field": "dialogue",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "b9b85886-492d-40a3-9edb-02c9d9a417b0",
+                "global": "GlobalObjectId_V1-3-e80b6b7b53c4cdcbb9498e655be648b9-11400000-0",
+                "assetGuid": "e80b6b7b53c4cdcbb9498e655be648b9",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/BelfryEcho.asset"
+              }
+            },
+            {
+              "field": "behaviour",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "f887a0e1-939c-45bb-b7cf-61caf86216bb",
+                "global": "GlobalObjectId_V1-3-bfc27c460eaa24cdd87cd49fbb29f6dc-11400000-0",
+                "assetGuid": "bfc27c460eaa24cdd87cd49fbb29f6dc",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEchoBehaviour.asset"
+              }
+            },
+            {
+              "field": "voiceId",
+              "to": {
+                "kind": "Definition",
+                "path": "byname:audio.clip:voice.echo"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+            "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+            "assetGuid": "749e4e68f4bec3647b34170983f99674",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset",
+            "scope": "Definition",
+            "stamp": "sha256:991fdcc15a3310c73c5ce92d13ee211fd7ff8221de3ff0727e216e526f110390"
+          },
+          "type": "logic.actionSet",
+          "name": "BuyOil",
+          "fields": {
+            "actions": {
+              "value": [
+                {
+                  "kind": "Buy",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+                    "global": "GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0",
+                    "assetGuid": "344e1560f458dcce8b088aebc730d844",
+                    "path": "Assets/Hollowmere/Items/OilFlask.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "actionSet": null,
+                  "worldItem": null,
+                  "vendor": {
+                    "kind": "Definition",
+                    "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                    "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                    "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                    "path": "Assets/Hollowmere/Items/InnStock.asset"
+                  },
+                  "inventory": null,
+                  "entityId": "",
+                  "value": 1,
+                  "text": "",
+                  "legacyTarget": null
+                }
+              ],
+              "type": "object[]"
+            }
+          },
+          "refs": [
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+                "global": "GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0",
+                "assetGuid": "344e1560f458dcce8b088aebc730d844",
+                "path": "Assets/Hollowmere/Items/OilFlask.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            },
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+                "global": "GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0",
+                "assetGuid": "344e1560f458dcce8b088aebc730d844",
+                "path": "Assets/Hollowmere/Items/OilFlask.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Entity",
+            "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+            "scope": "Instance",
+            "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+          },
+          "type": "entity.instance",
+          "name": "Bram",
+          "fields": {
+            "overrides": {
+              "value": {
+                "entries": [
+                  {
+                    "field": "tint",
+                    "value": "#8e3d2f"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "variant": {
+              "value": 0,
+              "type": "int"
+            }
+          },
+          "refs": [
+            {
+              "field": "definition",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+                "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+                "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+                "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+              }
+            }
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+            "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+            "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset",
+            "scope": "Definition",
+            "stamp": "sha256:fc1a55f039e92c0a2a488fdc45a18c7eaf6dd9e23417d40dc52a798617f00d7c"
+          },
+          "type": "logic.conditionSet",
+          "name": "HasCoins1",
+          "fields": {
+            "conditions": {
+              "value": [
+                {
+                  "kind": "ItemCount",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                    "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                    "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                    "path": "Assets/Hollowmere/Items/OldCoin.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "rule": null,
+                  "conditionSet": null,
+                  "inventory": null,
+                  "entityId": "",
+                  "index": 0,
+                  "op": "GreaterOrEqual",
+                  "value": 1,
+                  "legacySubject": null
+                }
+              ],
+              "type": "object[]"
+            },
+            "mode": {
+              "value": "All",
+              "type": "enum"
+            }
+          },
+          "refs": [
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            },
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+            "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+            "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset",
+            "scope": "Definition",
+            "stamp": "sha256:c210636b08a6676b5c03f2201bc39a89326fb4c7f81d43902c295e35a7b1ed31"
+          },
+          "type": "logic.conditionSet",
+          "name": "HasCoins2",
+          "fields": {
+            "conditions": {
+              "value": [
+                {
+                  "kind": "ItemCount",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                    "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                    "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                    "path": "Assets/Hollowmere/Items/OldCoin.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "rule": null,
+                  "conditionSet": null,
+                  "inventory": null,
+                  "entityId": "",
+                  "index": 0,
+                  "op": "GreaterOrEqual",
+                  "value": 2,
+                  "legacySubject": null
+                }
+              ],
+              "type": "object[]"
+            },
+            "mode": {
+              "value": "All",
+              "type": "enum"
+            }
+          },
+          "refs": [
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            },
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+            "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+            "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset",
+            "scope": "Definition",
+            "stamp": "sha256:1053fcc037d2bd0a56fcba9b27c6c9ff82ea51a3f936788afb1c9b6f2ce3cfa9"
+          },
+          "type": "logic.conditionSet",
+          "name": "HasCoins4",
+          "fields": {
+            "conditions": {
+              "value": [
+                {
+                  "kind": "ItemCount",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                    "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                    "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                    "path": "Assets/Hollowmere/Items/OldCoin.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "rule": null,
+                  "conditionSet": null,
+                  "inventory": null,
+                  "entityId": "",
+                  "index": 0,
+                  "op": "GreaterOrEqual",
+                  "value": 4,
+                  "legacySubject": null
+                }
+              ],
+              "type": "object[]"
+            },
+            "mode": {
+              "value": "All",
+              "type": "enum"
+            }
+          },
+          "refs": [
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            },
+            {
+              "field": "conditions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "19942a74-dafe-4daf-a9d4-26bea7aad898",
+                "global": "GlobalObjectId_V1-3-05dd05be1474ee7c6bcfc41eeee1b1fc-11400000-0",
+                "assetGuid": "05dd05be1474ee7c6bcfc41eeee1b1fc",
+                "path": "Assets/Hollowmere/Items/OldCoin.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+            "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+            "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset",
+            "scope": "Definition",
+            "stamp": "sha256:1a603d92a0eecdcd7e31acc50f8e76bf364c489415ced3686df4d560382eb0bc"
+          },
+          "type": "logic.actionSet",
+          "name": "BuyHerbs",
+          "fields": {
+            "actions": {
+              "value": [
+                {
+                  "kind": "Buy",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+                    "global": "GlobalObjectId_V1-3-ffdbcfebb268de301b2946345b0b0d5d-11400000-0",
+                    "assetGuid": "ffdbcfebb268de301b2946345b0b0d5d",
+                    "path": "Assets/Hollowmere/Items/MarshHerbs.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "actionSet": null,
+                  "worldItem": null,
+                  "vendor": {
+                    "kind": "Definition",
+                    "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                    "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                    "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                    "path": "Assets/Hollowmere/Items/InnStock.asset"
+                  },
+                  "inventory": null,
+                  "entityId": "",
+                  "value": 1,
+                  "text": "",
+                  "legacyTarget": null
+                }
+              ],
+              "type": "object[]"
+            }
+          },
+          "refs": [
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+                "global": "GlobalObjectId_V1-3-ffdbcfebb268de301b2946345b0b0d5d-11400000-0",
+                "assetGuid": "ffdbcfebb268de301b2946345b0b0d5d",
+                "path": "Assets/Hollowmere/Items/MarshHerbs.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            },
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+                "global": "GlobalObjectId_V1-3-ffdbcfebb268de301b2946345b0b0d5d-11400000-0",
+                "assetGuid": "ffdbcfebb268de301b2946345b0b0d5d",
+                "path": "Assets/Hollowmere/Items/MarshHerbs.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+          }
+        },
+        {
+          "ref": {
+            "kind": "Definition",
+            "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+            "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+            "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset",
+            "scope": "Definition",
+            "stamp": "sha256:48720e0c632b81e9551a18886b663b4e7d91569096e8d79f94006f9c765a63d3"
+          },
+          "type": "logic.actionSet",
+          "name": "BuyLantern",
+          "fields": {
+            "actions": {
+              "value": [
+                {
+                  "kind": "Buy",
+                  "fact": null,
+                  "item": {
+                    "kind": "Definition",
+                    "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                    "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                    "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                    "path": "Assets/Hollowmere/Items/Lantern.asset"
+                  },
+                  "quest": null,
+                  "region": null,
+                  "graph": null,
+                  "actionSet": null,
+                  "worldItem": null,
+                  "vendor": {
+                    "kind": "Definition",
+                    "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                    "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                    "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                    "path": "Assets/Hollowmere/Items/InnStock.asset"
+                  },
+                  "inventory": null,
+                  "entityId": "",
+                  "value": 1,
+                  "text": "",
+                  "legacyTarget": null
+                }
+              ],
+              "type": "object[]"
+            }
+          },
+          "refs": [
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            },
+            {
+              "field": "actions[0].item",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+                "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+                "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+                "path": "Assets/Hollowmere/Items/Lantern.asset"
+              }
+            },
+            {
+              "field": "actions[0].vendor",
+              "to": {
+                "kind": "Definition",
+                "authoringId": "1cc0feea-96aa-409f-8f60-ca0d51065de5",
+                "global": "GlobalObjectId_V1-3-12a2fb1abc1fa86f296f15036e4d61b0-11400000-0",
+                "assetGuid": "12a2fb1abc1fa86f296f15036e4d61b0",
+                "path": "Assets/Hollowmere/Items/InnStock.asset"
+              }
+            }
+          ],
+          "capabilities": [
+            "narrative.definition"
+          ],
+          "provenance": {
+            "asset": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "01c49243-c734-4250-8b0f-c01eeac4b827",
+            "global": "GlobalObjectId_V1-3-749e4e68f4bec3647b34170983f99674-11400000-0",
+            "assetGuid": "749e4e68f4bec3647b34170983f99674",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyOil.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Entity",
+            "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "3de64dcb-2b22-4d91-98f4-764552c261f5",
+            "global": "GlobalObjectId_V1-3-f10a72a8291c2c2be95c2e076e33a456-11400000-0",
+            "assetGuid": "f10a72a8291c2c2be95c2e076e33a456",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins1.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "43b5286f-f192-40df-8abf-09091be37ff3",
+            "global": "GlobalObjectId_V1-3-9a2aea3c3bfe56c71be5f263b0e6302e-11400000-0",
+            "assetGuid": "9a2aea3c3bfe56c71be5f263b0e6302e",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins2.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "5ebe6bae-27a1-48f5-9698-32e0879554f1",
+            "global": "GlobalObjectId_V1-3-312f20932391eaf6ea780ae71f56382c-11400000-0",
+            "assetGuid": "312f20932391eaf6ea780ae71f56382c",
+            "path": "Assets/Hollowmere/Rules/Conditions/HasCoins4.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "cc88cc5f-ea39-4bbf-aa7c-36970c288919",
+            "global": "GlobalObjectId_V1-3-d87f8d5db75ed7d6faa6ebe32f235106-11400000-0",
+            "assetGuid": "d87f8d5db75ed7d6faa6ebe32f235106",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyHerbs.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "eea3aaaa-c7cc-4e05-afa3-1fbb78980979",
+            "global": "GlobalObjectId_V1-3-4ad7a6abdd24836a2803a516c461c6a6-11400000-0",
+            "assetGuid": "4ad7a6abdd24836a2803a516c461c6a6",
+            "path": "Assets/Hollowmere/Rules/Actions/BuyLantern.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "to": {
+            "kind": "Entity",
+            "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Entity",
+            "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+            "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+            "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+            "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+            "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+            "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+            "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+            "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+            "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+            "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+            "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+            "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+            "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+            "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+            "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+            "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+            "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+            "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+            "global": "GlobalObjectId_V1-3-76f3902df5c1ad4728518ff290ebd9cd-11400000-0",
+            "assetGuid": "76f3902df5c1ad4728518ff290ebd9cd",
+            "path": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+            "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "13778dd9-35bd-4e39-a90e-f001d6d1d5da",
+            "global": "GlobalObjectId_V1-3-26dcffb30564d3a8e87c681d023454ec-11400000-0",
+            "assetGuid": "26dcffb30564d3a8e87c681d023454ec",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BramEntity.asset"
+          },
+          "kind": "references"
+        },
+        {
+          "from": {
+            "kind": "Definition",
+            "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+            "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+            "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset"
+          },
+          "to": {
+            "kind": "Definition",
+            "authoringId": "d4ec2831-ccac-416b-a348-efdef00a2d40",
+            "global": "GlobalObjectId_V1-3-6eedddac9e7ef3ffe804ba27629e1bc5-11400000-0",
+            "assetGuid": "6eedddac9e7ef3ffe804ba27629e1bc5",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BramBehaviour.asset"
+          },
+          "kind": "references"
+        }
+      ]
+    },
+    "ToolCatalogRevision": "8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e",
+    "Mode": "design",
+    "Attachments": [
+      {
+        "Name": "scene-context.json",
+        "MediaType": "application/json",
+        "Role": "context",
+        "Data": "eyJzY2hlbWEiOiJnYW1lY29yZS5zdHVkaW8uc2NlbmVjb250ZXh0LzEiLCJ1bml0cyI6Im1ldHJlcyIsImF4ZXMiOnsibm9ydGgiOiIreiIsImVhc3QiOiIreCIsInVwIjoiK3kifSwib2JqZWN0cyI6W3sicmVmIjp7ImtpbmQiOiJFbnRpdHkiLCJhdXRob3JpbmdJZCI6IjI4MjVkYjcxLTExYTEtNDE1NS1iMWRiLTllNzczNDExMWQ5ZSIsImdsb2JhbCI6Ikdsb2JhbE9iamVjdElkX1YxLTItNmNiYTMwMjg5OWM0NWJiOTE5YjA5N2FkZTk1OTI4M2MtMTA4NzExNDE4MC0wIiwiYXNzZXRHdWlkIjoiNmNiYTMwMjg5OWM0NWJiOTE5YjA5N2FkZTk1OTI4M2MiLCJwYXRoIjoiQXNzZXRzL0hvbGxvd21lcmUvUmVnaW9ucy9UaG9ybndpY2tWaWxsYWdlLnVuaXR5Iy9CcmFtIiwic2NvcGUiOiJJbnN0YW5jZSIsInN0YW1wIjoic2hhMjU2OmFmNTU0OTA5NzQ0ZWRjMGU4NjI5MWRiODYzN2VkMjY5ZGQyNDI5OTgyZTRjYTA0NmRiN2UwZGQ4YTlkYzM4YzEifSwibmFtZSI6IkJyYW0iLCJwYXRoIjoiQnJhbSIsInNjZW5lIjoiQXNzZXRzL0hvbGxvd21lcmUvUmVnaW9ucy9UaG9ybndpY2tWaWxsYWdlLnVuaXR5IiwicG9zaXRpb24iOlsxMS4wLDAuMCwtMTMuMF0sInJvdGF0aW9uIjpbMC4wLDAuNzA3MSwwLjAsLTAuNzA3MV0sInNjYWxlIjpbMS4wLDEuMCwxLjBdfV0sInRydW5jYXRlZCI6dHJ1ZX0="
+      }
+    ],
+    "Parent": null,
+    "VoiceTranscriptId": null,
+    "ChangeSetId": "cs_01M49SC9KRJS03WMHJEXC47ECD"
+  },
+  "toolCatalogRevision": "8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e",
+  "contextBytes": 49246,
+  "contextTruncated": true
+}

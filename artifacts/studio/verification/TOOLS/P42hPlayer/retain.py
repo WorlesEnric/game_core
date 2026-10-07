@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 
 ROOT = Path(__file__).resolve().parents[5]
 DEFAULT_DESTINATION = ROOT / "artifacts/studio/verification/W-GAME-01/p42h-player"
@@ -73,6 +74,14 @@ def main():
             # only builder receipts from these trees; runtime evidence is elsewhere.
             if relative.parts[0] in {"player", "sources", "capture-launcher"} and str(relative) not in {"player/build-report.json", "player/revision.txt"}:
                 receipt["skippedFiles"] += 1
+                continue
+            if suffix == ".png" and path.name == "window-proof.png":
+                target = destination / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(path, target)
+                receipt["files"].append({"source": str(relative), "retained": str(target.relative_to(destination)),
+                    "sourceBytes": path.stat().st_size, "sourceSha256": digest(path), "retainedSha256": digest(target),
+                    "homePathsSanitized": False, "gzip": False})
                 continue
             if suffix not in TEXT:
                 receipt["skippedFiles"] += 1

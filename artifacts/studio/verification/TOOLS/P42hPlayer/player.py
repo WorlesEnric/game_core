@@ -16,6 +16,7 @@ import signal
 import subprocess
 import sys
 import time
+from window import prepare
 
 ROOT = Path(__file__).resolve().parents[5]
 SELF = Path(__file__).resolve()
@@ -76,17 +77,31 @@ def capture(arguments):
     for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
         signal.signal(sig, interrupted)
     try:
+        child = subprocess.Popen([player, *arguments], stdin=subprocess.DEVNULL)
+        receipt["playerPid"] = child.pid
+        log_path = Path(arguments[arguments.index("-logFile") + 1])
+        readiness_deadline = time.monotonic() + 30
+        while not log_path.exists() or "frame pacing" not in log_path.read_text(errors="replace"):
+            if child.poll() is not None or time.monotonic() >= readiness_deadline:
+                raise RuntimeError("Player did not reach frame-pacing readiness before capture")
+            time.sleep(0.1)
+        window = prepare(child.pid)
+        receipt["ownedWindowId"] = hex(window)
+        receipt["captureTarget"] = "Exact _NET_WM_PID-matched player window, moved to 0,0 and raised; not desktop pixels"
+        command[command.index("-f"):command.index("-f")] = ["-window_id", hex(window)]
+        dump(target / "capture-start.json", receipt)
         with (target / "ffmpeg.log").open("w") as stream:
             recorder = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
             time.sleep(2)
             if recorder.poll() is not None:
-                raise RuntimeError("recorder failed before player; see ffmpeg.log")
-            child = subprocess.Popen([player, *arguments], stdin=subprocess.DEVNULL)
-            receipt["playerPid"] = child.pid
+                raise RuntimeError("owned-window recorder failed; see ffmpeg.log")
+            capture_started = time.monotonic()
             while child.poll() is None:
                 if recorder.poll() is not None:
                     raise RuntimeError("recorder stopped while player was active")
                 time.sleep(0.5)
+                if time.monotonic() - capture_started >= 15 and not (target / "window-proof.png").exists():
+                    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "x11grab", "-window_id", hex(window), "-video_size", "1920x1080", "-i", ":1.0", "-frames:v", "1", str(target / "window-proof.png")], check=True, timeout=10, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             receipt["playerExit"] = child.returncode
             stop(recorder)
             receipt["recorderExit"] = recorder.returncode
@@ -130,8 +145,12 @@ def main():
               "captureOverhead": "All four P3.1d routes are recorded using R7-C ffmpeg settings; the runner's historical 'No video/screen capture' provenance line does not describe these wrapped runs.",
               "profiles": {"vsync0": {"status": "BLOCKED"}, "vsync1": {"status": "BLOCKED"}}}
     try:
-        revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        harness_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        revision = harness_revision if args.action == "build" else json.loads((out / "player/build-report.json").read_text())["revision"]
+        if args.action == "run":
+            subprocess.run(["git", "diff", "--quiet", revision, harness_revision, "--", "Packages", "games", "studio/agent", "studio/stage"], cwd=ROOT, check=True)
         result["revision"] = revision
+        result["harnessRevision"] = harness_revision
         env = dict(os.environ, GC_STUDIO_UNITY_SLOTS="1")
         if args.action == "build":
             sources = out / "sources"
@@ -169,7 +188,7 @@ def main():
             launcher.chmod(0o755)
             env.update(PROBE_RUNS="2", PROFILE="0", EVIDENCE_DIR=str(out), PLAYER_DIR=str(wrapper),
                        P42H_REAL_PLAYER=str(out / "player/Hollowmere.x86_64"))
-            rc = logged(["bash", str(TOOLS / "measure_frames_p31d.sh")], out / "measurement-transcript.txt", env)
+            rc = logged(["bash", "-x", str(TOOLS / "measure_frames_p31d.sh")], out / "measurement-transcript.txt", env)
             result["runnerExit"] = rc
             folders = [out / "measurement" / f"vsync{v}" / f"run{r}" for v in (0, 1) for r in (1, 2)]
             if not all((p / "frame-stats.json").is_file() for p in folders):

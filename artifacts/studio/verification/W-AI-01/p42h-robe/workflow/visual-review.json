@@ -1,0 +1,22 @@
+{
+  "row": "W-AI-01",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-06T23:52:57.328546+00:00",
+  "observation": "Actual viewport captures frame the existing capsule-shaped Maren patrol view. Before is olive-colored; applied is visibly darker forest-green woven cloth with a clear textile pattern; normal undo restores the original olive material. The generated image is green woven cloth, not a flat tint. The stylized capsule geometry is unchanged, and the real material/property-block and behaviour receipts independently pass. Existing magenta background props remain visible and are not claimed fixed.",
+  "reviewAssertions": [
+    "The generated image is green robe cloth, not a tint or old texture.",
+    "The applied real healer body visibly uses the green texture; undo visibly restores the original body material.",
+    "All three captures frame the real healer body and are legible; a hidden/cropped body cannot pass."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "6c37757224481f3f9eda36379e7fd78da659d8874f45fd67e6b02e258f8e4381",
+    "viewport-before.png": "14362d11e274f245d91029a2d3e4f3c3e8f2cd28431c7044307be5668e784749",
+    "viewport-applied.png": "64a83a4c5cbfc351958c36dc7c281a2150aca70ec2a0f58100ed4e193ee3642d",
+    "viewport-undone.png": "a51ec65735dd0d0e317595353ad021319f49ea0405e4e067c396669ef730e1e6",
+    "studio-before.png": "d2c6379adb37825e7b96a859ba59b53fb252bd02d23613ddb41db407ad7c30c1",
+    "studio-applied.png": "249bd4221d2d70f9854cc2b7eb5e1af5d26f767554b8676e7e81bc65e50888f7",
+    "studio-undone.png": "cf4ce443c5780a206da1c04e6731e0ad951675cde5f11997719e57def3f8533c"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

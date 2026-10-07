@@ -1,15 +1,13 @@
 # W-AI-01: Select the healer; "give her a green robe": texture generated, material updated, behaviour unchanged; undo restores
 
-Verdict: **BLOCKED**. PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised.
+Verdict: **PASS**. P4.2h second real USD0.20 image is green woven cloth, imported through current media and assigned by explicit engine entity.setMaterialTexture. Actual GameBoot/New Game Maren body uses that texture via production property block; visible olive-to-forest-green cloth change and normal History restoration are captured. Behaviour/NPC/dialogue/village source hashes, runtime profile/route/schedule and structural recipe remain unchanged. Existing stylized capsule geometry and background graphics are not claimed improved.
 
-Report timestamp: 2026-10-06T15:29:44.397410+00:00 UTC.
-
-Acceptance baseline: merged main `f787829289ea7402c08917a78553ff6c3838bda8`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh p42c robe2
+python3 artifacts/studio/verification/TOOLS/live-p42h.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe --workflow-out artifacts/studio/verification/W-AI-01/p42h-robe/workflow
 ```
 
 ## Retained evidence
@@ -17,5 +15,8 @@ studio/tools/verify-all.sh p42c robe2
 - [W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md](../W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md)
 - [W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/robe/apply-report.json](../W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/robe/apply-report.json)
 - [W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json](../W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json)
-
-Historical references: Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.
+- [W-AI-01/p42h-robe/workflow/result.json](../W-AI-01/p42h-robe/workflow/result.json)
+- [W-AI-01/p42h-robe/workflow/visual-review.json](../W-AI-01/p42h-robe/workflow/visual-review.json)
+- [W-AI-01/p42h-robe/workflow/play-applied.json](../W-AI-01/p42h-robe/workflow/play-applied.json)
+- [W-AI-01/p42h-robe/workflow/play-undone.json](../W-AI-01/p42h-robe/workflow/play-undone.json)
+- [W-AI-01/p42h-robe/workflow/ledger-final.json](../W-AI-01/p42h-robe/workflow/ledger-final.json)

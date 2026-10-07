@@ -1,0 +1,34 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 666,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 664,
+  "steadySeconds": 11.037,
+  "dtMs": {
+    "p50": 16.683,
+    "p95": 17.393,
+    "p99": 19.067,
+    "max": 25.016,
+    "mean": 16.628
+  },
+  "fpsMean": 60.16,
+  "framesOver16_7ms": 303,
+  "framesOver100msOutsideTransitions": [],
+  "framesOver100msOutsideTransitionsCount": 0,
+  "transitions": [],
+  "perRegion": {
+    "Thornwick Village": {
+      "frames": 664,
+      "p95": 17.393,
+      "max": 25.016
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": false,
+    "no_frame_over_100ms_outside_transitions": true,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": false
+  },
+  "verdict": "fail"
+}

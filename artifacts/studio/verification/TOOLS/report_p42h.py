@@ -61,6 +61,8 @@ def main():
     (v.OUT / 'ROW-DECISIONS.json').write_text(json.dumps(decisions, indent=2) + '\n')
     matrix.write_text('\n'.join(lines) + '\n')
     v.summary()
+    summary = v.OUT / 'SUMMARY.md'
+    summary.write_text(summary.read_text().replace('# P4.2 + P4.2b + P4.2c verification summary', '# P4.2h verification summary', 1))
     print(json.dumps(rows['counts']))
 
 if __name__ == '__main__':

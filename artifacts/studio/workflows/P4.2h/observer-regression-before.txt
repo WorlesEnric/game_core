@@ -1,0 +1,17 @@
+test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory (p42h_media_test.MediaIdentity.test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory) ... FAIL
+
+======================================================================
+FAIL: test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory (p42h_media_test.MediaIdentity.test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2h/artifacts/studio/verification/TOOLS/tests/test_p42h_media.py", line 31, in test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory
+    self.assertEqual('PASS', generated['status'], generated.get('reason'))
+AssertionError: 'PASS' != 'BLOCKED'
+- PASS
++ BLOCKED
+ : Artifact lacks actual generate.image etosRef authority
+
+----------------------------------------------------------------------
+Ran 1 test in 0.018s
+
+FAILED (failures=1)

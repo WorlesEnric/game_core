@@ -1,0 +1,26 @@
+test_P42B_TARIFF_owner_declared_image_estimate (test_p42b.Acceptance.test_P42B_TARIFF_owner_declared_image_estimate) ... ok
+test_P42B_TARIFF_placeholder_still_refuses (test_p42b.Acceptance.test_P42B_TARIFF_placeholder_still_refuses) ... ok
+test_R5_B_describe_placeholder_refuses_independently (test_p42b.Acceptance.test_R5_B_describe_placeholder_refuses_independently) ... ok
+test_R2_38_dataset_without_xml_cannot_pass (test_p42b.DatasetReceipts.test_R2_38_dataset_without_xml_cannot_pass) ... ok
+test_R2_38_empty_dataset_cannot_pass (test_p42b.DatasetReceipts.test_R2_38_empty_dataset_cannot_pass) ... ok
+test_R2_38_P42c_baseline_cannot_reset_spend (test_p42c.Caps.test_R2_38_P42c_baseline_cannot_reset_spend) ... ok
+test_R2_38_P42c_ledger_ten_dollars_stops_without_reservation (test_p42c.Caps.test_R2_38_P42c_ledger_ten_dollars_stops_without_reservation) ... ok
+test_R2_38_P42c_missing_ledger_refuses (test_p42c.Caps.test_R2_38_P42c_missing_ledger_refuses) ... ok
+test_R2_38_P42c_no_automatic_paid_replay (test_p42c.Caps.test_R2_38_P42c_no_automatic_paid_replay) ... ok
+test_R2_38_P42c_reserves_all_paid_caps_before_launch (test_p42c.Caps.test_R2_38_P42c_reserves_all_paid_caps_before_launch) ... ok
+test_R2_38_P42d_baseline_and_missing_ledger_fail_closed (test_p42d.Caps.test_R2_38_P42d_baseline_and_missing_ledger_fail_closed) ... ok
+test_R2_38_P42d_cost_reserved_before_dispatch (test_p42d.Caps.test_R2_38_P42d_cost_reserved_before_dispatch) ... ok
+test_R2_38_P42d_four_image_four_tts_two_describe_caps (test_p42d.Caps.test_R2_38_P42d_four_image_four_tts_two_describe_caps) ... ok
+test_R2_38_P42d_no_paid_replay (test_p42d.Caps.test_R2_38_P42d_no_paid_replay) ... ok
+test_R2_38_P42e_owner_describe_estimate (test_p42e.Tariff.test_R2_38_P42e_owner_describe_estimate) ... ok
+test_R2_38_P42e_baseline_and_missing_ledger_fail_closed (test_p42e_caps.Caps.test_R2_38_P42e_baseline_and_missing_ledger_fail_closed) ... ok
+test_R2_38_P42e_cost_reserved_before_dispatch (test_p42e_caps.Caps.test_R2_38_P42e_cost_reserved_before_dispatch) ... ok
+test_R2_38_P42e_no_paid_replay (test_p42e_caps.Caps.test_R2_38_P42e_no_paid_replay) ... ok
+test_R2_38_P42e_two_image_three_tts_two_describe_caps (test_p42e_caps.Caps.test_R2_38_P42e_two_image_three_tts_two_describe_caps) ... ok
+test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take (test_p42e_voice.VoicePlayback.test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take) ... ok
+test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory (test_p42h_media.MediaIdentity.test_R2_38_P42h_ImageWithoutOptionalJobIdRetainsAuthorityAcrossHistory) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 4.111s
+
+OK

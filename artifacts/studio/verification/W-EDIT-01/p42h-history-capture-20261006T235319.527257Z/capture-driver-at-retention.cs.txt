@@ -1,0 +1,69 @@
+#nullable enable
+using System;
+using System.IO;
+using System.Linq;
+using GameCore.Studio.Edit;
+using GameCore.Studio.UI;
+using Hollowmere.P2_1.Evidence;
+using Newtonsoft.Json.Linq;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace P42h.Tasks
+{
+    public sealed class HistoryCapture : ScriptableSingleton<HistoryCapture>
+    {
+        [NonSerialized] private double readyAt;
+        [InitializeOnLoadMethod]
+        private static void RestoreCapture()
+        {
+            if (Environment.GetCommandLineArgs().Contains("P42h.Tasks.HistoryCapture.Run"))
+                EditorApplication.delayCall += Run;
+        }
+        [NonSerialized] private string output = "";
+        [NonSerialized] private string id = "";
+        public static void Run()
+        {
+            instance.output = Environment.GetEnvironmentVariable("GAMECORE_P42H_OUT") ?? throw new InvalidOperationException("Output required");
+            instance.id = Environment.GetEnvironmentVariable("GAMECORE_P42H_HISTORY_ID") ?? throw new InvalidOperationException("History ID required");
+            Directory.CreateDirectory(instance.output);
+            StudioHistoryWindow.Open();
+            var window = EditorWindow.GetWindow<StudioHistoryWindow>();
+            window.position = new Rect(0, 0, 1280, 900);
+            window.Focus();
+            window.View!.Select(instance.id);
+            EditorApplication.update -= Tick;
+            instance.readyAt = EditorApplication.timeSinceStartup + 3;
+            EditorApplication.update += Tick;
+        }
+        private static void Tick()
+        {
+            if (EditorApplication.timeSinceStartup < instance.readyAt) return;
+            EditorApplication.update -= Tick;
+            try
+            {
+                var window = EditorWindow.GetWindow<StudioHistoryWindow>();
+                var details = window.View!.Q<ScrollView>("history-details");
+                var entry = StudioServices.Runtime.Journal.Read(instance.id) ?? throw new InvalidOperationException("Journal missing");
+                var labels = details.Query<Label>().ToList();
+                var linked = labels.Where(label => entry.Links!.GameCoreOps!.Any(op => label.text.Contains(op))).ToArray();
+                if (linked.Length != 1) throw new InvalidOperationException("Unique operation label missing");
+                details.ScrollTo(linked[0]);
+                window.Repaint();
+                EditorApplication.delayCall += () =>
+                {
+                    string? error = UnityWindowCapture.CaptureStudio(Path.Combine(instance.output, "history-full.png"), false);
+                    File.WriteAllText(Path.Combine(instance.output, "result.json"), new JObject { ["status"] = error == null ? "PASS" : "FAIL", ["historyId"] = instance.id,
+                        ["gameCoreOps"] = new JArray(entry.Links!.GameCoreOps!), ["etosTasks"] = new JArray(entry.Links.EtosTasks!), ["error"] = error }.ToString());
+                    EditorApplication.Exit(error == null ? 0 : 1);
+                };
+            }
+            catch (Exception error)
+            {
+                Debug.LogException(error);
+                EditorApplication.Exit(1);
+            }
+        }
+    }
+}

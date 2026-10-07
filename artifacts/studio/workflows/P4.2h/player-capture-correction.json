@@ -1,0 +1,48 @@
+{
+  "originalAttempt": ".evidence/P42hPlayer",
+  "status": "FAIL",
+  "reason": "Actual frame inspection of first 619-second movie showed desktop notification rather than the game; metadata alone did not establish graphical recording. Second off-profile attempt cancelled; original measurements and movies retained.",
+  "correctedSmoke": {
+    "status": "PASS",
+    "display": ":1",
+    "playerPid": 422481,
+    "windowId": "0x400005",
+    "capture": "Exact _NET_WM_PID-matched owned player window after raise/move; actual Hollowmere menu observed at 1920x1080",
+    "image": "owned-player-window-smoke.png"
+  },
+  "nextAttempt": ".evidence/P42hPlayer-final",
+  "binaryReusedWithoutRebuild": true,
+  "productRevision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "auxiliaryWindowAttempt": {
+    "path": ".evidence/P42hPlayer-window",
+    "status": "FAIL",
+    "reason": "Initial PID-only match selected an auxiliary X11 window (0x400000), evidenced by capture error. Stopped before completing a qualifying run. Final selection additionally requires owned Hollowmere title and substantial game geometry."
+  },
+  "legacyTitleAttempt": {
+    "path": ".evidence/P42hPlayer-window2",
+    "status": "FAIL",
+    "reason": "Actual borderless player has no legacy WM_NAME, although its PID and 1920x1080 geometry are present. Title-filter setup rejected it, stopping each short run before qualification."
+  },
+  "finalSelectorSmoke": {
+    "status": "PASS",
+    "pid": 448048,
+    "windowId": "0x400005",
+    "criteria": "Exact launched PID and substantial game geometry; auxiliary 1x1 windows excluded; no legacy title or input-focus requirement.",
+    "proof": "owned-borderless-player-smoke.png"
+  },
+  "readinessFailures": [
+    {
+      "path": ".evidence/P42hPlayer-final",
+      "reason": "XSetInputFocus before the game window became viewable caused fatal X BadMatch; Python cleanup was bypassed. Exact orphan PID 451781 verified by its executable path and stopped."
+    },
+    {
+      "path": ".evidence/P42hPlayer-recorded",
+      "reason": "Traced repeat confirmed the premature X_SetInputFocus failure; exact owned orphan PID 463229 stopped."
+    }
+  ],
+  "qualifiedAttempt": {
+    "path": ".evidence/P42hPlayer-qualified",
+    "readiness": "Wait for actual frame pacing log, then move/map/raise the owned game window without XSetInputFocus",
+    "earlyProof": "measurement/vsync0/run1/window-proof.png shows actual Hollowmere HUD and village at 1920x1080"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "id": "cs_01M49SXYV4565S7ENNSGWEN6KY",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Give Maren a green robe using the newly generated cloth texture; preserve behaviour",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "entity.setMaterialTexture",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:9c5857942292165d5f966924d8ce5bd4454f07ba09b7c1cc0abe6659d1b14f53"
+      },
+      "args": {
+        "texture": {
+          "kind": "Asset",
+          "global": "GlobalObjectId_V1-1-88fe57e911834e2e796fecbb697f2650-2800000-0",
+          "assetGuid": "88fe57e911834e2e796fecbb697f2650",
+          "path": "Assets/Hollowmere/Generated/P42h/robe-f85d7c72c73f4400b1113d3c852524e1.png",
+          "stamp": "sha256:6c37757224481f3f9eda36379e7fd78da659d8874f45fd67e6b02e258f8e4381"
+        },
+        "renderer": 0,
+        "slot": 0,
+        "property": "_BaseMap"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "args": {
+                "fields": {
+                  "materialTextures": []
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+                "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+                "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+                "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+              },
+              "stamp": "sha256:30d3ce6772ab9a3c5461b1a196516da79f31165702b345c8013c369c782aa3c3"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-06T23:49:08.604Z",
+    "applied": "2026-10-06T23:49:08.629Z"
+  }
+}

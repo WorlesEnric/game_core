@@ -6,6 +6,8 @@ Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`, main after R7 inte
 
 Read the packet note and contracts first. Merge origin/main, establish no other Unity Editor or sibling project-hub OMP run, then start `monitor-p42h.py` through the process supervisor. Unrelated owner sessions outside the project hub are not blockers. Build the exact source companion with fmt, all-target clippy, tests and release build. `activate-worker-p42h.py` reuses the R6-F immutable installer and preserves the existing USD0.50 designer policy. It verifies the executable/worker digests and checksum no-op, and registers this root project.
 
+The activation adapter intentionally requires the product-baseline checkout before qualification commits. To reproduce after those commits, retain/copy the packet's TOOLS directory into a fresh checkout at the stated baseline; do not weaken the source-revision guard or erase an existing activation receipt.
+
 Run `live-p42h.py baseline` exactly once before paid work, then `live-p42h.py hello`. The baseline and reservations must not be reset. The packet ceiling is two images, two TTS, one describe, no paid 3D and USD1.50 total. This execution used only two images, no TTS/describe, plus one unconfigured 3D refusal. Text requests use the installed worker ceiling. `retain-ledger-p42h.py` collects only this project's tasks; empty task usage is explicitly listed rather than called free execution.
 
 ## Install acceptance drivers
@@ -56,7 +58,7 @@ python3 artifacts/studio/verification/TOOLS/P42hPlayer/player.py run --output "$
 python3 artifacts/studio/verification/TOOLS/P42hPlayer/retain.py --source "$PWD/.evidence/P42hPlayer"
 ```
 
-The production release Linux IL2CPP build must match the source revision. Four full routes run serially, twice each VSync off/on, real NVIDIA GPU at 1920×1080 on `:1`. The unchanged frame rule and owner definition remain separate. Recordings include capture overhead. Large movies stay outside Git with exact path/size/SHA256 manifests; never claim a prior video as this revision's recording.
+The production release Linux IL2CPP build is bound to its source revision. Evidence-only later commits are permitted only after a zero diff for Packages/games/companion/stage between build and harness revisions; both revisions are retained. Four full routes run serially, twice each VSync off/on, real NVIDIA GPU at 1920×1080 on `:1`. The unchanged frame rule and owner definition remain separate. Recordings include capture overhead. Final capture waits for actual frame-pacing readiness and targets only the launched PID's substantial X11 game window; it moves/maps/raises that window without changing input focus. Every run retains an early actual-pixel proof. Desktop-only, auxiliary-window, legacy-title and premature-focus setup failures remain separate, never full-run passes. Large movies stay outside Git with exact path/size/SHA256 manifests.
 
 ## Reporting and cleanup
 

@@ -1,0 +1,29 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "runtimeStatus": "PASS",
+  "reason": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Actual image depicts a head-and-shoulders adult healer portrait with green-brown clothing and herbs, not a placeholder. Generated/applied/redone PNGs are byte-identical SHA256 8ece8b51e61902d4aa58cf0bfee303e3b99af0aa6fc639b316fd00631c437aaf. Actual History captures show Applied, Undone with Undo done, and Applied with Redo done for the same import; ledger checkpoints retain one USD0.20 charge.",
+  "phase": 23,
+  "endedUtc": "2026-10-06T23:37:04.7650050Z",
+  "mode": "portrait",
+  "runtimeReason": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo.",
+  "generationCalls": 1,
+  "maximumCostUsdPerImage": 0.2,
+  "requestId": null,
+  "taskIds": [],
+  "mediaIdentity": {
+    "effectKey": "gc-66ad224daae13d1df715fdf8ea8cab99065641fd",
+    "etosRef": "ref_01m49s36yskb644zgrjkbk9sad",
+    "jobId": null,
+    "reason": "App-owned direct media route; no worker request or task was created",
+    "requestId": null,
+    "taskIds": []
+  },
+  "importChangeSetId": "cs_01M49S3764SDED9MR89Z1BFDM7",
+  "assignmentChangeSetId": "",
+  "identityNote": "No worker request/task exists for this app-owned direct-media route. Actual companion effect key and node jobId come only from the ledger; local journal IDs are not request authority.",
+  "accountingScope": "Binding companion tariff/charge ledger and original node-reported generation usage; no upstream provider invoice assertion.",
+  "visualEvidence": "generated.png; portrait-applied.png; portrait-redone.png; history-*.png",
+  "cleanup": "Normal History undo removed imported file; CAS and receipts retained.",
+  "visualReview": "visual-review.json"
+}

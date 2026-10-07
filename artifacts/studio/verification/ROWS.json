@@ -1,7 +1,7 @@
 {
   "counts": {
-    "PASS": 50,
-    "BLOCKED": 17,
+    "PASS": 55,
+    "BLOCKED": 12,
     "FAIL": 1
   },
   "rows": [
@@ -23,7 +23,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-D graphical 1280×720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
+      "note": "R7-D graphical 1280\u00d7720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained.",
       "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
@@ -42,7 +42,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-D graphical 1280×720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
+      "note": "R7-D graphical 1280\u00d7720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures.",
       "command": "bash artifacts/studio/verification/W-UI-02/r7-d/run.sh",
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
@@ -64,7 +64,7 @@
       "note": "Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.",
       "command": "studio/tools/verify-all.sh memory",
       "row": "W-UI-04",
-      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10×",
+      "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
       "requirement": "SR-8.2",
       "reportedAt": "2026-10-06T15:29:44.364423+00:00",
       "evidence": [
@@ -249,16 +249,38 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Real task/candidate IDs are recorded, but the worker move is rejected for missing scope, so no applied joined task/GameCore-operation History entry exists.",
-      "command": "studio/tools/verify-all.sh ui",
+      "status": "PASS",
+      "note": "P4.2h fresh installed-worker Instance-scoped runtime.move candidate applies unchanged in real Play. History joins task t9450022d9a74ef2db96f895e with the exact committed GameCore operation; production receipt and pose confirm Bram moved to (11.5,0,-13), with authored scene bytes unchanged.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py move --row W-EDIT-01 --method P42h.Tasks.TaskDriver.JoinedMove",
       "row": "W-EDIT-01",
       "scenario": "Change set in History shows etos task id and GameCore operation ids",
       "requirement": "SR-3.1",
-      "reportedAt": "2026-10-06T15:29:44.379100+00:00",
+      "reportedAt": "2026-10-07T01:31:38.711460+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-      ]
+        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
+        "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json",
+        "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
+        "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-task-gamecore-history.png"
+      ],
+      "checks": [
+        {
+          "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
+          "pointer": "/committedReceiptAndPose",
+          "equals": true
+        },
+        {
+          "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
+          "pointer": "/authoredSceneUnchanged",
+          "equals": true
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
       "status": "PASS",
@@ -277,17 +299,41 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence.",
-      "command": "studio/tools/verify-all.sh media",
+      "status": "PASS",
+      "note": "P4.2h one real USD0.20 portrait passes current media import, normal History undo/redo and final undo. Generated/applied/redone PNG SHA256 is identical; all post-generation charge/producer checkpoints remain unchanged. An observer initially wrongly required optional jobId; its failure is retained and corrected without regenerating. Normal History continuation reuses the original Applied journal after reopening.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait --workflow-out artifacts/studio/verification/W-EDIT-03/p42h-portrait/workflow",
       "row": "W-EDIT-03",
-      "scenario": "Generate portrait → apply → undo → redo: no second generation (usage unchanged)",
+      "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
       "requirement": "SR-3.3",
-      "reportedAt": "2026-10-06T15:29:44.380165+00:00",
+      "reportedAt": "2026-10-07T01:31:38.711721+00:00",
       "evidence": [
         "W-ETOS-07/installed-media-20261005T192218.561813Z/README.md",
-        "W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md"
-      ]
+        "W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md",
+        "W-EDIT-03/p42h-portrait/workflow/result.json",
+        "W-EDIT-03/p42h-portrait/workflow/visual-review.json",
+        "W-EDIT-03/p42h-portrait/workflow/ledger-final.json",
+        "W-EDIT-03/p42h-portrait/workflow/portrait-redone.json",
+        "W-EDIT-03/p42h-portrait/workflow/result-initial-observer-refusal.json"
+      ],
+      "checks": [
+        {
+          "file": "W-EDIT-03/p42h-portrait/workflow/result.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-EDIT-03/p42h-portrait/workflow/result.json",
+          "pointer": "/generationCalls",
+          "equals": 1
+        },
+        {
+          "file": "W-EDIT-03/p42h-portrait/workflow/ledger-final.json",
+          "pointer": "/usageUnchangedSinceGeneration",
+          "equals": true
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
       "status": "PASS",
@@ -332,7 +378,7 @@
         "GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests"
       ],
       "row": "W-EDIT-06",
-      "scenario": "Runtime-only move → \"Apply to authored\" → persists after exiting Play",
+      "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
       "requirement": "SR-1.8",
       "reportedAt": "2026-10-06T21:16:51.128079+00:00",
       "evidence": [
@@ -395,7 +441,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope.",
+      "note": "Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet\u2019s scope.",
       "command": "studio/tools/verify-all.sh security",
       "row": "W-ETOS-01",
       "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
@@ -422,27 +468,62 @@
     },
     {
       "status": "BLOCKED",
-      "note": "The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task.",
-      "command": "studio/tools/verify-all.sh ui",
+      "note": "P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py query --row W-ETOS-04 --method P42h.Tasks.TaskDriver.SelectedNpcQuery",
       "row": "W-ETOS-04",
       "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
       "requirement": "SR-2.4, SR-4.3",
-      "reportedAt": "2026-10-06T15:29:44.389718+00:00",
+      "reportedAt": "2026-10-07T01:31:38.711912+00:00",
       "evidence": [
-        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-      ]
+        "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
+        "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
+        "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json",
+        "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-tool-trace.json"
+      ],
+      "checks": [
+        {
+          "file": "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
+          "pointer": "/queryReceiptMatchesSelectedGraph",
+          "equals": false
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
-      "status": "BLOCKED",
-      "note": "Live client cancellation completes in 556 ms with one task/no candidate, but the creator tray-button portion is not exercised.",
-      "command": "studio/tools/verify-all.sh reconnect",
+      "status": "PASS",
+      "note": "P4.2h actual enabled attached tray Cancel button is activated while request, task and tray report running. One original task becomes cancelled, no candidate or duplicate row appears; acknowledgement 427 ms, stable observation 3585 ms.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py cancel --row W-ETOS-05 --method P42h.Tasks.TaskDriver.TrayCancel",
       "row": "W-ETOS-05",
       "scenario": "Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task",
       "requirement": "SR-4.4",
-      "reportedAt": "2026-10-06T15:29:44.390244+00:00",
+      "reportedAt": "2026-10-07T01:31:38.712066+00:00",
       "evidence": [
-        "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md"
-      ]
+        "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md",
+        "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/result.json",
+        "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/cancelled.json",
+        "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/running-before-cancel.png",
+        "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/cancelled-tray.png"
+      ],
+      "checks": [
+        {
+          "file": "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/result.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/cancelled.json",
+          "pointer": "/request/state",
+          "equals": "cancelled"
+        },
+        {
+          "file": "W-ETOS-05/p42h-cancel-20261006T234228.357309Z/workflow/cancelled.json",
+          "pointer": "/candidate",
+          "equals": false
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
       "status": "BLOCKED",
@@ -484,7 +565,7 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run.",
+      "note": "Removing the shared image provider and reloading the node would change concurrent users\u2019 provider service; that operator scenario is outside the permitted no-node-restart run.",
       "command": "studio/tools/verify-all.sh media",
       "row": "W-ETOS-08",
       "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
@@ -495,17 +576,45 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "Client cursor replay is real; a source recompile/domain reload while an in-flight task returns to the tray was not completed. Simulated reload tests remain component evidence.",
-      "command": "studio/tools/verify-all.sh reconnect",
+      "status": "PASS",
+      "note": "P4.2h real changed-source compilation/domain reload in the same Editor preserves running task tec77a34b9f6f55d58ed934f5 and one attached tray row with unchanged creation identity. Loaded source token and compilation/reload callbacks are retained; session starts 11-to-12. Durable cursor 760 continues with exact production/independent replay [761,762], no gap/duplicate and one terminal event; creator tray cancellation then bounds task lifetime.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py reload --row W-ETOS-09 --method P42h.Tasks.TaskDriver.SourceReload",
       "row": "W-ETOS-09",
       "scenario": "Domain reload during a task: tray shows the same task afterwards",
       "requirement": "SR-8.3",
-      "reportedAt": "2026-10-06T15:29:44.394293+00:00",
+      "reportedAt": "2026-10-07T01:31:38.712211+00:00",
       "evidence": [
         "W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md",
-        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-      ]
+        "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
+        "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json",
+        "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/cursor-replay.json",
+        "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/source-compilation-request.json",
+        "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/reload-same-running-row.png"
+      ],
+      "checks": [
+        {
+          "file": "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json",
+          "pointer": "/harnessCompiled",
+          "equals": true
+        },
+        {
+          "file": "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/result.json",
+          "pointer": "/sameRunningTaskAfterReload",
+          "equals": true
+        },
+        {
+          "file": "W-ETOS-09/p42h-reload-20261006T234520.220306Z/workflow/cursor-replay.json",
+          "pointer": "/exactNoGapNoDuplicate",
+          "equals": true
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
       "status": "BLOCKED",
@@ -530,19 +639,41 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "baseline": "f787829289ea7402c08917a78553ff6c3838bda8",
-      "note": "PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised.",
-      "command": "studio/tools/verify-all.sh p42c robe2",
-      "historical": "Earlier P4.2/P4.2b attempts remain retained; this disposition uses the installed P4.2c release and final-main product source.",
+      "status": "PASS",
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "note": "P4.2h second real USD0.20 image is green woven cloth, imported through current media and assigned by explicit engine entity.setMaterialTexture. Actual GameBoot/New Game Maren body uses that texture via production property block; visible olive-to-forest-green cloth change and normal History restoration are captured. Behaviour/NPC/dialogue/village source hashes, runtime profile/route/schedule and structural recipe remain unchanged. Existing stylized capsule geometry and background graphics are not claimed improved.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe --workflow-out artifacts/studio/verification/W-AI-01/p42h-robe/workflow",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
       "row": "W-AI-01",
       "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
-      "requirement": "mandate §10",
-      "reportedAt": "2026-10-06T15:29:44.397410+00:00",
+      "requirement": "mandate \u00a710",
+      "reportedAt": "2026-10-07T01:31:38.713207+00:00",
       "evidence": [
         "W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md",
         "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/robe/apply-report.json",
-        "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json"
+        "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json",
+        "W-AI-01/p42h-robe/workflow/result.json",
+        "W-AI-01/p42h-robe/workflow/visual-review.json",
+        "W-AI-01/p42h-robe/workflow/play-applied.json",
+        "W-AI-01/p42h-robe/workflow/play-undone.json",
+        "W-AI-01/p42h-robe/workflow/ledger-final.json"
+      ],
+      "checks": [
+        {
+          "file": "W-AI-01/p42h-robe/workflow/result.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-AI-01/p42h-robe/workflow/result.json",
+          "pointer": "/generationCalls",
+          "equals": 1
+        },
+        {
+          "file": "W-AI-01/p42h-robe/workflow/ledger-final.json",
+          "pointer": "/usageUnchangedSinceGeneration",
+          "equals": true
+        }
       ]
     },
     {
@@ -640,7 +771,7 @@
       "historical": "P4.2g installed qualification; earlier attempts remain retained as historical evidence. Other rows retain their own revision-specific evidence.",
       "row": "W-AI-02",
       "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
-      "requirement": "mandate §10",
+      "requirement": "mandate \u00a710",
       "reportedAt": "2026-10-06T20:20:42.654114+00:00",
       "evidence": [
         "W-AI-02/p42f-text2-20261006T173140.444632Z",
@@ -669,7 +800,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
-      "requirement": "mandate §10",
+      "requirement": "mandate \u00a710",
       "reportedAt": "2026-10-06T15:29:44.401563+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -686,7 +817,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-04",
       "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
-      "requirement": "mandate §10",
+      "requirement": "mandate \u00a710",
       "reportedAt": "2026-10-06T15:29:44.403575+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -702,7 +833,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-05",
       "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
-      "requirement": "mandate §10",
+      "requirement": "mandate \u00a710",
       "reportedAt": "2026-10-06T15:29:44.404795+00:00",
       "evidence": [
         "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
@@ -723,7 +854,7 @@
       "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
-      "requirement": "mandate §10",
+      "requirement": "mandate \u00a710",
       "reportedAt": "2026-10-06T21:13:46.407929+00:00",
       "evidence": [
         "W-AI-06/r7-a/README.md",
@@ -753,7 +884,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825–0.15878% of peak; both passing runs meet load ≤2 s/unload ≤1 s. Reloadable 702-byte clip descriptors remain included in the residual.",
+      "note": "R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825\u20130.15878% of peak; both passing runs meet load \u22642 s/unload \u22641 s. Reloadable 702-byte clip descriptors remain included in the residual.",
       "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform EditMode -testFilter 'NativeMediaAcceptance' -force-glcore",
       "tests": [
         "TravelsVillageMarshBelfryVillage"
@@ -802,7 +933,7 @@
     },
     {
       "status": "PASS",
-      "note": "Fresh-boot restore retains the unloaded NPC’s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
+      "note": "Fresh-boot restore retains the unloaded NPC\u2019s captured slots, including PatrolIndex, and gameplay patrol tests assert committed progression.",
       "command": "studio/tools/verify-all.sh unity",
       "tests": [
         "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
@@ -916,7 +1047,7 @@
     },
     {
       "status": "PASS",
-      "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals ≤0.159%; no paid calls.",
+      "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals \u22640.159%; no paid calls.",
       "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record\nnode artifacts/studio/verification/W-PLUG-11/audio-identity.mjs",
       "row": "W-PLUG-11",
       "scenario": "Ambience crossfade, voice line, clip release",
@@ -939,7 +1070,7 @@
         "OneFieldChange_ChangesOnlyThatDefinitionsRevision"
       ],
       "row": "W-PLUG-12",
-      "scenario": "Bake byte-identity; one line change → one revision change",
+      "scenario": "Bake byte-identity; one line change \u2192 one revision change",
       "requirement": "SR-5.3",
       "reportedAt": "2026-10-06T15:29:44.417891+00:00",
       "evidence": [
@@ -956,7 +1087,7 @@
         "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
       ],
       "row": "W-KERNEL-01",
-      "scenario": "Corrupted catalog → named failure, not an empty world",
+      "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
       "requirement": "SR-7.1",
       "reportedAt": "2026-10-06T15:29:44.419407+00:00",
       "evidence": [
@@ -1033,16 +1164,26 @@
     },
     {
       "status": "BLOCKED",
-      "note": "Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation.",
-      "command": "studio/tools/verify-all.sh stage",
+      "note": "P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained.",
+      "command": "Read docs/studio/packets/P4.2h-live-rows.md Requests to other packets and W-REC-03/p42h-prerequisite/result.json",
       "row": "W-REC-03",
       "scenario": "Cancel region load mid-way; cancel staging job",
       "requirement": "SR-9.1",
-      "reportedAt": "2026-10-06T15:29:44.423531+00:00",
+      "reportedAt": "2026-10-07T01:31:38.713401+00:00",
       "evidence": [
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
-        "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md"
-      ]
+        "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
+        "W-REC-03/p42h-prerequisite/result.json"
+      ],
+      "checks": [
+        {
+          "file": "W-REC-03/p42h-prerequisite/result.json",
+          "pointer": "/runtimeCancellationAttempted",
+          "equals": false
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
       "status": "PASS",
@@ -1274,16 +1415,38 @@
     },
     {
       "status": "BLOCKED",
-      "note": "reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open.",
-      "command": "Read the linked retained P3.1/P3.1b recording and frame manifests; do not make another ten-minute recording.",
-      "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
+      "note": "P4.2h current-source release Linux IL2CPP, real RTX4060Ti on :1 at 1080p: four actual >600-second recordings. VSync OFF literal B-FRAME PASS twice: p95 3.461/3.552 ms, zero frames >100 ms outside transition windows. VSync ON FAIL twice: p95 17.375/17.314 ms; outside-transition >100 ms counts 2/0. All full routes, saves and recordings pass; transition hitches <=122.590 ms. Owner VSync definition remains open; no blended or relaxed verdict. Failed recorder setup attempts remain retained.",
+      "command": "python3 artifacts/studio/verification/TOOLS/P42hPlayer/player.py run --output \"$PWD/.evidence/P42hPlayer-qualified\"",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
       "row": "W-GAME-01",
       "scenario": "10-minute graphical playthrough recording with frame log",
       "requirement": "SR-8.1, B-FRAME",
-      "reportedAt": "2026-10-06T15:29:44.428661+00:00",
+      "reportedAt": "2026-10-07T01:31:38.713547+00:00",
       "evidence": [
-        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
-      ]
+        "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
+        "W-GAME-01/p42h-player/result.json",
+        "W-GAME-01/p42h-player/visual-review.json",
+        "W-GAME-01/p42h-player/external-movies.json",
+        "W-GAME-01/p42h-player/player/build-report.json"
+      ],
+      "checks": [
+        {
+          "file": "W-GAME-01/p42h-player/result.json",
+          "pointer": "/profiles/vsync0/status",
+          "equals": "PASS"
+        },
+        {
+          "file": "W-GAME-01/p42h-player/result.json",
+          "pointer": "/profiles/vsync1/status",
+          "equals": "FAIL"
+        },
+        {
+          "file": "W-GAME-01/p42h-player/visual-review.json",
+          "pointer": "/status",
+          "equals": "PASS"
+        }
+      ],
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914"
     },
     {
       "status": "PASS",
@@ -1297,7 +1460,7 @@
       ],
       "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
       "row": "W-GAME-05",
-      "scenario": "Full flow menu→save→load→ending→restart in the player",
+      "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
       "requirement": "SR-6.10",
       "reportedAt": "2026-10-06T22:09:06.546015+00:00",
       "evidence": [
@@ -1309,7 +1472,7 @@
     },
     {
       "status": "PASS",
-      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
+      "note": "Hollowmere Linux IL2CPP build/hash passes. V1 phases 1\u20138 and resumed 9\u201311 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget.",
       "command": "studio/tools/verify-all.sh build\nstudio/tools/verify-all.sh v1",
       "row": "W-GAME-06",
       "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
@@ -1418,18 +1581,27 @@
     },
     {
       "status": "BLOCKED",
-      "note": "P4.2e qualifies the requested R6 targets on main d140f748 with its matching immutable release. Signed world/predicted stage verdicts, priced describe, candidate-time entry refusal, narrative Play effects and voice final/no-submission pass their named checks. Graphical admission still times out, the fresh ferryman fails its NPC Play prerequisites, exact reopen bytes differ, and voice partial revisions are absent. Host exclusivity has one unclassified transient Unity PID. Untouched rows retain their original revision-specific evidence; no all-row acceptance is claimed.",
-      "command": "See TOOLS/README-P4.2e.md; report_p42e.py and check_p42e.py regenerate and audit the report.",
-      "baseline": "d140f748",
-      "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+      "note": "P4.2h fresh complete-row PASS at product a77cb38b: W-AI-01, W-EDIT-01, W-EDIT-03, W-ETOS-05, W-ETOS-09. W-ETOS-04 lacks real dialogue-node publication; W-REC-03 lacks running-stage cancellation; W-GAME-01 has separate OFF PASS/ON FAIL measurements with the owner rule open. The other 59 rows were not rerun as complete scenarios at this revision; inherited PASS is not current acceptance. Current retained-dialogue regressions are 35/37, with two projection failures, and eight transient empty-argv children leave strict host exclusivity unproven. All 68 exact dispositions are listed.",
+      "command": "python3 artifacts/studio/verification/TOOLS/check_p42h.py",
+      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
       "row": "W-E2E-01",
       "scenario": "All rows resolved on one revision; completion report",
       "requirement": "SR-12.3",
-      "reportedAt": "2026-10-06T15:29:44.440792+00:00",
+      "reportedAt": "2026-10-07T01:31:38.713694+00:00",
       "evidence": [
         "../workflows/P4.2e/outcomes.json",
         "../workflows/P4.2e/paid-ledger.json",
-        "../workflows/P4.2e/editor-exclusivity-open.json"
+        "../workflows/P4.2e/editor-exclusivity-open.json",
+        "W-E2E-01/p42h-accounting/result.json",
+        "W-E2E-01/p42h-accounting/README.md"
+      ],
+      "checks": [
+        {
+          "file": "W-E2E-01/p42h-accounting/result.json",
+          "pointer": "/allRowsAcceptedAtProductRevision",
+          "equals": false
+        }
       ]
     }
   ]

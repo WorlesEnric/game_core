@@ -1,0 +1,50 @@
+{
+  "label": "p42h-harness-check-fixed",
+  "revision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "host": "worlesenric",
+  "started": "2026-10-06T23:28:46.530516+00:00",
+  "command": "bash ~/wkspace/gc-studio/p4.2h/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2h/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2h/artifacts/studio/verification/P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z/logs --label p42h-harness-check-fixed --timeout 1800 --attempts 1 --results ~/wkspace/gc-studio/p4.2h/artifacts/studio/verification/P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'Hollowmere.R6_B|Hollowmere.P3_2.Headless.DriverDryTests'",
+  "cwd": "~/wkspace/gc-studio/p4.2h",
+  "evidencePath": "artifacts/studio/verification/P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z",
+  "queuedAtRevision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "executionStarted": "2026-10-06T23:28:46.531837+00:00",
+  "sourceDiffSha256": "bdfa29c5d3207e09c4169313030b3d52dcdf402f34808e29f18356712f0b3fd9",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-06T23:29:37.762005+00:00",
+  "seconds": 51.23249636194669,
+  "suites": {
+    "results.xml": {
+      "total": 37,
+      "counts": {
+        "Passed": 35,
+        "Failed": 2
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2h/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_2.Headless.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.P3_2",
+        "Hollowmere.P3_2.Headless",
+        "Hollowmere.P3_2.Headless.DriverDryTests",
+        "~/wkspace/gc-studio/p4.2h/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R6_B.Tests.dll",
+        "Hollowmere",
+        "Hollowmere.R6_B",
+        "Hollowmere.R6_B.RealPathTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "Hollowmere.P3_2.Headless.DriverDryTests.R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects",
+          "result": "Failed",
+          "detail": "Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4; Odd: GP-DLG-003: edge 3 -> 8 leaves the graph; Odd: GP-DLG-003: edge 8 -> 4 leaves the graph; Odd: GP-DLG-003: dangling: node 3 next -> 8; Odd: GP-DLG-005: unreachable: node 4\n  Expected: True\n  But was:  False\n \n                   at Hollowmere.P3_2.Headless.DriverDryTests+<R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects>d__10.MoveNext () [0x00182] in ~/wkspace/gc-studio/p4.2h/games/hollowmere/Assets/Hollowmere/Tests/P3_2/EditMode/DriverDryTests.cs:186\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        },
+        {
+          "name": "Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting",
+          "result": "Failed",
+          "detail": "GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-003: Odd: GP-DLG-003: edge 8 -> 0 leaves the graph @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-002: Odd: GP-DLG-002: bad entry: node 8 does not exist @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 0 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 1 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 2 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 3 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 4 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 5 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 6 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681); GP-DLG-005: Odd: GP-DLG-005: unreachable: node 7 @ Definition(auth:aa779457-076d-496c-84b5-72019a826681)\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R6_B.RealPathTests.R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting () [0x0016b] in ~/wkspace/gc-studio/p4.2h/games/hollowmere/Assets/Hollowmere/Tests/R6_B/Editor/RealPathTests.cs:65"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

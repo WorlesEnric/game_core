@@ -1,0 +1,115 @@
+{
+  "entry": {
+    "id": "cs_01M49RWVXMYMBQB9X48D17F692",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Move only the selected live Bram instance in the running GameCore world, not authored content, to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees.",
+      "origin": "agent"
+    },
+    "selection": {
+      "id": "sel_01M49RWVW8CNDF0F7SVDKDEZTT",
+      "mode": "Play",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        }
+      ],
+      "indexRevision": 5
+    },
+    "baseVersions": [
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      }
+    ],
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "runtime.move",
+        "target": {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "args": {
+          "position": [
+            11.5,
+            0.0,
+            -13.0
+          ],
+          "yaw": 270.0
+        },
+        "dependsOn": [],
+        "preconditions": "stamp",
+        "applyRequirement": "Live"
+      }
+    ],
+    "artifacts": [],
+    "requirements": {
+      "max": "Live",
+      "worldRebuild": false,
+      "compile": false,
+      "build": false
+    },
+    "links": {
+      "etosTasks": [
+        "t9450022d9a74ef2db96f895e"
+      ],
+      "gameCoreOps": [
+        "w:c151bd01c2fe76451ad17df9fdb739b2/i:c696b9df8c15685712fcd173f2864320/s:17"
+      ]
+    },
+    "state": "Applied",
+    "outcomes": [
+      {
+        "opId": "op1",
+        "status": "Applied",
+        "detail": "Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+        "gameCoreOps": [
+          "w:c151bd01c2fe76451ad17df9fdb739b2/i:c696b9df8c15685712fcd173f2864320/s:17"
+        ]
+      }
+    ],
+    "timestamps": {
+      "requested": "2026-10-06T23:31:57.659Z",
+      "applied": "2026-10-06T23:31:57.686Z"
+    }
+  },
+  "visibleLabels": [
+    "cs_01M49RWVXMYMBQB9X48D17F692",
+    "Move only the selected live Bram instance in the running GameCore world, not authored content, to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees. (1 op: runtime.move x1)",
+    "State Applied · origin agent · 2026-10-07 07:31:04",
+    "etos tasks: t9450022d9a74ef2db96f895e",
+    "GameCore ops: w:c151bd01c2fe76451ad17df9fdb739b2/i:c696b9df8c15685712fcd173f2864320/s:17",
+    "op1: Applied - Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+    "Artifacts (0)"
+  ],
+  "operationId": "w:c151bd01c2fe76451ad17df9fdb739b2/i:c696b9df8c15685712fcd173f2864320/s:17",
+  "committedReceiptAndPose": true,
+  "desiredPosition": [
+    11.5,
+    0.0,
+    -13.0
+  ],
+  "isPlaying": true,
+  "authoredSceneUnchanged": true,
+  "commitWitness": "Production ReflectionGameplayBridge.IsAt checks current world session, exact request receipt Outcome.Kind == Committed, and all four committed pose slots."
+}

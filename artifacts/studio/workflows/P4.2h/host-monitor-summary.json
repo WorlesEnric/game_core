@@ -1,0 +1,97 @@
+{
+  "samples": 15863,
+  "sampleIntervalSeconds": 0.5,
+  "maximumClassifiedEditors": 1,
+  "classifiedOverlapSamples": 0,
+  "foreignPacketSamples": 0,
+  "unclassifiedPids": [
+    229612,
+    229692,
+    229700,
+    229747,
+    229807,
+    229896,
+    266399,
+    336727
+  ],
+  "unclassifiedSamples": 8,
+  "strictExclusivity": "BLOCKED",
+  "reason": "8 transient non-zombie process identities had empty argv and no later classifiable sample. Their owned Editor parent IDs are retained; parentage is not proof of role. No foreign project-hub packet or classified Editor overlap observed.",
+  "firstUtcEpoch": 1791327887.9366488,
+  "lastUtcEpoch": 1791336209.4228945,
+  "maxSampleGapSeconds": 5.381973743438721,
+  "unclassifiedProcesses": [
+    {
+      "pid": 229612,
+      "parentPid": 209862,
+      "state": "D",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 229692,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 229700,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 229747,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 229807,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 229896,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/FSBTool/x64/FSBTool"
+    },
+    {
+      "pid": 266399,
+      "parentPid": 209862,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/il2cpp/build/deploy/Analytics"
+    },
+    {
+      "pid": 336727,
+      "parentPid": 331899,
+      "state": "R",
+      "importWorker": false,
+      "ownedCwd": true,
+      "emptyArguments": true,
+      "executable": "/usr/bin/uname"
+    }
+  ]
+}
