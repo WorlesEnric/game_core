@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "reviewer": "Main",
+  "reportedAt": "2026-10-07T07:53:46.704684+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "observation": "The 1920x1080 movie preview and 30-second frame show only the GNOME desktop with a Low Disk Space notification, not the game window. The two-process gameplay assertions pass, but desktop pixels are not graphical lifecycle proof. Original driver-summary PASS is retained as a component result, not a complete-row verdict.",
+  "files": [
+    "playthrough.mp4"
+  ],
+  "nextOwnerRequest": "run_lifecycle.py main(): capture the exact launched player window (PID-owned X11 target) across both processes, and require actual visible menu/load/ending/restart evidence before claiming a recorded PASS."
+}

@@ -1,38 +1,32 @@
 {
   "status": "PASS",
-  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
-  "note": "P4.2h second real USD0.20 image is green woven cloth, imported through current media and assigned by explicit engine entity.setMaterialTexture. Actual GameBoot/New Game Maren body uses that texture via production property block; visible olive-to-forest-green cloth change and normal History restoration are captured. Behaviour/NPC/dialogue/village source hashes, runtime profile/route/schedule and structural recipe remain unchanged. Existing stylized capsule geometry and background graphics are not claimed improved.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe --workflow-out artifacts/studio/verification/W-AI-01/p42h-robe/workflow",
-  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
-  "row": "W-AI-01",
-  "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
-  "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T01:31:38.713207+00:00",
+  "note": "One fresh USD0.20 green cloth image is assigned through entity.setMaterialTexture in real Hollowmere Play. Actual olive-to-dark-green woven appearance and normal History restoration reviewed; behavior inputs/runtime profile stay unchanged.",
   "evidence": [
-    "W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md",
-    "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/robe/apply-report.json",
-    "W-AI-01/p42c-robe2-20261006T072832.434641Z/workflow/icon/assign.json",
-    "W-AI-01/p42h-robe/workflow/result.json",
-    "W-AI-01/p42h-robe/workflow/visual-review.json",
-    "W-AI-01/p42h-robe/workflow/play-applied.json",
-    "W-AI-01/p42h-robe/workflow/play-undone.json",
-    "W-AI-01/p42h-robe/workflow/ledger-final.json"
+    "W-AI-01/p42i-robe/workflow/result.json",
+    "W-AI-01/p42i-robe/workflow/generate.json",
+    "W-AI-01/p42i-robe/workflow/ledger-final.json",
+    "W-AI-01/p42i-robe/workflow/visual-review.json"
   ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe",
   "checks": [
     {
-      "file": "W-AI-01/p42h-robe/workflow/result.json",
+      "file": "W-AI-01/p42i-robe/workflow/result.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-AI-01/p42h-robe/workflow/result.json",
-      "pointer": "/generationCalls",
-      "equals": 1
-    },
-    {
-      "file": "W-AI-01/p42h-robe/workflow/ledger-final.json",
+      "file": "W-AI-01/p42i-robe/workflow/ledger-final.json",
       "pointer": "/usageUnchangedSinceGeneration",
       "equals": true
     }
-  ]
+  ],
+  "row": "W-AI-01",
+  "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
+  "requirement": "mandate \u00a710",
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-AI-01/p42i-robe/workflow/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

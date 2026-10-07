@@ -1,20 +1,38 @@
 {
   "status": "PASS",
-  "note": "R7-C real source overlap and native-release XML pass; the missing voice-bank enrollment is fixed. Final Linux IL2CPP monitor recording identifies Maren greeting (0.591 correlation), village before travel (0.464) and marsh after (0.455), with mismatched-region controls <0.075. Native residuals \u22640.159%; no paid calls.",
-  "command": "bash studio/tools/build_game_player.sh r7-c\npython3 games/hollowmere/Assets/Hollowmere/Tests/R7_C/PlayerFlow/run_lifecycle.py --output <fresh-dir> --display :97 --pulse-source alsa_output.pci-0000_00_1f.3.iec958-stereo.monitor --record\nnode artifacts/studio/verification/W-PLUG-11/audio-identity.mjs",
+  "note": "Current graphics-enabled native crossfade/release and actual Maren voice tests pass. Recorded player audio matches Maren/village/marsh WAVs with correlations 0.6108/0.4972/0.4242, exceeding 0.2 and wrong-region controls. Its initial desktop-only video remains rejected; this row uses that recording\u2019s real audio track, with no human-listening claim. A separate corrected owned-window recording closes W-GAME-05.",
+  "evidence": [
+    "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/audio-identity.json",
+    "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/result.json",
+    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+    "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native; node artifacts/studio/verification/W-PLUG-11/audio-identity.mjs <current lifecycle movie> <output>",
+  "checks": [
+    {
+      "file": "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/audio-identity.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-PLUG-11",
   "scenario": "Ambience crossfade, voice line, clip release",
   "requirement": "SR-6.11",
-  "reportedAt": "2026-10-06T22:09:06.544313+00:00",
-  "evidence": [
-    "W-PLUG-11/r7-combined/results.xml",
-    "W-PLUG-11/r7-combined/external-snapshots.json",
-    "W-PLUG-11/r7-voice-final/results.xml",
-    "W-PLUG-11/r7-audio-identity.json",
-    "W-GAME-05/r7-lifecycle-final/playthrough.mp4"
-  ],
-  "tests": [
-    "NativeMediaAcceptance",
-    "R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/audio-identity.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

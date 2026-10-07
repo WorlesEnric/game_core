@@ -1,17 +1,40 @@
 {
   "status": "PASS",
-  "note": "Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01.",
-  "command": "studio/tools/verify-all.sh bake\nstudio/tools/verify-all.sh clean\nstudio/tools/verify-all.sh build",
+  "note": "Current clean project AuthorAll, 11 EditMode+3 PlayMode cases and both rechecks pass. Fresh Linux IL2CPP build and standalone 600-frame autoplay pass real quest/save/restore/ending assertions with zero pump violations. Disk-reserve interruption was resolved by deleting only completed owned compiler caches; no workload bypassed the reserve.",
+  "evidence": [
+    "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
+    "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+    "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log",
+    "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml",
+    "UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/results.xml",
+    "UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml",
+    "UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/results.xml"
+  ],
+  "command": "studio/tools/verify-all.sh bake; studio/tools/verify-all.sh unity; python3 artifacts/studio/verification/TOOLS/builds-p42i.py --resume-completed-builds",
+  "checks": [
+    {
+      "file": "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+      "pointer": "/playerProof/frames",
+      "equals": 600
+    },
+    {
+      "file": "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+      "pointer": "/playerProof/violations",
+      "equals": 0
+    }
+  ],
   "row": "W-CLEAN-01",
   "scenario": "Clean project: install, author, run, build",
   "requirement": "SR-7.2",
-  "reportedAt": "2026-10-06T15:29:44.434187+00:00",
-  "evidence": [
-    "W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md",
-    "UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z/README.md",
-    "UNITY-CLEANPROOF/clean-recheck-playmode-20261005T202131.388822Z/README.md",
-    "W-CLEAN-01/cleanproof-fresh-build-cache-20261005T195625.655687Z/README.md",
-    "W-CLEAN-01/final-player-600-frames-20261005T201814.524176Z/README.md",
-    "W-GAME-06/final-player-manifests-20261005T201815.687151Z/cleanproof-player.sha256"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

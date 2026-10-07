@@ -1,22 +1,39 @@
 {
-  "status": "BLOCKED",
-  "note": "The unchanged R6-B driver now passes both readiness-gated real takes: move and destructive final transcripts arrive after proper Stop/drain. Destructive tray/request/journal counts remain exactly 8/11/122, and the field holds the destructive text without Send. Both provider traces contain only revision 1 with final=true; no partial speech revision is observed. Full-row partial-revision visibility remains unqualified despite the passing driver.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py voice2",
-  "tests": [
-    "R6_Request3_ActualVoiceTakeDoesNotPlayOnElapsedTimerAndDrains",
-    "test_R2_38_P42e_failed_move_does_not_starve_distinct_destructive_take"
-  ],
-  "baseline": "d140f748",
-  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
-  "row": "W-VOICE-01",
-  "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial revisions visible",
-  "requirement": "SR-4.8",
-  "reportedAt": "2026-10-06T15:29:44.395031+00:00",
+  "status": "PASS",
+  "note": "Both current readiness-gated real voice takes reach final transcript after Stop/drain. Destructive text is visibly unsent; tray/request/journal counts stay exactly 1/1/120. Earlier move becomes a prompt/task only on explicit Send, then ordinary undo succeeds. Judged on SR-4.8; no partial-revision visibility requirement.",
   "evidence": [
-    "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/result.json",
-    "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/workflow/voice/move-transcript.json",
-    "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/workflow/voice/destructive-transcript.json",
-    "W-VOICE-01/p42e-voice2-20261006T152310.669342Z/workflow/voice/destructive-check.json",
-    "../workflows/P4.2e/companion-voice.log"
-  ]
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-transcript.json",
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/move-transcript.json",
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice-move/undo-result.json",
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/visual-review.json",
+    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
+  "checks": [
+    {
+      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
+      "pointer": "/unchanged",
+      "equals": true
+    },
+    {
+      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-transcript.json",
+      "pointer": "/drainCompleted",
+      "equals": true
+    },
+    {
+      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
+  "row": "W-VOICE-01",
+  "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07)",
+  "requirement": "SR-4.8",
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,18 +1,20 @@
 # W-UI-01: Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition
 
-Verdict: **PASS**. Ordinary graphical Open Studio connects automatically without pairing; HUD walking moves committed world.posX/posZ 7.636 m in 3.040 s. Runtime NPC view tags now override the authored GameBoot ancestor; Select shows Maren and MarenEntity in the actual definition card. Graphical R2-29 key delivery and focus-reset regressions pass.
+Verdict: **PASS**. Ordinary Open Studio automatically connects; real HUD walking moves committed world.posX/posZ 7.531 m. Actual Select capture shows Maren and MarenEntity in the readable context card; no pairing or paid request.
 
-Source: `1a462f88`. [R7-A proof and exact limitations](r7-a/README.md).
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-bash artifacts/studio/verification/W-UI-01/r7-a/run.sh
+python3 artifacts/studio/verification/TOOLS/rows-p42i.py editor
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-UI-01/r7-a/README.md](../W-UI-01/r7-a/README.md)
-- [W-UI-01/ui-capture-20261005T192323.970290Z/README.md](../W-UI-01/ui-capture-20261005T192323.970290Z/README.md)
-- [W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md](../W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md)
-- [GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md](../GRAPHICAL/graphics-required-tests-20261005T191202.057821Z/README.md)
+- [W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json](../W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/result.json)
+- [W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/automatic-gateway.json](../W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/automatic-gateway.json)
+- [W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/current-observations.json](../W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/current-observations.json)
+- [W-UI-01/p42i-open-play-20261007T044622.194456Z/visual-review.json](../W-UI-01/p42i-open-play-20261007T044622.194456Z/visual-review.json)
+- [W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/03-npc-definition.png](../W-UI-01/p42i-open-play-20261007T044622.194456Z/workflow/03-npc-definition.png)

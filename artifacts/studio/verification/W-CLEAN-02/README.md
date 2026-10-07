@@ -1,17 +1,16 @@
 # W-CLEAN-02: Kernel diff empty after the clean exercise
 
-Verdict: **PASS**. After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/.
+Verdict: **PASS**. After the clean-project build/player exercise, literal git diff --exit-code origin/main -- Packages/ exits 0 with empty output. No kernel/package source changed.
 
-Report timestamp: 2026-10-06T15:29:44.436692+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh clean
+git diff --exit-code origin/main -- Packages/
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md](../W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md)
+- [W-CLEAN-02/p42i-final-kernel-diff/result.json](../W-CLEAN-02/p42i-final-kernel-diff/result.json)

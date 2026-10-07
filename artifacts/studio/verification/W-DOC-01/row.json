@@ -1,19 +1,35 @@
 {
   "status": "PASS",
-  "note": "The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition.",
-  "command": "studio/tools/verify-all.sh p42d guide",
-  "tests": [
-    "P42d.Live.NoviceGuideTests.R2_38_Guide_NpcAndDialogueContextToolsUndo"
+  "note": "Current creator-guide existing-Maren-definition flow places an NPC, appends the bell dialogue line, saves, and ordinary History undo restores roster 20 and graph 13. Named XML passes. Auxiliary viewport screenshot is blank; no additional visual-layout claim.",
+  "evidence": [
+    "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/results.xml",
+    "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide.json",
+    "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide-applied.png"
   ],
-  "baseline": "40fb91fa",
-  "historical": "P4.2d installed release 0.1.0-e8a72b2d6eb3aad9 on main 40fb91fa. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py guide",
+  "checks": [
+    {
+      "file": "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/results.xml",
+      "xmlCase": "R2_38_Guide_NpcAndDialogueContextToolsUndo"
+    },
+    {
+      "file": "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide.json",
+      "pointer": "/dialogueUndoOk",
+      "equals": true
+    },
+    {
+      "file": "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/guide.json",
+      "pointer": "/npcUndoOk",
+      "equals": true
+    }
+  ],
   "row": "W-DOC-01",
   "scenario": "New user adds an NPC with dialogue from the creator guide",
   "requirement": "SR-12.1",
-  "reportedAt": "2026-10-06T15:29:44.437511+00:00",
-  "evidence": [
-    "W-DOC-01/p42d-guide-20261006T123449.140659Z/results.xml",
-    "W-DOC-01/p42d-guide-20261006T123449.140659Z/guide.json",
-    "W-DOC-01/p42d-guide-20261006T123449.140659Z/guide-applied.png"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

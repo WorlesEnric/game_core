@@ -1,16 +1,28 @@
 {
   "status": "PASS",
-  "note": "R7-C two identical 110-frame traces prove walking is blocked by a solid 0.8 m ledge, Jump clears its lip airborne, descends and lands grounded. Existing real walking/focus/prompt/dispatch/travel case passes.",
-  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels' -force-glcore",
-  "tests": [
-    "LedgeJumpLanding|WalksInteractsTalksPastNpcsAndTravels"
+  "note": "Actual walking/focus/interaction/travel and paired 110-frame solid-ledge traces pass; Jump clears the lip, descends and lands grounded.",
+  "evidence": [
+    "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+    "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
+  "checks": [
+    {
+      "file": "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+      "xmlCase": "Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding.WPLUG03_DeterministicJumpClearsSolidLedgeAndLands"
+    },
+    {
+      "file": "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+      "xmlCase": "Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels"
+    }
   ],
   "row": "W-PLUG-03",
   "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
   "requirement": "SR-6.3",
-  "reportedAt": "2026-10-06T21:25:19.117913+00:00",
-  "evidence": [
-    "W-PLUG-03/r7-play/results.xml",
-    "W-PLUG-08/r7-pickup/results.xml"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,17 +1,20 @@
 {
-  "status": "PASS",
-  "note": "The fresh installed-worker candidate applies unchanged; actual Hollowmere Play hides its added line while shrine_lit is false and displays it when lit. The corrected driver records pass.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py narrative; python3 artifacts/studio/verification/TOOLS/live-p42e.py reopen",
-  "baseline": "d140f748",
-  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "status": "FAIL",
+  "note": "Fresh installed-worker Odd dialogue candidate is Invalid: GP-DLG-003 edges 3\u21928 and 8\u21924 leave the projected graph, dangling next\u21928, plus GP-DLG-005 unreachable node 4. Candidate never applies; actual Play driver reports candidate was not applied. Historical PASS is not retained.",
+  "evidence": [
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/candidate.json",
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/play-effect.json",
+    "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/outcome.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
   "row": "W-AI-03",
   "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-06T15:29:44.401563+00:00",
-  "evidence": [
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/result.json",
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/odd-line/candidate.json",
-    "W-AI-06/p42e-reopen-20261006T152055.608370Z/workflow/reopen/after-reopen.json",
-    "W-AI-03/p42e-narrative-20261006T151348.703137Z/workflow/odd-line/play-effect.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-AI-03/p42i-narrative-20261007T052144.251187Z/workflow/odd-line/staged.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

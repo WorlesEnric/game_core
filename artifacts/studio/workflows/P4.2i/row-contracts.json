@@ -1,0 +1,274 @@
+{
+  "W-UI-01": {
+    "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
+    "requirement": "SR-1.1"
+  },
+  "W-UI-02": {
+    "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
+    "requirement": "SR-1.2"
+  },
+  "W-UI-03": {
+    "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
+    "requirement": "SR-1.3"
+  },
+  "W-UI-04": {
+    "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
+    "requirement": "SR-8.2"
+  },
+  "W-UI-05": {
+    "scenario": "Selection/hover and marquee timings",
+    "requirement": "B-SELECT"
+  },
+  "W-VIEW-01": {
+    "scenario": "Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export",
+    "requirement": "P2.3 view definition"
+  },
+  "W-VIEW-02": {
+    "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
+    "requirement": "P2.3 view definition"
+  },
+  "W-VIEW-03": {
+    "scenario": "Quests: Stage/objective graph, branches, reward/rule links, simulation and live state",
+    "requirement": "P2.3 view definition"
+  },
+  "W-VIEW-04": {
+    "scenario": "World: Regions, portals, residency, spawn points and journaled world tools",
+    "requirement": "P2.3 view definition"
+  },
+  "W-VIEW-05": {
+    "scenario": "Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV",
+    "requirement": "P2.3 view definition"
+  },
+  "W-VIEW-06": {
+    "scenario": "Changes: Pending operations, diagnostics, dependencies and journal inspection",
+    "requirement": "P2.3 view definition"
+  },
+  "W-MODEL-02": {
+    "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
+    "requirement": "SR-2.2"
+  },
+  "W-TOOL-01": {
+    "scenario": "Tool catalog of the clean project lists only installed plugins' tools",
+    "requirement": "SR-2.3"
+  },
+  "W-TOOL-02": {
+    "scenario": "`check_package_metadata.py` passes with all new packages",
+    "requirement": "SR-11.1"
+  },
+  "W-EDIT-01": {
+    "scenario": "Change set in History shows etos task id and GameCore operation ids",
+    "requirement": "SR-3.1"
+  },
+  "W-EDIT-02": {
+    "scenario": "5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report",
+    "requirement": "SR-3.2"
+  },
+  "W-EDIT-03": {
+    "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
+    "requirement": "SR-3.3"
+  },
+  "W-EDIT-04": {
+    "scenario": "Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget`",
+    "requirement": "SR-1.4"
+  },
+  "W-EDIT-05": {
+    "scenario": "Gizmo drag and typed value produce identical History entries",
+    "requirement": "SR-1.6, SR-3.4"
+  },
+  "W-EDIT-06": {
+    "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
+    "requirement": "SR-1.8"
+  },
+  "W-EDIT-07": {
+    "scenario": "Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works",
+    "requirement": "SR-3.5"
+  },
+  "W-EDIT-08": {
+    "scenario": "Apply timings (single and region-wide)",
+    "requirement": "B-APPLY, B-COMPOSE"
+  },
+  "W-HOST-01": {
+    "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
+    "requirement": "SR-11.2"
+  },
+  "W-ETOS-01": {
+    "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
+    "requirement": "SR-4.1"
+  },
+  "W-ETOS-02": {
+    "scenario": "Unity key against another agent: `forbidden`; shown in Studio log",
+    "requirement": "SR-4.2"
+  },
+  "W-ETOS-04": {
+    "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
+    "requirement": "SR-2.4, SR-4.3"
+  },
+  "W-ETOS-05": {
+    "scenario": "Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task",
+    "requirement": "SR-4.4"
+  },
+  "W-ETOS-06": {
+    "scenario": "Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly",
+    "requirement": "SR-4.5, SR-9.2"
+  },
+  "W-ETOS-07": {
+    "scenario": "Generated texture arrives with matching sha256; tampered file refused",
+    "requirement": "SR-4.6"
+  },
+  "W-ETOS-08": {
+    "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
+    "requirement": "SR-4.9"
+  },
+  "W-ETOS-09": {
+    "scenario": "Domain reload during a task: tray shows the same task afterwards",
+    "requirement": "SR-8.3"
+  },
+  "W-VOICE-01": {
+    "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07)",
+    "requirement": "SR-4.8"
+  },
+  "W-AI-01": {
+    "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-02": {
+    "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-03": {
+    "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-04": {
+    "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-05": {
+    "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-06": {
+    "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
+    "requirement": "mandate \u00a710"
+  },
+  "W-AI-07": {
+    "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
+    "requirement": "SADR-020"
+  },
+  "W-PLUG-01": {
+    "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
+    "requirement": "SR-6.1, B-REGION"
+  },
+  "W-PLUG-02": {
+    "scenario": "Despawn/respawn keeps override; Animator bound",
+    "requirement": "SR-6.2"
+  },
+  "W-PLUG-03": {
+    "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
+    "requirement": "SR-6.3"
+  },
+  "W-PLUG-04": {
+    "scenario": "Patrol index across unload/reload and save/load",
+    "requirement": "SR-6.4"
+  },
+  "W-PLUG-05": {
+    "scenario": "Locked door with key; explain refusal",
+    "requirement": "SR-6.5"
+  },
+  "W-PLUG-06": {
+    "scenario": "Conditional choice and persisted fact",
+    "requirement": "SR-6.6"
+  },
+  "W-PLUG-07": {
+    "scenario": "Quest branches; failure closes dependents",
+    "requirement": "SR-6.7"
+  },
+  "W-PLUG-08": {
+    "scenario": "Take spam + reload: exactly one lantern",
+    "requirement": "SR-6.8"
+  },
+  "W-PLUG-09": {
+    "scenario": "\"Why didn't the gate open\" trace",
+    "requirement": "SR-6.9"
+  },
+  "W-PLUG-10": {
+    "scenario": "Definition validator parity (inspector, validator, agent)",
+    "requirement": "SR-5.2"
+  },
+  "W-PLUG-11": {
+    "scenario": "Ambience crossfade, voice line, clip release",
+    "requirement": "SR-6.11"
+  },
+  "W-PLUG-12": {
+    "scenario": "Bake byte-identity; one line change \u2192 one revision change",
+    "requirement": "SR-5.3"
+  },
+  "W-KERNEL-01": {
+    "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
+    "requirement": "SR-7.1"
+  },
+  "W-PERSIST-01": {
+    "scenario": "Save in the Ruin with items; load: all restored; region re-entered",
+    "requirement": "SR-6.12"
+  },
+  "W-PERSIST-02": {
+    "scenario": "Rename prefab, re-run: NPC keeps state in a save",
+    "requirement": "SR-2.1"
+  },
+  "W-PERSIST-03": {
+    "scenario": "Schema version bump with migration: restored; without: actionable refusal",
+    "requirement": "SR-6.12"
+  },
+  "W-REC-01": {
+    "scenario": "Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback",
+    "requirement": "SR-3.3"
+  },
+  "W-REC-03": {
+    "scenario": "Cancel region load mid-way; cancel staging job",
+    "requirement": "SR-9.1"
+  },
+  "W-MECH-01": {
+    "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
+    "requirement": "SR-3.6, SR-9.3, B-STAGE"
+  },
+  "W-GAME-01": {
+    "scenario": "10-minute graphical playthrough recording with frame log",
+    "requirement": "SR-8.1, B-FRAME"
+  },
+  "W-GAME-05": {
+    "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
+    "requirement": "SR-6.10"
+  },
+  "W-GAME-06": {
+    "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
+    "requirement": "SR-11.3"
+  },
+  "W-GAME-07": {
+    "scenario": "Player runs with etosd stopped and no network",
+    "requirement": "SR-4.10"
+  },
+  "W-GAME-08": {
+    "scenario": "Memory after 10 Play/Edit cycles",
+    "requirement": "B-MEMORY"
+  },
+  "W-CLEAN-01": {
+    "scenario": "Clean project: install, author, run, build",
+    "requirement": "SR-7.2"
+  },
+  "W-CLEAN-02": {
+    "scenario": "Kernel diff empty after the clean exercise",
+    "requirement": "SR-7.3"
+  },
+  "W-DOC-01": {
+    "scenario": "New user adds an NPC with dialogue from the creator guide",
+    "requirement": "SR-12.1"
+  },
+  "W-DOC-02": {
+    "scenario": "Developer adds a lever interactable from the plugin guide",
+    "requirement": "SR-12.2"
+  },
+  "W-E2E-01": {
+    "scenario": "All rows resolved on one revision; completion report",
+    "requirement": "SR-12.3"
+  }
+}

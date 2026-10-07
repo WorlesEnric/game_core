@@ -1,0 +1,90 @@
+{
+  "charges": [
+    {
+      "id": "describe_1a114cf86eac793a86d92a5",
+      "tariff": {
+        "kind": "operator",
+        "model": "echo/gpt-5.6-sol",
+        "note": "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models",
+        "perUnitUsd": 0.01,
+        "provider": "echo-describe",
+        "unit": "call",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.01
+    },
+    {
+      "id": "gc-a600e25e116664b25501595df7dca7527d85e630",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 36.0,
+      "costUsd": 0.0004128552
+    },
+    {
+      "id": "gc-bddef786ca6ff9131b7b805ef6cd21ad004c5bd0",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 32.0,
+      "costUsd": 0.0003669824
+    },
+    {
+      "id": "gc-df1697ff5bb17e3d23470a0ffa16adae552ac1ad",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    },
+    {
+      "id": "gc-f7be5a9ad44414bdaaf4165c7291cb573f361225",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    }
+  ],
+  "companionLedgerUsd": 0.41077983760000003,
+  "workerMicroUsd": 0,
+  "workerTaskCount": 11,
+  "tasksWithoutReportedMicroUsd": [
+    "t2f3c55f2f8ebd19e5ac694e8",
+    "t370d0a886f2cfe21a8bbeed3"
+  ],
+  "accountedUsd": 0.41077983760000003,
+  "operationCounts": {
+    "image": 2.0,
+    "tts": 2,
+    "describe": 1,
+    "3dPaid": 0,
+    "3dRefusals": 1
+  },
+  "accountingLimit": "Sum of node-reported task usage and binding operator media charges. Missing task usage entries are listed, not asserted as invoiced zero. Upstream provider invoices/unreported charges are unavailable."
+}

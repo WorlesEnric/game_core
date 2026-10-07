@@ -1,0 +1,43 @@
+{
+  "label": "p42b-final-views",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T04:50:56.958597+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/logs --label p42b-final-views --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'GameCore\\.Studio\\.Views\\..*|Hollowmere\\.P2_3\\..*|Hollowmere\\.R2_E\\..*'",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T04:50:56.959941+00:00",
+  "sourceDiffSha256": "0a32420ad7425a7ba956c11ba6c19162b6aa22e05a5131872f734b183b6b8c80",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-07T04:52:00.262400+00:00",
+  "seconds": 63.30505465087481,
+  "suites": {
+    "results.xml": {
+      "total": 41,
+      "counts": {
+        "Passed": 40,
+        "Failed": 1
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2i/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Views.Hollowmere.Tests.dll",
+        "GameCore",
+        "GameCore.Studio",
+        "GameCore.Studio.Views",
+        "GameCore.Studio.Views.Hollowmere",
+        "GameCore.Studio.Views.Hollowmere.Tests",
+        "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores",
+          "result": "Failed",
+          "detail": "Rejected cs_01M4AB7WXWCVC6MJ792CTQ2P01 - GP-DLG-005: ViewsTestGraph: GP-DLG-005: unreachable: node 1 @ Definition(auth:c5166204-3856-48c3-901f-dd82f1fc5d5f)\n  Expected: True\n  But was:  False\n \n                       at GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Expect (GameCore.Studio.Edit.ApplyReport report, System.String tool) [0x00010] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode/HollowmereEditingViewsTests.cs:223\nat GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores () [0x001b8] in ~/wkspace/gc-studio/p4.2i/games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode/HollowmereEditingViewsTests.cs:40"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

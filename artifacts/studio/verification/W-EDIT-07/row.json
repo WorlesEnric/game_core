@@ -1,18 +1,23 @@
 {
   "status": "PASS",
-  "note": "Per-operation conflict/rebase tests pass; the retained real worker candidate also refuses with StaleContext after an actual registry revision change.",
+  "note": "Current per-operation rename/conflict/rebase case preserves the concurrent rename and successfully applies the replanned intended field edit.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+  ],
   "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "Conflict_RebaseReplansAgainstTheCurrentStamp",
-    "R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext"
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Conflict_RebaseReplansAgainstTheCurrentStamp"
+    }
   ],
   "row": "W-EDIT-07",
   "scenario": "Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works",
   "requirement": "SR-3.5",
-  "reportedAt": "2026-10-06T15:29:44.382745+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
-    "W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/README.md",
-    "W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/stale-context.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

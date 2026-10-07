@@ -1,0 +1,26 @@
+{
+  "label": "p42i-validator-parity",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T05:05:39.194502+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/logs --label p42i-validator-parity --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/results.xml -- -runTests -testPlatform EditMode -testFilter WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T05:05:39.196450+00:00",
+  "sourceDiffSha256": "8501fe190c07aef9d1c741014e178b21b36b5dc57917e4860570fa7b6008fab7",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T05:06:23.713688+00:00",
+  "seconds": 44.520764072891325,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

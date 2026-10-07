@@ -1,0 +1,13 @@
+{
+  "row": "W-VOICE-01",
+  "source": "docs/studio/07-verification-matrix.md at product baseline",
+  "decision": "Owner SADR-055, 2026-10-07: SR-4.8 explicit Send; partial revision visibility not required",
+  "staleRowsJson": {
+    "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial revisions visible",
+    "requirement": "SR-4.8"
+  },
+  "normativeMatrix": {
+    "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07)",
+    "requirement": "SR-4.8"
+  }
+}

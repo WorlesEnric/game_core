@@ -1,0 +1,124 @@
+{
+  "entry": {
+    "id": "cs_01M4AE2DYAEFE50NA8FP6XGAJ8",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Move only the selected live Bram instance in the running GameCore world, not authored content. Use exactly one catalog runtime.move operation, scope Instance, copied selected reference and stamp. The creator measured the live desired absolute world position as [11.5,0.0,-13.0] and yaw in degrees as 270. Copy selection mode Play. No ordinary authored move, prefab edits, assets, generation, dialogue or other operations. Do not claim a committed operation ID; the creator will apply the unchanged candidate and observe the real receipt.",
+      "origin": "agent"
+    },
+    "selection": {
+      "id": "sel_01M4AE2DXF49E29VH8QHKFGQ18",
+      "mode": "Play",
+      "targets": [
+        {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        }
+      ],
+      "indexRevision": 179
+    },
+    "baseVersions": [
+      {
+        "ref": {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      }
+    ],
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "runtime.move",
+        "target": {
+          "kind": "Entity",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "args": {
+          "position": [
+            11.5,
+            0.0,
+            -13.0
+          ],
+          "yaw": 270.0
+        },
+        "dependsOn": [],
+        "preconditions": "stamp",
+        "applyRequirement": "Live"
+      }
+    ],
+    "artifacts": [],
+    "requirements": {
+      "max": "Live",
+      "worldRebuild": false,
+      "compile": false,
+      "build": false
+    },
+    "links": {
+      "etosTasks": [
+        "tdef3aee235f61066c163cf35"
+      ],
+      "gameCoreOps": [
+        "w:c59c39cd9ab195c33aa8e0c7ebd7f6bb/i:c696b9df8c15685712fcd173f2864320/s:17"
+      ]
+    },
+    "state": "Applied",
+    "outcomes": [
+      {
+        "opId": "op1",
+        "status": "Applied",
+        "detail": "Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+        "gameCoreOps": [
+          "w:c59c39cd9ab195c33aa8e0c7ebd7f6bb/i:c696b9df8c15685712fcd173f2864320/s:17"
+        ]
+      }
+    ],
+    "timestamps": {
+      "requested": "2026-10-07T05:41:37.529Z",
+      "applied": "2026-10-07T05:41:37.546Z"
+    }
+  },
+  "visibleLabels": [
+    "cs_01M4AE2DYAEFE50NA8FP6XGAJ8",
+    "Move only the selected live Bram instance in the running GameCore world, not authored content. Use exactly one catalog runtime.move operation, scope Instance, copied selected reference and stamp. The creator measured the live desired absolute world position as [11.5,0.0,-13.0] and yaw in degrees as 270. Copy selection mode Play. No ordinary authored move, prefab edits, assets, generation, dialogue or other operations. Do not claim a committed operation ID; the creator will apply the unchanged candidate and observe the real receipt. (1 op: runtime.move x1)",
+    "State Applied · origin agent · 2026-10-07 13:41:06",
+    "etos tasks: tdef3aee235f61066c163cf35",
+    "GameCore ops: w:c59c39cd9ab195c33aa8e0c7ebd7f6bb/i:c696b9df8c15685712fcd173f2864320/s:17",
+    "op1: Applied - Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+    "Artifacts (9)",
+    "0d00c9991e76  portrait-dfb05a61d1634f04979af1e8a6348096.png  2.1 MiB  image/png  [retained]",
+    "2e3bb2058a38  -  8.5 KiB  ",
+    "2eccdea616d7  -  2.6 KiB  ",
+    "3cfd4218aad3  -  8.4 KiB  ",
+    "4c06f700fd76  -  2.6 KiB  ",
+    "65b4b2fdba9c  frame.png  175.9 KiB  image/png",
+    "69a2e5a5efc8  frame.png  174.3 KiB  image/png",
+    "b1af6bb223ad  robe-70acddd9c9a44a098cf0cf6f03b07191.png  3.7 MiB  image/png  [retained]",
+    "bce8ed86b7c9  frame.png  638.8 KiB  image/png"
+  ],
+  "operationId": "w:c59c39cd9ab195c33aa8e0c7ebd7f6bb/i:c696b9df8c15685712fcd173f2864320/s:17",
+  "committedReceiptAndPose": true,
+  "desiredPosition": [
+    11.5,
+    0.0,
+    -13.0
+  ],
+  "isPlaying": true,
+  "authoredSceneUnchanged": true,
+  "commitWitness": "Production ReflectionGameplayBridge.IsAt checks current world session, exact request receipt Outcome.Kind == Committed, and all four committed pose slots."
+}

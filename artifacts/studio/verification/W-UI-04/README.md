@@ -1,10 +1,9 @@
 # W-UI-04: Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10×
 
-Verdict: **PASS**. Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes.
+Verdict: **PASS**. Ten current graphical Play/Edit cycles each record 60 frames and 60 sanctioned pumps. Combined native/managed growth is 1.6563%, below 15%; full cycle-1 and cycle-10 snapshots retained with hashes.
 
-Report timestamp: 2026-10-06T15:29:44.364423+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
@@ -12,8 +11,8 @@ Acceptance baseline: merged main `e94f27aa`; every linked run records its exact 
 studio/tools/verify-all.sh memory
 ```
 
-## Retained evidence
+## Current-run evidence
 
-- [W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md](../W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md)
-- [W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/memory-and-pumps.json](../W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/memory-and-pumps.json)
-- [W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/snapshot-manifest.json](../W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/snapshot-manifest.json)
+- [W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json](../W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/memory-and-pumps.json)
+- [W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json](../W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/result.json)
+- [W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/snapshot-manifest.json](../W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/snapshot-manifest.json)

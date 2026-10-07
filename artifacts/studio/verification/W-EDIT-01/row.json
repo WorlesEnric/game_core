@@ -1,34 +1,33 @@
 {
   "status": "PASS",
-  "note": "P4.2h fresh installed-worker Instance-scoped runtime.move candidate applies unchanged in real Play. History joins task t9450022d9a74ef2db96f895e with the exact committed GameCore operation; production receipt and pose confirm Bram moved to (11.5,0,-13), with authored scene bytes unchanged.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py move --row W-EDIT-01 --method P42h.Tasks.TaskDriver.JoinedMove",
+  "note": "Fresh unchanged installed-worker runtime.move candidate applies in real Play. History joins the task to the exact committed GameCore operation and Bram pose; authored scene bytes remain unchanged.",
+  "evidence": [
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/request.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/joined-history.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/latest-request.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-before-apply.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/started.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/submission.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/candidate-envelope.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/hello.json",
+    "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/apply-report.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42i.py",
+  "checks": [
+    {
+      "file": "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-EDIT-01",
   "scenario": "Change set in History shows etos task id and GameCore operation ids",
   "requirement": "SR-3.1",
-  "reportedAt": "2026-10-07T01:31:38.711460+00:00",
-  "evidence": [
-    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
-    "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json",
-    "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
-    "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-task-gamecore-history.png"
-  ],
-  "checks": [
-    {
-      "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/result.json",
-      "pointer": "/status",
-      "equals": "PASS"
-    },
-    {
-      "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
-      "pointer": "/committedReceiptAndPose",
-      "equals": true
-    },
-    {
-      "file": "W-EDIT-01/p42h-move-20261006T233010.771874Z/workflow/joined-history.json",
-      "pointer": "/authoredSceneUnchanged",
-      "equals": true
-    }
-  ],
-  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
-  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-EDIT-01/p42i-move-20261007T054012.009656Z/workflow/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

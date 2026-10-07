@@ -1,16 +1,28 @@
 {
   "status": "PASS",
-  "note": "Belfry save/fresh-boot restore preserves canonical slots, items/facts, resident region and in-flight work exactly once; real game mid-quest restore continues to ending C.",
+  "note": "Production Belfry save/fresh boot restores canonical slots, items/facts, residency and in-flight work exactly once; midquest restore continues to ending C.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+    "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml"
+  ],
   "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce",
-    "SaveRestoreMidQuest"
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+      "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml",
+      "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest"
+    }
   ],
   "row": "W-PERSIST-01",
   "scenario": "Save in the Ruin with items; load: all restored; region re-entered",
   "requirement": "SR-6.12",
-  "reportedAt": "2026-10-06T15:29:44.420494+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

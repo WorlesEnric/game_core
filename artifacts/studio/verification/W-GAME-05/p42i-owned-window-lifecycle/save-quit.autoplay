@@ -1,0 +1,120 @@
+# W-GAME-05 phase one. Production controls, real locomotion, save UI, then application Quit.
+# Graphical/audio-enabled only. Runtime lifecycle checks produce saves/lifecycle-report.json.
+waituntil ready timeout 120
+waituntil lifecycle menu timeout 30
+wait 8
+ui newgame
+waituntil lifecycle newgame timeout 120
+wait 4
+walk -2 -6
+mark voice-maren
+approach Maren within 1.8 timeout 40
+waituntil prompt Maren timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 8
+advance
+wait 8
+advance
+wait 3
+choose 1
+wait 8
+advance
+waituntil dialogue none timeout 10
+waituntil fact heard_rumour == 1 timeout 10
+waituntil quest active timeout 10
+wait 2
+
+mark coins
+approach "Coins (square)" within 1.4 timeout 30
+waituntil prompt coins timeout 10
+interact
+waituntil item OldCoin >= 5 timeout 10
+wait 2
+mark bram
+walk 6 -8
+approach Bram within 1.8 timeout 40
+waituntil prompt Bram timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 6
+advance
+wait 2
+choose 0
+wait 6
+advance
+waituntil dialogue none timeout 10
+waituntil item Lantern == 1 timeout 10
+wait 4
+
+# Same collision-aware road waypoints as the existing recorded playthrough.
+walk 4 -6
+walk 2 4
+walk 12 1
+walk 22 0
+face 90
+mark audio-village-before-marsh
+wait 8
+walk 30 0
+walk 166.5 0 timeout 40
+waituntil region Blackmere timeout 30
+mark audio-marsh-after-travel
+# The production crossfade is 2500 ms; hold still with audio for eight seconds.
+wait 8
+face 90
+approach Hale within 1.8 timeout 30
+waituntil prompt Hale timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 8
+advance
+waituntil dialogue none timeout 10
+waituntil fact gate_open == 1 timeout 10
+wait 4
+approach "Causeway Gate" within 1.6 timeout 20
+waituntil prompt gate timeout 10
+interact
+wait 3
+walk 172 2
+walk 180 2
+walk 192 -1
+mark shrine
+approach "Shrine Lantern West" within 1.6 timeout 30
+waituntil prompt west timeout 10
+interact
+waituntil fact shrine_post_1 == 1 timeout 10
+wait 3
+approach "Shrine Lantern Middle" within 1.6 timeout 30
+waituntil prompt middle timeout 10
+interact
+waituntil fact shrine_post_2 == 1 timeout 10
+wait 3
+approach "Shrine Lantern East" within 1.6 timeout 30
+waituntil prompt east timeout 10
+interact
+waituntil fact shrine_lit == 1 timeout 10
+wait 8
+mark clapper
+walk 213 -2
+walk 200 -3
+approach "Bell Clapper" within 1.4 timeout 40
+waituntil prompt clapper timeout 10
+interact
+waituntil item BellClapper == 1 timeout 10
+wait 2
+ui open.pause
+waituntil lifecycle paused timeout 10
+wait 4
+ui open.save
+waituntil screen Save timeout 10
+wait 4
+ui save.1
+waituntil lifecycle saved timeout 30
+wait 6
+ui close
+waituntil lifecycle quit-ready timeout 10
+wait 4
+# This dispatches IUiSessionActions.Quit. There is intentionally no autoplay quit command.
+ui quit
+# If the production quit path stops working, fail rather than silently ending the driver.
+waituntil lifecycle unexpected-surviving-quit timeout 15

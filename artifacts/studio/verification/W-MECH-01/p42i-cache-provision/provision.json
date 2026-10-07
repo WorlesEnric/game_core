@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "reportedAt": "2026-10-07T05:56:59.852166+00:00",
+  "ownerCache": "~/.cache/gamecore-studio/stage/fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22",
+  "sourceCache": "~/.cache/gamecore-studio/stage/_warm/22421f6df7cfc2cc396043796f1a4d9a966cbcd1e8c4a3287f60eb3816fa1c22",
+  "steps": [
+    "Verify committed public UPM lock against existing globally verified cache",
+    "Provision only pinned public metadata/archive records into current owner cache",
+    "Verify pinned NuGet payloads",
+    "Seed pinned Unity analysis metadata and public PackageCache from this project",
+    "verify_complete"
+  ],
+  "initialFailure": "Host rolling UPM cache lacked pinned content-v2 record; first owner cache copy was partial. Preserved stage failure, repaired using exact verified pinned cache payloads, no lock/manifest or cold-marker changes."
+}

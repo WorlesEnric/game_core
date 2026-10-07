@@ -1,0 +1,26 @@
+{
+  "label": "p42i-creator-guide",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T05:12:39.642836+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/logs --label p42i-creator-guide --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/results.xml -- -runTests -testPlatform EditMode -testFilter R2_38_Guide_NpcAndDialogueContextToolsUndo",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/W-DOC-01/p42i-creator-guide-20261007T051239.640968Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T05:12:39.644718+00:00",
+  "sourceDiffSha256": "8501fe190c07aef9d1c741014e178b21b36b5dc57917e4860570fa7b6008fab7",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T05:13:45.877427+00:00",
+  "seconds": 66.23636441701092,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

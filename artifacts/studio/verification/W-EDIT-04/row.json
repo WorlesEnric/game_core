@@ -1,12 +1,24 @@
 {
-  "status": "BLOCKED",
-  "note": "Stale-target pieces pass, but the exact live NPC \u2192 exit Play \u2192 apply \u2192 delete \u2192 apply sequence is not retained as a combined acceptance run.",
-  "command": "studio/tools/verify-all.sh unity",
+  "status": "PASS",
+  "note": "Current real Bram edit in Play, exit/apply, engine delete and second apply produce journaled StaleTarget without resurrection; normal History undo restores original scene and costume.",
+  "evidence": [
+    "W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z/workflow/edit-result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py lifecycle",
+  "checks": [
+    {
+      "file": "W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z/workflow/edit-result.json",
+      "pointer": "/status",
+      "equals": "pass"
+    }
+  ],
   "row": "W-EDIT-04",
   "scenario": "Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget`",
   "requirement": "SR-1.4",
-  "reportedAt": "2026-10-06T15:29:44.381210+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z/workflow/edit-result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

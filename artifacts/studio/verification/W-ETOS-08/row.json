@@ -1,12 +1,17 @@
 {
   "status": "BLOCKED",
-  "note": "Removing the shared image provider and reloading the node would change concurrent users\u2019 provider service; that operator scenario is outside the permitted no-node-restart run.",
-  "command": "studio/tools/verify-all.sh media",
+  "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
+  "evidence": [
+    "W-ETOS-08/p42i-owner-block/result.json"
+  ],
+  "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
   "row": "W-ETOS-08",
   "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
   "requirement": "SR-4.9",
-  "reportedAt": "2026-10-06T15:29:44.393584+00:00",
-  "evidence": [
-    "W-HOST-01/immutable-install-20261005T185516.633891Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-ETOS-08/p42i-owner-block/result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

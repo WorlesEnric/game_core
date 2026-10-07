@@ -1,15 +1,24 @@
 {
-  "status": "BLOCKED",
-  "note": "Cosmetic-content save compatibility passes, but the literal prefab rename/reopen case is not exercised; no claim is inferred from stable GUID design alone.",
-  "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "CosmeticEditRestores_StructuralEditRefusesWithRecipeRevisionMismatch"
+  "status": "PASS",
+  "note": "Literal NPC prefab rename after checkpoint capture; separate Editor PIDs restore identical canonical slot hash/eight NPC fields and cosmetics. Original prefab/meta paths and bytes restore exactly.",
+  "evidence": [
+    "W-PERSIST-02/p42i-prefab-prepare-20261007T045650.504079Z/workflow/reopen-result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py lifecycle",
+  "checks": [
+    {
+      "file": "W-PERSIST-02/p42i-prefab-prepare-20261007T045650.504079Z/workflow/reopen-result.json",
+      "pointer": "/status",
+      "equals": "pass"
+    }
   ],
   "row": "W-PERSIST-02",
   "scenario": "Rename prefab, re-run: NPC keeps state in a save",
   "requirement": "SR-2.1",
-  "reportedAt": "2026-10-06T15:29:44.421086+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PERSIST-02/p42i-prefab-prepare-20261007T045650.504079Z/workflow/reopen-result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

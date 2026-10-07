@@ -1,27 +1,20 @@
 # W-ETOS-04: Worker `etos query` returns the selected NPC's dialogue nodes
 
-Verdict: **PASS** on product `fccf3f8c44e08bd3c6925ef99a8fcd15991d8703`, Linux build host, 2026-10-07.
+Verdict: **PASS**. Actual installed Docker worker resolves selected Bram through owner-scoped gc_definition and executes etos query: all eight returned node indices/kinds/texts match the selected graph. Initial P42h observer wrongly compared authoringId to the R8 owner:asset-GUID graph key; corrected offline verification passes the unchanged current query and independent tool trace, with no repeated provider call.
 
-## Observed workflow
-
-Batch Editor selects the real `Assets/Hollowmere/Npcs/Definitions/Bram.asset`. The production ETOS session publishes the real project index; no harness-seeded rows or replacement publisher. A task on the scratch node's actual Docker worker executes `etos query`, discovers the owner-scoped graph from `gc_definition`, and returns **8 Bram nodes** and **53 current dialogue nodes** with the graph filter removed. Every selected node index and text matches the actual graph asset. The worker obtains owner/query guidance from the production `request.md` and graph reference from its actual selection/index inputs.
-
-The scratch node and companion were freshly installed for this run. A deterministic loopback tool selector instructs the real worker to run the query script; it supplies no query responses or graph data. There were **zero external provider calls**. The installed node and companion were untouched.
-
-## Evidence
-
-- [Worker query receipt](r8-a/worker-query-receipt.json.gz): exact commands, authenticated stdout, raw JSONL, discovered graph, selected and unfiltered rows.
-- [Real node worker tool trace](r8-a/worker-tool-trace.json.gz).
-- [Actual selection and graph nodes](r8-a/selection.json.gz).
-- [Editor result](r8-a/editor-result.json.gz), [complete scratch result](r8-a/result.json.gz).
-- [Baseline regression failures](r8-a/baseline-index-tests.log): unchanged new tests against baseline `7f5cacb8`, **0 passed / 3 failed**. Integrated tests pass.
-- [EditMode result XML](r8-a/editmode-results.xml.gz): **199 passed / 0 failed / 0 skipped**, including lifecycle open/apply/undo/redo/rebuild/removal/disposal coverage.
-- Full redacted logs and checksums: [R8_A scratch-02 manifest](../../../../games/hollowmere/Assets/Hollowmere/Tests/R8_A/Evidence~/scratch-02/manifest.json).
-
-The first scratch attempt returned the same real 8/53 rows but exposed a harness parser defect: it counted the JSONL provenance header as a row. The fresh passing run uses the CLI's structured `rows` array, validates completeness and row count, and preserves raw JSONL separately. No assertion or product rule was relaxed.
+P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
-See [R8-A packet](../../../../docs/studio/packets/R8-A-publication-cancellation.md) for build and scratch runner commands. All Editors run sequentially through `studio/tools/unity-batch.sh`; no graphical qualification is claimed.
+```sh
+python3 artifacts/studio/verification/TOOLS/tasks-p42i.py; python3 artifacts/studio/verification/TOOLS/query-p42i.py --workflow <current query workflow>
+```
 
-Historical P4.2h zero-row receipts remain in this directory under their original revision and names.
+## Current-run evidence
+
+- [W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/current-query-verification.json](../W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/current-query-verification.json)
+- [W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-query-receipt.json](../W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-query-receipt.json)
+- [W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-tool-trace.json](../W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/worker-tool-trace.json)
+- [W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/request.json](../W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/request.json)
+- [W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/result.json](../W-ETOS-04/p42i-query-20261007T054157.439022Z/workflow/result.json)

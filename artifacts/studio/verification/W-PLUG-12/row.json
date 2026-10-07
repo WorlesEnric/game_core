@@ -1,18 +1,32 @@
 {
   "status": "PASS",
-  "note": "Both final-tree rebakes/Entry.Verify pass without output changes; byte identity and single-definition revision tests pass. Structural recipe revisions did not change, preserving existing save compatibility.",
-  "command": "studio/tools/verify-all.sh bake\nstudio/tools/verify-all.sh unity",
-  "tests": [
-    "BakeTwice_IsByteIdentical_AndVerifyPasses",
-    "OneFieldChange_ChangesOnlyThatDefinitionsRevision"
+  "note": "Both current project authoring/bake lanes pass. Exact byte-identity and single-definition revision tests pass; initial missing voice-bank authoring is retained, not hidden.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+    "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml"
+  ],
+  "command": "studio/tools/verify-all.sh unity",
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.BakeTwice_IsByteIdentical_AndVerifyPasses"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.OneFieldChange_ChangesOnlyThatDefinitionsRevision"
+    },
+    {
+      "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml",
+      "xmlCase": "Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled"
+    }
   ],
   "row": "W-PLUG-12",
   "scenario": "Bake byte-identity; one line change \u2192 one revision change",
   "requirement": "SR-5.3",
-  "reportedAt": "2026-10-06T15:29:44.417891+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
-    "W-PLUG-12/bake-hollowmere-20261005T185517.764081Z/README.md",
-    "W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

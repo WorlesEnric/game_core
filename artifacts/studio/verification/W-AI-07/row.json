@@ -1,18 +1,25 @@
 {
   "status": "PASS",
-  "note": "Installed R6-main companion refuses 3D with not_configured before a zero budget; no generation. The authenticated P4.2e receipt passes in TRX. FBX-only mesh import and predictions provider credentials remain an explicit owner decision.",
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42e.py receipt-hello",
-  "tests": [
-    "R2_38_P42e_HelloOwnerDescribeAnd3dRefusal"
+  "note": "Current installed companion refuses the unconfigured 3D operation with not_configured before any paid generation; authenticated receipt and TRX pass.",
+  "evidence": [
+    "P4.2i/p42i-hello-20261007T041554.920808Z/3d-refusal.json",
+    "P4.2i/p42i-hello-20261007T041554.920808Z/result.json"
   ],
-  "baseline": "d140f748",
-  "historical": "P4.2e installed release 0.1.0-cac2f82c59be070b on main d140f748. Earlier attempts remain retained; untouched rows keep their original revision-specific evidence.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py hello",
+  "checks": [
+    {
+      "file": "P4.2i/p42i-hello-20261007T041554.920808Z/3d-refusal.json",
+      "pointer": "/code",
+      "equals": "not_configured"
+    }
+  ],
   "row": "W-AI-07",
   "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
   "requirement": "SADR-020",
-  "reportedAt": "2026-10-06T15:29:44.408093+00:00",
-  "evidence": [
-    "INSTALL-P4.2e/p42e-receipt-hello-20261006T143912.780456Z/result.json",
-    "INSTALL-P4.2e/p42e-receipt-hello-20261006T143912.780456Z/3d-refusal.json"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "P4.2i/p42i-hello-20261007T041554.920808Z/3d-refusal.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,15 +1,24 @@
 {
   "status": "PASS",
-  "note": "R7-C 32 actual barn interactions across cooldown and production save/restore leave exactly one lantern; canonical saved/restored hash matches and the replacement world handles further retries. Final 10-case XML passes.",
-  "command": "DISPLAY=:97 UNITY=$PWD/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py GAMECORE_ETOS_AUTOSTART=0 studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir <dir> --label r7 --results <xml> -- -runTests -testPlatform PlayMode -testFilter 'FullQuestHeadless' -force-glcore",
-  "tests": [
-    "FullQuestHeadless"
+  "note": "Thirty-two actual barn pickup submissions across cooldown and production save/restore retain exactly one lantern; replacement-world retries and canonical hash pass.",
+  "evidence": [
+    "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+    "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
+  "checks": [
+    {
+      "file": "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+      "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern"
+    }
   ],
   "row": "W-PLUG-08",
   "scenario": "Take spam + reload: exactly one lantern",
   "requirement": "SR-6.8",
-  "reportedAt": "2026-10-06T21:25:19.143896+00:00",
-  "evidence": [
-    "W-PLUG-08/r7-pickup/results.xml"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

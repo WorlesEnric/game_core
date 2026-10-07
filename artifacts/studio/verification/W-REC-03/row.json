@@ -1,23 +1,47 @@
 {
-  "status": "BLOCKED",
-  "note": "P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained.",
-  "command": "Read docs/studio/packets/P4.2h-live-rows.md Requests to other packets and W-REC-03/p42h-prerequisite/result.json",
+  "status": "PASS",
+  "note": "Actual unfinished native region load cancels and settles all regions Unloaded. Real installed Docker stage is cancelled through the attached Stage-panel button after pausing only its owned dotnet container to serialize Editors. Durable cancelled, no container, released slot, verdict 404 and Admit disabled are verified. Authenticated reread after the permitted companion restart still reports cancelled and verdict 404.",
+  "evidence": [
+    "W-REC-03/p42i-installed-cancellation/editor-result.json",
+    "W-REC-03/p42i-installed-cancellation/region-cancel-before.json",
+    "W-REC-03/p42i-installed-cancellation/region-cancel-after.json",
+    "W-REC-03/p42i-installed-cancellation/container-running.json",
+    "W-REC-03/p42i-installed-cancellation/stage-ui-before.json",
+    "W-REC-03/p42i-installed-cancellation/stage-ui-after.json",
+    "W-REC-03/p42i-installed-cancellation/cancel-editor-result.json",
+    "W-REC-03/p42i-installed-cancellation/stage-resources.json",
+    "W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/cancelled-after-restart.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/stages-p42i.py cancel",
+  "checks": [
+    {
+      "file": "W-REC-03/p42i-installed-cancellation/editor-result.json",
+      "pointer": "/regionCancellation",
+      "equals": true
+    },
+    {
+      "file": "W-REC-03/p42i-installed-cancellation/cancel-editor-result.json",
+      "pointer": "/stageCancellation",
+      "equals": true
+    },
+    {
+      "file": "W-REC-03/p42i-installed-cancellation/stage-resources.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/cancelled-after-restart.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-REC-03",
   "scenario": "Cancel region load mid-way; cancel staging job",
   "requirement": "SR-9.1",
-  "reportedAt": "2026-10-07T01:31:38.713401+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
-    "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
-    "W-REC-03/p42h-prerequisite/result.json"
-  ],
-  "checks": [
-    {
-      "file": "W-REC-03/p42h-prerequisite/result.json",
-      "pointer": "/runtimeCancellationAttempted",
-      "equals": false
-    }
-  ],
-  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
-  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-REC-03/p42i-installed-cancellation/editor-result.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,0 +1,78 @@
+{
+  "scenario": {
+    "scenario": "stage.admission",
+    "status": "pass",
+    "detail": "verified; confinement=docker; coldCache=False"
+  },
+  "journal": {
+    "id": "cs_01M4AFCT77HTA5977FSJZDVPV4",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "mechanism.admit",
+        "args": {
+          "package": {
+            "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+          },
+          "proposal": {
+            "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+          },
+          "verdict": {
+            "artifact": "sha256:e45376d50ff3cda6ce5e9d4c10a0f5db0dc24bc5e2e95827a16848dcf499288f"
+          }
+        },
+        "applyRequirement": "Compile"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+        "name": "package.tgz",
+        "mediaType": "application/gzip",
+        "bytes": 32839,
+        "role": "package"
+      },
+      {
+        "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+        "name": "proposal.json",
+        "mediaType": "application/json",
+        "bytes": 917,
+        "role": "proposal"
+      },
+      {
+        "sha256": "e45376d50ff3cda6ce5e9d4c10a0f5db0dc24bc5e2e95827a16848dcf499288f",
+        "name": "verdict.json",
+        "mediaType": "application/vnd.gamecore.stage-verdict+json",
+        "bytes": 11616,
+        "role": "verdict"
+      }
+    ],
+    "validation": [
+      {
+        "scenario": "stage.verdict",
+        "status": "pass",
+        "detail": "pass verdict e45376d50ff3 slot cs-01m4afct77hta5977fsjzdvpv4 (78663 ms); sha256:e45376d50ff3cda6ce5e9d4c10a0f5db0dc24bc5e2e95827a16848dcf499288f"
+      },
+      {
+        "scenario": "stage.admission",
+        "status": "pass",
+        "detail": "verified; confinement=docker; coldCache=False"
+      }
+    ],
+    "requirements": {
+      "max": "Compile",
+      "worldRebuild": false,
+      "compile": true,
+      "build": false
+    },
+    "state": "Applied",
+    "timestamps": {
+      "applied": "2026-10-07T06:08:02.798Z"
+    }
+  }
+}

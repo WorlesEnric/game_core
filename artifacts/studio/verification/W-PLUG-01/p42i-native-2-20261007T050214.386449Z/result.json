@@ -1,0 +1,26 @@
+{
+  "label": "p42i-native-2",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "host": "worlesenric",
+  "started": "2026-10-07T05:02:14.387566+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2i/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-PLUG-01/p42i-native-2-20261007T050214.386449Z/logs --label p42i-native-2 --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2i/artifacts/studio/verification/W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml -- -runTests -testPlatform EditMode -testFilter NativeMediaAcceptance",
+  "cwd": "~/wkspace/gc-studio/p4.2i",
+  "evidencePath": "artifacts/studio/verification/W-PLUG-01/p42i-native-2-20261007T050214.386449Z",
+  "queuedAtRevision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "executionStarted": "2026-10-07T05:02:14.389031+00:00",
+  "sourceDiffSha256": "8501fe190c07aef9d1c741014e178b21b36b5dc57917e4860570fa7b6008fab7",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T05:03:54.560282+00:00",
+  "seconds": 100.17377988807857,
+  "suites": {
+    "results.xml": {
+      "total": 3,
+      "counts": {
+        "Passed": 3
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

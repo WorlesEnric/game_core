@@ -1,15 +1,23 @@
 {
-  "status": "BLOCKED",
-  "note": "Current index/impact tests cover typed references and lantern reward/stock; the exact deleted-item dialogue-line/objective witness is not exercised.",
+  "status": "PASS",
+  "note": "Current exact item-deletion preview identifies referencing dialogue line and objective; engine deletion and ordinary History undo pass.",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml"
+  ],
   "command": "studio/tools/verify-all.sh unity",
-  "tests": [
-    "IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock"
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "xmlCase": "Hollowmere.R7_B.Model.ItemDeletionImpactTests.W_MODEL_02_DeleteItemListsReferencingDialogueLineAndObjective"
+    }
   ],
   "row": "W-MODEL-02",
   "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
   "requirement": "SR-2.2",
-  "reportedAt": "2026-10-06T15:29:44.376151+00:00",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,0 +1,66 @@
+[
+  {
+    "taskId": "t3e0924a56f714ec1e8d03ffd",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4ACK3VKSN3NRD7W6T4TP5AK`\n\n- Change set id: `cs_01M4ACK3VKSN3NRD7W6T4TP5AK` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `114` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nMove the well one meter to the east.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `tool-catalog.json\n[... 26308 bytes omitted ...]\n position (world space).\",\n          \"name\": \"position\",\n          \"required\": true,\n          \"type\": \"vector3\",\n          \"unit\": \"m\"\n        },\n        {\n          \"doc\": \"Spawn heading around +Y.\",\n          \"name\": \"yaw\",\n          \"required\": false,\n          \"type\": \"float\",\n          \"unit\": \"deg\"\n        },\n        {\n          \"doc\": \"Spawn point name (empty: default, the region's own spawn).\",\n          \"name\": \"name\",\n          \"required\": false,\n          \"type\": \"string\"\n        }\n      ],\n      \"doc\": \"Sets a spawn point of the target region: recorded as a named spawn point of the region definition; when the region scene is open, the default one also creates or moves the scene's SpawnPoint child (a named one its 'SpawnPoint <name>' marker).\",\n      \"id\": \"world.setSpawnPoint\",\n      \"prerequisites\": [\n        {\n          \"on\": \"Project\",\n          \"requires\": \"world.region\"\n        }\n      ],\n      \"runtimeApply\": \"Rebuild\",\n      \"scopes\": [\n        \"Definition\"\n      ],\n      \"targetRequired\": true,\n      \"targetType\": \"world.region\",\n      \"tier\": \"Compose\",\n      \"validators\": [\n        {\n          \"codes\": [\n            \"GP-ID-001\",\n            \"GP-ID-003\",\n            \"GP-REF-003\",\n            \"GP-WLD-001\",\n            \"GP-WLD-002\",\n            \"GP-WLD-003\",\n            \"GP-WLD-004\",\n            \"GP-WLD-005\",\n            \"GP-WLD-006\",\n            \"GP-WLD-007\",\n            \"GP-WLD-050\",\n            \"GP-WLD-051\",\n            \"GP-WLD-052\",\n            \"GP-WLD-053\",\n            \"GP-WLD-054\"\n          ],\n          \"id\": \"world.validator\"\n        }\n      ]\n    },\n    {\n      \"args\": [\n        {\n          \"name\": \"regionId\",\n          \"required\": true,\n          \"type\": \"string\"\n        },\n        {\n          \"name\": \"portalId\",\n          \"required\": false,\n          \"type\": \"string\"\n        },\n        {\n          \"min\": 0.0,\n          \"name\": \"expectedRevision\",\n          \"required\": true,\n          \"type\": \"int\"\n        }\n      ],\n      \"doc\": \"Revision-checked runtime action. No authored changes or inverse.\",\n      \"id\": \"world.travel\",\n      \"runtimeApply\": \"Live\",\n      \"runtimeOnly\": true,\n      \"targetRequired\": true,\n      \"tier\": \"Configure\"\n    }\n  ]\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 194128 bytes in total; full log: /tmp/etos/out/t3e0924a56f714ec1e8d03ffd-1-0.log]"
+    }
+  },
+  {
+    "taskId": "t3e0924a56f714ec1e8d03ffd",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/selection.json; echo INDEX; cat /inputs/index-slice.json; echo SCENE; cat /inputs/scene-context.json; echo TOOLS; jq '.tools[] | select((.id|test(\"move|position|transform\";\"i\"))) | {id,args,runtimeApply,targetKinds,scopes,targetType,targetRequired,doc}' /inputs/tool-catalog.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30241,
+      "text": "{\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7975986277873073,\n      \"fov\": 60.0,\n      \"position\": [\n        0.0,\n        0.0,\n        -14.364101409912108\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:69a2e5a5efc8f8cec760833856eadc3ec877daee2d57883b84da79bfa5afc23a\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4ACK3SXRCK8HWTKBXPTF9A8\",\n  \"indexRevision\": 114,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n      \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n    }\n  ]\n}INDEX\n{\n  \"edges\": [\n    {\n      \"from\": {\n        \"assetGuid\": \"d3023a37a33dd4ba982edbbdd8ffcd1c\",\n        \"authoringId\": \"0601f4eb-4bd8-49d1-bd35-885fc537f4e6\",\n        \"global\": \"GlobalObjectId_V1-3-d3023a37a33dd4ba982edbbdd8ffcd1c-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Audio/Definitions/Ambience_ThornwickVillage.asset\"\n      },\n      \"kind\": \"references\",\n      \"to\": {\n        \"assetGuid\": \"6d0c50f8843e0a791bb54f18201c0bca\",\n        \"authoringId\": \"11e8dd95-6622-43d0-8b48-5e17b72f0bb8\",\n        \"global\": \"GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Asse\n[... 26305 bytes omitted ...]\nuneMovement\",\n  \"args\": [\n    {\n      \"doc\": \"Walking speed.\",\n      \"max\": 20.0,\n      \"min\": 0.1,\n      \"name\": \"walkSpeed\",\n      \"required\": true,\n      \"type\": \"float\",\n      \"unit\": \"m/s\"\n    },\n    {\n      \"doc\": \"Running speed (>= walking speed).\",\n      \"max\": 30.0,\n      \"min\": 0.1,\n      \"name\": \"runSpeed\",\n      \"required\": true,\n      \"type\": \"float\",\n      \"unit\": \"m/s\"\n    },\n    {\n      \"doc\": \"Jump height.\",\n      \"max\": 5.0,\n      \"min\": 0.0,\n      \"name\": \"jumpHeight\",\n      \"required\": false,\n      \"type\": \"float\",\n      \"unit\": \"m\"\n    },\n    {\n      \"doc\": \"Maximum stamina.\",\n      \"max\": 100000.0,\n      \"min\": 1.0,\n      \"name\": \"staminaMax\",\n      \"required\": false,\n      \"type\": \"int\"\n    },\n    {\n      \"doc\": \"Stamina drained per second running.\",\n      \"max\": 100000.0,\n      \"min\": 0.0,\n      \"name\": \"drainPerSecond\",\n      \"required\": false,\n      \"type\": \"int\",\n      \"unit\": \"1/s\"\n    },\n    {\n      \"doc\": \"Stamina regenerated per second resting.\",\n      \"max\": 100000.0,\n      \"min\": 0.0,\n      \"name\": \"regenPerSecond\",\n      \"required\": false,\n      \"type\": \"int\",\n      \"unit\": \"1/s\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"targetKinds\": null,\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetType\": \"player.definition\",\n  \"targetRequired\": true,\n  \"doc\": \"Sets the player's walk/run speeds, jump height and stamina budget.\"\n}\n{\n  \"id\": \"removeComponent\",\n  \"args\": [\n    {\n      \"doc\": \"Component type (when the target is the GameObject).\",\n      \"name\": \"type\",\n      \"required\": false,\n      \"type\": \"string\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"targetKinds\": [\n    \"Entity\",\n    \"SceneObject\",\n    \"Region\"\n  ],\n  \"scopes\": null,\n  \"targetType\": null,\n  \"targetRequired\": true,\n  \"doc\": \"Remove a component from a scene object (the target component, or the component of 'type' on the target object).\"\n}\n{\n  \"id\": \"runtime.move\",\n  \"args\": [\n    {\n      \"name\": \"position\",\n      \"required\": true,\n      \"type\": \"vector3\"\n    },\n    {\n      \"name\": \"yaw\",\n      \"required\": true,\n      \"type\": \"float\"\n    }\n  ],\n  \"runtimeApply\": \"Live\",\n  \"targetKinds\": null,\n  \"scopes\": [\n    \"Instance\"\n  ],\n  \"targetType\": null,\n  \"targetRequired\": true,\n  \"doc\": null\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 83168 bytes in total; full log: /tmp/etos/out/t3e0924a56f714ec1e8d03ffd-1-1.log]"
+    }
+  },
+  {
+    "taskId": "t3e0924a56f714ec1e8d03ffd",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "ls -la /work/docs/studio/schemas/change-set.schema.json /outputs 2>/dev/null; jq '.nodes[] | select(.ref.authoringId==\"e3baad87-1923-4823-82fe-69c3cc399bf4\") | {ref,name,fields}' /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 810,
+      "text": "/outputs:\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 05:15 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 05:15 ..\n{\n  \"ref\": {\n    \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n    \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n    \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n    \"kind\": \"Entity\",\n    \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n    \"scope\": \"Instance\",\n    \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n  },\n  \"name\": \"Village Well\",\n  \"fields\": {\n    \"overrides\": {\n      \"type\": \"object\",\n      \"value\": {\n        \"entries\": []\n      }\n    },\n    \"variant\": {\n      \"type\": \"int\",\n      \"value\": 0\n    }\n  }\n}\n[exit code 0]\n[full log: /tmp/etos/out/t3e0924a56f714ec1e8d03ffd-1-2.log]"
+    }
+  },
+  {
+    "taskId": "t3e0924a56f714ec1e8d03ffd",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "jq -n --slurpfile s /inputs/selection.json --slurpfile i /inputs/index-slice.json '{id:\"cs_01M4ACK3VKSN3NRD7W6T4TP5AK\",schema:\"gamecore.studio.changeset/1\",intent:{text:\"Move the well one meter to the east.\",origin:\"agent\"},selection:$s[0],baseVersions:[{ref:($i[0].nodes[] | select(.ref.authoringId==\"e3baad87-1923-4823-82fe-69c3cc399bf4\") | .ref),stamp:\"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"}],operations:[{opId:\"op1\",tool:\"move\",target:($i[0].nodes[] | select(.ref.authoringId==\"e3baad87-1923-4823-82fe-69c3cc399bf4\") | .ref),args:{position:[1.0,0.0,-1.9]},dependsOn:[],preconditions:\"stamp\",applyRequirement:\"Rebuild\"}],artifacts:[],requirements:{max:\"Rebuild\",worldRebuild:true,compile:false,build:false}}' > /outputs/changeset.json\njq -e '.selection.indexRevision==114 and .operations[0].args.position==[1,0,-1.9] and .operations[0].target.stamp==.baseVersions[0].stamp and (.operations|length)==1 and (.artifacts|length)==0' /outputs/changeset.json >/dev/null && python -m json.tool /outputs/changeset.json >/dev/null && ls -l /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 139,
+      "text": "total 4\n-rw-r--r-- 1 agent agent 2621 Oct  7 05:15 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/t3e0924a56f714ec1e8d03ffd-1-3.log]"
+    }
+  }
+]

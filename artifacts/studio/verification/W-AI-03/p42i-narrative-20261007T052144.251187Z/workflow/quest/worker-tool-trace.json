@@ -1,0 +1,129 @@
+[
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n---catalog---\\n' && cat /inputs/tool-catalog.json && printf '\\n---selection---\\n' && cat /inputs/selection.json && printf '\\n---index---\\n' && cat /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4AD78NJQX0H1F25QBVN5J3J`\n\n- Change set id: `cs_01M4AD78NJQX0H1F25QBVN5J3J` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `147` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nChange the lantern quest to require two oil flasks.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='fe7c55721c38db8498991ec110f79b2c8d9502ea2a0aaea700d6f8718dd470f5' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `to\n[... 26308 bytes omitted ...]\n     \"authoringId\": \"4c125e97-b18c-4cf8-bb6a-06cb09b2fbbf\",\n        \"global\": \"GlobalObjectId_V1-3-e7ff9703a23afeb47b4a7596e1eb7493-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Rules/LanternLost.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:c4198cf385f5dc875675551fbea7ff575a192f5203459c20d92ee4cec51f08da\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"triggerFact\",\n          \"to\": {\n            \"assetGuid\": \"45d85b0ef2c142a5a9b61522b674259b\",\n            \"authoringId\": \"ca798a3f-2c3a-4575-af00-d1478e1435fe\",\n            \"global\": \"GlobalObjectId_V1-3-45d85b0ef2c142a5a9b61522b674259b-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Dialogue/Facts/lantern_lost.asset\"\n          }\n        },\n        {\n          \"field\": \"conditions[0].item\",\n          \"to\": {\n            \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n            \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n            \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Items/Lantern.asset\"\n          }\n        },\n        {\n          \"field\": \"conditions[0].item\",\n          \"to\": {\n            \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n            \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n            \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Items/Lantern.asset\"\n          }\n        }\n      ],\n      \"type\": \"logic.rule\"\n    },\n    {\n      \"name\": \"Lantern\",\n      \"ref\": {\n        \"assetGuid\": \"b2a9c9d308ca808c7968da017d5b089f\",\n        \"authoringId\": \"18779563-f74f-4223-947f-19f0502c5a63\",\n        \"global\": \"GlobalObjectId_V1-3-b2a9c9d308ca808c7968da017d5b089f-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/World/Definitions/Lantern.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:5abb4524e7ad1fea844b3f7baff54d0c571235fc3e69e34a6af0240aca2b6113\"\n      },\n      \"type\": \"entity.definition\"\n    }\n  ],\n  \"project\": \"hollowmere\",\n  \"revision\": 147\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 288726 bytes in total; full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-0.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json')); print(c.keys());\nfor t in c.get('tools',[]):\n if 'quest' in t['id'].lower() or 'condition' in t['id'].lower(): print(json.dumps(t,indent=2))\ns=json.load(open('/inputs/selection.json')); print('SELECTION',json.dumps(s,indent=2));i=json.load(open('/inputs/index-slice.json'));print('INDEX KEYS',i.keys());\nfor x in i.get('objects',[]):\n if 'quest' in str(x.get('type','')).lower() or 'lantern' in str(x.get('name','')).lower() or 'oil' in str(x.get('name','')).lower():print('OBJECT',json.dumps(x,indent=2)[:12000])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 14388,
+      "text": "dict_keys(['objectTypes', 'revision', 'schema', 'tools'])\n{\n  \"args\": [\n    {\n      \"doc\": \"Node index.\",\n      \"name\": \"node\",\n      \"required\": true,\n      \"type\": \"int\"\n    },\n    {\n      \"category\": \"logic.conditionSet\",\n      \"doc\": \"The condition (empty = none).\",\n      \"name\": \"condition\",\n      \"required\": false,\n      \"type\": \"ref\"\n    },\n    {\n      \"doc\": \"Option index of a choice node (-1 = the node itself, a branch).\",\n      \"name\": \"option\",\n      \"required\": false,\n      \"type\": \"int\"\n    }\n  ],\n  \"doc\": \"Sets the condition of a branch node, or the availability condition of one option of a choice node.\",\n  \"id\": \"dialogue.linkCondition\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"dialogue.graph\"\n    }\n  ],\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"dialogue.graph\",\n  \"tier\": \"Compose\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-DLG-001\",\n        \"GP-DLG-002\",\n        \"GP-DLG-003\",\n        \"GP-DLG-004\",\n        \"GP-DLG-005\",\n        \"GP-DLG-006\",\n        \"GP-DLG-020\",\n        \"GP-ID-002\",\n        \"GP-ID-003\",\n        \"GP-LOG-011\",\n        \"GP-LOG-012\",\n        \"GP-LOG-013\",\n        \"GP-REF-005\"\n      ],\n      \"id\": \"dialogue.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"category\": \"narrative.fact\",\n      \"doc\": \"Fact AuthoringRef, including the output of an earlier dialogue.setFact operation.\",\n      \"name\": \"fact\",\n      \"required\": true,\n      \"type\": \"ref\"\n    },\n    {\n      \"enumValues\": [\n        \"Equal\",\n        \"NotEqual\",\n \n[... 10452 bytes omitted ...]\nT-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\n{\n  \"args\": [\n    {\n      \"doc\": \"Steps separated by ';'.\",\n      \"name\": \"path\",\n      \"required\": true,\n      \"type\": \"string\"\n    }\n  ],\n  \"doc\": \"Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.\",\n  \"id\": \"quest.simulate\",\n  \"prerequisites\": [\n    {\n      \"on\": \"Project\",\n      \"requires\": \"quest.quest\"\n    }\n  ],\n  \"readOnly\": true,\n  \"runtimeApply\": \"Rebuild\",\n  \"scopes\": [\n    \"Definition\"\n  ],\n  \"targetRequired\": true,\n  \"targetType\": \"quest.quest\",\n  \"tier\": \"Configure\",\n  \"validators\": [\n    {\n      \"codes\": [\n        \"GP-LOG-013\",\n        \"GP-QST-001\",\n        \"GP-QST-002\",\n        \"GP-QST-003\",\n        \"GP-QST-004\",\n        \"GP-QST-020\",\n        \"GP-QST-021\",\n        \"GP-REF-001\"\n      ],\n      \"id\": \"quest.validator\"\n    }\n  ]\n}\nSELECTION {\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7975986277873073,\n      \"fov\": 60.0,\n      \"position\": [\n        221.0,\n        0.75724995136261,\n        3.8932952880859375\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:65b4b2fdba9c66b71f7b8fbaf5258aa23251fe00628de240ab88adcfb0137eb7\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4AD78MM0R99VDHWBVKZ5YNS\",\n  \"indexRevision\": 147,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n      \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n      \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n      \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n    },\n    {\n      \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n      \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n      \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n      \"kind\": \"Definition\",\n      \"path\": \"Assets/Hollowmere/Items/Lantern.asset\",\n      \"stamp\": \"sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e\"\n    }\n  ]\n}\nINDEX KEYS dict_keys(['edges', 'nodes', 'project', 'revision'])\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-1.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print('TOOLS',[(t['id'],t.get('targetType')) for t in c['tools'] if ('field' in t['id'].lower() or 'objective' in t['id'].lower())]);i=json.load(open('/inputs/index-slice.json'))\nfor x in i['nodes']:\n if 'quest' in str(x.get('type','')).lower() or x.get('ref',{}).get('assetGuid') in ('c0b53079e6e09fd8e94d904622330c55','344e1560f458dcce8b088aebc730d844'):\n  print(json.dumps(x,indent=2)[:18000])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 13791,
+      "text": "TOOLS [('quest.addObjective', 'quest.quest')]\n{\n  \"capabilities\": [\n    \"narrative.definition\"\n  ],\n  \"fields\": {\n    \"branchNames\": {\n      \"type\": \"string[]\",\n      \"value\": [\n        \"let it sleep\",\n        \"ring the bell\",\n        \"free the echo\"\n      ]\n    },\n    \"objectives\": {\n      \"type\": \"object[]\",\n      \"value\": [\n        {\n          \"branch\": 0,\n          \"fact\": {\n            \"assetGuid\": \"c0058a7ebedf01ab3996bdb19fb6b8a5\",\n            \"authoringId\": \"8508a66a-cbc1-4729-9be5-fb7befe04391\",\n            \"global\": \"GlobalObjectId_V1-3-c0058a7ebedf01ab3996bdb19fb6b8a5-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Dialogue/Facts/heard_rumour.asset\"\n          },\n          \"kind\": \"Fact\",\n          \"required\": 1,\n          \"stage\": 0,\n          \"targetEntityId\": \"\",\n          \"text\": \"Hear Maren out\"\n        },\n        {\n          \"branch\": 0,\n          \"item\": {\n            \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n            \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n            \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Items/Lantern.asset\"\n          },\n          \"kind\": \"Collect\",\n          \"required\": 1,\n          \"stage\": 1,\n          \"targetEntityId\": \"\",\n          \"text\": \"Get a lantern (find, buy or craft one)\"\n        },\n        {\n          \"branch\": 0,\n          \"fact\": {\n            \"assetGuid\": \"1af0f99dbdb793a73928cf5583252642\",\n            \"authoringId\": \"d92de0\n[... 9855 bytes omitted ...]\n}\n    },\n    {\n      \"field\": \"objectives[3].region\",\n      \"to\": {\n        \"assetGuid\": \"832904035182b2712b3f6c244c515dea\",\n        \"authoringId\": \"1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18\",\n        \"global\": \"GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/World/Regions/DrownedBelfry.asset\"\n      }\n    },\n    {\n      \"field\": \"objectives[4].fact\",\n      \"to\": {\n        \"assetGuid\": \"fc5608aaa89ff5044be68348ead91db5\",\n        \"authoringId\": \"c6a254c3-8968-480e-a748-e4e89a0bf8e2\",\n        \"global\": \"GlobalObjectId_V1-3-fc5608aaa89ff5044be68348ead91db5-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Dialogue/Facts/ending_a.asset\"\n      }\n    },\n    {\n      \"field\": \"objectives[5].fact\",\n      \"to\": {\n        \"assetGuid\": \"5434300b245f3b8018f9a8e1acdaa8bd\",\n        \"authoringId\": \"5b190264-aa11-4de8-9b67-ab793a7846f7\",\n        \"global\": \"GlobalObjectId_V1-3-5434300b245f3b8018f9a8e1acdaa8bd-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Dialogue/Facts/ending_b.asset\"\n      }\n    },\n    {\n      \"field\": \"objectives[6].fact\",\n      \"to\": {\n        \"assetGuid\": \"3cd06f4ce798f222b91f9221eb7fb0d7\",\n        \"authoringId\": \"91d867aa-ac86-4935-b1e9-d8c2a622f546\",\n        \"global\": \"GlobalObjectId_V1-3-3cd06f4ce798f222b91f9221eb7fb0d7-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Dialogue/Facts/ending_c.asset\"\n      }\n    },\n    {\n      \"field\": \"rewards[0].fact\",\n      \"to\": {\n        \"assetGuid\": \"d1df5cf368cc4f5198b9f871e51a4f47\",\n        \"authoringId\": \"9ad3fb8b-f42d-45fa-9fef-5d5ffb061752\",\n        \"global\": \"GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset\"\n      }\n    },\n    {\n      \"field\": \"rewards[1].fact\",\n      \"to\": {\n        \"assetGuid\": \"d1df5cf368cc4f5198b9f871e51a4f47\",\n        \"authoringId\": \"9ad3fb8b-f42d-45fa-9fef-5d5ffb061752\",\n        \"global\": \"GlobalObjectId_V1-3-d1df5cf368cc4f5198b9f871e51a4f47-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Dialogue/Facts/maren_grateful.asset\"\n      }\n    }\n  ],\n  \"type\": \"quest.quest\"\n}\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-2.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nx=json.load(open('/inputs/index-slice.json'))\nfor n in x['nodes']:\n if 'Oil' in n.get('name','') or 'oil' in n.get('name','').lower():print(n['name'],n['type'],n['ref'], n.get('fields',{}))\nPY\nls -la /outputs; ls -la /work/docs/studio/schemas/change-set.schema.json 2>/dev/null || true",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 172,
+      "text": "total 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 05:26 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 05:26 ..\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-3.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 4,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/scene-context.json | head -c 4000; python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json'));print([t['id'] for t in c['tools'] if t.get('targetType')=='quest.quest']);\nx=json.load(open('/inputs/index-slice.json')); print('oil refs:',[(n['name'],r['field']) for n in x['nodes'] for r in n.get('refs',[]) if r['to'].get('assetGuid')=='344e1560f458dcce8b088aebc730d844'][:20])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 490,
+      "text": "{\"schema\":\"gamecore.studio.scenecontext/1\",\"units\":\"metres\",\"axes\":{\"north\":\"+z\",\"east\":\"+x\",\"up\":\"+y\"},\"objects\":[],\"truncated\":true}['quest.addObjective', 'quest.addStage', 'quest.inspectRuntime', 'quest.linkReward', 'quest.setBranch', 'quest.setConsequence', 'quest.setPrerequisites', 'quest.simulate']\noil refs: [('HollowmereContent', 'definitions'), ('InnStock', 'stock[1].item'), ('InnStock', 'stock[1].item')]\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-4.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 5,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nx=json.load(open('/inputs/index-slice.json')); a=next(r['to'] for n in x['nodes'] for r in n.get('refs',[]) if r['to'].get('assetGuid')=='344e1560f458dcce8b088aebc730d844');print(json.dumps(a,indent=2));print('other tools', [t['id'] for t in json.load(open('/inputs/tool-catalog.json'))['tools'] if 'authoring' in t['id']])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 377,
+      "text": "{\n  \"assetGuid\": \"344e1560f458dcce8b088aebc730d844\",\n  \"authoringId\": \"bc9e0772-4981-4a2e-8e1b-03be5c839d18\",\n  \"global\": \"GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0\",\n  \"kind\": \"Definition\",\n  \"path\": \"Assets/Hollowmere/Items/OilFlask.asset\"\n}\nother tools ['authoring.migrateRefs']\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-5.log]"
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 6,
+    "name": "write",
+    "args": {
+      "path": "/outputs/changeset.json",
+      "content": "{\n  \"id\": \"cs_01M4AD78NJQX0H1F25QBVN5J3J\",\n  \"schema\": \"gamecore.studio.changeset/1\",\n  \"intent\": {\"text\": \"Change the lantern quest to require two oil flasks.\", \"origin\": \"agent\"},\n  \"selection\": {\n    \"id\": \"sel_01M4AD78MM0R99VDHWBVKZ5YNS\",\n    \"mode\": \"Edit\",\n    \"indexRevision\": 147,\n    \"targets\": [\n      {\n        \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n        \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n        \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n        \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n      },\n      {\n        \"assetGuid\": \"fffb111048bcd5d6ea31bc57defa7c6d\",\n        \"authoringId\": \"6bb88144-376c-4507-8429-e78247b14e66\",\n        \"global\": \"GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Items/Lantern.asset\",\n        \"stamp\": \"sha256:6bd7997a6dfbe9becd391f0c4f4e2357c9576747807ee3f212507cc16a49de5e\"\n      }\n    ]\n  },\n  \"baseVersions\": [\n    {\n      \"ref\": {\n        \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n        \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n        \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n      },\n      \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n    }\n  ],\n  \"operations\": [\n    {\n      \"opId\": \"require-two-oil-flasks\",\n      \"tool\": \"quest.addObjective\",\n      \"target\": {\n        \"assetGuid\": \"c0b53079e6e09fd8e94d904622330c55\",\n        \"authoringId\": \"0db698bb-d2d3-45b7-94cb-1bd81e90e6c2\",\n        \"global\": \"GlobalObjectId_V1-3-c0b53079e6e09fd8e94d904622330c55-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Quests/DrownedBell.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:58e2f1ac57ca3fef722ec45fb62af5fb38df1cddc66d8c2869a3543532f0cbf9\"\n      },\n      \"args\": {\n        \"stage\": 1,\n        \"kind\": \"Collect\",\n        \"target\": {\n          \"assetGuid\": \"344e1560f458dcce8b088aebc730d844\",\n          \"authoringId\": \"bc9e0772-4981-4a2e-8e1b-03be5c839d18\",\n          \"global\": \"GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0\",\n          \"kind\": \"Definition\",\n          \"path\": \"Assets/Hollowmere/Items/OilFlask.asset\"\n        },\n        \"required\": 2,\n        \"text\": \"Collect two oil flasks\"\n      },\n      \"dependsOn\": [],\n      \"preconditions\": \"stamp\",\n      \"applyRequirement\": \"Rebuild\"\n    }\n  ],\n  \"artifacts\": [],\n  \"requirements\": {\"max\": \"Rebuild\", \"worldRebuild\": true, \"compile\": false, \"build\": false}\n}\n"
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 53,
+      "text": "Wrote /outputs/changeset.json (2921 bytes, 75 lines)."
+    }
+  },
+  {
+    "taskId": "t05910e6ecd3ecb7a53924467",
+    "turn": 1,
+    "index": 7,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\np=json.load(open('/outputs/changeset.json'));s=json.load(open('/inputs/selection.json')); c=json.load(open('/inputs/tool-catalog.json')); assert p['selection']=={k:s[k] for k in ('id','mode','indexRevision','targets')}; t=next(t for t in c['tools'] if t['id']==p['operations'][0]['tool']); assert set(p['operations'][0]['args'])<=set(a['name'] for a in t['args']); assert all(a['name'] in p['operations'][0]['args'] for a in t['args'] if a.get('required')); assert p['operations'][0]['applyRequirement']==t['runtimeApply'];assert p['operations'][0]['target']['scope'] in t['scopes'];print('JSON, selection, catalog args and runtime requirement verified')\nPY\nls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 294,
+      "text": "JSON, selection, catalog args and runtime requirement verified\ntotal 12\ndrwxrwxr-x 2 agent agent 4096 Oct  7 05:27 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 05:26 ..\n-rw-r--r-- 1 agent agent 2921 Oct  7 05:27 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/t05910e6ecd3ecb7a53924467-1-7.log]"
+    }
+  }
+]

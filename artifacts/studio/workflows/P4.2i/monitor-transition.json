@@ -1,0 +1,7 @@
+{
+  "reportedAt": "2026-10-07T05:10:17.409909+00:00",
+  "initialSource": "sources/monitor-initial.py",
+  "currentSource": "../../../verification/TOOLS/monitor-scoped-p42i.py",
+  "reason": "Scope process cwd before reading OMP/Codex arguments; classify actual executable rather than transient inherited comm. Initial monitor retained only project-hub session metadata, but its argv-before-cwd ordering was broader than the intended inspection scope. No unrelated process was signalled.",
+  "continuousCoverage": "Started new monitor before stopping the owned initial monitor."
+}

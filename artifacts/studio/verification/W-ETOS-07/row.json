@@ -1,32 +1,33 @@
 {
+  "status": "PASS",
+  "note": "Current generated PNG imports with verified matching SHA256. Downloading that same owned artifact with one byte tampered refuses artifact_digest_mismatch; a clean reread equals the original bytes, with no regeneration. One priced describe call consumes the same digest for USD0.01.",
+  "evidence": [
+    "W-EDIT-03/p42i-portrait/workflow/generate.json",
+    "W-ETOS-07/p42i-tamper-20261007T052130.875133Z/tamper.json",
+    "W-ETOS-07/p42i-tamper-20261007T052130.875133Z/result.json",
+    "W-ETOS-07/p42i-describe-20261007T052135.363495Z/describe.json",
+    "W-ETOS-07/p42i-describe-20261007T052135.363495Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/receipts-p42i.py tamper --artifact 0d00c9991e76dede94bbf4d3cbc51b8dcb0dfa700733608ea3a1debf484612e7",
+  "checks": [
+    {
+      "file": "W-ETOS-07/p42i-tamper-20261007T052130.875133Z/tamper.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-ETOS-07/p42i-describe-20261007T052135.363495Z/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
   "row": "W-ETOS-07",
   "scenario": "Generated texture arrives with matching sha256; tampered file refused",
   "requirement": "SR-4.6",
-  "status": "PASS",
-  "baseline": "0adcdda20527b77f88c87a2277a50ab4f3dcd8cd",
-  "reportedAt": "2026-10-07T02:05:01.877590Z",
-  "note": "R8-B one real scratch-node Echo gpt-image-2 image passes authenticated USD0.20 operator-tariff preflight, verified download and production media import. Typed entity.setMaterialTexture apply, normal History undo/redo and final undo pass. Generated/applied/redone bytes share SHA256 36e071fa68dc08dad9cdd913d3e7dbf54c7a8f501a07007e39c29003c4fc7d50. Altering downloaded bytes causes artifact_digest_mismatch in both download verification and media import, before any tampered asset/meta or journal entry is created. Exactly one generation POST and one USD0.20 charge; all replay checkpoints unchanged. TTS/describe/worker calls zero. Fresh local companion and private real etosd only; installed services untouched.",
-  "command": "CARGO_TARGET_DIR=/tmp/r8-b-cargo-target cargo build --offline --manifest-path studio/agent/Cargo.toml --bin gamecore-studio; python3 games/hollowmere/Assets/Hollowmere/Tests/R8_B/Media/scratch.py prepare; python3 games/hollowmere/Assets/Hollowmere/Tests/R8_B/Media/scratch.py serve; GAMECORE_R8_MEDIA_SLOT_GRANTED=1 python3 games/hollowmere/Assets/Hollowmere/Tests/R8_B/Media/scratch.py launch",
-  "tests": [
-    "Hollowmere.R8_B.MediaQualification.Run (real graphical :1 executeMethod workflow, not a test fixture)",
-    "GameCore.Studio.Etos.Client.Tests: 69 passed, 6 environment-gated skipped (separate Main-run component coverage)"
-  ],
-  "generationCount": 1,
-  "chargedUsd": 0.2,
-  "accountingScope": "Companion binding operator tariff and real node budget/usage; not an upstream provider invoice",
-  "historical": "P4.2e and earlier installed-node evidence remains at its original revision under the unchanged historical subdirectories. R8-B independently runs the complete generated-texture/import/tamper workflow; it does not promote those partial runs or claim W-AI-01 rendered-healer qualification.",
-  "evidence": [
-    "W-ETOS-07/r8-b-media/result.json",
-    "W-ETOS-07/r8-b-media/unity-command.log",
-    "W-ETOS-07/r8-b-media/hello.json",
-    "W-ETOS-07/r8-b-media/generate.json",
-    "W-ETOS-07/r8-b-media/observe-redone.json",
-    "W-ETOS-07/r8-b-media/tampered-import.json",
-    "W-ETOS-07/r8-b-media/download-refusal.json",
-    "W-ETOS-07/r8-b-media/ledger-final.json",
-    "W-ETOS-07/r8-b-media/node-audit.json",
-    "W-ETOS-07/r8-b-media/verification.json",
-    "W-ETOS-07/r8-b-media/cleanup.json",
-    "W-ETOS-07/r8-b-media/client-tests.trx"
-  ]
+  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
+  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
+  "releaseId": "0.1.0-debdab3072dbe1f8",
+  "evidencePath": "W-EDIT-03/p42i-portrait/workflow/generate.json",
+  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
 }

@@ -1,0 +1,342 @@
+{
+  "task": "GC-013",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Gc013",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc013-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=7; scopes=7; laneSeed=laneSeed(joined revision=1, epoch=1, declaredScopes=6); setupEdits=True; targetsSeeded=True; targetsRegistered=True; idleFrames=4; idleSteps=0; mode=Automatic; joined=True; lifecycle=Running"
+    },
+    {
+      "name": "narrative/gc013-mount-inherits-to-every-eligible-target",
+      "status": "Pass",
+      "detail": "providerEdit=True; secondEdit=True; outcome=Published; eligibleTargets=3; derivedTargets=3; missing=<none>; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=0; isolatedBaseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; joined=True"
+    },
+    {
+      "name": "narrative/gc013-reparent-preserves-target-state-and-inheritance",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; scope=ScopeId(05cfbe283381aab8902e93d508ff031c)->stillOwned=True; effectiveValue=1->2; expected=1->2; supportProviderIsSecond=True; movedScope=ScopeId(05cfbe283381aab8902e93d508ff031c); parent=ScopeId(55f9567dcf63b6526d79e69454a3422c); liveState=7->7; expectedState=7"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-reparent",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=4"
+    },
+    {
+      "name": "narrative/gc013-opt-in-target-declared-and-derived",
+      "status": "Pass",
+      "detail": "seeded=True; published=True; outcome=Published; derivedValue=1; expectedValue=1; publishedRow=1; declaredOptIn=True; descriptorImports=0"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-opt-in-target",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=7"
+    },
+    {
+      "name": "narrative/gc013-mode-switch-automatic-to-conservative",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(not-registered); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-conservative-switch",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "narrative/gc013-future-target-in-conservative-derives-nothing",
+      "status": "Pass",
+      "detail": "neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; bindingRows=0; inPublishedView=True; mode=Conservative"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-future-spawn",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=8"
+    },
+    {
+      "name": "narrative/gc013-mode-switch-conservative-to-automatic",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=True,rows=2,value=1); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-automatic-switch",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "narrative/gc013-exclusive-conflict-preserves-mode-and-membership",
+      "status": "Pass",
+      "detail": "reading=the pair's exclusive rules are denied in Conservative and granted in Automatic, so the Conservative->Automatic switch is the attempt that would expose the conflict (02 s5, P-014); toConservative=True; mounts=NoTargetChange/NoTargetChange; conflictCapabilityPublished=False; admission.staged=False; admission.code=CapabilityConflict; admission.kind=Fresh; laneMode=Conservative; drained=0; publishedBefore=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; publishedAfter=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; membershipHeld=True; branchHeld=True; validator=modeSwitchValidator{checks=4;accepted=3;refused=1;lastCode=CapabilityConflict}; refusalDetail=the Conservative -> Automatic switch would expose a composition the kernel refuses (CompositionConflict): CompositionFailure(CapabilityConflict, TargetId(410ef4086b99afcfbfbb781aa53ff6d4)/CapabilityId(1a2c35de9d7b1972f8146b90790f59da)#0, Exclusive accepts at most one candidate and no selection override names one; rank does not hide the conflict (P-018, P-019).)"
+    },
+    {
+      "name": "narrative/gc013-isolated-branch-unchanged-across-the-conflict",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=4; decisionsEmitted=0; local;dirty=True;carried=3"
+    },
+    {
+      "name": "narrative/gc013-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:narrative/gc013-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=7; scopes=7; laneSeed=laneSeed(joined revision=1, epoch=1, declaredScopes=6); setupEdits=True; targetsSeeded=True; targetsRegistered=True; idleFrames=4; idleSteps=0; mode=Automatic; joined=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:narrative/gc013-mount-inherits-to-every-eligible-target",
+      "status": "Pass",
+      "detail": "providerEdit=True; secondEdit=True; outcome=Published; eligibleTargets=3; derivedTargets=3; missing=<none>; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=0; isolatedBaseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; joined=True"
+    },
+    {
+      "name": "fixture:narrative/gc013-reparent-preserves-target-state-and-inheritance",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; scope=ScopeId(05cfbe283381aab8902e93d508ff031c)->stillOwned=True; effectiveValue=1->2; expected=1->2; supportProviderIsSecond=True; movedScope=ScopeId(05cfbe283381aab8902e93d508ff031c); parent=ScopeId(55f9567dcf63b6526d79e69454a3422c); liveState=7->7; expectedState=7"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-reparent",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=4"
+    },
+    {
+      "name": "fixture:narrative/gc013-opt-in-target-declared-and-derived",
+      "status": "Pass",
+      "detail": "seeded=True; published=True; outcome=Published; derivedValue=1; expectedValue=1; publishedRow=1; declaredOptIn=True; descriptorImports=0"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-opt-in-target",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=7"
+    },
+    {
+      "name": "fixture:narrative/gc013-mode-switch-automatic-to-conservative",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(not-registered); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-conservative-switch",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "fixture:narrative/gc013-future-target-in-conservative-derives-nothing",
+      "status": "Pass",
+      "detail": "neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; bindingRows=0; inPublishedView=True; mode=Conservative"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-future-spawn",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; local;dirty=False;carried=8"
+    },
+    {
+      "name": "fixture:narrative/gc013-mode-switch-conservative-to-automatic",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=True,rows=2,value=1); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-automatic-switch",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=2; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "fixture:narrative/gc013-exclusive-conflict-preserves-mode-and-membership",
+      "status": "Pass",
+      "detail": "reading=the pair's exclusive rules are denied in Conservative and granted in Automatic, so the Conservative->Automatic switch is the attempt that would expose the conflict (02 s5, P-014); toConservative=True; mounts=NoTargetChange/NoTargetChange; conflictCapabilityPublished=False; admission.staged=False; admission.code=CapabilityConflict; admission.kind=Fresh; laneMode=Conservative; drained=0; publishedBefore=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; publishedAfter=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; membershipHeld=True; branchHeld=True; validator=modeSwitchValidator{checks=4;accepted=3;refused=1;lastCode=CapabilityConflict}; refusalDetail=the Conservative -> Automatic switch would expose a composition the kernel refuses (CompositionConflict): CompositionFailure(CapabilityConflict, TargetId(410ef4086b99afcfbfbb781aa53ff6d4)/CapabilityId(1a2c35de9d7b1972f8146b90790f59da)#0, Exclusive accepts at most one candidate and no selection override names one; rank does not hide the conflict (P-018, P-019).)"
+    },
+    {
+      "name": "fixture:narrative/gc013-isolated-branch-unchanged-across-the-conflict",
+      "status": "Pass",
+      "detail": "fingerprint=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; baseline=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; previous=ca70519807a3b6881e562ffb850df1dc53e6ab14a122669f5e3c0655a5774241|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=4; decisionsEmitted=0; local;dirty=True;carried=3"
+    },
+    {
+      "name": "fixture:narrative/gc013-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "gc013-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd; fixtureDigest=8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd; expectedDigest=8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd; observations=15; digest=8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd; label=narrative; steps=15; failed=0; digest=8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd; label=narrative; steps=15; failed=0"
+    },
+    {
+      "name": "cards/gc013-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; scopes=9; laneSeed=laneSeed(joined revision=1, epoch=1, declaredScopes=8); setupEdits=True; targetsSeeded=True; targetsRegistered=True; idleFrames=4; idleSteps=0; mode=Automatic; joined=True; lifecycle=Running"
+    },
+    {
+      "name": "cards/gc013-mount-inherits-to-every-eligible-target",
+      "status": "Pass",
+      "detail": "providerEdit=True; secondEdit=True; outcome=Published; eligibleTargets=3; derivedTargets=3; missing=<none>; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=0; isolatedBaseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; joined=True"
+    },
+    {
+      "name": "cards/gc013-reparent-preserves-target-state-and-inheritance",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; scope=ScopeId(55aacc846396635d81c199adda1b3ba4)->stillOwned=True; effectiveValue=2->1; expected=2->1; supportProviderIsSecond=True; movedScope=ScopeId(55aacc846396635d81c199adda1b3ba4); parent=ScopeId(f80bfac84be4bc3a121c5e0f0a16cad0); liveState=4242->4242; expectedState=4242"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-reparent",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=5"
+    },
+    {
+      "name": "cards/gc013-opt-in-target-declared-and-derived",
+      "status": "Pass",
+      "detail": "seeded=True; published=True; outcome=Published; derivedValue=2; expectedValue=2; publishedRow=2; declaredOptIn=True; descriptorImports=0"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-opt-in-target",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=6"
+    },
+    {
+      "name": "cards/gc013-mode-switch-automatic-to-conservative",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(not-registered); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-conservative-switch",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "cards/gc013-future-target-in-conservative-derives-nothing",
+      "status": "Pass",
+      "detail": "neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; bindingRows=0; inPublishedView=True; mode=Conservative"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-future-spawn",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=7"
+    },
+    {
+      "name": "cards/gc013-mode-switch-conservative-to-automatic",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=True,rows=1,value=2); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-automatic-switch",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "cards/gc013-exclusive-conflict-preserves-mode-and-membership",
+      "status": "Pass",
+      "detail": "reading=the pair's exclusive rules are denied in Conservative and granted in Automatic, so the Conservative->Automatic switch is the attempt that would expose the conflict (02 s5, P-014); toConservative=True; mounts=NoTargetChange/NoTargetChange; conflictCapabilityPublished=False; admission.staged=False; admission.code=CapabilityConflict; admission.kind=Fresh; laneMode=Conservative; drained=0; publishedBefore=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; publishedAfter=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; membershipHeld=True; branchHeld=True; validator=modeSwitchValidator{checks=4;accepted=3;refused=1;lastCode=CapabilityConflict}; refusalDetail=the Conservative -> Automatic switch would expose a composition the kernel refuses (CompositionConflict): CompositionFailure(CapabilityConflict, TargetId(0d6a4b487bd76746f7f0ac697158cf09)/CapabilityId(93932cbbe2e57f33df3a5b30b9710cdf)#0, Exclusive accepts at most one candidate and no selection override names one; rank does not hide the conflict (P-018, P-019).)"
+    },
+    {
+      "name": "cards/gc013-isolated-branch-unchanged-across-the-conflict",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=3; decisionsEmitted=0; local;dirty=True;carried=2"
+    },
+    {
+      "name": "cards/gc013-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:cards/gc013-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; scopes=9; laneSeed=laneSeed(joined revision=1, epoch=1, declaredScopes=8); setupEdits=True; targetsSeeded=True; targetsRegistered=True; idleFrames=4; idleSteps=0; mode=Automatic; joined=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:cards/gc013-mount-inherits-to-every-eligible-target",
+      "status": "Pass",
+      "detail": "providerEdit=True; secondEdit=True; outcome=Published; eligibleTargets=3; derivedTargets=3; missing=<none>; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=0; isolatedBaseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; joined=True"
+    },
+    {
+      "name": "fixture:cards/gc013-reparent-preserves-target-state-and-inheritance",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; scope=ScopeId(55aacc846396635d81c199adda1b3ba4)->stillOwned=True; effectiveValue=2->1; expected=2->1; supportProviderIsSecond=True; movedScope=ScopeId(55aacc846396635d81c199adda1b3ba4); parent=ScopeId(f80bfac84be4bc3a121c5e0f0a16cad0); liveState=4242->4242; expectedState=4242"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-reparent",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=5"
+    },
+    {
+      "name": "fixture:cards/gc013-opt-in-target-declared-and-derived",
+      "status": "Pass",
+      "detail": "seeded=True; published=True; outcome=Published; derivedValue=2; expectedValue=2; publishedRow=2; declaredOptIn=True; descriptorImports=0"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-opt-in-target",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=6"
+    },
+    {
+      "name": "fixture:cards/gc013-mode-switch-automatic-to-conservative",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(not-registered); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-conservative-switch",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "fixture:cards/gc013-future-target-in-conservative-derives-nothing",
+      "status": "Pass",
+      "detail": "neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; bindingRows=0; inPublishedView=True; mode=Conservative"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-future-spawn",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; local;dirty=False;carried=7"
+    },
+    {
+      "name": "fixture:cards/gc013-mode-switch-conservative-to-automatic",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; optInKept=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=True,rows=1,value=2); isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-automatic-switch",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=1; decisionsEmitted=0; whole-world;dirty=True;carried=0"
+    },
+    {
+      "name": "fixture:cards/gc013-exclusive-conflict-preserves-mode-and-membership",
+      "status": "Pass",
+      "detail": "reading=the pair's exclusive rules are denied in Conservative and granted in Automatic, so the Conservative->Automatic switch is the attempt that would expose the conflict (02 s5, P-014); toConservative=True; mounts=NoTargetChange/NoTargetChange; conflictCapabilityPublished=False; admission.staged=False; admission.code=CapabilityConflict; admission.kind=Fresh; laneMode=Conservative; drained=0; publishedBefore=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; publishedAfter=lane=11/11,assembly=11/11,rows=1,worldEpoch=11; membershipHeld=True; branchHeld=True; validator=modeSwitchValidator{checks=4;accepted=3;refused=1;lastCode=CapabilityConflict}; refusalDetail=the Conservative -> Automatic switch would expose a composition the kernel refuses (CompositionConflict): CompositionFailure(CapabilityConflict, TargetId(0d6a4b487bd76746f7f0ac697158cf09)/CapabilityId(93932cbbe2e57f33df3a5b30b9710cdf)#0, Exclusive accepts at most one candidate and no selection override names one; rank does not hide the conflict (P-018, P-019).)"
+    },
+    {
+      "name": "fixture:cards/gc013-isolated-branch-unchanged-across-the-conflict",
+      "status": "Pass",
+      "detail": "fingerprint=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; baseline=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; previous=b1888b3f977bab9fb420d61dcc6c7cf69cc9a16413cb0c79582b9ef2bca09861|capabilities=0|slots=0; rows=0; hasBinding=False; decisionsDenied=3; decisionsEmitted=0; local;dirty=True;carried=2"
+    },
+    {
+      "name": "fixture:cards/gc013-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "gc013-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9; fixtureDigest=ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9; expectedDigest=ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9; observations=15; digest=ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9; label=cards; steps=15; failed=0; digest=ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9; label=cards; steps=15; failed=0"
+    }
+  ]
+}

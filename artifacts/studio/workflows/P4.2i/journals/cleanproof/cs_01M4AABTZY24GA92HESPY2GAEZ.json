@@ -1,0 +1,30 @@
+{
+  "id": "cs_01M4AABTZY24GA92HESPY2GAEZ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Saltmarsh: narrative (procedural placeholder content)",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "author-narrative",
+      "tool": "saltmarsh.author",
+      "args": {
+        "phase": "narrative"
+      },
+      "preconditions": "none"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "author-narrative",
+      "status": "Applied",
+      "detail": "Created paths: "
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T04:36:20.608Z",
+    "applied": "2026-10-07T04:36:20.617Z"
+  }
+}
