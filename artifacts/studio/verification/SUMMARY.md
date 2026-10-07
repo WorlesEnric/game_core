@@ -1,6 +1,6 @@
 # P4.2h verification summary
 
-Matrix row totals: PASS 55, BLOCKED 12, FAIL 1.
+Matrix row totals: PASS 56, BLOCKED 11, FAIL 1.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
