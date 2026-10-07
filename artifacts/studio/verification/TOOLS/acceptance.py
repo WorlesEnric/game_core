@@ -100,6 +100,7 @@ def v1():
             old.rename(retained)
     # Adapter serializes all gate Editors with this packet's other jobs. Probe repetitions remain capped.
     return v.run('W-GAME-06','v1-gate-retry',['bash','tools/run_w7_gate.sh'],env={
+      'DISPLAY':os.environ.get('EVIDENCE_DISPLAY', ':1'),'XDG_SESSION_TYPE':'x11',
       'UNITY':str(v.ROOT/'artifacts/studio/verification/TOOLS/unity-gate-adapter.py'),
       'ARTIFACTS':'{out}/gate','PROBE_RUNS':'2','BENCH_RUNS':'1','BENCH_WARMUP':'1',
       'BENCH_DURATION':'2','BENCH_REPETITIONS':'5','GAMECORE_ETOS_AUTOSTART':'0'})
