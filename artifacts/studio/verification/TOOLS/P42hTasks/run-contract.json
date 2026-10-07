@@ -1,0 +1,103 @@
+{
+  "schema": "gamecore.p42h.tasks-driver/1",
+  "project": "games/hollowmere in this checkout only",
+  "installation": {
+    "command": "python3 artifacts/studio/verification/TOOLS/P42hTasks/launch.py install",
+    "when": "Main only, after the current Editor/build has exited. Refuses while this project's Temp/UnityLockfile exists.",
+    "copies": ["P42h.Tasks.asmdef", "TaskDriver.cs", "CompilePulse.cs"],
+    "destination": "games/hollowmere/Assets/Hollowmere/Tests/P42hTasks",
+    "productChanges": false
+  },
+  "launch": "python3 artifacts/studio/verification/TOOLS/P42hTasks/launch.py LANE --out ABSOLUTE_FRESH_EVIDENCE_DIRECTORY",
+  "collection": "python3 artifacts/studio/verification/TOOLS/P42hTasks/collect.py --out SAME_DRIVER_OUTPUT [--worker-trace EXPLICIT_SAME_TASK_EXPORTED_TRACE]",
+  "collectionPolicy": "Reads etos --json task --task ID and budget --task ID only for result.json's owned IDs, preserves redacted raw outputs and exit codes. Does not discover node files, inspect credentials, call providers, change the driver verdict or infer execution from prose.",
+  "environment": {
+    "GAMECORE_P42H_OUT": "Required by every executeMethod; launcher sets it to --out.",
+    "DISPLAY": ":1, set by launcher",
+    "GAMECORE_ETOS_PROJECT_ID": "Launcher derives SHA-256 of productGUID lowercased + newline + exact root project path, using existing P42g convention.",
+    "GAMECORE_ETOS_AUTOSTART": "1",
+    "GAMECORE_ETOS_LIVE": "1"
+  },
+  "launchPolicy": "unity-batch.sh host allocator, established graphical adapter, --attempts 1, 900-second process deadline, ten-minute in-driver deadline. Never add -quit. The driver closes itself. Existing credential-path convention is reused, not inspected or printed. Main alone owns worker-budget reservations, ledger checks and all launches.",
+  "prerequisites": [
+    "Installed current-main companion and gc-designer worker, authenticated project pairing, registered root project, creator text-task approval and remaining worker ceiling.",
+    "Root Hollowmere fixture, Bram NPC definition/graph and Village authored entity 2825db71-11a1-4155-b1db-9e7734111d9e, normal Boot world and menu/newgame path.",
+    "Unity 6000.0.75f1, display :1, pre-existing Hollowmere.P2_1.Evidence capture assembly and all referenced product assemblies.",
+    "Main must visually inspect retained PNGs; this slice has not run Unity, builds, tests, ETOS or provider calls.",
+    "No image/TTS/voice/describe/3D generation is requested; global media ledger must still be checked by Main.",
+    "The query row needs the same task's independent worker tool-call trace in addition to the retained authenticated worker result. A textual command claim never establishes execution."
+  ],
+  "lanes": {
+    "move": {
+      "row": "W-EDIT-01",
+      "executeMethod": "P42h.Tasks.TaskDriver.JoinedMove",
+      "assertions": [
+        "Actual graphical Play Boot and newgame, production live gateway and production StudioViewContext runtime placement bridge.",
+        "Creator-selected Bram Instance reference and measured +0.5 m X position passed before the single installed worker submission.",
+        "Exactly one runtime.move operation, exact selected target/scope and desired pose, zero artifacts.",
+        "Companion candidate versus imported candidate exactly equal excluding production-added task links; no mutation, repair, policy change or operation rebase.",
+        "Normal CandidateCoordinator.Apply reports Applied, journal outcome and links share one GameCore operation ID and include every authenticated task ID.",
+        "Production ReflectionGameplayBridge.IsAt confirms the exact request's Committed outcome, current world session and committed X/Y/Z/yaw slots, not just an admitted ID.",
+        "Attached History details visibly include both task IDs and GameCore operation ID; authored Village scene hash unchanged."
+      ],
+      "collect": ["candidate-envelope.json", "candidate-before-apply.json", "apply-report.json", "joined-history.json", "joined-task-gamecore-history.png"],
+      "cleanup": "Runtime-only move is neither undoable nor promoted. Editor exit disposes the isolated Play world; no authored scene is saved."
+    },
+    "query": {
+      "row": "W-ETOS-04",
+      "executeMethod": "P42h.Tasks.TaskDriver.SelectedNpcQuery",
+      "assertions": [
+        "Selected actual Bram NPC definition, graph binding and expected shipped dialogue texts retained independently of worker result.",
+        "Prompt explicitly requires worker-side etos query of gc_dialogue_node, not an input-file or local RG substitute; no paid media and no candidate requested.",
+        "Normal clarification outcome retains exact executed query command, exit code, stdout and stderr in P42H_QUERY_BEGIN/P42H_QUERY_END receipt.",
+        "Receipt's successful exit, graph identity and all selected graph dialogue texts must agree; no candidate may exist.",
+        "Main must retain actual task tool-call trace identifying etos query invocation and its matching raw result. Driver deliberately reports BLOCKED rather than infer execution from worker prose alone."
+      ],
+      "collect": ["worker-query-outcome.json", "worker-query-receipt.json", "query-result-check.json", "selected-npc-query-result.png", "same task's raw worker tool-call trace"],
+      "completion": "Review the independent tool-call receipt against exact worker-query-receipt.json; do not edit original result.json to conceal its provenance prerequisite. Record the row decision separately."
+    },
+    "cancel": {
+      "row": "W-ETOS-05",
+      "executeMethod": "P42h.Tasks.TaskDriver.TrayCancel",
+      "assertions": [
+        "Worker is explicitly asked to sleep 90 seconds before its read-only narrative review; no fake gateway pause or canned task state.",
+        "Authenticated request and tray both report running, exactly one identical task ID.",
+        "NavigationSubmitEvent delivered to actual enabled Cancel Button on an attached production task-tray row; no direct Cancel method shortcut.",
+        "Companion state and ETOS status become cancelled, one original task remains, one tray row remains, authoritative hasCandidate is false, no local candidate, three-second stable observation."
+      ],
+      "collect": ["running-before-cancel.png", "cancelled.json", "cancelled-tray.png", "observations.jsonl"]
+    },
+    "reload": {
+      "row": "W-ETOS-09",
+      "executeMethod": "P42h.Tasks.TaskDriver.SourceReload",
+      "assertions": [
+        "One real running worker task, deliberate bounded worker sleep, same request is never resubmitted.",
+        "Installed harness-only CompilePulse.cs bytes actually changed, AssetDatabase import plus RequestScriptCompilation executed, successful P42h.Tasks assembly compilation observed.",
+        "beforeAssemblyReload and DidReloadScripts in the same process, freshly loaded constant equals unique changed-source token, ETOS session Starts increases.",
+        "Same task still running after reload, same request and created row identity, exactly one attached tray row.",
+        "Production resumed event cursor sequence after pre-reload acknowledged cursor exactly equals a separate authenticated replay stream, without gaps/duplicates and with exactly one terminal cancellation event.",
+        "After the same-running-row observation, attached Cancel button is used to bound task lifetime; one cancelled task, no candidate."
+      ],
+      "collect": ["source-compilation-request.json", "reload-recovered.json", "reload-same-running-row.png", "events.jsonl", "cursor-replay.json", "cancelled.json", "logs"],
+      "cleanup": "Launcher restores only its installed CompilePulse.cs from TOOLS after process exit. A direct executeMethod invocation must perform this same owned-file restoration after the Editor exits, never while an Editor/build is running."
+    },
+    "stage-probe": {
+      "row": "W-REC-03 stage portion only",
+      "executeMethod": "P42h.Tasks.TaskDriver.StageCancelProbe",
+      "expectedStatus": "BLOCKED",
+      "assertions": [
+        "Authenticated app-origin StageAppCandidateAsync exists and signs the exact payload; the production stage service selects it for app-owned candidate provenance.",
+        "Current typed client and server router contain no running-stage cancellation method or route. Discard is explicitly not cancellation.",
+        "Only a bodyless authenticated GET to /v1/stage/{ownedJobOrProbeIdentity}/cancel is made; it does not submit, cancel, discard or kill anything.",
+        "No expensive stage is opened solely to demonstrate the absent endpoint. No slot release or region-load cancellation success is claimed."
+      ],
+      "optionalArgument": "--stage-job EXACT_OWNED_JOB_ID",
+      "collect": ["stage-cancellation-seam.json", "stage-route-probe.json"],
+      "blockingProductContract": "Authenticated app/project-owned running-job cancel endpoint, durable cancellation state/receipt, child/slot teardown and observable slot reusability."
+    }
+  },
+  "allLaneCollection": ["launch.json", "started.json", "hello.json", "request.json when submitted", "submission.json when submitted", "task-ids.txt", "latest-request.json", "observations.jsonl", "result.json", "process-result.json", "upm.log", "logs/*", "*.png"],
+  "exitCodes": {"0": "PASS", "1": "FAIL", "2": "BLOCKED; consult result.json, not generic wrapper usage classification"},
+  "missingResult": "No result.json is never PASS. Preserve logs and classify NotRun/FAIL accurately. Do not repeat a text request automatically.",
+  "unexecutedBySlice": "Per explicit assignment: no build, lint, test, formatter, Unity launch, ETOS command, provider request or service operation was run. Main owns serial proof."
+}

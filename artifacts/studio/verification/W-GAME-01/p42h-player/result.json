@@ -1,0 +1,692 @@
+{
+  "row": "W-GAME-01",
+  "status": "BLOCKED",
+  "requestIds": [],
+  "taskIds": [],
+  "ownerDefinition": "OPEN: VSync measurement definition remains owner-owned; neither profile replaces the other",
+  "captureOverhead": "All four P3.1d routes are recorded using R7-C ffmpeg settings; the runner's historical 'No video/screen capture' provenance line does not describe these wrapped runs.",
+  "profiles": {
+    "vsync0": {
+      "status": "PASS",
+      "runs": [
+        {
+          "run": 1,
+          "p95": 3.461,
+          "over100": 0,
+          "seconds": 611.395,
+          "transitions": [
+            {
+              "frame": 88020,
+              "time_s": 184.8851,
+              "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 14.42
+            },
+            {
+              "frame": 160571,
+              "time_s": 342.8678,
+              "marker": "region:Blackmere Marsh->Drowned Belfry",
+              "max_dt_ms": 35.892
+            },
+            {
+              "frame": 203839,
+              "time_s": 423.9541,
+              "marker": "reload|region:Drowned Belfry->Thornwick Village",
+              "max_dt_ms": 77.497
+            },
+            {
+              "frame": 212107,
+              "time_s": 441.0064,
+              "marker": "restore",
+              "max_dt_ms": 122.59
+            },
+            {
+              "frame": 212108,
+              "time_s": 441.0162,
+              "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 122.59
+            }
+          ],
+          "manualSave": {
+            "saveCommandFrame": 139763,
+            "savedMarkerFrame": 139765,
+            "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+            "maxDtMs": 59.069,
+            "over100": 0,
+            "captureMainThreadMs": 48.95
+          },
+          "firstReady": {
+            "frame": "3",
+            "time_s": "2.7774",
+            "dt_ms": "1.592",
+            "region": "Thornwick Village",
+            "marker": "ready"
+          },
+          "loadingRows": [
+            {
+              "frame": "1",
+              "time_s": "2.6644",
+              "dt_ms": "2619.184",
+              "region": "Thornwick Village",
+              "marker": "boot-warmup"
+            },
+            {
+              "frame": "2",
+              "time_s": "2.7747",
+              "dt_ms": "154.445",
+              "region": "Thornwick Village",
+              "marker": ""
+            }
+          ],
+          "checks": {
+            "NVIDIA_1080p": true,
+            "VSync_state": true,
+            "NoOtherEditorOrPlayer": true,
+            "FullRoute": true,
+            "P31d_BOOT_VisibleResponsiveMenu": true,
+            "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+            "P31d_BOOT_NoPostReadyStalls": true,
+            "Save": true,
+            "TenMinutePlaythrough": true,
+            "Recording": true
+          },
+          "B_FRAME": "PASS",
+          "budgetChecks": {
+            "p95_le_16_7ms": true,
+            "no_frame_over_100ms_outside_transitions": true,
+            "transition_hitch_le_250ms": true,
+            "duration_ge_budget": true
+          },
+          "recording": {
+            "status": "PASS",
+            "captureCommand": [
+              "ffmpeg",
+              "-hide_banner",
+              "-nostdin",
+              "-loglevel",
+              "warning",
+              "-n",
+              "-window_id",
+              "0x400005",
+              "-f",
+              "x11grab",
+              "-draw_mouse",
+              "0",
+              "-framerate",
+              "30",
+              "-video_size",
+              "1920x1080",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              ":1.0",
+              "-f",
+              "pulse",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              "@DEFAULT_MONITOR@",
+              "-c:v",
+              "libx264",
+              "-preset",
+              "veryfast",
+              "-crf",
+              "23",
+              "-pix_fmt",
+              "yuv420p",
+              "-c:a",
+              "aac",
+              "-b:a",
+              "128k",
+              "-movflags",
+              "+faststart",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run1/playthrough.mp4"
+            ],
+            "playerCommand": [
+              "<REPO>/.evidence/P42hPlayer-qualified/player/Hollowmere.x86_64",
+              "-force-glcore",
+              "-screen-width",
+              "1920",
+              "-screen-height",
+              "1080",
+              "-screen-fullscreen",
+              "1",
+              "-window-mode",
+              "borderless",
+              "-frameVsync",
+              "0",
+              "-frameLog",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run1/frame-log.csv",
+              "-autoplay",
+              "<REPO>/games/hollowmere/Autoplay/playthrough.txt",
+              "-saveDir",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run1/saves",
+              "-logFile",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run1/player.log"
+            ],
+            "playerPid": 467954,
+            "ownedWindowId": "0x400005",
+            "captureTarget": "Exact _NET_WM_PID-matched player window, moved to 0,0 and raised; not desktop pixels",
+            "playerExit": 0,
+            "recorderExit": 255,
+            "checks": {
+              "video1080p": true,
+              "monitorAudio": true,
+              "recordingAtLeast600Seconds": true
+            }
+          },
+          "status": "PASS"
+        },
+        {
+          "run": 2,
+          "p95": 3.552,
+          "over100": 0,
+          "seconds": 609.205,
+          "transitions": [
+            {
+              "frame": 87564,
+              "time_s": 182.6522,
+              "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 9.953
+            },
+            {
+              "frame": 155773,
+              "time_s": 340.6354,
+              "marker": "region:Blackmere Marsh->Drowned Belfry",
+              "max_dt_ms": 12.126
+            },
+            {
+              "frame": 198713,
+              "time_s": 421.7204,
+              "marker": "reload|region:Drowned Belfry->Thornwick Village",
+              "max_dt_ms": 70.796
+            },
+            {
+              "frame": 207150,
+              "time_s": 438.7664,
+              "marker": "restore",
+              "max_dt_ms": 103.528
+            },
+            {
+              "frame": 207151,
+              "time_s": 438.7721,
+              "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 103.528
+            }
+          ],
+          "manualSave": {
+            "saveCommandFrame": 134229,
+            "savedMarkerFrame": 134232,
+            "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+            "maxDtMs": 51.426,
+            "over100": 0,
+            "captureMainThreadMs": 46.653
+          },
+          "firstReady": {
+            "frame": "3",
+            "time_s": "2.7885",
+            "dt_ms": "1.690",
+            "region": "Thornwick Village",
+            "marker": "ready"
+          },
+          "loadingRows": [
+            {
+              "frame": "1",
+              "time_s": "2.6654",
+              "dt_ms": "2618.697",
+              "region": "Thornwick Village",
+              "marker": "boot-warmup"
+            },
+            {
+              "frame": "2",
+              "time_s": "2.7858",
+              "dt_ms": "165.965",
+              "region": "Thornwick Village",
+              "marker": ""
+            }
+          ],
+          "checks": {
+            "NVIDIA_1080p": true,
+            "VSync_state": true,
+            "NoOtherEditorOrPlayer": true,
+            "FullRoute": true,
+            "P31d_BOOT_VisibleResponsiveMenu": true,
+            "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+            "P31d_BOOT_NoPostReadyStalls": true,
+            "Save": true,
+            "TenMinutePlaythrough": true,
+            "Recording": true
+          },
+          "B_FRAME": "PASS",
+          "budgetChecks": {
+            "p95_le_16_7ms": true,
+            "no_frame_over_100ms_outside_transitions": true,
+            "transition_hitch_le_250ms": true,
+            "duration_ge_budget": true
+          },
+          "recording": {
+            "status": "PASS",
+            "captureCommand": [
+              "ffmpeg",
+              "-hide_banner",
+              "-nostdin",
+              "-loglevel",
+              "warning",
+              "-n",
+              "-window_id",
+              "0x400005",
+              "-f",
+              "x11grab",
+              "-draw_mouse",
+              "0",
+              "-framerate",
+              "30",
+              "-video_size",
+              "1920x1080",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              ":1.0",
+              "-f",
+              "pulse",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              "@DEFAULT_MONITOR@",
+              "-c:v",
+              "libx264",
+              "-preset",
+              "veryfast",
+              "-crf",
+              "23",
+              "-pix_fmt",
+              "yuv420p",
+              "-c:a",
+              "aac",
+              "-b:a",
+              "128k",
+              "-movflags",
+              "+faststart",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run2/playthrough.mp4"
+            ],
+            "playerCommand": [
+              "<REPO>/.evidence/P42hPlayer-qualified/player/Hollowmere.x86_64",
+              "-force-glcore",
+              "-screen-width",
+              "1920",
+              "-screen-height",
+              "1080",
+              "-screen-fullscreen",
+              "1",
+              "-window-mode",
+              "borderless",
+              "-frameVsync",
+              "0",
+              "-frameLog",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run2/frame-log.csv",
+              "-autoplay",
+              "<REPO>/games/hollowmere/Autoplay/playthrough.txt",
+              "-saveDir",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run2/saves",
+              "-logFile",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run2/player.log"
+            ],
+            "playerPid": 493918,
+            "ownedWindowId": "0x400005",
+            "captureTarget": "Exact _NET_WM_PID-matched player window, moved to 0,0 and raised; not desktop pixels",
+            "playerExit": 0,
+            "recorderExit": 255,
+            "checks": {
+              "video1080p": true,
+              "monitorAudio": true,
+              "recordingAtLeast600Seconds": true
+            }
+          },
+          "status": "PASS"
+        }
+      ]
+    },
+    "vsync1": {
+      "status": "FAIL",
+      "runs": [
+        {
+          "run": 1,
+          "p95": 17.375,
+          "over100": 2,
+          "seconds": 608.505,
+          "transitions": [
+            {
+              "frame": 10681,
+              "time_s": 180.8553,
+              "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 18.624
+            },
+            {
+              "frame": 20202,
+              "time_s": 339.542,
+              "marker": "region:Blackmere Marsh->Drowned Belfry",
+              "max_dt_ms": 17.876
+            },
+            {
+              "frame": 25076,
+              "time_s": 420.8436,
+              "marker": "reload|region:Drowned Belfry->Thornwick Village",
+              "max_dt_ms": 71.502
+            },
+            {
+              "frame": 26097,
+              "time_s": 437.9422,
+              "marker": "restore",
+              "max_dt_ms": 120.086
+            },
+            {
+              "frame": 26098,
+              "time_s": 437.9492,
+              "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 120.086
+            }
+          ],
+          "manualSave": {
+            "saveCommandFrame": 17201,
+            "savedMarkerFrame": 17206,
+            "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+            "maxDtMs": 43.898,
+            "over100": 0,
+            "captureMainThreadMs": 40.81
+          },
+          "firstReady": {
+            "frame": "3",
+            "time_s": "2.8076",
+            "dt_ms": "1.716",
+            "region": "Thornwick Village",
+            "marker": "ready"
+          },
+          "loadingRows": [
+            {
+              "frame": "1",
+              "time_s": "2.6788",
+              "dt_ms": "2633.648",
+              "region": "Thornwick Village",
+              "marker": "boot-warmup"
+            },
+            {
+              "frame": "2",
+              "time_s": "2.8047",
+              "dt_ms": "169.970",
+              "region": "Thornwick Village",
+              "marker": ""
+            }
+          ],
+          "checks": {
+            "NVIDIA_1080p": true,
+            "VSync_state": true,
+            "NoOtherEditorOrPlayer": true,
+            "FullRoute": true,
+            "P31d_BOOT_VisibleResponsiveMenu": true,
+            "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+            "P31d_BOOT_NoPostReadyStalls": false,
+            "Save": true,
+            "TenMinutePlaythrough": true,
+            "Recording": true
+          },
+          "B_FRAME": "FAIL",
+          "budgetChecks": {
+            "p95_le_16_7ms": false,
+            "no_frame_over_100ms_outside_transitions": false,
+            "transition_hitch_le_250ms": true,
+            "duration_ge_budget": true
+          },
+          "recording": {
+            "status": "PASS",
+            "captureCommand": [
+              "ffmpeg",
+              "-hide_banner",
+              "-nostdin",
+              "-loglevel",
+              "warning",
+              "-n",
+              "-window_id",
+              "0x400005",
+              "-f",
+              "x11grab",
+              "-draw_mouse",
+              "0",
+              "-framerate",
+              "30",
+              "-video_size",
+              "1920x1080",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              ":1.0",
+              "-f",
+              "pulse",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              "@DEFAULT_MONITOR@",
+              "-c:v",
+              "libx264",
+              "-preset",
+              "veryfast",
+              "-crf",
+              "23",
+              "-pix_fmt",
+              "yuv420p",
+              "-c:a",
+              "aac",
+              "-b:a",
+              "128k",
+              "-movflags",
+              "+faststart",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run1/playthrough.mp4"
+            ],
+            "playerCommand": [
+              "<REPO>/.evidence/P42hPlayer-qualified/player/Hollowmere.x86_64",
+              "-force-glcore",
+              "-screen-width",
+              "1920",
+              "-screen-height",
+              "1080",
+              "-screen-fullscreen",
+              "1",
+              "-window-mode",
+              "borderless",
+              "-frameVsync",
+              "1",
+              "-frameLog",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run1/frame-log.csv",
+              "-autoplay",
+              "<REPO>/games/hollowmere/Autoplay/playthrough.txt",
+              "-saveDir",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run1/saves",
+              "-logFile",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run1/player.log"
+            ],
+            "playerPid": 519921,
+            "ownedWindowId": "0x400005",
+            "captureTarget": "Exact _NET_WM_PID-matched player window, moved to 0,0 and raised; not desktop pixels",
+            "playerExit": 0,
+            "recorderExit": 255,
+            "checks": {
+              "video1080p": true,
+              "monitorAudio": true,
+              "recordingAtLeast600Seconds": true
+            }
+          },
+          "status": "FAIL"
+        },
+        {
+          "run": 2,
+          "p95": 17.314,
+          "over100": 0,
+          "seconds": 609.438,
+          "transitions": [
+            {
+              "frame": 10743,
+              "time_s": 181.8091,
+              "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 18.13
+            },
+            {
+              "frame": 20262,
+              "time_s": 340.4787,
+              "marker": "region:Blackmere Marsh->Drowned Belfry",
+              "max_dt_ms": 17.662
+            },
+            {
+              "frame": 25133,
+              "time_s": 421.7357,
+              "marker": "reload|region:Drowned Belfry->Thornwick Village",
+              "max_dt_ms": 77.214
+            },
+            {
+              "frame": 26154,
+              "time_s": 438.8177,
+              "marker": "restore",
+              "max_dt_ms": 108.274
+            },
+            {
+              "frame": 26155,
+              "time_s": 438.8247,
+              "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+              "max_dt_ms": 108.274
+            }
+          ],
+          "manualSave": {
+            "saveCommandFrame": 17262,
+            "savedMarkerFrame": 17265,
+            "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+            "maxDtMs": 50.088,
+            "over100": 0,
+            "captureMainThreadMs": 45.343
+          },
+          "firstReady": {
+            "frame": "3",
+            "time_s": "2.8122",
+            "dt_ms": "1.931",
+            "region": "Thornwick Village",
+            "marker": "ready"
+          },
+          "loadingRows": [
+            {
+              "frame": "1",
+              "time_s": "2.6871",
+              "dt_ms": "2637.403",
+              "region": "Thornwick Village",
+              "marker": "boot-warmup"
+            },
+            {
+              "frame": "2",
+              "time_s": "2.8089",
+              "dt_ms": "170.285",
+              "region": "Thornwick Village",
+              "marker": ""
+            }
+          ],
+          "checks": {
+            "NVIDIA_1080p": true,
+            "VSync_state": true,
+            "NoOtherEditorOrPlayer": true,
+            "FullRoute": true,
+            "P31d_BOOT_VisibleResponsiveMenu": true,
+            "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+            "P31d_BOOT_NoPostReadyStalls": true,
+            "Save": true,
+            "TenMinutePlaythrough": true,
+            "Recording": true
+          },
+          "B_FRAME": "FAIL",
+          "budgetChecks": {
+            "p95_le_16_7ms": false,
+            "no_frame_over_100ms_outside_transitions": true,
+            "transition_hitch_le_250ms": true,
+            "duration_ge_budget": true
+          },
+          "recording": {
+            "status": "PASS",
+            "captureCommand": [
+              "ffmpeg",
+              "-hide_banner",
+              "-nostdin",
+              "-loglevel",
+              "warning",
+              "-n",
+              "-window_id",
+              "0x400005",
+              "-f",
+              "x11grab",
+              "-draw_mouse",
+              "0",
+              "-framerate",
+              "30",
+              "-video_size",
+              "1920x1080",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              ":1.0",
+              "-f",
+              "pulse",
+              "-thread_queue_size",
+              "1024",
+              "-i",
+              "@DEFAULT_MONITOR@",
+              "-c:v",
+              "libx264",
+              "-preset",
+              "veryfast",
+              "-crf",
+              "23",
+              "-pix_fmt",
+              "yuv420p",
+              "-c:a",
+              "aac",
+              "-b:a",
+              "128k",
+              "-movflags",
+              "+faststart",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run2/playthrough.mp4"
+            ],
+            "playerCommand": [
+              "<REPO>/.evidence/P42hPlayer-qualified/player/Hollowmere.x86_64",
+              "-force-glcore",
+              "-screen-width",
+              "1920",
+              "-screen-height",
+              "1080",
+              "-screen-fullscreen",
+              "1",
+              "-window-mode",
+              "borderless",
+              "-frameVsync",
+              "1",
+              "-frameLog",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run2/frame-log.csv",
+              "-autoplay",
+              "<REPO>/games/hollowmere/Autoplay/playthrough.txt",
+              "-saveDir",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run2/saves",
+              "-logFile",
+              "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync1/run2/player.log"
+            ],
+            "playerPid": 545622,
+            "ownedWindowId": "0x400005",
+            "captureTarget": "Exact _NET_WM_PID-matched player window, moved to 0,0 and raised; not desktop pixels",
+            "playerExit": 0,
+            "recorderExit": 255,
+            "checks": {
+              "video1080p": true,
+              "monitorAudio": true,
+              "recordingAtLeast600Seconds": true
+            }
+          },
+          "status": "FAIL"
+        }
+      ]
+    }
+  },
+  "revision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "harnessRevision": "44f2b4ba6996ace3a9c734747b889f6f56b5b972",
+  "runnerExit": 0,
+  "observation": "Literal B-FRAME verdicts are separate; W-GAME-01 remains BLOCKED on open owner definition"
+}

@@ -1,0 +1,355 @@
++ set -euo pipefail
++++ dirname <REPO>/games/hollowmere/Tools/measure_frames_p31d.sh
+++ cd <REPO>/games/hollowmere/Tools/../../..
+++ pwd
++ root=<REPO>
++ cd <REPO>
++ [[ 2 == 2 ]]
++ out=<REPO>/.evidence/P42hPlayer-recorded
++ player=<REPO>/.evidence/P42hPlayer-recorded/capture-launcher
++ exe=<REPO>/.evidence/P42hPlayer-recorded/capture-launcher/Hollowmere.x86_64
++ [[ -x <REPO>/.evidence/P42hPlayer-recorded/capture-launcher/Hollowmere.x86_64 ]]
++ [[ ! -e <REPO>/.evidence/P42hPlayer-recorded/measurement ]]
+++ cat <REPO>/.evidence/P42hPlayer-recorded/capture-launcher/revision.txt
++ git merge-base --is-ancestor 1752ca8 a77cb38ba4a2265007fa40c38983e01a17bb0914
++ mkdir -p <REPO>/.evidence/P42hPlayer-recorded/measurement
++ out=<REPO>/.evidence/P42hPlayer-recorded/measurement
++ export DISPLAY=:1 XAUTHORITY=/run/user/1000/gdm/Xauthority
++ DISPLAY=:1
++ XAUTHORITY=/run/user/1000/gdm/Xauthority
++ xdpyinfo
++ glxinfo -B
++ grep -q 'OpenGL renderer string: NVIDIA GeForce RTX 4060 Ti' <REPO>/.evidence/P42hPlayer-recorded/measurement/opengl.txt
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/wait-start.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/wait-start.json
++ true
++ pgrep -af '[U]nity'
++ unity_tools_dir=<REPO>/studio/tools
++ source <REPO>/studio/tools/unity-slot.sh
++ export GC_STUDIO_UNITY_SLOTS=1
++ GC_STUDIO_UNITY_SLOTS=1
++ wait_start=0
++ watchdog=458176
++ trap cleanup EXIT
++ trap 'echo "BLOCKED: interrupted or sixty-minute idle wait expired" > "$out/BLOCKED.txt"; exit 3' TERM INT HUP
++ unity_slot_acquire
++ python3 - 458139
++ local count i probe mutex occupied owner waited=0
++ slots=1
++ [[ 1 =~ ^[1-3]$ ]]
++ slot_dir=<HOME>/wkspace/gc-studio/.unity-slots
++ mkdir -p <HOME>/wkspace/gc-studio/.unity-slots
++ true
++ exec
++ flock 10
++ occupied=0
++ (( i=1 ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' <HOME>/wkspace/gc-studio/.unity-slots/slot1.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f <HOME>/wkspace/gc-studio/.unity-slots/slot1.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' <HOME>/wkspace/gc-studio/.unity-slots/slot2.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f <HOME>/wkspace/gc-studio/.unity-slots/slot2.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' <HOME>/wkspace/gc-studio/.unity-slots/slot3.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f <HOME>/wkspace/gc-studio/.unity-slots/slot3.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
+++ python3 <REPO>/studio/tools/../stage/host-processes.py <HOME>/wkspace/gc-studio/.unity-slots
++ count=0
++ ((  occupied + count < slots  ))
++ (( i=1 ))
++ (( i<=slots ))
++ exec
++ flock -n 11
++ unity_slot_number=1
++ printf 'pid=%s\n' 458139
++ flock -u 10
++ exec
++ return 0
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ flock -u 10
++ exec
++ unset measurement_mutex
++ sleep 5
++ true
++ exec
++ flock 10
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/idle-before.json
++ break
++ kill 458176
++ wait 458176
++ true
++ unset watchdog
++ printf '%s\n' 117
+++ cat <REPO>/.evidence/P42hPlayer-recorded/capture-launcher/revision.txt
++ echo source_revision=a77cb38ba4a2265007fa40c38983e01a17bb0914
+++ git rev-parse HEAD
++ echo launcher_revision=44f2b4ba6996ace3a9c734747b889f6f56b5b972
+++ hostname
++ echo host=worlesenric
+++ date -Is
++ echo started=2026-10-07T08:39:03+08:00
++ echo 'PROBE_RUNS=2 per VSync state; one allocator reservation; allocator mutex held throughout all four probes'
++ echo 'No video/screen capture; no service operations; no batchmode; no Xvfb'
++ sha256sum <REPO>/games/hollowmere/Autoplay/playthrough.txt <REPO>/games/hollowmere/Tools/frame_stats.py <REPO>/games/hollowmere/Tools/measure_frames_p31d.sh
++ for vsync in 0 1
++ for run in 1 2
++ target=<REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1
++ mkdir -p <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/host-before.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/host-before.json
++ route=<REPO>/games/hollowmere/Autoplay/playthrough.txt
++ [[ 0 == 1 ]]
++ args=("$exe" -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route" -saveDir "$target/saves" -logFile "$target/player.log")
++ [[ 0 == 1 ]]
++ printf '%q ' <REPO>/.evidence/P42hPlayer-recorded/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/frame-log.csv -autoplay <REPO>/games/hollowmere/Autoplay/playthrough.txt -saveDir <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/saves -logFile <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/player.log
++ printf '\n'
++ rc=0
++ timeout --signal=TERM --kill-after=30 1000 <REPO>/.evidence/P42hPlayer-recorded/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/frame-log.csv -autoplay <REPO>/games/hollowmere/Autoplay/playthrough.txt -saveDir <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/saves -logFile <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/player.log
++ rc=1
++ printf '%s\n' 1
++ inventory <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/host-after.json
++ python3 - <REPO>/.evidence/P42hPlayer-recorded/measurement/vsync0/run1/host-after.json
++ cleanup
++ [[ -n '' ]]
++ [[ -n 10 ]]
++ flock -u 10
++ exec
++ unity_slot_release
++ [[ -n 11 ]]
++ local mutex
++ exec
++ flock 10
++ rm -f <HOME>/wkspace/gc-studio/.unity-slots/slot1.owner
++ flock -u 11
++ exec
++ unset unity_slot_fd
++ flock -u 10
++ exec

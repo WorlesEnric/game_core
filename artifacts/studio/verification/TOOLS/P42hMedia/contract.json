@@ -1,0 +1,74 @@
+{
+  "owner": "MediaHarness",
+  "rows": ["W-EDIT-03", "W-AI-01"],
+  "sourceBaseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "validation": "Not run by worker: Main exclusively owns compilation, validation, Unity, installed services, provider operations and actual visual review.",
+  "installation": {
+    "source": "artifacts/studio/verification/TOOLS/P42hMedia/Editor",
+    "destination": "games/hollowmere/Assets/Hollowmere/Tests/P42hMedia/Editor",
+    "timing": "Main copies only after the currently running player build exits. Do not use a sibling project.",
+    "command": "mkdir -p games/hollowmere/Assets/Hollowmere/Tests/P42hMedia && cp -r artifacts/studio/verification/TOOLS/P42hMedia/Editor games/hollowmere/Assets/Hollowmere/Tests/P42hMedia/"
+  },
+  "launch": {
+    "observer": "python3 artifacts/studio/verification/TOOLS/P42hMedia/ledger.py --out $GAMECORE_P42H_OUT --timeout 1500",
+    "portrait": "DISPLAY=:1 GAMECORE_P42_EVIDENCE=$GAMECORE_P42H_OUT UNITY=$PWD/artifacts/studio/verification/TOOLS/unity-interactive-p42f.py studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir $GAMECORE_P42H_OUT/logs --label p42h-portrait --timeout 1500 --attempts 1 -- -executeMethod P42h.Media.Driver.RunPortrait",
+    "robe": "DISPLAY=:1 GAMECORE_P42_EVIDENCE=$GAMECORE_P42H_OUT UNITY=$PWD/artifacts/studio/verification/TOOLS/unity-interactive-p42f.py studio/tools/unity-batch.sh --project $PWD/games/hollowmere --log-dir $GAMECORE_P42H_OUT/logs --label p42h-robe --timeout 1500 --attempts 1 -- -executeMethod P42h.Media.Driver.RunRobe",
+    "visualReview": "python3 artifacts/studio/verification/TOOLS/P42hMedia/review.py --out $GAMECORE_P42H_OUT --decision PASS --reviewer Main --observation 'Exact actually observed portrait or before/applied/undone robe pixels'",
+    "order": "Use one fresh absolute GAMECORE_P42H_OUT for portrait and another for robe. Export GAMECORE_P42H_OUT so the child Editor receives it. Start the read-only ledger observer through hub alongside each single serial Unity launch. Never relaunch a paid mode into a new output directory to bypass an uncertain attempt. Once both calls are issued the packet image budget is exhausted.",
+    "runtimeExit": "Unity and observer exit 0 when runtime assertions pass. result.json intentionally remains BLOCKED with runtimeStatus PASS until Main actually reviews the named images and invokes review.py. Technical success cannot silently substitute for visual green-robe/portrait acceptance."
+  },
+  "paidAuthority": {
+    "maximumTotalImages": 2,
+    "maximumUsdPerImage": 0.20,
+    "maximumPacketImageCeilingsUsd": 0.40,
+    "operations": ["one portrait generate.image", "one green robe generate.image"],
+    "productionPath": "EtosMediaGenerator.GenerateImageAsync -> current StudioUiSession.Context.Gateway -> authenticated companion -> retained verified artifact -> normal Engine asset.import",
+    "changeSetId": "Omitted on the paid request. IDs minted for local journal imports/manual engine assignment are not supplied as request authority.",
+    "workerRequestIds": "None: this direct-media app-owned workflow does not submit a worker request or task. Real effectKey/jobId/etosRef are retained from companion artifacts.producer.",
+    "retries": "No harness repeat generation. The production gateway may look up its identical idempotency key during its existing bounded replay window.",
+    "forbidden": ["TTS", "describe", "3D paid generation", "direct node paid operations", "provider invocation from Python", "unregistered changeSetId", "candidate byte repair", "tint fallback", "synthetic material binding", "credential file reads"]
+  },
+  "dependencies": [
+    "Installed-current paired companion, root games/hollowmere registration and verified positive image tariff <= USD0.20; preserve all ceilings.",
+    "Graphical DISPLAY=:1 with working actual Studio window pixel capture.",
+    "Read-only companion ledger path: ~/.local/share/etos-studio/agents/gamecore-studio/state/ledger.db, override via ledger.py --ledger only if Main's installed path differs.",
+    "No concurrent paid media during either observed interval; any unrelated ledger charge intentionally blocks isolation.",
+    "Robe requires existing Maren in ThornwickVillage, entity.setMaterialTexture in catalog, real Body renderer with one slot and _BaseMap Texture2D property.",
+    "Robe performs real world bake, then Boot/New Game and production view observation for before/applied/undone. Reload-safe state is in SessionState and ScriptableSingleton. A paid Task lost to an unexpected reload blocks rather than resubmits.",
+    "Harness source references existing P2_1 UnityWindowCapture; no new product package or service change."
+  ],
+  "ledgerObservations": {
+    "checkpoints": {
+      "portrait": ["before", "generated", "undone", "redone", "final"],
+      "robe": ["before", "generated", "undone", "final"]
+    },
+    "mainMustRetain": [
+      "Every ledger-*.json, generate.json, request.json, result.json, raw engine journals, normal History result files and visual-review.json.",
+      "One new image media_charges entry versus baseline, immutable pre-existing charge entries, quantity exactly 1, image tariff positive and <= USD0.20.",
+      "artifacts.producer key equals sole new charge key; real generate.image etosRef is present. jobId is retained verbatim and may be null on a synchronous operation; producer and artifact changeSetId are null; no fabricated worker task IDs.",
+      "Charge ledger digest and artifact producer identity identical at generated/undo/redo/final; original node generation response state succeeded and usage retained. Node may report cost_usd=0 while bound companion tariff is positive; never report that as free generation.",
+      "Main's already-retained global packet baseline/final ledger must show at most the two expected new image keys and sum <= USD0.40 across both runs.",
+      "Companion ledger establishes charged usage and number of idempotent media operations. No upstream provider invoice or a later separately queried node usage value is inferred. A synchronous operation may expose only effectKey/etosRef, with jobId null; never regenerate to obtain a job identifier."
+    ]
+  },
+  "acceptanceAssertions": {
+    "W-EDIT-03": [
+      "Exactly one fresh production generation call, no source image reuse, no resizing: providerSha256 == retainedArtifactSha256 == applied PNG SHA256.",
+      "Production media service's Engine apply leaves an Applied journal and an imported Texture2D.",
+      "Normal StudioHistoryWindow.View.Undo removes the imported file but CAS bytes still read and hash correctly.",
+      "Normal StudioHistoryWindow.View.Redo restores an imported Texture2D whose bytes equal the provider artifact exactly; no GenerateImageAsync invocation is added.",
+      "Ledger-generated/undone/redone/final are identical for charged usage and image job identity; normal cleanup undo removes the imported file without deleting CAS.",
+      "Main sees a real portrait and identical applied/redone image, plus real normal History captures."
+    ],
+    "W-AI-01": [
+      "Existing healer selected through production AuthoringRef before generation; no AI candidate repair or replacement fixture.",
+      "One real green cloth image is imported, then a separate explicit manual engine operation entity.setMaterialTexture assigns its typed Texture2D AuthoringRef to the healer Body renderer material slot.",
+      "Entity presentation content stamp changes; structural recipe stamp stays identical; NPC/behaviour/dialogue/village source bytes stay unchanged versus the pre-generation already-baked baseline.",
+      "Actual Hollowmere GameBoot/New Game production World.Views registry supplies the healer view; its Body slot's effective _BaseMap and MaterialPropertyBlock texture equal the generated image asset.",
+      "Shared material asset bytes stay unchanged, per production property-block semantics. NPC runtime profile, route, schedule and dialogue inputs match before/applied/undone.",
+      "Normal History undo restores the original authored materialBindings/content stamp; subsequent actual Boot/New Game view restores the original effective texture.",
+      "Main reviews before/applied/undone graphical captures, verifies visible green cloth on the real healer body and visible restoration. A non-green output, invisible effect or unreadable capture is FAIL/BLOCKED, not a passed texture-reference assertion."
+    ]
+  },
+  "refusalBehavior": "Missing seams/provider/import/ledger/capture prerequisites report BLOCKED; contract failures report FAIL. No fallback media, direct SetMaterialTexture call, forced undo, unregistered ID or changed candidate bytes. Runtime-only completion remains BLOCKED pending actual visual review."
+}

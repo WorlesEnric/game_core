@@ -1,0 +1,20 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-06T23:38:30.173424+00:00",
+  "observation": "Actual image depicts a head-and-shoulders adult healer portrait with green-brown clothing and herbs, not a placeholder. Generated/applied/redone PNGs are byte-identical SHA256 8ece8b51e61902d4aa58cf0bfee303e3b99af0aa6fc639b316fd00631c437aaf. Actual History captures show Applied, Undone with Undo done, and Applied with Redo done for the same import; ledger checkpoints retain one USD0.20 charge.",
+  "reviewAssertions": [
+    "The actual generated image depicts a portrait, not a pre-existing fixture or placeholder.",
+    "History captures show applied, undone and redone states; restored image is visibly the same portrait."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "8ece8b51e61902d4aa58cf0bfee303e3b99af0aa6fc639b316fd00631c437aaf",
+    "portrait-applied.png": "8ece8b51e61902d4aa58cf0bfee303e3b99af0aa6fc639b316fd00631c437aaf",
+    "portrait-redone.png": "8ece8b51e61902d4aa58cf0bfee303e3b99af0aa6fc639b316fd00631c437aaf",
+    "history-applied.png": "fe5bb36c766639c19124bf7a33ca48876e3286606beb3a0da1058ad44c668437",
+    "history-undone.png": "61bf47b57d4c1592f5dca56d42fa224232468c307105225bdfe3d5308923232b",
+    "history-redone.png": "530cd89b9060c579f22a60e4b9cb0cd60dbff54c0f54cdba4d3f502b4367c012"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

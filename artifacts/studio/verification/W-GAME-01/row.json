@@ -1,13 +1,35 @@
 {
   "status": "BLOCKED",
-  "note": "reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open.",
-  "command": "Read the linked retained P3.1/P3.1b recording and frame manifests; do not make another ten-minute recording.",
-  "historical": "[P3.1 recording](../../evidence/P3.1/recording/playthrough.mp4), [recording hash](../../evidence/P3.1/recording/playthrough.sha256), [P3.1b measurement qualification limits](../../evidence/P3.1b/README.md). The video predates the P3.1b source changes; no new ten-minute recording was made.",
+  "note": "P4.2h current-source release Linux IL2CPP, real RTX4060Ti on :1 at 1080p: four actual >600-second recordings. VSync OFF literal B-FRAME PASS twice: p95 3.461/3.552 ms, zero frames >100 ms outside transition windows. VSync ON FAIL twice: p95 17.375/17.314 ms; outside-transition >100 ms counts 2/0. All full routes, saves and recordings pass; transition hitches <=122.590 ms. Owner VSync definition remains open; no blended or relaxed verdict. Failed recorder setup attempts remain retained.",
+  "command": "python3 artifacts/studio/verification/TOOLS/P42hPlayer/player.py run --output \"$PWD/.evidence/P42hPlayer-qualified\"",
+  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance.",
   "row": "W-GAME-01",
   "scenario": "10-minute graphical playthrough recording with frame log",
   "requirement": "SR-8.1, B-FRAME",
-  "reportedAt": "2026-10-06T15:29:44.428661+00:00",
+  "reportedAt": "2026-10-07T01:31:38.713547+00:00",
   "evidence": [
-    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md"
-  ]
+    "UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md",
+    "W-GAME-01/p42h-player/result.json",
+    "W-GAME-01/p42h-player/visual-review.json",
+    "W-GAME-01/p42h-player/external-movies.json",
+    "W-GAME-01/p42h-player/player/build-report.json"
+  ],
+  "checks": [
+    {
+      "file": "W-GAME-01/p42h-player/result.json",
+      "pointer": "/profiles/vsync0/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-GAME-01/p42h-player/result.json",
+      "pointer": "/profiles/vsync1/status",
+      "equals": "FAIL"
+    },
+    {
+      "file": "W-GAME-01/p42h-player/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
+  ],
+  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914"
 }

@@ -1,0 +1,10 @@
+[
+  "ffprobe",
+  "-v",
+  "error",
+  "-show_streams",
+  "-show_format",
+  "-of",
+  "json",
+  "<REPO>/.evidence/P42hPlayer-qualified/measurement/vsync0/run1/playthrough.mp4"
+]

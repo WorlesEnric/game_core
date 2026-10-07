@@ -1,0 +1,47 @@
+{
+  "charges": [
+    {
+      "id": "gc-66ad224daae13d1df715fdf8ea8cab99065641fd",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    },
+    {
+      "id": "gc-f4a2865c6659205372b2ae3a489d0374bcc37400",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    }
+  ],
+  "companionLedgerUsd": 0.4,
+  "workerMicroUsd": 0,
+  "workerTaskCount": 4,
+  "tasksWithoutReportedMicroUsd": [
+    "t1757163998514f43322f890f"
+  ],
+  "accountedUsd": 0.4,
+  "operationCounts": {
+    "image": 2.0,
+    "tts": 0,
+    "describe": 0,
+    "3dPaid": 0,
+    "3dRefusals": 1
+  },
+  "accountingLimit": "Sum of node-reported task usage and binding operator media charges. Missing task usage entries are listed, not asserted as invoiced zero. Upstream provider invoices/unreported charges are unavailable."
+}

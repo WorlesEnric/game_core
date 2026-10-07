@@ -1,18 +1,17 @@
 # W-REC-03: Cancel region load mid-way; cancel staging job
 
-Verdict: **BLOCKED**. Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation.
+Verdict: **BLOCKED**. P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained.
 
-Report timestamp: 2026-10-06T15:29:44.423531+00:00 UTC.
-
-Acceptance baseline: merged main `e94f27aa`; every linked run records its exact source commit and measured UTC timestamps. Evidence-only and P4_2 harness commits do not change the product implementation. Historical evidence is explicitly identified and never promoted to a current workflow pass.
+Product baseline: `a77cb38ba4a2265007fa40c38983e01a17bb0914`. Historical receipts retain their original revision.
 
 ## Reproduce
 
 ```sh
-studio/tools/verify-all.sh stage
+Read docs/studio/packets/P4.2h-live-rows.md Requests to other packets and W-REC-03/p42h-prerequisite/result.json
 ```
 
 ## Retained evidence
 
 - [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md](../UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md)
 - [W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md](../W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md)
+- [W-REC-03/p42h-prerequisite/result.json](../W-REC-03/p42h-prerequisite/result.json)

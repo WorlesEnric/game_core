@@ -1,0 +1,39 @@
+{
+  "row": "W-GAME-01",
+  "status": "BLOCKED",
+  "requestIds": [],
+  "taskIds": [],
+  "ownerDefinition": "OPEN: VSync measurement definition remains owner-owned; neither profile replaces the other",
+  "captureOverhead": "All four P3.1d routes are recorded using R7-C ffmpeg settings; the runner's historical 'No video/screen capture' provenance line does not describe these wrapped runs.",
+  "profiles": {
+    "vsync0": {
+      "status": "BLOCKED",
+      "observations": [
+        {
+          "run": 1,
+          "status": "BLOCKED"
+        },
+        {
+          "run": 2,
+          "status": "BLOCKED"
+        }
+      ]
+    },
+    "vsync1": {
+      "status": "BLOCKED",
+      "observations": [
+        {
+          "run": 1,
+          "status": "BLOCKED"
+        },
+        {
+          "run": 2,
+          "status": "BLOCKED"
+        }
+      ]
+    }
+  },
+  "revision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "buildExit": 0,
+  "observation": "Build completed; graphical qualification not run"
+}

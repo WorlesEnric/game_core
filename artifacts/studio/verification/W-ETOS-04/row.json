@@ -1,12 +1,24 @@
 {
   "status": "BLOCKED",
-  "note": "The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task.",
-  "command": "studio/tools/verify-all.sh ui",
+  "note": "P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py query --row W-ETOS-04 --method P42h.Tasks.TaskDriver.SelectedNpcQuery",
   "row": "W-ETOS-04",
   "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
   "requirement": "SR-2.4, SR-4.3",
-  "reportedAt": "2026-10-06T15:29:44.389718+00:00",
+  "reportedAt": "2026-10-07T01:31:38.711912+00:00",
   "evidence": [
-    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md"
-  ]
+    "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
+    "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
+    "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json",
+    "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-tool-trace.json"
+  ],
+  "checks": [
+    {
+      "file": "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
+      "pointer": "/queryReceiptMatchesSelectedGraph",
+      "equals": false
+    }
+  ],
+  "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
 }

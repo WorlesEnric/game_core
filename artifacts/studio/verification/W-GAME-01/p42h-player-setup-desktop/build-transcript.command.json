@@ -1,0 +1,21 @@
+[
+  "bash",
+  "<REPO>/studio/tools/unity-batch.sh",
+  "--project",
+  "<REPO>/games/hollowmere",
+  "--log-dir",
+  "<REPO>/.evidence/P42hPlayer/build-logs",
+  "--label",
+  "p42h-player",
+  "--timeout",
+  "3600",
+  "--attempts",
+  "1",
+  "--",
+  "-executeMethod",
+  "Hollowmere.Build.BuildLinuxPlayer",
+  "-buildOutput",
+  "<REPO>/.evidence/P42hPlayer/player",
+  "-buildRevision",
+  "a77cb38ba4a2265007fa40c38983e01a17bb0914"
+]

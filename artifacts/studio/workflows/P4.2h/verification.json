@@ -1,0 +1,61 @@
+{
+  "productRevision": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+  "rust": {
+    "passed": 145,
+    "ignored": 12,
+    "fmt": "PASS",
+    "clippyAllTargetsDenyWarnings": "PASS",
+    "releaseBuild": "PASS",
+    "transcript": "companion-build.txt"
+  },
+  "clientTrx": [
+    {
+      "file": "client-trx/_worlesenric_2026-10-07_07_26_43.trx",
+      "counts": {
+        "NotExecuted": 6,
+        "Passed": 69
+      }
+    }
+  ],
+  "helloAnd3dRefusal": {
+    "passed": 1,
+    "evidence": "../../verification/P4.2h/p42h-hello-20261006T230811.468514Z/result.json"
+  },
+  "unityRegression": {
+    "passed": 35,
+    "failed": 2,
+    "skipped": 0,
+    "evidence": "../../verification/P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z/results.xml",
+    "failures": [
+      "R5_07_UnmodifiedRetainedCandidatesHaveDialogueAndQuestPlayEffects",
+      "R6_Request6_ActualEngineAcceptsExplicitRelinkWithoutWriting"
+    ]
+  },
+  "pythonAcceptance": {
+    "passed": 21
+  },
+  "pythonRunner": {
+    "passed": 11
+  },
+  "metadata": {
+    "status": "PASS",
+    "packages": 42,
+    "packageAssemblies": 91
+  },
+  "csharpPolicy": {
+    "status": "PASS",
+    "files": 1251
+  },
+  "freshCompleteRows": [
+    "W-AI-01",
+    "W-EDIT-01",
+    "W-EDIT-03",
+    "W-ETOS-05",
+    "W-ETOS-09"
+  ],
+  "frameProfiles": {
+    "vsyncOff": "PASS twice",
+    "vsyncOn": "FAIL twice"
+  },
+  "allSuitesGreen": false
+}

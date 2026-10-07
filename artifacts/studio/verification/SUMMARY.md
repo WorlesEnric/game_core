@@ -1,10 +1,10 @@
-# P4.2 + P4.2b + P4.2c verification summary
+# P4.2h verification summary
 
-Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
+Matrix row totals: PASS 55, BLOCKED 12, FAIL 1.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
-| [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
+| W-UI-01 | PASS | [Evidence](W-UI-01/README.md): Ordinary graphical Open Studio connects automatically without pairing; HUD walking moves committed world.posX/posZ 7.636 m in 3.040 s. Runtime NPC view tags now override the authored GameBoot ancestor; Select shows Maren and MarenEntity in the actual definition card. Graphical R2-29 key delivery and focus-reset regressions pass. |
 | W-UI-02 | PASS | [Evidence](W-UI-02/README.md): R7-D graphical 1280×720 marquee-result chooser presents three NPCs and fence geometry; real inclusion toggles exclude fence, then Apply selects exactly Maren/Odd/Pip and retains regionRect. Point choices confirm occlusion. Real chooser captures and PASS receipt retained. |
 | W-UI-03 | PASS | [Evidence](W-UI-03/README.md): R7-D graphical 1280×720 Lantern chooser exposes logical, Mesh:Body, originating prefab and Instance scope choices. Attached button interactions assert exact identities, scopes and cleared parts; all four choices are visible in real captures. |
 | W-UI-04 | PASS | [Evidence](W-UI-04/README.md): Ten graphical Play/Edit cycles: every measured frame has one pump and zero violations; combined engine/managed growth is +0.715% against the unchanged +15% limit. Full cycle-1/cycle-10 snapshots are retained with hashes. |
@@ -18,9 +18,9 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | W-MODEL-02 | PASS | [Evidence](W-MODEL-02/README.md): R7-B actual delete preview identifies the dialogue choice line through its item condition and the collect objective by nested field paths; engine deletion and ordinary History undo succeed. Exact case passes in final 8/8 XML. |
 | W-TOOL-01 | PASS | [Evidence](W-TOOL-01/README.md): Saltmarsh exports only installed production tools; fixture, Hollowmere and internal admission tools are absent. Catalog and installed-package manifest retained. |
 | W-TOOL-02 | PASS | [Evidence](W-TOOL-02/README.md): Package metadata and exact asmdef-derived dependencies pass on the final harness tree. |
-| W-EDIT-01 | BLOCKED | [Evidence](W-EDIT-01/README.md): Real task/candidate IDs are recorded, but the worker move is rejected for missing scope, so no applied joined task/GameCore-operation History entry exists. |
+| W-EDIT-01 | PASS | [Evidence](W-EDIT-01/README.md): P4.2h fresh installed-worker Instance-scoped runtime.move candidate applies unchanged in real Play. History joins task t9450022d9a74ef2db96f895e with the exact committed GameCore operation; production receipt and pose confirm Bram moved to (11.5,0,-13), with authored scene bytes unchanged. |
 | W-EDIT-02 | PASS | [Evidence](W-EDIT-02/README.md): Five-op stale-member cases prove AllOrNothing applies nothing and BestEffort records the other outcomes. |
-| W-EDIT-03 | BLOCKED | [Evidence](W-EDIT-03/README.md): No current generated portrait reaches apply/undo/redo: the legacy media caller supplies an unregistered local ID; direct image calls additionally need a verified operator tariff. Old image files are not new generation evidence. |
+| W-EDIT-03 | PASS | [Evidence](W-EDIT-03/README.md): P4.2h one real USD0.20 portrait passes current media import, normal History undo/redo and final undo. Generated/applied/redone PNG SHA256 is identical; all post-generation charge/producer checkpoints remain unchanged. An observer initially wrongly required optional jobId; its failure is retained and corrected without regenerating. Normal History continuation reuses the original Applied journal after reopening. |
 | W-EDIT-04 | PASS | [Evidence](W-EDIT-04/README.md): R7-B combined real Bram NPC command/staged edit, Play exit, authored apply, engine deletion and second apply produces a journaled Refused/StaleTarget without resurrection. Normal History undo restores original costume and scene bytes. |
 | W-EDIT-05 | PASS | [Evidence](W-EDIT-05/README.md): Core and viewport gizmo tests compare the resulting journal entries with typed moves. |
 | W-EDIT-06 | PASS | [Evidence](W-EDIT-06/README.md): R7-B real committed world.place leaves authored proxy unchanged; Changes creator command persists a distinct authored candidate. Play exit, ordinary move/save/reopen and History inverse/reopen pass. Runtime action remains non-undoable; final XML 8/8 includes refusal boundaries. |
@@ -29,19 +29,19 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | W-HOST-01 | BLOCKED | [Evidence](W-HOST-01/README.md): P4.2e activates and checksum-verifies immutable main-built release 0.1.0-cac2f82c59be070b; the repeat installer is a no-op and authenticated hello reports the owner describe tariff. A full fresh node install remains unrun under the no-etosd-restart rule. Initial host inventory is idle, but the monitor later sees a brief second Unity PID during NPC asset import; its exited process cannot be classified retrospectively, so strict host exclusivity is not claimed. |
 | W-ETOS-01 | BLOCKED | [Evidence](W-ETOS-01/README.md): Both settings files are absent and proxy probes return 401. Intended committed packet evidence has no credential-shaped value or absolute home path; 3,700 inherited committed artifact files retain home paths outside this packet’s scope. |
 | W-ETOS-02 | BLOCKED | [Evidence](W-ETOS-02/README.md): Live app-key access to agent-only tasks returns 403 forbidden, but the other-agent probe returns 404 agent_unknown; no installed second-agent forbidden response is established. |
-| W-ETOS-04 | BLOCKED | [Evidence](W-ETOS-04/README.md): The real worker moved the selected well; no worker-side etos query of selected NPC dialogue nodes was requested or retained in that bounded live task. |
-| W-ETOS-05 | BLOCKED | [Evidence](W-ETOS-05/README.md): Live client cancellation completes in 556 ms with one task/no candidate, but the creator tray-button portion is not exercised. |
+| W-ETOS-04 | BLOCKED | [Evidence](W-ETOS-04/README.md): P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute. |
+| W-ETOS-05 | PASS | [Evidence](W-ETOS-05/README.md): P4.2h actual enabled attached tray Cancel button is activated while request, task and tray report running. One original task becomes cancelled, no candidate or duplicate row appears; acknowledgement 427 ms, stable observation 3585 ms. |
 | W-ETOS-06 | BLOCKED | [Evidence](W-ETOS-06/README.md): Companion portion PASS: actual etos agent restart, same task, one cancellation outcome and exact four-event cursor replay; reconnect 143.1 ms, cancel ack 188.0 ms. Node-death portion remains BLOCKED: etosd stop/restart is forbidden, and a companion restart cannot prove delayed attribution after node death. |
 | W-ETOS-07 | BLOCKED | [Evidence](W-ETOS-07/README.md): P4.2e authenticated hello and one describe call pass with the owner-declared operator estimate USD 0.01/call. One new image is generated and downloaded with digest verification at USD 0.20; describe consumes that owned artifact and records its binding charge. Current client tests cover tamper refusal, but this run does not perform the full live generated-texture import/tamper workflow; prior image-import evidence remains revision-specific. |
 | W-ETOS-08 | BLOCKED | [Evidence](W-ETOS-08/README.md): Removing the shared image provider and reloading the node would change concurrent users’ provider service; that operator scenario is outside the permitted no-node-restart run. |
-| W-ETOS-09 | BLOCKED | [Evidence](W-ETOS-09/README.md): Client cursor replay is real; a source recompile/domain reload while an in-flight task returns to the tray was not completed. Simulated reload tests remain component evidence. |
+| W-ETOS-09 | PASS | [Evidence](W-ETOS-09/README.md): P4.2h real changed-source compilation/domain reload in the same Editor preserves running task tec77a34b9f6f55d58ed934f5 and one attached tray row with unchanged creation identity. Loaded source token and compilation/reload callbacks are retained; session starts 11-to-12. Durable cursor 760 continues with exact production/independent replay [761,762], no gap/duplicate and one terminal event; creator tray cancellation then bounds task lifetime. |
 | W-VOICE-01 | BLOCKED | [Evidence](W-VOICE-01/README.md): The unchanged R6-B driver now passes both readiness-gated real takes: move and destructive final transcripts arrive after proper Stop/drain. Destructive tray/request/journal counts remain exactly 8/11/122, and the field holds the destructive text without Send. Both provider traces contain only revision 1 with final=true; no partial speech revision is observed. Full-row partial-revision visibility remains unqualified despite the passing driver. |
-| W-AI-01 | BLOCKED | [Evidence](W-AI-01/README.md): PARTIAL: R3-F six-digit tint applies/undoes with unchanged behaviour hashes; R3-A Sprite bind and R4-A image/TTS imports pass. Two images are generated, but the unchanged P3.2 robe driver never assigns its generated robe texture through R3-D entity.setMaterialTexture. The full texture-to-material chain is unexercised. |
+| W-AI-01 | PASS | [Evidence](W-AI-01/README.md): P4.2h second real USD0.20 image is green woven cloth, imported through current media and assigned by explicit engine entity.setMaterialTexture. Actual GameBoot/New Game Maren body uses that texture via production property block; visible olive-to-forest-green cloth change and normal History restoration are captured. Behaviour/NPC/dialogue/village source hashes, runtime profile/route/schedule and structural recipe remain unchanged. Existing stylized capsule geometry and background graphics are not claimed improved. |
 | W-AI-02 | PASS | [Evidence](W-AI-02/README.md): P4.2g fresh installed-worker six-operation candidate cs_01M49DK7R5Z2YD985AHZG0EWEN applies unchanged after creator-supplied measured navigation, shared-prefab Play evidence and explicit new-NPC intent. Its graph is enrolled in GameplayContentSet. Actual WorkflowPlayChecks.Effect("W-AI-02", ...) proves committed patrol motion, on-NavMesh view, successful DialogueRunner.Start, the presented bell line and conversation end. R6-C AppliedOr reads the durable journal; normal undo journals Undone, restores roster 20-to-21-to-20, and is explicitly saved. Final integrated XML is 45/45 PASS, including the unchanged entry-unreachable refusal. Earlier clarification-only requests, prerequisite-driver errors, the lost-observation receipt and unsaved-fixture bake refusal remain retained. |
 | W-AI-03 | PASS | [Evidence](W-AI-03/README.md): The fresh installed-worker candidate applies unchanged; actual Hollowmere Play hides its added line while shrine_lit is false and displays it when lit. The corrected driver records pass. |
 | W-AI-04 | PASS | [Evidence](W-AI-04/README.md): The fresh installed-worker HUD candidate applies and saves; a separate Editor reopens with matching saved hashes, and normal undo/redo/final undo succeeds. HUD bytes return exactly to baseline. |
 | W-AI-05 | PASS | [Evidence](W-AI-05/README.md): The fresh installed-worker candidate uses the indexed OilFlask identity. Actual Play holds quest stage 1 after one flask and advances to stage 2 after two; the driver records pass. |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
+| W-AI-06 | PASS | [Evidence](W-AI-06/README.md): Unchanged retained narrative candidates save in Editor 4005226 and reopen in separate Editor 4007734 with all saved hashes equal. Normal undo/redo/final undo plus the production deterministic bake restores all four complete asset files exactly, including contentStamp: backToBefore=true. No fields or candidate stamps are normalized; no new paid generation. |
 | W-AI-07 | PASS | [Evidence](W-AI-07/README.md): Installed R6-main companion refuses 3D with not_configured before a zero budget; no generation. The authenticated P4.2e receipt passes in TRX. FBX-only mesh import and predictions provider credentials remain an explicit owner decision. |
 | W-PLUG-01 | PASS | [Evidence](W-PLUG-01/README.md): R7-C real three-region loop passes moved Odd, zero departed views/source clips, unloaded native audio data and six Memory Profiler snapshots per run. Residuals 0.08825–0.15878% of peak; both passing runs meet load ≤2 s/unload ≤1 s. Reloadable 702-byte clip descriptors remain included in the residual. |
 | W-PLUG-02 | PASS | [Evidence](W-PLUG-02/README.md): R7-C production binders drive real Animator transitions and animated poses; despawn destroys the old Animator and respawn retains variant prefab, 1.2 scale and committed bindings. Named XML passes in graphics-enabled batch Editor. |
@@ -60,9 +60,9 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | W-PERSIST-02 | PASS | [Evidence](W-PERSIST-02/README.md): R7-B literally renames the referenced NPC prefab after real checkpoint capture; a separate Editor PID reopens and restores identical canonical slot hash, eight NPC fields and costume content. Original prefab/meta path and bytes restored exactly. |
 | W-PERSIST-03 | PASS | [Evidence](W-PERSIST-03/README.md): Production SaveService restores a V1 checkpoint through the registered V2 migration; missing migration refuses while leaving the running world unchanged. |
 | W-REC-01 | PASS | [Evidence](W-REC-01/README.md): Real SIGKILL during engine mutation, then a different Editor process: both rollback and resume recover successfully. Killed-Editor nonzero exits are expected and retained. |
-| W-REC-03 | BLOCKED | [Evidence](W-REC-03/README.md): Region cancellation components exist; no installed running-stage cancellation is possible through the missing app-origin staging path, and discard is not proof of cancellation. |
+| W-REC-03 | BLOCKED | [Evidence](W-REC-03/README.md): P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained. |
 | W-MECH-01 | PASS | [Evidence](W-MECH-01/README.md): P4.2g installed main after R6-E/R6-F/R6-G: cold/warm signed Docker stages pass in 158.011/79.598 s, each 36 EditMode + 2 PlayMode XML passes. Explicit graphical Play Admit restores nine coins, completes 120-frame Pending-to-Passed smoke and normal undo twice. Cold durable-UTC admission is 42.869 s; corrected warm timer 47.070 s. Owned UPM admission/undo resolves are 16.622/19.119 s cold and 15.891/19.461 s warm. Both reload traces establish authenticated service through the R6-E resumer with zero refresh waits. No admission timeout or timeout retry occurred. Negative app candidate cannot Admit; separate production Docker Roslyn refuses 21 findings across SG001-SG010. A pre-Admit wrong-filename launch and the old cold harness timezone arithmetic remain retained, not rewritten. |
-| W-GAME-01 | BLOCKED | [Evidence](W-GAME-01/README.md): reused P3.1 video predates fixes. P3.1b `406f00c1` offscreen llvmpipe: p95 1.284 ms, 0 >100 ms, belfry 7.4 ms. [P3.1d real GPU](packets/P3.1b-frame-time.md): RTX 4060 Ti 1080p, VSync OFF PASS 2.778/2.856 ms; VSync ON FAIL 18.062/18.089 ms; both 0 >100 ms. New real-GPU measurements exist; final-tree recording and owner VSync rule remain open. |
+| W-GAME-01 | BLOCKED | [Evidence](W-GAME-01/README.md): P4.2h current-source release Linux IL2CPP, real RTX4060Ti on :1 at 1080p: four actual >600-second recordings. VSync OFF literal B-FRAME PASS twice: p95 3.461/3.552 ms, zero frames >100 ms outside transition windows. VSync ON FAIL twice: p95 17.375/17.314 ms; outside-transition >100 ms counts 2/0. All full routes, saves and recordings pass; transition hitches <=122.590 ms. Owner VSync definition remains open; no blended or relaxed verdict. Failed recorder setup attempts remain retained. |
 | W-GAME-05 | PASS | [Evidence](W-GAME-05/README.md): R7-C fc3245ea Linux IL2CPP recording passes production menu/save/UI Quit, second-process menu/load, Ending C and Play Again reset. Final 350.2 s 1080p movie has actual voice/ambience, exact saved-state assertions and two exit-0 processes; Xvfb/llvmpipe, not B-FRAME. |
 | W-GAME-06 | PASS | [Evidence](W-GAME-06/README.md): Hollowmere Linux IL2CPP build/hash passes. V1 phases 1–8 and resumed 9–11 pass; both release resumes retain their failed setup attempts, with no repeated qualification probes or relaxed budget. |
 | W-GAME-07 | BLOCKED | [Evidence](W-GAME-07/README.md): The owner forbids etosd stop/restart, so the requested stopped-node/no-network player scenario is not run. The companion-only supervisor restart does not establish this condition; the prior namespace prerequisite refusal remains historical evidence. |
@@ -70,8 +70,8 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | W-CLEAN-01 | PASS | [Evidence](W-CLEAN-01/README.md): Final-tree AuthorAll, content/catalog tests, fresh-cache Linux IL2CPP build and standalone 600-frame quest/save/restore/ending run pass. The separate app-stage contract test fails under W-MECH-01. |
 | W-CLEAN-02 | PASS | [Evidence](W-CLEAN-02/README.md): After final AuthorAll, build and both suite rechecks, git diff against origin/main is empty for all Packages/. |
 | W-DOC-01 | PASS | [Evidence](W-DOC-01/README.md): The creator-guide NPC/dialogue boundary is exercised through npc.addAt in Context and Add line in the Dialogue view, using the existing Maren definition and its bound graph. Placement and dialogue edit apply; save and normal journal undo restore the 20-entity/13-node baseline. Named guide test passes in XML. This is the documented existing-definition flow, not creation of a new unique NPC definition. |
-| [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
-| W-E2E-01 | BLOCKED | [Evidence](W-E2E-01/README.md): P4.2e qualifies the requested R6 targets on main d140f748 with its matching immutable release. Signed world/predicted stage verdicts, priced describe, candidate-time entry refusal, narrative Play effects and voice final/no-submission pass their named checks. Graphical admission still times out, the fresh ferryman fails its NPC Play prerequisites, exact reopen bytes differ, and voice partial revisions are absent. Host exclusivity has one unclassified transient Unity PID. Untouched rows retain their original revision-specific evidence; no all-row acceptance is claimed. |
+| W-DOC-02 | FAIL | [Evidence](W-DOC-02/README.md): Fresh-root cache_invalid is fixed: exact versioned provisioning and all seven default-Docker guide sample steps pass in 169.481 s, with 36 EditMode and 2 PlayMode passes. The literal new-lever and authenticated Stage/creator Admit/restored-world/undo exercise remains unproven; an unsigned pressure-plate CLI pass does not close this unchanged row. |
+| W-E2E-01 | BLOCKED | [Evidence](W-E2E-01/README.md): P4.2h fresh complete-row PASS at product a77cb38b: W-AI-01, W-EDIT-01, W-EDIT-03, W-ETOS-05, W-ETOS-09. W-ETOS-04 lacks real dialogue-node publication; W-REC-03 lacks running-stage cancellation; W-GAME-01 has separate OFF PASS/ON FAIL measurements with the owner rule open. The other 59 rows were not rerun as complete scenarios at this revision; inherited PASS is not current acceptance. Current retained-dialogue regressions are 35/37, with two projection failures, and eight transient empty-argv children leave strict host exclusivity unproven. All 68 exact dispositions are listed. |
 
 ## Retained attempts (including superseded and expected failures)
 
@@ -125,6 +125,11 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [INSTALL-P4.2g/p42g-receipt-hello-20261006T190806.394631Z](INSTALL-P4.2g/p42g-receipt-hello-20261006T190806.394631Z/README.md) | PASS | 55091b74be95 |
 | [INSTALL-P4.2g/p42g-runner-python-20261006T190954.983043Z](INSTALL-P4.2g/p42g-runner-python-20261006T190954.983043Z/README.md) | PASS | 55091b74be95 |
 | [INSTALL-P4.2g/p42g-runner-python-20261006T195344.349346Z](INSTALL-P4.2g/p42g-runner-python-20261006T195344.349346Z/README.md) | PASS | e4bb29fb83c9 |
+| [P4.2h/p42h-harness-check-20261006T232700.601491Z](P4.2h/p42h-harness-check-20261006T232700.601491Z/README.md) | FAIL | a77cb38ba4a2 |
+| [P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z](P4.2h/p42h-harness-check-fixed-20261006T232846.529458Z/README.md) | FAIL | a77cb38ba4a2 |
+| [P4.2h/p42h-hello-20261006T230811.468514Z](P4.2h/p42h-hello-20261006T230811.468514Z/README.md) | PASS | a77cb38ba4a2 |
+| [P4.2h/p42h-python-acceptance-20261007T012629.626551Z](P4.2h/p42h-python-acceptance-20261007T012629.626551Z/README.md) | PASS | 44f2b4ba6996 |
+| [P4.2h/p42h-python-runner-20261007T012633.846092Z](P4.2h/p42h-python-runner-20261007T012633.846092Z/README.md) | PASS | 44f2b4ba6996 |
 | [R6-P4.2e/p42e-regression-20261006T143611.682920Z](R6-P4.2e/p42e-regression-20261006T143611.682920Z/README.md) | FAIL | 26c971a61ab0 |
 | [R6-P4.2e/p42e-regression-20261006T143939.136591Z](R6-P4.2e/p42e-regression-20261006T143939.136591Z/README.md) | PASS | 26c971a61ab0 |
 | [R6-P4.2f/p42f-regression-20261006T165922.104070Z](R6-P4.2f/p42f-regression-20261006T165922.104070Z/README.md) | PASS | 4ac7ba858b91 |
@@ -215,6 +220,7 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z](UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md) | PASS | 74005cef3447 |
 | [W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z](W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-01/p42c-robe2-20261006T072832.434641Z](W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md) | PASS | 65666ac27168 |
+| [W-AI-01/p42h-robe-20261006T234742.071996Z](W-AI-01/p42h-robe-20261006T234742.071996Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z](W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-02/p42c-text2-20261006T071746.894107Z](W-AI-02/p42c-text2-20261006T071746.894107Z/README.md) | FAIL | 65666ac27168 |
 | [W-AI-02/p42d-text2-20261006T113349.342620Z](W-AI-02/p42d-text2-20261006T113349.342620Z/README.md) | FAIL | 274cfc7d24bb |
@@ -241,11 +247,12 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [W-AI-03/p42e-narrative-20261006T151348.703137Z](W-AI-03/p42e-narrative-20261006T151348.703137Z/README.md) | PASS | c047978f7382 |
 | [W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z](W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z](W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z/README.md) | BLOCKED | 8d1574e4326a |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
-| [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
+| [W-AI-06/p42b-live-prerequisite-20261006T044156.738894Z](W-AI-06/p42b-live-prerequisite-20261006T044156.738894Z/README.md) | BLOCKED | 8d1574e4326a |
+| [W-AI-06/p42c-reopen-20261006T073813.299352Z](W-AI-06/p42c-reopen-20261006T073813.299352Z/README.md) | FAIL | dbedd2fb6c83 |
+| [W-AI-06/p42d-history-prepare-20261006T115218.627176Z](W-AI-06/p42d-history-prepare-20261006T115218.627176Z/README.md) | PASS | e46d5fff79dc |
+| [W-AI-06/p42d-history-reopen-20261006T115409.820866Z](W-AI-06/p42d-history-reopen-20261006T115409.820866Z/README.md) | PASS | e46d5fff79dc |
+| [W-AI-06/p42d-reopen-20261006T114958.044810Z](W-AI-06/p42d-reopen-20261006T114958.044810Z/README.md) | PASS | e46d5fff79dc |
+| [W-AI-06/p42e-reopen-20261006T152055.608370Z](W-AI-06/p42e-reopen-20261006T152055.608370Z/README.md) | FAIL | e178f6d291ca |
 | [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
 | [W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z](W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/README.md) | FAIL | d26494a498d4 |
 | [W-AI-07/p42b-live-prerequisite-20261006T044157.606085Z](W-AI-07/p42b-live-prerequisite-20261006T044157.606085Z/README.md) | BLOCKED | 8d1574e4326a |
@@ -260,8 +267,15 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [W-DOC-01/p42c-image-recovered-20261006T084302.391519Z](W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-01/p42c-image-recovered-20261006T084832.481069Z](W-DOC-01/p42c-image-recovered-20261006T084832.481069Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-01/p42d-guide-20261006T123449.140659Z](W-DOC-01/p42d-guide-20261006T123449.140659Z/README.md) | PASS | 369a0de1eb22 |
+| [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z](W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md) | FAIL | 8d1574e4326a |
+| [W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z](W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md) | FAIL | 53525c74d62c |
 | [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
-| [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
+| [W-E2E-01/p42h-accounting](W-E2E-01/p42h-accounting/README.md) | BLOCKED | a77cb38ba4a2 |
+| [W-EDIT-01/p42h-history-capture-20261006T235319.527257Z](W-EDIT-01/p42h-history-capture-20261006T235319.527257Z/README.md) | FAIL | a77cb38ba4a2 |
+| [W-EDIT-01/p42h-history-capture-fixed-20261006T235831.511301Z](W-EDIT-01/p42h-history-capture-fixed-20261006T235831.511301Z/README.md) | FAIL | a77cb38ba4a2 |
+| [W-EDIT-01/p42h-move-20261006T233010.771874Z](W-EDIT-01/p42h-move-20261006T233010.771874Z/README.md) | PASS | a77cb38ba4a2 |
+| [W-EDIT-03/p42h-portrait-20261006T233329.764957Z](W-EDIT-03/p42h-portrait-20261006T233329.764957Z/README.md) | FAIL | a77cb38ba4a2 |
+| [W-EDIT-03/p42h-portrait-history-20261006T233621.554895Z](W-EDIT-03/p42h-portrait-history-20261006T233621.554895Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z](W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/README.md) | PASS | c532b77edd93 |
 | [W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z](W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z/README.md) | FAIL | d26494a498d4 |
 | [W-ETOS-01/proxy-missing-app-20261005T182210.204090Z](W-ETOS-01/proxy-missing-app-20261005T182210.204090Z/README.md) | PASS | 20e34d1e6a68 |
@@ -276,6 +290,8 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [W-ETOS-01/security-scan-20261005T190745.437064Z](W-ETOS-01/security-scan-20261005T190745.437064Z/README.md) | PASS | 12d7e5c7abab |
 | [W-ETOS-01/security-scan-20261005T202404.701613Z](W-ETOS-01/security-scan-20261005T202404.701613Z/README.md) | PASS | c532b77edd93 |
 | [W-ETOS-01/security-scan-20261005T203045.679270Z](W-ETOS-01/security-scan-20261005T203045.679270Z/README.md) | PASS | c532b77edd93 |
+| [W-ETOS-04/p42h-query-20261006T233851.413333Z](W-ETOS-04/p42h-query-20261006T233851.413333Z/README.md) | FAIL | a77cb38ba4a2 |
+| [W-ETOS-05/p42h-cancel-20261006T234228.357309Z](W-ETOS-05/p42h-cancel-20261006T234228.357309Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z](W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md) | PASS | 38baed3d6484 |
 | [W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z](W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z](W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/README.md) | PASS | 9d8ab6b11d43 |
@@ -283,6 +299,13 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [W-ETOS-07/direct-tts-import-20261005T194103.515551Z](W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md) | PASS | d26494a498d4 |
 | [W-ETOS-07/installed-media-20261005T192218.561813Z](W-ETOS-07/installed-media-20261005T192218.561813Z/README.md) | FAIL | 12d7e5c7abab |
 | [W-ETOS-07/p42e-describe-20261006T143956.171469Z](W-ETOS-07/p42e-describe-20261006T143956.171469Z/README.md) | PASS | 26c971a61ab0 |
+| [W-ETOS-09/p42h-reload-20261006T234520.220306Z](W-ETOS-09/p42h-reload-20261006T234520.220306Z/README.md) | PASS | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player](W-GAME-01/p42h-player/README.md) | BLOCKED | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player-setup-desktop](W-GAME-01/p42h-player-setup-desktop/README.md) | FAIL | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player-setup-final](W-GAME-01/p42h-player-setup-final/README.md) | FAIL | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player-setup-recorded](W-GAME-01/p42h-player-setup-recorded/README.md) | FAIL | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player-setup-window](W-GAME-01/p42h-player-setup-window/README.md) | FAIL | a77cb38ba4a2 |
+| [W-GAME-01/p42h-player-setup-window2](W-GAME-01/p42h-player-setup-window2/README.md) | FAIL | a77cb38ba4a2 |
 | [W-GAME-06/final-player-manifests-20261005T201815.687151Z](W-GAME-06/final-player-manifests-20261005T201815.687151Z/README.md) | PASS | c532b77edd93 |
 | [W-GAME-06/hollowmere-linux-build-20261005T183343.413775Z](W-GAME-06/hollowmere-linux-build-20261005T183343.413775Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z](W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md) | PASS | c532b77edd93 |
@@ -376,12 +399,14 @@ Matrix row totals: PASS 50, BLOCKED 17, FAIL 1.
 | [W-REC-01/rollback-reopened-editor-20261005T202237.272767Z](W-REC-01/rollback-reopened-editor-20261005T202237.272767Z/README.md) | PASS | c532b77edd93 |
 | [W-REC-01/rollback-state-20261005T174119.215442Z](W-REC-01/rollback-state-20261005T174119.215442Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-REC-01/rollback-state-20261005T202208.950937Z](W-REC-01/rollback-state-20261005T202208.950937Z/README.md) | PASS | c532b77edd93 |
+| [W-REC-03/p42h-prerequisite](W-REC-03/p42h-prerequisite/README.md) | BLOCKED | a77cb38ba4a2 |
 | [W-TOOL-02/final-harness-metadata-20261005T194717.145522Z](W-TOOL-02/final-harness-metadata-20261005T194717.145522Z/README.md) | PASS | c532b77edd93 |
 | [W-TOOL-02/final-metadata-20261005T205459.094614Z](W-TOOL-02/final-metadata-20261005T205459.094614Z/README.md) | PASS | 50a4c07c2021 |
 | [W-TOOL-02/metadata-20261005T170003.293967Z](W-TOOL-02/metadata-20261005T170003.293967Z/README.md) | PASS | 813e6b4591d8 |
 | [W-TOOL-02/metadata-20261005T185323.090417Z](W-TOOL-02/metadata-20261005T185323.090417Z/README.md) | PASS | 4214d67b2289 |
-| [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
-| [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
+| [W-UI-01/layout-1280x720-20261005T193653.367571Z](W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md) | PASS | d26494a498d4 |
+| [W-UI-01/r7-a](W-UI-01/r7-a/README.md) | PASS | 1a462f88 |
+| [W-UI-01/ui-capture-20261005T190220.779562Z](W-UI-01/ui-capture-20261005T190220.779562Z/README.md) | FAIL | 12d7e5c7abab |
 | [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
 | [W-UI-05/p42d-selection-20261006T112100.063994Z](W-UI-05/p42d-selection-20261006T112100.063994Z/README.md) | PASS | ed1969e4cc14 |
 | [W-UI-05/p42d-selection-repeat-20261006T123743.261129Z](W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/README.md) | PASS | 249ce726c452 |
