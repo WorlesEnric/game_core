@@ -1,26 +1,26 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **PASS — R10-A**, product `2e17a01ec02dcea3b4762b4536605120c985681b`, locally built scratch companion, graphical `:1`. Signed cold/warm stages take **165.852 / 82.232 s**; creator Admit → restored Play/smoke takes **34.751 / 30.089 s**, below the unchanged 90 s limit. Normal History Undo takes **36.494 / 33.832 s**. Both restore nine coins and run 120 real frames with Pending → Passed smoke, authenticated catalog equality, removed package and no pending state after Undo.
+Verdict: **PASS**. Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission.
 
-Both flows first exercise a worker-format structural edit through candidate Preview/Apply, observe early `bake_stale` while generated runtime is incompatible, then normal journal Undo and current snapshot export with byte-identical restored assets and unchanged bake outputs. No paid worker is called. The legacy pressure sample is observer-only: actual restored game root equals signed world; independently loaded world+mechanism catalog set equals signed predicted.
+P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
+Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
-Current evidence: [cold result](r10-a/final/cold/result.json), [warm result](r10-a/final/warm/result.json), [qualification/XML counts](r10-a/qualification.json), [packet](../../../../docs/studio/packets/R10-A-admission-freshness.md). Each run includes exact signed records, real stage XML, actual Admit-control pixels, source/Undo witnesses, terminal journals and SHA-256 manifest. No installed companion/etosd operation or installed-release upgrade is claimed.
-
-Reproduce: `python3 games/hollowmere/Assets/Hollowmere/Tests/R10_A/run.py /tmp/r10-a-new --label new --companion "$PWD/studio/agent/target/debug/gamecore-studio"` after building that companion and the Release literal-submit client. Use fresh private state and evidence labels; never overwrite retained attempts.
-
-## Historical P4.2j failure
-
-Both then-current signed Docker stages passed (166.402s cold, 76.786s warm), but creator admissions rolled back with `catalog_mismatch`: signed world `6c13778e` versus current authored `d82aed18`. Historical product `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release `0.1.0-fba3604e99ceadd1`; reported 2026-10-07T16:04:44.851949+00:00. Its original failure records below remain unchanged.
-
-### Historical reproduction
+## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism; after verified cold rollback only: python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism --mechanism-run warm
+python3 artifacts/studio/verification/TOOLS/stages-p42k.py mechanism --attempt provisioned
 ```
 
-### Historical evidence
+## Current-run evidence
 
-- [W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json](../W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json)
-- [W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json](../W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json)
-- [W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/admission.json](../W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/admission.json)
-- [W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/admission.json](../W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/admission.json)
+- [W-MECH-01/p42k-acceptance/result.json](../W-MECH-01/p42k-acceptance/result.json)
+- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json)
+- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json)
+- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json)
+- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json)
+- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json)
+- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json)
+- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json)
+- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json)
+- [W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json](../W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json)
+- [W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json](../W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json)

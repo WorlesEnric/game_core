@@ -1,30 +1,30 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+    "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json"
+  ],
   "checks": [
     {
-      "file": "W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/result.json",
+      "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/memory-and-pumps.json",
+      "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json",
       "pointer": "/cycles/9/cycle",
       "equals": 10
     }
   ],
-  "evidence": [
-    "W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/result.json",
-    "W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/memory-and-pumps.json"
-  ],
   "command": "studio/tools/verify-all.sh memory",
-  "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed growth is 1.7193%, below 15%; full cycle-1/10 snapshots are losslessly retained.",
+  "status": "PASS",
+  "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained.",
   "row": "W-GAME-08",
   "scenario": "Memory after 10 Play/Edit cycles",
   "requirement": "B-MEMORY",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/result.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

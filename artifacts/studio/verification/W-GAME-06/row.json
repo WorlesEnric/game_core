@@ -2,29 +2,31 @@
   "status": "PASS",
   "checks": [
     {
-      "file": "W-GAME-06/v1-gate-retry-20261007T145440.615549Z/result.json",
+      "file": "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-GAME-01/p42j-player/player/build-report.json",
+      "file": "W-GAME-01/p42k-player/player/build-report.json",
       "pointer": "/result",
       "equals": "Succeeded"
     }
   ],
   "evidence": [
-    "W-GAME-06/v1-gate-retry-20261007T145440.615549Z/result.json",
-    "W-GAME-01/p42j-player/player/build-report.json"
+    "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
+    "W-GAME-01/p42k-player/player/build-report.json",
+    "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/playmode-results.xml",
+    "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/editmode-results.xml"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/builds-p42j.py",
-  "note": "Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, probes and docs gates. Separate B-FRAME failure is not hidden by build success.",
+  "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
+  "note": "Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, prescribed probes and docs gates. B-FRAME is independently measured and passes under VSync OFF.",
   "row": "W-GAME-06",
   "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
   "requirement": "SR-11.3",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-GAME-06/v1-gate-retry-20261007T145440.615549Z/result.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

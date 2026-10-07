@@ -1,27 +1,27 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml"
+  ],
   "checks": [
     {
-      "file": "W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z/results.xml",
+      "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
       "xmlCase": "AV1SaveIsMigratedToV2OnRestore"
     },
     {
-      "file": "W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z/results.xml",
+      "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
       "xmlCase": "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
     }
   ],
-  "evidence": [
-    "W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z/results.xml"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py validation",
-  "note": "Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py validation",
+  "status": "PASS",
+  "note": "Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-PERSIST-03",
   "scenario": "Schema version bump with migration: restored; without: actionable refusal",
   "requirement": "SR-6.12",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z/results.xml",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

@@ -1,23 +1,23 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+  ],
   "checks": [
     {
-      "file": "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
       "xmlCase": "Hollowmere.R7_B.Model.ItemDeletionImpactTests.W_MODEL_02_DeleteItemListsReferencingDialogueLineAndObjective"
     }
   ],
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml"
-  ],
   "command": "studio/tools/verify-all.sh unity",
-  "note": "Current-run Delete an item asset; index lists every referencing dialogue line and objective is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
+  "status": "PASS",
+  "note": "Current-run Delete an item asset; index lists every referencing dialogue line and objective is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-MODEL-02",
   "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
   "requirement": "SR-2.2",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

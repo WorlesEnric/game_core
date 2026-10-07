@@ -2,28 +2,28 @@
   "status": "FAIL",
   "checks": [
     {
-      "file": "W-E2E-01/p42j-accounting/accounting.json",
+      "file": "W-E2E-01/p42k-accounting/accounting.json",
       "pointer": "/allRowsJudged",
-      "equals": 68
+      "equals": true
     },
     {
-      "file": "W-E2E-01/p42j-accounting/accounting.json",
+      "file": "W-E2E-01/p42k-accounting/accounting.json",
       "pointer": "/historicalPassCarriedForward",
       "equals": false
     }
   ],
   "evidence": [
-    "W-E2E-01/p42j-accounting/accounting.json"
+    "W-E2E-01/p42k-accounting/accounting.json"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/report-p42j.py; python3 artifacts/studio/verification/TOOLS/check-p42j.py",
-  "note": "All 68 rows are freshly judged at one product revision and installed companion release with strict host exclusivity; no historical PASS carries forward. End-to-end acceptance is FAIL because W-MECH-01, W-DOC-02 and W-GAME-01 fail now; six exact owner-forbidden scenarios remain BLOCKED.",
+  "command": "python3 artifacts/studio/verification/TOOLS/report-p42k.py && python3 artifacts/studio/verification/TOOLS/check-p42k.py",
+  "note": "All 68 rows are freshly judged at one product revision and installed companion release with strict host exclusivity; no historical PASS carries forward. End-to-end acceptance is FAIL because current W-AI-02 refuses the unchanged Ferryman candidate with GP-LOG-002 duplicate enrollment. Six exact owner-forbidden scenarios remain BLOCKED.",
   "row": "W-E2E-01",
   "scenario": "All rows resolved on one revision; completion report",
   "requirement": "SR-12.3",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-E2E-01/p42j-accounting/accounting.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-E2E-01/p42k-accounting/accounting.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

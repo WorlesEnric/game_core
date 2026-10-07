@@ -2,73 +2,33 @@
   "status": "PASS",
   "checks": [
     {
-      "file": "W-MECH-01/r10-a/final/cold/result.json",
-      "pointer": "/status",
-      "equals": "PASS"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/cold/live-admit.json",
-      "pointer": "/outcome",
-      "equals": "Admitted"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/cold/live-undo.json",
-      "pointer": "/outcome",
-      "equals": "Undone"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/cold/visual-review.json",
-      "pointer": "/status",
-      "equals": "PASS"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/warm/result.json",
-      "pointer": "/status",
-      "equals": "PASS"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/warm/live-admit.json",
-      "pointer": "/outcome",
-      "equals": "Admitted"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/warm/live-undo.json",
-      "pointer": "/outcome",
-      "equals": "Undone"
-    },
-    {
-      "file": "W-MECH-01/r10-a/final/warm/visual-review.json",
+      "file": "W-MECH-01/p42k-acceptance/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
   "evidence": [
-    "W-MECH-01/r10-a/final/cold/result.json",
-    "W-MECH-01/r10-a/final/cold/live-admit.json",
-    "W-MECH-01/r10-a/final/cold/live-undo.json",
-    "W-MECH-01/r10-a/final/cold/visual-review.json",
-    "W-MECH-01/r10-a/final/cold/signed-verdict.json",
-    "W-MECH-01/r10-a/final/cold/manifest.json",
-    "W-MECH-01/r10-a/final/cold/service/slot-out/editmode.xml",
-    "W-MECH-01/r10-a/final/cold/service/slot-out/playmode.xml",
-    "W-MECH-01/r10-a/final/warm/result.json",
-    "W-MECH-01/r10-a/final/warm/live-admit.json",
-    "W-MECH-01/r10-a/final/warm/live-undo.json",
-    "W-MECH-01/r10-a/final/warm/visual-review.json",
-    "W-MECH-01/r10-a/final/warm/signed-verdict.json",
-    "W-MECH-01/r10-a/final/warm/manifest.json",
-    "W-MECH-01/r10-a/final/warm/service/slot-out/editmode.xml",
-    "W-MECH-01/r10-a/final/warm/service/slot-out/playmode.xml"
+    "W-MECH-01/p42k-acceptance/result.json",
+    "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json",
+    "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json",
+    "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json",
+    "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json",
+    "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json",
+    "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json",
+    "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json",
+    "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json",
+    "W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json",
+    "W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json"
   ],
-  "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R10_A/run.py /tmp/r10-a-creator-final --label final --companion \"$PWD/studio/agent/target/debug/gamecore-studio\"",
-  "note": "R10-A scratch companion on :1: signed cold/warm stages 165.852/82.232s; actual creator Admit restores nine coins and 120-frame Pending\u2192Passed smoke in 34.751/30.089s, then normal History Undo in 36.494/33.832s. Both exercise worker-format edit/Apply/Undo without generated rebake and verify signed catalog equality. Zero paid operations; no installed-service qualification claimed.",
+  "command": "python3 artifacts/studio/verification/TOOLS/stages-p42k.py mechanism --attempt provisioned",
+  "note": "Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission.",
   "row": "W-MECH-01",
   "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
   "requirement": "SR-3.6, SR-9.3, B-STAGE",
-  "reportedAt": "2026-10-07T17:51:36.700710+00:00",
-  "revision": "2e17a01ec02dcea3b4762b4536605120c985681b",
-  "baseline": "b0086c55",
-  "releaseId": "scratch-sha256:2880959f4a38b372d9d74b643869fc0dfaade617eaf215027f3553b012c6a180",
-  "evidencePath": "W-MECH-01/r10-a/final/cold/result.json",
-  "runStartedAt": "2026-10-07T17:27:53.657832+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-MECH-01/p42k-acceptance/result.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

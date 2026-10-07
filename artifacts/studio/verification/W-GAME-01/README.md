@@ -1,18 +1,19 @@
 # W-GAME-01: 10-minute graphical playthrough recording with frame log
 
-Verdict: **FAIL**. Current 1080p RTX4060Ti VSync OFF run 1 fails B-FRAME: outside-transition frames are 374.077, 174.926 and 1352.808 ms. OFF p95 is 3.547/3.612 ms over 612.244/612.467s; run 2 has zero outside-transition >100ms frames. No failing probe is repeated. ON p95 17.380/17.266 ms is informational only.
+Verdict: **PASS**. Current 1080p RTX4060Ti VSync OFF runs both pass: p95 3.502/3.565ms over 607.410/611.724s, zero outside-transition frames over 100ms and maximum transition 124.909ms. Neither run is eligible for a rerun. VSync ON p95 17.331/17.315ms is informational only. All four actual game-window movies are retained.
 
-P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
+P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/builds-p42j.py
+python3 artifacts/studio/verification/TOOLS/builds-p42k.py
 ```
 
 ## Current-run evidence
 
-- [W-GAME-01/p42j-player/result.json](../W-GAME-01/p42j-player/result.json)
-- [W-GAME-01/p42j-player/measurement/vsync0/run1/frame-stats.json](../W-GAME-01/p42j-player/measurement/vsync0/run1/frame-stats.json)
-- [W-GAME-01/p42j-player/visual-review.json](../W-GAME-01/p42j-player/visual-review.json)
+- [W-GAME-01/p42k-player/result.json](../W-GAME-01/p42k-player/result.json)
+- [W-GAME-01/p42k-player/visual-review.json](../W-GAME-01/p42k-player/visual-review.json)
+- [W-GAME-01/p42k-player/retry-decision.json](../W-GAME-01/p42k-player/retry-decision.json)
+- [W-GAME-01/p42k-player/external-artifacts.json](../W-GAME-01/p42k-player/external-artifacts.json)

@@ -1,24 +1,24 @@
 {
-  "status": "PASS",
+  "evidence": [
+    "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json"
+  ],
   "checks": [
     {
-      "file": "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json",
+      "file": "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "evidence": [
-    "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42j.py",
-  "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
+  "status": "PASS",
+  "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-ETOS-09",
   "scenario": "Domain reload during a task: tray shows the same task afterwards",
   "requirement": "SR-8.3",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

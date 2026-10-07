@@ -1,17 +1,18 @@
 {
+  "evidence": [
+    "W-ETOS-08/p42k-owner-rule/result.json"
+  ],
+  "checks": [],
+  "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
   "status": "BLOCKED",
   "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
-  "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
-  "evidence": [
-    "W-ETOS-08/p42j-owner-rule/result.json"
-  ],
   "row": "W-ETOS-08",
   "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
   "requirement": "SR-4.9",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-ETOS-08/p42j-owner-rule/result.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
+  "releaseId": "0.1.0-3475150b9571123a",
+  "evidencePath": "W-ETOS-08/p42k-owner-rule/result.json",
+  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
 }

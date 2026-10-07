@@ -1,17 +1,19 @@
 # W-GAME-06: Build log + sha256 + V1 gate transcript on the same revision
 
-Verdict: **PASS**. Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, probes and docs gates. Separate B-FRAME failure is not hidden by build success.
+Verdict: **PASS**. Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, prescribed probes and docs gates. B-FRAME is independently measured and passes under VSync OFF.
 
-P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
+P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/builds-p42j.py
+python3 artifacts/studio/verification/TOOLS/builds-p42k.py
 ```
 
 ## Current-run evidence
 
-- [W-GAME-06/v1-gate-retry-20261007T145440.615549Z/result.json](../W-GAME-06/v1-gate-retry-20261007T145440.615549Z/result.json)
-- [W-GAME-01/p42j-player/player/build-report.json](../W-GAME-01/p42j-player/player/build-report.json)
+- [W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json](../W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json)
+- [W-GAME-01/p42k-player/player/build-report.json](../W-GAME-01/p42k-player/player/build-report.json)
+- [W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/playmode-results.xml](../W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/playmode-results.xml)
+- [W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/editmode-results.xml](../W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/editmode-results.xml)
