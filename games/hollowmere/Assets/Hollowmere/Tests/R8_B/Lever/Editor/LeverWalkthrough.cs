@@ -473,6 +473,10 @@ namespace Hollowmere.R8_B
                     GameBoot? boot = UnityEngine.Object.FindAnyObjectByType<GameBoot>();
                     HollowmereAdmittedSmoke? smoke = boot == null ? null : ObservedSmoke(boot);
                     long wallMs = Now - (long)progress["admissionStartedMs"]!;
+                    // The maintained pressure fixture is an observer-only mechanism; only the lever
+                    // declares a world extension. Both still verify the complete signed catalog set.
+                    JObject signed = JObject.Parse(File.ReadAllText(Path.Combine(evidence, "signed-verdict.json")));
+                    string? expectedRoot = (string?)signed["catalogDelta"]![IsLever(config) ? "predicted" : "world"];
                     if (!EditorApplication.isPlaying || boot?.Saves == null || !boot.AdmissionReady(boot.Saves)
                         || smoke == null || smoke.Steps != 120 || smoke.Transitions.Count != 2
                         || smoke.Transitions[0] != "Pending" || smoke.Transitions[1] != "Passed"
@@ -481,7 +485,7 @@ namespace Hollowmere.R8_B
                         || !smoke.CheckpointRoundTripsEqual || smoke.RestoredCheckpointSlotHash.Length != 64
                         || boot.GetComponent<HollowmereGame>().Director!.ItemCount("OldCoin") != 9
                         || string.IsNullOrEmpty(result.Predicted) || result.Live != result.Predicted
-                        || boot.World?.Root.CatalogHash.ToHex() != result.Predicted
+                        || string.IsNullOrEmpty(expectedRoot) || boot.World?.Root.CatalogHash.ToHex() != expectedRoot
                         || result.Confinement != "docker" || result.Milliseconds > AdmissionBudgetMs || wallMs > AdmissionBudgetMs
                         || domain == (string)progress["admissionDomain"]!
                         || !refreshObserved)

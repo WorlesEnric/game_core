@@ -167,8 +167,9 @@ def verify_live(config, evidence):
     panel = load(evidence / 'panel-admit.json')
     signed = load(evidence / 'signed-verdict.json')
     require(signed == load(evidence / 'signed-record-original.json'), 'Panel did not authenticate the exact issued record')
-    require(admitted['restoredRootCatalogHash'] == signed['catalogDelta']['predicted'],
-            'The actual restored game root differs from the signed predicted catalog')
+    root_key = 'predicted' if config['mechanism'] == 'lever' else 'world'
+    require(admitted['restoredRootCatalogHash'] == signed['catalogDelta'][root_key],
+            'The actual restored game root differs from its signed runtime catalog')
     require(admitted['outcome'] == 'Admitted' and undone['outcome'] == 'Undone' and progress['phase'] == 'complete',
             'Admission/normal History undo did not complete')
     require(0 <= admitted['milliseconds'] <= 90000 and 0 <= admitted['admissionWallMs'] <= 90000,
