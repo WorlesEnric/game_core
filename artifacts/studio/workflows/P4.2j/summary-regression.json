@@ -1,0 +1,10 @@
+{
+  "finding": "R2-38",
+  "historicalReceipt": "W-MECH-01/r9-b/result.json",
+  "originalFailure": "KeyError: 'status'",
+  "test": "test_R2_38_missing_historical_status_remains_unjudged_without_aborting_summary",
+  "before": "ERROR KeyError status",
+  "after": "PASS",
+  "summarySmoke": "PASS",
+  "historicalReceiptUnchanged": true
+}

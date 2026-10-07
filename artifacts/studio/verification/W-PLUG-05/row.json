@@ -1,33 +1,33 @@
 {
   "status": "PASS",
-  "note": "Actual gate explain names its failed condition; condition-controlled travel and full key/gate ending route pass.",
-  "evidence": [
-    "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
-    "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
-    "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml"
-  ],
-  "command": "studio/tools/verify-all.sh unity",
   "checks": [
     {
-      "file": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml",
       "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate"
     },
     {
-      "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T115310.470379Z/results.xml",
       "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.APortalCondition_RefusesTravelWithAStableCode_UntilItHolds"
     },
     {
-      "file": "UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/results.xml",
       "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho"
     }
   ],
+  "evidence": [
+    "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml",
+    "UNITY-HOLLOWMERE/perf-probe-1-20261007T115310.470379Z/results.xml",
+    "UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/results.xml"
+  ],
+  "command": "studio/tools/verify-all.sh unity",
+  "note": "Current-run Locked door with key; explain refusal is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
   "row": "W-PLUG-05",
   "scenario": "Locked door with key; explain refusal",
   "requirement": "SR-6.5",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

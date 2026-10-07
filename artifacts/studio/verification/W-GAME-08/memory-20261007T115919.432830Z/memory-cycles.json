@@ -1,0 +1,109 @@
+{
+  "what": "W-GAME-08: Boot.unity Play/Edit cycles in the Editor; memory sampled after each exit (GC + UnloadUnusedAssetsImmediate)",
+  "revision": "editor",
+  "unity": "6000.0.75f1",
+  "cycles": [
+    {
+      "cycle": 1,
+      "playAllocated": 371383066,
+      "allocated": 196772092,
+      "reserved": 633569280,
+      "managed": 723910656,
+      "ms": 6512,
+      "allocatedGrowthPct": 0.0,
+      "reservedGrowthPct": 0.0
+    },
+    {
+      "cycle": 2,
+      "playAllocated": 447178912,
+      "allocated": 276542094,
+      "reserved": 679706624,
+      "managed": 725917696,
+      "ms": 5849,
+      "allocatedGrowthPct": 40.54,
+      "reservedGrowthPct": 7.28
+    },
+    {
+      "cycle": 3,
+      "playAllocated": 366701069,
+      "allocated": 196048331,
+      "reserved": 646152192,
+      "managed": 726036480,
+      "ms": 5325,
+      "allocatedGrowthPct": -0.37,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 4,
+      "playAllocated": 366682937,
+      "allocated": 196052555,
+      "reserved": 646152192,
+      "managed": 726732800,
+      "ms": 5724,
+      "allocatedGrowthPct": -0.37,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 5,
+      "playAllocated": 366696177,
+      "allocated": 196057403,
+      "reserved": 646152192,
+      "managed": 726401024,
+      "ms": 5029,
+      "allocatedGrowthPct": -0.36,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 6,
+      "playAllocated": 366687271,
+      "allocated": 196061587,
+      "reserved": 646152192,
+      "managed": 726315008,
+      "ms": 5489,
+      "allocatedGrowthPct": -0.36,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 7,
+      "playAllocated": 366706917,
+      "allocated": 196079859,
+      "reserved": 646152192,
+      "managed": 726687744,
+      "ms": 5166,
+      "allocatedGrowthPct": -0.35,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 8,
+      "playAllocated": 366724263,
+      "allocated": 196083539,
+      "reserved": 646152192,
+      "managed": 726646784,
+      "ms": 5525,
+      "allocatedGrowthPct": -0.35,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 9,
+      "playAllocated": 366713259,
+      "allocated": 196087411,
+      "reserved": 646152192,
+      "managed": 726884352,
+      "ms": 5202,
+      "allocatedGrowthPct": -0.35,
+      "reservedGrowthPct": 1.99
+    },
+    {
+      "cycle": 10,
+      "playAllocated": 366728847,
+      "allocated": 196143125,
+      "reserved": 629374976,
+      "managed": 726675456,
+      "ms": 5275,
+      "allocatedGrowthPct": -0.32,
+      "reservedGrowthPct": -0.66
+    }
+  ],
+  "allocatedGrowthPctCycle10": -0.32,
+  "reservedGrowthPctCycle10": -0.66
+}

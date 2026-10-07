@@ -1,0 +1,172 @@
+{
+  "task": "GC-011",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Cards",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "cards-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; fingerprintAsDeclared=True; accepted=4; rejected=0; factoryLookup=found; unknownKey=MissingDependency(key:FactoryKey(4771366f6c5f1ea9cdd9bc836d9c05ae, 1)); keyDerivationHolds=True; unregisteredResolved=False"
+    },
+    {
+      "name": "cards-ownership-and-schedule-compiled",
+      "status": "Pass",
+      "detail": "compilation=compiled: schedule(stages=4, systems=4, playback=1, edges=3, hash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e); adaptation=adapted: 4 entries, 1 buffers; descriptor=descriptor(4 stages, 5 slots, 1 buffers, revision 15373d3a7b5092c20546afd6b94b43e488b07891cdd6cdecf51777a92912f921); ownershipValid=True; domains=5; singleOwnerPerDomain=True; schedule=schedule(stages=4, systems=4, playback=1, edges=3, hash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e)\n  0:StageId(28f1252822fa41a3816963e73e089287)(1 systems)\n    0:StageId(28f1252822fa41a3816963e73e089287)/FactoryKey(4522ee4e182f61dce6e7466b929dee07, 1)\n  1:StageId(bdccfc9a414e81b39c4d51b8dbf921b1)(1 systems)\n    1:StageId(bdccfc9a414e81b39c4d51b8dbf921b1)/FactoryKey(e113f54073e28d830803e540be4eedfb, 1) afterStages=0\n    playback[0]:BufferId(7934f8123a62f5e11a34f25d1deffc20) owner=1 consumer=2\n  2:StageId(3326fd97c2ec5ce276c6ca42e700d7db)(1 systems)\n    2:StageId(3326fd97c2ec5ce276c6ca42e700d7db)/FactoryKey(a61b22df091d9ac4c299ae0d0ae30f30, 1) afterStages=1\n  3:StageId(6f3a5b8b1582366e41d2cda1a2dd7b23)(1 systems)\n    3:StageId(6f3a5b8b1582366e41d2cda1a2dd7b23)/FactoryKey(2cb9bbfc9bb6cc9495666c211e20ee0f, 1) afterStages=2"
+    },
+    {
+      "name": "cards-world-and-market-seeded",
+      "status": "Pass",
+      "detail": "session=43415244534553310000000000000001; registryBefore=1; liveTargets=6; seats=4; lane=11/11; worldEpoch=11; mode=Automatic; scopesCreated=True; tableMounted=True"
+    },
+    {
+      "name": "cards-mount-reaches-existing-seats",
+      "status": "Pass",
+      "detail": "mounted=True; installedRows=3; seatARows=1; seatAValue=2; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; reductions=3; predicateEvals=3"
+    },
+    {
+      "name": "cards-idle-before-command-commits-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; demand=0"
+    },
+    {
+      "name": "cards-one-command-commits-both-sides",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; hand=4->1; score=4->16; expectedScore=16; tableVersion=2; events=1; eventDelta=12; writes=5; faulted=False"
+    },
+    {
+      "name": "cards-duplicate-command-transfers-once",
+      "status": "Pass",
+      "detail": "first=Accepted; second=Accepted; duplicateCount=1; steps=1->2; receiver=1->2; giverHand=3; demand=0; settlements=2"
+    },
+    {
+      "name": "cards-rejected-settlement-changes-nothing",
+      "status": "Pass",
+      "detail": "admitted=True; result=Accepted; steps=2->3; handA=2->2; handB=3->3; scoreA=16->16; version=3->3; rejectedDecisions=1"
+    },
+    {
+      "name": "cards-transfer-commits-both-sides",
+      "status": "Pass",
+      "detail": "result=Accepted; giver=4->3; receiver=3->4; gained=1; stillHeld=0; version=3->4"
+    },
+    {
+      "name": "cards-batch-envelope-resolves-one-winner",
+      "status": "Pass",
+      "detail": "admitted=True; result=Accepted; candidates=2; winner=1@3; holder=2->1; winnerHand=4->5; loserHand=3->3; version=4->5; batches=1"
+    },
+    {
+      "name": "cards-future-seat-inherits-modifier",
+      "status": "Pass",
+      "detail": "unmounted=True; forwardNoTargetChange=True; spawn=spawn OperationId(WorldId(43415244534553310000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 42): Published; lane=14/14; worldEpoch=13->14; joined=True; derivation input built: scopes=9, installs=4, targets=6, contracts=1, hash=a911d7756a3fe7443fbed589a73bee224c6b5ec8b086c7c5b9da4e4db7f52d4b; derivation=accepted(6 targets, Delta(+=0, -=0, ~=0, slots=0)); invalidation{dirtyTargets=0;dirtyScopes=0;candidates=0;contributions=0;targets=0;bytes=0;rules=0;buckets=0;visitedTargets=0;shadowed=0;reasons=none;compared=18/8/12;closureScopes=0;closureTargets=0;closureRules=0;ancestors=0;reachTests=0;dirtyScopes=0;dirtyTargets=0;dirtyRules=0;skippedRules=0;carried=6;evaluations=0;serviceConsumers=0;wholeWorld=0}; publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; spawnedBonus=2; stampEpoch=14; published=True; inView=True; laneEpoch=14; worldEpoch=14"
+    },
+    {
+      "name": "cards-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; images=19->19; dispatchRuns=0; demand=0"
+    },
+    {
+      "name": "cards-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "fixture:cards-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; fingerprintAsDeclared=True; accepted=4; rejected=0; factoryLookup=found; unknownKey=MissingDependency(key:FactoryKey(c4d3f9becdf691d69ff6f056d4f2e274, 1)); keyDerivationHolds=True; unregisteredResolved=False"
+    },
+    {
+      "name": "fixture:cards-ownership-and-schedule-compiled",
+      "status": "Pass",
+      "detail": "compilation=compiled: schedule(stages=4, systems=4, playback=1, edges=3, hash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e); adaptation=adapted: 4 entries, 1 buffers; descriptor=descriptor(4 stages, 5 slots, 1 buffers, revision 15373d3a7b5092c20546afd6b94b43e488b07891cdd6cdecf51777a92912f921); ownershipValid=True; domains=5; singleOwnerPerDomain=True; schedule=schedule(stages=4, systems=4, playback=1, edges=3, hash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e)\n  0:StageId(28f1252822fa41a3816963e73e089287)(1 systems)\n    0:StageId(28f1252822fa41a3816963e73e089287)/FactoryKey(4522ee4e182f61dce6e7466b929dee07, 1)\n  1:StageId(bdccfc9a414e81b39c4d51b8dbf921b1)(1 systems)\n    1:StageId(bdccfc9a414e81b39c4d51b8dbf921b1)/FactoryKey(e113f54073e28d830803e540be4eedfb, 1) afterStages=0\n    playback[0]:BufferId(7934f8123a62f5e11a34f25d1deffc20) owner=1 consumer=2\n  2:StageId(3326fd97c2ec5ce276c6ca42e700d7db)(1 systems)\n    2:StageId(3326fd97c2ec5ce276c6ca42e700d7db)/FactoryKey(a61b22df091d9ac4c299ae0d0ae30f30, 1) afterStages=1\n  3:StageId(6f3a5b8b1582366e41d2cda1a2dd7b23)(1 systems)\n    3:StageId(6f3a5b8b1582366e41d2cda1a2dd7b23)/FactoryKey(2cb9bbfc9bb6cc9495666c211e20ee0f, 1) afterStages=2"
+    },
+    {
+      "name": "fixture:cards-world-and-market-seeded",
+      "status": "Pass",
+      "detail": "session=43415244534553310000000000000001; registryBefore=1; liveTargets=6; seats=4; lane=11/11; worldEpoch=11; mode=Automatic; scopesCreated=True; tableMounted=True"
+    },
+    {
+      "name": "fixture:cards-mount-reaches-existing-seats",
+      "status": "Pass",
+      "detail": "mounted=True; installedRows=3; seatARows=1; seatAValue=2; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; reductions=3; predicateEvals=3"
+    },
+    {
+      "name": "fixture:cards-idle-before-command-commits-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; demand=0"
+    },
+    {
+      "name": "fixture:cards-one-command-commits-both-sides",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; hand=4->1; score=4->16; expectedScore=16; tableVersion=2; events=1; eventDelta=12; writes=5; faulted=False"
+    },
+    {
+      "name": "fixture:cards-duplicate-command-transfers-once",
+      "status": "Pass",
+      "detail": "first=Accepted; second=Accepted; duplicateCount=1; steps=1->2; receiver=1->2; giverHand=3; demand=0; settlements=2"
+    },
+    {
+      "name": "fixture:cards-rejected-settlement-changes-nothing",
+      "status": "Pass",
+      "detail": "admitted=True; result=Accepted; steps=2->3; handA=2->2; handB=3->3; scoreA=16->16; version=3->3; rejectedDecisions=1"
+    },
+    {
+      "name": "fixture:cards-transfer-commits-both-sides",
+      "status": "Pass",
+      "detail": "result=Accepted; giver=4->3; receiver=3->4; gained=1; stillHeld=0; version=3->4"
+    },
+    {
+      "name": "fixture:cards-batch-envelope-resolves-one-winner",
+      "status": "Pass",
+      "detail": "admitted=True; result=Accepted; candidates=2; winner=1@3; holder=2->1; winnerHand=4->5; loserHand=3->3; version=4->5; batches=1"
+    },
+    {
+      "name": "fixture:cards-future-seat-inherits-modifier",
+      "status": "Pass",
+      "detail": "unmounted=True; forwardNoTargetChange=True; spawn=spawn OperationId(WorldId(43415244534553310000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 42): Published; lane=14/14; worldEpoch=13->14; joined=True; derivation input built: scopes=9, installs=4, targets=6, contracts=1, hash=a911d7756a3fe7443fbed589a73bee224c6b5ec8b086c7c5b9da4e4db7f52d4b; derivation=accepted(6 targets, Delta(+=0, -=0, ~=0, slots=0)); invalidation{dirtyTargets=0;dirtyScopes=0;candidates=0;contributions=0;targets=0;bytes=0;rules=0;buckets=0;visitedTargets=0;shadowed=0;reasons=none;compared=18/8/12;closureScopes=0;closureTargets=0;closureRules=0;ancestors=0;reachTests=0;dirtyScopes=0;dirtyTargets=0;dirtyRules=0;skippedRules=0;carried=6;evaluations=0;serviceConsumers=0;wholeWorld=0}; publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; spawnedBonus=2; stampEpoch=14; published=True; inView=True; laneEpoch=14; worldEpoch=14"
+    },
+    {
+      "name": "fixture:cards-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; images=19->19; dispatchRuns=0; demand=0"
+    },
+    {
+      "name": "fixture:cards-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "cards-generated-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; stages=4; systems=4; scheduleHash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e; edges=3; playback=1; inputStage=0; commitStage=2; bufferEdge=True; domains=5; slotPolicies=5; writers=4; singleOwnerPerDomain=True; session=43415244534553310000000000000001; liveTargets=6; seats=4; laneEpochAfterSetup=13; worldEpochAfterSetup=13; joinedAfterSetup=True; seatARows=1; seatAValue=2; seatAActive=True; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; installedRows=3; reducers=3; predicateEvals=3; commandAdmitted=True; commandAdmission=Accepted; steps=1; handBefore=4; handAfter=1; scoreBefore=4; scoreAfter=16; tableVersion=2; turnNumber=1; events=1; eventDelta=12; eventScoreAfter=16; eventCards=3; eventStep=1; eventMatchesLive=True; writes=5; duplicateAdmitted=True; duplicateAdmission=Accepted; stepsAfterDuplicate=2; seatBHand=3; seatBScore=4; demandAfterDuplicate=0; duplicateRejections=1; rejectedAdmitted=True; rejectedKind=Accepted; stepsAfterRejection=3; seatAHandAfterRejection=2; seatBHandAfterRejection=3; seatAScoreAfterRejection=16; tableVersionAfterRejection=3; rejectedDecisions=1; staleCommitRejections=0; giverBefore=4; giverAfter=3; receiverBefore=3; receiverAfter=4; tableVersionAfterTransfer=4; stepsAfterTransfer=4; transferLost=0; transferGained=1; batchAdmitted=True; batchCandidates=2; contestWinner=1; contestSequence=3; contestHolderHand=2->1; contestWinnerHand=4->5; contestLoserHand=3->3; contestVersion=5; contestSteps=5; spawnedBonus=2; spawnedStampEpoch=14; spawnedPublished=True; spawnedInView=True; laneEpochAfterSpawn=14; worldEpochAfterSpawn=14; joinedAfterSpawn=True; forwardNoTargetChange=True; idleFrames=8; idleSteps=0; idleImages=19; idleDispatchRuns=0; pendingDemandAfterIdle=0; outstandingAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    },
+    {
+      "name": "cards-fixture-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; stages=4; systems=4; scheduleHash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e; edges=3; playback=1; inputStage=0; commitStage=2; bufferEdge=True; domains=5; slotPolicies=5; writers=4; singleOwnerPerDomain=True; session=43415244534553310000000000000001; liveTargets=6; seats=4; laneEpochAfterSetup=13; worldEpochAfterSetup=13; joinedAfterSetup=True; seatARows=1; seatAValue=2; seatAActive=True; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; installedRows=3; reducers=3; predicateEvals=3; commandAdmitted=True; commandAdmission=Accepted; steps=1; handBefore=4; handAfter=1; scoreBefore=4; scoreAfter=16; tableVersion=2; turnNumber=1; events=1; eventDelta=12; eventScoreAfter=16; eventCards=3; eventStep=1; eventMatchesLive=True; writes=5; duplicateAdmitted=True; duplicateAdmission=Accepted; stepsAfterDuplicate=2; seatBHand=3; seatBScore=4; demandAfterDuplicate=0; duplicateRejections=1; rejectedAdmitted=True; rejectedKind=Accepted; stepsAfterRejection=3; seatAHandAfterRejection=2; seatBHandAfterRejection=3; seatAScoreAfterRejection=16; tableVersionAfterRejection=3; rejectedDecisions=1; staleCommitRejections=0; giverBefore=4; giverAfter=3; receiverBefore=3; receiverAfter=4; tableVersionAfterTransfer=4; stepsAfterTransfer=4; transferLost=0; transferGained=1; batchAdmitted=True; batchCandidates=2; contestWinner=1; contestSequence=3; contestHolderHand=2->1; contestWinnerHand=4->5; contestLoserHand=3->3; contestVersion=5; contestSteps=5; spawnedBonus=2; spawnedStampEpoch=14; spawnedPublished=True; spawnedInView=True; laneEpochAfterSpawn=14; worldEpochAfterSpawn=14; joinedAfterSpawn=True; forwardNoTargetChange=True; idleFrames=8; idleSteps=0; idleImages=19; idleDispatchRuns=0; pendingDemandAfterIdle=0; outstandingAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    }
+  ]
+}

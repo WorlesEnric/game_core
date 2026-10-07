@@ -1,0 +1,75 @@
+{
+  "scenario": {
+    "scenario": "stage.admission",
+    "status": "fail",
+    "detail": "rolled back: catalog_mismatch"
+  },
+  "journal": {
+    "id": "cs_01M4B7PQ3SZGEXFC1FFARFCM8B",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "mechanism.admit",
+        "args": {
+          "package": {
+            "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+          },
+          "proposal": {
+            "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+          },
+          "verdict": {
+            "artifact": "sha256:eefcc5fafcc6a7993eb9dafabbfd95a6ff4cda43d2d119d90bfbdc218b8e1025"
+          }
+        },
+        "applyRequirement": "Compile"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+        "name": "package.tgz",
+        "mediaType": "application/gzip",
+        "bytes": 32839,
+        "role": "package"
+      },
+      {
+        "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+        "name": "proposal.json",
+        "mediaType": "application/json",
+        "bytes": 917,
+        "role": "proposal"
+      },
+      {
+        "sha256": "eefcc5fafcc6a7993eb9dafabbfd95a6ff4cda43d2d119d90bfbdc218b8e1025",
+        "name": "verdict.json",
+        "mediaType": "application/vnd.gamecore.stage-verdict+json",
+        "bytes": 11620,
+        "role": "verdict"
+      }
+    ],
+    "validation": [
+      {
+        "scenario": "stage.verdict",
+        "status": "pass",
+        "detail": "pass verdict eefcc5fafcc6 slot cs-01m4b7pq3szgexfc1ffarfcm8b (166402 ms); sha256:eefcc5fafcc6a7993eb9dafabbfd95a6ff4cda43d2d119d90bfbdc218b8e1025"
+      },
+      {
+        "scenario": "stage.admission",
+        "status": "fail",
+        "detail": "rolled back: catalog_mismatch"
+      }
+    ],
+    "requirements": {
+      "max": "Compile",
+      "worldRebuild": false,
+      "compile": true,
+      "build": false
+    },
+    "state": "Failed"
+  }
+}

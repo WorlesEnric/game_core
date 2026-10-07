@@ -1,39 +1,36 @@
 {
   "status": "PASS",
-  "note": "Both current readiness-gated real voice takes reach final transcript after Stop/drain. Destructive text is visibly unsent; tray/request/journal counts stay exactly 1/1/120. Earlier move becomes a prompt/task only on explicit Send, then ordinary undo succeeds. Judged on SR-4.8; no partial-revision visibility requirement.",
-  "evidence": [
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-transcript.json",
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/move-transcript.json",
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice-move/undo-result.json",
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/visual-review.json",
-    "W-VOICE-01/p42i-voice-20261007T051405.333523Z/result.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42i.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
   "checks": [
     {
-      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
+      "file": "W-VOICE-01/p42j-voice-20261007T123542.149202Z/workflow/voice/destructive-check.json",
       "pointer": "/unchanged",
       "equals": true
     },
     {
-      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-transcript.json",
+      "file": "W-VOICE-01/p42j-voice-20261007T123542.149202Z/workflow/voice/destructive-transcript.json",
       "pointer": "/drainCompleted",
       "equals": true
     },
     {
-      "file": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/visual-review.json",
+      "file": "W-VOICE-01/p42j-voice-20261007T123542.149202Z/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
+  "evidence": [
+    "W-VOICE-01/p42j-voice-20261007T123542.149202Z/workflow/voice/destructive-check.json",
+    "W-VOICE-01/p42j-voice-20261007T123542.149202Z/workflow/voice/destructive-transcript.json",
+    "W-VOICE-01/p42j-voice-20261007T123542.149202Z/visual-review.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42j.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
+  "note": "Both readiness-gated real voice takes reach final transcript. Destructive text remains visibly unsent and tray/request/journal counts stay 1/1/120; the earlier move is explicitly sent and undone. SR-4.8 applies; partial-revision visibility is not required.",
   "row": "W-VOICE-01",
   "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07)",
   "requirement": "SR-4.8",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-VOICE-01/p42i-voice-20261007T051405.333523Z/workflow/voice/destructive-check.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-VOICE-01/p42j-voice-20261007T123542.149202Z/workflow/voice/destructive-check.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

@@ -1,21 +1,30 @@
 {
   "status": "PASS",
-  "note": "R9-A unchanged retained Odd candidate passes Stage/Apply with identical historical/current catalog; real Play shows its new shrine line only when lit, and journal Undo restores complete baseline bytes. No new model call or candidate repair.",
-  "evidence": [
-    "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
-    "W-AI-03/r9-a-odd-20261007T104156.540366Z/odd-line/play-effect.json",
-    "W-AI-03/r9-a-odd-20261007T104156.540366Z/undo.json",
-    "W-AI-03/r9-a-odd-20261007T104156.540366Z/catalog-context.json",
-    "W-AI-03/r9-a-odd-20261007T104156.540366Z/source-sha256.json"
+  "checks": [
+    {
+      "file": "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/odd-line/apply-report.json",
+      "pointer": "/ok",
+      "equals": true
+    },
+    {
+      "file": "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/odd-line/play-effect.json",
+      "pointer": "/status",
+      "equals": "pass"
+    }
   ],
-  "command": "python3 artifacts/studio/verification/W-AI-06/r9-a/run.py --lane odd",
+  "evidence": [
+    "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/odd-line/apply-report.json",
+    "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/odd-line/play-effect.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42j.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
+  "note": "Fresh unchanged Odd dialogue candidate applies. Actual unlit dialogue excludes the new shrine-light line and lit dialogue includes it; both line sets are retained.",
   "row": "W-AI-03",
   "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T10:48:11.700671+00:00",
-  "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-AI-03/r9-a-odd-20261007T104156.540366Z/result.json",
-  "runStartedAt": "2026-10-07T10:41:56.540366+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-AI-03/p42j-narrative-20261007T124515.649672Z/workflow/odd-line/apply-report.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

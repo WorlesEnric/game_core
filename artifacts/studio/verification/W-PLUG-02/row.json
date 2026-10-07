@@ -1,24 +1,23 @@
 {
   "status": "PASS",
-  "note": "Graphics-enabled current Animator transitions/poses pass; despawn destroys the old Animator and respawn retains variant and 1.2 scale overrides.",
-  "evidence": [
-    "W-PLUG-02/p42i-animation-20261007T050400.252886Z/results.xml",
-    "W-PLUG-02/p42i-animation-20261007T050400.252886Z/result.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
   "checks": [
     {
-      "file": "W-PLUG-02/p42i-animation-20261007T050400.252886Z/results.xml",
+      "file": "W-PLUG-02/p42j-animation-20261007T122512.100407Z/results.xml",
       "xmlCase": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides"
     }
   ],
+  "evidence": [
+    "W-PLUG-02/p42j-animation-20261007T122512.100407Z/results.xml"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py native",
+  "note": "Current-run Despawn/respawn keeps override; Animator bound is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
   "row": "W-PLUG-02",
   "scenario": "Despawn/respawn keeps override; Animator bound",
   "requirement": "SR-6.2",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-PLUG-02/p42i-animation-20261007T050400.252886Z/results.xml",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-PLUG-02/p42j-animation-20261007T122512.100407Z/results.xml",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

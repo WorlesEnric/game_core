@@ -1,0 +1,19 @@
+{
+  "name": "com.hollowmere.mechanism.lever",
+  "version": "0.1.0",
+  "displayName": "Hollowmere Bistable Lever",
+  "description": "W-DOC-02 authoring candidate: one int32 latched lever state, a bounded single-toggle command, committed events and presentation, pure rules and a sandbox-only smoke. Trusted game composition uses LeverWorldExtension; the package never registers live smoke authority.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.entities": "1.4.6"
+  }
+}

@@ -1,44 +1,40 @@
 {
   "status": "PASS",
-  "note": "Two real graphical three-region loop runs preserve moved NPC state and release region views/media. Native residuals 0.08825\u20130.15878% of peak; all load/unload timings meet 2s/1s. Twelve full snapshots retained losslessly with raw/compressed hashes.",
-  "evidence": [
-    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
-    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/native-media.csv",
-    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/snapshot-manifest.json",
-    "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/retention.json",
-    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
-    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/native-media.csv",
-    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/snapshot-manifest.json",
-    "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/retention.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py native",
   "checks": [
     {
-      "file": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
+      "file": "W-PLUG-01/p42j-native-1-20261007T122027.825900Z/results.xml",
       "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
     },
     {
-      "file": "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/results.xml",
+      "file": "W-PLUG-01/p42j-native-2-20261007T122240.031825Z/results.xml",
       "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
     },
     {
-      "file": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/native/retention.json",
+      "file": "W-PLUG-01/p42j-native-1-20261007T122027.825900Z/native/retention.json",
       "pointer": "/snapshotCount",
       "equals": 6
     },
     {
-      "file": "W-PLUG-01/p42i-native-2-20261007T050214.386449Z/native/retention.json",
+      "file": "W-PLUG-01/p42j-native-2-20261007T122240.031825Z/native/retention.json",
       "pointer": "/snapshotCount",
       "equals": 6
     }
   ],
+  "evidence": [
+    "W-PLUG-01/p42j-native-1-20261007T122027.825900Z/results.xml",
+    "W-PLUG-01/p42j-native-2-20261007T122240.031825Z/results.xml",
+    "W-PLUG-01/p42j-native-1-20261007T122027.825900Z/native/retention.json",
+    "W-PLUG-01/p42j-native-2-20261007T122240.031825Z/native/retention.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py native",
+  "note": "Current-run Three-region loop, moved NPC stays, memory baseline, timings is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
   "row": "W-PLUG-01",
   "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
   "requirement": "SR-6.1, B-REGION",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-PLUG-01/p42i-native-1-20261007T045942.121995Z/results.xml",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-PLUG-01/p42j-native-1-20261007T122027.825900Z/results.xml",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

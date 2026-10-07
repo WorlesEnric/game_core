@@ -63,7 +63,7 @@ if clean['status'] == 'PASS':
     player = v.ROOT / 'games/cleanproof/Builds/Linux/Saltmarsh.x86_64'
     result = v.run('W-CLEAN-01', 'p42j-clean-player', ['timeout', '--signal=TERM', '--kill-after=10', '180',
         player, '-batchmode', '-nographics', '-saltmarshAutoplay', '-logFile', '{out}/player.log'],
-        env={'DISPLAY': ':1', 'XDG_SESSION_TYPE': 'x11', 'XDG_CONFIG_HOME': '{out}/player-state'})
+        env={'DISPLAY': ':1', 'XDG_SESSION_TYPE': 'x11', 'XDG_CONFIG_HOME': str(v.ROOT / '.evidence/P42jCleanPlayerState')})
     folder = v.ROOT / result['evidencePath']
     text = (folder / 'player.log').read_text() if (folder / 'player.log').exists() else ''
     matched = re.search(r'AUTOPLAY PASS frames=(\d+) pumps=(\d+) violations=(\d+)', text)

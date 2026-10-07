@@ -1,17 +1,17 @@
 {
   "status": "BLOCKED",
   "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
-  "evidence": [
-    "W-HOST-01/p42i-owner-block/result.json"
-  ],
   "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
+  "evidence": [
+    "W-HOST-01/p42j-owner-rule/result.json"
+  ],
   "row": "W-HOST-01",
   "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
   "requirement": "SR-11.2",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-HOST-01/p42i-owner-block/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-HOST-01/p42j-owner-rule/result.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

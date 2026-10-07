@@ -1,0 +1,88 @@
+[
+  {
+    "label": "p42j-stage-submit-cold",
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42j-stage-submit-cold-20261007T130905.791892Z",
+    "state": "done",
+    "durationMs": 166402,
+    "coldCache": true,
+    "pass": true,
+    "catalogDelta": {
+      "mechanisms": [
+        {
+          "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+          "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+          "package": "com.hollowmere.mechanism.pressureplate"
+        }
+      ],
+      "predicted": "f088be3a864c147c938d46ce53be784f09def4327ebf846745218c98050fed80",
+      "world": "6c13778e6adf58964f55654c0b352352e4fba6cdd0024655690c49d536734bea"
+    },
+    "xml": {
+      "service/slot-out/editmode.xml": {
+        "total": 36,
+        "counts": {
+          "Passed": 36
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "service/slot-out/playmode.xml": {
+        "total": 2,
+        "counts": {
+          "Passed": 2
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      }
+    }
+  },
+  {
+    "label": "p42j-stage-submit-warm",
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42j-stage-submit-warm-20261007T131804.964537Z",
+    "state": "done",
+    "durationMs": 76786,
+    "coldCache": false,
+    "pass": true,
+    "catalogDelta": {
+      "mechanisms": [
+        {
+          "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+          "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+          "package": "com.hollowmere.mechanism.pressureplate"
+        }
+      ],
+      "predicted": "f088be3a864c147c938d46ce53be784f09def4327ebf846745218c98050fed80",
+      "world": "6c13778e6adf58964f55654c0b352352e4fba6cdd0024655690c49d536734bea"
+    },
+    "xml": {
+      "service/slot-out/editmode.xml": {
+        "total": 36,
+        "counts": {
+          "Passed": 36
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "service/slot-out/playmode.xml": {
+        "total": 2,
+        "counts": {
+          "Passed": 2
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      }
+    }
+  },
+  {
+    "label": "p42j-stage-submit-negative",
+    "evidence": "artifacts/studio/verification/W-MECH-01/p42j-stage-submit-negative-20261007T132300.972430Z",
+    "state": "done",
+    "durationMs": 19436,
+    "coldCache": false,
+    "pass": false,
+    "catalogDelta": {
+      "mechanisms": []
+    },
+    "xml": {}
+  }
+]

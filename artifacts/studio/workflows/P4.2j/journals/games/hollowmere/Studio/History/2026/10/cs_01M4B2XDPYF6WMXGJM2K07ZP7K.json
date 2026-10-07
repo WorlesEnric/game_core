@@ -1,0 +1,26 @@
+{
+  "id": "cs_01M4B2XDPYF6WMXGJM2K07ZP7K",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "P3.1 admission capture probe",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "set",
+      "args": {
+        "field": "displayName",
+        "value": "probe"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.admission",
+      "status": "fail",
+      "detail": "refused: No authenticated companion verdict is available."
+    }
+  ],
+  "state": "Rejected"
+}

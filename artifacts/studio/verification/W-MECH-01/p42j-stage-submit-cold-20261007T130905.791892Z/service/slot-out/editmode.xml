@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="36" result="Passed" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="1.1493429">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="1.149343" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1006" name="GameCore.Stage.Harness.Editor.dll" fullname="/w/p/Library/ScriptAssemblies/GameCore.Stage.Harness.Editor.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.129082" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1007" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.128570" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1008" name="Stage" fullname="GameCore.Stage" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.128416" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1009" name="Harness" fullname="GameCore.Stage.Harness" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.128270" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="CatalogProbe" fullname="GameCore.Stage.Harness.CatalogProbe" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.127044" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="R6_A_01_ChangedSourceWorldRefuses" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_ChangedSourceWorldRefuses" methodname="R6_A_01_ChangedSourceWorldRefuses" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1974278855" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.029528" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="R6_A_01_MissingSourceWorldRefuses" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_MissingSourceWorldRefuses" methodname="R6_A_01_MissingSourceWorldRefuses" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1225917716" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.001047" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="R6_A_01_TrustedSourceWorldRecompilesDeterministically" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_TrustedSourceWorldRecompilesDeterministically" methodname="R6_A_01_TrustedSourceWorldRecompilesDeterministically" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1311218529" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.060877" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="WritesTheCatalogDelta" fullname="GameCore.Stage.Harness.CatalogProbe.WritesTheCatalogDelta" methodname="WritesTheCatalogDelta" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1192161291" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.019401" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[stage-harness] catalog delta {"changeSetId":"cs_01M4B7PQ3SZGEXFC1FFARFCM8B","package":"com.hollowmere.mechanism.pressureplate","world":"6c13778e6adf58964f55654c0b352352e4fba6cdd0024655690c49d536734bea","worldVerified":true,"worldSnapshotSha256":"f6ee24fd629289abdd328daa01f8e496474f8335909e3fddda011a1d23f7859e","mechanisms":[{"package":"com.hollowmere.mechanism.pressureplate","catalogType":"Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog","fingerprint":"eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21"}],"predicted":"f088be3a864c147c938d46ce53be784f09def4327ebf846745218c98050fed80"}
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1019" name="GameCore.Unity.App.Editor.Tests.dll" fullname="/w/p/Library/ScriptAssemblies/GameCore.Unity.App.Editor.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.525789" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1020" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.525363" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1021" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.525218" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1022" name="App" fullname="GameCore.Unity.App" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.525111" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1023" name="Tests" fullname="GameCore.Unity.App.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.524996" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1010" name="RestoreAdoptionTests" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.524827" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1017" name="APP1_CurrentNeverNullDuringStartStopOrRootChanged" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_CurrentNeverNullDuringStartStopOrRootChanged" methodname="APP1_CurrentNeverNullDuringStartStopOrRootChanged" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="332600061" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:01Z" duration="0.482903" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1016" name="APP1_NonCurrentRestoreLeavesCurrentUntouched" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.017108" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1014" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1997764959" result="Passed" start-time="2026-10-07 13:12:01Z" end-time="2026-10-07 13:12:02Z" duration="0.009569" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1015" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="643948257" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.006480" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1018" name="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" methodname="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1618236002" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.006216" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1013" name="APP1_RestoreAdoptsCurrentAndPreservesRunState" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.016140" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1011" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1188523482" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.007920" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1012" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1420934589" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.007478" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1038" name="Hollowmere.Mechanism.PressurePlate.Editor.Tests.dll" fullname="/w/p/Library/ScriptAssemblies/Hollowmere.Mechanism.PressurePlate.Editor.Tests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.465646" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1039" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.465345" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1040" name="Mechanism" fullname="Hollowmere.Mechanism" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.465201" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1041" name="PressurePlate" fullname="Hollowmere.Mechanism.PressurePlate" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.465105" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1042" name="Editor" fullname="Hollowmere.Mechanism.PressurePlate.Editor" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.464986" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1043" name="Tests" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.464812" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1024" name="PressurePlateCatalogTests" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.038040" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1027" name="CatalogSet_Combine_MatchesTheContractVectors" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.CatalogSet_Combine_MatchesTheContractVectors" methodname="CatalogSet_Combine_MatchesTheContractVectors" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="276628134" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.001316" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1028" name="CompositeCatalog_LooksUpEveryPart_InMergedCanonicalOrder" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.CompositeCatalog_LooksUpEveryPart_InMergedCanonicalOrder" methodname="CompositeCatalog_LooksUpEveryPart_InMergedCanonicalOrder" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="2075128088" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.009270" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1029" name="CompositeCatalog_RefusesAKeyRegisteredTwice" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.CompositeCatalog_RefusesAKeyRegisteredTwice" methodname="CompositeCatalog_RefusesAKeyRegisteredTwice" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="1140061807" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000812" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1030" name="Extend_AddsExactlyThePlateContributions" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.Extend_AddsExactlyThePlateContributions" methodname="Extend_AddsExactlyThePlateContributions" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="1083376622" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.023057" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1025" name="GeneratedCatalog_Builds_AndItsFingerprintIsTheGeneratedConstant" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.GeneratedCatalog_Builds_AndItsFingerprintIsTheGeneratedConstant" methodname="GeneratedCatalog_Builds_AndItsFingerprintIsTheGeneratedConstant" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="1357288518" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000590" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1026" name="GeneratedCatalog_RegistersEveryDeclaredKeyAndSchema" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests.GeneratedCatalog_RegistersEveryDeclaredKeyAndSchema" methodname="GeneratedCatalog_RegistersEveryDeclaredKeyAndSchema" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateCatalogTests" runstate="Runnable" seed="1854013210" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.001084" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-suite type="TestFixture" id="1031" name="PressurePlateSmokeTests" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateSmokeTests" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.283657" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1032" name="TwoSequentialSessions_EndInTheSameSlotHash_AndTheScheduledState" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateSmokeTests.TwoSequentialSessions_EndInTheSameSlotHash_AndTheScheduledState" methodname="TwoSequentialSessions_EndInTheSameSlotHash_AndTheScheduledState" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateSmokeTests" runstate="Runnable" seed="695261876" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.282637" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-suite type="TestFixture" id="1033" name="PressurePlateToolTests" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.142535" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1037" name="Add_CarriesTheMirrorOperationAttribute" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests.Add_CarriesTheMirrorOperationAttribute" methodname="Add_CarriesTheMirrorOperationAttribute" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" runstate="Runnable" seed="456883890" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.034055" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1034" name="Add_PlacesAPlate_WithItsDefinition_AndUndoRemovesIt" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests.Add_PlacesAPlate_WithItsDefinition_AndUndoRemovesIt" methodname="Add_PlacesAPlate_WithItsDefinition_AndUndoRemovesIt" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" runstate="Runnable" seed="1554496498" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.045079" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1036" name="Add_RefusesBadArguments_AndChangesNothing" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests.Add_RefusesBadArguments_AndChangesNothing" methodname="Add_RefusesBadArguments_AndChangesNothing" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" runstate="Runnable" seed="913741748" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.030896" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1035" name="Add_WithoutADefinition_UsesTheDefaults" fullname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests.Add_WithoutADefinition_UsesTheDefaults" methodname="Add_WithoutADefinition_UsesTheDefaults" classname="Hollowmere.Mechanism.PressurePlate.Editor.Tests.PressurePlateToolTests" runstate="Runnable" seed="2105414494" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.030824" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1061" name="Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll" fullname="/w/p/Library/ScriptAssemblies/Hollowmere.Mechanism.PressurePlate.Rules.Tests.dll" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.019195" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1062" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.014076" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1063" name="Mechanism" fullname="Hollowmere.Mechanism" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.013764" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1064" name="PressurePlate" fullname="Hollowmere.Mechanism.PressurePlate" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.013557" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1065" name="Rules" fullname="Hollowmere.Mechanism.PressurePlate.Rules" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.013403" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1066" name="Tests" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.013199" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1044" name="PressurePlateRulesTests" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.012800" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1045" name="Initial_IsEmptyAndReleased" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.Initial_IsEmptyAndReleased" methodname="Initial_IsEmptyAndReleased" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="864034206" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000500" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-suite type="ParameterizedMethod" id="1057" name="InvalidDefinition_IsRefused" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.InvalidDefinition_IsRefused" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.001662" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                    <properties />
+                    <test-case id="1054" name="InvalidDefinition_IsRefused(0,2)" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.InvalidDefinition_IsRefused(0,2)" methodname="InvalidDefinition_IsRefused" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="614276515" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000664" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                    <test-case id="1055" name="InvalidDefinition_IsRefused(-1,2)" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.InvalidDefinition_IsRefused(-1,2)" methodname="InvalidDefinition_IsRefused" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="294245454" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000124" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                    <test-case id="1056" name="InvalidDefinition_IsRefused(3,2)" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.InvalidDefinition_IsRefused(3,2)" methodname="InvalidDefinition_IsRefused" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="382886602" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000106" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                  </test-suite>
+                  <test-case id="1060" name="Press_IsDeterministic" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.Press_IsDeterministic" methodname="Press_IsDeterministic" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="1434704469" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.001465" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1058" name="RefusalCodes_AreStable" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.RefusalCodes_AreStable" methodname="RefusalCodes_AreStable" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="1687513121" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000323" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1059" name="SmokeSchedule_EndsWhereTheSessionExpects" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.SmokeSchedule_EndsWhereTheSessionExpects" methodname="SmokeSchedule_EndsWhereTheSessionExpects" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="355636183" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.001476" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1049" name="StepOff_BelowThreshold_Releases" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOff_BelowThreshold_Releases" methodname="StepOff_BelowThreshold_Releases" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="1063804031" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000501" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1051" name="StepOff_EmptyPlate_IsRefusedNotLoaded" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOff_EmptyPlate_IsRefusedNotLoaded" methodname="StepOff_EmptyPlate_IsRefusedNotLoaded" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="688627815" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000544" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1050" name="StepOff_StillAtThreshold_StaysPressed" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOff_StillAtThreshold_StaysPressed" methodname="StepOff_StillAtThreshold_StaysPressed" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="631986918" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000401" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1048" name="StepOn_AboveThreshold_StaysPressedWithoutTransition" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOn_AboveThreshold_StaysPressedWithoutTransition" methodname="StepOn_AboveThreshold_StaysPressedWithoutTransition" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="570863233" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000430" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1046" name="StepOn_AtThreshold_Presses" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOn_AtThreshold_Presses" methodname="StepOn_AtThreshold_Presses" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="583721795" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000855" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1047" name="StepOn_BelowThreshold_AddsWeightWithoutTransition" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOn_BelowThreshold_AddsWeightWithoutTransition" methodname="StepOn_BelowThreshold_AddsWeightWithoutTransition" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="518405075" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000364" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1052" name="StepOn_FullPlate_IsRefusedOverloaded" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.StepOn_FullPlate_IsRefusedOverloaded" methodname="StepOn_FullPlate_IsRefusedOverloaded" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="1993903722" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000308" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1053" name="Unknown_IsRefusedUnknown" fullname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests.Unknown_IsRefusedUnknown" methodname="Unknown_IsRefusedUnknown" classname="Hollowmere.Mechanism.PressurePlate.Rules.Tests.PressurePlateRulesTests" runstate="Runnable" seed="1388140574" result="Passed" start-time="2026-10-07 13:12:02Z" end-time="2026-10-07 13:12:02Z" duration="0.000297" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

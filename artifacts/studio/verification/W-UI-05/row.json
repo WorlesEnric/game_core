@@ -1,72 +1,70 @@
 {
   "status": "PASS",
-  "note": "Two fresh 500-candidate datasets each contain 100 picks and 100 marquees. Pick/marquee p95 ms: [[1.0265, 0.27540000000000003], [0.9298000000000001, 0.23820000000000002]]; unchanged limits 16/50 ms.",
-  "evidence": [
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py timing",
   "checks": [
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
       "pointer": "/candidateCount",
       "equals": 500
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
       "pointer": "/picks/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
       "pointer": "/marquee/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
       "pointer": "/picks/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
       "pointer": "/marquee/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json",
       "pointer": "/candidateCount",
       "equals": 500
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json",
       "pointer": "/picks/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json",
       "pointer": "/marquee/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json",
       "pointer": "/picks/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/selection.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json",
       "pointer": "/marquee/pass",
       "equals": true
     }
   ],
+  "evidence": [
+    "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
+    "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/selection.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py timing",
+  "note": "Two current 500-candidate datasets contain 100 picks and 100 marquees each. Pick p95 is 0.9203/0.9819ms and marquee p95 0.2771/0.2545ms; unchanged limits are 16/50ms.",
   "row": "W-UI-05",
   "scenario": "Selection/hover and marquee timings",
   "requirement": "B-SELECT",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/selection.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/selection.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

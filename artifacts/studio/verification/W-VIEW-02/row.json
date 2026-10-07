@@ -1,18 +1,41 @@
 {
-  "status": "FAIL",
-  "note": "R9-A final suite: 161 PASS/1 FAIL, no skips. Owned combined AddLine/Connect/Rename workflow and retained orphan refusals pass. Exact P2_3 named test remains outside exclusive paths and now correctly refuses its empty graph creation with GP-DLG-001; its later separately committed orphan also needs fixture/workflow correction. No replacement-test promotion.",
-  "evidence": [
-    "W-VIEW-02/r9-a-final-regressions/results.xml",
-    "W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/regressions.xml"
+  "status": "PASS",
+  "checks": [
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "xmlCase": "Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "xmlCase": "Dialogue_UndoOnMarenKeepsTheConditionReferences"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "xmlCase": "Dialogue_PreviewDiffersByFact"
+    },
+    {
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+      "xmlCase": "R2_32_RealPlayDialogueTravelAndDestroyedOwner"
+    },
+    {
+      "file": "W-VIEW-01/captures-20261007T121149Z/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    }
   ],
-  "command": "studio/tools/unity-batch.sh --project <hollowmere> --log-dir <owned evidence> --label r9a-final-suites --results <results.xml> -- -runTests -testPlatform EditMode -testFilter <recorded final suite filter>",
+  "evidence": [
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+    "W-VIEW-01/captures-20261007T121149Z/visual-review.json"
+  ],
+  "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
+  "note": "Current creator AddLine/Connect/Rename and full-byte Undo pass in the 42/42 Views suite, alongside condition preview and real-Play bridge cases. Actual graph/preview controls are visibly captured.",
   "row": "W-VIEW-02",
   "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-07T10:48:11.700671+00:00",
-  "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-VIEW-02/r9-a-final-regressions/results.xml",
-  "runStartedAt": "2026-10-07T10:44:25+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

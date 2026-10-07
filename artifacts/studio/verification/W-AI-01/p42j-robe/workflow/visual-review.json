@@ -1,0 +1,22 @@
+{
+  "row": "W-AI-01",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-07T12:45:00.541505+00:00",
+  "observation": "Actual generated pixels are green woven cloth. The real framed Maren capsule changes from olive cloth to darker green visible weave and ordinary Undo restores the original olive appearance in the same village framing. Exact binding and behavior checks remain separate runtime receipts; capsule geometry and distant magenta objects are unchanged, with no aesthetics improvement claimed.",
+  "reviewAssertions": [
+    "The generated image is green robe cloth, not a tint or old texture.",
+    "The applied real healer body visibly uses the green texture; undo visibly restores the original body material.",
+    "All three captures frame the real healer body and are legible; a hidden/cropped body cannot pass."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "9a5cba3dbf82c01d59bc015a36267c59a64d7d38234568f8f797fabd1ee5f551",
+    "viewport-before.png": "96d2502b87f135c1b2a74faee4f67448bb91414ad86f9daa765ef38cd76d33ce",
+    "viewport-applied.png": "3c88f805be5a06a3404ad678f6bf1327765e55a2903fab720c62169630a3f951",
+    "viewport-undone.png": "52bfdcc9a79d5e5bb1cfa047bcc402315d81de06e0515544797d35441732335e",
+    "studio-before.png": "90d466b8774b9373d94e0976a60da044114f32d0f858f7364d7b6cbafb7da0ff",
+    "studio-applied.png": "d98884bb1662243c20ef93703de0dc0578f15608b82ae063e14bb57bf5d6cd7b",
+    "studio-undone.png": "2e53de9c3fc67da8060230abb085404efe34e80399b80dfc9c11fb920e3fe9dd"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

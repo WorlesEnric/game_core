@@ -1,0 +1,173 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "update-size-100",
+  "kind": "Change",
+  "dimension": "update-size",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 1328682,
+  "passed": true,
+  "gates": [
+    {
+      "name": "update-affects-the-declared-target-count",
+      "passed": true,
+      "detail": "size=100; affectedTargets=100; expected=100; repetitions=5; warmupCycles=1; accepted=True"
+    },
+    {
+      "name": "apply-affects-the-declared-target-count",
+      "passed": true,
+      "detail": "outcome=Published; code=None; detail=; eligibleTargets=100; declaredApplyTargets=100; installedRows=200; retractedRows=0; applyUs=891; applySamples=1; waitUs=0; endToEndUs=430754; prepareUs=429863; joined=True"
+    },
+    {
+      "name": "apply-pause-is-measured-by-the-publisher",
+      "passed": true,
+      "detail": "applySamples=1; applyUs=891; note=a zero apply sample count would make the apply-pause row unmeasurable rather than fast"
+    }
+  ],
+  "notes": [
+    "warmupCycles=1; warmupComplete=true; warmupSecondsRequested=1",
+    "applyPhase=the publisher's own fenced apply window (apply-us/apply-samples counters); waitPhase=the execution driver's job-wait fence (job-wait-us counter); preparePhase=endToEnd-apply-wait, so it includes the mandatory safety-boundary wait",
+    "liveWorld=liveScopes=1000; liveTargets=10000; eligible=100; ineligible=9900; epoch=2; step=0; publications=2; bindingRows=200; joined=True",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 1,
+      "min": 1328682,
+      "p50": 1328682,
+      "p95": 1328682,
+      "p99": 1328682,
+      "max": 1328682,
+      "mean": 1328682,
+      "total": 1328682
+    },
+    {
+      "phase": "Prepare",
+      "count": 6,
+      "min": 429863,
+      "p50": 1268624,
+      "p95": 1378424,
+      "p99": 1378424,
+      "max": 1378424,
+      "mean": 1163649.833,
+      "total": 6981899
+    },
+    {
+      "phase": "Apply",
+      "count": 1,
+      "min": 891,
+      "p50": 891,
+      "p95": 891,
+      "p99": 891,
+      "max": 891,
+      "mean": 891,
+      "total": 891
+    },
+    {
+      "phase": "EndToEnd",
+      "count": 1,
+      "min": 430754,
+      "p50": 430754,
+      "p95": 430754,
+      "p99": 430754,
+      "max": 430754,
+      "mean": 430754,
+      "total": 430754
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 0,
+    "managedHeapEndBytes": 0,
+    "managedAllocatedBytes": 0,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 0,
+    "leaseBytes": 0,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 0,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 645200,
+    "candidates-matched": 155005,
+    "contributions-added": 500,
+    "contributions-retracted": 500,
+    "strata-evaluated": 5,
+    "apply-us": 891,
+    "assembly-epoch": 2,
+    "structural-operations": 500,
+    "live-leases": 9,
+    "lease-bytes": 4320,
+    "apply-samples": 1
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 1328682,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 1225812,
+      "counters": "control-nodes-visited=129040;candidates-matched=31001;contributions-added=100;contributions-retracted=100;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 1268624,
+      "counters": "control-nodes-visited=129040;candidates-matched=31001;contributions-added=100;contributions-retracted=100;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 1346551,
+      "counters": "control-nodes-visited=129040;candidates-matched=31001;contributions-added=100;contributions-retracted=100;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 1332625,
+      "counters": "control-nodes-visited=129040;candidates-matched=31001;contributions-added=100;contributions-retracted=100;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 1378424,
+      "counters": "control-nodes-visited=129040;candidates-matched=31001;contributions-added=100;contributions-retracted=100;strata-evaluated=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "EndToEnd",
+      "microseconds": 430754,
+      "counters": "apply-us=891;assembly-epoch=2;structural-operations=500;live-leases=9;lease-bytes=4320;apply-samples=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Apply",
+      "microseconds": 891,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 429863,
+      "counters": "0"
+    }
+  ]
+}

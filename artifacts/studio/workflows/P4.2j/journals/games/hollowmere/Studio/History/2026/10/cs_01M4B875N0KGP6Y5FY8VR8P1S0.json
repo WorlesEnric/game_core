@@ -1,0 +1,68 @@
+{
+  "id": "cs_01M4B875N0KGP6Y5FY8VR8P1S0",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "mechanism.admit",
+      "args": {
+        "package": {
+          "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+        },
+        "proposal": {
+          "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+        },
+        "verdict": {
+          "artifact": "sha256:3ee672eba69ee61cc0194ffa1fc8b3a97da5b716ed0a9fc4e5ddef7ba5169b2c"
+        }
+      },
+      "applyRequirement": "Compile"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+      "name": "package.tgz",
+      "mediaType": "application/gzip",
+      "bytes": 32839,
+      "role": "package"
+    },
+    {
+      "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+      "name": "proposal.json",
+      "mediaType": "application/json",
+      "bytes": 917,
+      "role": "proposal"
+    },
+    {
+      "sha256": "3ee672eba69ee61cc0194ffa1fc8b3a97da5b716ed0a9fc4e5ddef7ba5169b2c",
+      "name": "verdict.json",
+      "mediaType": "application/vnd.gamecore.stage-verdict+json",
+      "bytes": 11616,
+      "role": "verdict"
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.verdict",
+      "status": "pass",
+      "detail": "pass verdict 3ee672eba69e slot cs-01m4b875n0kgp6y5fy8vr8p1s0 (76786 ms); sha256:3ee672eba69ee61cc0194ffa1fc8b3a97da5b716ed0a9fc4e5ddef7ba5169b2c"
+    },
+    {
+      "scenario": "stage.admission",
+      "status": "fail",
+      "detail": "rolled back: catalog_mismatch"
+    }
+  ],
+  "requirements": {
+    "max": "Compile",
+    "worldRebuild": false,
+    "compile": true,
+    "build": false
+  },
+  "state": "Failed"
+}

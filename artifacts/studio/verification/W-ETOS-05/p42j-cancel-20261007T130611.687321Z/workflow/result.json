@@ -1,0 +1,90 @@
+{
+  "lane": "cancel",
+  "row": "W-ETOS-05",
+  "phase": 0,
+  "output": "~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-ETOS-05/p42j-cancel-20261007T130611.687321Z/workflow",
+  "startedMs": 1791378413632,
+  "processId": 2767011,
+  "requestId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+  "taskIds": [
+    "tddf1959324b9ed47b83c96b3"
+  ],
+  "sourceProject": "~/wkspace/gc-studio/p4.2j/games/hollowmere",
+  "worker": "gc-designer",
+  "selectedNpc": {
+    "kind": "Definition",
+    "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+    "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+    "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+    "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+    "scope": "Definition",
+    "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+  },
+  "graphId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+  "graphPath": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset",
+  "expectedTexts": [
+    "Welcome to the Drowned Lantern. Coin for goods, and no questions.",
+    "What will it be?",
+    "There you are. Keep it dry.",
+    "Chew them when your legs give out.",
+    "Suit yourself."
+  ],
+  "submittedMs": 1791378420103,
+  "lastTrayRow": {
+    "changeSetId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "requestId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "state": "cancelled",
+    "etosStatus": "cancelled",
+    "taskIds": [
+      "tddf1959324b9ed47b83c96b3"
+    ],
+    "worker": "gc-designer",
+    "sequence": 908,
+    "localState": "",
+    "createdTicks": 639269752201151950,
+    "diagnostics": [
+      "{\"code\":\"cancelled\",\"message\":\"This task was cancelled (cancelled by the owner); I stopped working on it.\"}"
+    ],
+    "question": ""
+  },
+  "originalTaskId": "tddf1959324b9ed47b83c96b3",
+  "runningRequest": {
+    "attempt": 0,
+    "changeSetId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "createdAt": 1791378420139,
+    "hasCandidate": false,
+    "requestId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "seq": 906,
+    "state": "running",
+    "taskId": "tddf1959324b9ed47b83c96b3",
+    "taskStatus": "running",
+    "tasks": [
+      "tddf1959324b9ed47b83c96b3"
+    ],
+    "topic": "#agent/gamecore-studio/cs-01m4b7jwc3f336690f4b1g9hzk",
+    "updatedAt": 1791378420705,
+    "worker": "gc-designer"
+  },
+  "runningTray": {
+    "changeSetId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "requestId": "cs_01M4B7JWC3F336690F4B1G9HZK",
+    "state": "running",
+    "etosStatus": "running",
+    "taskIds": [
+      "tddf1959324b9ed47b83c96b3"
+    ],
+    "worker": "gc-designer",
+    "sequence": 906,
+    "localState": "",
+    "createdTicks": 639269752201151950,
+    "diagnostics": [],
+    "question": ""
+  },
+  "clickedCancelMs": 1791378420956,
+  "cancelledMs": 1791378421264,
+  "finalCursor": 908,
+  "phaseAtFinish": 20,
+  "status": "PASS",
+  "detail": "Attached real tray Cancel button was activated while ETOS and tray both reported running; one unchanged task became cancelled, with no candidate or duplicate row after a three-second settle observation.",
+  "finishedMs": 1791378424357
+}

@@ -1,0 +1,75 @@
+{
+  "scenario": {
+    "scenario": "stage.admission",
+    "status": "fail",
+    "detail": "rolled back: compile_timeout"
+  },
+  "journal": {
+    "id": "cs_01M4B8WGXJ93MHM9J2HGQF5B9Q",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Add a bistable lever whose position latches until the next bounded toggle.",
+      "origin": "agent"
+    },
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "mechanism.admit",
+        "args": {
+          "package": {
+            "artifact": "sha256:96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15"
+          },
+          "proposal": {
+            "artifact": "sha256:5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336"
+          },
+          "verdict": {
+            "artifact": "sha256:aeb53ba61e4d21ca3d262403c9b289efec6d1eb3ae6a98da2adc23c1573ce889"
+          }
+        },
+        "applyRequirement": "Compile"
+      }
+    ],
+    "artifacts": [
+      {
+        "sha256": "96fc3e24ccdb6bcb84b45d7f09f78c20d21680a1d81208a7119947dbee5dbd15",
+        "name": "package.tgz",
+        "mediaType": "application/gzip",
+        "bytes": 16680,
+        "role": "package"
+      },
+      {
+        "sha256": "5d8863cfd99e676222d8ede1b6912b1f54e2d357f805736c03ecee9a12878336",
+        "name": "proposal.json",
+        "mediaType": "application/json",
+        "bytes": 622,
+        "role": "proposal"
+      },
+      {
+        "sha256": "aeb53ba61e4d21ca3d262403c9b289efec6d1eb3ae6a98da2adc23c1573ce889",
+        "name": "verdict.json",
+        "mediaType": "application/vnd.gamecore.stage-verdict+json",
+        "bytes": 9415,
+        "role": "verdict"
+      }
+    ],
+    "validation": [
+      {
+        "scenario": "stage.verdict",
+        "status": "pass",
+        "detail": "pass verdict aeb53ba61e4d slot cs-01m4b8wgxj93mhm9j2hgqf5b9q (77307 ms); sha256:aeb53ba61e4d21ca3d262403c9b289efec6d1eb3ae6a98da2adc23c1573ce889"
+      },
+      {
+        "scenario": "stage.admission",
+        "status": "fail",
+        "detail": "rolled back: compile_timeout"
+      }
+    ],
+    "requirements": {
+      "max": "Compile",
+      "worldRebuild": false,
+      "compile": true,
+      "build": false
+    },
+    "state": "Failed"
+  }
+}

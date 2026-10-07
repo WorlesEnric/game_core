@@ -1,22 +1,16 @@
 # W-ETOS-05: Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task
 
-Verdict: **PASS**. Actual enabled attached tray Cancel is activated while original request/task/tray report running. The same task becomes cancelled after 429ms, no candidate or duplicate row after a three-second observation.
+Verdict: **PASS**. Current-run Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.
 
-P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/tasks-p42i.py
+python3 artifacts/studio/verification/TOOLS/tasks-p42j.py
 ```
 
 ## Current-run evidence
 
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/result.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/result.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/request.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/request.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/latest-request.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/latest-request.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/started.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/started.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/submission.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/submission.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/cancelled.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/cancelled.json)
-- [W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/hello.json](../W-ETOS-05/p42i-cancel-20261007T054357.507172Z/workflow/hello.json)
+- [W-ETOS-05/p42j-cancel-20261007T130611.687321Z/workflow/result.json](../W-ETOS-05/p42j-cancel-20261007T130611.687321Z/workflow/result.json)

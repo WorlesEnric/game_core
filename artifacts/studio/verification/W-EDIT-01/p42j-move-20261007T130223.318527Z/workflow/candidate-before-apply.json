@@ -1,0 +1,76 @@
+{
+  "id": "cs_01M4B7C9JXTNXNZNKYKE2PY937",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Move only the selected live Bram instance in the running GameCore world, not authored content, to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M4B7C9H3HTC71SZNCFVT78M8",
+    "mode": "Play",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      }
+    ],
+    "indexRevision": 216
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      },
+      "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "runtime.move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      },
+      "args": {
+        "position": [
+          11.5,
+          0.0,
+          -13.0
+        ],
+        "yaw": 270.0
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Live"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Live",
+    "worldRebuild": false,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t366378f802591a061bc7c273"
+    ]
+  }
+}

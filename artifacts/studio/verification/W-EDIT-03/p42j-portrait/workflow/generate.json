@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "provider": "echo-images",
+  "providerSha256": "dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52",
+  "providerBytes": 2341680,
+  "opState": {
+    "state": "succeeded",
+    "usage": {
+      "cost_usd": 0.0,
+      "input_tokens": 70,
+      "output_tokens": 429,
+      "quantity": 1.0,
+      "unit": "image"
+    }
+  },
+  "refusal": null,
+  "diagnostics": [],
+  "assetPath": "Assets/Hollowmere/Generated/P42h/portrait-3ad8ea109aac4dae9ddd80d6b4431b3a.png",
+  "artifact": {
+    "sha256": "dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52",
+    "name": "portrait-3ad8ea109aac4dae9ddd80d6b4431b3a.png",
+    "mediaType": "image/png",
+    "bytes": 2341680,
+    "producer": {
+      "op": "generate.image",
+      "provider": "echo-images"
+    },
+    "role": "texture"
+  },
+  "journalId": "cs_01M4B63C7EACSJX7NWCMPHJC9W",
+  "journalState": "Applied",
+  "maxCostUsd": 0.2,
+  "requestId": null,
+  "taskIds": [],
+  "identityNote": "Direct-media app route has no worker request/task. ledger-generated.json supplies actual producer key/jobId/etosRef."
+}

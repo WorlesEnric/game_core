@@ -1,0 +1,40 @@
+[2026-10-07T13:26:56.067Z][INFO] Command-line: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 2839646 -ipc -ipc-path /tmp/Unity-Upm-2839646.sock -l 2 --log-file ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-REC-03/p42j-stage-submit-cancel-20261007T132655.382783Z/upm.log
+[2026-10-07T13:26:56.074Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-2839646.sock).
+[2026-10-07T13:26:56.075Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-2839646.
+[2026-10-07T13:26:56.806Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-10-07T13:27:38.830Z][ERROR] Error: Cannot connect to 'packages.unity.com' (error code: ECONNRESET). Check your internet connection and verify that your environment firewall policies allow connection to this host name. If your system is behind a proxy, verify your proxy environment variables (HTTP_PROXY and HTTPS_PROXY) are properly set.
+[2026-10-07T13:28:06.861Z][INFO] project:add-dependency --> 200 (70056 ms)
+[2026-10-07T13:28:07.097Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:07.148Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:07.161Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:07.168Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:28:07.185Z][INFO] config:project:get-registries --> 200 (17 ms)
+[2026-10-07T13:28:07.673Z][INFO] project:list-packages --> 200 (576 ms)
+[2026-10-07T13:28:07.774Z][INFO] project:list-packages --> 200 (626 ms)
+[2026-10-07T13:28:09.442Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:09.788Z][INFO] project:list-packages --> 200 (346 ms)
+[2026-10-07T13:28:12.367Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:12.378Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:12.389Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:28:12.406Z][INFO] config:project:get-registries --> 200 (17 ms)
+[2026-10-07T13:28:12.936Z][INFO] project:list-packages --> 200 (558 ms)
+[2026-10-07T13:28:16.150Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:16.161Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:28:16.597Z][INFO] project:list-packages --> 200 (448 ms)
+[2026-10-07T13:28:27.992Z][INFO] project:list-packages --> 200 (15625 ms)
+[2026-10-07T13:28:27.994Z][INFO] project:list-packages --> 200 (20834 ms)
+[2026-10-07T13:28:27.994Z][INFO] project:list-packages --> 200 (11833 ms)
+[2026-10-07T13:28:28.541Z][INFO] Received shutdown request (SIGINT), shutting down Unity Package Manager

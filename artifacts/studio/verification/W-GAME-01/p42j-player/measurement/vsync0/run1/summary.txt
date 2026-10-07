@@ -1,0 +1,94 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 282366,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 282364,
+  "steadySeconds": 612.244,
+  "dtMs": {
+    "p50": 1.928,
+    "p95": 3.547,
+    "p99": 5.791,
+    "max": 1352.808,
+    "mean": 2.168
+  },
+  "fpsMean": 461.2,
+  "framesOver16_7ms": 302,
+  "framesOver100msOutsideTransitions": [
+    {
+      "frame": 7097,
+      "time_s": 19.2409,
+      "dt_ms": 374.077,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 109374,
+      "time_s": 223.6677,
+      "dt_ms": 174.926,
+      "region": "Blackmere Marsh"
+    },
+    {
+      "frame": 162268,
+      "time_s": 355.8197,
+      "dt_ms": 1352.808,
+      "region": "Drowned Belfry"
+    }
+  ],
+  "framesOver100msOutsideTransitionsCount": 3,
+  "transitions": [
+    {
+      "frame": 89795,
+      "time_s": 184.3876,
+      "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 9.442
+    },
+    {
+      "frame": 156835,
+      "time_s": 342.4594,
+      "marker": "region:Blackmere Marsh->Drowned Belfry",
+      "max_dt_ms": 12.5
+    },
+    {
+      "frame": 200460,
+      "time_s": 424.8914,
+      "marker": "reload|region:Drowned Belfry->Thornwick Village",
+      "max_dt_ms": 91.44
+    },
+    {
+      "frame": 208554,
+      "time_s": 441.9236,
+      "marker": "restore",
+      "max_dt_ms": 118.074
+    },
+    {
+      "frame": 208555,
+      "time_s": 441.9302,
+      "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 118.074
+    }
+  ],
+  "perRegion": {
+    "Blackmere Marsh": {
+      "frames": 140852,
+      "p95": 3.899,
+      "max": 174.926
+    },
+    "Drowned Belfry": {
+      "frames": 43625,
+      "p95": 3.123,
+      "max": 1352.808
+    },
+    "Thornwick Village": {
+      "frames": 97887,
+      "p95": 3.305,
+      "max": 374.077
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": true,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": true
+  },
+  "verdict": "fail"
+}
