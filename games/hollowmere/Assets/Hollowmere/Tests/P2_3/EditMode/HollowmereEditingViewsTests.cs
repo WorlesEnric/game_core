@@ -123,8 +123,11 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             using DialogueView view = new DialogueView(Context);
             view.ShowGraph(Runtime.Resolver.BuildRef(AssetDatabase.LoadMainAssetAtPath(GraphPath), null, false)!);
             view.SelectNode(0);
-            ApplyReport added = Expect(view.AddChoice(new[] { "Now", "Later" }, "When?"), DialogueEdits.AddChoiceTool, 2);
-            Assert.That(view.Document!.Find(0, DialogueDocument.PortOption, 0)!.To, Is.EqualTo(1));
+            ApplyReport added = view.AddChoice(new[] { "Now", "Later" }, "When?")!;
+            Assert.That(added, Is.Not.Null);
+            Assert.That(added.Ok, Is.True, ViewEdits.Describe(added));
+            Assert.That(added.Journaled, Is.True);
+            Assert.That(view.Document!.Find(0, DialogueDocument.PortOption, 0)?.To, Is.EqualTo(1), "the selected choice must reach the new choice through an Option, not an unused Next edge");
             Assert.That(view.Document.Find(1, DialogueDocument.PortOption, 0)!.To, Is.EqualTo(-1));
             Assert.That(view.Document.Find(1, DialogueDocument.PortOption, 1)!.To, Is.EqualTo(-1));
             Assert.That(view.Document.Nodes[1].Options[1].Text, Is.EqualTo("Later"));
