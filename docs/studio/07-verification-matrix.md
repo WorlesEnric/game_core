@@ -168,4 +168,4 @@ Four fresh actual game-window recordings use product `cb5e2aa20263209df2dea4ee17
 | VSync OFF | 607.729 / 608.971 | 3.404 / 3.463 | 0 / 0 | PASS / PASS |
 | VSync ON | 608.314 / 608.274 | 17.230 / 17.261 | 0 / 0 | Informational; literal p95 FAIL / FAIL |
 
-Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Full 68-row result: **59 PASS / 6 BLOCKED / 3 FAIL**; [packet](packets/P4.2i-same-revision.md).
+Maximum transition hitch is 123.080 ms; all four route/save/recording checks pass. No VSync averaging or budget relaxation is used. W-VOICE-01 was also rerun under SR-4.8: destructive final text stays visible and unsent, with unchanged task/request/journal counts; partial-revision visibility is not required. Full 68-row result: **60 PASS / 6 BLOCKED / 2 FAIL**; [packet](packets/P4.2i-same-revision.md).
