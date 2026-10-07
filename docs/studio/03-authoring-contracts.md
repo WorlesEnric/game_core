@@ -100,6 +100,8 @@ from traces), `query.references`, `query.impact`, `preview.stage`, `preview.comp
 `history.redo`, `project.save`, `project.reload`, `project.build`, `project.launch`, `asset.import` (verified),
 `asset.generate` (opens an etos task through D, returns an artifact ref).
 
+`assign` with `append: true` uses reference-set semantics: an already-listed Unity object is a recorded Applied no-op (`alreadyListed: true`, existing `index`) with no inverse mutation; a distinct reference appends and `index` still replaces.
+
 ## 6. Change set (owner: studio.core Edit)
 
 | JSON member | Presence |
