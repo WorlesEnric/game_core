@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.9507174">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="606" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.950717" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1268" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r9-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="72" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.914002" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2190838" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1269" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="72" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.912974" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1270" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="72" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.912187" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1271" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="72" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.911438" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1272" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="72" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.910669" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1207" name="R2UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.907903" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1209" name="R9_B_AlreadyRecoveredCandidateRefreshesLateJobBindingWithoutRestaging" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_AlreadyRecoveredCandidateRefreshesLateJobBindingWithoutRestaging" methodname="R9_B_AlreadyRecoveredCandidateRefreshesLateJobBindingWithoutRestaging" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" seed="682928937" result="Failed" start-time="2026-10-07 10:03:31Z" end-time="2026-10-07 10:03:32Z" duration="0.466452" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: null
+  But was:  <StageFailed: stage_context_changed: restage this candidate>
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_AlreadyRecoveredCandidateRefreshesLateJobBindingWithoutRestaging () [0x0009f] in /home/worlesenric/wkspace/gc-studio/r9-b/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:94
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1211" name="R9_B_ChangedCandidateCannotUsePreviouslyVerifiedJob" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_ChangedCandidateCannotUsePreviouslyVerifiedJob" methodname="R9_B_ChangedCandidateCannotUsePreviouslyVerifiedJob" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" seed="1561999813" result="Failed" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.215908" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_ChangedCandidateCannotUsePreviouslyVerifiedJob () [0x00089] in /home/worlesenric/wkspace/gc-studio/r9-b/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:122
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1210" name="R9_B_RefreshWithoutAddRecoversLateBindingButRefusesChangedSource" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_RefreshWithoutAddRecoversLateBindingButRefusesChangedSource" methodname="R9_B_RefreshWithoutAddRecoversLateBindingButRefusesChangedSource" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" seed="978808598" result="Failed" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.211590" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: null
+  But was:  <StageFailed: stage_context_changed: restage this candidate>
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R2UiRegressionTests.R9_B_RefreshWithoutAddRecoversLateBindingButRefusesChangedSource () [0x00071] in /home/worlesenric/wkspace/gc-studio/r9-b/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:107
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1934" name="Hollowmere.R9_B.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r9-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R9_B.EditMode.Tests.dll" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.016674" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2190838" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1935" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.015799" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1936" name="R9_B" fullname="Hollowmere.R9_B" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.015545" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1937" name="EditMode" fullname="Hollowmere.R9_B.EditMode" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.015356" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1938" name="Tests" fullname="Hollowmere.R9_B.EditMode.Tests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.015145" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1932" name="BuildTimestampTests" fullname="Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests" classname="Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.015000" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1933" name="R9B_BuildTimestamp_NonUtcHostPreservesUtcInstantAndRawUnityValue" fullname="Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests.R9B_BuildTimestamp_NonUtcHostPreservesUtcInstantAndRawUnityValue" methodname="R9B_BuildTimestamp_NonUtcHostPreservesUtcInstantAndRawUnityValue" classname="Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests" runstate="Runnable" seed="338707803" result="Failed" start-time="2026-10-07 10:03:32Z" end-time="2026-10-07 10:03:32Z" duration="0.014388" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  UTC ticks from Unity must not be shifted by the host's eight-hour offset.
+  String lengths are both 20. Strings differ at index 9.
+  Expected: "2026-10-07T06:34:27Z"
+  But was:  "2026-10-06T22:34:27Z"
+  --------------------^
+]]></message>
+                    <stack-trace><![CDATA[at Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests.R9B_BuildTimestamp_NonUtcHostPreservesUtcInstantAndRawUnityValue () [0x0019b] in /home/worlesenric/wkspace/gc-studio/r9-b/games/hollowmere/Assets/Hollowmere/Tests/R9_B/EditMode/BuildTimestampTests.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[Local zone: Asia/Shanghai; raw kind: Unspecified
+{
+  "result": "Unknown",
+  "platform": "0",
+  "scriptingBackend": "IL2CPP",
+  "managedStripping": "Low",
+  "unityVersion": "6000.0.75f1",
+  "revision": "r9-b-timestamp",
+  "outputPath": "",
+  "development": false,
+  "settingsChangedForBuild": false,
+  "totalSize": 0,
+  "totalTimeSeconds": 0.000,
+  "errors": 0,
+  "warnings": 0,
+  "startedUtc": "2026-10-06T22:34:27Z",
+  "startedRaw": "2026-10-07T06:34:27.1234567",
+  "startedRawKind": "Unspecified",
+  "scenes": ["Assets/Hollowmere/Boot/Boot.unity"],
+  "steps": [],
+  "messages": []
+}
+
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

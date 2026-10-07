@@ -77,6 +77,10 @@ namespace Hollowmere.R9_B
                         if (!ReferenceEquals(candidates.Add(candidate.Id, candidate), entry)) throw new InvalidOperationException("duplicate recovery entry");
                     }
                     window = StudioCandidatesWindow.Open(entry.Id);
+                    foreach (EditorWindow other in Resources.FindObjectsOfTypeAll<EditorWindow>())
+                        if (other != window && other.GetType().Namespace == "GameCore.Studio.UI") other.Close();
+                    window.position = new Rect(80, 80, 1100, 900);
+                    window.Focus();
                     activated = true;
                     return;
                 }
@@ -100,7 +104,7 @@ namespace Hollowmere.R9_B
                 if (enabled && ++settledFrames < 12) return;
                 if (enabled)
                 {
-                    string? captureProblem = Hollowmere.P2_1.Evidence.UnityWindowCapture.CaptureStudio(Path.Combine((string)config!["evidence"]!, "panel-admit-enabled.png"), true);
+                    string? captureProblem = Hollowmere.P2_1.Evidence.UnityWindowCapture.CaptureStudio(Path.Combine((string)config!["evidence"]!, "panel-admit-enabled.png"), false);
                     if (captureProblem != null) throw new InvalidOperationException(captureProblem);
                 }
                 Save("panel-result", new JObject {

@@ -75,6 +75,7 @@ async fn main() {
     let mut args = std::env::args().skip(1);
     let (mut binary, mut cache, mut context, mut evidence, mut service_root) =
         (None, None, None, None, None);
+    let mut resume_state = None;
     while let Some(flag) = args.next() {
         let value = PathBuf::from(args.next().expect("each option requires a path"));
         match flag.as_str() {
@@ -83,6 +84,7 @@ async fn main() {
             "--context" => context = Some(value),
             "--evidence" => evidence = Some(value),
             "--state-root" => service_root = Some(value),
+            "--resume-state" => resume_state = Some(value),
             _ => panic!(
                 "expected --companion PATH --cache PATH --context PATH --evidence PATH [--state-root PATH]"
             ),
@@ -111,9 +113,9 @@ async fn main() {
         "prepare again after source revision changes"
     );
     let project = context["projectId"].as_str().unwrap();
-    let catalog = context["catalogRevision"].as_str().unwrap();
+    let prepared_catalog = context["catalogRevision"].as_str().unwrap();
     assert_eq!(project.len(), 64);
-    assert_eq!(catalog.len(), 64);
+    assert_eq!(prepared_catalog.len(), 64);
     assert!(
         !source_project
             .join("UserSettings/GameCoreStudio.json")
@@ -130,7 +132,10 @@ async fn main() {
     };
     let evidence_root = repo.join("artifacts/studio/verification/W-MECH-01/r9-b");
     std::fs::create_dir_all(&evidence_root).unwrap();
-    assert!(!evidence.exists(), "refusing reused evidence");
+    assert!(
+        !evidence.exists() || resume_state.is_some(),
+        "refusing reused evidence"
+    );
     assert!(
         evidence
             .parent()
@@ -139,7 +144,7 @@ async fn main() {
             .unwrap()
             .starts_with(evidence_root.canonicalize().unwrap())
     );
-    std::fs::create_dir(&evidence).unwrap();
+    std::fs::create_dir_all(&evidence).unwrap();
     let evidence = evidence.canonicalize().unwrap();
     save(&evidence.join("project-context.json"), &context);
 
@@ -152,11 +157,13 @@ async fn main() {
         !service_root.starts_with(&repo),
         "signing authority must be external to the checkout"
     );
-    let state = tempfile::Builder::new()
-        .prefix("node-")
-        .tempdir_in(service_root)
-        .unwrap()
-        .keep();
+    let state = resume_state.clone().unwrap_or_else(|| {
+        tempfile::Builder::new()
+            .prefix("node-")
+            .tempdir_in(service_root)
+            .unwrap()
+            .keep()
+    });
     std::fs::set_permissions(&state, std::fs::Permissions::from_mode(0o700)).unwrap();
     save(
         &evidence.join("installation.json"),
@@ -180,15 +187,17 @@ async fn main() {
     let owner = json!(["gamecore-unity", project]).to_string();
     let fixture = repo.join("samples/mechanisms/pressure-plate/candidate");
     let candidate = evidence.join("candidate");
-    assert!(
-        Command::new("cp")
-            .arg("-a")
-            .arg(&fixture)
-            .arg(&candidate)
-            .status()
-            .unwrap()
-            .success()
-    );
+    if resume_state.is_none() {
+        assert!(
+            Command::new("cp")
+                .arg("-a")
+                .arg(&fixture)
+                .arg(&candidate)
+                .status()
+                .unwrap()
+                .success()
+        );
+    }
     let mut change_set: Value =
         serde_json::from_slice(&std::fs::read(candidate.join("change-set.json")).unwrap()).unwrap();
     // Fresh envelope identity only: package, proposal, operations and artifact bytes stay exact.
@@ -217,16 +226,18 @@ async fn main() {
         .join("_warm")
         .join(version);
     std::fs::create_dir_all(cache.parent().unwrap()).unwrap();
-    assert!(
-        Command::new("cp")
-            .args(["-a", "--reflink=auto"])
-            .arg(&cache_source)
-            .arg(&cache)
-            .status()
-            .unwrap()
-            .success(),
-        "private cache copy failed"
-    );
+    if resume_state.is_none() {
+        assert!(
+            Command::new("cp")
+                .args(["-a", "--reflink=auto"])
+                .arg(&cache_source)
+                .arg(&cache)
+                .status()
+                .unwrap()
+                .success(),
+            "private cache copy failed"
+        );
+    }
     std::fs::write(
         state.join("config.toml"),
         format!(
@@ -245,7 +256,11 @@ async fn main() {
     std::fs::set_permissions(&pairing_file, std::fs::Permissions::from_mode(0o600)).unwrap();
     let executable = state.join("gamecore-studio");
     std::fs::copy(&binary, &executable).unwrap();
-    let log = std::fs::File::create(state.join("companion.log")).unwrap();
+    let log = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(state.join("companion.log"))
+        .unwrap();
     let mut child = Companion(
         Command::new(&executable)
             .env("ETOS_URL", &node.url)
@@ -300,6 +315,9 @@ async fn main() {
     }
     let queued: Value = serde_json::from_slice(&std::fs::read(binding_path).unwrap()).unwrap();
     let job = queued["jobId"].as_str().unwrap();
+    // The panel submits only after gateway/catalog initialization. Its exact binding,
+    // not a pre-session export, is the authority used for all subsequent comparisons.
+    let catalog = queued["request"]["catalogRevision"].as_str().unwrap();
     let route = format!("/v1/stage/{job}");
     let completed = loop {
         let status: Value = request(reqwest::Method::GET, &route)
@@ -390,7 +408,7 @@ async fn main() {
         std::fs::copy(slot.join("out").join(file), evidence.join(file)).unwrap();
     }
     let graphical = evidence.join("graphical");
-    std::fs::create_dir(&graphical).unwrap();
+    std::fs::create_dir_all(&graphical).unwrap();
     save(
         &graphical.join("live-config.json"),
         &json!({

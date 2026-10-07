@@ -1,0 +1,9 @@
+{
+  "check_package_metadata.py": {"exitCode": 0, "packages": 42, "packageAssemblies": 92, "enginePins": 4, "gameEnginePins": 6, "lockSources": 3},
+  "check_game_core_csharp.py": {"exitCode": 0, "filesChecked": 1274},
+  "companionFmt": {"exitCode": 0},
+  "companionClippyAllTargetsDenyWarnings": {"exitCode": 0},
+  "companionDefaultTests": {"result": "FAIL", "failure": "a_slow_task_open_is_reread_not_failed observed requested/opening instead of running under concurrent host load"},
+  "companionSerialTests": {"result": "PASS", "passed": 153, "ignored": 12, "command": "cargo test -- --test-threads=1"},
+  "scope": "No companion product source was modified. Default-run failure retained rather than reported as an all-green default suite."
+}

@@ -1,0 +1,12 @@
+{
+  "failure": "W-DOC-02/p42i-lever-workflow/live-failure.txt",
+  "stage": "W-DOC-02/p42i-stage-submit-lever-20261007T061548.119706Z/service/job.json",
+  "jobId": "stg_1a11501b4ecb4f771c9eddb",
+  "changeSetId": "cs_01M4AG1YMKT3W6YENHJA308QFK",
+  "stagePass": true,
+  "stageDurationMs": 89220,
+  "failedReviewObserved": "Play after domain reload, nine coins, stage_context_changed before FetchVerdict/Admit",
+  "missingWitness": "The retained failed review does not dump entry.StageRequest, entry.StageJobId or current BuildStageRequest. Its exact three-way guard branch cannot be determined retrospectively.",
+  "inference": "LeverWalkthrough writes SessionState binding then Find(id) ?? Add(...); an already recovered entry bypasses RestoreStageJob. The new regression observes a missing entry binding before this exact ordering and reproduces the refusal.",
+  "comparisonWarning": "Passing pressure-plate expected/current bindings describe different candidates and are not proof of the failed lever entry's fields."
+}
