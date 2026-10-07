@@ -58,6 +58,33 @@ namespace GameCore.Studio.Edit.Tests
             });
         }
 
+        [Test]
+        public void R10_A_W_MECH_01_ImportedCacheDirtinessDoesNotBlockSavedAuthoring()
+        {
+            string path = "Assets/R10Imported-" + Guid.NewGuid().ToString("N") + ".txt";
+            string[] worlds = AssetDatabase.FindAssets("t:WorldDefinition");
+            Assert.That(worlds.Length, Is.EqualTo(1));
+            string worldPath = AssetDatabase.GUIDToAssetPath(worlds[0]);
+            UnityEngine.Object world = AssetDatabase.LoadMainAssetAtPath(worldPath);
+            Assert.That(EditorUtility.IsDirty(world), Is.False);
+            try
+            {
+                File.WriteAllText(path, "Imported source bytes remain authoritative.\n");
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+                UnityEngine.Object imported = AssetDatabase.LoadMainAssetAtPath(path);
+                EditorUtility.SetDirty(imported);
+                Assert.That(StageWorldSnapshot.DirtySourcePaths(), Does.Not.Contain(path));
+                EditorUtility.SetDirty(world);
+                Assert.That(StageWorldSnapshot.DirtySourcePaths(), Does.Contain(worldPath),
+                    "Unsaved native authoring must still refuse; imported cache state must not hide it.");
+            }
+            finally
+            {
+                EditorUtility.ClearDirty(world);
+                AssetDatabase.DeleteAsset(path);
+            }
+        }
+
         private static void WithWorld(Action<string, string, JObject> assertion)
         {
             if (AssetDatabase.FindAssets("t:WorldDefinition").Length != 1)

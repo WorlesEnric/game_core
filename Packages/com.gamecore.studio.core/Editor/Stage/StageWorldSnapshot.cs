@@ -79,7 +79,10 @@ namespace GameCore.Studio.Edit
             var paths = new SortedSet<string>(StringComparer.Ordinal);
             foreach (UnityEngine.Object asset in Resources.FindObjectsOfTypeAll<UnityEngine.Object>())
             {
-                if (!EditorUtility.IsPersistent(asset) || !EditorUtility.IsDirty(asset)) continue;
+                // Imported objects (for example UI Toolkit's loaded theme) can be dirtied by
+                // Editor rendering but cannot be saved back as authoring assets by SaveAssets.
+                // Their source files are covered by the inventory; native assets carry authored edits.
+                if (!EditorUtility.IsPersistent(asset) || !AssetDatabase.IsNativeAsset(asset) || !EditorUtility.IsDirty(asset)) continue;
                 string path = AssetDatabase.GetAssetPath(asset);
                 if (path.StartsWith("Assets/", StringComparison.Ordinal)) paths.Add(path);
             }
