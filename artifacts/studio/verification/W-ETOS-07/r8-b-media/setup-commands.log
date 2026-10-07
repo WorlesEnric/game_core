@@ -1,0 +1,10 @@
+$ /home/worlesenric/.local/opt/etos/bin/etosd init --profile local --root /tmp/r8-b-media-20261007/node --name r8-b-media --owner r8-b
+exit=0
+$ /home/worlesenric/.local/opt/etos/bin/etos agent install /tmp/r8-b-media-20261007/agent
+exit=0
+$ /home/worlesenric/.local/opt/etos/bin/etos app install /home/worlesenric/wkspace/gc-studio/r8-b/studio/etos/app
+exit=0
+$ /home/worlesenric/.local/opt/etos/bin/etos app pair gamecore-unity --approve --out /tmp/r8-b-media-20261007/scratch-pairing.json
+exit=0
+$ /home/worlesenric/.local/opt/etos/bin/etos agent install /tmp/r8-b-media-20261007/agent
+exit=1

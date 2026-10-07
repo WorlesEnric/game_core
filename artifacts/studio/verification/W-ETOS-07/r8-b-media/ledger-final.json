@@ -1,0 +1,53 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3752328,
+      "mediaType": "image/png",
+      "producer": {
+        "changeSetId": null,
+        "charge": {
+          "costUsd": 0.2,
+          "quantity": 1.0,
+          "tariff": {
+            "kind": "operator",
+            "model": "gpt-image-2",
+            "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+            "perUnitUsd": 0.2,
+            "provider": "echo-images",
+            "unit": "image",
+            "url": ""
+          }
+        },
+        "etosRef": "ref_01m4a1p8r23gsx61f02ca0enrq",
+        "jobId": null,
+        "key": "gc-d42d1260797e6b2adfb0e74ec4b8f7a35f8fa17e",
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "sha256": "36e071fa68dc08dad9cdd913d3e7dbf54c7a8f501a07007e39c29003c4fc7d50"
+    }
+  ],
+  "charges": [
+    {
+      "charge": {
+        "costUsd": 0.2,
+        "quantity": 1.0,
+        "tariff": {
+          "kind": "operator",
+          "model": "gpt-image-2",
+          "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+          "perUnitUsd": 0.2,
+          "provider": "echo-images",
+          "unit": "image",
+          "url": ""
+        }
+      },
+      "key": "gc-d42d1260797e6b2adfb0e74ec4b8f7a35f8fa17e",
+      "owner": "[\"gamecore-unity\",\"9f9a9d1e01a4652f2e4408bc8c3d61145c77483ba42c67f37c4642611f245fee\"]"
+    }
+  ],
+  "label": "final",
+  "observedUtc": "2026-10-07T02:05:01.876308+00:00",
+  "status": "PASS",
+  "workerRequests": 0
+}
