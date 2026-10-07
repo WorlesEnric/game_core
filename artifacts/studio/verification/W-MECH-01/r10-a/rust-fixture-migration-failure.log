@@ -1,0 +1,248 @@
+    Checking gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r10-a/studio/agent)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.84s
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/r10-a/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.18s
+     Running unittests src/lib.rs (/tmp/r10-a-cargo-target/debug/deps/gamecore_studio-7c49548b0c6f1153)
+
+running 102 tests
+test desk::tests::body_limit_covers_the_attachment_budget ... ok
+test api::tests::framework_rejections_become_etos_errors ... ok
+test desk::tests::rg_extensions_are_stripped ... ok
+test desk::tests::degraded_models_are_named_in_outcomes ... ok
+test error::tests::messages_are_redacted ... ok
+test config::tests::unknown_keys_are_errors ... ok
+test config::tests::file_and_env_override_defaults ... ok
+test error::tests::refusals_pass_through ... ok
+test desk::tests::digest_ignores_the_catalog_and_attachment_encoding ... ok
+test index::tests::authorable_type_ids_map_to_kinds ... ok
+test index::tests::states_are_consistent ... ok
+test index::tests::nodes_map_to_rows ... ok
+test model::tests::contract_examples_round_trip ... ok
+test model::tests::edit_requests_parse ... ok
+test redact::tests::keys_tokens_and_bearers_are_redacted ... ok
+test ops::tests::studio_ops_map_to_etos_ops ... ok
+test pricing::tests::r3_d14_bailian_published_character_examples ... ok
+test pricing::tests::r4_tariff_provenance_missing_placeholder_and_invalid_refuse ... ok
+test stage::cli::tests::arguments_parse_and_unknown_options_are_refused ... ok
+test redact::tests::r2_19_stream_and_json_secrets_are_redacted_before_write ... ok
+test stage::cli::tests::bad_invocations_exit_2 ... ok
+test stage::env::tests::provider_keys_and_tokens_never_reach_a_stage_child ... ok
+test stage::env::tests::secret_names_are_recognised_case_insensitively ... ok
+test stage::env::tests::this_process_environment_is_filtered ... ok
+test stage::pipeline::semantic::tests::r2_11_stage_int_denied_transitive_dependency_has_named_seam ... ok
+test stage::pipeline::semantic::tests::stage_tmp2_metadata_ignores_mutable_library_and_rejects_corruption ... ok
+test stage::cli::tests::scan_and_gc_and_discard_work_on_a_temporary_root ... ok
+test stage::pipeline::tests::dotnet_summary ... ok
+test stage::pipeline::tests::integrity_finds_missing_changed_and_extra_files ... ok
+test stage::pipeline::tests::nunit_totals_and_failures ... ok
+test index::tests::deltas_coalesce_per_key ... ok
+test stage::pipeline::tests::r2_11_cache_versions_and_one_cold_budget ... ok
+test stage::pipeline::tests::r6_a_01_snapshot_is_bound_to_request_revision_and_bytes ... ok
+test stage::sandbox::licensing::tests::r2_f2_license_links_and_unapproved_sources_fail_closed_and_clean_up ... ok
+test stage::pipeline::semantic::tests::r2_11_stage_int_shared_analyzer_fixture_and_strict_results ... ok
+test schema::tests::embedded_schemas_match_authoritative_documents_byte_for_byte ... ok
+test stage::sandbox::licensing::tests::r2_f2_private_license_copies_are_writable_isolated_and_deleted ... ok
+test stage::sandbox::tests::r2_11_docker_isolation_blocks_host_files_environment_and_network ... ignored, requires the locally provisioned gamecore-stage Docker image; no Unity or ETOS
+test stage::sandbox::tests::r2_11_docker_command_has_no_live_project_or_host_home ... ok
+test stage::sandbox::tests::r2_11_stage_int_results_are_owned_by_host_allocator ... ok
+test stage::sandbox::licensing::tests::stage_tmp_unity_cache_copy_is_private_and_disposable ... ok
+test stage::sandbox::tests::r2_f2_probe_requires_engine_handshake_even_when_allocator_exits_zero ... ok
+test stage::sandbox::tests::r2_f2_licensing_command_mounts_only_private_state_and_fixed_identity ... ok
+test stage::sandbox::tests::stage_tmp_short_mounts_refuse_symlink_escapes ... ok
+test stage::scan::tests::an_exemption_covers_only_its_exact_shape ... ok
+test stage::sandbox::tests::stage_tmp_unity_paths_are_short_and_job_private ... ok
+test stage::scan::tests::credentials_are_found_and_redacted ... ok
+test stage::scan::tests::legitimate_code_is_not_a_hit ... ok
+test stage::scan::tests::every_rule_has_a_positive_case ... ok
+test stage::scan::tests::r2_11_textual_paths_and_editor_hooks_never_bypass_prefilter ... ok
+test stage::scan::tests::r2_11_unsafe_reason_never_grants_authority ... ok
+test stage::scan::tests::rule_list_is_complete ... ok
+test stage::scan::tests::the_repository_allowlist_loads_and_bad_entries_are_refused ... ok
+test stage::scan::tests::unity_editor_is_legal_in_editor_code_only ... ok
+test desk::tests::slices_are_capped_from_the_end ... ok
+test stage::slot::tests::a_lock_of_a_dead_process_is_replaced ... ok
+test stage::slot::tests::a_recent_verdict_keeps_a_slot ... ok
+test stage::signing::tests::r2_09_hmac_rfc4231_and_installation_binding ... ok
+test stage::slot::tests::one_slot_per_change_set_and_one_change_set_per_slot ... ok
+test stage::slot::tests::gc_removes_old_unlocked_slots_only ... ok
+test stage::slot::tests::one_stage_per_slot ... ok
+test stage::slot::tests::r2_16_unparsable_locked_inode_survives_acquisition_and_gc ... ok
+test stage::slot::tests::slot_ids_and_defaults ... ok
+test stage::tests::lane_requests_are_strict ... ok
+test stage::tests::the_proposed_package_is_found_in_either_argument_shape ... ok
+test stage::tests::verdicts_and_env ... ok
+test stage::slot::tests::r2_16_stage_int_guard_drop_unlocks_inherited_description ... ok
+test ledger::tests::w_rec_03_completion_cannot_overwrite_cancellation ... ok
+test stage::verdict::tests::a_wrong_schema_is_refused ... ok
+test stage::verdict::tests::pass_needs_every_step_acceptable_and_a_full_run ... ok
+test stage::verdict::tests::r2_09_not_applicable_never_bypasses_a_mandatory_step ... ok
+test stage::verdict::tests::r6_a_01_missing_world_or_predicted_never_passes ... ok
+test stage::verdict::tests::the_verdict_ref_is_stable_and_changes_with_content ... ok
+test stage::verdict::tests::verdict_serialises_camel_case_without_nulls_and_round_trips ... ok
+test ledger::tests::catalogs_meta_and_stage_jobs ... ok
+test ledger::tests::requests_are_idempotent_and_conflicts_refused ... ok
+test util::tests::canonical_json_sorts_keys ... ok
+test util::tests::catalog_revision_ignores_the_revision_member ... ok
+test store::tests::put_verifies_and_addresses_by_content ... ok
+test util::tests::digests_normalise ... ok
+test util::tests::nulls_are_pruned_and_found ... ok
+test util::tests::topic_segments_are_valid_and_distinct ... ok
+test voice::tests::realtime_refusals_are_recovered_from_sdk_errors ... ok
+test util::tests::catalog_revision_matches_the_csharp_registry ... ok
+test ledger::tests::reask_candidate_inputs_and_give_up_are_atomic ... ok
+test store::tests::r2_26_corruption_is_refused_and_verified_put_repairs ... ok
+test stage::scan::tests::package_scan_covers_blobs_native_plugins_and_asmdefs ... ok
+test candidate::tests::a_complete_output_is_valid ... ok
+test candidate::tests::missing_ambiguous_schema_and_clarification ... ok
+test schema::tests::vendored_schema_accepts_the_contract_example_and_rejects_garbage ... ok
+test candidate::tests::digest_size_id_and_reference_failures_are_reported ... ok
+test candidate::tests::structural_rules_match_the_unity_validator ... ok
+test candidate::tests::catalog_and_candidate_mode_rules ... ok
+test blocking::tests::r2_27_slow_storage_does_not_stall_executor ... ok
+test schema::tests::request_schemas_compile_and_check ... ok
+test schema::tests::unity_sample_catalog_and_current_metadata_are_accepted ... ok
+test ledger::tests::w_rec_03_cancel_and_completion_have_one_durable_winner ... ok
+test stage::tests::w_rec_03_restart_finishes_requested_cancel_and_kills_recorded_child ... ok
+test stage::sandbox::tests::r2_11_stage_int_launcher_refuses_missing_cache_before_execution ... ok
+test stage::tests::w_rec_03_cancel_waits_for_child_teardown_and_releases_slot ... ok
+test stage::pipeline::tests::r2_19_child_log_is_redacted_before_process_exit ... ok
+test stage::pipeline::tests::a_child_gets_the_allowlisted_env_and_is_killed_at_its_deadline ... ok
+
+test result: ok. 101 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running unittests src/main.rs (/tmp/r10-a-cargo-target/debug/deps/gamecore_studio-78a602b15b9e6176)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/companion.rs (/tmp/r10-a-cargo-target/debug/deps/companion-8455471aa95cbf08)
+
+running 33 tests
+test r2_19_legacy_stage_extractor_is_retired ... ok
+test r3_d14_retained_budget_refuses_unpriced_before_provider_call ... ok
+test p42_ops_01_retained_unconfigured_3d_precedes_budget ... ok
+test etos_task_refusal_passes_through ... ok
+test r3_d14_priced_budget_binds_quantity_and_provider ... ok
+test proxy_token_and_app_are_checked_and_follow_restarts ... ok
+test a_degraded_model_is_named_in_the_outcome ... ok
+test invalid_candidate_without_reask_is_terminal ... ok
+test r3_d3b_hello_negotiates_before_project_header ... ok
+test r3_d24_unregistered_project_has_registration_hint ... ok
+test r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs ... ok
+test p42_live_01_ambiguous_scope_reasks_exactly_once ... ok
+test ops_generate_stores_artifacts_and_passes_refusals ... ok
+test r4_published_tts_charge_and_configured_missing_tariff ... ok
+test digest_mismatch_is_reasked_once_with_parent ... ok
+test r2_25_all_routes_isolate_apps_and_projects_and_replay_cursors ... ok
+test r4_tariffs_operator_cap_pair_ledger_and_hot_reload ... ok
+test requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped ... ok
+test index_deltas_are_coalesced_and_delivered ... ok
+test catalog_rules_are_reasked_and_a_refused_reask_settles_invalid ... ok
+test requests_are_idempotent_and_conflicts_refused ... ok
+test voice_refusal_passes_through ... ok
+test voice_session_ready_transcripts_and_close ... ok
+test restart_resumes_from_the_ledger_without_reopening ... ok
+test unresolved_requests_are_followed_at_most_three_more_times ... ok
+test w_rec_03_cancel_is_authenticated_owner_scoped_and_durable ... ok
+test request_task_candidate_with_verified_artifacts ... ok
+test p42_live_01_published_candidate_uses_request_index_slice ... ok
+test cancel_reports_the_etos_status ... ok
+test r3_d23_retained_sample_signed_app_stage_and_tamper_refusals ... ok
+test a_slow_task_open_is_reread_not_failed ... ok
+test request6_voice_stop_commits_before_close_when_vad_emits_nothing ... ok
+test a_slow_media_op_is_held_up_to_the_op_timeout ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.85s
+
+     Running tests/index_publication.rs (/tmp/r10-a-cargo-target/debug/deps/index_publication-7c5d8030c35785ed)
+
+running 3 tests
+test w_etos_04_graph_fields_publish_discoverable_owned_dialogue_nodes ... ok
+test w_etos_04_project_open_after_restart_removes_stale_graphs_only_for_owner ... ok
+test w_etos_04_graph_revisions_clear_removed_fields_shrink_undo_and_delete ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+
+     Running tests/r3_f_candidate.rs (/tmp/r10-a-cargo-target/debug/deps/r3_f_candidate-d7e1965be6fb8826)
+
+running 4 tests
+test d5_singleton_intersection_normalizes_raw_and_typed_with_nonblocking_evidence ... ok
+test d5_ambiguous_empty_and_explicit_disallowed_scopes_refuse ... ok
+test d4_d5_retained_robe_has_same_refusals_as_core ... ok
+test d4_instance_tint_contract_precheck ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/r4_c.rs (/tmp/r10-a-cargo-target/debug/deps/r4_c-424de33cadca0046)
+
+running 2 tests
+test p42_live_01_missing_or_ambiguous_index_refuses_and_reasks ... ok
+test p42_live_01_retained_generic_move_infers_indexed_instance ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/r6_a_real.rs (/tmp/r10-a-cargo-target/debug/deps/r6_a_real-eed726bd52cc7ae0)
+
+running 1 test
+test r6_a_02_real_stage_play_admit_smoke_undo ... ignored, myubuntu: provision stage-int cache first; real Docker Unity via shared allocator
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/real_node.rs (/tmp/r10-a-cargo-target/debug/deps/real_node-0d2460e338186a61)
+
+running 3 tests
+test r4_one_priced_tts_records_published_tariff ... ignored, requires live-run guard, R4 companion, paired client, and explicit paid TTS opt-in
+test real_node_end_to_end ... ignored, needs a real etosd with gamecore-studio installed (STUDIO_REAL_APP_KEY)
+test real_node_restart_recovery ... ignored, needs a real etosd and STUDIO_REAL_ETOS (restarts the agent)
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stage_int.rs (/tmp/r10-a-cargo-target/debug/deps/stage_int-e9d9e47cf31621f7)
+
+running 1 test
+test r2_11_stage_int_docker_pressure_signed_verdict ... ignored, myubuntu: provision stage-int cache first; real Docker Unity via shared allocator
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stage_lane.rs (/tmp/r10-a-cargo-target/debug/deps/stage_lane-ad27e8df4c7c2de6)
+
+running 4 tests
+test bad_lane_requests_are_refused ... ok
+test forbidden_content_fails_the_scan_and_no_code_runs ... ok
+test a_candidate_is_staged_scanned_and_checked_into_its_own_slot ... ok
+test r2_11_missing_semantic_analyzer_fails_dotnet_without_executing_candidate ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s
+
+     Running tests/stage_licensing.rs (/tmp/r10-a-cargo-target/debug/deps/stage_licensing-ddb1cdd0b6638693)
+
+running 1 test
+test r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state ... ignored, myubuntu only: installed Unity entitlement and gamecore-stage Docker image; host allocator
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stage_project_root.rs (/tmp/r10-a-cargo-target/debug/deps/stage_project_root-3ee78041fb374a75)
+
+running 5 tests
+test r5_04_existing_slot_cannot_reuse_another_project_binding ... ok
+test r5_04_revision_refuses_before_rebinding_mount ... ok
+test r5_04_mount_mismatch_refuses_before_slot_creation ... ok
+test r5_04_real_candidate_accepts_canonical_equivalent_source_path ... FAILED
+test r5_04_registered_project_pins_and_mount_share_root ... ok
+
+failures:
+
+---- r5_04_real_candidate_accepts_canonical_equivalent_source_path stdout ----
+
+thread 'r5_04_real_candidate_accepts_canonical_equivalent_source_path' (3450179) panicked at tests/stage_project_root.rs:179:36:
+called `Result::unwrap()` on an `Err` value: "stage_package_root_mismatch: sandbox mount /home/worlesenric/wkspace/gc-studio/r10-a/Packages differs from /tmp/.tmptiUCV8/source/Packages; register the intended checkout's project in stage.projects and pin local packages to that checkout's Packages/<package-name> (not the companion tools checkout)"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    r5_04_real_candidate_accepts_canonical_equivalent_source_path
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+error: test failed, to rerun pass `--test stage_project_root`

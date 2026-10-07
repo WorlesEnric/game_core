@@ -1,32 +1,74 @@
 {
-  "status": "FAIL",
+  "status": "PASS",
   "checks": [
     {
-      "file": "W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json",
-      "pointer": "/reason",
-      "equals": "rolled back: catalog_mismatch"
+      "file": "W-MECH-01/r10-a/final/cold/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
     },
     {
-      "file": "W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json",
-      "pointer": "/reason",
-      "equals": "rolled back: catalog_mismatch"
+      "file": "W-MECH-01/r10-a/final/cold/live-admit.json",
+      "pointer": "/outcome",
+      "equals": "Admitted"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/cold/live-undo.json",
+      "pointer": "/outcome",
+      "equals": "Undone"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/cold/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/warm/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/warm/live-admit.json",
+      "pointer": "/outcome",
+      "equals": "Admitted"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/warm/live-undo.json",
+      "pointer": "/outcome",
+      "equals": "Undone"
+    },
+    {
+      "file": "W-MECH-01/r10-a/final/warm/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
     }
   ],
   "evidence": [
-    "W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json",
-    "W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json",
-    "W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/admission.json",
-    "W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/admission.json"
+    "W-MECH-01/r10-a/final/cold/result.json",
+    "W-MECH-01/r10-a/final/cold/live-admit.json",
+    "W-MECH-01/r10-a/final/cold/live-undo.json",
+    "W-MECH-01/r10-a/final/cold/visual-review.json",
+    "W-MECH-01/r10-a/final/cold/signed-verdict.json",
+    "W-MECH-01/r10-a/final/cold/manifest.json",
+    "W-MECH-01/r10-a/final/cold/service/slot-out/editmode.xml",
+    "W-MECH-01/r10-a/final/cold/service/slot-out/playmode.xml",
+    "W-MECH-01/r10-a/final/warm/result.json",
+    "W-MECH-01/r10-a/final/warm/live-admit.json",
+    "W-MECH-01/r10-a/final/warm/live-undo.json",
+    "W-MECH-01/r10-a/final/warm/visual-review.json",
+    "W-MECH-01/r10-a/final/warm/signed-verdict.json",
+    "W-MECH-01/r10-a/final/warm/manifest.json",
+    "W-MECH-01/r10-a/final/warm/service/slot-out/editmode.xml",
+    "W-MECH-01/r10-a/final/warm/service/slot-out/playmode.xml"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism; after verified cold rollback only: python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism --mechanism-run warm",
-  "note": "Both current signed Docker stages pass (166.402s cold, 76.786s warm; each 36 EditMode and 2 PlayMode cases), but both creator admissions roll back with catalog_mismatch. Signed world 6c13778e differs from live re-baked d82aed18 after a stale-bake warning. No restored-world smoke or successful admission is claimed; both packages are removed and rollback completes.",
+  "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R10_A/run.py /tmp/r10-a-creator-final --label final --companion \"$PWD/studio/agent/target/debug/gamecore-studio\"",
+  "note": "R10-A scratch companion on :1: signed cold/warm stages 165.852/82.232s; actual creator Admit restores nine coins and 120-frame Pending\u2192Passed smoke in 34.751/30.089s, then normal History Undo in 36.494/33.832s. Both exercise worker-format edit/Apply/Undo without generated rebake and verify signed catalog equality. Zero paid operations; no installed-service qualification claimed.",
   "row": "W-MECH-01",
   "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
   "requirement": "SR-3.6, SR-9.3, B-STAGE",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T17:51:36.700710+00:00",
+  "revision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+  "baseline": "b0086c55",
+  "releaseId": "scratch-sha256:2880959f4a38b372d9d74b643869fc0dfaade617eaf215027f3553b012c6a180",
+  "evidencePath": "W-MECH-01/r10-a/final/cold/result.json",
+  "runStartedAt": "2026-10-07T17:27:53.657832+00:00"
 }

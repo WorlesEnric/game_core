@@ -38,13 +38,14 @@ def launch(config, flag, log):
     env = dict(os.environ, DISPLAY=':1', GAMECORE_R6_E_PAIRING_PATH=config['pairing'],
                UNITY=str(REPO / 'games/hollowmere/Assets/Hollowmere/Tests/R6_E/graphical-unity.sh'))
     command(['bash', REPO / 'studio/tools/unity-batch.sh', '--project', PROJECT,
-             '--log-dir', Path(config['evidence']) / 'logs', '--label', 'r8-c-' + flag,
+             '--log-dir', Path(config['evidence']) / 'logs', '--label', config.get('caseName', 'r8-c') + '-' + flag,
              '--attempts', '1', '--timeout', '1500', '--', '-force-glcore',
              '-executeMethod', 'Hollowmere.R8_B.LeverWalkthrough.Run',
-             '-gcR8C' + flag, Path(config['evidence']) / 'config.json'], log, env)
+             '-gcR8C' + flag, Path(config['evidence']) / 'config.json',
+             '-upmLogFile', Path(config['evidence']) / (flag.lower() + '-upm.log')], log, env)
 
 
-def walkthrough(work, candidate, companion, library, upm):
+def walkthrough(work, candidate, companion, library, upm, run=None):
     work = work.resolve()
     candidate = candidate.resolve()
     companion = companion.resolve()
@@ -77,12 +78,13 @@ def walkthrough(work, candidate, companion, library, upm):
         config.pop('request', None)
         for name in ('live-progress.json', 'live-failure.txt', 'stage-job.json', 'live-admit.json',
                      'live-undo.json', 'interactive-lever.json', 'automatic-refresh.json', 'last-pending.json',
-                     'signed-verdict.json', 'no-paid-ops.json', 'recovery-undo.json'):
+                     'signed-verdict.json', 'no-paid-ops.json', 'recovery-undo.json', 'source-world-snapshot.json',
+                     'panel-admit.json', 'pending-transitions.jsonl', 'undo-request.json'):
             (evidence / name).unlink(missing_ok=True)
         for image in evidence.glob('*.png'):
             image.unlink()
         save(evidence / 'config.json', config)
-        run_service(config, evidence, work / 'node', evidence / 'runner.log', install=False)
+        run_service(config, evidence, work / 'node', evidence / 'runner.log', install=False, run=run)
         return
     work.mkdir(mode=0o700, parents=True)
     evidence = work / 'evidence'
@@ -133,10 +135,10 @@ def walkthrough(work, candidate, companion, library, upm):
                   projectId=project_id, project=str(PROJECT), installedNodeUsed=False,
                   companionSha256=hashlib.sha256(companion.read_bytes()).hexdigest())
     save(evidence / 'config.json', config)
-    run_service(config, evidence, node, log, install=True)
+    run_service(config, evidence, node, log, install=True, run=run)
 
 
-def run_service(config, evidence, node, log, install):
+def run_service(config, evidence, node, log, install, run=None):
     state = Path(config['state'])
     env = dict(os.environ, ETOS_ROOT=str(node))
     for key in ['ETOS_SOCKET', 'http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'all_proxy']:
@@ -164,6 +166,9 @@ def run_service(config, evidence, node, log, install):
                     raise RuntimeError('Scratch companion readiness failed')
                 time.sleep(0.25)
             print('R8_C_SCRATCH_READY', evidence, flush=True)
+            if run is not None:
+                run(config, evidence, node, log)
+                return
             launch(config, 'Stage', log)
             # The source Editor has exited and released its lease before any sandbox probe can start.
             command([Path.home() / '.dotnet/dotnet', 'run', '--project',

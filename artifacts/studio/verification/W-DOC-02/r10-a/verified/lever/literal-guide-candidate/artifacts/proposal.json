@@ -1,0 +1,31 @@
+{
+  "adds": {
+    "definitions": [],
+    "events": [
+      "LeverToggled"
+    ],
+    "routes": [
+      "lever.toggle"
+    ],
+    "slots": [
+      "lever.state"
+    ],
+    "tools": []
+  },
+  "catalog": {
+    "type": "Hollowmere.Mechanism.Lever.Generated.LeverCatalog"
+  },
+  "package": "com.hollowmere.mechanism.lever",
+  "rules": {
+    "assembly": "Hollowmere.Mechanism.Lever.Rules",
+    "directory": "Rules",
+    "tests": "Tests/Rules"
+  },
+  "schema": "gamecore.studio.proposal/1",
+  "smokeTest": {
+    "method": "Begin",
+    "steps": 120,
+    "type": "Hollowmere.Mechanism.Lever.LeverSmoke"
+  },
+  "version": "0.1.0"
+}

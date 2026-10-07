@@ -1,0 +1,76 @@
+{
+  "id": "cs_01M4BPG5HZDHJ8C48KPTZQHM3B",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "mechanism.admit",
+      "args": {
+        "package": {
+          "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+        },
+        "proposal": {
+          "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+        },
+        "verdict": {
+          "artifact": "sha256:36e15a949bef56b4571777067e8d9496ba16164e0afa94c6131991c399f5172e"
+        }
+      },
+      "applyRequirement": "Compile"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+      "name": "package.tgz",
+      "mediaType": "application/gzip",
+      "bytes": 32839,
+      "role": "package"
+    },
+    {
+      "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+      "name": "proposal.json",
+      "mediaType": "application/json",
+      "bytes": 917,
+      "role": "proposal"
+    },
+    {
+      "sha256": "36e15a949bef56b4571777067e8d9496ba16164e0afa94c6131991c399f5172e",
+      "name": "verdict.json",
+      "mediaType": "application/vnd.gamecore.stage-verdict+json",
+      "bytes": 11691,
+      "role": "verdict"
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.admission",
+      "status": "pass",
+      "detail": "verified; confinement=docker; coldCache=False"
+    },
+    {
+      "scenario": "stage.verdict",
+      "status": "pass",
+      "detail": "pass verdict 36e15a949bef slot cs-01m4bpg5hzdhj8c48kptzqhm3b (82232 ms); sha256:36e15a949bef56b4571777067e8d9496ba16164e0afa94c6131991c399f5172e"
+    },
+    {
+      "scenario": "stage.undo",
+      "status": "pass",
+      "detail": "verified removal"
+    }
+  ],
+  "requirements": {
+    "max": "Compile",
+    "worldRebuild": false,
+    "compile": true,
+    "build": false
+  },
+  "state": "Undone",
+  "timestamps": {
+    "applied": "2026-10-07T17:37:06.281Z"
+  }
+}

@@ -32,6 +32,11 @@ namespace Hollowmere.R8_B
         [NonSerialized] private bool busy;
         [NonSerialized] private string domain = Guid.NewGuid().ToString("N");
         [NonSerialized] private bool refreshObserved;
+        [NonSerialized] private StudioCandidatesWindow? window;
+        [NonSerialized] private string? lastPending;
+
+        private static bool IsLever(JObject config) => (string?)config["mechanism"] != "pressure-plate";
+        private static string Package(JObject config) => IsLever(config) ? LeverPackage : HollowmereAdmittedSmoke.PressurePlatePackage;
 
         private static string Argument(string flag)
         {
@@ -78,8 +83,15 @@ namespace Hollowmere.R8_B
                 StageAdmission stage = StageAdmission.Of(runtime);
                 if (Directory.Exists(stage.StateRoot) && Directory.GetFiles(stage.StateRoot, "pending-*.json").Length != 0)
                     throw new InvalidOperationException("Existing pending admission must be resolved by its owner");
-                if (Directory.Exists(Path.Combine(Project, "Packages", LeverPackage)))
-                    throw new InvalidOperationException("The lever package is already installed");
+                if (Directory.Exists(Path.Combine(Project, "Packages", Package(config))))
+                    throw new InvalidOperationException("The candidate package is already installed");
+                GraphicsWitness();
+                EditorSceneManager.OpenScene("Assets/Hollowmere/Boot/Boot.unity");
+                if ((bool?)config["workerEditUndo"] == true)
+                    Hollowmere.R10_A.SourceFreshness.Exercise(runtime, (string)config["evidence"]!);
+                stage.PrepareStageWorldSnapshot();
+                File.Copy(Path.Combine(Project, "Library", "GameCoreStudio", "StageWorldSnapshot.json"),
+                    Path.Combine((string)config["evidence"]!, "source-world-snapshot.json"), false);
                 string candidatePath = (string)config["candidate"]!;
                 ChangeSet candidate = StageAdmission.Of(runtime).RetainCandidate(candidatePath);
                 StageCandidateRequest request = stage.BuildStageRequest(candidate, Project);
@@ -125,7 +137,7 @@ namespace Hollowmere.R8_B
             JObject? pending = instance.admission?.ReadPending((string)config["request"]!["changeSetId"]!);
             reloads.Add(new JObject {
                 ["phase"] = progress["phase"], ["pendingPhase"] = pending?["phase"],
-                ["packageInstalled"] = Directory.Exists(Path.Combine(Project, "Packages", LeverPackage)),
+                ["packageInstalled"] = Directory.Exists(Path.Combine(Project, "Packages", Package(config))),
                 ["domain"] = instance.domain, ["atMs"] = Now,
             });
             progress["reloads"] = reloads;
@@ -237,20 +249,64 @@ namespace Hollowmere.R8_B
                     if (problem != null || !context.Candidates.CanAdmit(entry))
                         throw new InvalidOperationException("Creator review has no authenticated passing verdict: " + problem?.Message);
                     StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "signed-verdict.json"), entry.VerifiedVerdict!.Document.ToString());
+                    window = StudioCandidatesWindow.Open(entry.Id);
+                    foreach (EditorWindow other in Resources.FindObjectsOfTypeAll<EditorWindow>())
+                        if (other != window && other.GetType().Namespace == "GameCore.Studio.UI") other.Close();
+                    window.position = new Rect(80, 80, 1100, 900);
+                    window.Focus();
                     progress["initialVerifiedJobId"] = (string)config["jobId"]!;
+                    progress["phase"] = "review";
+                    progress["reviewStartedMs"] = Now;
+                    Save(evidence, progress);
+                    return;
+                }
+                if (phase == "review" && Now - (long)progress["reviewStartedMs"]! >= 1500)
+                {
+                    CandidateEntry entry = StudioUiSession.Context.Candidates.Find(expected.ChangeSetId)
+                        ?? throw new InvalidOperationException("The creator candidate entry disappeared");
+                    Button? button = window?.rootVisualElement.Q<Button>("candidate-admit");
+                    Toggle? capture = window?.rootVisualElement.Q<Toggle>("candidate-admit-capture");
+                    if (button == null || !button.enabledInHierarchy || button.panel == null
+                        || capture == null || !capture.enabledInHierarchy || !capture.value
+                        || !EditorApplication.isPlaying || boot?.GetComponent<HollowmereGame>().Director?.ItemCount("OldCoin") != 9
+                        || !StudioUiSession.Context.Candidates.CanAdmit(entry))
+                        throw new InvalidOperationException("The real creator Admit/capture controls are not ready in Play");
+                    string? captureProblem = Hollowmere.P2_1.Evidence.UnityWindowCapture.CaptureStudio(
+                        Path.Combine(evidence, "panel-admit-enabled.png"), false);
+                    if (captureProblem != null) throw new InvalidOperationException(captureProblem);
+                    StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "panel-admit.json"), new JObject {
+                        ["control"] = button.name, ["event"] = "NavigationSubmitEvent", ["enabled"] = true,
+                        ["captureAndStop"] = capture.value, ["coins"] = 9, ["graphics"] = GraphicsWitness(),
+                        ["jobId"] = entry.StageJobId, ["request"] = JObject.FromObject(expected),
+                    }.ToString());
                     progress["phase"] = "admission";
                     progress["admissionStartedMs"] = Now;
                     progress["admissionDomain"] = domain;
                     Save(evidence, progress);
-                    AdmissionResult result = context.Candidates.Admit(entry, captureAndStop: true);
-                    if (result.Outcome != AdmissionOutcome.Pending) throw new InvalidOperationException(result.Detail);
+                    using (NavigationSubmitEvent submit = NavigationSubmitEvent.GetPooled())
+                    {
+                        submit.target = button;
+                        button.SendEvent(submit);
+                    }
+                    if (entry.Admission?.Outcome != AdmissionOutcome.Pending)
+                        throw new InvalidOperationException("The creator Admit control did not start normal pending admission: " + entry.Admission?.Detail);
                     return;
                 }
                 if (phase == "admission" || phase == "undo")
                 {
                     JObject? pending = admission.ReadPending(expected.ChangeSetId);
                     if (pending != null)
+                    {
+                        string serialized = pending.ToString(Newtonsoft.Json.Formatting.None);
                         StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "last-pending.json"), pending.ToString());
+                        if (serialized != lastPending)
+                        {
+                            File.AppendAllText(Path.Combine(evidence, "pending-transitions.jsonl"), new JObject {
+                                ["observedMs"] = Now, ["domain"] = domain, ["driverPhase"] = phase, ["pending"] = pending,
+                            }.ToString(Newtonsoft.Json.Formatting.None) + "\n");
+                            lastPending = serialized;
+                        }
+                    }
                     if (runtime.Journal.Read(expected.ChangeSetId)?.EffectiveState == ChangeSetState.Failed)
                         throw new InvalidOperationException("admission rolled back; inspect retained compile records");
                     if (phase == "admission" && domain != (string)progress["admissionDomain"]!
@@ -271,6 +327,11 @@ namespace Hollowmere.R8_B
                 }
                 if (phase == "admitted" && Now - (long)progress["admittedMs"]! >= 2000)
                 {
+                    if (!IsLever(config))
+                    {
+                        BeginUndo(runtime, expected.ChangeSetId, evidence, progress);
+                        return;
+                    }
                     CaptureLever(evidence, "lever-off-before");
                     ActivateLever();
                     progress["phase"] = "lever-on";
@@ -298,14 +359,26 @@ namespace Hollowmere.R8_B
                         ["control"] = "lever-toggle", ["coins"] = boot!.GetComponent<HollowmereGame>().Director!.ItemCount("OldCoin"),
                         ["graphics"] = GraphicsWitness(),
                     }.ToString());
-                    progress["phase"] = "undo";
-                    progress["undoStartedMs"] = Now;
-                    Save(evidence, progress);
-                    runtime.History.Undo(expected.ChangeSetId);
+                    BeginUndo(runtime, expected.ChangeSetId, evidence, progress);
                 }
             }
             catch (Exception error) { Fail(error); }
             finally { busy = false; }
+        }
+
+        private static void BeginUndo(StudioRuntime runtime, string changeSetId, string evidence, JObject progress)
+        {
+            progress["phase"] = "undo";
+            progress["undoStartedMs"] = Now;
+            Save(evidence, progress);
+            var result = runtime.History.Undo(changeSetId);
+            JObject? pending = StageAdmission.Of(runtime).ReadPending(changeSetId);
+            bool accepted = result.Ok || (pending != null && (string?)pending["action"] == "undo");
+            StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "undo-request.json"), new JObject {
+                ["changeSetId"] = changeSetId, ["ok"] = result.Ok, ["accepted"] = accepted,
+                ["pendingPhase"] = pending?["phase"], ["requestedMs"] = progress["undoStartedMs"],
+            }.ToString());
+            if (!accepted) throw new InvalidOperationException("Normal History admission undo was refused");
         }
 
         private static void FrameGameView()
@@ -403,14 +476,19 @@ namespace Hollowmere.R8_B
                     GameBoot? boot = UnityEngine.Object.FindAnyObjectByType<GameBoot>();
                     HollowmereAdmittedSmoke? smoke = boot == null ? null : ObservedSmoke(boot);
                     long wallMs = Now - (long)progress["admissionStartedMs"]!;
+                    // The maintained pressure fixture is an observer-only mechanism; only the lever
+                    // declares a world extension. Both still verify the complete signed catalog set.
+                    JObject signed = JObject.Parse(File.ReadAllText(Path.Combine(evidence, "signed-verdict.json")));
+                    string? expectedRoot = (string?)signed["catalogDelta"]![IsLever(config) ? "predicted" : "world"];
                     if (!EditorApplication.isPlaying || boot?.Saves == null || !boot.AdmissionReady(boot.Saves)
                         || smoke == null || smoke.Steps != 120 || smoke.Transitions.Count != 2
                         || smoke.Transitions[0] != "Pending" || smoke.Transitions[1] != "Passed"
-                        || smoke.MechanismStates.Count != 3 || smoke.MechanismStates[0] != 0
-                        || smoke.MechanismStates[1] != 1 || smoke.MechanismStates[2] != 0
+                        || (IsLever(config) && (smoke.MechanismStates.Count != 3 || smoke.MechanismStates[0] != 0
+                            || smoke.MechanismStates[1] != 1 || smoke.MechanismStates[2] != 0))
                         || !smoke.CheckpointRoundTripsEqual || smoke.RestoredCheckpointSlotHash.Length != 64
                         || boot.GetComponent<HollowmereGame>().Director!.ItemCount("OldCoin") != 9
                         || string.IsNullOrEmpty(result.Predicted) || result.Live != result.Predicted
+                        || string.IsNullOrEmpty(expectedRoot) || boot.World?.Root.CatalogHash.ToHex() != expectedRoot
                         || result.Confinement != "docker" || result.Milliseconds > AdmissionBudgetMs || wallMs > AdmissionBudgetMs
                         || domain == (string)progress["admissionDomain"]!
                         || !refreshObserved)
@@ -425,6 +503,7 @@ namespace Hollowmere.R8_B
                     witness["finalSlotHash"] = smoke.FinalSlotHash;
                     witness["checkpointRoundTripsEqual"] = smoke.CheckpointRoundTripsEqual;
                     witness["coins"] = 9;
+                    witness["restoredRootCatalogHash"] = boot.World!.Root.CatalogHash.ToHex();
                     witness["admissionWallMs"] = wallMs;
                     witness["admissionBudgetMs"] = AdmissionBudgetMs;
                     witness["resumedDomain"] = domain;
@@ -442,7 +521,7 @@ namespace Hollowmere.R8_B
                     long wallMs = Now - (long)progress["undoStartedMs"]!;
                     if (string.IsNullOrEmpty(result.Before) || result.Before != result.Live || wallMs > UndoBudgetMs
                         || admission!.ReadPending(result.ChangeSetId) != null
-                        || Directory.Exists(Path.Combine(Project, "Packages", LeverPackage)))
+                        || Directory.Exists(Path.Combine(Project, "Packages", Package(config))))
                         throw new InvalidOperationException("undo catalog/package/pending-state witness or 180s removal bound failed");
                     JObject witness = result.ToJson();
                     witness["undoWallMs"] = wallMs;

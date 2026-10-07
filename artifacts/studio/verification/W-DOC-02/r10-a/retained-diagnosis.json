@@ -1,0 +1,21 @@
+{
+  "finding": "P4.2j request #2",
+  "row": "W-DOC-02",
+  "pendingWitness": "artifacts/studio/verification/W-DOC-02/p42j-lever-literal/last-pending.json",
+  "pendingPhase": "compile",
+  "compileOutcome": "pending",
+  "deadlineMilliseconds": 90000,
+  "upmWitness": "artifacts/studio/verification/W-DOC-02/p42j-lever-literal-review-20261007T133258.506317Z/upm.log",
+  "resolveStartUtc": "2026-10-07T13:34:03.240Z",
+  "resolveEndUtc": "2026-10-07T13:36:44.488Z",
+  "resolveMilliseconds": 161248,
+  "registryError": "ECONNRESET connecting to packages.unity.com",
+  "registryErrorUtc": ["2026-10-07T13:34:17.632Z", "2026-10-07T13:35:19.151Z", "2026-10-07T13:36:20.965Z", "2026-10-07T13:36:25.838Z"],
+  "editorWitness": "artifacts/studio/verification/W-DOC-02/p42j-lever-literal-review-20261007T133258.506317Z/logs/p42j-lever-literal-review-20261007T213258-2867679-a1.log",
+  "invokePackagesCallbackMilliseconds": 161447.365,
+  "assetRefreshSeconds": 171.157,
+  "cause": "Public Unity PackageManager.Client.Resolve calls Resolve_Internal(true), forcing remote resolution during local embedded-package admission. Native package registration blocks Refresh beyond the durable deadline.",
+  "excludedExplanation": "Authenticated resumer binding had completed and called CompilePending before the recorded stall; the witness is not a wait for the stage service.",
+  "apiSource": "https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/6000.0/Modules/PackageManager/Editor/Managed/PackageManager.bindings.cs",
+  "runtimeVerification": "Not yet performed. Retained failure is not rerun or relabeled."
+}

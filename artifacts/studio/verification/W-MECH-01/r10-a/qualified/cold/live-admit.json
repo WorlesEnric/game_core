@@ -1,0 +1,42 @@
+{
+  "changeSetId": "cs_01M4BNQSP0K4EHX1BZ9C3XVS7F",
+  "outcome": "Admitted",
+  "detail": "Admitted and verified.",
+  "milliseconds": 39507.0,
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "directory": "Packages/com.hollowmere.mechanism.pressureplate",
+  "verdict": "sha256:8eb70a73795ca55d2e95b38e7de5dd817daef9ea867e477db7f259a7dc504e68",
+  "slot": "cs-01m4bnqsp0k4ehx1bz9c3xvs7f",
+  "before": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "live": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+  "predicted": "361ae5328dc281f6fa7142fc551671baed8cbb7d0f2e14b7abbc858c8cd0772d",
+  "confinement": "docker",
+  "coldCache": true,
+  "captureSlot": "admit-cs_01m4bnqsp0k4ehx1bz9c3xvs7f",
+  "smokeSteps": 120,
+  "smokeTransitions": [
+    "Pending",
+    "Passed"
+  ],
+  "smokeReport": "pass: active root Running, catalog d82aed185b6d, round trip equal (slot hash 8c4c963b4194); 120 game frame(s) stepped and asserted [Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin, steps 120]",
+  "mechanismStates": [],
+  "restoredCheckpointSlotHash": "e5b7a94bd921d44a0e9e1d7099edf7994eed678a7a3fcda46191ee5e4250a02d",
+  "initialSlotHash": "",
+  "finalSlotHash": "8c4c963b4194642288752db55d7f9fc203e7a57658b1591b757ec2e85605bebc",
+  "checkpointRoundTripsEqual": true,
+  "coins": 9,
+  "restoredRootCatalogHash": "d82aed185b6d2e4f415e1e8d45f8d70a4e2f6779be825786ba03db3b3b447c18",
+  "admissionWallMs": 39531,
+  "admissionBudgetMs": 90000,
+  "resumedDomain": "2444f4966716443192f5666c1da3cae2",
+  "graphics": {
+    "isBatchMode": false,
+    "display": ":1",
+    "deviceType": "OpenGLCore",
+    "deviceName": "NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2",
+    "deviceVendor": "NVIDIA Corporation",
+    "deviceVersion": "OpenGL 4.5.0 NVIDIA 595.84",
+    "isPlaying": true,
+    "observedMs": 1791393586614
+  }
+}

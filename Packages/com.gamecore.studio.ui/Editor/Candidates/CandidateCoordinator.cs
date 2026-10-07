@@ -473,6 +473,10 @@ namespace GameCore.Studio.UI
             try
             {
                 IStageService service = admission.Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Pending,
+                    "Saving authored source and computing current world catalog (no rebake).", entry.ChangeSet);
+                Changed?.Invoke();
+                admission.PrepareStageWorldSnapshot();
                 StageCandidateRequest request = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
                 entry.StageRequest = request;
                 entry.StageJobId = null;

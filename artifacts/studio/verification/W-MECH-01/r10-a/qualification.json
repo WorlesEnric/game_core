@@ -1,0 +1,85 @@
+{
+  "sourceRevision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+  "cases": [
+    {
+      "caseName": "R10_A_01_cold",
+      "status": "PASS",
+      "changeSetId": "cs_01M4BPG5GT8DP3NPVVYP0GBRR6",
+      "jobId": "stg_1a117691e438a18f050b6d1",
+      "sourceRevision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+      "coldCache": true,
+      "signedStageMs": 165852,
+      "stageWallMs": 167903.516264,
+      "admissionWallMs": 34751,
+      "undoWallMs": 36494,
+      "admissionBudgetMs": 90000,
+      "installedNodeUsed": false,
+      "xml": {
+        "editmode": {
+          "passed": 36,
+          "failed": 0,
+          "skipped": 0
+        },
+        "playmode": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        }
+      }
+    },
+    {
+      "caseName": "R10_A_01_warm",
+      "status": "PASS",
+      "changeSetId": "cs_01M4BPG5HZDHJ8C48KPTZQHM3B",
+      "jobId": "stg_1a1176e476a4fa189e12707",
+      "sourceRevision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+      "coldCache": false,
+      "signedStageMs": 82232,
+      "stageWallMs": 83776.246468,
+      "admissionWallMs": 30089,
+      "undoWallMs": 33832,
+      "admissionBudgetMs": 90000,
+      "installedNodeUsed": false,
+      "xml": {
+        "editmode": {
+          "passed": 36,
+          "failed": 0,
+          "skipped": 0
+        },
+        "playmode": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        }
+      }
+    },
+    {
+      "caseName": "R10_A_02",
+      "status": "PASS",
+      "changeSetId": "cs_01M4BPG5NXKMSNBV83CT0YDQRK",
+      "jobId": "stg_1a11771ea31c3143aaf050a",
+      "sourceRevision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+      "coldCache": false,
+      "signedStageMs": 88035,
+      "stageWallMs": 88747.305851,
+      "admissionWallMs": 47375,
+      "undoWallMs": 34288,
+      "admissionBudgetMs": 90000,
+      "installedNodeUsed": false,
+      "xml": {
+        "editmode": {
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0
+        },
+        "playmode": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        }
+      }
+    }
+  ],
+  "authority": "scratch companion authenticated signed records; creator Admit controls; no installed service",
+  "admissionBudgetMs": 90000
+}

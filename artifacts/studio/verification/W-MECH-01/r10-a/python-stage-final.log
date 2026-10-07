@@ -1,0 +1,69 @@
+test_make_slot_reseeds_context_on_reuse (test_analysis_context.AnalysisContextTests.test_make_slot_reseeds_context_on_reuse) ... ok
+test_seed_reuse_and_tamper (test_analysis_context.AnalysisContextTests.test_seed_reuse_and_tamper) ... ok
+test_source_parent_link_refused (test_analysis_context.AnalysisContextTests.test_source_parent_link_refused) ... ok
+test_R2_11_StageIntArchiveTamper (test_cache.CacheTests.test_R2_11_StageIntArchiveTamper) ... ok
+test_R2_11_StageIntExpandedDllTamper (test_cache.CacheTests.test_R2_11_StageIntExpandedDllTamper) ... ok
+test_R2_11_StageIntExtraPackageRefused (test_cache.CacheTests.test_R2_11_StageIntExtraPackageRefused) ... ok
+test_R2_11_StageIntLinkRefused (test_cache.CacheTests.test_R2_11_StageIntLinkRefused) ... ok
+test_R2_11_StageIntNuGetEscapedPayloadNames (test_cache.CacheTests.test_R2_11_StageIntNuGetEscapedPayloadNames) ... ok
+test_R2_11_StageIntPinnedClosure (test_cache.CacheTests.test_R2_11_StageIntPinnedClosure) ... ok
+test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs (test_cache.CacheTests.test_R7_A_CompleteVerificationRejectsMissingAndCorruptInputs) ... stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/tmp8f8wmdlb/new-private-stage/_warm/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ok
+test_R7_A_InvalidSeedNeverPassesProvisioning (test_cache.CacheTests.test_R7_A_InvalidSeedNeverPassesProvisioning) ... ok
+test_R7_A_ProvisionExactVersionAndPreserveColdGrace (test_cache.CacheTests.test_R7_A_ProvisionExactVersionAndPreserveColdGrace) ... stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/tmp839mvu81/new-private-stage/_warm/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/tmp839mvu81/new-private-stage/_warm/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+stage cache: verified pinned NuGet, Unity metadata and UPM payloads at /tmp/tmp839mvu81/new-private-stage/_warm/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ok
+test_R7_A_RejectForeignOrMalformedVersionBeforeWrites (test_cache.CacheTests.test_R7_A_RejectForeignOrMalformedVersionBeforeWrites) ... ok
+test_R7_A_RejectLinkedVersionedRootBeforeWrites (test_cache.CacheTests.test_R7_A_RejectLinkedVersionedRootBeforeWrites) ... ok
+test_R7_A_RequireBothOfflineUnityInputsBeforeProvisioning (test_cache.CacheTests.test_R7_A_RequireBothOfflineUnityInputsBeforeProvisioning) ... usage: cache.py [-h] [--stage-root STAGE_ROOT] [--repo REPO]
+                [--source-project SOURCE_PROJECT] [--binary BINARY] [--verify]
+                [--complete] [--offline-from OFFLINE_FROM]
+                [--unity-library UNITY_LIBRARY] [--upm-from UPM_FROM]
+                [cache]
+cache.py: error: complete provisioning requires --unity-library and --upm-from
+usage: cache.py [-h] [--stage-root STAGE_ROOT] [--repo REPO]
+                [--source-project SOURCE_PROJECT] [--binary BINARY] [--verify]
+                [--complete] [--offline-from OFFLINE_FROM]
+                [--unity-library UNITY_LIBRARY] [--upm-from UPM_FROM]
+                [cache]
+cache.py: error: complete provisioning requires --unity-library and --upm-from
+usage: cache.py [-h] [--stage-root STAGE_ROOT] [--repo REPO]
+                [--source-project SOURCE_PROJECT] [--binary BINARY] [--verify]
+                [--complete] [--offline-from OFFLINE_FROM]
+                [--unity-library UNITY_LIBRARY] [--upm-from UPM_FROM]
+                [cache]
+cache.py: error: complete provisioning requires --unity-library and --upm-from
+ok
+test_O52_CacheKeyTracksVersions (test_host.HostTests.test_O52_CacheKeyTracksVersions) ... ok
+test_O52_JournalResetRequiresScratchMarker (test_host.HostTests.test_O52_JournalResetRequiresScratchMarker) ... ok
+test_R2_13_LegacyRequestRefused (test_host.HostTests.test_R2_13_LegacyRequestRefused) ... ok
+test_R2_17_UnownedCountAndStalePid (test_host.HostTests.test_R2_17_UnownedCountAndStalePid) ... ok
+test_R2_18_EnvironmentIsEnumerated (test_host.HostTests.test_R2_18_EnvironmentIsEnumerated) ... ok
+test_R2_19_PartialAndMultilineLogs (test_host.HostTests.test_R2_19_PartialAndMultilineLogs) ... ok
+test_R2_19_RedactorAllForms (test_host.HostTests.test_R2_19_RedactorAllForms) ... ok
+test_R2_37_O48_XmlDispositions (test_host.HostTests.test_R2_37_O48_XmlDispositions) ... ok
+test_R2_37_RequiredCaseAndSuiteDisposition (test_host.HostTests.test_R2_37_RequiredCaseAndSuiteDisposition) ... ok
+test_R5_04_mount_mismatch_precedes_candidate_access (test_package_root.PackageRootTests.test_R5_04_mount_mismatch_precedes_candidate_access) ... ok
+test_R5_04_shared_root_cases (test_package_root.PackageRootTests.test_R5_04_shared_root_cases) ... ok
+test_R5_04_unregistered_checkout_has_no_root (test_package_root.PackageRootTests.test_R5_04_unregistered_checkout_has_no_root) ... ok
+test_R2_11_StageIntPublicUpmMetadataAndMappingIntegrity (test_upm_cache.UpmTests.test_R2_11_StageIntPublicUpmMetadataAndMappingIntegrity) ... ok
+test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_candidate_snapshot_cannot_replace_missing_source_receipt) ... ok
+test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_imported_binary_data_changes_invalidate_snapshot) ... ok
+test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_linked_source_receipt_cannot_authorize_export) ... ok
+test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_new_or_deleted_definition_invalidates_snapshot) ... ok
+test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_package_contributor_changes_invalidate_snapshot) ... ok
+test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_snapshot_revision_and_description_tampering_refuse) ... ok
+test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_source_edit_after_export_cannot_be_signed) ... ok
+test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_stale_committed_bake_without_current_export_refuses_early) ... ok
+test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake (test_world_snapshot.WorldSnapshotTests.test_R10_A_W_MECH_01_worker_edit_and_normal_undo_export_current_not_committed_bake) ... ok
+test_R6_A_01_missing_and_ambiguous_world_fail_closed (test_world_snapshot.WorldSnapshotTests.test_R6_A_01_missing_and_ambiguous_world_fail_closed) ... ok
+test_R6_A_01_reused_destination_link_refused (test_world_snapshot.WorldSnapshotTests.test_R6_A_01_reused_destination_link_refused) ... ok
+test_R6_A_01_source_export_is_bound_read_only_and_not_candidate_input (test_world_snapshot.WorldSnapshotTests.test_R6_A_01_source_export_is_bound_read_only_and_not_candidate_input) ... ok
+test_R6_A_01_source_link_refused (test_world_snapshot.WorldSnapshotTests.test_R6_A_01_source_link_refused) ... ok
+test_source_inventory_never_follows_private_or_unimported_paths (test_world_snapshot.WorldSnapshotTests.test_source_inventory_never_follows_private_or_unimported_paths) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 1.262s
+
+OK

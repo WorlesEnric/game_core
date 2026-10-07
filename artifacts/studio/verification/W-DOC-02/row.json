@@ -1,27 +1,46 @@
 {
-  "status": "FAIL",
+  "status": "PASS",
   "checks": [
     {
-      "file": "W-DOC-02/p42j-stage-lever-recovery-20261007T133830.438524Z/outcome.json",
-      "pointer": "/reason",
-      "equals": "rolled back: compile_timeout"
+      "file": "W-DOC-02/r10-a/final/lever/result.json",
+      "pointer": "/status",
+      "equals": "PASS"
+    },
+    {
+      "file": "W-DOC-02/r10-a/final/lever/live-admit.json",
+      "pointer": "/outcome",
+      "equals": "Admitted"
+    },
+    {
+      "file": "W-DOC-02/r10-a/final/lever/live-undo.json",
+      "pointer": "/outcome",
+      "equals": "Undone"
+    },
+    {
+      "file": "W-DOC-02/r10-a/final/lever/visual-review.json",
+      "pointer": "/status",
+      "equals": "PASS"
     }
   ],
   "evidence": [
-    "W-DOC-02/p42j-stage-lever-recovery-20261007T133830.438524Z/outcome.json",
-    "W-DOC-02/p42j-lever-literal/live-failure.txt",
-    "W-DOC-02/p42j-lever-literal/live-progress.json",
-    "W-DOC-02/p42j-lever-literal/signed-verdict.json"
+    "W-DOC-02/r10-a/final/lever/result.json",
+    "W-DOC-02/r10-a/final/lever/live-admit.json",
+    "W-DOC-02/r10-a/final/lever/live-undo.json",
+    "W-DOC-02/r10-a/final/lever/visual-review.json",
+    "W-DOC-02/r10-a/final/lever/signed-verdict.json",
+    "W-DOC-02/r10-a/final/lever/manifest.json",
+    "W-DOC-02/r10-a/final/lever/service/slot-out/editmode.xml",
+    "W-DOC-02/r10-a/final/lever/service/slot-out/playmode.xml"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/lever-literal-p42j.py",
-  "note": "Current literal export/client-submit reaches a signed passing lever stage, but creator admission exceeds the unchanged 90000 ms limit while compilation is pending. A separate recovery Editor rolls it back with compile_timeout; no live lever/smoke/undo acceptance is claimed. The package is removed and no pending admission remains.",
+  "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R10_A/run.py /tmp/r10-a-creator-final --label final --companion \"$PWD/studio/agent/target/debug/gamecore-studio\"",
+  "note": "R10-A literal lever export/client-submit and signed Docker stage pass (88.035s). Actual creator Admit, genuine compile/reload and restored Play complete in 47.375s under unchanged90s; lever control commits off/on/off with visible handle changes; normal History Undo completes in34.288s. Scratch companion only, zero paid operations.",
   "row": "W-DOC-02",
   "scenario": "Developer adds a lever interactable from the plugin guide",
   "requirement": "SR-12.2",
-  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
-  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
-  "releaseId": "0.1.0-fba3604e99ceadd1",
-  "evidencePath": "W-DOC-02/p42j-stage-lever-recovery-20261007T133830.438524Z/outcome.json",
-  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
+  "reportedAt": "2026-10-07T17:51:36.700710+00:00",
+  "revision": "2e17a01ec02dcea3b4762b4536605120c985681b",
+  "baseline": "b0086c55",
+  "releaseId": "scratch-sha256:2880959f4a38b372d9d74b643869fc0dfaade617eaf215027f3553b012c6a180",
+  "evidencePath": "W-DOC-02/r10-a/final/lever/result.json",
+  "runStartedAt": "2026-10-07T17:37:46.665081+00:00"
 }

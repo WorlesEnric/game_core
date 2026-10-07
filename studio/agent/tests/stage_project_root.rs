@@ -155,13 +155,25 @@ fn r5_04_real_candidate_accepts_canonical_equivalent_source_path() {
         .unwrap()
         .to_path_buf();
     let temp = tempfile::tempdir().unwrap();
+    let source = temp.path().join("source");
+    let made = std::process::Command::new("python3")
+        .arg(repo.join("studio/stage/tests/world_fixture.py"))
+        .arg(&source)
+        .output()
+        .unwrap();
+    assert!(
+        made.status.success(),
+        "{}",
+        String::from_utf8_lossy(&made.stderr)
+    );
     let mut opts = StageOptions::from_env(
         &repo,
         "canonical",
         SlotSource::Candidate(repo.join("samples/mechanisms/pressure-plate/candidate")),
     );
     opts.root = temp.path().join("slots");
-    opts.source_project = repo.join("games/../games/hollowmere");
+    opts.source_project = source.join("games/../games/hollowmere");
+    opts.sandbox.packages = source.join("Packages");
     // Only the lexical scan runs; no candidate compiler or Unity process is launched.
     opts.steps = Some(BTreeSet::from(["scan".to_string()]));
     opts.sandbox.mode = Confinement::Host;
@@ -172,10 +184,10 @@ fn r5_04_real_candidate_accepts_canonical_equivalent_source_path() {
         serde_json::from_slice(&fs::read(opts.slot_dir().join("stage.json")).unwrap()).unwrap();
     assert_eq!(
         record["source"]["project"],
-        repo.join("games/hollowmere").to_str().unwrap()
+        source.join("games/hollowmere").to_str().unwrap()
     );
     assert_eq!(
         record["source"]["packageRoot"],
-        opts.sandbox.packages.to_str().unwrap()
+        source.join("Packages").to_str().unwrap()
     );
 }

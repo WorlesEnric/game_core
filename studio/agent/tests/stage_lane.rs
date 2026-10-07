@@ -29,6 +29,7 @@ struct Lane {
     _dir: tempfile::TempDir,
     root: PathBuf,
     work: PathBuf,
+    project: PathBuf,
     ledger: Arc<Ledger>,
     store: ArtifactStore,
     runner: Arc<StageRunner>,
@@ -36,6 +37,17 @@ struct Lane {
 
 fn lane() -> Lane {
     let dir = tempfile::tempdir().unwrap();
+    let source = std::process::Command::new("python3")
+        .arg(repo().join("studio/stage/tests/world_fixture.py"))
+        .arg(dir.path().join("source"))
+        .output()
+        .unwrap();
+    assert!(
+        source.status.success(),
+        "{}",
+        String::from_utf8_lossy(&source.stderr)
+    );
+    let project = PathBuf::from(String::from_utf8(source.stdout).unwrap().trim());
     let ledger = Arc::new(Ledger::open(&dir.path().join("ledger.sqlite")).unwrap());
     let hub = EventHub::new(ledger.clone()).unwrap();
     let store = ArtifactStore::new(dir.path().join("store"));
@@ -58,6 +70,7 @@ fn lane() -> Lane {
     );
     Lane {
         work: dir.path().join("work"),
+        project,
         _dir: dir,
         root,
         ledger,
@@ -144,7 +157,9 @@ async fn a_candidate_is_staged_scanned_and_checked_into_its_own_slot() {
     let sha = put_candidate(&l, cs, CLEAN);
     let answer = l
         .runner
-        .request(json!({"changeSetId": cs, "steps": ["scan", "checkers"]}))
+        .request(
+            json!({"changeSetId": cs, "sourceProject": l.project, "steps": ["scan", "checkers"]}),
+        )
         .unwrap();
     assert_eq!(answer.status.as_u16(), 202, "{}", answer.body);
     assert_eq!(answer.body["packageRef"], sha);
@@ -221,7 +236,10 @@ async fn forbidden_content_fails_the_scan_and_no_code_runs() {
     let l = lane();
     let cs = "cs_01JAPP0000000000000000SAN2";
     put_candidate(&l, cs, FORBIDDEN);
-    let answer = l.runner.request(json!({"changeSetId": cs})).unwrap();
+    let answer = l
+        .runner
+        .request(json!({"changeSetId": cs, "sourceProject": l.project}))
+        .unwrap();
     let job = wait_job(&l, answer.body["jobId"].as_str().unwrap()).await;
     let v = &job["verdict"];
     assert_eq!(v["pass"], false);
@@ -280,7 +298,7 @@ async fn r2_11_missing_semantic_analyzer_fails_dotnet_without_executing_candidat
     put_candidate(&l, cs, CLEAN);
     let answer = l
         .runner
-        .request(json!({"changeSetId":cs,"steps":["scan","checkers","dotnet"]}))
+        .request(json!({"changeSetId":cs,"sourceProject":l.project,"steps":["scan","checkers","dotnet"]}))
         .unwrap();
     let job = wait_job(&l, answer.body["jobId"].as_str().unwrap()).await;
     let verdict = &job["verdict"];

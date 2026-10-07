@@ -1,0 +1,76 @@
+{
+  "id": "cs_01M4BNQSP0K4EHX1BZ9C3XVS7F",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Add a pressure plate mechanism to Hollowmere: a plate that is pressed while enough actors stand on it.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "mechanism.admit",
+      "args": {
+        "package": {
+          "artifact": "sha256:10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+        },
+        "proposal": {
+          "artifact": "sha256:ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+        },
+        "verdict": {
+          "artifact": "sha256:8eb70a73795ca55d2e95b38e7de5dd817daef9ea867e477db7f259a7dc504e68"
+        }
+      },
+      "applyRequirement": "Compile"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+      "name": "package.tgz",
+      "mediaType": "application/gzip",
+      "bytes": 32839,
+      "role": "package"
+    },
+    {
+      "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+      "name": "proposal.json",
+      "mediaType": "application/json",
+      "bytes": 917,
+      "role": "proposal"
+    },
+    {
+      "sha256": "8eb70a73795ca55d2e95b38e7de5dd817daef9ea867e477db7f259a7dc504e68",
+      "name": "verdict.json",
+      "mediaType": "application/vnd.gamecore.stage-verdict+json",
+      "bytes": 11699,
+      "role": "verdict"
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "stage.verdict",
+      "status": "pass",
+      "detail": "pass verdict 8eb70a73795c slot cs-01m4bnqsp0k4ehx1bz9c3xvs7f (164223 ms); sha256:8eb70a73795ca55d2e95b38e7de5dd817daef9ea867e477db7f259a7dc504e68"
+    },
+    {
+      "scenario": "stage.admission",
+      "status": "pass",
+      "detail": "verified; confinement=docker; coldCache=True"
+    },
+    {
+      "scenario": "stage.undo",
+      "status": "pending",
+      "detail": "undo-pending"
+    }
+  ],
+  "requirements": {
+    "max": "Compile",
+    "worldRebuild": false,
+    "compile": true,
+    "build": false
+  },
+  "state": "Interrupted",
+  "timestamps": {
+    "applied": "2026-10-07T17:19:46.603Z"
+  }
+}
