@@ -3,6 +3,7 @@
 // view rendering a conflicting candidate.
 #nullable enable
 using System.Collections.Generic;
+using System.IO;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
@@ -20,31 +21,57 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         public void Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores()
         {
             RequireAuthoringIdValueType();
-            ApplyReport created = Context.Edits.Apply(ViewEdits.Build("P2.3 test: graph", new[]
-            {
-                ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject { ["type"] = DialogueDocument.Type, ["name"] = "ViewsTestGraph", ["path"] = TempFolder }),
-            }));
-            Assert.That(created.Ok, Is.True, ViewEdits.Describe(created));
-            AuthoringRef graphRef = Runtime.Resolver.BuildRef(AssetDatabase.LoadMainAssetAtPath(GraphPath), null, false)!;
-            DialogueView view = new DialogueView(Context);
-            view.ShowGraph(graphRef);
-            Assert.That(view.Document, Is.Not.Null);
-
+            using DialogueView view = new DialogueView(Context);
+            ApplyReport created = Expect(view.CreateGraph(GraphPath), BuiltInToolIdsExt.Create);
+            Assert.That(view.Document!.Entry, Is.EqualTo(0));
+            Assert.That(view.Document.Nodes.Count, Is.EqualTo(1));
+            AssetDatabase.SaveAssets();
+            byte[] initial = File.ReadAllBytes(GraphPath);
+            view.ShowGraph(view.Document.Ref);
+            Assert.That(view.AddLine("No selection", string.Empty), Is.Null);
+            Assert.That(view.AddChoice(new[] { "Yes" }, "No selection"), Is.Null);
+            Assert.That(File.ReadAllBytes(GraphPath), Is.EqualTo(initial));
+            List<byte[]> before = new List<byte[]>();
             List<ApplyReport> reports = new List<ApplyReport>();
-            reports.Add(Expect(view.AddLine("Traveller, a word.", "Maren"), DialogueEdits.AddLineTool));
+
+            before.Add(File.ReadAllBytes(GraphPath));
             view.SelectNode(0);
+            reports.Add(Expect(view.AddLine("Traveller, a word.", "Maren"), DialogueEdits.AddLineTool));
+            Assert.That(view.Document!.Find(0, DialogueDocument.PortNext, 0)!.To, Is.EqualTo(1));
+            AssetDatabase.SaveAssets();
+            byte[] connected = File.ReadAllBytes(GraphPath);
+            Assert.That(view.AddLine("Would orphan the previous continuation", string.Empty), Is.Null);
+            Assert.That(view.AddChoice(new[] { "Yes" }, "Occupied continuation"), Is.Null);
+            Assert.That(File.ReadAllBytes(GraphPath), Is.EqualTo(connected));
+
+            before.Add(File.ReadAllBytes(GraphPath));
+            reports.Add(Expect(Context.Edits.Apply(ViewEdits.Build("rename line", new[] { DialogueEdits.SetText(view.Document, 1, "Traveller!") })), BuiltInToolIdsExt.Set));
+            view.Refresh();
+            Assert.That(view.Document!.Nodes[1].Text, Is.EqualTo("Traveller!"));
+            AssetDatabase.SaveAssets();
+
+            before.Add(File.ReadAllBytes(GraphPath));
+            view.SelectNode(1);
             reports.Add(Expect(view.AddChoice(new[] { "Yes", "No" }, "Help?"), DialogueEdits.AddChoiceTool));
-            Assert.That(view.Document!.Nodes.Count, Is.EqualTo(2));
-            Assert.That(view.Document.Find(0, DialogueDocument.PortNext, 0)!.To, Is.EqualTo(1), "add after the selection links next");
-            reports.Add(Expect(view.AddLine("Thank you.", string.Empty), DialogueEdits.AddLineTool));
-            reports.Add(Expect(view.Connect(1, DialogueDocument.PortOption, 0, 2), BuiltInToolIdsExt.Set));
-            Assert.That(view.Document!.Find(1, DialogueDocument.PortOption, 0)!.To, Is.EqualTo(2));
-            reports.Add(Expect(Context.Edits.Apply(ViewEdits.Build("rename option", new[] { DialogueEdits.RenameOption(view.Document, 1, 1, "Not now") })), BuiltInToolIdsExt.Set));
+            Assert.That(view.Document!.Find(1, DialogueDocument.PortNext, 0)!.To, Is.EqualTo(2));
+            AssetDatabase.SaveAssets();
+
+            before.Add(File.ReadAllBytes(GraphPath));
+            reports.Add(Expect(Context.Edits.Apply(ViewEdits.Build("rename option", new[] { DialogueEdits.RenameOption(view.Document, 2, 1, "Not now") })), BuiltInToolIdsExt.Set));
             view.Refresh();
-            Assert.That(view.Document!.Nodes[1].Options[1].Text, Is.EqualTo("Not now"));
-            reports.Add(Expect(Context.Edits.Apply(ViewEdits.Build("text", new[] { DialogueEdits.SetText(view.Document, 0, "Traveller!") })), BuiltInToolIdsExt.Set));
-            view.Refresh();
-            Assert.That(view.Document!.Nodes[0].Text, Is.EqualTo("Traveller!"));
+            Assert.That(view.Document!.Nodes[2].Options[1].Text, Is.EqualTo("Not now"));
+            AssetDatabase.SaveAssets();
+
+            before.Add(File.ReadAllBytes(GraphPath));
+            view.SelectNode(2);
+            reports.Add(Expect(view.AddLine("Thank you.", string.Empty), DialogueEdits.AddLineTool, 2));
+            Assert.That(view.Document!.Find(2, DialogueDocument.PortOption, 0)!.To, Is.EqualTo(3));
+            AssetDatabase.SaveAssets();
+
+            before.Add(File.ReadAllBytes(GraphPath));
+            reports.Add(Expect(view.Connect(2, DialogueDocument.PortOption, 1, 3), BuiltInToolIdsExt.Set));
+            Assert.That(view.Document!.Find(2, DialogueDocument.PortOption, 1)!.To, Is.EqualTo(3));
+            AssetDatabase.SaveAssets();
             foreach (ApplyReport report in reports)
             {
                 ChangeSet? entry = Runtime.Journal.Read(report.Entry.Id);
@@ -55,19 +82,58 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
 
             for (int i = reports.Count - 1; i >= 0; i--)
             {
-                HistoryResult undo = UndoOrInconclusive(reports[i].Entry.Id);
+                HistoryResult undo = Runtime.History.Undo(reports[i].Entry.Id);
                 Assert.That(undo.Ok, Is.True, "undo " + reports[i].Entry.Intent.Text + ": " + string.Join("; ", undo.Diagnostics));
-                if (i == reports.Count - 1)
-                {
-                    view.Refresh();
-                    Assert.That(view.Document!.Nodes[1].Options[1].Text, Is.EqualTo("Not now"), "undoing the text keeps the rename");
-                }
+                AssetDatabase.SaveAssets();
+                Assert.That(File.ReadAllBytes(GraphPath), Is.EqualTo(before[i]), "undo restores complete bytes at each creator step");
+                Assert.That(Runtime.Journal.Read(reports[i].Entry.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Undone));
             }
 
             view.Refresh();
-            Assert.That(view.Document!.Nodes.Count, Is.EqualTo(0), "every edit undone");
+            Assert.That(view.Document!.Nodes.Count, Is.EqualTo(1), "every edit undone to the valid entry graph");
             Assert.That(view.Document.Edges.Count, Is.EqualTo(0));
-            view.Dispose();
+            Assert.That(Runtime.Journal.Read(created.Entry.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Applied));
+            Assert.That(Runtime.History.Undo(created.Entry.Id).Ok, Is.True);
+            Assert.That(File.Exists(GraphPath), Is.False, "undo creation removes the graph");
+        }
+
+        [Test]
+        public void R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes()
+        {
+            ApplyReport created = Context.Edits.Apply(ViewEdits.Build("Choice entry", new[]
+            {
+                ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject
+                {
+                    ["type"] = DialogueDocument.Type, ["name"] = "ViewsTestGraph", ["path"] = GraphPath,
+                    ["fields"] = new JObject
+                    {
+                        ["entry"] = 0,
+                        ["nodes"] = new JArray(new JObject
+                        {
+                            ["kind"] = "Choice", ["text"] = "Help?",
+                            ["options"] = new JArray(new JObject { ["text"] = "Yes" }, new JObject { ["text"] = "No" }),
+                        }),
+                        ["edges"] = new JArray(),
+                    },
+                }),
+            }));
+            Assert.That(created.Ok, Is.True, ViewEdits.Describe(created));
+            AssetDatabase.SaveAssets();
+            byte[] before = File.ReadAllBytes(GraphPath);
+            using DialogueView view = new DialogueView(Context);
+            view.ShowGraph(Runtime.Resolver.BuildRef(AssetDatabase.LoadMainAssetAtPath(GraphPath), null, false)!);
+            view.SelectNode(0);
+            ApplyReport added = view.AddChoice(new[] { "Now", "Later" }, "When?")!;
+            Assert.That(added, Is.Not.Null);
+            Assert.That(added.Ok, Is.True, ViewEdits.Describe(added));
+            Assert.That(added.Journaled, Is.True);
+            Assert.That(view.Document!.Find(0, DialogueDocument.PortOption, 0)?.To, Is.EqualTo(1), "the selected choice must reach the new choice through an Option, not an unused Next edge");
+            Assert.That(view.Document.Find(1, DialogueDocument.PortOption, 0)!.To, Is.EqualTo(-1));
+            Assert.That(view.Document.Find(1, DialogueDocument.PortOption, 1)!.To, Is.EqualTo(-1));
+            Assert.That(view.Document.Nodes[1].Options[1].Text, Is.EqualTo("Later"));
+            Assert.That(Runtime.History.Undo(added.Entry.Id).Ok, Is.True);
+            AssetDatabase.SaveAssets();
+            Assert.That(File.ReadAllBytes(GraphPath), Is.EqualTo(before));
         }
 
         [Test]
@@ -217,11 +283,11 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             view.Dispose();
         }
 
-        private static ApplyReport Expect(ApplyReport? report, string tool)
+        private static ApplyReport Expect(ApplyReport? report, string tool, int operations = 1)
         {
             Assert.That(report, Is.Not.Null);
             Assert.That(report!.Ok, Is.True, ViewEdits.Describe(report));
-            Assert.That(report.Entry.Operations.Count, Is.EqualTo(1));
+            Assert.That(report.Entry.Operations.Count, Is.EqualTo(operations));
             Assert.That(report.Entry.Operations[0].Tool, Is.EqualTo(tool));
             Assert.That(report.Journaled, Is.True);
             return report;

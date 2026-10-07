@@ -1,7 +1,7 @@
 {
   "counts": {
-    "PASS": 59,
-    "FAIL": 3,
+    "PASS": 60,
+    "FAIL": 2,
     "BLOCKED": 6
   },
   "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
@@ -249,22 +249,25 @@
       "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
     },
     {
-      "status": "FAIL",
-      "note": "R9-A final suite: 161 PASS/1 FAIL, no skips. Owned combined AddLine/Connect/Rename workflow and retained orphan refusals pass. Exact P2_3 named test remains outside exclusive paths and now correctly refuses its empty graph creation with GP-DLG-001; its later separately committed orphan also needs fixture/workflow correction. No replacement-test promotion.",
+      "status": "PASS",
+      "note": "R9-C closes the exact P2_3 creator workflow: New graph with entry, selected-port Add line/Add choice, single-op line/option rename and Connect, Applied/Manual journals and complete-byte undo at every step. Final requested suite: 63 PASS/0 FAIL/0 skipped/0 inconclusive, including unchanged R9-A and R6-B. First run's unrelated layout-budget failure (62/1) and behavior-first pre-fix choice-port failure (0/1) are retained. Graphical/real-Play portions retain attributed P4.2i evidence; this is not all-row same-revision requalification.",
       "evidence": [
-        "W-VIEW-02/r9-a-final-regressions/results.xml",
-        "W-VIEW-02/r9-a-regressions-20261007T101610.953797Z/regressions.xml"
+        "W-VIEW-02/r9-c/results-final.xml",
+        "W-VIEW-02/r9-c/baseline-port.xml",
+        "W-VIEW-02/r9-c/results.xml",
+        "W-VIEW-02/r9-c/source-sha256.json",
+        "W-VIEW-01/captures-20261007T045200Z/capture.json"
       ],
-      "command": "studio/tools/unity-batch.sh --project <hollowmere> --log-dir <owned evidence> --label r9a-final-suites --results <results.xml> -- -runTests -testPlatform EditMode -testFilter <recorded final suite filter>",
+      "command": "studio/tools/unity-batch.sh --project /home/worlesenric/wkspace/gc-studio/r9-c/games/hollowmere --log-dir /home/worlesenric/wkspace/gc-studio/r9-c/artifacts/studio/verification/W-VIEW-02/r9-c --label views-dialogue-final --results /home/worlesenric/wkspace/gc-studio/r9-c/artifacts/studio/verification/W-VIEW-02/r9-c/results-final.xml -- -runTests -testPlatform EditMode -testFilter 'GameCore\\.Studio\\.Views.*|Hollowmere\\.(P2_3|R9_[AC]|R6_B).*'",
       "row": "W-VIEW-02",
       "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T10:48:11.700671+00:00",
-      "revision": "6a67e2871950613270d8cf5d5029a92d8f3178c1",
+      "reportedAt": "2026-10-07T11:18:32+00:00",
+      "revision": "a89f55bbbdd90986fdaa8a9040aba2e1601fd65f",
       "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
       "releaseId": "0.1.0-debdab3072dbe1f8",
-      "evidencePath": "W-VIEW-02/r9-a-final-regressions/results.xml",
-      "runStartedAt": "2026-10-07T10:44:25+00:00"
+      "evidencePath": "W-VIEW-02/r9-c/results-final.xml",
+      "runStartedAt": "2026-10-07T11:16:57+00:00"
     },
     {
       "status": "PASS",

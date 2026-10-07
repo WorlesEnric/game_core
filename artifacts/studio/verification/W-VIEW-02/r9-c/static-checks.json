@@ -1,0 +1,14 @@
+[
+  {
+    "command": "python3 tools/check_package_metadata.py",
+    "exitCode": 0,
+    "stdout": "packages inspected: 42; assemblies defined by packages: 92; engine pins: 4\nrelease version expected: 1.0.0; kernel packages: 8\nallowlisted engine pins from games/*: 6; lock sources: 3\npackage metadata and asmdef-derived dependencies agree.\nNo Unity resolve, no compilation and no player build was executed by this check.\n",
+    "stderr": ""
+  },
+  {
+    "command": "python3 tools/check_game_core_csharp.py",
+    "exitCode": 0,
+    "stdout": "checked 1278 C# file(s)\nok\n",
+    "stderr": ""
+  }
+]

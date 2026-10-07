@@ -54,6 +54,11 @@ namespace GameCore.Studio.Views
                 }
             });
             Toolbar.Add(_graphPicker);
+            AddButton("New graph", () =>
+            {
+                string path = EditorUtility.SaveFilePanelInProject("New dialogue graph", "Dialogue", "asset", "Create a graph with an entry line.");
+                if (path.Length > 0) CreateGraph(path);
+            }, "Creates a dialogue graph with an entry line in one change set.");
             AddButton("Add line", () => AddLine("New line", string.Empty), "dialogue.addLine after the selected node.");
             AddButton("Add choice", () => AddChoice(new[] { "Yes", "No" }, string.Empty), "dialogue.addChoice after the selected node.");
             AddButton("Remove node", () => RemoveSelected(), "Removes the selected node (set nodes/edges).");
@@ -148,12 +153,73 @@ namespace GameCore.Studio.Views
 
         public ApplyReport? AddLine(string text, string speaker)
         {
-            return Document == null ? null : ApplyEdit(ViewEdits.Build("Dialogue: add line", new[] { DialogueEdits.AddLine(Document, text, speaker, _selectedNode) }));
+            if (!TryAdditionPort(out string port, out int option)) return null;
+            Operation add = DialogueEdits.AddLine(Document!, text, speaker, port == DialogueDocument.PortNext ? _selectedNode : -1);
+            return AddConnectedNode("Dialogue: add line", add, port, option, 0);
         }
 
         public ApplyReport? AddChoice(IReadOnlyList<string> options, string prompt)
         {
-            return Document == null ? null : ApplyEdit(ViewEdits.Build("Dialogue: add choice", new[] { DialogueEdits.AddChoice(Document, options, null, _selectedNode, prompt) }));
+            if (!TryAdditionPort(out string port, out int option)) return null;
+            Operation add = DialogueEdits.AddChoice(Document!, options, null, port == DialogueDocument.PortNext ? _selectedNode : -1, prompt);
+            return AddConnectedNode("Dialogue: add choice", add, port, option, options.Count);
+        }
+
+        /// <summary>Creates a graph whose first committed state has a reachable entry line.</summary>
+        public ApplyReport CreateGraph(string path)
+        {
+            ApplyReport report = ApplyEdit(ViewEdits.Build("Dialogue: new graph", new[]
+            {
+                ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject
+                {
+                    ["type"] = DialogueDocument.Type, ["name"] = System.IO.Path.GetFileNameWithoutExtension(path), ["path"] = path,
+                    ["fields"] = new JObject
+                    {
+                        ["entry"] = 0,
+                        ["nodes"] = new JArray(new JObject { ["kind"] = "Line", ["text"] = "New dialogue" }),
+                        ["edges"] = new JArray(),
+                    },
+                }),
+            }));
+            if (report.Ok)
+            {
+                ShowGraph(Context.Runtime.Resolver.BuildRef(AssetDatabase.LoadMainAssetAtPath(path), null, false)!);
+                SelectNode(0);
+            }
+            return report;
+        }
+
+        private bool TryAdditionPort(out string port, out int option)
+        {
+            port = DialogueDocument.PortNext;
+            option = 0;
+            if (Document != null && _selectedNode >= 0 && _selectedNode < Document.Nodes.Count)
+            {
+                DialogueNode node = Document.Nodes[_selectedNode];
+                Document.DefaultPort(_selectedNode, out port, out option);
+                DialogueEdgeInfo? edge = Document.Find(_selectedNode, port, option);
+                if (!node.Is("End") && (!node.Is("Choice") || node.Options.Count > 0) && (edge == null || edge.To < 0)) return true;
+            }
+            SetStatus("Select a node with an unused continuation port before adding a line or choice.", ViewPalette.Warn);
+            return false;
+        }
+
+        private ApplyReport AddConnectedNode(string intent, Operation add, string port, int option, int choices)
+        {
+            // The existing terminal-Next tool already adds both node and edge atomically.
+            if (port == DialogueDocument.PortNext) return ApplyEdit(ViewEdits.Build(intent, new[] { add }));
+            DialogueDocument document = Document!;
+            Operation connect = DialogueEdits.Connect(document, _selectedNode, port, option, document.Nodes.Count);
+            JArray edges = (JArray)connect.Args!["value"]!;
+            for (int i = 0; i < choices; i++)
+            {
+                edges.Add(new DialogueEdgeInfo(edges.Count, document.Nodes.Count, DialogueDocument.PortOption, i, -1).ToJson());
+            }
+            return ApplyEdit(ViewEdits.Build(intent, new[]
+            {
+                add,
+                ViewEdits.Op("connect", connect.Tool, connect.Target, connect.Args, new[] { add.OpId }),
+            }));
         }
 
         public ApplyReport? Connect(int from, string port, int option, int to)
