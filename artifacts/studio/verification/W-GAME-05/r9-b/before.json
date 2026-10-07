@@ -1,0 +1,11 @@
+{
+  "sourceXml": "W-MECH-01/r9-b/before/results.xml",
+  "cases": [
+    {
+      "name": "Hollowmere.R9_B.EditMode.Tests.BuildTimestampTests.R9B_BuildTimestamp_NonUtcHostPreservesUtcInstantAndRawUnityValue",
+      "result": "Failed",
+      "message": "  UTC ticks from Unity must not be shifted by the host's eight-hour offset.\n  String lengths are both 20. Strings differ at index 9.\n  Expected: \"2026-10-07T06:34:27Z\"\n  But was:  \"2026-10-06T22:34:27Z\"\n  --------------------^\n",
+      "output": "Local zone: Asia/Shanghai; raw kind: Unspecified\n{\n  \"result\": \"Unknown\",\n  \"platform\": \"0\",\n  \"scriptingBackend\": \"IL2CPP\",\n  \"managedStripping\": \"Low\",\n  \"unityVersion\": \"6000.0.75f1\",\n  \"revision\": \"r9-b-timestamp\",\n  \"outputPath\": \"\",\n  \"development\": false,\n  \"settingsChangedForBuild\": false,\n  \"totalSize\": 0,\n  \"totalTimeSeconds\": 0.000,\n  \"errors\": 0,\n  \"warnings\": 0,\n  \"startedUtc\": \"2026-10-06T22:34:27Z\",\n  \"startedRaw\": \"2026-10-07T06:34:27.1234567\",\n  \"startedRawKind\": \"Unspecified\",\n  \"scenes\": [\"Assets/Hollowmere/Boot/Boot.unity\"],\n  \"steps\": [],\n  \"messages\": []\n}\n\nSaving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml\n"
+    }
+  ]
+}

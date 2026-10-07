@@ -81,6 +81,48 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(service.Verifications, Is.EqualTo(2));
         }
 
+        [Test]
+        public void R9_B_AlreadyRecoveredCandidateRefreshesLateJobBindingWithoutRestaging()
+        {
+            CandidateEntry entry = Candidate();
+            StageService service = ConfigureStage();
+            CandidateCoordinator recovered = new CandidateCoordinator(_bed.Runtime, () => _bed.Gateway);
+            CandidateEntry early = recovered.Add(entry.Id, entry.ChangeSet);
+            Assert.That(early.StageJobId, Is.Null);
+            Assert.That(_bed.Context.Candidates.RequestStage(entry).GetAwaiter().GetResult(), Is.Null);
+            Assert.That(recovered.Add(entry.Id, entry.ChangeSet), Is.SameAs(early));
+            Assert.That(recovered.RefreshStage(early).GetAwaiter().GetResult(), Is.Null);
+            Assert.That(recovered.CanAdmit(early), Is.True);
+            Assert.That(service.Submissions, Is.EqualTo(1), "Recovery fetches the original signed job; it never submits another stage.");
+        }
+
+        [Test]
+        public void R9_B_RefreshWithoutAddRecoversLateBindingButRefusesChangedSource()
+        {
+            CandidateEntry entry = Candidate();
+            StageService service = ConfigureStage();
+            CandidateCoordinator recovered = new CandidateCoordinator(_bed.Runtime, () => _bed.Gateway);
+            CandidateEntry early = recovered.Add(entry.Id, entry.ChangeSet);
+            Assert.That(_bed.Context.Candidates.RequestStage(entry).GetAwaiter().GetResult(), Is.Null);
+            Assert.That(recovered.RefreshStage(early).GetAwaiter().GetResult(), Is.Null);
+            StageAdmission.Of(_bed.Runtime).Options.SourceRevision = () => "changed-source";
+            Assert.That(recovered.CanAdmit(early), Is.False);
+            Assert.That(recovered.RefreshStage(early).GetAwaiter().GetResult()!.Message, Does.Contain("stage_context_changed"));
+            Assert.That(recovered.CanAdmit(early), Is.False);
+            Assert.That(service.Submissions, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void R9_B_ChangedCandidateCannotUsePreviouslyVerifiedJob()
+        {
+            CandidateEntry entry = Candidate();
+            ConfigureStage();
+            Assert.That(_bed.Context.Candidates.RequestStage(entry).GetAwaiter().GetResult(), Is.Null);
+            entry.ChangeSet.Operations[0].Args!["package"] = new JObject { ["artifact"] = ContentStamp.Prefix + new string('e', 64) };
+            Assert.That(_bed.Context.Candidates.CanAdmit(entry), Is.False);
+            Assert.That(_bed.Context.Candidates.RefreshStage(entry).GetAwaiter().GetResult()!.Message, Does.Contain("stage_context_changed"));
+        }
+
         [TestCase("host", false, false)]
         [TestCase("host", true, true)]
         [TestCase("docker", false, true)]
@@ -349,7 +391,8 @@ namespace GameCore.Studio.UI.Tests
             public string Confinement = "docker";
             public string Defect = "";
             public int Verifications;
-            public Task<string> RequestStage(StageCandidateRequest request) { Request = request; return Task.FromResult("test-job"); }
+            public int Submissions;
+            public Task<string> RequestStage(StageCandidateRequest request) { Submissions++; Request = request; return Task.FromResult("test-job"); }
             public Task<SignedVerdict> GetVerdict(string jobId)
             {
                 var steps = new JArray();
