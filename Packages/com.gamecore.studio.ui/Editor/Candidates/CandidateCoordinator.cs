@@ -238,6 +238,7 @@ namespace GameCore.Studio.UI
             CandidateEntry? existing = Find(changeSet.Id);
             if (existing != null)
             {
+                RestoreStageJob(existing);
                 return existing;
             }
 
@@ -441,7 +442,22 @@ namespace GameCore.Studio.UI
             StageVerdict? verdict = admission.VerdictOf(entry.Id);
             return entry.IsOpen && !entry.Staging && entry.VerifiedVerdict != null
                 && ReferenceEquals(verdict, entry.VerifiedVerdict) && verdict.Pass
-                && (verdict.Confinement == "docker" || (verdict.Confinement == "host" && admission.Options.AllowHostConfinement));
+                && (verdict.Confinement == "docker" || (verdict.Confinement == "host" && admission.Options.AllowHostConfinement))
+                && StageContextMatches(entry, admission);
+        }
+
+        private bool StageContextMatches(CandidateEntry entry, StageAdmission admission)
+        {
+            if (entry.StageRequest == null || string.IsNullOrEmpty(entry.StageJobId)) return false;
+            try
+            {
+                StageCandidateRequest current = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
+                return JToken.DeepEquals(JObject.FromObject(current), JObject.FromObject(entry.StageRequest));
+            }
+            catch (Exception error) when (!(error is OutOfMemoryException))
+            {
+                return false;
+            }
         }
 
         /// <summary>Submit the complete candidate binding through the trusted project stage service.
@@ -459,6 +475,8 @@ namespace GameCore.Studio.UI
                 IStageService service = admission.Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
                 StageCandidateRequest request = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
                 entry.StageRequest = request;
+                entry.StageJobId = null;
+                SessionState.EraseString(StageJobKey(entry));
                 CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Pending, "staging", entry.ChangeSet);
                 entry.StageJobId = await service.RequestStage(request);
                 if (string.IsNullOrWhiteSpace(entry.StageJobId)) throw new InvalidOperationException("stage_job_missing");
@@ -467,7 +485,9 @@ namespace GameCore.Studio.UI
                     ["jobId"] = entry.StageJobId, ["request"] = JObject.FromObject(request),
                 }.ToString(Formatting.None));
                 Changed?.Invoke();
-                entry.VerifiedVerdict = await admission.FetchVerdict(entry.StageJobId, request);
+                StageVerdict verdict = await admission.FetchVerdict(entry.StageJobId, request);
+                if (!StageContextMatches(entry, admission)) throw new InvalidOperationException("stage_context_changed: restage this candidate");
+                entry.VerifiedVerdict = verdict;
                 return null;
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
@@ -487,6 +507,9 @@ namespace GameCore.Studio.UI
 
         private void RestoreStageJob(CandidateEntry entry)
         {
+            // Recovery can create the entry before the job binding arrives. Never replace an
+            // active binding: it belongs to the exact candidate revision submitted to the service.
+            if (entry.Staging || entry.StageRequest != null || entry.StageJobId != null) return;
             string saved = SessionState.GetString(StageJobKey(entry), string.Empty);
             if (saved.Length == 0) return;
             try
@@ -504,6 +527,7 @@ namespace GameCore.Studio.UI
         public async Task<Diagnostic?> RefreshStage(CandidateEntry entry)
         {
             RequireOpen(entry);
+            RestoreStageJob(entry);
             if (entry.Staging) return new Diagnostic(DiagnosticCodes.StageFailed, "This candidate is already staging.");
             entry.VerifiedVerdict = null;
             entry.Staging = true;
@@ -516,7 +540,9 @@ namespace GameCore.Studio.UI
                     || !JToken.DeepEquals(JObject.FromObject(current), JObject.FromObject(entry.StageRequest)))
                     throw new InvalidOperationException("stage_context_changed: restage this candidate");
                 CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Pending, "refreshing verdict", entry.ChangeSet);
-                entry.VerifiedVerdict = await admission.FetchVerdict(entry.StageJobId!, entry.StageRequest);
+                StageVerdict verdict = await admission.FetchVerdict(entry.StageJobId!, entry.StageRequest);
+                if (!StageContextMatches(entry, admission)) throw new InvalidOperationException("stage_context_changed: restage this candidate");
+                entry.VerifiedVerdict = verdict;
                 return null;
             }
             catch (Exception error) when (!(error is OutOfMemoryException))

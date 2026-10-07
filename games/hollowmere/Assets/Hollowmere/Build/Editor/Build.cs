@@ -128,7 +128,7 @@ namespace Hollowmere
 
             BuildSummary summary = report.summary;
             bool ok = summary.result == BuildResult.Succeeded;
-            string json = ReportJson(report, revision, development, scenes, changedBackend, changedStripping);
+            string json = ReportJson(summary, report.steps, revision, development, scenes, changedBackend, changedStripping);
             File.WriteAllText(Path.Combine(outputDir, ReportName), json, new UTF8Encoding(false));
             if (ok)
             {
@@ -144,9 +144,8 @@ namespace Hollowmere
             return ok;
         }
 
-        private static string ReportJson(BuildReport report, string revision, bool development, List<string> scenes, bool changedBackend, bool changedStripping)
+        private static string ReportJson(BuildSummary summary, BuildStep[] steps, string revision, bool development, List<string> scenes, bool changedBackend, bool changedStripping)
         {
-            BuildSummary summary = report.summary;
             var json = new StringBuilder();
             json.Append("{\n");
             Field(json, "result", summary.result.ToString());
@@ -162,7 +161,12 @@ namespace Hollowmere
             json.Append("  \"totalTimeSeconds\": ").Append(summary.totalTime.TotalSeconds.ToString("F3", CultureInfo.InvariantCulture)).Append(",\n");
             json.Append("  \"errors\": ").Append(summary.totalErrors.ToString(CultureInfo.InvariantCulture)).Append(",\n");
             json.Append("  \"warnings\": ").Append(summary.totalWarnings.ToString(CultureInfo.InvariantCulture)).Append(",\n");
-            Field(json, "startedUtc", summary.buildStartedAt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture));
+            // Unity 6000.0 constructs buildStartedAt from UTC ticks without setting DateTimeKind.
+            // ToUniversalTime would interpret those ticks as local time and apply the host offset again.
+            DateTime startedRaw = summary.buildStartedAt;
+            Field(json, "startedUtc", DateTime.SpecifyKind(startedRaw, DateTimeKind.Utc).ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture));
+            Field(json, "startedRaw", startedRaw.ToString("O", CultureInfo.InvariantCulture));
+            Field(json, "startedRawKind", startedRaw.Kind.ToString());
             json.Append("  \"scenes\": [");
             for (int i = 0; i < scenes.Count; i++)
             {
@@ -170,7 +174,6 @@ namespace Hollowmere
             }
 
             json.Append("],\n  \"steps\": [");
-            BuildStep[] steps = report.steps;
             for (int i = 0; i < steps.Length; i++)
             {
                 json.Append(i == 0 ? "\n" : ",\n").Append("    {\"name\": \"").Append(Escape(steps[i].name)).Append("\", \"seconds\": ")
