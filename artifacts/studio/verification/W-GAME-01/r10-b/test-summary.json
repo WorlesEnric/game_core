@@ -1,0 +1,329 @@
+{
+  "baseline": {
+    "id": "2",
+    "testcasecount": "3",
+    "result": "Failed(Child)",
+    "total": "3",
+    "passed": "2",
+    "failed": "1",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 16:39:16Z",
+    "end-time": "2026-10-07 16:39:16Z",
+    "duration": "0.0867401"
+  },
+  "after": {
+    "id": "2",
+    "testcasecount": "16",
+    "result": "Failed(Child)",
+    "total": "16",
+    "passed": "15",
+    "failed": "1",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 16:43:55Z",
+    "end-time": "2026-10-07 16:43:56Z",
+    "duration": "1.0233323"
+  },
+  "cases": [
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode.PressurePlateAdmittedIntoTheRunningGame",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent",
+      "result": "Failed",
+      "failure": "  the second run applied steps: media.voices-bank-28\n  Expected: <empty>\n  But was:  < \"media.voices-bank-28\" >\n"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.BakeVerifies",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.ContentIsBoundToScripts",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BELFRY_PreloadIsLimitedToFerryPreparation",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_RegionWaitsForPresentedMenu",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_AutomaticFlushDoesNotWaitForStorage",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.AdmissionFromPlayModeCaptures",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall",
+      "result": "Passed",
+      "failure": null
+    }
+  ],
+  "policy": {
+    "metadata": "PASS: 42 packages / 92 assemblies; 3 lock sources",
+    "csharp": "PASS: 1281 files"
+  },
+  "scope": "R10_B and existing P3_1 EditMode: final 16/16. Initial fresh-checkout AuthorAll missing media.voices-bank-28 journal precondition retained in after.xml; test setup created that entry before final run.",
+  "finalEditMode": {
+    "id": "2",
+    "testcasecount": "16",
+    "result": "Passed",
+    "total": "16",
+    "passed": "16",
+    "failed": "0",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 17:07:17Z",
+    "end-time": "2026-10-07 17:07:19Z",
+    "duration": "1.1394906"
+  },
+  "finalCases": [
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode.PressurePlateAdmittedIntoTheRunningGame",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.BakeVerifies",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.ContentIsBoundToScripts",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BELFRY_PreloadIsLimitedToFerryPreparation",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_RegionWaitsForPresentedMenu",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_AutomaticFlushDoesNotWaitForStorage",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.AdmissionFromPlayModeCaptures",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.R10_B.Tests.FrameStallTests.R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall",
+      "result": "Passed"
+    }
+  ],
+  "playMode": {
+    "id": "2",
+    "testcasecount": "10",
+    "result": "Failed(Child)",
+    "total": "10",
+    "passed": "9",
+    "failed": "1",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 17:08:38Z",
+    "end-time": "2026-10-07 17:08:46Z",
+    "duration": "7.9881383"
+  },
+  "playModeCases": [
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern",
+      "result": "Passed",
+      "failure": null
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip",
+      "result": "Failed",
+      "failure": "  the native playback assertion requires graphics-enabled batch PlayMode\n  Expected: True\n  But was:  False\n"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest",
+      "result": "Passed",
+      "failure": null
+    }
+  ],
+  "finalPlayMode": {
+    "id": "2",
+    "testcasecount": "10",
+    "result": "Passed",
+    "total": "10",
+    "passed": "10",
+    "failed": "0",
+    "inconclusive": "0",
+    "skipped": "0",
+    "asserts": "0",
+    "engine-version": "3.5.0.0",
+    "clr-version": "4.0.30319.42000",
+    "start-time": "2026-10-07 17:11:13Z",
+    "end-time": "2026-10-07 17:11:23Z",
+    "duration": "9.6931593"
+  },
+  "finalPlayModeCases": [
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip",
+      "result": "Passed"
+    },
+    {
+      "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest",
+      "result": "Passed"
+    }
+  ]
+}

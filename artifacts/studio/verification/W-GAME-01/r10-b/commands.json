@@ -1,0 +1,64 @@
+{
+  "cwd": "/home/worlesenric/wkspace/gc-studio/r10-b",
+  "build": [
+    "studio/tools/unity-batch.sh",
+    "--project",
+    "/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere",
+    "--log-dir",
+    "/home/worlesenric/wkspace/gc-studio/r10-b/artifacts/studio/verification/W-GAME-01/r10-b/build",
+    "--label",
+    "player",
+    "--timeout",
+    "3600",
+    "--",
+    "-executeMethod",
+    "Hollowmere.Build.BuildLinuxPlayer",
+    "-buildOutput",
+    "/home/worlesenric/wkspace/gc-studio/r10-b/.evidence/R10bPlayer",
+    "-buildRevision",
+    "fe5364ab"
+  ],
+  "tests": {
+    "wrapper": "studio/tools/unity-batch.sh",
+    "project": "/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere",
+    "timeoutSeconds": 2400,
+    "runs": [
+      {
+        "label": "before",
+        "platform": "EditMode",
+        "filter": "Hollowmere.R10_B.Tests",
+        "result": "tests/before.xml",
+        "mutation": "original synchronous Debug.Log retained, new scope instrumentation present"
+      },
+      {
+        "label": "after",
+        "platform": "EditMode",
+        "filter": "Hollowmere.R10_B.Tests;Hollowmere.P3_1.EditMode.Tests",
+        "result": "tests/after.xml"
+      },
+      {
+        "label": "final-editmode",
+        "platform": "EditMode",
+        "filter": "Hollowmere.R10_B.Tests;Hollowmere.P3_1.EditMode.Tests",
+        "result": "tests/final-editmode.xml"
+      },
+      {
+        "label": "playmode",
+        "platform": "PlayMode",
+        "filter": "Hollowmere.P3_1.PlayMode.Tests",
+        "result": "tests/playmode.xml"
+      },
+      {
+        "label": "playmode-graphics",
+        "platform": "PlayMode",
+        "filter": "Hollowmere.P3_1.PlayMode.Tests",
+        "result": "tests/playmode-graphics.xml",
+        "UNITY": "/home/worlesenric/wkspace/gc-studio/r10-b/artifacts/studio/verification/W-GAME-01/r10-b/unity_offscreen.py"
+      }
+    ]
+  },
+  "policyCommands": [
+    "python3 tools/check_package_metadata.py",
+    "python3 tools/check_game_core_csharp.py"
+  ]
+}

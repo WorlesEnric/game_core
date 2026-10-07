@@ -1,0 +1,255 @@
+{
+  "source": "../p42j-player/measurement/vsync0/run1",
+  "csvGzipSha256": "dcd10645f763eb4e85795d19599d24567256ffdce95ddccf405a86784af86404",
+  "stalls": [
+    {
+      "sample": {
+        "frame": "7097",
+        "time_s": "19.2409",
+        "dt_ms": "374.077",
+        "region": "Thornwick Village",
+        "marker": ""
+      },
+      "workFrame": 7096,
+      "neighbours": [
+        {
+          "frame": "7095",
+          "time_s": "18.8644",
+          "dt_ms": "1.554",
+          "region": "Thornwick Village",
+          "marker": ""
+        },
+        {
+          "frame": "7096",
+          "time_s": "19.2381",
+          "dt_ms": "1.516",
+          "region": "Thornwick Village",
+          "marker": ""
+        },
+        {
+          "frame": "7097",
+          "time_s": "19.2409",
+          "dt_ms": "374.077",
+          "region": "Thornwick Village",
+          "marker": ""
+        },
+        {
+          "frame": "7098",
+          "time_s": "19.2427",
+          "dt_ms": "2.599",
+          "region": "Thornwick Village",
+          "marker": ""
+        },
+        {
+          "frame": "7099",
+          "time_s": "19.2447",
+          "dt_ms": "1.766",
+          "region": "Thornwick Village",
+          "marker": ""
+        }
+      ],
+      "actionsInWorkFrame": [
+        {
+          "line": 128,
+          "text": "[autoplay] 18 log a look around the square frame=7096"
+        },
+        {
+          "line": 138,
+          "text": "[autoplay] 19 face 30 frame=7096"
+        },
+        {
+          "line": 143,
+          "text": "[autoplay] 20 wait 5 frame=7096"
+        }
+      ],
+      "lastMarkers": [
+        {
+          "frame": "3",
+          "time_s": "2.8624",
+          "dt_ms": "1.972",
+          "region": "Thornwick Village",
+          "marker": "ready"
+        },
+        {
+          "frame": "4",
+          "time_s": "2.8645",
+          "dt_ms": "3.604",
+          "region": "Thornwick Village",
+          "marker": "menu"
+        },
+        {
+          "frame": "5194",
+          "time_s": "14.8655",
+          "dt_ms": "1.777",
+          "region": "Thornwick Village",
+          "marker": "new-game"
+        }
+      ],
+      "cause": "unproven: temporal correlation with synchronous autoplay logging/action dispatch, no retained profiler sample"
+    },
+    {
+      "sample": {
+        "frame": "109374",
+        "time_s": "223.6677",
+        "dt_ms": "174.926",
+        "region": "Blackmere Marsh",
+        "marker": ""
+      },
+      "workFrame": 109373,
+      "neighbours": [
+        {
+          "frame": "109372",
+          "time_s": "223.4904",
+          "dt_ms": "1.702",
+          "region": "Blackmere Marsh",
+          "marker": ""
+        },
+        {
+          "frame": "109373",
+          "time_s": "223.6652",
+          "dt_ms": "3.569",
+          "region": "Blackmere Marsh",
+          "marker": ""
+        },
+        {
+          "frame": "109374",
+          "time_s": "223.6677",
+          "dt_ms": "174.926",
+          "region": "Blackmere Marsh",
+          "marker": ""
+        },
+        {
+          "frame": "109375",
+          "time_s": "223.6694",
+          "dt_ms": "2.272",
+          "region": "Blackmere Marsh",
+          "marker": ""
+        },
+        {
+          "frame": "109376",
+          "time_s": "223.6712",
+          "dt_ms": "1.890",
+          "region": "Blackmere Marsh",
+          "marker": ""
+        }
+      ],
+      "actionsInWorkFrame": [
+        {
+          "line": 924,
+          "text": "[autoplay] 139 approach \"Causeway Gate\" within 1.6 timeout 20 frame=109373"
+        }
+      ],
+      "lastMarkers": [
+        {
+          "frame": "43835",
+          "time_s": "92.5387",
+          "dt_ms": "1.687",
+          "region": "Thornwick Village",
+          "marker": "bram"
+        },
+        {
+          "frame": "87278",
+          "time_s": "179.1213",
+          "dt_ms": "1.739",
+          "region": "Thornwick Village",
+          "marker": "gate"
+        },
+        {
+          "frame": "89795",
+          "time_s": "184.3876",
+          "dt_ms": "2.183",
+          "region": "Blackmere Marsh",
+          "marker": "marsh|region:Thornwick Village->Blackmere Marsh"
+        }
+      ],
+      "cause": "unproven: temporal correlation with synchronous autoplay logging/action dispatch, no retained profiler sample"
+    },
+    {
+      "sample": {
+        "frame": "162268",
+        "time_s": "355.8197",
+        "dt_ms": "1352.808",
+        "region": "Drowned Belfry",
+        "marker": ""
+      },
+      "workFrame": 162267,
+      "neighbours": [
+        {
+          "frame": "162266",
+          "time_s": "354.4603",
+          "dt_ms": "1.583",
+          "region": "Drowned Belfry",
+          "marker": ""
+        },
+        {
+          "frame": "162267",
+          "time_s": "355.8126",
+          "dt_ms": "1.971",
+          "region": "Drowned Belfry",
+          "marker": ""
+        },
+        {
+          "frame": "162268",
+          "time_s": "355.8197",
+          "dt_ms": "1352.808",
+          "region": "Drowned Belfry",
+          "marker": ""
+        },
+        {
+          "frame": "162269",
+          "time_s": "355.8270",
+          "dt_ms": "8.411",
+          "region": "Drowned Belfry",
+          "marker": ""
+        },
+        {
+          "frame": "162270",
+          "time_s": "355.8301",
+          "dt_ms": "6.362",
+          "region": "Drowned Belfry",
+          "marker": ""
+        }
+      ],
+      "actionsInWorkFrame": [
+        {
+          "line": 1493,
+          "text": "[autoplay] 217 face 90 frame=162267"
+        },
+        {
+          "line": 1498,
+          "text": "[autoplay] 218 wait 6 frame=162267"
+        }
+      ],
+      "lastMarkers": [
+        {
+          "frame": "150378",
+          "time_s": "313.2486",
+          "dt_ms": "2.311",
+          "region": "Blackmere Marsh",
+          "marker": "odd"
+        },
+        {
+          "frame": "156835",
+          "time_s": "342.4594",
+          "dt_ms": "2.987",
+          "region": "Drowned Belfry",
+          "marker": "region:Blackmere Marsh->Drowned Belfry"
+        },
+        {
+          "frame": "158497",
+          "time_s": "346.4608",
+          "dt_ms": "1.945",
+          "region": "Drowned Belfry",
+          "marker": "belfry"
+        }
+      ],
+      "cause": "unproven: temporal correlation with synchronous autoplay logging/action dispatch, no retained profiler sample"
+    }
+  ],
+  "movie": {
+    "accessibleInThisClone": false,
+    "manifestPath": ".evidence/P42jPlayer/measurement/vsync0/run1/playthrough.mp4",
+    "sha256": "cb81a9ef4837b8fffd4df8a322c8d98b8b83179187b191fd8548882dfa9385a0"
+  },
+  "exclusions": "No measurement or threshold changed. All three remain failures."
+}

@@ -1,0 +1,110 @@
+{
+  "revision": "fe5364ab",
+  "qualification": false,
+  "exitCode": 0,
+  "seconds": 613.7313,
+  "rows": 577792,
+  "sameActions": [
+    {
+      "action": "[autoplay] 19 face 30 frame=16406",
+      "workFrame": 16406,
+      "followingSample": {
+        "frame": "16407",
+        "time_s": "16.2073",
+        "dt_ms": "0.839",
+        "region": "Thornwick Village",
+        "marker": ""
+      }
+    },
+    {
+      "action": "[autoplay] 139 approach \"Causeway Gate\" within 1.6 timeout 20 frame=205392",
+      "workFrame": 205392,
+      "followingSample": {
+        "frame": "205393",
+        "time_s": "221.2636",
+        "dt_ms": "3.819",
+        "region": "Blackmere Marsh",
+        "marker": ""
+      }
+    },
+    {
+      "action": "[autoplay] 217 face 90 frame=325275",
+      "workFrame": 325275,
+      "followingSample": {
+        "frame": "325276",
+        "time_s": "353.1175",
+        "dt_ms": "1.196",
+        "region": "Drowned Belfry",
+        "marker": ""
+      }
+    }
+  ],
+  "allStalls": [
+    {
+      "sample_frame": "1",
+      "work_frame": "0",
+      "time_s": "0.2211",
+      "dt_ms": "174.404",
+      "owner": "unattributed",
+      "autoplay_ms": "0.000",
+      "autoplay_log_ms": "0.000",
+      "presentation_ms": "0.000",
+      "recorder_ms": "0.000",
+      "gc_collections_since_sample": "2",
+      "engine_owner": "unattributed",
+      "gc_ns": "-1",
+      "scene_loading_ns": "-1",
+      "shader_ns": "-1",
+      "audio_ns": "-1",
+      "navmesh_ns": "-1",
+      "snapshot_ns": "-1",
+      "present_wait_ns": "-1"
+    },
+    {
+      "sample_frame": "15",
+      "work_frame": "14",
+      "time_s": "0.4038",
+      "dt_ms": "157.971",
+      "owner": "unattributed",
+      "autoplay_ms": "0.005",
+      "autoplay_log_ms": "0.000",
+      "presentation_ms": "0.138",
+      "recorder_ms": "0.018",
+      "gc_collections_since_sample": "0",
+      "engine_owner": "unattributed",
+      "gc_ns": "0",
+      "scene_loading_ns": "-1",
+      "shader_ns": "-1",
+      "audio_ns": "-1",
+      "navmesh_ns": "-1",
+      "snapshot_ns": "-1",
+      "present_wait_ns": "0"
+    }
+  ],
+  "requiredMarkers": {
+    "ready": true,
+    "menu": true,
+    "new-game": true,
+    "saved": true,
+    "ending:3": true,
+    "restarted": true,
+    "restore": true,
+    "done": true
+  },
+  "measurementVerdict": "FAIL: two retained startup frames above 100ms; no exemption or relabel",
+  "diagnosticConclusion": "Full route completes; no autoplay/log-owned >100ms frame. Historical ownership not proven. Both startup stalls remain unattributed.",
+  "tests": {
+    "EditMode": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    "PlayMode": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "actualScreen": "640x480 llvmpipe OpenGLCore",
+  "leftOpen": "Historical root cause and two offscreen startup stalls; no B-FRAME qualification."
+}

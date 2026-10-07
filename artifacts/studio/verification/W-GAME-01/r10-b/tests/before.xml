@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.0867401">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="616" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.086740" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1697" name="Hollowmere.R10_B.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R10_B.Tests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.052843" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3372042" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1698" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.052216" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1699" name="R10_B" fullname="Hollowmere.R10_B" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.051835" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1700" name="Tests" fullname="Hollowmere.R10_B.Tests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.051429" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1693" name="FrameStallTests" fullname="Hollowmere.R10_B.Tests.FrameStallTests" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.049898" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1695" name="R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" methodname="R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="720864101" result="Passed" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.015001" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1694" name="R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" methodname="R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="141334495" result="Failed" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.019651" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  diagnostic IO must not execute inside a measured frame
+  Expected: <empty>
+  But was:  < "[autoplay] first frame=7096", "[autoplay] second frame=109373" >
+]]></message>
+                  <stack-trace><![CDATA[at Hollowmere.R10_B.Tests.FrameStallTests.R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush () [0x000b2] in /home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Assets/Hollowmere/Tests/R10_B/Editor/FrameStallTests.cs:30
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[[Hollowmere] frame pacing vsync=1 target=-1
+[Hollowmere] frame log -> /tmp/r10-b-8922aec9bc8e4679a800584131f55f75.csv
+]]></output>
+              </test-case>
+              <test-case id="1696" name="R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" methodname="R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="1114317165" result="Passed" start-time="2026-10-07 16:39:16Z" end-time="2026-10-07 16:39:16Z" duration="0.000576" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
