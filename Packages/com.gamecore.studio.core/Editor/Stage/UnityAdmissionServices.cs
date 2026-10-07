@@ -108,11 +108,24 @@ namespace GameCore.Studio.Edit
             CompilationPipeline.assemblyCompilationFinished += onAssembly;
             CompilationPipeline.compilationFinished += onFinished;
             EditorApplication.update += tick;
-            // Resolve schedules registration; batch mode may not service it until Refresh.
-            // Refresh once on a later update (never inside registeredPackages), so registration,
-            // versionDefines, compilation and reload converge in the same asset pipeline pass.
-            UnityEngine.Debug.Log("[GameCore Studio] stage: resolving packages (" + reason + ")");
-            UnityEditor.PackageManager.Client.Resolve();
+            // Admission adds/removes a local embedded package; it does not request registry updates.
+            // The public Resolve() forces remote resolution and can block Refresh beyond the durable
+            // deadline while an unavailable registry is retried. Unity 6000 exposes the non-forcing
+            // resolver internally; it still discovers changed embedded packages and their dependencies.
+            // Fail closed on an unsupported Editor rather than silently falling back to forced resolution.
+            MethodInfo? resolve = typeof(UnityEditor.PackageManager.Client).GetMethod("Resolve",
+                BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(bool) }, null);
+            if (resolve == null)
+            {
+                Complete(new AdmissionCompileResult(false, false, "package_resolution_unsupported"));
+                return;
+            }
+            UnityEngine.Debug.Log("[GameCore Studio] stage: resolving local package changes without forced registry refresh (" + reason + ")");
+            try { resolve.Invoke(null, new object[] { false }); }
+            catch (TargetInvocationException)
+            {
+                Complete(new AdmissionCompileResult(false, false, "package_resolution_failed"));
+            }
         }
     }
 
