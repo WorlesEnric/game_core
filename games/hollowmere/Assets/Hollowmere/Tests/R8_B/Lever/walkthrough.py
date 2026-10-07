@@ -57,8 +57,10 @@ def walkthrough(work, candidate, companion, library, upm):
     if work.exists():
         evidence = work / 'evidence'
         config = json.loads((evidence / 'config.json').read_text())
-        if (evidence / 'live-admit.json').exists():
-            raise RuntimeError('Admitted runs require normal History recovery, not a fresh candidate retry')
+        undo = evidence / 'live-undo.json'
+        if (evidence / 'live-admit.json').exists() and (not undo.exists()
+                or json.loads(undo.read_text()).get('outcome') != 'Undone'):
+            raise RuntimeError('Admitted runs require normal History recovery before another candidate')
         count = 1
         while (work / ('evidence-attempt-' + str(count))).exists():
             count += 1
@@ -70,8 +72,12 @@ def walkthrough(work, candidate, companion, library, upm):
         config['candidate'] = str(candidate)
         config.pop('jobId', None)
         config.pop('request', None)
-        for name in ('live-progress.json', 'live-failure.txt', 'stage-job.json'):
+        for name in ('live-progress.json', 'live-failure.txt', 'stage-job.json', 'live-admit.json',
+                     'live-undo.json', 'interactive-lever.json', 'automatic-refresh.json', 'last-pending.json',
+                     'signed-verdict.json', 'no-paid-ops.json'):
             (evidence / name).unlink(missing_ok=True)
+        for image in evidence.glob('*.png'):
+            image.unlink()
         save(evidence / 'config.json', config)
         run_service(config, evidence, work / 'node', evidence / 'runner.log', install=False)
         return

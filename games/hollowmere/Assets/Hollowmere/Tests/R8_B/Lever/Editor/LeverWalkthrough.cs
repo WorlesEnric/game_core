@@ -184,6 +184,7 @@ namespace Hollowmere.R8_B
                 {
                     GraphicsWitness();
                     EditorSceneManager.OpenScene("Assets/Hollowmere/Boot/Boot.unity");
+                    FrameGameView();
                     progress["phase"] = "play";
                     Save(evidence, progress);
                     EditorApplication.isPlaying = true;
@@ -307,6 +308,14 @@ namespace Hollowmere.R8_B
             finally { busy = false; }
         }
 
+        private static void FrameGameView()
+        {
+            Type type = typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView", true)!;
+            EditorWindow view = EditorWindow.GetWindow(type);
+            view.maximized = true;
+            view.Focus();
+        }
+
         private static int ReadLever(GameBoot boot)
         {
             foreach (var extension in boot.World!.Extensions)
@@ -321,6 +330,10 @@ namespace Hollowmere.R8_B
             {
                 Button? button = document.rootVisualElement.Q<Button>("lever-toggle");
                 if (button == null || button.panel == null || !button.enabledInHierarchy) continue;
+                Rect bounds = button.worldBound;
+                if (bounds.width <= 0 || bounds.height <= 0 || bounds.xMin < 0 || bounds.yMin < 0
+                    || bounds.xMax > Screen.width || bounds.yMax > Screen.height)
+                    throw new InvalidOperationException("The actual lever control is outside the rendered Game View");
                 using (NavigationSubmitEvent click = NavigationSubmitEvent.GetPooled())
                 {
                     click.target = button;
@@ -333,6 +346,8 @@ namespace Hollowmere.R8_B
 
         private static void CaptureLever(string evidence, string name)
         {
+            if (Screen.width < 640 || Screen.height < 360)
+                throw new InvalidOperationException("The live Game View is too small for readable evidence");
             ScreenCapture.CaptureScreenshot(Path.Combine(evidence, name + "-play.png"));
             GameObject? lever = GameObject.Find("Admitted Lever (committed state)");
             if (lever == null) throw new InvalidOperationException("The actual lever presentation is absent");
@@ -407,6 +422,7 @@ namespace Hollowmere.R8_B
                     witness["resumedDomain"] = domain;
                     witness["graphics"] = GraphicsWitness();
                     StudioPaths.WriteAllTextAtomic(Path.Combine(evidence, "live-admit.json"), witness.ToString());
+                    FrameGameView();
                     ScreenCapture.CaptureScreenshot(Path.Combine(evidence, "admitted-play.png"));
                     boot.Saves.Delete(result.CaptureSlot!);
                     progress["phase"] = "admitted";
