@@ -1,0 +1,24 @@
+   Compiling gamecore-studio v0.1.0 (/tmp/r8-a-baseline-7f5cacb/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.13s
+     Running tests/companion.rs (/tmp/r8-a-baseline-target/debug/deps/companion-8455471aa95cbf08)
+
+running 1 test
+
+thread 'w_rec_03_cancel_is_authenticated_owner_scoped_and_durable' (692491) panicked at tests/companion.rs:2456:5:
+assertion `left == right` failed: {"code":"not_found","message":"no such companion route"}
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-rt-worker' (692493) panicked at /home/worlesenric/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.2/src/runtime/time/entry.rs:539:9:
+A Tokio 1.x context was found, but it is being shutdown.
+test w_rec_03_cancel_is_authenticated_owner_scoped_and_durable ... FAILED
+
+failures:
+
+failures:
+    w_rec_03_cancel_is_authenticated_owner_scoped_and_durable
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.20s
+
+error: test failed, to rerun pass `--test companion`

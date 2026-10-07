@@ -1,7 +1,7 @@
 {
   "counts": {
-    "PASS": 55,
-    "BLOCKED": 12,
+    "PASS": 57,
+    "BLOCKED": 10,
     "FAIL": 1
   },
   "rows": [
@@ -467,14 +467,17 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "P4.2h selected Bram worker task actually executes etos query; exact node tool-call trace and authenticated stdout are retained. Selected-graph and unfiltered gc_dialogue_node queries return zero rows. Production Editor has no PostIndexDeltaAsync caller, and companion ingestion does not expand dialogue.graph nodes. Requires real lifecycle-bound node publication and discoverable owner-scoped graph identity; no harness-seeded RG substitute.",
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42h.py query --row W-ETOS-04 --method P42h.Tasks.TaskDriver.SelectedNpcQuery",
+      "status": "PASS",
+      "note": "R8-A product fccf3f8c: production lifecycle index publication expands real dialogue graphs. Actual scratch ETOS Docker worker etos query discovers Bram graph and returns 8 matching nodes, plus 53 owner-scoped nodes without graph filter. Exact tool trace/stdout retained; no seeded rows or external provider calls.",
+      "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R8_A/run.py run --companion <fresh-binary> --cache <verified-cache> --evidence <repo>/.evidence/r8-a/<fresh-run>",
       "row": "W-ETOS-04",
       "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
       "requirement": "SR-2.4, SR-4.3",
-      "reportedAt": "2026-10-07T01:31:38.711912+00:00",
+      "reportedAt": "2026-10-07T02:17:51.969586+00:00",
       "evidence": [
+        "W-ETOS-04/README.md",
+        "W-ETOS-04/r8-a/result.json.gz",
+        "W-ETOS-04/r8-a/worker-query-receipt.json.gz",
         "W-UI-01/ui-capture-20261005T192323.970290Z/README.md",
         "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/result.json",
         "W-ETOS-04/p42h-query-20261006T233851.413333Z/workflow/worker-query-receipt.json",
@@ -487,7 +490,7 @@
           "equals": false
         }
       ],
-      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "baseline": "fccf3f8c44e08bd3c6925ef99a8fcd15991d8703",
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
@@ -1163,14 +1166,17 @@
       ]
     },
     {
-      "status": "BLOCKED",
-      "note": "P4.2h current app-origin staging exists, but installed running-stage cancellation does not: no authenticated cancel route/client method, and action accepts only stage/discard. Requires owner-scoped cancellation, durable cancelled state, child/container teardown and allocator release without a passing verdict. Discard or cancelling an HTTP wait is not job cancellation; source-backed prerequisite retained.",
-      "command": "Read docs/studio/packets/P4.2h-live-rows.md Requests to other packets and W-REC-03/p42h-prerequisite/result.json",
+      "status": "PASS",
+      "note": "R8-A product fccf3f8c: real native region load cancelled mid-flight and unloaded. Actual attached Stage Cancel button cancels authenticated scratch companion Docker stage; durable cancelled survives restart, container gone, held stage slot released, no verdict, Admit disabled. Real dotnet container paused solely to serialize Editors; foreign app/project 404, unauthenticated proxy 401.",
+      "command": "python3 games/hollowmere/Assets/Hollowmere/Tests/R8_A/run.py run --companion <fresh-binary> --cache <verified-cache> --evidence <repo>/.evidence/r8-a/<fresh-run>",
       "row": "W-REC-03",
       "scenario": "Cancel region load mid-way; cancel staging job",
       "requirement": "SR-9.1",
-      "reportedAt": "2026-10-07T01:31:38.713401+00:00",
+      "reportedAt": "2026-10-07T02:17:51.969607+00:00",
       "evidence": [
+        "W-REC-03/README.md",
+        "W-REC-03/r8-a/result.json.gz",
+        "W-REC-03/r8-a/stage-resources.json.gz",
         "UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md",
         "W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md",
         "W-REC-03/p42h-prerequisite/result.json"
@@ -1182,7 +1188,7 @@
           "equals": false
         }
       ],
-      "baseline": "a77cb38ba4a2265007fa40c38983e01a17bb0914",
+      "baseline": "fccf3f8c44e08bd3c6925ef99a8fcd15991d8703",
       "historical": "P4.2h qualifies only the commissioned rows. Earlier receipts remain historical; untouched rows are not same-revision acceptance."
     },
     {
