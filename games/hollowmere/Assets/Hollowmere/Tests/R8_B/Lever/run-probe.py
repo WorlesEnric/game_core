@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Run the new-lever prerequisite probe, capture :1, and quit the owned Editor.
+"""Run the dispatch probe or the literal signed lever walkthrough on an owned :1 Editor.
 
-This is NOT a stage/admit walkthrough pass. The tested product boundary currently
-refuses every new package's smoke entry; no candidate or signing credential is used.
+The walkthrough subcommand authors no live assets before Stage and creator Admit.
 """
 import argparse
 import json
@@ -12,6 +11,7 @@ import subprocess
 import re
 import tempfile
 import time
+import sys
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[6]
@@ -19,6 +19,18 @@ PROJECT = REPO / "games/hollowmere"
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == 'walkthrough':
+        from walkthrough import walkthrough
+        parser = argparse.ArgumentParser()
+        parser.add_argument('mode', choices=['walkthrough'])
+        parser.add_argument('work', type=Path)
+        parser.add_argument('--candidate', type=Path, required=True)
+        parser.add_argument('--companion', type=Path, default=REPO / 'studio/agent/target/release/gamecore-studio')
+        parser.add_argument('--unity-library', type=Path, default=PROJECT / 'Library')
+        parser.add_argument('--upm-from', type=Path, default=Path.home() / '.cache/Unity/upm')
+        args = parser.parse_args()
+        walkthrough(args.work, args.candidate, args.companion, args.unity_library, args.upm_from)
+        return
     parser = argparse.ArgumentParser()
     parser.add_argument("evidence", type=Path)
     args = parser.parse_args()

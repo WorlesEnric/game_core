@@ -59,8 +59,8 @@ namespace Hollowmere.R8_B
 
         private static JObject Probe()
         {
-            // Dispatch checks precede access to boot/service. Null dependencies deliberately
-            // demonstrate that the observed refusal is the registration gate, not world readiness.
+            // Parsed records are not authority. Missing live-world dependencies and mismatched
+            // package identities must refuse without advancing or registering any mechanism.
             var smoke = new HollowmereAdmittedSmoke(null!, null!);
             var document = new JObject
             {
@@ -95,13 +95,21 @@ namespace Hollowmere.R8_B
         }
 
         [Test]
-        public static void SR_12_2_NewLeverSmokeIsBlockedBeforeWorldAccess()
+        public static void R2_38_LeverRegistrySurvivesRecreationAndRefusesForeignDispatch()
         {
+            var first = new HollowmereExtensionRegistry();
+            var recreated = new HollowmereExtensionRegistry();
+            HollowmereExtensionRegistry.Entry entry = first.Find(LeverType, "Begin")!;
+            Assert.That(entry, Is.Not.Null);
+            Assert.That(entry.Package, Is.EqualTo(LeverPackage));
+            Assert.That(recreated.Find(LeverType, "Begin")!.Package, Is.EqualTo(entry.Package));
+            Assert.That(first.Find(LeverType, "begin"), Is.Null);
+            Assert.That(first.Find("Candidate.SelfRegistered", "Begin"), Is.Null);
+            Assert.That(first.Find(HollowmereAdmittedSmoke.PressurePlateType, "Begin")!.Package,
+                Is.EqualTo(HollowmereAdmittedSmoke.PressurePlatePackage));
             JObject result = Probe();
             Assert.That((string?)result["smokeStatus"], Is.EqualTo("Failed"));
-            Assert.That((string?)result["smokeReport"], Does.Contain("no trusted smoke entry"));
             Assert.That((string?)result["aliasStatus"], Is.EqualTo("Failed"));
-            Assert.That((string?)result["aliasReport"], Does.Contain("the entry belongs to"));
             Assert.That((int?)result["registrations"], Is.Zero);
             Assert.That((int?)result["steps"], Is.Zero);
         }

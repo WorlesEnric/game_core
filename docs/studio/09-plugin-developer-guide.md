@@ -193,7 +193,7 @@ The historical `studio/tools/verify-all.sh final-guides` / `guide-stage` routes 
 1. Register the paired project from its actual source checkout using [10](10-install-build-run.md). Submit the local candidate with `CompanionClient.StageAppCandidateAsync` through the authenticated app-origin route; worker candidates retained by the companion use `StageAsync`. The candidate panel's **Stage** follows these paths. Fixed sample IDs are project-scoped; do not reuse another project's request ID or delete a creator's journal.
 2. Retain the job ID; poll job state. Fetch `/v1/stage/{job}/verdict` and verify that exact signed record through `/verify`. Only a complete trusted pass enables **Admit**. An unsigned CLI verdict or **Record verdict** file is insufficient.
 3. Explicit creator **Admit** starts capture/stop/compile/restore/smoke. Use History for pending recovery and admission undo; no public `mechanism.admit` tool may substitute.
-4. Observe the actual live world, restoration, smoke and undo. The historical P4.2d `catalog_mismatch` failure was subsequently resolved for the maintained pressure plate: [R6-E](packets/R6-E-resumer-rebinding.md) proves authenticated recovery and [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md) retains the later complete-row evidence. That does not establish a new lever. The independent new-package restriction below still prevents the lever walkthrough.
+4. Observe the actual live world, restoration, smoke and undo. The historical P4.2d `catalog_mismatch` failure was subsequently resolved for the maintained pressure plate: [R6-E](packets/R6-E-resumer-rebinding.md) proves authenticated recovery and [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md) retains the later complete-row evidence. That does not establish a new lever. Follow the independent lever walkthrough below; only its own signed stage, live restoration and undo evidence can establish W-DOC-02.
 
 ([04 §6](04-etos-integration.md#6-staging-code-admission), [P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission), [W-DOC-02](../../artifacts/studio/verification/W-DOC-02/README.md))
 
@@ -212,23 +212,72 @@ StudioAdmissionServices.BindAdmission(
 
 The tri-state smoke callback returns Pending/Succeeded/Failed and advances on game frames. Hollowmere allows up to 120 proposal steps with a 240-poll allowance; it checks a trusted registered entry and exact admitted assembly/package identity. It does not invoke arbitrary candidate-named callbacks. Persist progress or fail safely after recovery; mark Applied only after smoke succeeds. ([HollowmereStudioAdmission.cs](../../games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereStudioAdmission.cs), [P3.1 §3](packets/P3.1-hollowmere-complete.md#3-studio-admission-in-the-real-game-r2-g-request-4-as-superseded-by-r2-g2), [R2-B2](packets/R2-B-admission.md#r2-b2--asynchronous-admission-smoke-packetmd))
 
-### New lever: required trusted-game prerequisite
+### New lever: author, stage, admit, observe and undo
 
-W-DOC-02 requires a **new lever mechanism**, not a renamed pressure plate or an existing `interaction.addDoor` placement. Give it a distinct package identity (`com.hollowmere.mechanism.lever`) and smoke identity (`Hollowmere.Mechanism.Lever.LeverSmoke.Begin`); implement declared int32 lever state, a bounded toggle command and committed-state presentation using the extension seams above. Keep its candidate source outside the live project's imported Assets/Packages until the authenticated Stage and creator Admit boundary. Renaming the maintained sample, directly copying candidate code into Assets, or using an unsigned CLI pass is not that workflow.
+W-DOC-02 requires a **new lever mechanism**, not a renamed pressure plate or an existing `interaction.addDoor` placement. The maintained recipe is [Mechanisms/Lever~](../../games/hollowmere/Assets/Hollowmere/Mechanisms/Lever~/). Unity ignores the directory ending in `~`; its C# sources are **not imported into the live game**. The generated candidate below also stays outside live Assets/Packages. Never remove the tilde, copy this package into live imports yourself, or treat an unsigned CLI verdict as admission authority.
 
-**Current blocker:** before attempting admission, the trusted game must support that new package's live smoke entry. `HollowmereAdmittedSmoke` currently contains a private fixed registry with only `Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin`, bound to `com.hollowmere.mechanism.pressureplate`. There is no creator registration operation. A new lever entry returns `Failed` with `no trusted smoke entry is registered`; borrowing the plate entry instead returns a package-ownership refusal. A passing isolated stage cannot change this trusted registry. Do not disable the smoke or patch the registry from candidate code.
+The package is **com.hollowmere.mechanism.lever 0.1.0**. Its pure rule is a bistable latch: one toggle changes `0 → 1` or `1 → 0`, and the position remains latched until another toggle. There is no actor weight, threshold or occupancy. `lever.state` is an authoritative int32 slot with PreserveDormant policy. `lever.toggle` accepts one int32 turn count, exactly `1`; its ingress lane is bounded to **16 commands / 64 payload bytes per step**, with reject-before-mutation overflow. Accepted transitions reserve and commit `LeverToggled{target,state}` before writing the slot; malformed, unknown-target, invalid-state, invalid-command and event-budget refusals do not mutate it. The binder rotates the handle and changes its indicator from committed slots after the ordinary game pump; it skips a null graphics device in batchmode and releases its view on detach.
 
-The retained [R8-B probe](../../games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Editor/LeverAdmissionProbe.cs) exercises this dispatch boundary without importing code or claiming signed authority. Run the exact EditMode case with:
+| Recipe part | Concrete implementation |
+|---|---|
+| Pure rules and tests | `package/Rules/LeverRules.cs`, `package/Tests/Rules/LeverRulesTests.cs`: alternating latch states, corrupt-state refusal and rejection of zero/multiple turns. Stage compiles these same pure sources for dotnet and Unity. |
+| Kernel and target | `LeverDeclarations`, `LeverKernel`: distinct stable names under `gameplay.hollowmere.lever.*`, one recipe, one world-scope lever target, command reader, bounded lane, system and committed event. A newly created target's recipe initializes state to `0`; `Attach(seedSlots:false)` never overwrites restored slots. |
+| Normal gameplay composition | Public sealed `Hollowmere.Mechanism.Lever.LeverWorldExtension`, public parameterless constructor, assembly `Hollowmere.Mechanism.Lever`; implements `IGameplayWorldExtension` and `IGameplayWorldTargets`. `public int State { get; }` reads committed `0/1` (`-1` means absent/detached); `public bool Toggle()` enqueues only and returns ingress admission, **not** completion. It uses the root's resumed operation sequence and never pumps. |
+| Player interaction | The runtime **Toggle lever** button near the top-left of the game view, below the HUD, calls the same bounded `Toggle()` command once per click. Its **Lever: Off/On** label and the 3D handle change only after a committed slot update; unavailable targets disable the button. The binder owns its runtime UI Toolkit panel and releases it on detach. This is a real player control, not an Editor tool or autonomous smoke loop. |
+| Catalog | `make-catalog.py` uses the repository emitter to generate `Hollowmere.Mechanism.Lever.Generated.LeverCatalog` in assembly `Hollowmere.Mechanism.Lever.Generated`, its coverage, a hash over the other package files, and stable metas. The reviewed game registry composes this exact catalog with the existing world catalog, preserving the actual `CatalogSet` fingerprint. There is no candidate Editor contributor/discovery hook. |
+| Sandbox only | `Hollowmere.Mechanism.Lever.LeverSmoke.Begin()` returns the Stage harness session with `Root`, `Step(int)`, `SlotHash()` and `Dispose()`. Three scheduled toggles exercise `0 → 1 → 0 → 1` with the normal PlayerLoop. **The live admission adapter never invokes Begin.** |
+
+**Why this sample does not use `IGameplayCatalogContributor`:** the admission path calls the regular bake's `Entry.Verify`; it does not regenerate the checked-in game catalog. Discovering a new contributor there would change the staged base-world fingerprint while the runtime still loads the old generated base catalog. The reviewed trusted composition seam therefore adds the exact lever generated catalog explicitly, with the real combined fingerprint, and supplies the normal `WorldBuildOptions.Extensions` plan. It does not substitute a baseline hash for the combined catalog or discover arbitrary candidate catalog types. The normal contributor seam above remains the standard for packages delivered together with a regular rebake.
+
+#### 1. Author an external candidate
+
+Run at the repository root in a dedicated developer checkout. Python 3.11+ is sufficient for these generation commands; they do not build, install or execute candidate C#. `make-candidate.py` reuses the maintained sample's canonical tarball and change-set schema machinery, verifies catalog/hash/metas are current, and refuses output below live Assets/Packages. The proposal names the real rule-test sources; it does not invent pre-stage passing test counts.
 
 ```sh
-bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
-  --log-dir "$PWD/.unity-logs/r8-b" --label lever-prerequisite \
-  --results "$PWD/.unity-logs/r8-b/lever-prerequisite.xml" -- \
-  -runTests -testPlatform EditMode \
-  -testFilter 'Hollowmere\.R8_B\.LeverAdmissionProbe\.SR_12_2_NewLeverSmokeIsBlockedBeforeWorldAccess'
+lever_recipe="$PWD/games/hollowmere/Assets/Hollowmere/Mechanisms/Lever~"
+lever_work="$(mktemp -d "${TMPDIR:-/tmp}/gc-lever-guide.XXXXXX")"
+python3 "$lever_recipe/make-catalog.py"
+python3 "$lever_recipe/make-catalog.py" --check
+python3 "$lever_recipe/make-candidate.py" --output "$lever_work/candidate"
+python3 "$lever_recipe/make-candidate.py" --output "$lever_work/candidate" --check
 ```
 
-A passing **probe test** means the blocker was reproduced, not that W-DOC-02 passed. The [R8-B packet](packets/R8-B-guide-and-texture.md#requests-to-other-packets) requests the trusted game integration; it is outside this packet's edit ownership. After that integration, qualification still requires a distinct lever candidate, all seven signed service steps, explicit authenticated creator Admit, restored Play with an observed committed lever toggle, and normal admission undo. None of those requirements is waived by this prerequisite check.
+The candidate is exactly `$lever_work/candidate/change-set.json` plus `artifacts/package.tgz` and `artifacts/proposal.json`; the command prints their digests. Author changes under `Lever~/package`, then rerun both generators. Regenerate before submitting, never alter an already staged candidate to make its retained verdict pass. The default candidate ID is scoped to the paired project; a repeated independent attempt in the same project must supply a new schema-valid `--id` rather than erase its journal.
+
+#### 2. Run the signed service walkthrough
+
+Meet [the provisioning prerequisites above](#build-and-provision-before-staging) first: local companion build, exact licensed Docker image, pinned NuGet/public UPM inputs and a trusted resolved Unity Library. This graphical walkthrough additionally requires the host's working `:1` display and no concurrent Editor for this project. The project must not already have `UserSettings/GameCoreStudio.json`; use a dedicated checkout rather than deleting or reading another creator's pairing. The operator's etos binaries must already exist under `$HOME/.local/opt/etos/bin`; the runner starts a **private scratch node**, never modifies/restarts installed services, and configures no providers, workers or paid operations.
+
+```sh
+export PATH="$HOME/.dotnet:$HOME/.cargo/bin:$PATH"
+cargo build --release --manifest-path studio/agent/Cargo.toml
+python3 games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/run-probe.py \
+  walkthrough "$lever_work/walkthrough" \
+  --candidate "$lever_work/candidate" \
+  --companion "$PWD/studio/agent/target/release/gamecore-studio" \
+  --unity-library "$PWD/games/hollowmere/Library" \
+  --upm-from "$HOME/.cache/Unity/upm"
+```
+
+`$lever_work/walkthrough` must not exist and must be outside the checkout. If the mutable default public UPM cache lacks pinned historical records, pass the complete verified public `upm` directory described above; never relax its lock/digest checks or copy a whole warm root. The runner derives the exact app/project owner namespace and provisions its versioned cache before submitting candidate bytes. It uses the real production `CompanionClient.StageAppCandidateAsync`, retains/polls the service job, and fetches/verifies the signed verdict. **Invoking this walkthrough explicitly authorizes its driver to perform creator Admit and normal History Undo after the trusted pass**; it is not a read-only staging command and does not wait for manual button clicks. No pre-Admit package import is part of this command.
+
+The driver performs and records these same creator workflow boundaries in its owned graphical Editor:
+
+1. Resolve the lever identity and the complete **signed seven-step Docker verdict** through the production candidate coordinator. A cache preflight, the old registry probe, an unsigned CLI verdict, or a partial step set does not enable admission.
+2. Explicitly invoke the coordinator's `Admit(entry, captureAndStop: true)` action. This captures the old world, stops Play, installs/compiles the package, verifies the signed catalog prediction, composes the reviewed catalogs and restores. It is the trusted driver's creator action, not a candidate callback or public `mechanism.admit` tool.
+3. Wait for restored Play and the trusted smoke to finish through normal game frames. Before adding new lever topology, the restored world must complete an equal save roundtrip; the walkthrough separately verifies that the captured **nine OldCoin** inventory state survives admission. This is not an assertion that full-world initial and final hashes remain equal across advancing NPC/game frames. Then the game-owned adapter mounts the declared plugin/seeds only an absent target, observes the real committed sequence **off/on/off (`0,1,0`)**, and records the normal pump evidence. Merely returning `true` from `Toggle()` is not success.
+4. After admission smoke, activate the attached runtime `lever-toggle` button through its ordinary UI submit event, wait for committed **on**, activate it again and wait for committed **off**. The driver retains `interactive-lever.json` and `lever-off-before`, `lever-on`, `lever-off-after` Play screenshots plus camera captures of the actual playing world (`*-play.png` and `*-world.png`), rather than recreating the lever in a preview scene.
+5. Explicitly invoke `runtime.History.Undo(changeSetId)` and wait for the previous catalog to restore and the lever package to disappear, rather than deleting package files. Retain `$lever_work/walkthrough/evidence`, the signed verdict and retained stage outputs, package/proposal digests, equal-roundtrip and nine-coin witnesses, committed state observations, graphical captures and undo result. A timeout or refusal is retained as failure, never rewritten as acceptance.
+
+For the equivalent manual flow in a separately paired project, use the candidate panel's **Stage**, review the verified complete verdict, explicitly click **Admit**, inspect restored Play, then use admission **Undo** in History. Do not run that manual flow concurrently with the automated walkthrough on the same project.
+
+These are executable instructions and expected observations, **not a claim that W-DOC-02 has passed**. Qualification belongs to the actual signed run and retained restored-world/undo evidence for the delivered revision.
+
+#### 3. Reviewed game-author process for another mechanism
+
+The old fixed pressure-plate-only dispatch was a genuine R8-B blocker. [SADR-054](decisions/SADR-054-trusted-game-extension-registry.md) records its replacement by the reviewed, game-owned [HollowmereExtensionRegistry](../../games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereExtensionRegistry.cs), not by candidate self-registration. Its immutable per-instance `Entries` and ordinal `Find(smokeType, smokeMethod)` retain the pressure-plate identity and explicitly name the lever package, runtime assembly and extension type. The trusted resolver verifies the loaded type's assembly and that its asmdef belongs to `<project>/Packages/com.hollowmere.mechanism.lever` with a matching package manifest. Unknown smoke entries, aliases, wrong package ownership and incompatible public signatures fail closed. `RunAdmittedSmokeEntry(StageVerdict,string,string,int)` remains the entry boundary.
+
+For a genuinely new mechanism, a **game author**, in a reviewed trusted-source change before candidate admission, must add its exact package/assembly/type/smoke identity and implement a bounded game-owned live adapter that checks restored checkpoint continuity and observes its declared committed effects. Use `WorldBuildOptions.Extensions` and optional `IGameplayWorldTargets`; integrate the exact generated catalog through the reviewed composition seam for admission, or use a normal contributor when delivering a regular rebake. Do not discover arbitrary candidate callbacks or add a candidate-side registry API. Review minimum/maximum smoke steps, headless behavior, fresh/restored attachment, preserved slots, one-pump behavior and normal undo. Only after that trusted integration may a separate candidate go through the same authenticated Stage and explicit Admit boundary. A registry source change alone confers neither a signed verdict nor creator authorization.
 
 ## Delivery checklist
 

@@ -20,6 +20,9 @@ namespace Hollowmere.Boot
         /// <summary>Frames raised so far.</summary>
         public int Frames { get; private set; }
 
+        /// <summary>Replaces the previous admission binding; a rebind must not leave two smoke drivers toggling a world.</summary>
+        public void Bind(Action step) => Frame = step ?? throw new ArgumentNullException(nameof(step));
+
         private void LateUpdate()
         {
             Frames++;
