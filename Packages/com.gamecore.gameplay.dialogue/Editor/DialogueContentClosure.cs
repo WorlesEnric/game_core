@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Logic;
 using GameCore.Gameplay.Logic.Editor;
@@ -14,6 +15,22 @@ namespace GameCore.Gameplay.Dialogue.Editor
     /// <summary>Uses the same world-owned narrative closure as the bake; never infers ownership from asset paths.</summary>
     public static class DialogueContentClosure
     {
+        /// <summary>Runs the ordinary read-only content-set bake validation with the source asset's path.</summary>
+        public static IReadOnlyList<GameplayDiagnostic> ValidateProjectedSet(ScriptableObject definition, string originalPath)
+        {
+            if (!(definition is GameplayContentSet set))
+                throw new ArgumentException("A projected GameplayContentSet is required.", nameof(definition));
+            var diagnostics = new List<GameplayDiagnostic>();
+            if (set.World == null)
+            {
+                diagnostics.Add(new GameplayDiagnostic(NarrativeDiagnosticCodes.ContentSetMissingWorld,
+                    originalPath, set.name + " names no world"));
+                return diagnostics;
+            }
+            NarrativeBake.Plan(set, originalPath, set.World.AuthoringId, diagnostics);
+            return diagnostics;
+        }
+
         public static GameplayContentSet ResolveForActiveScene()
         {
             Scene scene = SceneManager.GetActiveScene();

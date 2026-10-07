@@ -565,6 +565,13 @@ namespace GameCore.Studio.Edit
                 }
 
                 projection.RemapReferences();
+                var checkedCopies = new HashSet<ScriptableObject>(copies.Values);
+                foreach (ScriptableObject copy in projection.Definitions)
+                    if (checkedCopies.Add(copy))
+                    {
+                        copies.Add(copy, copy);
+                        affected.Add(copy, new List<StagedOperation>());
+                    }
                 bool needsClosure = projection.Definitions.Exists(definition =>
                     _runtime.Identity.Describe(definition)?.TypeId == "npc.definition");
                 Type? closure = Type.GetType("GameCore.Studio.Gameplay.DialogueClosureTools, GameCore.Studio.Gameplay.Editor");
@@ -589,9 +596,24 @@ namespace GameCore.Studio.Edit
                             if (!owner.Blocked) owner.AddRange(failed.Diagnostics);
                         continue;
                     }
+                    bool contentSet = _runtime.Identity.Describe(pair.Value)?.TypeId == "logic.contentSet";
+                    if (contentSet)
+                    {
+                        MethodInfo validateSet = closure?.GetMethod("ValidateProjectedSet")
+                            ?? throw new InvalidOperationException("The trusted projected content-set validator is unavailable.");
+                        string path = (string?)projection.WriteRef(pair.Value)["path"]
+                            ?? throw new InvalidOperationException("The projected content set has no source path.");
+                        diagnostics.AddRange((IReadOnlyList<Diagnostic>)validateSet.Invoke(null, new object[] { pair.Value, path })!);
+                    }
                     foreach (MethodInfo method in DefinitionValidators.Value)
                     {
                         if (!method.GetParameters()[0].ParameterType.IsInstanceOfType(pair.Value)) continue;
+                        // These built-ins delegate content sets to the same NarrativeBake.Plan.
+                        // Run that pipeline once with its source path above; custom validators still run.
+                        if (contentSet && (method.DeclaringType?.FullName == "GameCore.Gameplay.Logic.Editor.LogicValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Dialogue.Editor.DialogueValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Inventory.Editor.InventoryValidator"
+                            || method.DeclaringType?.FullName == "GameCore.Gameplay.Quest.Editor.QuestValidator")) continue;
                         try
                         {
                             if (!(method.Invoke(null, new object[] { pair.Value }) is IEnumerable results))
@@ -623,6 +645,10 @@ namespace GameCore.Studio.Edit
                         }
                         catch (Exception error) when (!(error is ExitGUIException))
                         {
+                            if (owners.Count == 0)
+                                diagnostics.Add(StudioDiagnostics.General(DiagnosticCodes.StageFailed,
+                                    "Definition validator " + method.DeclaringType?.Name + "." + method.Name
+                                    + " failed: " + error.GetBaseException().Message));
                             foreach (StagedOperation owner in owners)
                                 owner.Add(StudioDiagnostics.Op(DiagnosticCodes.StageFailed, owner.OpId,
                                     "Definition validator " + method.DeclaringType?.Name + "." + method.Name

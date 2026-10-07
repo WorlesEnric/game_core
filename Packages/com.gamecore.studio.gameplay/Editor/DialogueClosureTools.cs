@@ -31,6 +31,27 @@ namespace GameCore.Studio.Gameplay
             }
         }
 
+        /// <summary>Preserves content-set validation diagnostics for a detached final copy without requiring an asset path on it.</summary>
+        public static IReadOnlyList<Diagnostic> ValidateProjectedSet(ScriptableObject definition, string originalPath)
+        {
+            var diagnostics = new List<Diagnostic>();
+            var results = (System.Collections.IEnumerable)ClosureMethod("ValidateProjectedSet")
+                .Invoke(null, new object[] { definition, originalPath })!;
+            foreach (object item in results)
+            {
+                Type type = item.GetType();
+                string code = (string)type.GetProperty("Code")!.GetValue(item)!;
+                string message = (string)type.GetProperty("Message")!.GetValue(item)!;
+                string subjectId = (string)type.GetProperty("SubjectId")!.GetValue(item)!;
+                AuthoringRef subject = Guid.TryParse(subjectId, out _)
+                    ? new AuthoringRef(AuthoringKind.Definition, authoringId: subjectId, scope: AuthorScope.Definition)
+                    : new AuthoringRef(AuthoringKind.Definition, path: originalPath, scope: AuthorScope.Definition);
+                diagnostics.Add(new Diagnostic(code, message, null, DiagnosticWhere.At(subject),
+                    subjectId.Length > 0 ? new JObject { ["subject"] = subjectId } : null));
+            }
+            return diagnostics;
+        }
+
         [AuthorOperation("dialogue.createGraph", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(DialogueClosureValidator), Doc = "Creates a dialogue graph and enrolls it in the active region world's narrative content set, with durable undo.")]
         public static OperationResult CreateGraph(EditContext context,
