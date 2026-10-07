@@ -56,6 +56,18 @@ namespace Hollowmere.Game
         private FrameLogWriter? writer;
         private string region = string.Empty;
         private int pending;
+        private readonly StringBuilder diagnostics = new StringBuilder();
+        private readonly StringBuilder stalls = new StringBuilder();
+        private int collections;
+        private int emittedDiagnosticLength;
+        private FrameEngineAttribution? engineAttribution;
+        public FrameAttribution Attribution { get; } = new FrameAttribution();
+
+        /// <summary>Retains autoplay evidence without synchronous Unity log/stacktrace/file IO in a measured frame.</summary>
+        public void RecordDiagnostic(string line)
+        {
+            diagnostics.Append(line).Append('\n');
+        }
 
         /// <summary>The file being written; null before Begin.</summary>
         public string? LogPath => path;
@@ -97,6 +109,14 @@ namespace Hollowmere.Game
             File.WriteAllText(logPath, buffer.ToString(), new UTF8Encoding(false));
             buffer.Clear();
             pending = 0;
+            diagnostics.Clear();
+            emittedDiagnosticLength = 0;
+            stalls.Clear();
+            stalls.Append("sample_frame,work_frame,time_s,dt_ms,owner,autoplay_ms,autoplay_log_ms,presentation_ms,recorder_ms,gc_collections_since_sample,engine_owner,")
+                .Append(FrameEngineAttribution.Header).Append('\n');
+            engineAttribution?.Dispose();
+            engineAttribution = new FrameEngineAttribution();
+            collections = GC.CollectionCount(0);
         }
 
         /// <summary>The region name written on the following rows.</summary>
@@ -116,6 +136,16 @@ namespace Hollowmere.Game
         {
             QueueRows();
             writer?.Drain();
+            if (path != null)
+            {
+                File.WriteAllText(path + ".events.log", diagnostics.ToString());
+                File.WriteAllText(path + ".stalls.csv", stalls.ToString());
+                if (diagnostics.Length > emittedDiagnosticLength)
+                {
+                    Debug.Log(diagnostics.ToString(emittedDiagnosticLength, diagnostics.Length - emittedDiagnosticLength));
+                    emittedDiagnosticLength = diagnostics.Length;
+                }
+            }
         }
 
         private void QueueRows()
@@ -137,6 +167,21 @@ namespace Hollowmere.Game
                 return;
             }
 
+            using var measurement = Attribution.Measure(Time.frameCount, FrameSubsystem.FrameRecorder);
+            int nowCollections = GC.CollectionCount(0);
+            if (Time.unscaledDeltaTime * 1000.0 > 100)
+            {
+                stalls.Append(Time.frameCount.ToString(CultureInfo.InvariantCulture)).Append(',')
+                    .Append((Time.frameCount - 1).ToString(CultureInfo.InvariantCulture)).Append(',')
+                    .Append(Time.realtimeSinceStartupAsDouble.ToString("F4", CultureInfo.InvariantCulture)).Append(',')
+                    .Append((Time.unscaledDeltaTime * 1000.0).ToString("F3", CultureInfo.InvariantCulture)).Append(',')
+                    .Append(Attribution.Describe(Time.frameCount - 1)).Append(',')
+                    .Append((nowCollections - collections).ToString(CultureInfo.InvariantCulture)).Append(',')
+                    .Append(engineAttribution!.Owner());
+                engineAttribution.AppendTo(stalls);
+                stalls.Append('\n');
+            }
+            collections = nowCollections;
             buffer.Append(Time.frameCount.ToString(CultureInfo.InvariantCulture)).Append(',')
                 .Append(Time.realtimeSinceStartupAsDouble.ToString("F4", CultureInfo.InvariantCulture)).Append(',')
                 .Append((Time.unscaledDeltaTime * 1000.0).ToString("F3", CultureInfo.InvariantCulture)).Append(',')
@@ -162,7 +207,11 @@ namespace Hollowmere.Game
 
         private void OnApplicationQuit() => Flush();
 
-        private void OnDestroy() => Flush();
+        private void OnDestroy()
+        {
+            try { Flush(); }
+            finally { engineAttribution?.Dispose(); engineAttribution = null; }
+        }
 
         /// <summary>No commas, no newlines (the CSV has no quoting).</summary>
         private static string Clean(string text)

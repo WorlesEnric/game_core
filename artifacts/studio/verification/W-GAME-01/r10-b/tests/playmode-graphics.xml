@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="10" result="Passed" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.6931593">
+  <test-suite type="TestSuite" id="1079" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="25" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.693159" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1064" name="Hollowmere.P3_1.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.PlayMode.Tests.dll" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.683123" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3507684" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1065" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.682525" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1066" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.682261" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1067" name="PlayMode" fullname="Hollowmere.P3_1.PlayMode" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.682014" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1068" name="Tests" fullname="Hollowmere.P3_1.PlayMode.Tests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.681779" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1053" name="FullQuestHeadless" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:23Z" duration="9.680348" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1056" name="EndingA_Silence" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence" methodname="EndingA_Silence" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="819403978" result="Passed" start-time="2026-10-07 17:11:13Z" end-time="2026-10-07 17:11:16Z" duration="3.230134" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending A: boot 1675ms/1f | Maren's rumour 235ms/5f | the barn lantern 44ms/4f | Hale opens the gate 73ms/3f | the oil flask 17ms/4f | the punt sealed with pitch 20ms/4f | the punt crosses to the belfry 1018ms/3f | the Echo, left to sleep 85ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1055" name="EndingB_Toll" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll" methodname="EndingB_Toll" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="355106753" result="Passed" start-time="2026-10-07 17:11:16Z" end-time="2026-10-07 17:11:18Z" duration="1.607754" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending B: boot 291ms/1f | Maren's rumour 47ms/5f | the square's coins (2 + 3) 17ms/4f | Bram's lantern 43ms/4f | Hale opens the gate 47ms/3f | the clapper 13ms/4f | the oil flask 24ms/4f | the punt sealed with pitch 17ms/4f | the punt crosses to the belfry 1014ms/3f | the bell rings 63ms/5f
+]]></output>
+                </test-case>
+                <test-case id="1054" name="EndingC_FreedEcho" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho" methodname="EndingC_FreedEcho" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="602993570" result="Passed" start-time="2026-10-07 17:11:18Z" end-time="2026-10-07 17:11:19Z" duration="0.626929" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] ending C: boot 318ms/5f | Maren's rumour 48ms/5f | the barn lantern 17ms/4f | Hale opens the gate 52ms/3f | the west shrine lantern 22ms/4f | the middle shrine lantern 11ms/4f | the shrine alight 18ms/6f | the clapper 19ms/4f | Odd ferries to the belfry 50ms/3f | ferry 0ms/0f | the bell rings 52ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1057" name="Failure_LanternLost" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost" methodname="Failure_LanternLost" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="54483899" result="Passed" start-time="2026-10-07 17:11:19Z" end-time="2026-10-07 17:11:19Z" duration="0.493289" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] failure: boot 331ms/5f | Maren's rumour 49ms/5f | the barn lantern 18ms/4f | Hale opens the gate 51ms/3f | the sinkhole takes the lantern 23ms/4f
+]]></output>
+                </test-case>
+                <test-case id="1062" name="P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" methodname="P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="1069239412" result="Passed" start-time="2026-10-07 17:11:19Z" end-time="2026-10-07 17:11:20Z" duration="0.631270" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1060" name="P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" methodname="P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="252306714" result="Passed" start-time="2026-10-07 17:11:20Z" end-time="2026-10-07 17:11:20Z" duration="0.644996" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1b] save capture slot-1 mainThreadMs=95.375
+]]></output>
+                </test-case>
+                <test-case id="1061" name="P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" methodname="P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="13897081" result="Passed" start-time="2026-10-07 17:11:20Z" end-time="2026-10-07 17:11:21Z" duration="0.534053" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1059" name="R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" methodname="R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="1491714403" result="Passed" start-time="2026-10-07 17:11:21Z" end-time="2026-10-07 17:11:22Z" duration="0.624702" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[R7-C lantern] interaction outcomes: succeeded=1, refused=7
+[R7-C lantern] interaction outcomes: succeeded=1, refused=7
+[R7-C lantern] interaction outcomes: succeeded=0, refused=8
+[R7-C lantern] interaction outcomes: succeeded=0, refused=8
+[P3.1] R7-C W-PLUG-08: 32 real barn uses, exactly one lantern across save/reload: boot 325ms/19f
+]]></output>
+                </test-case>
+                <test-case id="1063" name="R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip" methodname="R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Explicit" seed="28525256" result="Passed" start-time="2026-10-07 17:11:22Z" end-time="2026-10-07 17:11:22Z" duration="0.332153" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="_SKIPREASON" value="Native audio acceptance: select this case in a graphics-enabled batch Editor." />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[W-PLUG-11] real Maren dialogue plays Maren_greet volume=1
+]]></output>
+                </test-case>
+                <test-case id="1058" name="SaveRestoreMidQuest" fullname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest" methodname="SaveRestoreMidQuest" classname="Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless" runstate="Runnable" seed="767543133" result="Passed" start-time="2026-10-07 17:11:22Z" end-time="2026-10-07 17:11:23Z" duration="0.934968" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] round trip: slots 98ff46e85f63035db9e3454a200557bd9bfa84529e465285a5d25bc6f083ae29 -> 98ff46e85f63035db9e3454a200557bd9bfa84529e465285a5d25bc6f083ae29, step 40 -> 40
+[P3.1] capture slot hash 98ff46e85f63035db9e3454a200557bd9bfa84529e465285a5d25bc6f083ae29, restore slot hash 98ff46e85f63035db9e3454a200557bd9bfa84529e465285a5d25bc6f083ae29
+[P3.1] save/restore: boot 310ms/2f | Maren's rumour 47ms/5f | the barn lantern 17ms/4f | Hale opens the gate 47ms/3f | the west shrine lantern 13ms/4f | the middle shrine lantern (after restore) 348ms/4f | the shrine alight (after restore) 15ms/6f | the clapper (after restore) 13ms/4f | Odd ferries to the belfry 44ms/3f | ferry 0ms/0f | the bell rings 55ms/4f
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

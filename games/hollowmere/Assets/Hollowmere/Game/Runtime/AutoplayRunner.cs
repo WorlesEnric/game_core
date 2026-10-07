@@ -121,6 +121,7 @@ namespace Hollowmere.Game
 
         private void Update()
         {
+            using var measurement = (host as HollowmerePersistentSession)?.FrameLog?.Attribution.Measure(Time.frameCount, FrameSubsystem.Autoplay) ?? default;
             if (script == null || host == null)
             {
                 return;

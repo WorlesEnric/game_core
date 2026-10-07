@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Failed(Child)" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="1.0233323">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="616" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="1.023332" total="16" passed="15" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1645" name="Hollowmere.P3_1.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P3_1.EditMode.Tests.dll" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.931715" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3397661" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1646" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.929224" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1647" name="P3_1" fullname="Hollowmere.P3_1" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.927903" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1648" name="EditMode" fullname="Hollowmere.P3_1.EditMode" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.926584" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1649" name="Tests" fullname="Hollowmere.P3_1.EditMode.Tests" runstate="Runnable" testcasecount="13" result="Failed" site="Child" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.924948" total="13" passed="12" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1626" name="P31AdmissionInPlayMode" fullname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" classname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 16:42:34Z" end-time="2026-10-07 16:42:40Z" duration="6.498786" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1627" name="PressurePlateAdmittedIntoTheRunningGame" fullname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode.PressurePlateAdmittedIntoTheRunningGame" methodname="PressurePlateAdmittedIntoTheRunningGame" classname="Hollowmere.P3_1.EditMode.Tests.P31AdmissionInPlayMode" runstate="Runnable" seed="117061840" result="Passed" start-time="2026-10-07 16:42:34Z" end-time="2026-10-07 16:42:40Z" duration="6.486227" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="600000" />
+                  </properties>
+                  <output><![CDATA[[P3.1] admission from Play Mode: Pending () Waiting for Play Mode to stop.; capture 
+[P3.1] admission in Edit Mode: Re-entering Play Mode for checkpoint restore.; installed /tmp/gcstudio-p31-5274465314/packages/com.hollowmere.mechanism.pressureplate
+[Hollowmere] admitted smoke pass: active root Running, catalog d82aed185b6d, round trip equal (slot hash f3e55e490c69); 120 game frame(s) stepped and asserted [Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin, steps 120]
+[P3.1] admission after the restart: Admitted () Admitted and verified. after 122 editor frame(s); smoke polls 121, steps 120, Pending -> Passed; pass: active root Running, catalog d82aed185b6d, round trip equal (slot hash f3e55e490c69); 120 game frame(s) stepped and asserted [Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin, steps 120]
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1628" name="P31AuthoringTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests" classname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-07 16:42:40Z" end-time="2026-10-07 16:42:43Z" duration="2.895197" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1629" name="AuthorAllIsIdempotent" fullname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent" methodname="AuthorAllIsIdempotent" classname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests" runstate="Runnable" seed="311693230" result="Failed" start-time="2026-10-07 16:42:40Z" end-time="2026-10-07 16:42:43Z" duration="2.605617" asserts="0">
+                  <properties />
+                  <failure>
+                    <message><![CDATA[  the second run applied steps: media.voices-bank-28
+  Expected: <empty>
+  But was:  < "media.voices-bank-28" >
+]]></message>
+                    <stack-trace><![CDATA[at Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.AuthorAllIsIdempotent () [0x001ec] in /home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Assets/Hollowmere/Tests/P3_1/EditMode/P31AuthoringTests.cs:82
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4BKXTXJNS9VG48426GAV3KB -> Applied (28 op(s), 786.5 ms)
+[P3.1] AuthorAll second run: ok=True applied=1 skipped=72 ops=28 bake=True verify=True seconds=1.7; journal 112 -> 113; files 1729, changed 0; 1939 ms
+]]></output>
+                </test-case>
+                <test-case id="1630" name="BakeVerifies" fullname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.BakeVerifies" methodname="BakeVerifies" classname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests" runstate="Runnable" seed="1061790842" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.075445" asserts="0">
+                  <properties />
+                  <output><![CDATA[[P3.1] verify: verified Assets/Hollowmere/World/Hollowmere.asset
+]]></output>
+                </test-case>
+                <test-case id="1631" name="ContentIsBoundToScripts" fullname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests.ContentIsBoundToScripts" methodname="ContentIsBoundToScripts" classname="Hollowmere.P3_1.EditMode.Tests.P31AuthoringTests" runstate="Runnable" seed="1867953708" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.212663" asserts="0">
+                  <properties />
+                  <output><![CDATA[[P3.1] script references: 285 (53 scripts), unresolved 0
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1635" name="P31bFramePolicyTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests" classname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.004925" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1637" name="P31b_BELFRY_PreloadIsLimitedToFerryPreparation" fullname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BELFRY_PreloadIsLimitedToFerryPreparation" methodname="P31b_BELFRY_PreloadIsLimitedToFerryPreparation" classname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests" runstate="Runnable" seed="1742167447" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.000822" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1636" name="P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency" fullname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests.P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency" methodname="P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency" classname="Hollowmere.P3_1.EditMode.Tests.P31bFramePolicyTests" runstate="Runnable" seed="713951958" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.000797" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1638" name="P31dFrameTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.018099" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1641" name="P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" methodname="P31d_BOOT_AttachDoesNotClaimAnUnreadyMenu" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" seed="1975373773" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.016364" asserts="0">
+                  <properties />
+                  <output><![CDATA[[Hollowmere] frame pacing vsync=1 target=-1
+[Hollowmere] frame log -> /tmp/hollowmere-p31d-a9def1190a9e434c846b64ac02cb1fca.csv
+]]></output>
+                </test-case>
+                <test-case id="1640" name="P31d_BOOT_RegionWaitsForPresentedMenu" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_BOOT_RegionWaitsForPresentedMenu" methodname="P31d_BOOT_RegionWaitsForPresentedMenu" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" seed="697108600" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.000379" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1639" name="P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored" fullname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests.P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored" methodname="P31d_PACING_DefaultIsUncappedAndExplicitVsyncIsHonored" classname="Hollowmere.P3_1.EditMode.Tests.P31dFrameTests" runstate="Runnable" seed="1719286549" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.000327" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1642" name="P31dLogWriterTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.007857" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1643" name="P31d_LOG_AutomaticFlushDoesNotWaitForStorage" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_AutomaticFlushDoesNotWaitForStorage" methodname="P31d_LOG_AutomaticFlushDoesNotWaitForStorage" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" seed="126543832" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.002876" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1644" name="P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" fullname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests.P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" methodname="P31d_LOG_WritesStayOrderedAndFailuresSurfaceAtDrain" classname="Hollowmere.P3_1.EditMode.Tests.P31dLogWriterTests" runstate="Runnable" seed="1310656470" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:43Z" duration="0.003959" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1632" name="P31PlayModeHooksTests" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 16:43:55Z" end-time="2026-10-07 16:43:56Z" duration="0.910815" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1633" name="AdmissionFromPlayModeCaptures" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.AdmissionFromPlayModeCaptures" methodname="AdmissionFromPlayModeCaptures" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Runnable" seed="1257551351" result="Passed" start-time="2026-10-07 16:42:43Z" end-time="2026-10-07 16:42:53Z" duration="9.693320" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="Timeout" value="300000" />
+                  </properties>
+                  <output><![CDATA[[P3.1] unverified admission from Play Mode: Refused (verdict_missing)
+[P3.1] admission capture adapter wrote admit-p31-c5ee5528 (230710 bytes); the retry reused it
+]]></output>
+                </test-case>
+                <test-case id="1634" name="TenPlayEditCycles" fullname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles" methodname="TenPlayEditCycles" classname="Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests" runstate="Explicit" seed="1713388312" result="Passed" start-time="2026-10-07 16:42:53Z" end-time="2026-10-07 16:43:56Z" duration="62.646683" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="_SKIPREASON" value="W-GAME-08 memory series; run with --filter TenPlayEditCycles" />
+                    <property name="Timeout" value="1800000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P3.1] memory-cycles.json {"what":"W-GAME-08: Boot.unity Play/Edit cycles in the Editor; memory sampled after each exit (GC + UnloadUnusedAssetsImmediate)","revision":"editor","unity":"6000.0.75f1","cycles":[{"cycle":1,"playAllocated":371734180,"allocated":201069567,"reserved":709066752,"managed":733020160,"ms":6174,"allocatedGrowthPct":0.0,"reservedGrowthPct":0.0},{"cycle":2,"playAllocated":371700068,"allocated":201070808,"reserved":704872448,"managed":733741056,"ms":6660,"allocatedGrowthPct":0.0,"reservedGrowthPct":-0.59},{"cycle":3,"playAllocated":371699931,"allocated":201078543,"reserved":709066752,"managed":734035968,"ms":6487,"allocatedGrowthPct":0.0,"reservedGrowthPct":0.0},{"cycle":4,"playAllocated":371726857,"allocated":201108991,"reserved":704872448,"managed":733986816,"ms":8520,"allocatedGrowthPct":0.02,"reservedGrowthPct":-0.59},{"cycle":5,"playAllocated":373755333,"allocated":203191760,"reserved":704872448,"managed":734564352,"ms":7663,"allocatedGrowthPct":1.06,"reservedGrowthPct":-0.59},{"cycle":6,"playAllocated":373789951,"allocated":203172237,"reserved":709066752,"managed":734224384,"ms":5250,"allocatedGrowthPct":1.05,"reservedGrowthPct":0.0},{"cycle":7,"playAllocated":373812637,"allocated":203175021,"reserved":704872448,"managed":734691328,"ms":5271,"allocatedGrowthPct":1.05,"reservedGrowthPct":-0.59},{"cycle":8,"playAllocated":373760915,"allocated":203133846,"reserved":704806912,"managed":734404608,"ms":5399,"allocatedGrowthPct":1.03,"reservedGrowthPct":-0.6},{"cycle":9,"playAllocated":373786718,"allocated":203148356,"reserved":704872448,"managed":734924800,"ms":5338,"allocatedGrowthPct":1.03,"reservedGrowthPct":-0.59},{"cycle":10,"playAllocated":373823980,"allocated":203183724,"reserved":704872448,"managed":734531584,"ms":5602,"allocatedGrowthPct":1.05,"reservedGrowthPct":-0.59}],"allocatedGrowthPctCycle10":1.05,"reservedGrowthPctCycle10":-0.59}
+[P3.1] memory cycles: allocated +1.05%, reserved +-0.59% at cycle 10 (/home/worlesenric/wkspace/gc-studio/r10-b/artifacts/studio/evidence/P3.1/memory-cycles.json)
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1697" name="Hollowmere.R10_B.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r10-b/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R10_B.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.015306" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3397661" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1698" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.014998" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1699" name="R10_B" fullname="Hollowmere.R10_B" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.014840" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1700" name="Tests" fullname="Hollowmere.R10_B.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.014706" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1693" name="FrameStallTests" fullname="Hollowmere.R10_B.Tests.FrameStallTests" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.014531" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1695" name="R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" methodname="R10_B_AttributionUsesWorkFrameAndSpecificNestedOwner" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="1231019747" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.002926" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1694" name="R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" methodname="R10_B_LogDoesNotEnterSynchronousUnitySinkUntilExplicitFlush" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="1813298943" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.010157" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[Hollowmere] frame pacing vsync=1 target=-1
+[Hollowmere] frame log -> /tmp/r10-b-42412e2df3a142c9b833105163dbf818.csv
+]]></output>
+              </test-case>
+              <test-case id="1696" name="R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" fullname="Hollowmere.R10_B.Tests.FrameStallTests.R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" methodname="R10_B_SmallScopesDoNotInventAnOwnerForAnExternalStall" classname="Hollowmere.R10_B.Tests.FrameStallTests" runstate="Runnable" seed="89628716" result="Passed" start-time="2026-10-07 16:43:56Z" end-time="2026-10-07 16:43:56Z" duration="0.000483" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

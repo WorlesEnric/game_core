@@ -1878,10 +1878,11 @@
       "evidence": [
         "W-GAME-01/p42j-player/result.json",
         "W-GAME-01/p42j-player/measurement/vsync0/run1/frame-stats.json",
-        "W-GAME-01/p42j-player/visual-review.json"
+        "W-GAME-01/p42j-player/visual-review.json",
+        "W-GAME-01/r10-b/result.json"
       ],
       "command": "python3 artifacts/studio/verification/TOOLS/builds-p42j.py",
-      "note": "Current 1080p RTX4060Ti VSync OFF run 1 fails B-FRAME: outside-transition frames are 374.077, 174.926 and 1352.808 ms. OFF p95 is 3.547/3.612 ms over 612.244/612.467s; run 2 has zero outside-transition >100ms frames. No failing probe is repeated. ON p95 17.380/17.266 ms is informational only.",
+      "note": "Current 1080p RTX4060Ti VSync OFF run 1 fails B-FRAME: outside-transition frames are 374.077, 174.926 and 1352.808 ms. OFF p95 is 3.547/3.612 ms over 612.244/612.467s; run 2 has zero outside-transition >100ms frames. No failing probe is repeated. ON p95 17.380/17.266 ms is informational only. R10-B diagnostic at fe5364ab: deferred autoplay log IO and frame attribution; llvmpipe full route 613.731s, p95 1.935ms, original correlated actions 0.839/3.819/1.196ms. Two startup frames 174.404/157.971ms remain counted and unattributed; historical causality unresolved. Not B-FRAME qualification; status remains FAIL for P4.2k.",
       "row": "W-GAME-01",
       "scenario": "10-minute graphical playthrough recording with frame log",
       "requirement": "SR-8.1, B-FRAME",

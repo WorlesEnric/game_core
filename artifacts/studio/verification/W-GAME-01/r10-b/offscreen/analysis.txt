@@ -1,0 +1,88 @@
+{
+  "budget": "B-FRAME: p95 <= 16.7 ms over the run; no frame > 100 ms outside the first second after a region transition; transition hitch <= 250 ms",
+  "frameLog": "frame-log.csv",
+  "rowsTotal": 577792,
+  "steadyStartRule": "first 'ready' marker",
+  "steadyFrames": 577792,
+  "steadySeconds": 613.731,
+  "dtMs": {
+    "p50": 0.933,
+    "p95": 1.935,
+    "p99": 3.181,
+    "max": 174.404,
+    "mean": 1.063
+  },
+  "fpsMean": 941.44,
+  "framesOver16_7ms": 27,
+  "framesOver100msOutsideTransitions": [
+    {
+      "frame": 1,
+      "time_s": 0.2211,
+      "dt_ms": 174.404,
+      "region": "Thornwick Village"
+    },
+    {
+      "frame": 15,
+      "time_s": 0.4039,
+      "dt_ms": 157.971,
+      "region": "Thornwick Village"
+    }
+  ],
+  "framesOver100msOutsideTransitionsCount": 2,
+  "transitions": [
+    {
+      "frame": 171626,
+      "time_s": 182.1052,
+      "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 7.838
+    },
+    {
+      "frame": 311367,
+      "time_s": 341.1158,
+      "marker": "region:Blackmere Marsh->Drowned Belfry",
+      "max_dt_ms": 8.084
+    },
+    {
+      "frame": 403515,
+      "time_s": 422.5779,
+      "marker": "reload|region:Drowned Belfry->Thornwick Village",
+      "max_dt_ms": 91.494
+    },
+    {
+      "frame": 420518,
+      "time_s": 439.568,
+      "marker": "restore",
+      "max_dt_ms": 80.657
+    },
+    {
+      "frame": 420519,
+      "time_s": 439.5746,
+      "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+      "max_dt_ms": 80.657
+    }
+  ],
+  "perRegion": {
+    "Blackmere Marsh": {
+      "frames": 297015,
+      "p95": 2.117,
+      "max": 80.657
+    },
+    "Drowned Belfry": {
+      "frames": 92148,
+      "p95": 1.723,
+      "max": 35.716
+    },
+    "Thornwick Village": {
+      "frames": 188629,
+      "p95": 1.859,
+      "max": 174.404
+    }
+  },
+  "checks": {
+    "p95_le_16_7ms": true,
+    "no_frame_over_100ms_outside_transitions": false,
+    "transition_hitch_le_250ms": true,
+    "duration_ge_budget": true
+  },
+  "verdict": "fail"
+}
