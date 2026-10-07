@@ -1,0 +1,46 @@
+{
+  "agent": "/tmp/r8-b-media-20261007/agent",
+  "configs": {
+    "companion": "ops_timeout_secs = 300\nops_max_cost_usd = 0.20\n[[ops_prices]]\nop = \"image\"\nprovider = \"echo-images\"\nmodel = \"gpt-image-2\"\nsource = \"operator\"\nunit = \"image\"\nper_unit = 0.20\nnote = \"Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff\"\n",
+    "node": "models = \"models.toml\"\nops = \"ops.toml\"\nshare_roots = []\n[node]\nname = \"r8-b-media\"\nowner = \"r8-b\"\nlocal = true\n[gateway]\nlisten = \"127.0.0.1:37351\"\n[containers]\nruntime = \"none\"\n[broker]\nlisten = \"127.0.0.1:42581\"\nauthority = \"127.0.0.1:42581\"\n[api]\nlisten = \"127.0.0.1:52861\"\nagent_budget_usd = 0.20\n[ssh]\nweb = false\n",
+    "ops": "[[providers]]\nname = \"echo-images\"\nfamily = \"image\"\nkind = \"openai-images\"\nbase_url = \"https://api.echo-coding.com/v1\"\ncredential = \"env:ECHO_API_KEY\"\nmodel = \"gpt-image-2\"\noptions = { quality = \"low\", response_format = \"b64_json\" }\n[providers.limits]\ntimeout = \"300s\"\nmax_outputs = 1\n# No published Echo reseller list price is verified. This is NOT an OpenAI list price.\n# Owner declared a total estimate on 2026-10-06; this is not a reseller invoice.\n# @studio source = \"operator\"\n# @studio note = \"Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff\"\n# @studio unit = \"image\"\n[providers.cost]\nper_unit = 0.20\n\n# Image description: a vision chat model of models.toml.\n"
+  },
+  "credentialResolution": "systemd EnvironmentFile; harness never opens or prints provider/app secret contents",
+  "evidence": "/home/worlesenric/wkspace/gc-studio/r8-b/artifacts/studio/verification/W-ETOS-07/r8-b-media",
+  "installedNodeUsed": false,
+  "limits": "One immutable dispatch reservation; gateway OpReplayWindow=0; image-only node; max_outputs=1; agent total budget USD0.20; no worker definitions",
+  "localCompanion": "/tmp/r8-b-cargo-target/debug/gamecore-studio",
+  "maxCostUsd": 0.2,
+  "maximumDescribeCalls": 0,
+  "maximumImageCalls": 1,
+  "maximumTtsCalls": 0,
+  "node": "/tmp/r8-b-media-20261007/node",
+  "nodeUrl": "http://127.0.0.1:52861",
+  "pairing": "/tmp/r8-b-media-20261007/scratch-pairing.json",
+  "preparedUtc": "2026-10-07T01:47:56.208019+00:00",
+  "project": "/home/worlesenric/wkspace/gc-studio/r8-b/games/hollowmere",
+  "projectId": "9f9a9d1e01a4652f2e4408bc8c3d61145c77483ba42c67f37c4642611f245fee",
+  "provider": {
+    "base_url": "https://api.echo-coding.com/v1",
+    "cost": {
+      "per_unit": 0.2
+    },
+    "credential": "env:ECHO_API_KEY",
+    "family": "image",
+    "kind": "openai-images",
+    "limits": {
+      "max_outputs": 1,
+      "timeout": "300s"
+    },
+    "model": "gpt-image-2",
+    "name": "echo-images",
+    "options": {
+      "quality": "low",
+      "response_format": "b64_json"
+    }
+  },
+  "root": "/tmp/r8-b-media-20261007",
+  "state": "/tmp/r8-b-media-20261007/node/agents/gamecore-studio/state",
+  "totalCapUsd": 0.3,
+  "unit": "gamecore-r8-b-media-20261007"
+}

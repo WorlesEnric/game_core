@@ -1,0 +1,22 @@
+{
+  "name": "Hollowmere.R8_B.Lever.Tests",
+  "rootNamespace": "Hollowmere.R8_B",
+  "references": [
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Gameplay.World.Editor",
+    "GameCore.Unity.App",
+    "Hollowmere.Authoring.Editor",
+    "Hollowmere.Boot",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll", "Newtonsoft.Json.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

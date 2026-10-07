@@ -193,7 +193,7 @@ The historical `studio/tools/verify-all.sh final-guides` / `guide-stage` routes 
 1. Register the paired project from its actual source checkout using [10](10-install-build-run.md). Submit the local candidate with `CompanionClient.StageAppCandidateAsync` through the authenticated app-origin route; worker candidates retained by the companion use `StageAsync`. The candidate panel's **Stage** follows these paths. Fixed sample IDs are project-scoped; do not reuse another project's request ID or delete a creator's journal.
 2. Retain the job ID; poll job state. Fetch `/v1/stage/{job}/verdict` and verify that exact signed record through `/verify`. Only a complete trusted pass enables **Admit**. An unsigned CLI verdict or **Record verdict** file is insufficient.
 3. Explicit creator **Admit** starts capture/stop/compile/restore/smoke. Use History for pending recovery and admission undo; no public `mechanism.admit` tool may substitute.
-4. Observe the actual live world, restoration, smoke and undo. As of P4.2d, the real sample rolls back with `catalog_mismatch` after a compile stall. The new lever exercise remains W-DOC-02 FAIL; reading the pressure-plate sample and correcting this guide do not establish a new lever or successful admission.
+4. Observe the actual live world, restoration, smoke and undo. The historical P4.2d `catalog_mismatch` failure was subsequently resolved for the maintained pressure plate: [R6-E](packets/R6-E-resumer-rebinding.md) proves authenticated recovery and [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md) retains the later complete-row evidence. That does not establish a new lever. The independent new-package restriction below still prevents the lever walkthrough.
 
 ([04 §6](04-etos-integration.md#6-staging-code-admission), [P4.2d §Stage and admission](packets/P4.2d-live-rerun.md#stage-and-admission), [W-DOC-02](../../artifacts/studio/verification/W-DOC-02/README.md))
 
@@ -211,6 +211,24 @@ StudioAdmissionServices.BindAdmission(
 ```
 
 The tri-state smoke callback returns Pending/Succeeded/Failed and advances on game frames. Hollowmere allows up to 120 proposal steps with a 240-poll allowance; it checks a trusted registered entry and exact admitted assembly/package identity. It does not invoke arbitrary candidate-named callbacks. Persist progress or fail safely after recovery; mark Applied only after smoke succeeds. ([HollowmereStudioAdmission.cs](../../games/hollowmere/Assets/Hollowmere/Authoring/Editor/HollowmereStudioAdmission.cs), [P3.1 §3](packets/P3.1-hollowmere-complete.md#3-studio-admission-in-the-real-game-r2-g-request-4-as-superseded-by-r2-g2), [R2-B2](packets/R2-B-admission.md#r2-b2--asynchronous-admission-smoke-packetmd))
+
+### New lever: required trusted-game prerequisite
+
+W-DOC-02 requires a **new lever mechanism**, not a renamed pressure plate or an existing `interaction.addDoor` placement. Give it a distinct package identity (`com.hollowmere.mechanism.lever`) and smoke identity (`Hollowmere.Mechanism.Lever.LeverSmoke.Begin`); implement declared int32 lever state, a bounded toggle command and committed-state presentation using the extension seams above. Keep its candidate source outside the live project's imported Assets/Packages until the authenticated Stage and creator Admit boundary. Renaming the maintained sample, directly copying candidate code into Assets, or using an unsigned CLI pass is not that workflow.
+
+**Current blocker:** before attempting admission, the trusted game must support that new package's live smoke entry. `HollowmereAdmittedSmoke` currently contains a private fixed registry with only `Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke.Begin`, bound to `com.hollowmere.mechanism.pressureplate`. There is no creator registration operation. A new lever entry returns `Failed` with `no trusted smoke entry is registered`; borrowing the plate entry instead returns a package-ownership refusal. A passing isolated stage cannot change this trusted registry. Do not disable the smoke or patch the registry from candidate code.
+
+The retained [R8-B probe](../../games/hollowmere/Assets/Hollowmere/Tests/R8_B/Lever/Editor/LeverAdmissionProbe.cs) exercises this dispatch boundary without importing code or claiming signed authority. Run the exact EditMode case with:
+
+```sh
+bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
+  --log-dir "$PWD/.unity-logs/r8-b" --label lever-prerequisite \
+  --results "$PWD/.unity-logs/r8-b/lever-prerequisite.xml" -- \
+  -runTests -testPlatform EditMode \
+  -testFilter 'Hollowmere\.R8_B\.LeverAdmissionProbe\.SR_12_2_NewLeverSmokeIsBlockedBeforeWorldAccess'
+```
+
+A passing **probe test** means the blocker was reproduced, not that W-DOC-02 passed. The [R8-B packet](packets/R8-B-guide-and-texture.md#requests-to-other-packets) requests the trusted game integration; it is outside this packet's edit ownership. After that integration, qualification still requires a distinct lever candidate, all seven signed service steps, explicit authenticated creator Admit, restored Play with an observed committed lever toggle, and normal admission undo. None of those requirements is waived by this prerequisite check.
 
 ## Delivery checklist
 
