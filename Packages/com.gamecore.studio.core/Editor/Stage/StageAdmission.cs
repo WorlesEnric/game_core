@@ -587,6 +587,20 @@ namespace GameCore.Studio.Edit
 
         public StageVerdict? VerdictOf(string changeSetId) => _verified.TryGetValue(changeSetId, out StageVerdict value) ? value : null;
 
+        /// <summary>Revokes local authorization only after the companion acknowledges completed cancellation.</summary>
+        public async Task CancelStage(string jobId, string changeSetId)
+        {
+            if (Options.StageService is not IStageJobControl control)
+                throw new InvalidOperationException("stage_cancel_unavailable");
+            string state = await control.CancelStage(jobId);
+            if (state != "cancelled") throw new InvalidOperationException("stage_job_" + state);
+            _verified.Remove(changeSetId);
+            JObject index = ReadState("verdicts.json");
+            index.Remove(changeSetId);
+            WriteState("verdicts.json", index);
+            SetScenario(changeSetId, VerdictScenario, ScenarioStatus.Fail, "stage_job_cancelled");
+        }
+
         public async Task<int> RefreshPendingVerdicts()
         {
             int count = 0;

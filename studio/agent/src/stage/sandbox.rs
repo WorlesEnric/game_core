@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::time::Duration;
 
-use super::pipeline::{ChildOutcome, run_child};
+use super::pipeline::{ChildOutcome, run_child_controlled};
 
 mod licensing;
 use licensing::LicenseHome;
@@ -32,6 +32,9 @@ impl Confinement {
 /// Trusted sandbox launch specification, never accepted from candidates.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Sandbox {
+    /// Trusted service cancellation and child journal, outside candidate mounts.
+    #[serde(default)]
+    pub control: super::control::Control,
     /// Trusted wrapper invocation identity (never supplied by a candidate).
     #[serde(default)]
     pub attempt: Option<String>,
@@ -59,6 +62,7 @@ impl Sandbox {
     pub fn defaults(slot: &Path, cache: &Path, repo: &Path) -> Self {
         let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
         Self {
+            control: super::control::Control::default(),
             attempt: None,
             mode: Confinement::Docker,
             image: "gamecore-stage:6000.0.75f1-v1".into(),
@@ -129,6 +133,60 @@ impl Sandbox {
                 .status();
         }
     }
+    /// Remove every attempt belonging to this job, including orphaned Unity wrappers.
+    /// Docker failures refuse cancellation acknowledgement rather than reporting cleanup.
+    pub fn stop_job_containers(&self) -> Result<(), String> {
+        if self.mode != Confinement::Docker {
+            return Ok(());
+        }
+        let Some(identity) = self.control.identity() else {
+            return Ok(());
+        };
+        let mut list = Command::new("/usr/bin/docker");
+        let output = list
+            .env_clear()
+            .envs(super::env::stage_env())
+            .arg("--config")
+            .arg(self.docker_config())
+            .args([
+                "ps",
+                "-aq",
+                "--filter",
+                &format!("label=gamecore.stage.job={identity}"),
+            ])
+            .output()
+            .map_err(|e| e.to_string())?;
+        if !output.status.success() {
+            return Err("stage Docker teardown could not list job containers".into());
+        }
+        for id in String::from_utf8_lossy(&output.stdout).split_whitespace() {
+            if !id.bytes().all(|b| b.is_ascii_hexdigit()) {
+                return Err("invalid Docker container identity".into());
+            }
+            let status = Command::new("/usr/bin/docker")
+                .env_clear()
+                .envs(super::env::stage_env())
+                .arg("--config")
+                .arg(self.docker_config())
+                .args(["rm", "-f", id])
+                .stdout(std::process::Stdio::null())
+                .stderr(std::process::Stdio::null())
+                .status()
+                .map_err(|e| e.to_string())?;
+            if !status.success() {
+                // --rm may have removed it while the Docker client exited.
+                let remaining = list.output().map_err(|e| e.to_string())?;
+                if !remaining.status.success()
+                    || String::from_utf8_lossy(&remaining.stdout)
+                        .split_whitespace()
+                        .any(|current| current == id)
+                {
+                    return Err("stage Docker teardown did not remove a job container".into());
+                }
+            }
+        }
+        Ok(())
+    }
 
     /// Build a command with no inherited environment, network, host HOME or live project.
     fn command(&self, executable: &Path, private_home: &Path) -> Result<Command, String> {
@@ -177,6 +235,10 @@ impl Sandbox {
                 return Err("sandbox requires a valid host hostname".into());
             }
             cmd.arg("--name").arg(self.container_name());
+            if let Some(identity) = self.control.identity() {
+                cmd.arg("--label")
+                    .arg(format!("gamecore.stage.job={identity}"));
+            }
             cmd.arg("--hostname").arg(&self.hostname);
             use std::os::unix::fs::MetadataExt;
             let metadata = std::fs::metadata(&self.slot).map_err(|e| e.to_string())?;
@@ -336,20 +398,37 @@ impl Sandbox {
 
     /// Verify both the pinned archives and expanded compiler inputs before launching Docker.
     pub fn verify_cache(&self) -> Result<(), String> {
+        self.control.check()?;
         let script = self
             .packages
             .parent()
             .ok_or("trusted repository missing")?
             .join("studio/stage/cache.py");
-        let output = Command::new("/usr/bin/python3")
-            .env_clear()
-            .envs(super::env::stage_env())
-            .arg(script)
-            .arg(&self.cache)
-            .arg("--verify")
-            .output()
-            .map_err(|e| e.to_string())?;
-        if output.status.success() {
+        let launch = self
+            .slot
+            .parent()
+            .ok_or("slot parent required")?
+            .join(".launch");
+        std::fs::create_dir_all(&launch).map_err(|e| e.to_string())?;
+        let capture = launch.join(format!(
+            "verify-cache-{}-{}.log",
+            crate::util::sha256_hex(self.slot.as_os_str().as_encoded_bytes()),
+            std::process::id()
+        ));
+        let output = run_child_controlled(
+            Command::new("/usr/bin/python3")
+                .arg(script)
+                .arg(&self.cache)
+                .arg("--verify"),
+            &[],
+            &capture,
+            Duration::from_secs(120),
+            false,
+            None,
+            Some(&self.control),
+        );
+        self.control.check()?;
+        if output.ok() {
             Ok(())
         } else {
             Err("cache_invalid: provision the exact versioned cache with studio/stage/provision-cache.sh".into())
@@ -470,6 +549,7 @@ impl Sandbox {
             timeout,
             cancelled.is_some(),
             cancelled,
+            Some(&self.control),
         );
         self.stop_container();
         out
@@ -545,13 +625,23 @@ impl Sandbox {
             .arg(timeout.as_secs().to_string())
             .args(["--attempts", "2"])
             .args(batch_test_args(args));
-        let out = run_child(
+        let out = run_child_controlled(
             &mut cmd,
             &[("UNITY", &wrapper.display().to_string()), ("HOME", &home)],
             &self.slot.join(format!("{label}-allocator.log")),
             timeout.saturating_mul(2) + Duration::from_secs(30),
+            false,
+            None,
+            Some(&self.control),
         );
-        self.stop_container();
+        if let Err(error) = self.stop_job_containers() {
+            return ChildOutcome {
+                code: None,
+                timed_out: false,
+                output: error,
+                elapsed: out.elapsed,
+            };
+        }
         out
     }
 

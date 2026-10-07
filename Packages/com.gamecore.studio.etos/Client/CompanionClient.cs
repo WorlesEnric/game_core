@@ -207,6 +207,13 @@ namespace GameCore.Studio.Etos.Client
             return new StageJobInfo(await GetObjectAsync("/v1/stage/" + Escape(jobId), ct).ConfigureAwait(false));
         }
 
+        /// <summary>Cancels an owned stage and waits for its execution resources to be released.</summary>
+        public async Task<StageJobInfo> CancelStageAsync(string jobId, CancellationToken ct = default)
+        {
+            return new StageJobInfo(await SendObjectAsync(HttpMethod.Post, "/v1/stage/" + Escape(jobId) + "/cancel",
+                new JObject(), Options.RequestTimeout, ct).ConfigureAwait(false));
+        }
+
         /// <summary>
         /// <c>GET /v1/artifacts/{sha256}</c>: streams the bytes to a temp file, then verifies the digest (and
         /// <paramref name="expectedBytes"/> when given) on what is on disk before returning them. A mismatch is

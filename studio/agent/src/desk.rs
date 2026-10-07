@@ -581,6 +581,15 @@ impl Desk {
             };
             md.push_str(&format!("- `{f}` — {what}\n"));
         }
+        let owner = crate::util::sha256_hex(row.app.as_bytes());
+        md.push_str(&format!(
+            "\n## Resource Graph queries\n\n\
+             Your app/project owner namespace is `{owner}`. Use `etos query`; rows are projections, not authority. \
+             Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. \
+             Discover that graph with `SELECT graph FROM gc_definition WHERE owner='{owner}' AND asset_guid='<assetGuid>' AND removed=false`; \
+             use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='{owner}' AND graph='<graph>' AND removed=false`. \
+             To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n"
+        ));
         if let Some(t) = truncation {
             md.push_str(&format!(
                 "\nThe index slice was **truncated** to fit {} bytes: {}. Ask for nothing outside it; \

@@ -314,6 +314,8 @@ namespace GameCore.Studio.Etos
             }
 
             EtosStudioSession.EnableAutomaticStartup();
+            // A paired project publishes on open even before any Studio window is opened.
+            if (EtosCredentials.ResolveAutomaticKeyFile() != null) EtosStudioSession.EnsureStarted();
         }
     }
 }

@@ -40,6 +40,7 @@ ticket: `POST /tickets {path}` → `?etos_ticket=` (single use, 30 s, `crates/et
 | `POST /v1/stage` / `GET /v1/stage/{job}` | stage a retained candidate; job state | §6 |
 | `POST /v1/stage/app-candidate` | authenticated app-origin candidate retention and staging | signed envelope; §6 |
 | `GET /v1/stage/{job}/verdict` / `POST /v1/stage/{job}/verify` | fetch signed passing record / verify exact record | §6 |
+| `POST /v1/stage/{job}/cancel` | cancel an owned running stage | returns job state after execution teardown; §6 |
 
 Error bodies are etos-shaped `{code, message, hint}`; etos refusal codes pass through unchanged
 (`not_configured`, `outcome_unknown`, `request_rejected`, `budget_exhausted`, `too_large`, `agent_starting`,
@@ -158,6 +159,14 @@ this owner's namespace. The response is 202 with `jobId`; `GET /v1/stage/{job}` 
 retained `verdictRef` evidence. Discard is `POST /v1/stage {changeSetId,projectId,action:"discard"}`
 and holds the slot lock while deleting.
 
+Running-job cancellation is `POST /v1/stage/{job}/cancel` with an empty JSON object, through the
+same authenticated app/project proxy. Foreign jobs return 404. Cancellation first records
+`cancelling`, prevents verdict issuance, and terminates the owned child/container execution.
+Only after execution resources and the slot are released does it return durable `cancelled`.
+Terminal jobs are unchanged. Cancelling an HTTP wait or discarding a slot is not job cancellation.
+The Studio Stage panel exposes Cancel independently of candidate rejection; cancelled stages
+cannot authorize Admit.
+
 `GET /v1/stage/{job}/verdict` returns the companion-issued signed passing record only.
 `POST /v1/stage/{job}/verify` accepts that entire record and returns `{verified:true|false}`.
 The HMAC binds job/app/project/source/catalog, package/proposal digests, all seven step results,
@@ -200,6 +209,21 @@ Binding `gamecore-studio` (declared by the companion with the SDK logger; digest
 
 Workers read `/etos/rg` (bounded view: 200 per kind, 7 days, `crates/etrg/src/view/mod.rs:40-61`) and may
 `etos query`. Index deltas are logged on every Studio index revision, coalesced to at most one batch per second.
+
+The Editor publishes a full snapshot on session/project open, then deltas after index rebuilds
+and applied/undone change sets. Capture follows engine notifications; one authenticated POST is
+in flight at a time. Omitting `baseRevision` denotes a full owner snapshot, including removal of
+previously published sources absent from that snapshot. The companion retains source-to-row
+inventory so graph edits, node deletion, undo and restart do not leave stale live node rows.
+
+A `dialogue.graph` definition expands its actual `fields.nodes.value` array into
+`gc_dialogue_node` records. `gc_definition` exposes `owner`, `asset_guid` and `graph`;
+`gc_dialogue_node` exposes the same owner and graph identity. Owner is SHA-256 of the compact
+authenticated `[app,projectId]` identity; graph keys are owner-prefixed and based on the graph's
+asset GUID. The worker's ordinary `request.md` supplies its owner namespace and query recipe:
+resolve the selected NPC's dialogue asset GUID from its index slice, query `gc_definition` for
+that owner's `asset_guid`, then query nodes by the returned `graph`. Filter `removed=false` in
+both queries. Unfiltered dialogue queries omit only the graph predicate, retaining owner scope.
 
 ## 8. Operational setup (host)
 

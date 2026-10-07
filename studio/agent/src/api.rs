@@ -115,6 +115,7 @@ pub fn router(state: AppState) -> Router {
             post(crate::stage::app_candidate::submit),
         )
         .route("/v1/stage/{job}", get(stage_job))
+        .route("/v1/stage/{job}/cancel", post(stage_cancel))
         .route("/v1/stage/{job}/verdict", get(stage_verdict))
         .route("/v1/stage/{job}/verify", post(stage_verify))
         .fallback(|| async { ApiError::not_found("no such companion route").into_response() })
@@ -284,6 +285,7 @@ async fn hello(
             "events",
             "voice",
             "stage",
+            "stage.cancel/1",
             "stage.app-candidate.signed/1",
         ]
         .iter()
@@ -448,7 +450,7 @@ async fn index_delta(
             e.to_string(),
         )
         .with_hint("the node is unreachable or refused the binding; deltas resume when it answers"),
-        IndexError::Poisoned => ApiError::internal(e.to_string()),
+        IndexError::Poisoned | IndexError::Storage(_) => ApiError::internal(e.to_string()),
     })?;
     s.ledger.set_meta(
         &format!("index-revision:{app}"),
@@ -497,6 +499,18 @@ async fn stage_job(
         .map_err(|e| not_found_or(e, || format!("no stage job {job}")))?;
     own_request(&s, &j.change_set_id, &app)?;
     Ok(out(&j).into_response())
+}
+
+async fn stage_cancel(
+    State(s): State<AppState>,
+    Extension(Caller(owner)): Extension<Caller>,
+    Path(job): Path<String>,
+) -> ApiResult<Response> {
+    let runner = s.stage.clone();
+    let row = tokio::task::spawn_blocking(move || runner.cancel_owned(&job, &owner))
+        .await
+        .map_err(|error| ApiError::internal(error.to_string()))??;
+    Ok(out(&row).into_response())
 }
 
 async fn stage_verdict(
