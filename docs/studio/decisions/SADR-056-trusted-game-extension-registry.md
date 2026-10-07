@@ -1,4 +1,4 @@
-# SADR-054: Reviewed game-owned extension registry
+# SADR-056: Reviewed game-owned extension registry
 
 - Status: implementation decision; not an acceptance claim for W-DOC-02.
 - Scope: Hollowmere's trusted Editor composition and live admission smoke. Candidate packages remain subject to signed Stage and explicit creator Admit.
