@@ -1,33 +1,24 @@
 {
   "status": "PASS",
-  "note": "Actual changed-source compilation/domain reload preserves the same running task and one attached tray row. Cursor continuation 819\u2192821 matches independent authenticated replay; explicit Cancel then settles the original task without candidate.",
-  "evidence": [
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/request.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/latest-request.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/started.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/submission.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/source-compilation-request.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cursor-replay.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/cancelled.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/reload-recovered.json",
-    "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/hello.json"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42i.py",
   "checks": [
     {
-      "file": "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json",
+      "file": "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
+  "evidence": [
+    "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42j.py",
+  "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.",
   "row": "W-ETOS-09",
   "scenario": "Domain reload during a task: tray shows the same task afterwards",
   "requirement": "SR-8.3",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-ETOS-09/p42i-reload-20261007T054455.135309Z/workflow/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-ETOS-09/p42j-reload-20261007T130708.562116Z/workflow/result.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

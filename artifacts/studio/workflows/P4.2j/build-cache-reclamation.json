@@ -1,0 +1,36 @@
+[
+  {
+    "reportedAt": "2026-10-07T13:54:35.373410+00:00",
+    "path": "games/hollowmere/Library/Bee",
+    "freeBefore": 53684482048,
+    "freeAfter": 59168329728,
+    "reason": "This owned compiler cache completed its successful player build; binary, build logs, source, journals and measurements are retained."
+  },
+  {
+    "reportedAt": "2026-10-07T14:54:28.743561+00:00",
+    "path": "games/cleanproof/Library/Bee",
+    "freeBefore": 49215938560,
+    "freeAfter": 56331378688,
+    "reason": "This owned compiler cache completed its successful player build; binary, build logs, source, journals and measurements are retained."
+  },
+  {
+    "reportedAt": "2026-10-07T15:57:35.432765+00:00",
+    "path": "unity/GameCore.Validation/Library/Bee",
+    "freeBefore": 44157235200,
+    "freeAfter": 48194854912,
+    "reason": "Completed owned V1 native compiler cache only; full passing gate and binaries retained"
+  },
+  {
+    "reportedAt": "2026-10-07T15:57:35.720777+00:00",
+    "path": "unity/GameCore.ReleaseCheck/Library/Bee",
+    "freeBefore": 48194854912,
+    "freeAfter": 51966164992,
+    "reason": "Completed owned V1 native compiler cache only; full passing gate and binaries retained"
+  },
+  {
+    "path": "studio/agent/target/debug",
+    "command": "cargo clean --profile dev",
+    "removedGiB": 3.4,
+    "reason": "Rust fmt/clippy/tests completed; immutable installed release and release build retained"
+  }
+]

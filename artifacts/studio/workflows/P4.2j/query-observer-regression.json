@@ -1,0 +1,9 @@
+{
+  "finding": "R2-38",
+  "test": "test_R2_38_composed_graph_identity_preserves_real_query_witness",
+  "before": "No independent actual worker query execution witness",
+  "after": "PASS with foreign-owner and absent-trace refusals",
+  "providerCallsRepeated": 0,
+  "cause": "Real worker composes owner + colon + graph asset GUID; prior observer required concatenated literal in its shell source",
+  "retainedEvidence": "artifacts/studio/verification/W-ETOS-04/p42j-query-20261007T130430.466361Z/workflow"
+}

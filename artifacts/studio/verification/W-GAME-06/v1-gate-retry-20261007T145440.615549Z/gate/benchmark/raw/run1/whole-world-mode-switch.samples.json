@@ -1,0 +1,121 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "whole-world-mode-switch",
+  "kind": "Change",
+  "dimension": "mode-switch",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 2082347,
+  "passed": true,
+  "gates": [
+    {
+      "name": "mode-switch-invalidates-the-whole-world",
+      "passed": true,
+      "detail": "switches=5; reportedLocal=0; warmupSwitches=2; accepted=True"
+    }
+  ],
+  "notes": [
+    "warmupSwitches=2; warmupComplete=true",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 2,
+      "min": 952022,
+      "p50": 952022,
+      "p95": 1130325,
+      "p99": 1130325,
+      "max": 1130325,
+      "mean": 1041173.5,
+      "total": 2082347
+    },
+    {
+      "phase": "Prepare",
+      "count": 5,
+      "min": 667835,
+      "p50": 730594,
+      "p95": 1028721,
+      "p99": 1028721,
+      "max": 1028721,
+      "mean": 810800.2,
+      "total": 4054001
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 0,
+    "managedHeapEndBytes": 0,
+    "managedAllocatedBytes": 0,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 0,
+    "leaseBytes": 0,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 0,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 105555,
+    "candidates-matched": 105005,
+    "contributions-added": 41918,
+    "contributions-retracted": 62877,
+    "strata-evaluated": 5
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 952022,
+      "counters": "0"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Warmup",
+      "microseconds": 1130325,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 667835,
+      "counters": "control-nodes-visited=21111;candidates-matched=21001;contributions-retracted=20959;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 946877,
+      "counters": "control-nodes-visited=21111;candidates-matched=21001;contributions-added=20959;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 730594,
+      "counters": "control-nodes-visited=21111;candidates-matched=21001;contributions-retracted=20959;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 1028721,
+      "counters": "control-nodes-visited=21111;candidates-matched=21001;contributions-added=20959;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 679974,
+      "counters": "control-nodes-visited=21111;candidates-matched=21001;contributions-retracted=20959;strata-evaluated=1"
+    }
+  ]
+}

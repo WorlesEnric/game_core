@@ -1,0 +1,14 @@
+# p42j-move
+
+Verdict: **PASS**.
+
+Source revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; host: `worlesenric`.
+Started: 2026-10-07T13:02:23.319586+00:00; ended: 2026-10-07T13:04:30.363531+00:00; duration: 127.045 s.
+
+Command (from repository root unless cwd specified):
+
+```sh
+bash ~/wkspace/gc-studio/p4.2j/studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2j/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-EDIT-01/p42j-move-20261007T130223.318527Z/logs --label p42j-move --timeout 1800 --attempts 1 -- -executeMethod P42h.Tasks.TaskDriver.JoinedMove -saveDir ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-EDIT-01/p42j-move-20261007T130223.318527Z/saves
+```
+
+Text evidence redacts credentials and substitutes `~` for absolute home paths. XML dispositions are unchanged; trailing log whitespace is normalized. Hashes describe these retained sanitized bytes.

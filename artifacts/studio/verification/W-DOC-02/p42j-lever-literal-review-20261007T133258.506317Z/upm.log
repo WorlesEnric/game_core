@@ -1,0 +1,79 @@
+[2026-10-07T13:32:59.183Z][INFO] Command-line: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 2867708 -ipc -ipc-path /tmp/Unity-Upm-2867708.sock -l 2 --log-file ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-DOC-02/p42j-lever-literal-review-20261007T133258.506317Z/upm.log
+[2026-10-07T13:32:59.189Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-2867708.sock).
+[2026-10-07T13:32:59.189Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-2867708.
+[2026-10-07T13:33:00.113Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-10-07T13:33:32.949Z][INFO] project:add-dependency --> 200 (32836 ms)
+[2026-10-07T13:33:33.340Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:33.421Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:33.436Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:33.453Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:33:33.494Z][INFO] config:project:get-registries --> 200 (41 ms)
+[2026-10-07T13:33:34.428Z][INFO] project:list-packages --> 200 (1088 ms)
+[2026-10-07T13:33:34.562Z][INFO] project:list-packages --> 200 (1141 ms)
+[2026-10-07T13:33:37.018Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:37.419Z][INFO] project:list-packages --> 200 (402 ms)
+[2026-10-07T13:33:40.135Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:40.145Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:40.156Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:33:40.176Z][INFO] config:project:get-registries --> 200 (21 ms)
+[2026-10-07T13:33:40.802Z][INFO] project:list-packages --> 200 (657 ms)
+[2026-10-07T13:33:44.517Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:44.529Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:44.926Z][INFO] project:list-packages --> 200 (409 ms)
+[2026-10-07T13:33:51.267Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:51.667Z][INFO] project:list-packages --> 200 (400 ms)
+[2026-10-07T13:33:51.875Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:51.885Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:33:51.895Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:33:51.921Z][INFO] config:project:get-registries --> 200 (26 ms)
+[2026-10-07T13:33:52.420Z][INFO] project:list-packages --> 200 (535 ms)
+[2026-10-07T13:34:03.240Z][INFO] project:resolve-packages <-- Request received
+params: {}
+[2026-10-07T13:34:17.632Z][ERROR] Error: Cannot connect to 'packages.unity.com' (error code: ECONNRESET). Check your internet connection and verify that your environment firewall policies allow connection to this host name. If your system is behind a proxy, verify your proxy environment variables (HTTP_PROXY and HTTPS_PROXY) are properly set.
+[2026-10-07T13:35:19.151Z][ERROR] Error: Cannot connect to 'packages.unity.com' (error code: ECONNRESET). Check your internet connection and verify that your environment firewall policies allow connection to this host name. If your system is behind a proxy, verify your proxy environment variables (HTTP_PROXY and HTTPS_PROXY) are properly set.
+[2026-10-07T13:36:20.965Z][ERROR] Error: Cannot connect to 'packages.unity.com' (error code: ECONNRESET). Check your internet connection and verify that your environment firewall policies allow connection to this host name. If your system is behind a proxy, verify your proxy environment variables (HTTP_PROXY and HTTPS_PROXY) are properly set.
+[2026-10-07T13:36:25.838Z][ERROR] Error: Cannot connect to 'packages.unity.com' (error code: ECONNRESET). Check your internet connection and verify that your environment firewall policies allow connection to this host name. If your system is behind a proxy, verify your proxy environment variables (HTTP_PROXY and HTTPS_PROXY) are properly set.
+[2026-10-07T13:36:44.464Z][WARN] Requested version [3.1.3] for package [com.unity.serialization] overridden by minimum version [3.1.5].
+[2026-10-07T13:36:44.465Z][WARN] Requested version [1.23.1] for package [com.unity.scriptablebuildpipeline] overridden by minimum version [2.6.1].
+[2026-10-07T13:36:44.465Z][WARN] Requested version [3.0.3] for package [com.unity.test-framework.performance] overridden by minimum version [3.4.0].
+[2026-10-07T13:36:44.471Z][INFO] project:list-packages --> 200 (179942 ms)
+[2026-10-07T13:36:44.479Z][INFO] project:list-packages --> 200 (184344 ms)
+[2026-10-07T13:36:44.480Z][INFO] project:list-packages --> 200 (191044 ms)
+[2026-10-07T13:36:44.480Z][INFO] project:list-packages --> 200 (172605 ms)
+[2026-10-07T13:36:44.488Z][INFO] project:resolve-packages --> 200 (161248 ms)
+[2026-10-07T13:36:44.682Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:36:44.695Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:36:44.705Z][INFO] config:project:get-registries --> 200 (23 ms)
+[2026-10-07T13:36:45.029Z][INFO] project:list-packages --> 200 (334 ms)
+[2026-10-07T13:36:53.067Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:36:53.357Z][INFO] project:list-packages --> 200 (290 ms)
+[2026-10-07T13:36:53.472Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:36:53.482Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T13:36:53.494Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T13:36:53.506Z][INFO] config:project:get-registries --> 200 (12 ms)
+[2026-10-07T13:36:53.763Z][INFO] project:list-packages --> 200 (281 ms)
+[2026-10-07T13:36:55.805Z][INFO] project:list-packages --> 200 (2333 ms)
+[2026-10-07T13:36:59.696Z][INFO] Received shutdown request (SIGINT), shutting down Unity Package Manager

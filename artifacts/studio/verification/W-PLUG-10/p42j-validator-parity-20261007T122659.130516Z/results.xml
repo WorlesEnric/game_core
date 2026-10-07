@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.9676379">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="618" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.967638" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1923" name="Hollowmere.R7_C.Validation.Tests.dll" fullname="~/wkspace/gc-studio/p4.2j/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Validation.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.955213" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2647305" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1924" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.954892" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1925" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.954738" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1926" name="Validation" fullname="Hollowmere.R7_C.Validation" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.954568" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1921" name="DefinitionDiagnosticParityTests" fullname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" classname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.953697" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1922" name="WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" fullname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" methodname="WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts" classname="Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests" runstate="Runnable" seed="671543220" result="Passed" start-time="2026-10-07 12:28:45Z" end-time="2026-10-07 12:28:47Z" duration="1.943117" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Category" value="R7_C" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[W-PLUG-10 asset=Assets/Hollowmere/Tests/R7_C/Validation/Temporary_71bca00acdac4352ba77e7b237d7037d.asset subject=0c258781-986f-40e2-94de-8c6ea3ce90b4
+inspector rendered=[
+  "GP-ENT-006: definition Temporary_71bca00acdac4352ba77e7b237d7037d has no prefab"
+]
+inspector diagnostics=[
+  {
+    "code": "GP-ENT-006",
+    "message": "definition Temporary_71bca00acdac4352ba77e7b237d7037d has no prefab",
+    "where": {
+      "kind": "Definition",
+      "authoringId": "0c258781-986f-40e2-94de-8c6ea3ce90b4",
+      "global": "GlobalObjectId_V1-3-4b81bc5ea9d1ef0238b408290b8e2289-11400000-0",
+      "assetGuid": "4b81bc5ea9d1ef0238b408290b8e2289",
+      "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_71bca00acdac4352ba77e7b237d7037d.asset"
+    },
+    "data": {
+      "subject": "0c258781-986f-40e2-94de-8c6ea3ce90b4"
+    }
+  }
+]
+validator diagnostics=[
+  {
+    "code": "GP-ENT-006",
+    "message": "definition Temporary_71bca00acdac4352ba77e7b237d7037d has no prefab",
+    "where": {
+      "kind": "Definition",
+      "authoringId": "0c258781-986f-40e2-94de-8c6ea3ce90b4",
+      "global": "GlobalObjectId_V1-3-4b81bc5ea9d1ef0238b408290b8e2289-11400000-0",
+      "assetGuid": "4b81bc5ea9d1ef0238b408290b8e2289",
+      "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_71bca00acdac4352ba77e7b237d7037d.asset"
+    },
+    "data": {
+      "subject": "0c258781-986f-40e2-94de-8c6ea3ce90b4"
+    }
+  }
+]
+agent request=cs_01M4B5CWP1573TREQR6HX3H23C accepted=False diagnostics=[
+  {
+    "code": "GP-ENT-006",
+    "message": "definition Temporary_71bca00acdac4352ba77e7b237d7037d has no prefab",
+    "where": {
+      "kind": "Definition",
+      "authoringId": "0c258781-986f-40e2-94de-8c6ea3ce90b4",
+      "global": "GlobalObjectId_V1-3-4b81bc5ea9d1ef0238b408290b8e2289-11400000-0",
+      "assetGuid": "4b81bc5ea9d1ef0238b408290b8e2289",
+      "path": "Assets/Hollowmere/Tests/R7_C/Validation/Temporary_71bca00acdac4352ba77e7b237d7037d.asset"
+    },
+    "data": {
+      "subject": "0c258781-986f-40e2-94de-8c6ea3ce90b4"
+    }
+  }
+]
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

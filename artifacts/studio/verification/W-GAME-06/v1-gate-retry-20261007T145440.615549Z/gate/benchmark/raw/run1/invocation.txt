@@ -1,0 +1,27 @@
+# exact invocation (plain)
+~/wkspace/gc-studio/p4.2j/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 -batchmode -nographics -probeBenchmark -probeBenchmarkWorkload=all -probeBenchmarkScopes=1000 -probeBenchmarkTargets=10000 -probeBenchmarkLiveScopes=1000 -probeBenchmarkLiveTargets=10000 -probeBenchmarkWarmup=1 -probeBenchmarkDuration=2 -probeBenchmarkRepetitions=5 -probeBenchmarkSeed=20260926 -probeBenchmarkApplyTargets=100 -probeBenchmarkLiveSpawnTargets=1000 -probeBenchmarkIdleFrames=64 -probeBenchmarkUnchangedSteps=10000 -probeBenchmarkRunOrdinal=1 -logFile ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261007T145440.615549Z/gate/benchmark/raw/run1/player-benchmark.log -probeResult ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261007T145440.615549Z/gate/benchmark/raw/run1/probe-benchmark.json
+
+# exact invocation (re-runnable, shell-quoted)
+~/wkspace/gc-studio/p4.2j/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 -batchmode -nographics -probeBenchmark -probeBenchmarkWorkload=all -probeBenchmarkScopes=1000 -probeBenchmarkTargets=10000 -probeBenchmarkLiveScopes=1000 -probeBenchmarkLiveTargets=10000 -probeBenchmarkWarmup=1 -probeBenchmarkDuration=2 -probeBenchmarkRepetitions=5 -probeBenchmarkSeed=20260926 -probeBenchmarkApplyTargets=100 -probeBenchmarkLiveSpawnTargets=1000 -probeBenchmarkIdleFrames=64 -probeBenchmarkUnchangedSteps=10000 -probeBenchmarkRunOrdinal=1 -logFile ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261007T145440.615549Z/gate/benchmark/raw/run1/player-benchmark.log -probeResult ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261007T145440.615549Z/gate/benchmark/raw/run1/probe-benchmark.json
+
+# resolved environment
+MACHINE=worlesenric
+UNITY_PROJECT=~/wkspace/gc-studio/p4.2j/unity/GameCore.Validation
+ARTIFACTS=~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-GAME-06/v1-gate-retry-20261007T145440.615549Z/gate/benchmark
+BENCH_RUNS=1
+BENCH_RUN_ORDINAL=1
+BENCH_WORKLOADS=all (selected: idle-command-world steady-unchanged-10000-steps steady-execution-10000-targets update-size-1 update-size-100 update-size-10000 whole-world-mode-switch spawn-1000 reparent-100 inactive-target-comparison lifecycle-cycles-1000)
+BENCH_SCOPES=1000
+BENCH_TARGETS=10000
+BENCH_LIVE_SCOPES=1000
+BENCH_SEED=20260926
+BENCH_APPLY_TARGETS=100
+BENCH_LIVE_SPAWN_TARGETS=1000
+BENCH_IDLE_FRAMES=64
+BENCH_UNCHANGED_STEPS=10000
+BENCH_WARMUP=1
+BENCH_DURATION=2
+BENCH_REPETITIONS=5
+BENCH_SEED=20260926
+BENCH_TIMEOUT=1800
+PROBE_PLAYER=~/wkspace/gc-studio/p4.2j/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64

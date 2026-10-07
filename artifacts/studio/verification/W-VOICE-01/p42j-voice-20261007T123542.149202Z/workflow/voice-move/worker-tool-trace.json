@@ -1,0 +1,97 @@
+[
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 0,
+    "name": "shell",
+    "args": {
+      "command": "cat /inputs/request.md && printf '\\n--- catalog ---\\n' && cat /inputs/tool-catalog.json && printf '\\n--- selection ---\\n' && cat /inputs/selection.json && printf '\\n--- index ---\\n' && cat /inputs/index-slice.json",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 30244,
+      "text": "# GameCore Studio request `cs_01M4B5W594NCVR6BMCN1C849K2`\n\n- Change set id: `cs_01M4B5W594NCVR6BMCN1C849K2` \u2014 write it as `id` in `/outputs/changeset.json`.\n- Worker: `gc-designer`\n- Index revision: `121` \u2014 cite it as `selection.indexRevision`.\n- Tool catalog revision: `8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e`\n- Attempt: 0\n\n## Intent\n\nMove the well one meter to the east.\n\n## Inputs (`/inputs`)\n\n- `request.md` \u2014 this file\n- `selection.json` \u2014 the selection snapshot (AuthoringRefs; never invent other ids)\n- `index-slice.json` \u2014 the bounded semantic index slice (selection closure, depth 2)\n- `tool-catalog.json` \u2014 the tool catalog: the ONLY operations you may produce\n- `scene-context.json` \u2014 an attachment\n\n## Resource Graph queries\n\nYour app/project owner namespace is `8a454c77bf18ae25e1b3363f40b7f8299f0eb0f6d6173f8f7b4c3718d3dc1557`. Use `etos query`; rows are projections, not authority. Follow the selected NPC's dialogue reference in `index-slice.json` to its `dialogue.graph` assetGuid. Discover that graph with `SELECT graph FROM gc_definition WHERE owner='8a454c77bf18ae25e1b3363f40b7f8299f0eb0f6d6173f8f7b4c3718d3dc1557' AND asset_guid='<assetGuid>' AND removed=false`; use the returned graph value in `SELECT * FROM gc_dialogue_node WHERE owner='8a454c77bf18ae25e1b3363f40b7f8299f0eb0f6d6173f8f7b4c3718d3dc1557' AND graph='<graph>' AND removed=false`. To inspect all current dialogue nodes for this project, omit the graph predicate, not the owner or removed predicates.\n\n## Output contract\n\n1. Read `tool-catalog.json\n[... 26308 bytes omitted ...]\n         \"value\": 0.5\n        },\n        \"focusHeight\": {\n          \"range\": [\n            0.0,\n            10.0\n          ],\n          \"type\": \"float\",\n          \"unit\": \"m\",\n          \"value\": 1.0\n        },\n        \"focusPriority\": {\n          \"range\": [\n            -100.0,\n            100.0\n          ],\n          \"type\": \"int\",\n          \"value\": 0\n        },\n        \"initialState\": {\n          \"type\": \"string\",\n          \"value\": \"idle\"\n        },\n        \"kind\": {\n          \"type\": \"enum\",\n          \"value\": \"Examinable\"\n        },\n        \"maxUses\": {\n          \"range\": [\n            0.0,\n            100000.0\n          ],\n          \"type\": \"int\",\n          \"value\": 0\n        },\n        \"prompts\": {\n          \"type\": \"object[]\",\n          \"value\": [\n            {\n              \"state\": \"idle\",\n              \"text\": \"Examine the well\"\n            }\n          ]\n        },\n        \"range\": {\n          \"range\": [\n            0.0,\n            20.0\n          ],\n          \"type\": \"float\",\n          \"unit\": \"m\",\n          \"value\": 3.0\n        }\n      },\n      \"name\": \"VillageWell\",\n      \"provenance\": {\n        \"asset\": \"Assets/Hollowmere/Interactables/Definitions/VillageWell.asset\"\n      },\n      \"ref\": {\n        \"assetGuid\": \"abf1477b24d3dd38193b3d1ba100db0a\",\n        \"authoringId\": \"d0e07a7e-7f26-4c76-a782-5c4f171c030d\",\n        \"global\": \"GlobalObjectId_V1-3-abf1477b24d3dd38193b3d1ba100db0a-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Interactables/Definitions/VillageWell.asset\",\n        \"scope\": \"Definition\",\n        \"stamp\": \"sha256:59b49a521e727260e36c48d65e573803f98018649bb0a3e9054582e063d80cb9\"\n      },\n      \"refs\": [\n        {\n          \"field\": \"entity\",\n          \"to\": {\n            \"assetGuid\": \"30fd77047fcfeb484a281c97ce32f960\",\n            \"authoringId\": \"19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54\",\n            \"global\": \"GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0\",\n            \"kind\": \"Definition\",\n            \"path\": \"Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset\"\n          }\n        }\n      ],\n      \"type\": \"interaction.interactable\"\n    }\n  ],\n  \"project\": \"hollowmere\",\n  \"revision\": 121\n}\n[exit code 0]\n[output cut to 30 KB, keeping the start and the end; 273209 bytes in total; full log: /tmp/etos/out/tf8cc56719d5c8e380191a893-1-0.log]"
+    }
+  },
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 1,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nfor fn in ['selection.json','scene-context.json']:\n print('\\n',fn); print(json.dumps(json.load(open('/inputs/'+fn)),indent=2)[:12000])\nc=json.load(open('/inputs/tool-catalog.json'))\nprint('top keys',c.keys())\nfor t in c.get('tools',[]):\n if any(s in (t.get('id','')+' '+t.get('displayName','')).lower() for s in ('move','transform','position')): print(json.dumps(t,indent=2)[:7000])\ni=json.load(open('/inputs/index-slice.json'))\nprint('index keys',i.keys())\nfor k,v in i.items():\n if isinstance(v,list):\n  print('list',k,len(v));\n  for e in v:\n   if 'well' in str(e).lower(): print(json.dumps(e,indent=2)[:11000])\n",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": false,
+      "bytes": 216,
+      "text": "bash: line 22: warning: here-document at line 3 delimited by end-of-file (wanted `PY')\nbash: -c: line 23: syntax error: unexpected end of file\n[exit code 2]\n[full log: /tmp/etos/out/tf8cc56719d5c8e380191a893-1-1.log]"
+    }
+  },
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 2,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\nfor fn in ['selection.json','scene-context.json']:\n print('\\n',fn); print(json.dumps(json.load(open('/inputs/'+fn)),indent=2)[:12000])\nc=json.load(open('/inputs/tool-catalog.json'))\nprint('top keys',c.keys())\nfor t in c.get('tools',[]):\n if any(s in (t.get('id','')+' '+t.get('displayName','')).lower() for s in ('move','transform','position')): print(json.dumps(t,indent=2)[:7000])\ni=json.load(open('/inputs/index-slice.json'))\nprint('index keys',i.keys())\nfor k,v in i.items():\n if isinstance(v,list):\n  print('list',k,len(v));\n  for e in v:\n   if 'well' in str(e).lower(): print(json.dumps(e,indent=2)[:11000])\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 12833,
+      "text": "\n selection.json\n{\n  \"frame\": {\n    \"camera\": {\n      \"aspect\": 1.7975986277873073,\n      \"fov\": 60.0,\n      \"position\": [\n        0.0,\n        0.0,\n        -14.364101409912108\n      ],\n      \"rotation\": [\n        0.0,\n        0.0,\n        0.0,\n        1.0\n      ]\n    },\n    \"image\": \"sha256:69a2e5a5efc8f8cec760833856eadc3ec877daee2d57883b84da79bfa5afc23a\",\n    \"viewport\": [\n      1048,\n      583\n    ]\n  },\n  \"id\": \"sel_01M4B5W57EXRNJKFH7VTY03B1A\",\n  \"indexRevision\": 121,\n  \"mode\": \"Edit\",\n  \"targets\": [\n    {\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n      \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n    }\n  ]\n}\n\n scene-context.json\n{\n  \"schema\": \"gamecore.studio.scenecontext/1\",\n  \"units\": \"metres\",\n  \"axes\": {\n    \"north\": \"+z\",\n    \"east\": \"+x\",\n    \"up\": \"+y\"\n  },\n  \"objects\": [\n    {\n      \"ref\": {\n        \"kind\": \"Entity\",\n        \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n        \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n        \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n        \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n        \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n      },\n      \"name\": \"Village Well\",\n      \"path\": \n[... 8897 bytes omitted ...]\nype\": \"string\",\n      \"value\": \"\"\n    },\n    \"builtInAction\": {\n      \"type\": \"string\",\n      \"value\": \"\"\n    },\n    \"conditionOp\": {\n      \"type\": \"enum\",\n      \"value\": \"NotEqual\"\n    },\n    \"conditionRef\": {\n      \"type\": \"string\",\n      \"value\": \"\"\n    },\n    \"conditionValue\": {\n      \"type\": \"int\",\n      \"value\": 0\n    },\n    \"cooldownSeconds\": {\n      \"range\": [\n        0.0,\n        3600.0\n      ],\n      \"type\": \"float\",\n      \"unit\": \"s\",\n      \"value\": 0.5\n    },\n    \"focusHeight\": {\n      \"range\": [\n        0.0,\n        10.0\n      ],\n      \"type\": \"float\",\n      \"unit\": \"m\",\n      \"value\": 1.0\n    },\n    \"focusPriority\": {\n      \"range\": [\n        -100.0,\n        100.0\n      ],\n      \"type\": \"int\",\n      \"value\": 0\n    },\n    \"initialState\": {\n      \"type\": \"string\",\n      \"value\": \"idle\"\n    },\n    \"kind\": {\n      \"type\": \"enum\",\n      \"value\": \"Examinable\"\n    },\n    \"maxUses\": {\n      \"range\": [\n        0.0,\n        100000.0\n      ],\n      \"type\": \"int\",\n      \"value\": 0\n    },\n    \"prompts\": {\n      \"type\": \"object[]\",\n      \"value\": [\n        {\n          \"state\": \"idle\",\n          \"text\": \"Examine the well\"\n        }\n      ]\n    },\n    \"range\": {\n      \"range\": [\n        0.0,\n        20.0\n      ],\n      \"type\": \"float\",\n      \"unit\": \"m\",\n      \"value\": 3.0\n    }\n  },\n  \"name\": \"VillageWell\",\n  \"provenance\": {\n    \"asset\": \"Assets/Hollowmere/Interactables/Definitions/VillageWell.asset\"\n  },\n  \"ref\": {\n    \"assetGuid\": \"abf1477b24d3dd38193b3d1ba100db0a\",\n    \"authoringId\": \"d0e07a7e-7f26-4c76-a782-5c4f171c030d\",\n    \"global\": \"GlobalObjectId_V1-3-abf1477b24d3dd38193b3d1ba100db0a-11400000-0\",\n    \"kind\": \"Definition\",\n    \"path\": \"Assets/Hollowmere/Interactables/Definitions/VillageWell.asset\",\n    \"scope\": \"Definition\",\n    \"stamp\": \"sha256:59b49a521e727260e36c48d65e573803f98018649bb0a3e9054582e063d80cb9\"\n  },\n  \"refs\": [\n    {\n      \"field\": \"entity\",\n      \"to\": {\n        \"assetGuid\": \"30fd77047fcfeb484a281c97ce32f960\",\n        \"authoringId\": \"19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54\",\n        \"global\": \"GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0\",\n        \"kind\": \"Definition\",\n        \"path\": \"Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset\"\n      }\n    }\n  ],\n  \"type\": \"interaction.interactable\"\n}\n[exit code 0]\n[full log: /tmp/etos/out/tf8cc56719d5c8e380191a893-1-2.log]"
+    }
+  },
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 3,
+    "name": "shell",
+    "args": {
+      "command": "ls -la /work /outputs; find /work -path '*/change-set.schema.json' -print | head; python - <<'PY'\nimport json\nc=json.load(open('/inputs/tool-catalog.json')); print(c['revision']); print(next(t for t in c['tools'] if t['id']=='move'))\nPY",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 1286,
+      "text": "/outputs:\ntotal 8\ndrwxrwxr-x 2 agent agent 4096 Oct  7 12:37 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 12:37 ..\n\n/work:\ntotal 8\ndrwxr-xr-x 1 agent agent 4096 Oct  4 18:09 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 12:37 ..\n8d5bcc39924ca426cb4a137eceb0c8d5df5d3880c92a70514608c3c1c48b5d5e\n{'args': [{'doc': 'World position (metres).', 'name': 'position', 'required': False, 'type': 'vector3'}, {'doc': 'World rotation [x, y, z, w].', 'name': 'rotation', 'required': False, 'type': 'quaternion'}, {'doc': 'Local scale.', 'name': 'scale', 'required': False, 'type': 'vector3'}, {'doc': \"New parent (keeps the world position unless 'position' is given).\", 'name': 'parent', 'required': False, 'type': 'ref'}, {'doc': 'Move to the scene root.', 'name': 'unparent', 'required': False, 'type': 'bool'}, {'doc': 'Sibling index under the parent.', 'name': 'siblingIndex', 'required': False, 'type': 'int'}], 'doc': 'Move a scene object: world position, world rotation (quaternion), local scale, parent and sibling index (any subset). Gizmo drags and typed values produce the same operation.', 'id': 'move', 'runtimeApply': 'Rebuild', 'targetKinds': ['Entity', 'SceneObject', 'Region'], 'targetRequired': True, 'tier': 'Compose'}\n[exit code 0]\n[full log: /tmp/etos/out/tf8cc56719d5c8e380191a893-1-3.log]"
+    }
+  },
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 4,
+    "name": "write",
+    "args": {
+      "path": "/outputs/changeset.json",
+      "content": "{\n  \"id\": \"cs_01M4B5W594NCVR6BMCN1C849K2\",\n  \"schema\": \"gamecore.studio.changeset/1\",\n  \"intent\": {\"text\": \"Move the well one meter to the east.\", \"origin\": \"agent\"},\n  \"selection\": {\n    \"id\": \"sel_01M4B5W57EXRNJKFH7VTY03B1A\",\n    \"mode\": \"Edit\",\n    \"indexRevision\": 121,\n    \"targets\": [{\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n      \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n    }]\n  },\n  \"baseVersions\": [{\n    \"ref\": {\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n      \"scope\": \"Instance\",\n      \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n    },\n    \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n  }],\n  \"operations\": [{\n    \"opId\": \"op1\",\n    \"tool\": \"move\",\n    \"target\": {\n      \"assetGuid\": \"6cba302899c45bb919b097ade959283c\",\n      \"authoringId\": \"e3baad87-1923-4823-82fe-69c3cc399bf4\",\n      \"global\": \"GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0\",\n      \"kind\": \"Entity\",\n      \"path\": \"Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well\",\n      \"scope\": \"Instance\",\n      \"stamp\": \"sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0\"\n    },\n    \"args\": {\"position\": [1.0, 0.0, -1.9]},\n    \"dependsOn\": [],\n    \"preconditions\": \"stamp\",\n    \"applyRequirement\": \"Rebuild\"\n  }],\n  \"artifacts\": [],\n  \"requirements\": {\"max\": \"Rebuild\", \"worldRebuild\": true, \"compile\": false, \"build\": false}\n}\n"
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 53,
+      "text": "Wrote /outputs/changeset.json (2001 bytes, 49 lines)."
+    }
+  },
+  {
+    "taskId": "tf8cc56719d5c8e380191a893",
+    "turn": 1,
+    "index": 5,
+    "name": "shell",
+    "args": {
+      "command": "python - <<'PY'\nimport json\ns=json.load(open('/inputs/selection.json')); c=json.load(open('/outputs/changeset.json')); t=json.load(open('/inputs/tool-catalog.json')); scene=json.load(open('/inputs/scene-context.json'))\nassert c['selection']=={k:s[k] for k in ('id','mode','indexRevision','targets')}\nassert c['operations'][0]['target']==next(n['ref'] for n in json.load(open('/inputs/index-slice.json'))['nodes'] if n['name']=='Village Well')\nassert c['operations'][0]['args']['position']==[scene['objects'][0]['position'][0]+1,*scene['objects'][0]['position'][1:]]\nassert next(x for x in t['tools'] if x['id']=='move')['runtimeApply']==c['operations'][0]['applyRequirement']\nassert set(c)=={'id','schema','intent','selection','baseVersions','operations','artifacts','requirements'}\nassert not any(x is None for x in [c['id'],c['schema']]); print('JSON, selected reference, tool, eastward displacement verified')\nPY\nls -la /outputs",
+      "timeout": 120,
+      "background": false
+    },
+    "outcome": {
+      "ok": true,
+      "bytes": 294,
+      "text": "JSON, selected reference, tool, eastward displacement verified\ntotal 12\ndrwxrwxr-x 2 agent agent 4096 Oct  7 12:37 .\ndrwxr-xr-x 1 root  root  4096 Oct  7 12:37 ..\n-rw-r--r-- 1 agent agent 2001 Oct  7 12:37 changeset.json\n[exit code 0]\n[full log: /tmp/etos/out/tf8cc56719d5c8e380191a893-1-5.log]"
+    }
+  }
+]

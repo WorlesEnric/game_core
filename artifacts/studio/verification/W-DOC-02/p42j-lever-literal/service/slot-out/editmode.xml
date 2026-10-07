@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.5715674">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.571567" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1006" name="GameCore.Stage.Harness.Editor.dll" fullname="/w/p/Library/ScriptAssemblies/GameCore.Stage.Harness.Editor.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.126014" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1007" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.125666" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1008" name="Stage" fullname="GameCore.Stage" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.125541" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1009" name="Harness" fullname="GameCore.Stage.Harness" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.125366" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="CatalogProbe" fullname="GameCore.Stage.Harness.CatalogProbe" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.124451" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="R6_A_01_ChangedSourceWorldRefuses" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_ChangedSourceWorldRefuses" methodname="R6_A_01_ChangedSourceWorldRefuses" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1458674856" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.024135" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="R6_A_01_MissingSourceWorldRefuses" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_MissingSourceWorldRefuses" methodname="R6_A_01_MissingSourceWorldRefuses" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1374072729" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.000796" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="R6_A_01_TrustedSourceWorldRecompilesDeterministically" fullname="GameCore.Stage.Harness.CatalogProbe.R6_A_01_TrustedSourceWorldRecompilesDeterministically" methodname="R6_A_01_TrustedSourceWorldRecompilesDeterministically" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="1919063673" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.074004" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="WritesTheCatalogDelta" fullname="GameCore.Stage.Harness.CatalogProbe.WritesTheCatalogDelta" methodname="WritesTheCatalogDelta" classname="GameCore.Stage.Harness.CatalogProbe" runstate="Runnable" seed="76324252" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:30Z" duration="0.013473" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[stage-harness] catalog delta {"changeSetId":"cs_01M4B8WGXJ93MHM9J2HGQF5B9Q","package":"com.hollowmere.mechanism.lever","world":"6c13778e6adf58964f55654c0b352352e4fba6cdd0024655690c49d536734bea","worldVerified":true,"worldSnapshotSha256":"f6ee24fd629289abdd328daa01f8e496474f8335909e3fddda011a1d23f7859e","mechanisms":[{"package":"com.hollowmere.mechanism.lever","catalogType":"Hollowmere.Mechanism.Lever.Generated.LeverCatalog","fingerprint":"b2d694b9bc3afc6455430978edc899a74def015cd6323cd2efea1eb76ef2a57e"}],"predicted":"694db5e75411b4197cd6e30bfdf72b8ed027e6e20b0a54bfb734c64ce9223db0"}
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1019" name="GameCore.Unity.App.Editor.Tests.dll" fullname="/w/p/Library/ScriptAssemblies/GameCore.Unity.App.Editor.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.431141" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1020" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.430830" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1021" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.430736" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1022" name="App" fullname="GameCore.Unity.App" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.430657" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1023" name="Tests" fullname="GameCore.Unity.App.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.430561" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1010" name="RestoreAdoptionTests" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.430419" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1017" name="APP1_CurrentNeverNullDuringStartStopOrRootChanged" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_CurrentNeverNullDuringStartStopOrRootChanged" methodname="APP1_CurrentNeverNullDuringStartStopOrRootChanged" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="873089728" result="Passed" start-time="2026-10-07 13:32:30Z" end-time="2026-10-07 13:32:31Z" duration="0.382029" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1016" name="APP1_NonCurrentRestoreLeavesCurrentUntouched" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.026715" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1014" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(False)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="313020893" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.017456" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1015" name="APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_NonCurrentRestoreLeavesCurrentUntouched(True)" methodname="APP1_NonCurrentRestoreLeavesCurrentUntouched" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="830934311" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.007902" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1018" name="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" methodname="APP1_RefusedRestoreAndScratchRoundTripKeepCurrent" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1010998588" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.005807" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1013" name="APP1_RestoreAdoptsCurrentAndPreservesRunState" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.013769" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1011" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(False)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="741446129" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.006994" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1012" name="APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" fullname="GameCore.Unity.App.Tests.RestoreAdoptionTests.APP1_RestoreAdoptsCurrentAndPreservesRunState(True)" methodname="APP1_RestoreAdoptsCurrentAndPreservesRunState" classname="GameCore.Unity.App.Tests.RestoreAdoptionTests" runstate="Runnable" seed="1077007538" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.006149" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1033" name="Hollowmere.Mechanism.Lever.Rules.Tests.dll" fullname="/w/p/Library/ScriptAssemblies/Hollowmere.Mechanism.Lever.Rules.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.004162" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1034" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003892" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1035" name="Mechanism" fullname="Hollowmere.Mechanism" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003768" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1036" name="Lever" fullname="Hollowmere.Mechanism.Lever" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003637" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1037" name="Rules" fullname="Hollowmere.Mechanism.Lever.Rules" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003331" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1038" name="Tests" fullname="Hollowmere.Mechanism.Lever.Rules.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003229" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1024" name="LeverRulesTests" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.003091" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-suite type="ParameterizedMethod" id="1028" name="CorruptCommittedStateIsRefusedWithoutNormalization" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.CorruptCommittedStateIsRefusedWithoutNormalization" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.001109" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                    <properties />
+                    <test-case id="1026" name="CorruptCommittedStateIsRefusedWithoutNormalization(-1)" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.CorruptCommittedStateIsRefusedWithoutNormalization(-1)" methodname="CorruptCommittedStateIsRefusedWithoutNormalization" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="1221608140" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000630" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                    <test-case id="1027" name="CorruptCommittedStateIsRefusedWithoutNormalization(2)" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.CorruptCommittedStateIsRefusedWithoutNormalization(2)" methodname="CorruptCommittedStateIsRefusedWithoutNormalization" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="1434201719" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000088" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                  </test-suite>
+                  <test-suite type="ParameterizedMethod" id="1032" name="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000842" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                    <properties />
+                    <test-case id="1029" name="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(0)" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(0)" methodname="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="273400114" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000267" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                    <test-case id="1030" name="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(2)" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(2)" methodname="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="96068319" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000068" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                    <test-case id="1031" name="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(int.MaxValue)" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn(int.MaxValue)" methodname="RequestCannotSmuggleSeveralTurnsOrAnEmptyTurn" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="460337870" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000052" asserts="0">
+                      <properties>
+                        <property name="retryIteration" value="0" />
+                        <property name="repeatIteration" value="0" />
+                      </properties>
+                    </test-case>
+                  </test-suite>
+                  <test-case id="1025" name="TwoSeparateTogglesLatchOnThenOff" fullname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests.TwoSeparateTogglesLatchOnThenOff" methodname="TwoSeparateTogglesLatchOnThenOff" classname="Hollowmere.Mechanism.Lever.Rules.Tests.LeverRulesTests" runstate="Runnable" seed="1445166161" result="Passed" start-time="2026-10-07 13:32:31Z" end-time="2026-10-07 13:32:31Z" duration="0.000277" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

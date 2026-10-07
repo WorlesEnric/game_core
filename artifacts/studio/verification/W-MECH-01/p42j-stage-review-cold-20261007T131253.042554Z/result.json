@@ -1,0 +1,16 @@
+{
+  "label": "p42j-stage-review-cold",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "host": "worlesenric",
+  "started": "2026-10-07T13:12:53.044132+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2j/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/logs --label p42j-stage-review-cold --attempts 1 --timeout 1800 -- -executeMethod P42g.Live.StageUi.Review",
+  "cwd": "~/wkspace/gc-studio/p4.2j",
+  "evidencePath": "artifacts/studio/verification/W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z",
+  "queuedAtRevision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "executionStarted": "2026-10-07T13:12:53.045810+00:00",
+  "sourceDiffSha256": "ba3082e4cd5e2f670aafee480686c98502a47d567062924a87d1e391c9bb6d6b",
+  "exitCode": 1,
+  "status": "FAIL",
+  "ended": "2026-10-07T13:16:22.062204+00:00",
+  "seconds": 209.01960310386494
+}

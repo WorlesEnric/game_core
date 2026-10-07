@@ -1,25 +1,24 @@
 {
   "status": "PASS",
-  "note": "Current-revision exact package metadata and dependency check passes; no historical checker receipt is reused.",
-  "evidence": [
-    "W-TOOL-02/metadata-20261007T041606.827753Z/result.json",
-    "W-TOOL-02/metadata-20261007T041606.827753Z/command.log"
-  ],
-  "command": "python3 tools/check_package_metadata.py",
   "checks": [
     {
-      "file": "W-TOOL-02/metadata-20261007T041606.827753Z/result.json",
+      "file": "W-TOOL-02/metadata-20261007T113207.870567Z/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
+  "evidence": [
+    "W-TOOL-02/metadata-20261007T113207.870567Z/result.json"
+  ],
+  "command": "python3 tools/check_package_metadata.py",
+  "note": "Current exact package metadata/dependency checker passes: 42 packages, 92 assemblies, four engine pins, six game pins and three lock sources.",
   "row": "W-TOOL-02",
   "scenario": "`check_package_metadata.py` passes with all new packages",
   "requirement": "SR-11.1",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-TOOL-02/metadata-20261007T041606.827753Z/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-TOOL-02/metadata-20261007T113207.870567Z/result.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

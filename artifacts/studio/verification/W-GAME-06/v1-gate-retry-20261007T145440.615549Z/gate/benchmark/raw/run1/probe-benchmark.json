@@ -1,0 +1,122 @@
+{
+  "task": "GC-026",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Benchmark",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "benchmark-fixture",
+      "status": "Pass",
+      "detail": "accepted=True; rejection=None; fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}; candidates=21001;contributions=20959;targets=10000;bytes=8053632;rules=110;buckets=110;visitedTargets=21001;shadowed=0"
+    },
+    {
+      "name": "benchmark-config",
+      "status": "Pass",
+      "detail": "scopes=1000;targets=10000;liveScopes=1000;liveTargets=10000;applyTargets=100;liveSpawnTargets=1000;idleFrames=64;unchangedSteps=10000;warmupSeconds=1;durationSeconds=2;repetitions=5;runOrdinal=1;seed=20260926;workloads=idle-command-world,steady-unchanged-10000-steps,steady-execution-10000-targets,update-size-1,update-size-100,update-size-10000,whole-world-mode-switch,spawn-1000,reparent-100,inactive-target-comparison,lifecycle-cycles-1000; referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000); telemetrySymbol=GAMECORE_TELEMETRY; telemetryCompiledInProbeAssembly=true; instrumentedKernelCountersMoved=true"
+    },
+    {
+      "name": "benchmark-hardware",
+      "status": "Pass",
+      "detail": "machine=worlesenric; processors=20; os=Unix 7.0.0.31; architecture=X64; processorType=12th Gen Intel(R) Core(TM) i7-12700KF; unityVersion=6000.0.75f1; declaredUnityVersion=6000.0.75f1; platform=LinuxPlayer; scriptingBackend=IL2CPP; isIl2Cpp=True; is64BitProcess=True; managedStrippingLevel=High; managedStrippingLevelSource=declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime; burstCompilerEnabled=True; catalogGeneratedFile=ProbeCatalog.g.cs; catalogFileHash=03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff"
+    },
+    {
+      "name": "benchmark-idle-command-world",
+      "status": "Pass",
+      "detail": "kind=Steady; samples=298; repetitionsRequested=0; repetitionsExecuted=0; steps=0; windowUs=2001653; passed=true; step(n=298,p50=6586,p95=10177,p99=15625,max=18694); counters=[0]; memory=[managedHeapStart=61739008;managedHeapEnd=61739008;managedHeapGrowth=0;managedAllocated=61739008;managedThreadComplete=false;nativeContainers=4320;leases=4320;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=9;outstandingCallbacks=0]; gate:idle-command-world-advances-zero-steps=pass(frames=2441216; pumpsPerSample=8192; steps=0; stepsAdvanced=0; stageSamples=0; dispatchRuns=0; windowUs=2001653; budgetUs=2000000); gate:idle-command-world-does-zero-control-work=pass(controlNodes=0; serviceStringLookups=0; candidatesMatched=0; strataEvaluated=0; planPreparedBytes=0)"
+    },
+    {
+      "name": "benchmark-steady-unchanged-10000-steps",
+      "status": "Pass",
+      "detail": "kind=Steady; samples=10; repetitionsRequested=0; repetitionsExecuted=0; steps=10000; windowUs=104604; passed=true; step(n=10,p50=9600,p95=12649,p99=12649,max=12649); counters=[0]; memory=[managedHeapStart=91283456;managedHeapEnd=91283456;managedHeapGrowth=0;managedAllocated=91283456;managedThreadComplete=false;nativeContainers=4320;leases=4320;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=9;outstandingCallbacks=0]; gate:unchanged-composition-commits-the-declared-steps=pass(declared=10000; committed=10000; pumps=10; step=97000; windowUs=104604); gate:zero-stable-control-tree-scans=pass(steps=10000; controlNodes=0; candidatesMatched=0; strataEvaluated=0; planPreparedBytes=0); gate:zero-string-service-lookups=pass(serviceStringLookups=0); gate:unchanged-composition-publishes-nothing=pass(publicationsBefore=1; after=1)"
+    },
+    {
+      "name": "benchmark-steady-execution-10000-targets",
+      "status": "Pass",
+      "detail": "kind=Steady; samples=978; repetitionsRequested=0; repetitionsExecuted=0; steps=978; windowUs=2000827; passed=true; step(n=978,p50=2015,p95=2405,p99=2510,max=2621); counters=[steps-advanced=978]; memory=[managedHeapStart=91635712;managedHeapEnd=91635712;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=true;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:core-execution-window=pass(steps=978; windowUs=2000827; budgetUs=2000000; windowEndedByCap=false; targets=10000; commands=978000); gate:steady-execution-allocation-is-thread-complete=pass(managedBytes=0;declaredThreads=1;sampledThreads=1;threadComplete=true;coverage=AllThreadsSampled; managedBytesPerStep=0)"
+    },
+    {
+      "name": "benchmark-update-size-1",
+      "status": "Pass",
+      "detail": "kind=Change; samples=6; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=1,p50=1078400,p95=1078400,p99=1078400,max=1078400); prepare(n=5,p50=1338904,p95=1494656,p99=1494656,max=1494656); counters=[control-nodes-visited=645200;candidates-matched=155005;contributions-added=5;contributions-retracted=5;strata-evaluated=5]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:update-affects-the-declared-target-count=pass(size=1; affectedTargets=1; expected=1; repetitions=5; warmupCycles=1; accepted=True)"
+    },
+    {
+      "name": "benchmark-update-size-100",
+      "status": "Pass",
+      "detail": "kind=Change; samples=9; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=1,p50=1328682,p95=1328682,p99=1328682,max=1328682); prepare(n=6,p50=1268624,p95=1378424,p99=1378424,max=1378424); apply(n=1,p50=891,p95=891,p99=891,max=891); endtoend(n=1,p50=430754,p95=430754,p99=430754,max=430754); counters=[control-nodes-visited=645200;candidates-matched=155005;contributions-added=500;contributions-retracted=500;strata-evaluated=5;apply-us=891;assembly-epoch=2;structural-operations=500;live-leases=9;lease-bytes=4320;apply-samples=1]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:update-affects-the-declared-target-count=pass(size=100; affectedTargets=100; expected=100; repetitions=5; warmupCycles=1; accepted=True); gate:apply-affects-the-declared-target-count=pass(outcome=Published; code=None; detail=; eligibleTargets=100; declaredApplyTargets=100; installedRows=200; retractedRows=0; applyUs=891; applySamples=1; waitUs=0; endToEndUs=430754; prepareUs=429863; joined=True); gate:apply-pause-is-measured-by-the-publisher=pass(applySamples=1; applyUs=891; note=a zero apply sample count would make the apply-pause row unmeasurable rather than fast)"
+    },
+    {
+      "name": "benchmark-update-size-10000",
+      "status": "Pass",
+      "detail": "kind=Change; samples=6; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=1,p50=1763533,p95=1763533,p99=1763533,max=1763533); prepare(n=5,p50=1611657,p95=1749670,p99=1749670,max=1749670); counters=[control-nodes-visited=645200;candidates-matched=155005;contributions-added=50000;contributions-retracted=50000;strata-evaluated=5]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:update-affects-the-declared-target-count=pass(size=10000; affectedTargets=10000; expected=10000; repetitions=5; warmupCycles=1; accepted=True)"
+    },
+    {
+      "name": "benchmark-whole-world-mode-switch",
+      "status": "Pass",
+      "detail": "kind=Change; samples=7; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=2,p50=952022,p95=1130325,p99=1130325,max=1130325); prepare(n=5,p50=730594,p95=1028721,p99=1028721,max=1028721); counters=[control-nodes-visited=105555;candidates-matched=105005;contributions-added=41918;contributions-retracted=62877;strata-evaluated=5]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:mode-switch-invalidates-the-whole-world=pass(switches=5; reportedLocal=0; warmupSwitches=2; accepted=True)"
+    },
+    {
+      "name": "benchmark-spawn-1000",
+      "status": "Pass",
+      "detail": "kind=Change; samples=11; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=3,p50=334088,p95=364553,p99=364553,max=364553); prepare(n=6,p50=221581,p95=254731,p99=254731,max=254731); apply(n=1,p50=2952,p95=2952,p99=2952,max=2952); endtoend(n=1,p50=1867133,p95=1867133,p99=1867133,max=1867133); counters=[control-nodes-visited=35020;candidates-matched=10000;contributions-added=10000;contributions-retracted=8000;strata-evaluated=5;apply-us=2952;assembly-epoch=3;structural-operations=5000;live-leases=9;lease-bytes=4320;apply-samples=1]; memory=[managedHeapStart=112201728;managedHeapEnd=112201728;managedHeapGrowth=0;managedAllocated=112201728;managedThreadComplete=false;nativeContainers=4320;leases=4320;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=9;outstandingCallbacks=0]; gate:spawn-first-visibility-is-fully-assembled=pass(spawnedPerRepetition=1000; assembledOnFirstVisibility=1000; capability=CapabilityId(0774f192d6754a88c3215e38cceaf022); accepted=True); gate:live-spawn-publishes-one-complete-publication=pass(spawned=1000; code=None; detail=; assembled=1000; outcome=Published; installedRows=2000; seedUs=10063; publishUs=1867133; applyUs=2952)"
+    },
+    {
+      "name": "benchmark-reparent-100",
+      "status": "Pass",
+      "detail": "kind=Change; samples=10; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=5,p50=200061,p95=210163,p99=210163,max=210163); prepare(n=5,p50=128131,p95=145516,p99=145516,max=145516); counters=[control-nodes-visited=6240;candidates-matched=1250;contributions-added=180;contributions-retracted=270;strata-evaluated=5]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:reparent-moves-the-declared-subtree=pass(subtreeTargets=100; accepted=True)"
+    },
+    {
+      "name": "benchmark-inactive-target-comparison",
+      "status": "Pass",
+      "detail": "kind=Change; samples=17; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=7,p50=184561,p95=1445145,p99=1445145,max=1445145); prepare(n=10,p50=292377,p95=2063406,p99=2063406,max=2063406); counters=[control-nodes-visited=1300690;candidates-matched=360505;contributions-added=10;strata-evaluated=10]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:inactive-targets-do-not-add-a-per-change-scan=pass(smallTargets=1000; largeTargets=10000; smallUs=1283216; largeUs=8488180; ratio=6.615)"
+    },
+    {
+      "name": "benchmark-lifecycle-cycles-1000",
+      "status": "Pass",
+      "detail": "kind=Change; samples=11; repetitionsRequested=5; repetitionsExecuted=5; steps=0; windowUs=0; passed=true; warmup(n=1,p50=2667808,p95=2667808,p99=2667808,max=2667808); change(n=10,p50=1205544,p95=1511045,p99=1511045,max=1511045); counters=[control-nodes-visited=1035435;candidates-matched=260010;contributions-added=5;contributions-retracted=5;strata-evaluated=10]; memory=[managedHeapStart=0;managedHeapEnd=0;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=false;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:lifecycle-counts-return-to-baseline=pass(baselineAssemblies=10000; finalAssemblies=10000; baselineContributions=20959; finalContributions=20959; cycles=5; accepted=True)"
+    },
+    {
+      "name": "benchmark-correctness-gates",
+      "status": "Pass",
+      "detail": "positiveControlInstrumentedKernelCountersMoved=true; controlNodesInWarmupDerivation=21111; telemetrySymbol=GAMECORE_TELEMETRY; telemetryCompiledInProbeAssembly=true; controlNodesAcrossWorkloads=4418540; stringServiceLookupsAcrossWorkloads=0; workloadsFailed=0; documents=11; declaredWorkloads=11; authorityMirrorFixture=target=TargetId(02000000001e84809874e6d616f95a95); slotWrites=11->12; slotReads=11->12; bindingRows=0->0; bindingValue=-2147483648->-2147483648; kernelAuditClean=true; kernelAssemblies=8; forbiddenKernelReferences=0"
+    },
+    {
+      "name": "benchmark-digest",
+      "status": "Pass",
+      "detail": "observations=16; documents=11; workloads=11; digest=5525bb0064790d7ce88d3ef3e9026e514f41cb846b515f38732a15ae53c27c03"
+    },
+    {
+      "name": "benchmark-artifacts-json",
+      "status": "Pass",
+      "detail": "documents=11; samples=1363; format=gamecore.benchmark.samples/1; files=idle-command-world.samples.json,steady-unchanged-10000-steps.samples.json,steady-execution-10000-targets.samples.json,update-size-1.samples.json,update-size-100.samples.json,update-size-10000.samples.json,whole-world-mode-switch.samples.json,spawn-1000.samples.json,reparent-100.samples.json,inactive-target-comparison.samples.json,lifecycle-cycles-1000.samples.json"
+    },
+    {
+      "name": "benchmark-artifacts-csv",
+      "status": "Pass",
+      "detail": "documents=11; rows=1374; format=gamecore.benchmark.samples.csv/1; columns=33; files=idle-command-world.samples.csv,steady-unchanged-10000-steps.samples.csv,steady-execution-10000-targets.samples.csv,update-size-1.samples.csv,update-size-100.samples.csv,update-size-10000.samples.csv,whole-world-mode-switch.samples.csv,spawn-1000.samples.csv,reparent-100.samples.csv,inactive-target-comparison.samples.csv,lifecycle-cycles-1000.samples.csv"
+    }
+  ]
+}

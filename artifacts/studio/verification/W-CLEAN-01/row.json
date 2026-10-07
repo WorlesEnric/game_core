@@ -1,40 +1,35 @@
 {
   "status": "PASS",
-  "note": "Current clean project AuthorAll, 11 EditMode+3 PlayMode cases and both rechecks pass. Fresh Linux IL2CPP build and standalone 600-frame autoplay pass real quest/save/restore/ending assertions with zero pump violations. Disk-reserve interruption was resolved by deleting only completed owned compiler caches; no workload bypassed the reserve.",
-  "evidence": [
-    "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
-    "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
-    "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/player.log",
-    "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/results.xml",
-    "UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/results.xml",
-    "UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/results.xml",
-    "UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/results.xml"
-  ],
-  "command": "studio/tools/verify-all.sh bake; studio/tools/verify-all.sh unity; python3 artifacts/studio/verification/TOOLS/builds-p42i.py --resume-completed-builds",
   "checks": [
     {
-      "file": "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
+      "file": "W-CLEAN-01/p42j-clean-build-20261007T144150.779087Z/result.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+      "file": "W-CLEAN-01/p42j-clean-player-20261007T145428.743794Z/result.json",
       "pointer": "/playerProof/frames",
       "equals": 600
     },
     {
-      "file": "W-CLEAN-01/p42i-clean-player-20261007T075638.272854Z/result.json",
+      "file": "W-CLEAN-01/p42j-clean-player-20261007T145428.743794Z/result.json",
       "pointer": "/playerProof/violations",
       "equals": 0
     }
   ],
+  "evidence": [
+    "W-CLEAN-01/p42j-clean-build-20261007T144150.779087Z/result.json",
+    "W-CLEAN-01/p42j-clean-player-20261007T145428.743794Z/result.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/builds-p42j.py",
+  "note": "Current clean-project author/bake, 11 EditMode and 3 PlayMode cases, both rechecks, Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations.",
   "row": "W-CLEAN-01",
   "scenario": "Clean project: install, author, run, build",
   "requirement": "SR-7.2",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-CLEAN-01/p42i-clean-build-20261007T073040.943841Z/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-CLEAN-01/p42j-clean-build-20261007T144150.779087Z/result.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

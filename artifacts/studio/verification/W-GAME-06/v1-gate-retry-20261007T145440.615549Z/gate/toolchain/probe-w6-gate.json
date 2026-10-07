@@ -1,0 +1,237 @@
+{
+  "task": "W6-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W6Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "w6-gate-cycle-count",
+      "status": "Pass",
+      "detail": "resolvedCycleCount=1000; requestedCycleCount=1000; defaultCycleCount=1000; source=GC_W6_GATE_CYCLES"
+    },
+    {
+      "name": "w6-gate-native-leak-detection",
+      "status": "Pass",
+      "detail": "requested=EnabledWithStackTrace; appliedMode=EnabledWithStackTrace; priorMode=Disabled; source=UNITY_JOBS_NATIVE_LEAK_DETECTION_MODE; applied=True"
+    },
+    {
+      "name": "w6-gate-telemetry-build-shape",
+      "status": "Pass",
+      "detail": "symbol=GAMECORE_TELEMETRY; compiledIn=True; counterCount=29; counterSetWritable=True"
+    },
+    {
+      "name": "narrative/w6-declares-no-action-physics-or-audio-surface",
+      "status": "Pass",
+      "detail": "owner=narrative; walked=69; declaredStages=6; offenders=<none>; descriptorOutcome=Built; descriptorStages=6; descriptorSlots=14"
+    },
+    {
+      "name": "narrative/w6-adapter-assembly-is-absent",
+      "status": "Pass",
+      "detail": "assemblies=GameCore.Gameplay.Narrative=noAdaptersAssembly,GameCore.Gameplay.Cards=noAdaptersAssembly,GameCore.Gameplay.Traversal=referencesAdapters; narrativeAdapters=False; cardsAdapters=False; traversalAdapters=True; allLoaded=True; selfAssembly=GameCore.Gameplay.Narrative; selfReferencesAdapters=False"
+    },
+    {
+      "name": "narrative/w6-thousand-cycle-teardown-is-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; completed=1000; failedCycle=-1; failedCode=<none>; laneRevision=2003; laneEpoch=2003; hostStep=1000; laneRetainedResults=64"
+    },
+    {
+      "name": "narrative/w6-ledger-and-fence-high-water-marks-are-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2@baseline2; worldAcquired=9; worldRetired=0; worldRetained=9@baseline9; worldOutstanding=0@baseline0; quarantinedBytes=0"
+    },
+    {
+      "name": "narrative/w6-counters-return-to-baseline",
+      "status": "Pass",
+      "detail": "instances=1000; instancesMissing=0; instancesRetained=0; ledgerBalance=9@baseline9; ledgerRetained=9@baseline9; ledgerOutstanding=0@baseline0; lifecycle=Running; laneRevision=2003; laneEpoch=2003"
+    },
+    {
+      "name": "narrative/w6-repeatable-digest",
+      "status": "Pass",
+      "detail": "digest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; expectedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; observations=5; tableSize=6; cycleCount=1000; fixtureRun=False"
+    },
+    {
+      "name": "fixture:narrative/w6-declares-no-action-physics-or-audio-surface",
+      "status": "Pass",
+      "detail": "owner=narrative; walked=69; declaredStages=6; offenders=<none>; descriptorOutcome=Built; descriptorStages=6; descriptorSlots=14"
+    },
+    {
+      "name": "fixture:narrative/w6-adapter-assembly-is-absent",
+      "status": "Pass",
+      "detail": "assemblies=GameCore.Gameplay.Narrative=noAdaptersAssembly,GameCore.Gameplay.Cards=noAdaptersAssembly,GameCore.Gameplay.Traversal=referencesAdapters; narrativeAdapters=False; cardsAdapters=False; traversalAdapters=True; allLoaded=True; selfAssembly=GameCore.Gameplay.Narrative; selfReferencesAdapters=False"
+    },
+    {
+      "name": "fixture:narrative/w6-thousand-cycle-teardown-is-bounded",
+      "status": "Pass",
+      "detail": "cycles=3; completed=3; failedCycle=-1; failedCode=<none>; laneRevision=9; laneEpoch=9; hostStep=3; laneRetainedResults=64"
+    },
+    {
+      "name": "fixture:narrative/w6-ledger-and-fence-high-water-marks-are-bounded",
+      "status": "Pass",
+      "detail": "cycles=3; highWaterRecords=3; retired=3; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2@baseline2; worldAcquired=9; worldRetired=0; worldRetained=9@baseline9; worldOutstanding=0@baseline0; quarantinedBytes=0"
+    },
+    {
+      "name": "fixture:narrative/w6-counters-return-to-baseline",
+      "status": "Pass",
+      "detail": "instances=3; instancesMissing=0; instancesRetained=0; ledgerBalance=9@baseline9; ledgerRetained=9@baseline9; ledgerOutstanding=0@baseline0; lifecycle=Running; laneRevision=9; laneEpoch=9"
+    },
+    {
+      "name": "fixture:narrative/w6-repeatable-digest",
+      "status": "Pass",
+      "detail": "digest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; expectedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; observations=5; tableSize=6; cycleCount=3; fixtureRun=True"
+    },
+    {
+      "name": "w6-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; fixtureDigest=ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73; expectedGeneratedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; expectedFixtureDigest=ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73; observations=6; fixtureObservations=6; digest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; label=narrative; steps=6; failed=0; digest=ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73; label=narrative; steps=6; failed=0"
+    },
+    {
+      "name": "cards/w6-declares-no-action-physics-or-audio-surface",
+      "status": "Pass",
+      "detail": "owner=cards; walked=46; declaredStages=4; offenders=<none>; descriptorOutcome=Built; descriptorStages=4; descriptorSlots=11"
+    },
+    {
+      "name": "cards/w6-adapter-assembly-is-absent",
+      "status": "Pass",
+      "detail": "assemblies=GameCore.Gameplay.Narrative=noAdaptersAssembly,GameCore.Gameplay.Cards=noAdaptersAssembly,GameCore.Gameplay.Traversal=referencesAdapters; narrativeAdapters=False; cardsAdapters=False; traversalAdapters=True; allLoaded=True; selfAssembly=GameCore.Gameplay.Cards; selfReferencesAdapters=False"
+    },
+    {
+      "name": "cards/w6-reward-delivery-is-exactly-once-across-a-reload",
+      "status": "Pass",
+      "detail": "sessions=14771506107562600000000000000001->14771506107562600000000000000002->14771506107562600000000000000003; sessionsDiffer=True; sourceStopped=Published; reloadStopped=Published; firstUnregistered=True; secondUnregistered=True; claimedSchema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); claimedSequence=1; rows=1; reinstated=True(None: ); dispatched=1; destinationMutationsAfterReload=1; destinationMutations=1; deliveredOnce=True; redeliveredOnce=True; ackOutcome=Acknowledged; openAfterDispatch=1; destinationAttempts=2; destinationAlreadyApplied=1; acknowledged=1; reinstatedAgain=True(None: ); dispatchedAgain=1; durable=True; journalFrames=9"
+    },
+    {
+      "name": "cards/w6-thousand-cycle-teardown-is-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; completed=1000; failedCycle=-1; failedCode=<none>; laneRevision=2003; laneEpoch=2003; hostStep=1000; laneRetainedResults=64"
+    },
+    {
+      "name": "cards/w6-ledger-and-fence-high-water-marks-are-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2@baseline2; worldAcquired=7; worldRetired=0; worldRetained=7@baseline7; worldOutstanding=0@baseline0; quarantinedBytes=0"
+    },
+    {
+      "name": "cards/w6-counters-return-to-baseline",
+      "status": "Pass",
+      "detail": "instances=1000; instancesMissing=0; instancesRetained=0; ledgerBalance=7@baseline7; ledgerRetained=7@baseline7; ledgerOutstanding=0@baseline0; lifecycle=Running; laneRevision=2003; laneEpoch=2003"
+    },
+    {
+      "name": "cards/w6-repeatable-digest",
+      "status": "Pass",
+      "detail": "digest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; expectedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; observations=6; tableSize=7; cycleCount=1000; fixtureRun=False"
+    },
+    {
+      "name": "fixture:cards/w6-declares-no-action-physics-or-audio-surface",
+      "status": "Pass",
+      "detail": "owner=cards; walked=46; declaredStages=4; offenders=<none>; descriptorOutcome=Built; descriptorStages=4; descriptorSlots=11"
+    },
+    {
+      "name": "fixture:cards/w6-adapter-assembly-is-absent",
+      "status": "Pass",
+      "detail": "assemblies=GameCore.Gameplay.Narrative=noAdaptersAssembly,GameCore.Gameplay.Cards=noAdaptersAssembly,GameCore.Gameplay.Traversal=referencesAdapters; narrativeAdapters=False; cardsAdapters=False; traversalAdapters=True; allLoaded=True; selfAssembly=GameCore.Gameplay.Cards; selfReferencesAdapters=False"
+    },
+    {
+      "name": "fixture:cards/w6-reward-delivery-is-exactly-once-across-a-reload",
+      "status": "Pass",
+      "detail": "sessions=523e4d52452727600000000000000001->523e4d52452727600000000000000002->523e4d52452727600000000000000003; sessionsDiffer=True; sourceStopped=Published; reloadStopped=Published; firstUnregistered=True; secondUnregistered=True; claimedSchema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); claimedSequence=1; rows=1; reinstated=True(None: ); dispatched=1; destinationMutationsAfterReload=1; destinationMutations=1; deliveredOnce=True; redeliveredOnce=True; ackOutcome=Acknowledged; openAfterDispatch=1; destinationAttempts=2; destinationAlreadyApplied=1; acknowledged=1; reinstatedAgain=True(None: ); dispatchedAgain=1; durable=True; journalFrames=9"
+    },
+    {
+      "name": "fixture:cards/w6-thousand-cycle-teardown-is-bounded",
+      "status": "Pass",
+      "detail": "cycles=3; completed=3; failedCycle=-1; failedCode=<none>; laneRevision=9; laneEpoch=9; hostStep=3; laneRetainedResults=64"
+    },
+    {
+      "name": "fixture:cards/w6-ledger-and-fence-high-water-marks-are-bounded",
+      "status": "Pass",
+      "detail": "cycles=3; highWaterRecords=3; retired=3; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2@baseline2; worldAcquired=7; worldRetired=0; worldRetained=7@baseline7; worldOutstanding=0@baseline0; quarantinedBytes=0"
+    },
+    {
+      "name": "fixture:cards/w6-counters-return-to-baseline",
+      "status": "Pass",
+      "detail": "instances=3; instancesMissing=0; instancesRetained=0; ledgerBalance=7@baseline7; ledgerRetained=7@baseline7; ledgerOutstanding=0@baseline0; lifecycle=Running; laneRevision=9; laneEpoch=9"
+    },
+    {
+      "name": "fixture:cards/w6-repeatable-digest",
+      "status": "Pass",
+      "detail": "digest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; expectedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; observations=6; tableSize=7; cycleCount=3; fixtureRun=True"
+    },
+    {
+      "name": "w6-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; fixtureDigest=9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14; expectedGeneratedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; expectedFixtureDigest=9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14; observations=7; fixtureObservations=7; digest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; label=cards; steps=7; failed=0; digest=9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14; label=cards; steps=7; failed=0"
+    },
+    {
+      "name": "traversal/w6-fixed-step-course-runs",
+      "status": "Pass",
+      "detail": "session=03640617161700120000000000000001; catalogFingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459; generatedCatalog=absent; temporalModel=FixedStep; stepMillis=20; stepDurationTicks=200000; maxStepsPerPump=4; declaredStep=True; idleSteps=0; moduleRunners=3; moduleVolumes=2; declaredStages=5; physicsSceneInstalled=True"
+    },
+    {
+      "name": "traversal/w6-telemetry-counters-record-admitted-steps",
+      "status": "Pass",
+      "detail": "telemetryCompiledIn=True; collectorCompiledIn=True; owners=10; samples=1; sections=8; stepsAdvanced=5; hostStep=5; gateSimulatedSteps=5; engineSimulations=5; liveLeases=8; outstandingCallbacks=0; structuralOperations=0; applySamples=0; admittedInputSamples=5; counterSchema=steps-advanced"
+    },
+    {
+      "name": "traversal/w6-one-physics-simulation-per-admitted-step",
+      "status": "Pass",
+      "detail": "bodies=TargetId(51cf5b27370ded93a091b2e9eb6e180c)=Applied,TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=Applied,TargetId(e57ba9f33193786c847033b85d6702fd)=Applied; intent=Applied(); poseReflectsIntent=True; steps=0->5; engineSimulations=0->5; gateSimulatedSteps=0->5; duplicateRefused=True(step 5 was already simulated once; a presentation rate never advances authority ); duplicateRefusals=1; dedicatedLocalScene=True; automaticSuppressed=True"
+    },
+    {
+      "name": "traversal/w6-replay-reproduces-the-rule-digest",
+      "status": "Pass",
+      "detail": "recordedSamples=5; replayedSamples=5; recordedSteps=5; recordedBodies=15; ruleDigest=ef453d7cfbc1f28d314a65c16f20ed0e611314725049b13ef2fa74302e8301b6; replayedDigest=ef453d7cfbc1f28d314a65c16f20ed0e611314725049b13ef2fa74302e8301b6; digestsAgree=True; identical=steps=5;bodies=15;mismatchedBodies=0;mismatchedSteps=0;matches=True; perturbedBy=1; atTolerance0=False(mismatchedBodies=5); atDeclaredTolerance=True(tolerance=5, mismatchedBodies=0); comparisonDetail=body mismatch at step 0: left[TargetId(51cf5b27370ded93a091b2e9eb6e180c) p(20,0,0) v(1040,0,0)] right[TargetId(51cf5b273"
+    },
+    {
+      "name": "traversal/w6-carries-the-optional-engine-surface",
+      "status": "Pass",
+      "detail": "stages=5; systems=5; declaredStages=5; accelerationCapability=CapabilityId(90ac4c459000ca74c3f8e2285d770cf3); physicsScene=GameCoreTraversalCourseScene-1; physicsGate=True; audioStage=True; audioSink=True; animationStage=True; animationSink=True; audioSinkKind=recording-device-disabled(crash-139); runtimeAttached=True"
+    },
+    {
+      "name": "traversal/w6-thousand-cycle-teardown-is-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; completed=1000; failedCycle=-1; failedCode=<none>; laneRevision=2003; laneEpoch=2003; hostStep=1000; laneRetainedResults=64"
+    },
+    {
+      "name": "traversal/w6-ledger-and-fence-high-water-marks-are-bounded",
+      "status": "Pass",
+      "detail": "cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2@baseline2; worldAcquired=8; worldRetired=0; worldRetained=8@baseline8; worldOutstanding=0@baseline0; quarantinedBytes=0"
+    },
+    {
+      "name": "traversal/w6-counters-return-to-baseline",
+      "status": "Pass",
+      "detail": "instances=1000; instancesMissing=0; instancesRetained=0; ledgerBalance=8@baseline8; ledgerRetained=8@baseline8; ledgerOutstanding=0@baseline0; lifecycle=Running; laneRevision=2003; laneEpoch=2003"
+    },
+    {
+      "name": "traversal/w6-repeatable-digest",
+      "status": "Pass",
+      "detail": "digest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; expectedDigest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; observations=8; tableSize=9; cycleCount=1000; fixtureRun=False"
+    },
+    {
+      "name": "w6-traversal-digest",
+      "status": "Pass",
+      "detail": "digest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; expectedDigest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; observations=9; catalogs=1; digest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; label=traversal; steps=9; failed=0"
+    }
+  ]
+}

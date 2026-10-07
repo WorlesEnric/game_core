@@ -1,0 +1,88 @@
+{
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "receipts": [
+    {
+      "label": "metadata",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/W-TOOL-02/metadata-20261007T113207.870567Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "csharp",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/csharp-20261007T113208.154677Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "schemas",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/schemas-20261007T113234.273566Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "schema-mirror",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/schema-mirror-20261007T113237.592167Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "cargo-fmt",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/cargo-fmt-20261007T113237.713382Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "cargo-clippy",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/cargo-clippy-20261007T113238.205464Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "cargo-test",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/cargo-test-20261007T113259.305718Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "dotnet",
+      "status": "BLOCKED",
+      "evidence": "artifacts/studio/verification/STATIC/dotnet-20261007T113341.193143Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-python",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/stage-python-20261007T113514.694248Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "installer-python",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/installer-python-20261007T113515.988445Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "host-python",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/host-python-20261007T113521.643097Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-slot",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/stage-slot-20261007T113524.306670Z/result.json",
+      "exitCode": 0
+    },
+    {
+      "label": "p42-runner-regressions",
+      "status": "PASS",
+      "evidence": "artifacts/studio/verification/STATIC/p42-runner-regressions-20261007T113524.545577Z/result.json",
+      "exitCode": 0
+    }
+  ],
+  "solutionCounts": {
+    "Passed": 1832,
+    "NotExecuted": 6
+  },
+  "summaryGeneration": "Initial missing-status KeyError retained; fixed summary smoke passes"
+}

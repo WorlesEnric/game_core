@@ -1,0 +1,179 @@
+[
+  {
+    "evidence": "artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/result.json",
+    "xml": "results.xml",
+    "cases": [
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+        "result": "Skipped",
+        "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+        "result": "Skipped",
+        "detail": "R2-29: window event delivery requires a graphical Editor."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+        "result": "Skipped",
+        "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_GraphicalClampedOriginReportsTimeout",
+        "result": "Skipped",
+        "detail": "P42-UI-02: native clamping requires the graphical :1 lane."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.R7_D_W_UI_02_MarqueeChooser_OnlyAmbiguityOpensAndFilteringPreservesOriginalOperation",
+        "result": "Skipped",
+        "detail": "W-UI-02 popup interaction requires a graphical editor panel; geometry classification is covered without graphics."
+      },
+      {
+        "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+        "result": "Skipped",
+        "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+      },
+      {
+        "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+        "result": "Skipped",
+        "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+      },
+      {
+        "name": "Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine",
+        "result": "Failed",
+        "detail": "create: state Rejected; GP-LOG-011 P17b_narrative_fact: GP-LOG-011: 'P17b_narrative_fact' is not a fact name; GP-LOG-011 P17b_narrative_fact: GP-LOG-011: 'P17b_narrative_fact' is not a fact name; GP-LOG-011 P17b_narrative_fact: GP-LOG-011: 'P17b_narrative_fact' is not a fact name; GP-LOG-011 P17b_narrative_fact: GP-LOG-011: 'P17b_narrative_fact' is not a fact name; op1 Refused GP-LOG-011 Not applied: P17b_narrative_fact: GP-LOG-011: 'P17b_narrative_fact' is not a fact name\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103\nat Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine () [0x000b3] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/NarrativeRegistrationTests.cs:50"
+      },
+      {
+        "name": "Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine",
+        "result": "Failed",
+        "detail": "world.connectRegions: state Rejected; GP-WLD-001 P17bRegionA has no scene; GP-WLD-001 P17bRegionB has no scene; op1 Refused GP-WLD-001 Not applied: P17bRegionA has no scene\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103\nat Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine () [0x000a2] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/ReadOnlyAndWorldBindingTests.cs:125"
+      },
+      {
+        "name": "Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.NpcTools_SetDialogueAndAppearance_AreJournaled",
+        "result": "Failed",
+        "detail": "npc.setAppearance: state Rejected; InvalidArgs npc_dialogue_world_ambiguous: the active scene must name exactly one authored region.; op1 Refused InvalidArgs Not applied: npc_dialogue_world_ambiguous: the active scene must name exactly one authored region.\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103\nat Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.NpcTools_SetDialogueAndAppearance_AreJournaled () [0x0009b] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/ToolJournalTests.cs:85"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+        "result": "Skipped",
+        "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+      },
+      {
+        "name": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+        "result": "Skipped",
+        "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+      },
+      {
+        "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+        "result": "Skipped",
+        "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+      },
+      {
+        "name": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+        "result": "Skipped",
+        "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+      },
+      {
+        "name": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+        "result": "Skipped",
+        "detail": "P4.2 physical layout requires a graphical Editor; run the layout qualification command."
+      },
+      {
+        "name": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+        "result": "Skipped",
+        "detail": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+      },
+      {
+        "name": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+        "result": "Skipped",
+        "detail": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+      },
+      {
+        "name": "Hollowmere.R3_F.FactHandoffTests.D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine",
+        "result": "Failed",
+        "detail": "GP-LOG-001: Content names no world @ Definition(path:Assets/Hollowmere/Tests/R3_F/Scratch/Content.asset)\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R3_F.FactHandoffTests.D10a_EarlierCandidateFactStagesAppliesAndReplaysThroughEngine () [0x0001c] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R3_F/Editor/FactHandoffTests.cs:87\n \n               \n               [GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op fact)\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op condition)"
+      },
+      {
+        "name": "Hollowmere.R3_F.FactHandoffTests.D10a_FailedFactProducerNeverAppliesDependentCondition",
+        "result": "Failed",
+        "detail": "Expected: Failed\n  But was:  Refused\n \n                 at Hollowmere.R3_F.FactHandoffTests.D10a_FailedFactProducerNeverAppliesDependentCondition () [0x00019] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R3_F/Editor/FactHandoffTests.cs:143\n \n               \n               [GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op fact)\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op condition)\n[GameCore.Studio/engine] applied cs_01M4B31D1CFC7DAZ2DQAAM94AW -> Rejected (2 op(s), 5.1 ms)"
+      },
+      {
+        "name": "Hollowmere.R4_A.VirtualVoiceSelfTest.P42_VOICE_01_VirtualMicrophoneFixtureFinalContainsDelete",
+        "result": "Skipped",
+        "detail": "Requires explicit realtime-operation authorization and GAMECORE_R4A_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+      },
+      {
+        "name": "Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(False)",
+        "result": "Failed",
+        "detail": "Expected: null\n  But was:  <StageFailed: verdict_failed: The signed world/predicted catalog delta is missing or inconsistent.>\n \n                   at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001cd] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:44"
+      },
+      {
+        "name": "Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload(True)",
+        "result": "Failed",
+        "detail": "Expected: null\n  But was:  <StageFailed: verdict_failed: The signed world/predicted catalog delta is missing or inconsistent.>\n \n                   at Hollowmere.R5_B.CandidateTests.Request5_RetainedUnpreviewedCandidateBadgeSurvivesReload (System.Boolean refreshFails) [0x001cd] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R5_B/Editor/CandidateTests.cs:44"
+      },
+      {
+        "name": "Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe",
+        "result": "Skipped",
+        "detail": "Requires explicit realtime-operation authorization and GAMECORE_R5B_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+      },
+      {
+        "name": "Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure",
+        "result": "Failed",
+        "detail": "Expected is <System.Byte[8418]>, actual is <System.Byte[8362]>\n  Values differ at index [8359]\n  Expected: 49\n  But was:  48\n \n                 at Hollowmere.R6_F.ContentClosureTests+<R6_F_Request2_GraphCreationEnrollsAndHistoryRestoresClosure>d__12.MoveNext () [0x00308] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R6_F/ContentClosureTests.cs:102\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/engine] applied cs_01M4B32KQRR11E4951ZXR2S9VE -> Applied (1 op(s), 139.5 ms)\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.\nDialogueRunner.Start: True; reason=\nBell line presented; conversation ended; retainedCandidate=False\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u1)\n[GameCore.Studio/engine] history apply cs_01M4B32TS5FQCZ1F1KDW7TQ5BR -> Applied (2 op(s), 186.0 ms)\n[GameCore.Studio/history] undid cs_01M4B32KQRR11E4951ZXR2S9VE (2 inverse op(s))\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it."
+      },
+      {
+        "name": "Hollowmere.R6_F.ContentClosureTests.R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20",
+        "result": "Failed",
+        "detail": "undo cannot leave a dangling closure member\n  Expected: True\n  But was:  False\n \n                 at Hollowmere.R6_F.ContentClosureTests+<R6_F_Request2_UnchangedCandidateStartsPresentsBellEndsAndDurableUndoRestores20>d__14.MoveNext () [0x0037f] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R6_F/ContentClosureTests.cs:182\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n \n               \n               [GameCore.Studio/engine] applied cs_01M49500E9KFTHBKGBCXWW3VZC -> Applied (6 op(s), 290.6 ms)\nRetained candidate enrolled=True\nDialogueRunner.Start: True; reason=\nBell line presented; conversation ended; retainedCandidate=True\n[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op u1)\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u2)\n[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u5)\n[GameCore.Studio/engine] history apply cs_01M4B33AJWXTYT330Z95B5FDG0 -> Applied (7 op(s), 500.1 ms)\n[GameCore.Studio/history] undid cs_01M49500E9KFTHBKGBCXWW3VZC (7 inverse op(s))\nA meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it."
+      },
+      {
+        "name": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides",
+        "result": "Failed",
+        "detail": "W-PLUG-02 requires a graphics-enabled Editor: omit -nographics; inactive binders are not acceptance evidence.\n  Expected: False\n  But was:  True\n \n                     at Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides () [0x0000d] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Animation/AnimatorRespawnTests.cs:75"
+      },
+      {
+        "name": "Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak",
+        "result": "Failed",
+        "detail": "Expected: True\n  But was:  False\n \n                 at Hollowmere.R7_C.NativeMediaAcceptance+<W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak>d__2.MoveNext () [0x001e8] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/R7_C/Media/NativeMediaAcceptance.cs:106\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+      }
+    ]
+  },
+  {
+    "evidence": "artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/result.json",
+    "xml": "results.xml",
+    "cases": [
+      {
+        "name": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip",
+        "result": "Failed",
+        "detail": "the native playback assertion requires graphics-enabled batch PlayMode\n  Expected: True\n  But was:  False\n \n                     at Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless+<R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip>d__41.MoveNext () [0x000d2] in ~/wkspace/gc-studio/p4.2j/games/hollowmere/Assets/Hollowmere/Tests/P3_1/PlayMode/R7VoicePlayback.cs:24\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+      }
+    ]
+  }
+]

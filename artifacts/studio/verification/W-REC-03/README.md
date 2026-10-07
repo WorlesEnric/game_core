@@ -1,24 +1,19 @@
 # W-REC-03: Cancel region load mid-way; cancel staging job
 
-Verdict: **PASS**. Actual unfinished native region load cancels and settles all regions Unloaded. Real installed Docker stage is cancelled through the attached Stage-panel button after pausing only its owned dotnet container to serialize Editors. Durable cancelled, no container, released slot, verdict 404 and Admit disabled are verified. Authenticated reread after the permitted companion restart still reports cancelled and verdict 404.
+Verdict: **PASS**. Actual unfinished native region load and owned running Docker stage cancel. The attached Stage Cancel button leaves durable cancelled state, no execution container, a released slot, verdict 404 and disabled Admit. Authenticated reread after the permitted companion restart still refuses verdict authority.
 
-P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/stages-p42i.py cancel
+python3 artifacts/studio/verification/TOOLS/stages-p42j.py cancel
 ```
 
 ## Current-run evidence
 
-- [W-REC-03/p42i-installed-cancellation/editor-result.json](../W-REC-03/p42i-installed-cancellation/editor-result.json)
-- [W-REC-03/p42i-installed-cancellation/region-cancel-before.json](../W-REC-03/p42i-installed-cancellation/region-cancel-before.json)
-- [W-REC-03/p42i-installed-cancellation/region-cancel-after.json](../W-REC-03/p42i-installed-cancellation/region-cancel-after.json)
-- [W-REC-03/p42i-installed-cancellation/container-running.json](../W-REC-03/p42i-installed-cancellation/container-running.json)
-- [W-REC-03/p42i-installed-cancellation/stage-ui-before.json](../W-REC-03/p42i-installed-cancellation/stage-ui-before.json)
-- [W-REC-03/p42i-installed-cancellation/stage-ui-after.json](../W-REC-03/p42i-installed-cancellation/stage-ui-after.json)
-- [W-REC-03/p42i-installed-cancellation/cancel-editor-result.json](../W-REC-03/p42i-installed-cancellation/cancel-editor-result.json)
-- [W-REC-03/p42i-installed-cancellation/stage-resources.json](../W-REC-03/p42i-installed-cancellation/stage-resources.json)
-- [W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/cancelled-after-restart.json](../W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/cancelled-after-restart.json)
+- [W-REC-03/p42j-installed-cancellation/editor-result.json](../W-REC-03/p42j-installed-cancellation/editor-result.json)
+- [W-REC-03/p42j-installed-cancellation/cancel-editor-result.json](../W-REC-03/p42j-installed-cancellation/cancel-editor-result.json)
+- [W-REC-03/p42j-installed-cancellation/stage-resources.json](../W-REC-03/p42j-installed-cancellation/stage-resources.json)
+- [W-REC-03/p42j-cancelled-stage-20261007T134245.938620Z/cancelled-after-restart.json](../W-REC-03/p42j-cancelled-stage-20261007T134245.938620Z/cancelled-after-restart.json)

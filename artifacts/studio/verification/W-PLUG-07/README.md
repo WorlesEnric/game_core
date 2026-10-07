@@ -1,8 +1,8 @@
 # W-PLUG-07: Quest branches; failure closes dependents
 
-Verdict: **PASS**. Both quest branches, transitive dependent failure, cycle refusal and actual three endings/LanternLost failure pass at this revision.
+Verdict: **PASS**. Current-run Quest branches; failure closes dependents is verified by the linked named XML cases and/or exact JSON assertions; no prior-run result is used.
 
-P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
@@ -13,6 +13,6 @@ studio/tools/verify-all.sh unity
 
 ## Current-run evidence
 
-- [UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml](../UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/results.xml)
-- [UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml](../UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/results.xml)
-- [UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml](../UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/results.xml)
+- [UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml](../UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/results.xml)
+- [UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml](../UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/results.xml)
+- [UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/results.xml](../UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/results.xml)

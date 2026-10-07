@@ -1,21 +1,18 @@
 {
   "status": "BLOCKED",
-  "note": "Companion-only portion PASS: actual etos agent restart preserves original task and exact cursor replay, with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run, so the complete row remains BLOCKED.",
-  "evidence": [
-    "W-ETOS-06/p42i-owner-block/result.json",
-    "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/result.json",
-    "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-g-h-events-resume-cancel.json",
-    "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-exchanges-R2_38_W_ETOS_06_CompanionRestartResumesCursorAndKeepsTask.json",
-    "W-ETOS-06/p42i-companion-restart-20261007T062720.972531Z/live/dotnet-companion-restart.json"
-  ],
+  "note": "Companion-only portion PASS: actual permitted agent restart preserves the original task and cursor replay with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run, so the full row remains BLOCKED.",
   "command": "Not run: Owner rule: never stop/restart etosd; node-death/reconnect part is not run. Companion-only restart cannot close this row.",
+  "evidence": [
+    "W-ETOS-06/p42j-owner-rule/result.json",
+    "W-ETOS-06/p42j-companion-restart-20261007T134234.435304Z/result.json"
+  ],
   "row": "W-ETOS-06",
   "scenario": "Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly",
   "requirement": "SR-4.5, SR-9.2",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-ETOS-06/p42i-owner-block/result.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-ETOS-06/p42j-owner-rule/result.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }

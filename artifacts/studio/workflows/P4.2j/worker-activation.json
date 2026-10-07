@@ -1,0 +1,42 @@
+{
+  "release": "0.1.0-fba3604e99ceadd1",
+  "state": "ready",
+  "pid": 2469984,
+  "runningExecutable": "~/.local/share/etos-studio/agents/gamecore-studio/0.1.0-fba3604e99ceadd1/bin/gamecore-studio",
+  "runningExecutableSha256": "86e167f694c47f82249ed00f37a121b5ac2a8e17b6b0ad58b04d79061df735dc",
+  "designerInstructionsSha256": "04d5158c7f1365ddaf52afb6c79159342ac477f531e0c50aef1a559e8f6b1fa0",
+  "workerBudget": {
+    "usd": 0.5
+  },
+  "productRevision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "label": "p42g-worker-activation",
+  "recordedAt": "2026-10-07T11:31:25.321767+00:00",
+  "binarySha256": "86e167f694c47f82249ed00f37a121b5ac2a8e17b6b0ad58b04d79061df735dc",
+  "installerSha256": "1575bd636f61297a852c7e1c25f5b55c5403f9e5ee73668c1373c384b7678890",
+  "operatorManifestSha256": "fcf2bcb3ef9a630f93ad3cb32144ab2f2314d545269d43dd227481dcd04fbe0d",
+  "operatorPackage": "0.1.0-p42g-operator-fba3604e99ceadd1",
+  "operatorManifestReconciled": false,
+  "operatorOverlay": "Only designer worker budget = USD 0.50; exact baseline binary and tracked worker files.",
+  "workerFilesSha256": {
+    "workers/common.md": "b63732c150624ca082ff571a531edabcff709c3f31394fc3640a10a403576520",
+    "workers/gc-designer.md": "04d5158c7f1365ddaf52afb6c79159342ac477f531e0c50aef1a559e8f6b1fa0",
+    "workers/gc-mechanic.md": "259af88df0000703713339982e2108d9684e0bad487d2e2f4ffe0e46b482b3da",
+    "workers/importer-contract.json": "e3ed17bf3cb605dd6a44c54b21fdd22ea8a100846fc40cc1555f756647eb832d",
+    "workers/tests/fixtures/describe-placeholder.toml": "57d87c0f55ae4f61620f264a378e5f4e242dab7ce09b79174eb744ccb827fc8b",
+    "workers/tests/fixtures/request6-odd-before.json": "210def087162daeb41d4ad033850ef03902ba67654257a54d32fe37d4558e246",
+    "workers/tests/fixtures/request6-original.json": "23dc29c3e888aa926bef71da27d80fd7ef77249a0cc8938da330c0c12275d3ce",
+    "workers/tests/fixtures/request8-original.json": "eb802dcd7c45715f5c51445e0f05cf7896d010e8cd9fa6221d95ea07cacc5928",
+    "workers/tests/test_r5_b.py": "9ed848894029bcddf49be9544edaa6739ee1f96ab9f8145d0196e5f0d21c030d",
+    "workers/tests/test_r6_b.py": "48f43683e5dabe04895eff137fc2520f75020e1e280e136242340f1a18abd7a6"
+  },
+  "projects": {
+    "844de33de4b73d1590557c7d75cc39976f4f4cf74537ad897c9c868169740936": "~/wkspace/gc-studio/p4.2j/games/hollowmere",
+    "f91c3da3c2ab64636f1975e711eca4e580199f1303795cdf319f3b30b7c5d576": "~/wkspace/gc-studio/p4.2j/games/cleanproof"
+  },
+  "workerPoliciesPreserved": true,
+  "repeatChecksumNoop": true,
+  "installerResults": [
+    "healthy: 0.1.0-fba3604e99ceadd1; previous release retained: 0.1.0-debdab3072dbe1f8",
+    "unchanged: release 0.1.0-fba3604e99ceadd1 (checksums verified)"
+  ]
+}

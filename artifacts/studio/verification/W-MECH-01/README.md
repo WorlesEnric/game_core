@@ -1,39 +1,19 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **PASS**. Current installed signed Docker cold/warm stages pass in 158.107/78.663s, each 36 EditMode+2 PlayMode XML passes. Creator Admit resumes real Play with nine coins and 120 Pending→Passed smoke frames in 56.613/33.879s; normal History undo succeeds twice. Initial cache_invalid setup failure is retained; exact owner-scoped pinned cache was provisioned without altering cold markers or budgets.
+Verdict: **FAIL**. Both current signed Docker stages pass (166.402s cold, 76.786s warm; each 36 EditMode and 2 PlayMode cases), but both creator admissions roll back with catalog_mismatch. Signed world 6c13778e differs from live re-baked d82aed18 after a stale-bake warning. No restored-world smoke or successful admission is claimed; both packages are removed and rollback completes.
 
-P4.2i product revision: `cb5e2aa20263209df2dea4ee17aa23c50daec0e0`; installed release: `0.1.0-debdab3072dbe1f8`. Reported: 2026-10-07T09:37:56.595149+00:00.
+P4.2j product revision: `389cf038a7386dbcc5b2b52ad31744d8747e76f4`; installed release: `0.1.0-fba3604e99ceadd1`. Reported: 2026-10-07T16:04:44.851949+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/stages-p42i.py mechanism --attempt provisioned
+python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism; after verified cold rollback only: python3 artifacts/studio/verification/TOOLS/stages-p42j.py mechanism --mechanism-run warm
 ```
 
 ## Current-run evidence
 
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/outcome.json](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/outcome.json)
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/restored-world.json](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/restored-world.json)
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/smoke-witness.json](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/smoke-witness.json)
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/admission.json](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/admission.json)
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/undo.json](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/undo.json)
-- [W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/resumed-world.png](../W-MECH-01/p42i-stage-review-cold-20261007T060148.783190Z/resumed-world.png)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/outcome.json](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/outcome.json)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/restored-world.json](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/restored-world.json)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/smoke-witness.json](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/smoke-witness.json)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/admission.json](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/admission.json)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/undo.json](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/undo.json)
-- [W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/resumed-world.png](../W-MECH-01/p42i-stage-review-warm-20261007T060630.756770Z/resumed-world.png)
-- [W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/job.json](../W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/job.json)
-- [W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/editmode.xml](../W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/editmode.xml)
-- [W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/playmode.xml](../W-MECH-01/p42i-stage-submit-cold-20261007T055820.084238Z/service/slot-out/playmode.xml)
-- [W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/job.json](../W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/job.json)
-- [W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/editmode.xml](../W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/editmode.xml)
-- [W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/playmode.xml](../W-MECH-01/p42i-stage-submit-warm-20261007T060415.469534Z/service/slot-out/playmode.xml)
-- [W-MECH-01/p42i-signed-record-20261007T060145.901277Z/verified.json](../W-MECH-01/p42i-signed-record-20261007T060145.901277Z/verified.json)
-- [W-MECH-01/p42i-signed-record-20261007T060628.146841Z/verified.json](../W-MECH-01/p42i-signed-record-20261007T060628.146841Z/verified.json)
-- [W-MECH-01/p42i-stage-submit-cold-20261007T054655.315450Z/service/job.json](../W-MECH-01/p42i-stage-submit-cold-20261007T054655.315450Z/service/job.json)
-- [W-MECH-01/p42i-cache-provision/provision.json](../W-MECH-01/p42i-cache-provision/provision.json)
-- [W-MECH-01/p42i-stage-negative-review-20261007T061419.738746Z/panel-verdict.json](../W-MECH-01/p42i-stage-negative-review-20261007T061419.738746Z/panel-verdict.json)
-- [W-MECH-01/p42i-stage-submit-negative-20261007T061309.881587Z/service/job.json](../W-MECH-01/p42i-stage-submit-negative-20261007T061309.881587Z/service/job.json)
+- [W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json](../W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/outcome.json)
+- [W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json](../W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/outcome.json)
+- [W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/admission.json](../W-MECH-01/p42j-stage-review-cold-20261007T131253.042554Z/admission.json)
+- [W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/admission.json](../W-MECH-01/p42j-stage-review-warm-20261007T132025.462151Z/admission.json)

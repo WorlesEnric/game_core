@@ -1,0 +1,56 @@
+[2026-10-07T12:17:14.069Z][INFO] Command-line: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 2620240 -ipc -ipc-path /tmp/Unity-Upm-2620240.sock -l 2 --log-file ~/wkspace/gc-studio/p4.2j/artifacts/studio/verification/W-PERSIST-02/p42j-prefab-prepare-20261007T121713.435293Z/upm.log
+[2026-10-07T12:17:14.075Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-2620240.sock).
+[2026-10-07T12:17:14.075Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-2620240.
+[2026-10-07T12:17:14.732Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-10-07T12:17:39.466Z][INFO] project:add-dependency --> 200 (24733 ms)
+[2026-10-07T12:17:39.864Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:39.946Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:39.955Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:39.971Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T12:17:39.995Z][INFO] config:project:get-registries --> 200 (24 ms)
+[2026-10-07T12:17:41.463Z][INFO] project:list-packages --> 200 (1599 ms)
+[2026-10-07T12:17:41.799Z][INFO] project:list-packages --> 200 (1854 ms)
+[2026-10-07T12:17:43.587Z][INFO] project:list-packages --> 200 (3632 ms)
+[2026-10-07T12:17:44.081Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:44.580Z][INFO] project:list-packages --> 200 (499 ms)
+[2026-10-07T12:17:47.960Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:47.970Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:47.982Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T12:17:48.003Z][INFO] config:project:get-registries --> 200 (21 ms)
+[2026-10-07T12:17:48.641Z][INFO] project:list-packages --> 200 (671 ms)
+[2026-10-07T12:17:51.495Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:51.506Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:52.468Z][INFO] project:list-packages --> 200 (973 ms)
+[2026-10-07T12:17:55.016Z][INFO] project:list-packages --> 200 (7056 ms)
+[2026-10-07T12:17:56.354Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:56.682Z][INFO] project:list-packages --> 200 (329 ms)
+[2026-10-07T12:17:56.849Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:56.860Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-10-07T12:17:56.872Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-10-07T12:17:56.883Z][INFO] config:project:get-registries --> 200 (11 ms)
+[2026-10-07T12:17:57.264Z][INFO] project:list-packages --> 200 (404 ms)
+[2026-10-07T12:18:06.293Z][INFO] project:list-packages --> 200 (14787 ms)
+[2026-10-07T12:18:06.294Z][INFO] project:list-packages --> 200 (9445 ms)
+[2026-10-07T12:18:06.299Z][ERROR] Unexpected error during IPC communication:
+{
+  error: 'Error: read ECONNRESET\n' +
+    '    at Pipe.onStreamRead (node:internal/stream_base_commons:216:20)'
+}
+[2026-10-07T12:18:06.302Z][INFO] Received shutdown request (SIGINT), shutting down Unity Package Manager

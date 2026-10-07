@@ -1,0 +1,49 @@
+{
+  "id": "cs_01M4B5FSSZ7GMV5Y29DCNJ0XZQ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "P4.2 real Editor death rollback",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/data.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Tests/P4_2/Fixture/second.txt",
+        "artifact": {
+          "artifact": "sha256:95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "95713e9cbdd1dfcb2d4080c2537f418d43ca0da25f0d7d6631f4f7c97b89dc47",
+      "name": "data.txt",
+      "mediaType": "text/plain",
+      "bytes": 11
+    }
+  ],
+  "state": "Failed",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Skipped",
+      "detail": "Rolled back after interruption."
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T12:30:22.373Z"
+  }
+}

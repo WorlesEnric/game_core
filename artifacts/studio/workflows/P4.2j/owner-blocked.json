@@ -1,0 +1,50 @@
+{
+  "W-HOST-01": {
+    "status": "BLOCKED",
+    "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
+    "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
+    "evidence": [
+      "W-HOST-01/p42j-owner-rule/result.json"
+    ]
+  },
+  "W-ETOS-01": {
+    "status": "BLOCKED",
+    "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
+    "command": "Not run: Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
+    "evidence": [
+      "W-ETOS-01/p42j-owner-rule/result.json"
+    ]
+  },
+  "W-ETOS-02": {
+    "status": "BLOCKED",
+    "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
+    "command": "Not run: Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
+    "evidence": [
+      "W-ETOS-02/p42j-owner-rule/result.json"
+    ]
+  },
+  "W-ETOS-06": {
+    "status": "BLOCKED",
+    "note": "Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run. Companion-only qualification is reported separately.",
+    "command": "Not run: Owner rule: never stop/restart etosd; node-death/reconnect part is not run. Companion-only restart cannot close this row.",
+    "evidence": [
+      "W-ETOS-06/p42j-owner-rule/result.json"
+    ]
+  },
+  "W-ETOS-08": {
+    "status": "BLOCKED",
+    "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
+    "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
+    "evidence": [
+      "W-ETOS-08/p42j-owner-rule/result.json"
+    ]
+  },
+  "W-GAME-07": {
+    "status": "BLOCKED",
+    "note": "Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
+    "command": "Not run: Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
+    "evidence": [
+      "W-GAME-07/p42j-owner-rule/result.json"
+    ]
+  }
+}

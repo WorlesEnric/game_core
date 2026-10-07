@@ -1,0 +1,114 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "Hollowmere.Mechanism.PressurePlate.Generated",
+  "className": "PressurePlateCatalog",
+  "fileName": "PressurePlateCatalog.g.cs",
+  "supportedFeatureIds": [],
+  "schemas": [
+    {
+      "stableName": "hollowmere.pressureplate.serializer.config",
+      "valueTypeName": "PressurePlateConfigValue",
+      "serializerTypeName": "PressurePlateConfigSerializer",
+      "serializerKeyName": "PressurePlateConfigSerializerKey",
+      "schemaId": "3fb9abf0555948f99bc37b264b8da057",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "hollowmere.pressureplate.serializer.domain-plate",
+      "valueTypeName": "PlateDomainValue",
+      "serializerTypeName": "PlateDomainSerializer",
+      "serializerKeyName": "PlateDomainSerializerKey",
+      "schemaId": "61ff906aa16aa87d3f1914858a6e97bc",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPlugin",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "hollowmere.pressureplate.plugin",
+          "keyName": "PressurePlatePluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+          "implementationId": "f638827f2166557d1e3a1d10c62866c0",
+          "implementationExpression": "new GameplayCatalogEntry(PressurePlatePluginKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "SystemRegistrations",
+      "keysName": "SystemKeys",
+      "lookupMethodName": "TryGetSystem",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "SystemFactory",
+      "entries": [
+        {
+          "stableName": "hollowmere.pressureplate.system.command",
+          "keyName": "PressurePlateCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+          "implementationId": "a8f47e29a00f28b82d1e35ba956d9a4c",
+          "implementationExpression": "new GameplayCatalogEntry(PressurePlateCommandSystemKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "LayoutRegistrations",
+      "keysName": "LayoutKeys",
+      "lookupMethodName": "TryGetLayout",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "LayoutApply",
+      "entries": [
+        {
+          "stableName": "hollowmere.pressureplate.applier",
+          "keyName": "PlateApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+          "implementationId": "9f13ab9f4325be87f4e7c06416f56696",
+          "implementationExpression": "new GameplayCatalogEntry(PlateApplierKey)"
+        },
+        {
+          "stableName": "hollowmere.pressureplate.layout.plate",
+          "keyName": "PlateLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "54e315dc9f717bf21514409fb2604642",
+          "implementationId": "e47d9315757620356e7ef6c35fb03738",
+          "implementationExpression": "new GameplayCatalogEntry(PlateLayoutKey)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": [
+      "GameCore.Gameplay.Contracts"
+    ]
+  }
+}

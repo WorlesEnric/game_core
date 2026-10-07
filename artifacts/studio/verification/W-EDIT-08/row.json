@@ -1,86 +1,84 @@
 {
   "status": "PASS",
-  "note": "Two current 20-sample datasets pass. Single/Marsh-all-NPC/kernel-prepare p95 ms: [[22.3321, 31.6321, 9.5897], [25.0379, 34.204100000000004, 10.7461]]; limits 200/1000/300 ms.",
-  "evidence": [
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json",
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json",
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json",
-    "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/results.xml",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json",
-    "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/results.xml"
-  ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42i.py timing",
   "checks": [
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/apply.json",
       "pointer": "/single/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/apply.json",
       "pointer": "/single/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/region-apply.json",
       "pointer": "/region/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/region-apply.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/region-apply.json",
       "pointer": "/region/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/compose.json",
       "pointer": "/prepare/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/compose.json",
+      "file": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/compose.json",
       "pointer": "/prepare/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/apply.json",
       "pointer": "/single/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/apply.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/apply.json",
       "pointer": "/single/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/region-apply.json",
       "pointer": "/region/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/region-apply.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/region-apply.json",
       "pointer": "/region/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/compose.json",
       "pointer": "/prepare/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42i-timing-2-20261007T045434.953869Z/compose.json",
+      "file": "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/compose.json",
       "pointer": "/prepare/pass",
       "equals": true
     }
   ],
+  "evidence": [
+    "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/apply.json",
+    "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/region-apply.json",
+    "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/compose.json",
+    "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/apply.json",
+    "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/region-apply.json",
+    "W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/compose.json"
+  ],
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42j.py timing",
+  "note": "Two current 20-sample datasets pass: single-target p95 21.9878/23.4201ms; Marsh-all-NPC 46.9320/31.9713ms; kernel prepare 5.1430/4.4619ms. Limits remain 200/1000/300ms.",
   "row": "W-EDIT-08",
   "scenario": "Apply timings (single and region-wide)",
   "requirement": "B-APPLY, B-COMPOSE",
-  "reportedAt": "2026-10-07T09:37:56.595149+00:00",
-  "revision": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "baseline": "cb5e2aa20263209df2dea4ee17aa23c50daec0e0",
-  "releaseId": "0.1.0-debdab3072dbe1f8",
-  "evidencePath": "W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/apply.json",
-  "runStartedAt": "2026-10-07T04:15:21.096867+00:00"
+  "reportedAt": "2026-10-07T16:04:44.851949+00:00",
+  "revision": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "baseline": "389cf038a7386dbcc5b2b52ad31744d8747e76f4",
+  "releaseId": "0.1.0-fba3604e99ceadd1",
+  "evidencePath": "W-EDIT-08/p42j-timing-1-20261007T121340.343896Z/apply.json",
+  "runStartedAt": "2026-10-07T11:30:06.911406+00:00"
 }
