@@ -51,7 +51,17 @@ namespace Hollowmere.Mechanism.Lever
 
             // Runtime UI Toolkit control: a click submits one command; no autonomous Update or pump.
             controls = new GameObject("Admitted Lever Controls");
-            panel = ScriptableObject.CreateInstance<PanelSettings>();
+            PanelSettings? template = null;
+            foreach (UIDocument existing in UnityEngine.Object.FindObjectsByType<UIDocument>(FindObjectsSortMode.None))
+            {
+                if (existing.panelSettings != null && existing.panelSettings.themeStyleSheet != null)
+                {
+                    template = existing.panelSettings;
+                    break;
+                }
+            }
+            if (template == null) throw new InvalidOperationException("The lever controls require the game's runtime UI theme");
+            panel = UnityEngine.Object.Instantiate(template);
             panel.name = "Admitted Lever Panel (runtime)";
             panel.sortingOrder = 100;
             panel.scaleMode = PanelScaleMode.ConstantPixelSize;

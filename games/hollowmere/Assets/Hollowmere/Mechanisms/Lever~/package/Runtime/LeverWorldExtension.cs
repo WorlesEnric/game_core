@@ -83,7 +83,7 @@ namespace Hollowmere.Mechanism.Lever
         {
             binder?.Dispose();
             binder = null;
-            if (root != null)
+            if (root != null && root.Host.EntityWorld.IsCreated)
             {
                 LeverCommandSystem? system = root.Host.EntityWorld.GetExistingSystemManaged<LeverCommandSystem>();
                 if (system != null) { system.Module = null; }

@@ -24,6 +24,10 @@ Execution results pending. W-DOC-02 remains FAIL until all seven signed service 
 - Initial policy gates: 42 packages / 91 package assemblies and 1,266 C# files pass.
 - Initial Unity compile caught the driver reference `GameCore.Gameplay.UI`; corrected to the actual `GameCore.Gameplay.Ui`.
 - First executed requested EditMode suite: 110 total, 106 passed, 4 failed, zero skipped/inconclusive. Both existing admission-in-Play cases and the new registry test passed. Full XML retained as `editmode-initial-failures.xml`.
+- Composed-registry rerun: 110 total, 107 passed, 3 failed, zero skipped/inconclusive. `AuthorAllIsIdempotent` now passes after the initial run applied its missing voice-bank journal step. The same three R5-A projection cases remain failed; no assertions were changed.
+- Candidate attempts A–D failed honestly before admission: missing command-reader import (semantic SG012), missing Derivation/import dependencies, Unity Entities' required Collections reference (DC0061, recovered from retained Bee diagnostics), then two real PlayMode failures from the uninitialized slot. The mechanism recipe description now uses `.description.json`, distinguishing it from the registered game's tracked `.catalog.json` world snapshot.
+- Candidate E passes all seven Docker stage steps after explicit new-slot initialization: six Rules, 16 EditMode and two PlayMode tests. Its first graphical admission driver failed before Admit because it retained only four wire fields rather than the complete `StageCandidateRequest`; the corrected driver exports `BuildStageRequest` directly.
+- Stage submission is now outside Unity through a small production-client dotnet executable after the source Editor releases its lease. This prevents holding a source Editor while the companion's sandbox preflight starts. Final qualification uses this serialized path, not the earlier attempts.
 
 ## Requests to other packets
 
