@@ -1,0 +1,86 @@
+{
+  "runner": "studio/tools/unity-batch.sh",
+  "project": "/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere",
+  "attempts": 1,
+  "environment": {
+    "GC_STUDIO_UNITY_SLOTS": "1",
+    "GC_STUDIO_DISK_RESERVE_GIB": "28",
+    "GAMECORE_ETOS_AUTOSTART": "0"
+  },
+  "runs": [
+    {
+      "label": "diagnosis",
+      "testFilter": "Hollowmere.P1_7b;Hollowmere.P4_2.RetainedCandidateTests",
+      "mode": "EditMode",
+      "environment": {
+        "GAMECORE_ETOS_AUTOSTART": "not explicitly set; only P1_7b/retained offline filters selected"
+      }
+    },
+    {
+      "label": "leak-before",
+      "testFilter": "R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes;R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes",
+      "mode": "EditMode"
+    },
+    {
+      "label": "editmode",
+      "testFilter": ".*",
+      "mode": "EditMode"
+    },
+    {
+      "label": "fixtures",
+      "testFilter": "NarrativeRegistrationTests;FactHandoffTests;P31AuthoringTests;R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes;R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes",
+      "mode": "EditMode"
+    },
+    {
+      "label": "timing",
+      "testFilter": "P42b.Acceptance.TimingTests",
+      "mode": "EditMode",
+      "environment": {
+        "DISPLAY": ":1",
+        "GAMECORE_P42_EVIDENCE": "/home/worlesenric/wkspace/gc-studio/r12-a/artifacts/studio/verification/UNITY-HOLLOWMERE/r12-a-20261008T024809Z/timing",
+        "UNITY": "/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/R7_C/batch-graphics.py"
+      }
+    },
+    {
+      "label": "guide",
+      "testFilter": "R2_38_Guide_NpcAndDialogueContextToolsUndo",
+      "mode": "EditMode",
+      "environment": {
+        "DISPLAY": ":1",
+        "GAMECORE_P42_EVIDENCE": "/home/worlesenric/wkspace/gc-studio/r12-a/artifacts/studio/verification/UNITY-HOLLOWMERE/r12-a-20261008T024809Z/guide",
+        "UNITY": "/tmp/r12-a-graphics.py",
+        "GAMECORE_ETOS_AUTOSTART": "0"
+      },
+      "adapter": "exec Unity after removing only -batchmode and -nographics; no credential or service environment added"
+    },
+    {
+      "label": "final-editmode",
+      "testFilter": ".*",
+      "mode": "EditMode"
+    },
+    {
+      "label": "playmode",
+      "testFilter": ".*",
+      "mode": "PlayMode"
+    }
+  ],
+  "dotnet": [
+    "dotnet",
+    "test",
+    "dotnet/GameCore.sln",
+    "--configuration",
+    "Release",
+    "--logger",
+    "trx",
+    "--results-directory",
+    "/home/worlesenric/wkspace/gc-studio/r12-a/artifacts/studio/verification/UNITY-HOLLOWMERE/r12-a-20261008T024809Z/dotnet"
+  ],
+  "static": [
+    "python3 tools/check_package_metadata.py",
+    "python3 tools/check_game_core_csharp.py"
+  ],
+  "injectedFixtures": [
+    "artifacts/studio/verification/TOOLS/P42bHarness",
+    "artifacts/studio/verification/TOOLS/P42dLive"
+  ]
+}

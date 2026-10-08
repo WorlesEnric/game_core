@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.3903518">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="628" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.390352" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1979" name="P42d.Live.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Library/ScriptAssemblies/P42d.Live.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.368705" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1203082" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1980" name="P42d" fullname="P42d" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.368042" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1981" name="Live" fullname="P42d.Live" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.367669" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1977" name="NoviceGuideTests" fullname="P42d.Live.NoviceGuideTests" classname="P42d.Live.NoviceGuideTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.366445" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1978" name="R2_38_Guide_NpcAndDialogueContextToolsUndo" fullname="P42d.Live.NoviceGuideTests.R2_38_Guide_NpcAndDialogueContextToolsUndo" methodname="R2_38_Guide_NpcAndDialogueContextToolsUndo" classname="P42d.Live.NoviceGuideTests" runstate="Runnable" seed="1805249833" result="Passed" start-time="2026-10-08 03:10:07Z" end-time="2026-10-08 03:10:15Z" duration="8.352320" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4CQTTPY9YMKGHGZZPMKP1ZA -> Applied (1 op(s), 53.6 ms)
+[GameCore.Studio/engine] applied cs_01M4CQTVJJ7G6A0H09YGQ7XDDV -> Applied (1 op(s), 41.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] history apply cs_01M4CQTX0M5FCZ6TY14T1AC9JZ -> Applied (1 op(s), 36.8 ms)
+[GameCore.Studio/history] undid cs_01M4CQTVJJ7G6A0H09YGQ7XDDV (1 inverse op(s))
+[GameCore.Studio/engine] history apply cs_01M4CQTX2JGQ9RDS9XHXB6THTX -> Applied (1 op(s), 224.2 ms)
+[GameCore.Studio/history] undid cs_01M4CQTTPY9YMKGHGZZPMKP1ZA (1 inverse op(s))
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,65 @@
+{
+  "diagnosis": {
+    "cases": {
+      "Passed": 28,
+      "Failed": 2
+    },
+    "testRunResult": "Failed(Child)"
+  },
+  "leak-before": {
+    "cases": {
+      "Passed": 1,
+      "Failed": 1
+    },
+    "testRunResult": "Failed(Child)"
+  },
+  "editmode": {
+    "cases": {
+      "Passed": 597,
+      "Skipped": 28,
+      "Failed": 3
+    },
+    "testRunResult": "Failed(Child)"
+  },
+  "fixtures": {
+    "cases": {
+      "Passed": 14
+    },
+    "testRunResult": "Passed"
+  },
+  "timing": {
+    "cases": {
+      "Passed": 4
+    },
+    "testRunResult": "Passed"
+  },
+  "guide": {
+    "cases": {
+      "Passed": 1
+    },
+    "testRunResult": "Passed"
+  },
+  "final-editmode": {
+    "cases": {
+      "Passed": 600,
+      "Skipped": 28
+    },
+    "testRunResult": "Skipped:Ignored"
+  },
+  "playmode": {
+    "cases": {
+      "Passed": 24,
+      "Skipped": 1
+    },
+    "testRunResult": "Skipped:Ignored"
+  },
+  "dotnet": {
+    "Passed": 1832,
+    "NotExecuted": 6
+  },
+  "productPackagesChanged": false,
+  "wrapperExitNotes": {
+    "final-editmode": "exit 1; zero failures and explicit Ignored prerequisites; wrapper SKIPPED (env-gated)",
+    "playmode": "exit 1; zero failures and one graphics prerequisite Ignored; wrapper FAIL because its env-gate classifier does not classify graphics-only messages"
+  }
+}

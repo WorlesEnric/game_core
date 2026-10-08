@@ -25,6 +25,15 @@ namespace P42b.Acceptance
 {
     public sealed class TimingTests
     {
+        [SetUp]
+        public void RequireEvidenceDirectory()
+        {
+            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE")))
+            {
+                Assert.Ignore("P4.2 timing acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py timing.");
+            }
+        }
+
         private static string Output => Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE") ?? throw new InvalidOperationException("Evidence directory required");
         private static double P95(IEnumerable<double> values)
         {

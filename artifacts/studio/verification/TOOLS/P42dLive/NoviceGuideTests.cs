@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GameCore.Gameplay.Dialogue;
@@ -23,6 +24,90 @@ namespace P42d.Live
 {
     public sealed class NoviceGuideTests
     {
+        private static readonly string[] AuthoredPaths =
+        {
+            "Assets/Hollowmere/Dialogue/Graphs/Maren.asset",
+            "Assets/Hollowmere/Rules/HollowmereContent.asset",
+            "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+        };
+        private readonly Dictionary<string, byte[]> preimages = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+        private SceneSetup[] scenes = Array.Empty<SceneSetup>();
+        private bool restoreAuthoredFiles;
+
+        [SetUp]
+        public void SetUp()
+        {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+            {
+                Assert.Ignore("P4.2 novice guide acceptance requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py guide.");
+            }
+            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GAMECORE_P42_EVIDENCE")))
+            {
+                Assert.Ignore("P4.2 novice guide acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py guide.");
+            }
+            for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
+            {
+                Assert.That(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty, Is.False,
+                    "guide acceptance requires saved scenes and must not discard user edits");
+            }
+            foreach (string path in AuthoredPaths)
+            {
+                Assert.That(EditorUtility.IsDirty(AssetDatabase.LoadMainAssetAtPath(path)), Is.False,
+                    "guide acceptance requires saved authored assets: " + path);
+                preimages[path] = File.ReadAllBytes(path);
+                preimages[path + ".meta"] = File.ReadAllBytes(path + ".meta");
+            }
+            scenes = EditorSceneManager.GetSceneManagerSetup();
+            restoreAuthoredFiles = true;
+            Directory.CreateDirectory(Output);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (!restoreAuthoredFiles) return;
+            var failures = new List<Exception>();
+            try
+            {
+                // Discard live test objects before restoring scene bytes; never save them over the preimage.
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                foreach (string path in AuthoredPaths.Where(path => !path.EndsWith(".unity", StringComparison.Ordinal)))
+                {
+                    try { AssetDatabase.SaveAssetIfDirty(AssetDatabase.LoadMainAssetAtPath(path)); }
+                    catch (Exception error) { failures.Add(error); }
+                }
+            }
+            finally
+            {
+                // Safety cleanup runs after every original acceptance assertion, including failed/aborted yields.
+                // Restore complete authored bytes and metadata, not normalized fields or claimed undo receipts.
+                foreach (KeyValuePair<string, byte[]> file in preimages)
+                {
+                    try { File.WriteAllBytes(file.Key, file.Value); }
+                    catch (Exception error) { failures.Add(error); }
+                }
+                foreach (string path in AuthoredPaths)
+                {
+                    try { AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate); }
+                    catch (Exception error) { failures.Add(error); }
+                }
+                try
+                {
+                    if (scenes.Any(scene => scene.isLoaded && scene.isActive && !string.IsNullOrEmpty(scene.path)))
+                        EditorSceneManager.RestoreSceneManagerSetup(scenes);
+                    else
+                        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                }
+                finally
+                {
+                    restoreAuthoredFiles = false;
+                    preimages.Clear();
+                    scenes = Array.Empty<SceneSetup>();
+                }
+            }
+            if (failures.Count != 0) throw new AggregateException("Novice guide authored-file restoration failed", failures);
+        }
+
         [UnityTest]
         public IEnumerator R2_38_Guide_NpcAndDialogueContextToolsUndo()
         {

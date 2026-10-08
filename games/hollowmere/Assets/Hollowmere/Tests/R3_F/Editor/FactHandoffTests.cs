@@ -6,6 +6,7 @@ using GameCore.Gameplay.Dialogue;
 using GameCore.Gameplay.Dialogue.Editor;
 using GameCore.Gameplay.Logic;
 using GameCore.Gameplay.Contracts.Narrative;
+using GameCore.Gameplay.World;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
@@ -32,7 +33,11 @@ namespace Hollowmere.R3_F
             runtime = StudioRuntime.Create(new StudioRuntimeOptions {
                 Paths = new StudioPaths(Path.GetDirectoryName(Application.dataPath)!, state, "r3-f"),
                 SearchFolders = new[] { Folder }, LoadIndexCache = false });
+            var world = ScriptableObject.CreateInstance<WorldDefinition>();
+            world.EnsureAuthoringId();
+            AssetDatabase.CreateAsset(world, Folder + "/World.asset");
             content = ScriptableObject.CreateInstance<GameplayContentSet>();
+            content.Configure(world, Array.Empty<ScriptableObject>());
             AssetDatabase.CreateAsset(content, Folder + "/Content.asset");
             condition = ScriptableObject.CreateInstance<ConditionSetDefinition>();
             condition.EnsureAuthoringId();

@@ -1,0 +1,80 @@
+{
+  "id": "cs_01M4CQTTPY9YMKGHGZZPMKP1ZA",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "npc.addAt on Maren",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "npc.addAt",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:5a601ec2ac991904e34bfda5bfa8b173300341b2c265054b69c03116921d933a"
+      },
+      "args": {
+        "location": [
+          4.0,
+          0.0,
+          1.1
+        ],
+        "name": "Guide NPC"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteCreated",
+              "args": {
+                "created": {
+                  "kind": "Entity",
+                  "authoringId": "68b30f28-db10-4d5e-8edf-d2137d6b0b4b"
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "68b30f28-db10-4d5e-8edf-d2137d6b0b4b",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-735803936-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Guide NPC"
+              },
+              "stamp": "sha256:c4f0589dda0caa4153c52421093434665baf953015f1e089e678d41654c56172"
+            }
+          ],
+          "replay": {
+            "authoringId": "68b30f28-db10-4d5e-8edf-d2137d6b0b4b"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-08T03:10:12.286Z",
+    "applied": "2026-10-08T03:10:12.335Z"
+  }
+}

@@ -21,6 +21,16 @@ namespace Hollowmere.R7_C
 {
     public sealed class NativeMediaAcceptance
     {
+        [SetUp]
+        public void RequireNativeTravelPrerequisites()
+        {
+            if (TestContext.CurrentContext.Test.MethodName != nameof(W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak)) return;
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+            {
+                Assert.Ignore("W-PLUG-01 native-media travel requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native.");
+            }
+        }
+
         [Test]
         public void W_PLUG_11_CompletedFadeReleasesOutgoingSourceClip()
         {
