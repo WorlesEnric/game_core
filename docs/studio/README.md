@@ -1,6 +1,6 @@
 # GameCore Studio documentation
 
-Final documentation **as of P4.2d (2026-10-06)**. Product acceptance is **33 PASS / 29 BLOCKED / 6 FAIL (68 rows)**, with revision-specific receipts. Start with the [completion report](12-completion-report.md); R6 is reserved for its Addendum. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [P4.2d](packets/P4.2d-live-rerun.md))
+Final documentation **as of P4.2l (2026-10-08)**. Product acceptance is **62 PASS / 6 BLOCKED / 0 FAIL (68 rows)**, all rows judged at one revision (`6e8e73c4`) and one installed companion release; the six BLOCKED rows are the scenarios the owner's host rules forbid. Start with the [completion report](12-completion-report.md). ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [P4.2l](packets/P4.2l-same-revision.md), [agents design](../agents/README.md))
 
 | Document | Contents |
 |---|---|

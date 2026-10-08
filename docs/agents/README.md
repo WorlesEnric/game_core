@@ -2,7 +2,7 @@
 
 This set describes the AI agents that give GameCore Studio its authoring intelligence and how they are integrated with ETOS, so the agents can be tuned without re-deriving the architecture from the code. It covers the installed ETOS agent `gamecore-studio` (the companion), its two workers, the Unity client that talks to it, the modality operations (image, speech, describe, 3D), real-time voice, the semantic index published to ETOS query, the staging lane that admits generated code, and the authority model that bounds all of it.
 
-Everything stated here is taken from this repository at main `7a7ff0c0` (2026-10-07) and from ETOS main `e4067fd`; each document ends with the files that implement it. Out of scope: the GameCore kernel itself, the plugin library's gameplay semantics, and the Hollowmere game content, except where a worker contract depends on them.
+Everything stated here is taken from this repository at main `5110bf20` (2026-10-08, after R11-A and P4.2l) and from ETOS main `e4067fd`; each document ends with the files that implement it. Out of scope: the GameCore kernel itself, the plugin library's gameplay semantics, and the Hollowmere game content, except where a worker contract depends on them.
 
 | Document | Content |
 | --- | --- |

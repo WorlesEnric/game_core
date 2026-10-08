@@ -1,6 +1,8 @@
 # GameCore Studio completion report
 
-**As of P4.2d (2026-10-06): 33 PASS / 29 BLOCKED / 6 FAIL across 68 rows.** The documentation set is finalized; the product is not fully accepted. Evidence spans recorded revisions, with P4.2d live work on `40fb91fa` and immutable companion `0.1.0-e8a72b2d6eb3aad9`. R6 is excluded from this snapshot. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [ROWS](../../artifacts/studio/verification/ROWS.json), [P4.2d §Host](packets/P4.2d-live-rerun.md#host-installation-and-authority))
+**As of P4.2l (2026-10-08): 62 PASS / 6 BLOCKED / 0 FAIL across 68 rows, all freshly judged at product `6e8e73c4` with immutable companion `0.1.0-b50cd34dddae2cc4`.** The six BLOCKED rows are exactly the scenarios the owner's rules forbid on the shared host (stopping or restarting `etosd`, credential handling, removing the shared provider): W-HOST-01, W-ETOS-01, W-ETOS-02, W-ETOS-06 (node-death part; the companion part passes), W-ETOS-08, W-GAME-07. W-E2E-01 passes SR-12.3. Paid usage for the final run was USD 0.41. The sections "Failed acceptance" and "Blocked acceptance" below are the P4.2d snapshot kept as history; the row-by-row progression P4.2d → P4.2l is in the Addendum, and the final causes are in [P4.2l](packets/P4.2l-same-revision.md). Still open after P4.2l and not acceptance rows: the broad Hollowmere EditMode/PlayMode suites are not all green (17 + 1 failures: environment gates reported as failures, fixtures invalidated by R9–R11 tightening, and one journal byte-contract test-isolation leak), assigned to R12-A. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [ROWS](../../artifacts/studio/verification/ROWS.json), [P4.2l](packets/P4.2l-same-revision.md))
+
+*Previous header (P4.2d, 2026-10-06):* As of P4.2d (2026-10-06): 33 PASS / 29 BLOCKED / 6 FAIL across 68 rows.** The documentation set is finalized; the product is not fully accepted. Evidence spans recorded revisions, with P4.2d live work on `40fb91fa` and immutable companion `0.1.0-e8a72b2d6eb3aad9`. R6 is excluded from this snapshot. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md), [ROWS](../../artifacts/studio/verification/ROWS.json), [P4.2d §Host](packets/P4.2d-live-rerun.md#host-installation-and-authority))
 
 ## Mandate and delivery
 
@@ -21,7 +23,9 @@ The packet asked for “Status at completion”, “reconcile with the merged co
 
 Implemented product surfaces include the Editor viewport/context/candidates/history/six views, structured edit engine and recovery, twelve gameplay groups, installed ETOS service agent, isolated signed staging, Hollowmere and independent Saltmarsh. Implementation does not imply every scenario passes. Concrete qualified examples are dialogue and quest effects in Play, HUD binding across reopen, crash resume/rollback, selection timing, independent clean project and Linux build/V1 evidence. ([W-AI-03](../../artifacts/studio/verification/W-AI-03/README.md), [W-AI-04](../../artifacts/studio/verification/W-AI-04/README.md), [W-AI-05](../../artifacts/studio/verification/W-AI-05/README.md), [W-REC-01](../../artifacts/studio/verification/W-REC-01/README.md), [W-UI-05](../../artifacts/studio/verification/W-UI-05/README.md), [W-CLEAN-01](../../artifacts/studio/verification/W-CLEAN-01/README.md), [W-GAME-06](../../artifacts/studio/verification/W-GAME-06/README.md))
 
-## Failed acceptance
+## Failed acceptance (historical snapshot, P4.2d)
+
+As of P4.2l every row in this table is PASS; see the Addendum for the packet that closed each one.
 
 | Row | Exact P4.2d result / evidence |
 |---|---|
@@ -32,7 +36,9 @@ Implemented product surfaces include the Editor viewport/context/candidates/hist
 | [W-MECH-01](../../artifacts/studio/verification/W-MECH-01/README.md) | Installed app-origin stage passes all seven gates in 158.122 s (33 EditMode + 2 PlayMode XML passes). Authenticated fetch/verify enables Admit and the visible badge says verdict pass. Explicit Play Admit captures/stops and passes the real catalog checkpoint, but compilation stalls; the owned wrapper is stopped at 817 s. Recovery finishes rollback with catalog_mismatch because the signed delta has no world/predicted hashes. Package and pending record are absent afterward. No live restoration, tri-state smoke or successful admission undo is claimed. The semantic-negative fixture is refused with 14 lexical hits, no issued passing verdict and Admit disabled; Roslyn/Unity are skipped for that refusal. |
 | [W-DOC-02](../../artifacts/studio/verification/W-DOC-02/README.md) | Guide 09: four sample regeneration/check steps pass. After supplying its built-binary prerequisite, stage refuses cache_invalid in the fresh private stage root. No exact versioned-cache provisioning recipe or authenticated app-origin handoff bridges 09:132-142. No new lever or successful Admit is claimed. |
 
-## Blocked acceptance
+## Blocked acceptance (historical snapshot, P4.2d)
+
+As of P4.2l only the six owner-rule rows named in the header remain BLOCKED; every other row in this table is PASS.
 
 Every BLOCKED row from P4.2d is retained below, including inherited revision-specific reasons. Later app-origin staging exists, but cancellation qualification still does not; P3.1d real-GPU measurements are discussed below without replacing the old recording. Partial subproofs do not promote a row. ([SUMMARY](../../artifacts/studio/verification/SUMMARY.md))
 
@@ -108,7 +114,7 @@ Other limits: no durable Apply to authored, no general recipe/clock migration, n
 | Studio / stage / game, R6 | Bound compile/reload, trusted world/predicted delta, admission restore/smoke/undo; byte consistency, voice-driver readiness and worker graph quality. Retain P4.2d failing witnesses. |
 | Infra / operator | Positive describe tariff/provenance and supported apply path; deployment/licensing and authorized node scenarios; ledger billing limitations. |
 | Gameplay / compiler | CP-01 codecs, CP-02 journaled scene creation, CP-04 immutable generated tables; unresolved gameplay acceptance breadth. |
-| Verification | Remaining 29 blocked and six failed rows, same-revision qualification, explicit frame rule and final recording. |
+| Verification | **Done at P4.2l:** 62 PASS / 6 BLOCKED / 0 FAIL at one revision and one release; frame rule (SADR-054) and voice rule (SADR-055) applied. Remaining: the six owner-forbidden scenarios need an operator window on a non-shared node; broad-suite hygiene (R12-A). |
 | Documentation / integrator | Preserve [57-item resolutions and additional open items](packets/P4.3-final-docs.md#register-resolution), append actual R6 outcome below. |
 
 Roles and review/test boundaries are in [11](11-ownership-plan.md#final-handover-additions). Missing original branch/decision wording is recorded as unknown rather than assigned retrospectively.
