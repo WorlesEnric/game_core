@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="12.2678745">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="628" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="12.267875" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1281" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="11.980752" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="472274" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1282" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="11.977782" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1283" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="11.965699" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1284" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="11.964784" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1285" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:55Z" duration="11.963878" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1220" name="R2UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:44Z" duration="1.231575" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1237" name="R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers" fullname="GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers" methodname="R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers" classname="GameCore.Studio.UI.Tests.R2UiRegressionTests" runstate="Runnable" seed="1112049055" result="Passed" start-time="2026-10-07 23:15:43Z" end-time="2026-10-07 23:15:44Z" duration="1.220442" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[R4-B key delivery] prompt-input down=1 up=1 imageDowns=0 imageUps=0 promptBubbleDowns=0 mode=Select focusAfterTab=prompt-input
+[R4-B key delivery] mode-select down=1 up=1 imageDowns=0 imageUps=0 promptBubbleDowns=0 mode=Select focusAfterTab=mode-inspect
+[R4-B key delivery] viewport-image down=1 up=1 imageDowns=2 imageUps=1 promptBubbleDowns=0 mode=Inspect focusAfterTab=voice-button
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1245" name="R3UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:15:44Z" end-time="2026-10-07 23:15:54Z" duration="9.567512" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1248" name="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" methodname="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" seed="1098200682" result="Passed" start-time="2026-10-07 23:15:44Z" end-time="2026-10-07 23:15:54Z" duration="9.564088" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[R4-B layout settled] requested=(x:20.00, y:100.00, width:1048.00, height:694.00) creator=(x:60.00, y:140.00, width:900.00, height:700.00)
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1276" name="ViewportWindowTests" fullname="GameCore.Studio.UI.Tests.ViewportWindowTests" classname="GameCore.Studio.UI.Tests.ViewportWindowTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-07 23:15:54Z" end-time="2026-10-07 23:15:55Z" duration="1.161605" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1280" name="Render_TargetMatchesTheViewportArea" fullname="GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea" methodname="Render_TargetMatchesTheViewportArea" classname="GameCore.Studio.UI.Tests.ViewportWindowTests" runstate="Runnable" seed="1168602378" result="Passed" start-time="2026-10-07 23:15:54Z" end-time="2026-10-07 23:15:55Z" duration="1.158505" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[P2.1] viewport render 900x589 in 0.76 ms
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1440" name="Hollowmere.P1_5.EditMode.Tests.dll" fullname="~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_5.EditMode.Tests.dll" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.246102" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="472274" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1441" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.242206" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1442" name="P1_5" fullname="Hollowmere.P1_5" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.241030" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1443" name="EditMode" fullname="Hollowmere.P1_5.EditMode" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.240650" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1444" name="Tests" fullname="Hollowmere.P1_5.EditMode.Tests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.240290" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1425" name="UiAudioContentTests" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.239763" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1433" name="PreviewScreenCapturesARenderTextureOrSkipsHeadless" fullname="Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless" methodname="PreviewScreenCapturesARenderTextureOrSkipsHeadless" classname="Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests" runstate="Runnable" seed="1715801482" result="Passed" start-time="2026-10-07 23:15:55Z" end-time="2026-10-07 23:15:55Z" duration="0.238335" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[P1.5-PREVIEW /tmp/gamecore-p1_5-preview.png (640x360, rendered)
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

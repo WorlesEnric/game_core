@@ -1,24 +1,24 @@
 {
+  "status": "PASS",
+  "note": "Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-TOOL-02/metadata-20261007T180650.868229Z/result.json"
+    "W-TOOL-02/metadata-20261007T224438.069632Z/result.json"
   ],
   "checks": [
     {
-      "file": "W-TOOL-02/metadata-20261007T180650.868229Z/result.json",
+      "file": "W-TOOL-02/metadata-20261007T224438.069632Z/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
   "command": "python3 tools/check_package_metadata.py",
-  "status": "PASS",
-  "note": "Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "row": "W-TOOL-02",
   "scenario": "`check_package_metadata.py` passes with all new packages",
   "requirement": "SR-11.1",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-TOOL-02/metadata-20261007T180650.868229Z/result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-TOOL-02/metadata-20261007T224438.069632Z/result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

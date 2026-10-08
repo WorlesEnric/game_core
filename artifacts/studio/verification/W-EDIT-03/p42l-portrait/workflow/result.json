@@ -1,0 +1,29 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "runtimeStatus": "PASS",
+  "reason": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone images visibly show the same adult healer portrait. History screenshots are obscured by overlapping windows; normal History receipts, retained hashes and unchanged charge checkpoints establish replay, not readable History pixels.",
+  "phase": 23,
+  "endedUtc": "2026-10-07T23:40:48.6900450Z",
+  "mode": "portrait",
+  "runtimeReason": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo.",
+  "generationCalls": 1,
+  "maximumCostUsdPerImage": 0.2,
+  "requestId": null,
+  "taskIds": [],
+  "mediaIdentity": {
+    "effectKey": "gc-4b868e7214b65954f7b8dcd94b9e8f70c7518617",
+    "etosRef": "ref_01m4cbvaah97x4htjjnkcjr70c",
+    "jobId": null,
+    "reason": "App-owned direct media route; no worker request or task was created",
+    "requestId": null,
+    "taskIds": []
+  },
+  "importChangeSetId": "cs_01M4CBVANVSQNDAC2MVMK117E5",
+  "assignmentChangeSetId": "",
+  "identityNote": "No worker request/task exists for this app-owned direct-media route. Actual companion effect key and node jobId come only from the ledger; local journal IDs are not request authority.",
+  "accountingScope": "Binding companion tariff/charge ledger and original node-reported generation usage; no upstream provider invoice assertion.",
+  "visualEvidence": "generated.png; portrait-applied.png; portrait-redone.png; history-*.png",
+  "cleanup": "Normal History undo removed imported file; CAS and receipts retained.",
+  "visualReview": "visual-review.json"
+}

@@ -1,0 +1,9 @@
+{
+  "finding": "R2-38",
+  "test": "test_R2_38_actual_query_witness_accepts_variable_and_punctuation_variation",
+  "before": "FAIL: No independent actual worker query execution witness",
+  "after": "PASS, including refusal for missing/failed execution, wrong count and foreign graph",
+  "cause": "Independent successful shell prints raw JSON total_rows: 8 rather than prose rows: 8. Accept either shape while preserving exact owner/GUID, exit zero and all eight indexed kinds/texts.",
+  "candidateAltered": false,
+  "newProviderCalls": 0
+}

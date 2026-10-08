@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.8638363">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="628" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.863836" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1920" name="Hollowmere.R7_C.Animation.Tests.dll" fullname="~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_C.Animation.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.852571" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="512327" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1921" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.852244" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1922" name="R7_C" fullname="Hollowmere.R7_C" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.852101" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1923" name="Animation" fullname="Hollowmere.R7_C.Animation" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.851982" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1924" name="Tests" fullname="Hollowmere.R7_C.Animation.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.851840" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1918" name="AnimatorRespawnTests" fullname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" classname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.851081" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1919" name="W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" fullname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" methodname="W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides" classname="Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests" runstate="Runnable" seed="282074424" result="Passed" start-time="2026-10-07 23:29:42Z" end-time="2026-10-07 23:29:43Z" duration="0.840951" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[W-PLUG-02] PASS: committed variant drives real controller state and animated pose; despawn destroys Animator; respawn restores variant prefab, 1.2 scale and binding.
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

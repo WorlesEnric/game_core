@@ -1,24 +1,24 @@
 {
   "status": "PASS",
+  "note": "Current-run Kernel diff empty after the clean exercise passes linked exact assertions; no historical PASS is carried forward.",
   "checks": [
     {
-      "file": "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json",
+      "file": "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json",
       "pointer": "/exitCode",
       "equals": 0
     }
   ],
   "evidence": [
-    "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json"
+    "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json"
   ],
   "command": "git diff --exit-code origin/main -- Packages/",
-  "note": "After all clean-project/build/player exercises and owned-fixture cleanup, literal git diff --exit-code origin/main -- Packages/ exits zero with empty output. No kernel/package source changed.",
   "row": "W-CLEAN-02",
   "scenario": "Kernel diff empty after the clean exercise",
   "requirement": "SR-7.3",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

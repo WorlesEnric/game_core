@@ -1,0 +1,114 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "Hollowmere.Mechanism.Lever.Generated",
+  "className": "LeverCatalog",
+  "fileName": "LeverCatalog.g.cs",
+  "supportedFeatureIds": [],
+  "schemas": [
+    {
+      "stableName": "gameplay.hollowmere.lever.serializer.config",
+      "valueTypeName": "LeverConfigValue",
+      "serializerTypeName": "LeverConfigSerializer",
+      "serializerKeyName": "LeverConfigSerializerKey",
+      "schemaId": "68ea921d70862030090bd92092490449",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.hollowmere.lever.serializer.domain-lever",
+      "valueTypeName": "LeverDomainValue",
+      "serializerTypeName": "LeverDomainSerializer",
+      "serializerKeyName": "LeverDomainSerializerKey",
+      "schemaId": "35610d67d8e236b255ad3ed048f58fc2",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPlugin",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "gameplay.hollowmere.lever.plugin",
+          "keyName": "LeverPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+          "implementationId": "b7e36800c93d624425a90470c55bb0ec",
+          "implementationExpression": "new GameplayCatalogEntry(LeverPluginKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "SystemRegistrations",
+      "keysName": "SystemKeys",
+      "lookupMethodName": "TryGetSystem",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "SystemFactory",
+      "entries": [
+        {
+          "stableName": "gameplay.hollowmere.lever.system.command",
+          "keyName": "LeverCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+          "implementationId": "7c805f1de3fc4926c971b3867b9a0590",
+          "implementationExpression": "new GameplayCatalogEntry(LeverCommandSystemKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "LayoutRegistrations",
+      "keysName": "LayoutKeys",
+      "lookupMethodName": "TryGetLayout",
+      "interfaceType": "GameCore.Gameplay.Contracts.IGameplayCatalogEntry",
+      "kind": "LayoutApply",
+      "entries": [
+        {
+          "stableName": "gameplay.hollowmere.lever.applier",
+          "keyName": "LeverApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+          "implementationId": "0a1327da563a7132480acc626cfb9876",
+          "implementationExpression": "new GameplayCatalogEntry(LeverApplierKey)"
+        },
+        {
+          "stableName": "gameplay.hollowmere.lever.layout.lever",
+          "keyName": "LeverLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "38aa278cfafa141f01009fb00583c884",
+          "implementationId": "41a2614acd5446b3fae86275e7b5d477",
+          "implementationExpression": "new GameplayCatalogEntry(LeverLayoutKey)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": [
+      "GameCore.Gameplay.Contracts"
+    ]
+  }
+}

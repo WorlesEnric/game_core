@@ -1,0 +1,113 @@
+test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh) ... ok
+test_P42_secret_and_home_redaction (test_verify.EvidenceTests.test_P42_secret_and_home_redaction) ... ok
+test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip) ... ERROR
+test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes) ... ERROR
+test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes) ... ERROR
+test_R2_38_disk_reserve_stops_before_child_launch (test_verify.EvidenceTests.test_R2_38_disk_reserve_stops_before_child_launch) ... ok
+test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes) ... ERROR
+test_R2_38_enospc_empty_record_does_not_abort_summary (test_verify.EvidenceTests.test_R2_38_enospc_empty_record_does_not_abort_summary) ... ok
+test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure) ... ERROR
+test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts) ... ERROR
+test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip (test_verify.EvidenceTests.test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip) ... ERROR
+
+======================================================================
+ERROR: test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 38, in test_R2_37_failure_wins_over_skip
+    r = self.invoke('<test-run><test-case result="Failed"/><test-case result="Skipped"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 34, in test_R2_37_skipped_xml_never_passes
+    r = self.invoke('<test-run><test-case result="Passed"/><test-case result="Skipped"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 42, in test_R2_37_suite_setup_failure_never_passes
+    r = self.invoke('<test-run result="Failed"><test-case result="Passed"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 51, in test_R2_38_empty_xml_never_passes
+    self.assertEqual('BLOCKED', self.invoke('<test-run/>')['status'])
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 46, in test_R2_38_malformed_xml_is_retained_as_failure
+    r = self.invoke('<test-run')
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 54, in test_R2_38_repeat_keeps_both_attempts
+    self.invoke('<test-run><test-case result="Failed"/></test-run>')
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+======================================================================
+ERROR: test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip (test_verify.EvidenceTests.test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 75, in test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip
+    r = self.invoke('<test-run><test-case result="Passed"/></test-run>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/studio/tools/Tests/P4_2/test_verify.py", line 29, in invoke
+    return verify.run('TEST', 'xml', [sys.executable, '-c',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py", line 94, in run
+    raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
+RuntimeError: Disk reserve below 40 GiB; stop before starting another workload.
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.041s
+
+FAILED (errors=7)

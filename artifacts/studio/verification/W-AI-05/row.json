@@ -1,34 +1,34 @@
 {
+  "status": "PASS",
+  "note": "Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json"
+    "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json"
   ],
   "checks": [
     {
-      "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+      "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
       "pointer": "/status",
       "equals": "pass"
     },
     {
-      "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+      "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
       "pointer": "/stageAfterOne",
       "equals": 1
     },
     {
-      "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+      "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
       "pointer": "/stageAfterTwo",
       "equals": 2
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
-  "status": "PASS",
-  "note": "Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
   "row": "W-AI-05",
   "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

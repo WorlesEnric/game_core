@@ -1,0 +1,11 @@
+{
+  "diskPolicy": {
+    "defaultGiB": 40,
+    "packetGiB": 28,
+    "minimumGiB": 28,
+    "initialRefusal": "All post-bake offline launches refused before child execution at historical 40 GiB guard.",
+    "continuation": "resume-offline-p42l.py; no completed bake repeated"
+  },
+  "runnerRegression": "Initial hard-coded guard wording change failed existing regression; restored default and added explicit floor option. Existing regression passed after default restoration; packet boundary tests pass.",
+  "forbiddenReclamation": "Removed P4.2k Library/Bee deletion from current build driver; no compiler caches reclaimed."
+}

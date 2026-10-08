@@ -1,19 +1,19 @@
 # W-GAME-05: Full flow menu→save→load→ending→restart in the player
 
-Verdict: **PASS**. Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed owned-window keyframes show both menus, Save UI and ending. The 320.3s movie explicitly concatenates two actual process segments.
+Verdict: **PASS**. Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed PID-owned-window keyframes show both menus, Saved to slot-1, ending and restarted village. Movie explicitly concatenates two actual processes.
 
-P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
+P4.2l product revision: `6e8e73c42427e4f65ffae6f5028373a0566ba1d0`; installed release: `0.1.0-b50cd34dddae2cc4`. Reported: 2026-10-08T02:38:22.131501+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/lifecycle-p42k.py --player .evidence/P42kPlayer/player/Hollowmere.x86_64 --output .evidence/P42kLifecycleOwned
+python3 artifacts/studio/verification/TOOLS/lifecycle-p42l.py --player .evidence/P42lPlayer/player/Hollowmere.x86_64 --output .evidence/P42lLifecycleOwned
 ```
 
 ## Current-run evidence
 
-- [W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json](../W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json)
-- [W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json](../W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json)
-- [W-GAME-05/p42k-owned-window-lifecycle/visual-review.json](../W-GAME-05/p42k-owned-window-lifecycle/visual-review.json)
-- [W-GAME-05/p42k-owned-window-lifecycle/external-artifacts.json](../W-GAME-05/p42k-owned-window-lifecycle/external-artifacts.json)
+- [W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json](../W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json)
+- [W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json](../W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json)
+- [W-GAME-05/p42l-owned-window-lifecycle/visual-review.json](../W-GAME-05/p42l-owned-window-lifecycle/visual-review.json)
+- [W-GAME-05/p42l-owned-window-lifecycle/external-artifacts.json](../W-GAME-05/p42l-owned-window-lifecycle/external-artifacts.json)

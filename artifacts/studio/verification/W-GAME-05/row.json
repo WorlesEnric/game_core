@@ -1,37 +1,37 @@
 {
   "status": "PASS",
+  "note": "Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed PID-owned-window keyframes show both menus, Saved to slot-1, ending and restarted village. Movie explicitly concatenates two actual processes.",
   "checks": [
     {
-      "file": "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
+      "file": "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
+      "file": "W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json",
       "pointer": "/status",
       "equals": "PASS"
     },
     {
-      "file": "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
+      "file": "W-GAME-05/p42l-owned-window-lifecycle/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
   "evidence": [
-    "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
-    "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
-    "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
-    "W-GAME-05/p42k-owned-window-lifecycle/external-artifacts.json"
+    "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
+    "W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json",
+    "W-GAME-05/p42l-owned-window-lifecycle/visual-review.json",
+    "W-GAME-05/p42l-owned-window-lifecycle/external-artifacts.json"
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/lifecycle-p42k.py --player .evidence/P42kPlayer/player/Hollowmere.x86_64 --output .evidence/P42kLifecycleOwned",
-  "note": "Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed owned-window keyframes show both menus, Save UI and ending. The 320.3s movie explicitly concatenates two actual process segments.",
+  "command": "python3 artifacts/studio/verification/TOOLS/lifecycle-p42l.py --player .evidence/P42lPlayer/player/Hollowmere.x86_64 --output .evidence/P42lLifecycleOwned",
   "row": "W-GAME-05",
   "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
   "requirement": "SR-6.10",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

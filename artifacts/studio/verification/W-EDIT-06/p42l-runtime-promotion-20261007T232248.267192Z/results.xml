@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.8836135">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="628" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.883614" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1138" name="GameCore.Studio.Core.Editor.Tests.dll" fullname="~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.Core.Editor.Tests.dll" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.428004" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="494671" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1139" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.426307" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1140" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.424852" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1141" name="Edit" fullname="GameCore.Studio.Edit" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.423407" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1142" name="Tests" fullname="GameCore.Studio.Edit.Tests" runstate="Runnable" testcasecount="116" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.421924" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1118" name="RuntimeMovePromotionTests" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:23Z" duration="2.419008" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="ParameterizedMethod" id="1122" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:22Z" duration="1.112199" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1120" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(False,&quot;Conflict&quot;)" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(False,&quot;Conflict&quot;)" methodname="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1358915812" result="Passed" start-time="2026-10-07 23:23:21Z" end-time="2026-10-07 23:23:22Z" duration="0.785345" asserts="0">
+                    <properties />
+                  </test-case>
+                  <test-case id="1121" name="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(True,&quot;StaleTarget&quot;)" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting(True,&quot;StaleTarget&quot;)" methodname="W_EDIT_06_ChangedOrDeletedAuthoredTargetRefusesWithoutOverwriting" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="611542699" result="Passed" start-time="2026-10-07 23:23:22Z" end-time="2026-10-07 23:23:22Z" duration="0.321799" asserts="0">
+                    <properties />
+                  </test-case>
+                </test-suite>
+                <test-case id="1119" name="W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" methodname="W_EDIT_06_PromotionSurvivesRuntimeReconstructionAndHasIndependentInverse" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1605537271" result="Passed" start-time="2026-10-07 23:23:22Z" end-time="2026-10-07 23:23:23Z" duration="0.417894" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1125" name="W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" methodname="W_EDIT_06_RuntimeMoveCannotJoinAtomicAuthoredBatch" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="522017652" result="Passed" start-time="2026-10-07 23:23:23Z" end-time="2026-10-07 23:23:23Z" duration="0.255812" asserts="0">
+                  <properties />
+                </test-case>
+                <test-case id="1124" name="W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" methodname="W_EDIT_06_StaleRuntimeWorldRefusesWithRevisionWitnesses" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1166110942" result="Passed" start-time="2026-10-07 23:23:23Z" end-time="2026-10-07 23:23:23Z" duration="0.359988" asserts="0">
+                  <properties />
+                  <output><![CDATA[A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+]]></output>
+                </test-case>
+                <test-case id="1123" name="W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" fullname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests.W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" methodname="W_EDIT_06_UncommittedOrUnmappedMoveAndOtherActionsCannotPromote" classname="GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests" runstate="Runnable" seed="1697461185" result="Passed" start-time="2026-10-07 23:23:23Z" end-time="2026-10-07 23:23:23Z" duration="0.264927" asserts="0">
+                  <properties />
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1914" name="Hollowmere.R7_B.Promotion.dll" fullname="~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/ScriptAssemblies/Hollowmere.R7_B.Promotion.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.788025" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="494671" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1915" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.787283" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1916" name="R7_B" fullname="Hollowmere.R7_B" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.786798" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1917" name="Promotion" fullname="Hollowmere.R7_B.Promotion" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.786457" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1912" name="RuntimeMoveAcceptance" fullname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" classname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 23:23:27Z" end-time="2026-10-07 23:23:32Z" duration="4.785842" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1913" name="W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" fullname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance.W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" methodname="W_EDIT_06_RealRuntimeMoveCreatorPromotionExitPlayAndInverse" classname="Hollowmere.R7_B.Promotion.RuntimeMoveAcceptance" runstate="Runnable" seed="2028268330" result="Passed" start-time="2026-10-07 23:23:23Z" end-time="2026-10-07 23:23:32Z" duration="8.658283" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[GameCore.Studio/engine] applied cs_01M4CAVPW29Q29ZYXW81SPWBRX -> Applied (1 op(s), 53.9 ms)
+[GameCore.Studio/engine] applied cs_01M4CAVQK3ZAMV7PD9ZWYD6CQT -> Applied (1 op(s), 28.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op u1)
+[GameCore.Studio/engine] history apply cs_01M4CAVSDV6FJQP5VFJ1BZR39X -> Applied (1 op(s), 26.8 ms)
+[GameCore.Studio/history] undid cs_01M4CAVQK3ZAMV7PD9ZWYD6CQT (1 inverse op(s))
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

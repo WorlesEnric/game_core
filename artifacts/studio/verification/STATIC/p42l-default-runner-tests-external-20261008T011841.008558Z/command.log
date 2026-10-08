@@ -1,0 +1,56 @@
+test_P42_HOST_01_local_linux_never_uses_ssh (test_verify.EvidenceTests.test_P42_HOST_01_local_linux_never_uses_ssh) ... ok
+test_P42_secret_and_home_redaction (test_verify.EvidenceTests.test_P42_secret_and_home_redaction) ... ok
+test_R2_37_failure_wins_over_skip (test_verify.EvidenceTests.test_R2_37_failure_wins_over_skip) ... START TEST/xml
+END TEST/xml: FAIL (2.5s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_37_skipped_xml_never_passes (test_verify.EvidenceTests.test_R2_37_skipped_xml_never_passes) ... START TEST/xml
+END TEST/xml: BLOCKED (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_37_suite_setup_failure_never_passes (test_verify.EvidenceTests.test_R2_37_suite_setup_failure_never_passes) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_disk_reserve_stops_before_child_launch (test_verify.EvidenceTests.test_R2_38_disk_reserve_stops_before_child_launch) ... ok
+test_R2_38_empty_xml_never_passes (test_verify.EvidenceTests.test_R2_38_empty_xml_never_passes) ... START TEST/xml
+END TEST/xml: BLOCKED (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_enospc_empty_record_does_not_abort_summary (test_verify.EvidenceTests.test_R2_38_enospc_empty_record_does_not_abort_summary) ... ok
+test_R2_38_malformed_xml_is_retained_as_failure (test_verify.EvidenceTests.test_R2_38_malformed_xml_is_retained_as_failure) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_repeat_keeps_both_attempts (test_verify.EvidenceTests.test_R2_38_repeat_keeps_both_attempts) ... START TEST/xml
+END TEST/xml: FAIL (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+START TEST/xml
+END TEST/xml: PASS (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip (test_verify.EvidenceTests.test_R2_38_repeat_suffix_logs_are_redacted_without_touching_gzip) ... START TEST/xml
+END TEST/xml: PASS (0.0s)
+/tmp/gamecore-p42l-6e8e73c4/build-source/studio/tools/Tests/P4_2/test_verify.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  return verify.run('TEST', 'xml', [sys.executable, '-c',
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.851s
+
+OK

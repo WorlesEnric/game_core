@@ -1,2099 +1,2170 @@
 {
   "counts": {
-    "PASS": 60,
+    "PASS": 62,
     "BLOCKED": 6,
-    "FAIL": 2
+    "FAIL": 0
   },
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
   "rows": [
     {
+      "status": "PASS",
+      "note": "Current-run Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json",
-        "W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json"
+        "W-UI-01/p42l-open-play-20261007T231144.009992Z/workflow/result.json",
+        "W-UI-01/p42l-open-play-20261007T231144.009992Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json",
+          "file": "W-UI-01/p42l-open-play-20261007T231144.009992Z/workflow/result.json",
           "pointer": "/passed",
           "equals": true
         },
         {
-          "file": "W-UI-01/p42k-open-play-20261007T183112.222372Z/visual-review.json",
+          "file": "W-UI-01/p42l-open-play-20261007T231144.009992Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
-      "status": "PASS",
-      "note": "Current-run Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py editor",
       "row": "W-UI-01",
       "scenario": "Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition",
       "requirement": "SR-1.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-UI-01/p42k-open-play-20261007T183112.222372Z/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-UI-01/p42l-open-play-20261007T231144.009992Z/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Box-select three NPCs behind a fence; overlap list; choose NPCs is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-UI-02/r7-d-20261007T183301570Z/receipt.json",
-        "W-UI-02/r7-d-20261007T183301570Z/visual-review.json"
+        "W-UI-02/r7-d-20261007T231333289Z/receipt.json",
+        "W-UI-02/r7-d-20261007T231333289Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "W-UI-02/r7-d-20261007T183301570Z/receipt.json",
+          "file": "W-UI-02/r7-d-20261007T231333289Z/receipt.json",
           "pointer": "/verdict",
           "equals": "PASS"
         },
         {
-          "file": "W-UI-02/r7-d-20261007T183301570Z/visual-review.json",
+          "file": "W-UI-02/r7-d-20261007T231333289Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
-      "status": "PASS",
-      "note": "Current-run Box-select three NPCs behind a fence; overlap list; choose NPCs is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py editor",
       "row": "W-UI-02",
       "scenario": "Box-select three NPCs behind a fence; overlap list; choose NPCs",
       "requirement": "SR-1.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-UI-02/r7-d-20261007T183301570Z/receipt.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-UI-02/r7-d-20261007T231333289Z/receipt.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
-        "W-UI-03/r7-d-20261007T183348335Z/visual-review.json"
+        "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
+        "W-UI-03/r7-d-20261007T231458672Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
+          "file": "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
           "pointer": "/verdict",
           "equals": "PASS"
         },
         {
-          "file": "W-UI-03/r7-d-20261007T183348335Z/visual-review.json",
+          "file": "W-UI-03/r7-d-20261007T231458672Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
-      "status": "PASS",
-      "note": "Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py editor",
       "row": "W-UI-03",
       "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
       "requirement": "SR-1.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.5436%, below unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained.",
       "evidence": [
-        "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
-        "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json"
+        "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/memory-and-pumps.json"
       ],
       "checks": [
         {
-          "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+          "file": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json",
+          "file": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/memory-and-pumps.json",
           "pointer": "/cycles/9/cycle",
           "equals": 10
         }
       ],
       "command": "studio/tools/verify-all.sh memory",
-      "status": "PASS",
-      "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained.",
       "row": "W-UI-04",
       "scenario": "Pump count exactly one per frame with the viewport open; Play Mode enter/exit 10\u00d7",
       "requirement": "SR-8.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Two current 500-candidate datasets contain 100 picks and 100 marquees: pick p95 1.3656/0.8867ms, marquee p95 0.4024/0.2487ms. Unchanged limits are 16/50ms.",
       "evidence": [
-        "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
-        "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json"
+        "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
+        "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
           "pointer": "/candidateCount",
           "equals": 500
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
           "pointer": "/picks/count",
           "equals": 100
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
           "pointer": "/marquee/count",
           "equals": 100
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
           "pointer": "/picks/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
           "pointer": "/marquee/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
           "pointer": "/candidateCount",
           "equals": 500
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
           "pointer": "/picks/count",
           "equals": 100
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
           "pointer": "/marquee/count",
           "equals": 100
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
           "pointer": "/picks/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
           "pointer": "/marquee/pass",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
-      "status": "PASS",
-      "note": "Two current datasets contain 100 picks and 100 marquees over 500 candidates. Pick p95 is 1.499/0.881ms; marquee p95 0.4756/0.2362ms. Unchanged limits are 16/50ms.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py timing",
       "row": "W-UI-05",
       "scenario": "Selection/hover and marquee timings",
       "requirement": "B-SELECT",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.Maren_ShowsHerDialogueGraphPatrolPointsAndRegion"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.RelationshipsModelTests.Export_WritesJsonAndMermaid"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.SelectionSoftBindingPropagatesFocusChangesAndDetaches"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-      "status": "PASS",
-      "note": "Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
       "row": "W-VIEW-01",
       "scenario": "Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "Dialogue_UndoOnMarenKeepsTheConditionReferences"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "Dialogue_PreviewDiffersByFact"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "R2_32_RealPlayDialogueTravelAndDestroyedOwner"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "command": "studio/tools/verify-all.sh final-views-tests; studio/tools/verify-all.sh views",
-      "status": "PASS",
-      "note": "Current-run Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-VIEW-02",
       "scenario": "Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Quests: Stage/objective graph, branches, reward/rule links, simulation and live state is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Quest_SimulatePassesOnBothBranches"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Quest_PathForABranchSatisfiesAlwaysAndBranchObjectives"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Quest_SimulationParsesStatusFactsInventoryAndRewards"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-      "status": "PASS",
-      "note": "Current-run Quests: Stage/objective graph, branches, reward/rule links, simulation and live state is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
       "row": "W-VIEW-03",
       "scenario": "Quests: Stage/objective graph, branches, reward/rule links, simulation and live state",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run World: Regions, portals, residency, spawn points and journaled world tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.World_ListsThreeRegionsAndThePortalTriangle"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.R2_34_WorldAddPortalAndConnectAreSingleChangeSets"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_34_SecondOperationRefusalRollsBackConnectionInOneChangeSet"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2GameplayPlayTests.R2_32_RealPlayDialogueTravelAndDestroyedOwner"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-      "status": "PASS",
-      "note": "Current-run World: Regions, portals, residency, spawn points and journaled world tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
       "row": "W-VIEW-04",
       "scenario": "World: Regions, portals, residency, spawn points and journaled world tools",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Table_ParsesByFieldSpecAndBuildsRowAndBulkChangeSets"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.Table_CsvQuotesPerRfc4180"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-      "status": "PASS",
-      "note": "Current-run Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
       "row": "W-VIEW-05",
       "scenario": "Tables: Typed inline edits, bulk AllOrNothing edits, filtering and CSV",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Changes: Pending operations, diagnostics, dependencies and journal inspection is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Changes_RendersACandidateWithAConflictDiagnostic"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.EditBuilderTests.PackageGraph_ReportsDependencyAndKernelProblems"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.R2_35_ActualCheckerRunsAndReturnsItsJsonVerdict"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.R2ViewsIntegrationTests.R2_15_ViewsUndoAndRedoUseAdmissionHistoryHandler"
         },
         {
-          "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+          "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-      "status": "PASS",
-      "note": "Current-run Changes: Pending operations, diagnostics, dependencies and journal inspection is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
       "row": "W-VIEW-06",
       "scenario": "Changes: Pending operations, diagnostics, dependencies and journal inspection",
       "requirement": "P2.3 view definition",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Delete an item asset; index lists every referencing dialogue line and objective is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.R7_B.Model.ItemDeletionImpactTests.W_MODEL_02_DeleteItemListsReferencingDialogueLineAndObjective"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Delete an item asset; index lists every referencing dialogue line and objective is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-MODEL-02",
       "scenario": "Delete an item asset; index lists every referencing dialogue line and objective",
       "requirement": "SR-2.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Tool catalog of the clean project lists only installed plugins' tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml"
+        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml",
+          "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/results.xml",
           "xmlCase": "Saltmarsh.P4_2.CatalogAcceptanceTests.R2_39_W_TOOL_01_ExportOnlyInstalledProductionTools"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Tool catalog of the clean project lists only installed plugins' tools is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-TOOL-01",
       "scenario": "Tool catalog of the clean project lists only installed plugins' tools",
       "requirement": "SR-2.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-TOOL-02/metadata-20261007T180650.868229Z/result.json"
+        "W-TOOL-02/metadata-20261007T224438.069632Z/result.json"
       ],
       "checks": [
         {
-          "file": "W-TOOL-02/metadata-20261007T180650.868229Z/result.json",
+          "file": "W-TOOL-02/metadata-20261007T224438.069632Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "command": "python3 tools/check_package_metadata.py",
-      "status": "PASS",
-      "note": "Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-TOOL-02",
       "scenario": "`check_package_metadata.py` passes with all new packages",
       "requirement": "SR-11.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-TOOL-02/metadata-20261007T180650.868229Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-TOOL-02/metadata-20261007T224438.069632Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json"
+        "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json",
+          "file": "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
-      "status": "PASS",
-      "note": "Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42l.py",
       "row": "W-EDIT-01",
       "scenario": "Change set in History shows etos task id and GameCore operation ids",
       "requirement": "SR-3.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run 5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_AllOrNothing_RefusesTheStaleOpAndAppliesNothing"
         },
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.WEdit02_BestEffort_AppliesTheOthersAndRecordsPerOpOutcomes"
         },
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.AllOrNothing_RollsBackUndoAndAssetLevelChangesWhenAToolThrows"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run 5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-EDIT-02",
       "scenario": "5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report",
       "requirement": "SR-3.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone images visibly show the same adult healer portrait. History screenshots are obscured by overlapping windows; normal History receipts, retained hashes and unchanged charge checkpoints establish replay, not readable History pixels.",
       "evidence": [
-        "W-EDIT-03/p42k-portrait/workflow/result.json",
-        "W-EDIT-03/p42k-portrait/workflow/ledger-final.json",
-        "W-EDIT-03/p42k-portrait-20261007T185846.087649Z/workflow/result.json"
+        "W-EDIT-03/p42l-portrait/workflow/result.json",
+        "W-EDIT-03/p42l-portrait/workflow/ledger-final.json",
+        "W-EDIT-03/p42l-portrait/workflow/result.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-03/p42k-portrait/workflow/result.json",
+          "file": "W-EDIT-03/p42l-portrait/workflow/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-EDIT-03/p42k-portrait/workflow/ledger-final.json",
+          "file": "W-EDIT-03/p42l-portrait/workflow/ledger-final.json",
           "pointer": "/usageUnchangedSinceGeneration",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait",
-      "status": "PASS",
-      "note": "One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone pixels show the same brown-haired healer portrait with herbs and green-brown cloth. History screenshots are clipped by overlapping windows and do not visibly prove each entry state; normal panel receipts, retained journals, exact image hashes and unchanged ledger checkpoints establish replay. No readable-History-screenshot claim. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers.",
+      "command": "export GC_STUDIO_DISK_RESERVE_GIB=28\npython3 artifacts/studio/verification/TOOLS/P42hMedia/ledger.py --out artifacts/studio/verification/W-EDIT-03/p42l-portrait/workflow &\nobserver=$!\npython3 artifacts/studio/verification/TOOLS/live-p42l.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait --workflow-out artifacts/studio/verification/W-EDIT-03/p42l-portrait/workflow\nwait \"$observer\"\n# One-use reservation: do not replay an already attempted run. P4.2l packet retains the robe pre-generation failure and exact baseline-restored continuation.",
       "row": "W-EDIT-03",
       "scenario": "Generate portrait \u2192 apply \u2192 undo \u2192 redo: no second generation (usage unchanged)",
       "requirement": "SR-3.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-03/p42k-portrait/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-03/p42l-portrait/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget` is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/workflow/edit-result.json"
+        "W-EDIT-04/p42l-edit-lifecycle-20261007T232023.211234Z/workflow/edit-result.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/workflow/edit-result.json",
+          "file": "W-EDIT-04/p42l-edit-lifecycle-20261007T232023.211234Z/workflow/edit-result.json",
           "pointer": "/status",
           "equals": "pass"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
-      "status": "PASS",
-      "note": "Current-run Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget` is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py lifecycle",
       "row": "W-EDIT-04",
       "scenario": "Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget`",
       "requirement": "SR-1.4",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/workflow/edit-result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-04/p42l-edit-lifecycle-20261007T232023.211234Z/workflow/edit-result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Gizmo drag and typed value produce identical History entries is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.Edit.Tests.ManualEditTests.WEdit05_GizmoDragAndTypedMoveProduceIdenticalJournalEntries"
         },
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.UI.Tests.CandidateHistoryGizmoTests.WEdit05_ViewportGizmoDragEqualsTypedMove"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Gizmo drag and typed value produce identical History entries is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-EDIT-05",
       "scenario": "Gizmo drag and typed value produce identical History entries",
       "requirement": "SR-1.6, SR-3.4",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/workflow/promotion.json"
+        "W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/workflow/promotion.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/workflow/promotion.json",
+          "file": "W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/workflow/promotion.json",
           "pointer": "/result",
           "equals": "pass"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
-      "status": "PASS",
-      "note": "Current-run Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py lifecycle",
       "row": "W-EDIT-06",
       "scenario": "Runtime-only move \u2192 \"Apply to authored\" \u2192 persists after exiting Play",
       "requirement": "SR-1.8",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/workflow/promotion.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/workflow/promotion.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "GameCore.Studio.Edit.Tests.ChangeSetEngineTests.Conflict_RebaseReplansAgainstTheCurrentStamp"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-EDIT-07",
       "scenario": "Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works",
       "requirement": "SR-3.5",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Two current 20-sample datasets pass: single-target p95 20.7325/23.758ms; Marsh-all-NPC p95 30.0882/36.0957ms; kernel prepare p95 6.6654/10.5762ms. Limits remain 200/1000/300ms.",
       "evidence": [
-        "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
-        "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
-        "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
-        "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
-        "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
-        "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json"
+        "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
+        "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
+        "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
+        "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
+        "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
+        "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json"
       ],
       "checks": [
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
           "pointer": "/single/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
           "pointer": "/single/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
           "pointer": "/region/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
           "pointer": "/region/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
           "pointer": "/prepare/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+          "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
           "pointer": "/prepare/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
           "pointer": "/single/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
           "pointer": "/single/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
           "pointer": "/region/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
           "pointer": "/region/pass",
           "equals": true
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json",
           "pointer": "/prepare/count",
           "equals": 20
         },
         {
-          "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+          "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json",
           "pointer": "/prepare/pass",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
-      "status": "PASS",
-      "note": "Two current 20-sample datasets pass: single-target p95 25.926/24.6934ms; Marsh-all-NPC p95 43.5722/35.9275ms; kernel prepare p95 9.8924/7.0972ms. Limits remain 200/1000/300ms.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py timing",
       "row": "W-EDIT-08",
       "scenario": "Apply timings (single and region-wide)",
       "requirement": "B-APPLY, B-COMPOSE",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "BLOCKED",
+      "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
       "evidence": [
-        "W-HOST-01/p42k-owner-rule/result.json"
+        "W-HOST-01/p42l-owner-rule/result.json"
       ],
       "checks": [],
       "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
-      "status": "BLOCKED",
-      "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
       "row": "W-HOST-01",
       "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
       "requirement": "SR-11.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-HOST-01/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-HOST-01/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "BLOCKED",
+      "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
       "evidence": [
-        "W-ETOS-01/p42k-owner-rule/result.json"
+        "W-ETOS-01/p42l-owner-rule/result.json"
       ],
       "checks": [],
       "command": "Not run: Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
-      "status": "BLOCKED",
-      "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
       "row": "W-ETOS-01",
       "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
       "requirement": "SR-4.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-01/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-01/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "BLOCKED",
+      "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
       "evidence": [
-        "W-ETOS-02/p42k-owner-rule/result.json"
+        "W-ETOS-02/p42l-owner-rule/result.json"
       ],
       "checks": [],
       "command": "Not run: Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
-      "status": "BLOCKED",
-      "note": "Owner rule: credential handling is forbidden; cross-agent credential probe is not run.",
       "row": "W-ETOS-02",
       "scenario": "Unity key against another agent: `forbidden`; shown in Studio log",
       "requirement": "SR-4.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-02/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-02/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Actual installed worker executes an owner-scoped query and returns all eight current Bram nodes with exact indices/kinds/texts. Initial observer rejected structured total_rows output; unchanged independent trace passes corrected observer without another worker call.",
       "evidence": [
-        "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json"
+        "W-ETOS-04/p42l-query-20261008T000152.746669Z/workflow/current-query-verification.json"
       ],
       "checks": [
         {
-          "file": "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json",
+          "file": "W-ETOS-04/p42l-query-20261008T000152.746669Z/workflow/current-query-verification.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json",
+          "file": "W-ETOS-04/p42l-query-20261008T000152.746669Z/workflow/current-query-verification.json",
           "pointer": "/nodeCount",
           "equals": 8
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py; python3 artifacts/studio/verification/TOOLS/query-p42k.py --workflow <current query workflow>",
-      "status": "PASS",
-      "note": "Actual installed worker executes an owner-scoped query and returns all eight current Bram nodes with matching indices/kinds/texts. Initial observer rejected local variable cmd and colon-delimited output; unchanged independent trace and receipt pass the corrected observer without another worker call.",
+      "command": "python3 artifacts/studio/verification/TOOLS/query-p42l.py --workflow artifacts/studio/verification/W-ETOS-04/p42l-query-20261008T000152.746669Z/workflow",
       "row": "W-ETOS-04",
       "scenario": "Worker `etos query` returns the selected NPC's dialogue nodes",
       "requirement": "SR-2.4, SR-4.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-04/p42k-query-20261007T191948.047722Z/workflow/current-query-verification.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-04/p42l-query-20261008T000152.746669Z/workflow/current-query-verification.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-ETOS-05/p42k-cancel-20261007T192114.982259Z/workflow/result.json"
+        "W-ETOS-05/p42l-cancel-20261008T000330.148810Z/workflow/result.json"
       ],
       "checks": [
         {
-          "file": "W-ETOS-05/p42k-cancel-20261007T192114.982259Z/workflow/result.json",
+          "file": "W-ETOS-05/p42l-cancel-20261008T000330.148810Z/workflow/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
-      "status": "PASS",
-      "note": "Current-run Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42l.py",
       "row": "W-ETOS-05",
       "scenario": "Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task",
       "requirement": "SR-4.4",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-05/p42k-cancel-20261007T192114.982259Z/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-05/p42l-cancel-20261008T000330.148810Z/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "BLOCKED",
+      "note": "Companion-only portion PASS: permitted restart preserves the original task and cursor replay with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run.",
       "evidence": [
-        "W-ETOS-06/p42k-owner-rule/result.json",
-        "W-ETOS-06/p42k-companion-restart-20261007T195622.701526Z/result.json"
+        "W-ETOS-06/p42l-owner-rule/result.json",
+        "W-ETOS-06/p42l-companion-restart-20261008T002740.659906Z/result.json"
       ],
       "checks": [],
       "command": "Not run: Owner rule: never stop/restart etosd; node-death/reconnect part is not run. Companion-only restart cannot close this row.",
-      "status": "BLOCKED",
-      "note": "Companion-only portion PASS: permitted restart preserves the original task and cursor replay with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run.",
       "row": "W-ETOS-06",
       "scenario": "Kill companion mid-task; restart; same task id resumes; one outcome; kill etosd mid-task: delayed completion attributed correctly",
       "requirement": "SR-4.5, SR-9.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-06/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-06/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Generated texture arrives with matching sha256; tampered file refused is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-ETOS-07/p42k-tamper-20261007T192804.029366Z/tamper.json",
-        "W-ETOS-07/p42k-describe-20261007T192814.175198Z/result.json"
+        "W-ETOS-07/p42l-tamper-20261007T234608.137312Z/tamper.json",
+        "W-ETOS-07/p42l-describe-20261007T234617.273213Z/result.json"
       ],
       "checks": [
         {
-          "file": "W-ETOS-07/p42k-tamper-20261007T192804.029366Z/tamper.json",
+          "file": "W-ETOS-07/p42l-tamper-20261007T234608.137312Z/tamper.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-ETOS-07/p42k-describe-20261007T192814.175198Z/result.json",
+          "file": "W-ETOS-07/p42l-describe-20261007T234617.273213Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/receipts-p42k.py tamper --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52; python3 artifacts/studio/verification/TOOLS/receipts-p42k.py describe --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52",
-      "status": "PASS",
-      "note": "Current-run Generated texture arrives with matching sha256; tampered file refused is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/receipts-p42l.py tamper --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52; python3 artifacts/studio/verification/TOOLS/receipts-p42l.py describe --artifact dc9e49e43cc72e5ba8b8d12877e1eb1eb7e555c4f5fc6dfb01f813aaa471cb52",
       "row": "W-ETOS-07",
       "scenario": "Generated texture arrives with matching sha256; tampered file refused",
       "requirement": "SR-4.6",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-07/p42k-tamper-20261007T192804.029366Z/tamper.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-07/p42l-tamper-20261007T234608.137312Z/tamper.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "BLOCKED",
+      "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
       "evidence": [
-        "W-ETOS-08/p42k-owner-rule/result.json"
+        "W-ETOS-08/p42l-owner-rule/result.json"
       ],
       "checks": [],
       "command": "Not run: Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
-      "status": "BLOCKED",
-      "note": "Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run.",
       "row": "W-ETOS-08",
       "scenario": "Remove image provider: `not_configured` surfaced; nothing applied",
       "requirement": "SR-4.9",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-08/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-08/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json"
+        "W-ETOS-09/p42l-reload-20261008T000417.519147Z/workflow/result.json"
       ],
       "checks": [
         {
-          "file": "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json",
+          "file": "W-ETOS-09/p42l-reload-20261008T000417.519147Z/workflow/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
-      "status": "PASS",
-      "note": "Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42l.py",
       "row": "W-ETOS-09",
       "scenario": "Domain reload during a task: tray shows the same task afterwards",
       "requirement": "SR-8.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-ETOS-09/p42k-reload-20261007T192207.203212Z/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-ETOS-09/p42l-reload-20261008T000417.519147Z/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Final transcript visibly remains unsent; tray/request/journal counts stay 1/1/122. Earlier move is explicitly sent and undone. Provider transcription of the destructive fixture is imperfect (To, to lead to every NPC in the village.); no partial-revision visibility requirement is imposed.",
       "evidence": [
-        "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-check.json",
-        "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-transcript.json",
-        "W-VOICE-01/p42k-voice-20261007T185601.031912Z/visual-review.json"
+        "W-VOICE-01/p42l-voice-20261007T233657.311356Z/workflow/voice/destructive-check.json",
+        "W-VOICE-01/p42l-voice-20261007T233657.311356Z/workflow/voice/destructive-transcript.json",
+        "W-VOICE-01/p42l-voice-20261007T233657.311356Z/visual-review.json"
       ],
       "checks": [
         {
-          "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-check.json",
+          "file": "W-VOICE-01/p42l-voice-20261007T233657.311356Z/workflow/voice/destructive-check.json",
           "pointer": "/unchanged",
           "equals": true
         },
         {
-          "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-transcript.json",
+          "file": "W-VOICE-01/p42l-voice-20261007T233657.311356Z/workflow/voice/destructive-transcript.json",
           "pointer": "/drainCompleted",
           "equals": true
         },
         {
-          "file": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/visual-review.json",
+          "file": "W-VOICE-01/p42l-voice-20261007T233657.311356Z/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
-      "status": "PASS",
-      "note": "Current-run Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py voice --row W-VOICE-01 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow voice2",
       "row": "W-VOICE-01",
       "scenario": "Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07)",
       "requirement": "SR-4.8",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-VOICE-01/p42k-voice-20261007T185601.031912Z/workflow/voice/destructive-check.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-VOICE-01/p42l-voice-20261007T233657.311356Z/workflow/voice/destructive-check.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Actual generated image is green woven cloth. The complete real Maren body changes from olive to dark green weave and returns to olive after normal History Undo. Distant magenta geometry remains; no aesthetics improvement claimed.",
       "evidence": [
-        "W-AI-01/p42k-robe/workflow/result.json",
-        "W-AI-01/p42k-robe/workflow/ledger-final.json",
-        "W-AI-01/p42k-robe-20261007T190127.927059Z/workflow/result.json"
+        "W-AI-01/p42l-robe-baseline-restored/workflow/result.json",
+        "W-AI-01/p42l-robe-baseline-restored/workflow/ledger-final.json",
+        "W-AI-01/p42l-robe-baseline-restored/workflow/result.json"
       ],
       "checks": [
         {
-          "file": "W-AI-01/p42k-robe/workflow/result.json",
+          "file": "W-AI-01/p42l-robe-baseline-restored/workflow/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-AI-01/p42k-robe/workflow/ledger-final.json",
+          "file": "W-AI-01/p42l-robe-baseline-restored/workflow/ledger-final.json",
           "pointer": "/usageUnchangedSinceGeneration",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe",
-      "status": "PASS",
-      "note": "One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Generated pixels show green woven cloth. Actual Maren body is visibly olive before, dark green with coarse weave after application, and olive again after normal Undo. All three viewport captures frame the complete body; Studio captures identify the workflow. Capsule geometry and distant magenta geometry are unchanged, not improved. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers.",
+      "command": "export GC_STUDIO_DISK_RESERVE_GIB=28\npython3 artifacts/studio/verification/TOOLS/P42hMedia/ledger.py --out artifacts/studio/verification/W-AI-01/p42l-robe/workflow &\nobserver=$!\npython3 artifacts/studio/verification/TOOLS/live-p42l.py robe --row W-AI-01 --method P42h.Media.Driver.RunRobe --workflow-out artifacts/studio/verification/W-AI-01/p42l-robe/workflow\nwait \"$observer\"\n# One-use reservation: do not replay an already attempted run. P4.2l packet retains the robe pre-generation failure and exact baseline-restored continuation.",
       "row": "W-AI-01",
       "scenario": "Select the healer; \"give her a green robe\": texture generated, material updated, behaviour unchanged; undo restores",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-01/p42k-robe/workflow/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-01/p42l-robe-baseline-restored/workflow/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
-      "status": "FAIL",
+      "status": "PASS",
+      "note": "Fresh installed-worker Ferryman candidate stages and applies unchanged; graph enrollment, committed movement, NavMesh and bell dialogue pass in real Play. Scene-entity roster is 20 \u2192 21 \u2192 20 after normal Undo. No retained candidate reuse, repair or regeneration.",
       "checks": [
         {
-          "file": "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/staged.json",
-          "pointer": "/ok",
-          "equals": false
-        }
-      ],
-      "evidence": [
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/outcome.json",
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/staged.json",
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/candidate.json",
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/play-effect.json",
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/roster-before.json",
-        "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/roster-undone.json"
-      ],
-      "command": "GAMECORE_P42G_NPC_CREATION=1 GAMECORE_P42G_NPC_VIEW=artifacts/studio/verification/W-AI-02/p42k-npc-view-20261007T191235.565763Z/npc-view-prerequisite.json python3 artifacts/studio/verification/TOOLS/live-p42k.py npc --row W-AI-02 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow p42f-npc",
-      "note": "Fresh unchanged installed-worker Ferryman candidate is refused before apply: GP-LOG-002, FerrymanElian is listed twice in Assets/Hollowmere/Rules/HollowmereContent.asset. No NPC Play/nav/dialogue or successful admission is claimed; original roster remains 20. Candidate is not repaired or regenerated.",
-      "row": "W-AI-02",
-      "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
-      "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-02/p42k-npc-20261007T191317.157379Z/workflow/ferryman2/outcome.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
-    },
-    {
-      "evidence": [
-        "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/apply-report.json",
-        "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/play-effect.json"
-      ],
-      "checks": [
-        {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/apply-report.json",
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/staged.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/play-effect.json",
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/apply-report.json",
+          "pointer": "/ok",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/status",
+          "equals": "pass"
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/graphEnrolled",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/committedMotionObserved",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/motionObserved",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/onNavMesh",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/dialogueStartSucceeded",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+          "pointer": "/conversationEnded",
+          "equals": true
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-before.json",
+          "pointer": "/count",
+          "equals": 20
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-applied.json",
+          "pointer": "/count",
+          "equals": 21
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-undone.json",
+          "pointer": "/count",
+          "equals": 20
+        },
+        {
+          "file": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/undo-result.json",
+          "pointer": "/ok",
+          "equals": true
+        }
+      ],
+      "evidence": [
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/staged.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/apply-report.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/play-effect.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-before.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-applied.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/roster-undone.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/undo-result.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/candidate.json",
+        "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/request.json"
+      ],
+      "command": "python3 artifacts/studio/verification/TOOLS/workflows-p42l.py",
+      "row": "W-AI-02",
+      "scenario": "Point at a location; \"add a ferryman NPC here who talks about the bell\": NPC spawned with dialogue, patrol, nav",
+      "requirement": "mandate \u00a710",
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-02/p42l-npc-20261007T235545.087554Z/workflow/ferryman2/staged.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
+    },
+    {
+      "status": "PASS",
+      "note": "Current-run \"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "evidence": [
+        "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/odd-line/apply-report.json",
+        "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/odd-line/play-effect.json"
+      ],
+      "checks": [
+        {
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/odd-line/apply-report.json",
+          "pointer": "/ok",
+          "equals": true
+        },
+        {
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/odd-line/play-effect.json",
           "pointer": "/status",
           "equals": "pass"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
-      "status": "PASS",
-      "note": "Current-run \"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
       "row": "W-AI-03",
       "scenario": "\"Add a line Odd only says after the shrine is lit\": conditional dialogue works in Play",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/odd-line/apply-report.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/odd-line/apply-report.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Edit the HUD objective label and rebind it to the quest stage name is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json"
+        "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/hud/apply-report.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json"
       ],
       "checks": [
         {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/hud/apply-report.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
           "pointer": "/hashesMatchSaved",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json",
           "pointer": "/backToBefore",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative; then reopen workflow",
-      "status": "PASS",
-      "note": "Current-run Edit the HUD objective label and rebind it to the quest stage name is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative; then reopen workflow",
       "row": "W-AI-04",
       "scenario": "Edit the HUD objective label and rebind it to the quest stage name",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/hud/apply-report.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/hud/apply-report.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json"
+        "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json"
       ],
       "checks": [
         {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
           "pointer": "/status",
           "equals": "pass"
         },
         {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
           "pointer": "/stageAfterOne",
           "equals": 1
         },
         {
-          "file": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
+          "file": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
           "pointer": "/stageAfterTwo",
           "equals": 2
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
-      "status": "PASS",
-      "note": "Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py narrative --row W-AI-03 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow narrative",
       "row": "W-AI-05",
       "scenario": "Change the lantern quest to require two oil flasks; verify consequences in Play",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-03/p42k-narrative-20261007T190416.133826Z/workflow/quest/play-effect.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-03/p42l-narrative-20261007T234636.675960Z/workflow/quest/play-effect.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Undo/redo the above, close and reopen the project, verify consistency is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
-        "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json"
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/undo-result.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/redo-result.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/undo-result.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/redo-result.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/undo-result.json",
+        "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/redo-result.json"
       ],
       "checks": [
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
           "pointer": "/hashesMatchSaved",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json",
           "pointer": "/backToBefore",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
           "pointer": "/journal/odd-line",
           "equals": "Applied"
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/undo-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/redo-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
           "pointer": "/journal/hud",
           "equals": "Applied"
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/undo-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/redo-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
           "pointer": "/journal/quest",
           "equals": "Applied"
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/undo-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json",
+          "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/redo-result.json",
           "pointer": "/ok",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
-      "status": "PASS",
-      "note": "Current-run Undo/redo the above, close and reopen the project, verify consistency is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
       "row": "W-AI-06",
       "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
       "requirement": "mandate \u00a710",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run 3D generation request: `not_configured`/blocked surfaced honestly is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json"
+        "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json"
       ],
       "checks": [
         {
-          "file": "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json",
+          "file": "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json",
           "pointer": "/code",
           "equals": "not_configured"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py hello",
-      "status": "PASS",
-      "note": "Current-run 3D generation request: `not_configured`/blocked surfaced honestly is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py hello",
       "row": "W-AI-07",
       "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
       "requirement": "SADR-020",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Three-region loop, moved NPC stays, memory baseline, timings is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/results.xml",
-        "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/results.xml",
-        "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/native/retention.json",
-        "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/native/retention.json"
+        "W-PLUG-01/p42l-native-1-20261007T232335.853309Z/results.xml",
+        "W-PLUG-01/p42l-native-2-20261007T232629.188222Z/results.xml",
+        "W-PLUG-01/p42l-native-1-20261007T232335.853309Z/native/retention.json",
+        "W-PLUG-01/p42l-native-2-20261007T232629.188222Z/native/retention.json"
       ],
       "checks": [
         {
-          "file": "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/results.xml",
+          "file": "W-PLUG-01/p42l-native-1-20261007T232335.853309Z/results.xml",
           "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
         },
         {
-          "file": "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/results.xml",
+          "file": "W-PLUG-01/p42l-native-2-20261007T232629.188222Z/results.xml",
           "xmlCase": "W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak"
         },
         {
-          "file": "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/native/retention.json",
+          "file": "W-PLUG-01/p42l-native-1-20261007T232335.853309Z/native/retention.json",
           "pointer": "/snapshotCount",
           "equals": 6
         },
         {
-          "file": "W-PLUG-01/p42k-native-2-20261007T184524.470978Z/native/retention.json",
+          "file": "W-PLUG-01/p42l-native-2-20261007T232629.188222Z/native/retention.json",
           "pointer": "/snapshotCount",
           "equals": 6
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
-      "status": "PASS",
-      "note": "Current-run Three-region loop, moved NPC stays, memory baseline, timings is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py native",
       "row": "W-PLUG-01",
       "scenario": "Three-region loop, moved NPC stays, memory baseline, timings",
       "requirement": "SR-6.1, B-REGION",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-01/p42k-native-1-20261007T184327.390946Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-01/p42l-native-1-20261007T232335.853309Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Despawn/respawn keeps override; Animator bound is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml"
+        "W-PLUG-02/p42l-animation-20261007T232913.724791Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml",
+          "file": "W-PLUG-02/p42l-animation-20261007T232913.724791Z/results.xml",
           "xmlCase": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
-      "status": "PASS",
-      "note": "Current-run Despawn/respawn keeps override; Animator bound is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py native",
       "row": "W-PLUG-02",
       "scenario": "Despawn/respawn keeps override; Animator bound",
       "requirement": "SR-6.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-02/p42k-animation-20261007T184758.576913Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-02/p42l-animation-20261007T232913.724791Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Walk, jump a ledge, focus prompt, interact dispatch is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml"
+        "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+          "file": "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml",
           "xmlCase": "Hollowmere.R7_C.Interaction.Tests.LedgeJumpLanding.WPLUG03_DeterministicJumpClearsSolidLedgeAndLands"
         },
         {
-          "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+          "file": "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml",
           "xmlCase": "Hollowmere.P1_3.PlayMode.Tests.PlayerWalkAndInteract.WalksInteractsTalksPastNpcsAndTravels"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
-      "status": "PASS",
-      "note": "Current-run Walk, jump a ledge, focus prompt, interact dispatch is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py native",
       "row": "W-PLUG-03",
       "scenario": "Walk, jump a ledge, focus prompt, interact dispatch",
       "requirement": "SR-6.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Patrol index across unload/reload and save/load is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
           "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
         },
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_3.EditMode.Tests.P13KernelTests.NpcPatrol_CommitsWhatTheLogicalMoverComputes_AndRaisesNpcArrived"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Patrol index across unload/reload and save/load is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-04",
       "scenario": "Patrol index across unload/reload and save/load",
       "requirement": "SR-6.4",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Locked door with key; explain refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-        "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
-        "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate"
         },
         {
-          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
           "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.APortalCondition_RefusesTravelWithAStableCode_UntilItHolds"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Locked door with key; explain refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-05",
       "scenario": "Locked door with key; explain refusal",
       "requirement": "SR-6.5",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Conditional choice and persisted fact is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml"
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Dialogue_PreviewDiffersByFact"
         },
         {
-          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
           "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Conditional choice and persisted fact is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-06",
       "scenario": "Conditional choice and persisted fact",
       "requirement": "SR-6.6",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Quest branches; failure closes dependents is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-        "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-        "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+        "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused"
         },
         {
-          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
           "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.Quest_SimulatePassesOnBothBranches"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingA_Silence"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingB_Toll"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.EndingC_FreedEcho"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.Failure_LanternLost"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Quest branches; failure closes dependents is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-07",
       "scenario": "Quest branches; failure closes dependents",
       "requirement": "SR-6.7",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Take spam + reload: exactly one lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml"
+        "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
+          "file": "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG08_RepeatedBarnLanternPickupAndReload_LeavesExactlyOneLantern"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
-      "status": "PASS",
-      "note": "Current-run Take spam + reload: exactly one lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py native",
       "row": "W-PLUG-08",
       "scenario": "Take spam + reload: exactly one lantern",
       "requirement": "SR-6.8",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run \"Why didn't the gate open\" trace is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run \"Why didn't the gate open\" trace is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-09",
       "scenario": "\"Why didn't the gate open\" trace",
       "requirement": "SR-6.9",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Definition validator parity (inspector, validator, agent) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml"
+        "W-PLUG-10/p42l-validator-parity-20261007T233027.031604Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml",
+          "file": "W-PLUG-10/p42l-validator-parity-20261007T233027.031604Z/results.xml",
           "xmlCase": "Hollowmere.R7_C.Validation.DefinitionDiagnosticParityTests.WPlug10_SameInvalidDefinition_HasCodeMessageAndLocationParityAcrossAllFronts"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py native",
-      "status": "PASS",
-      "note": "Current-run Definition validator parity (inspector, validator, agent) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py native",
       "row": "W-PLUG-10",
       "scenario": "Definition validator parity (inspector, validator, agent)",
       "requirement": "SR-5.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-10/p42l-validator-parity-20261007T233027.031604Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current graphical native crossfade/release and actual Maren voice cases pass. Marker-derived ten-second audio windows pass unchanged 2000Hz correlation metric at threshold 0.2: voice 0.5783, Village 0.4657, Marsh 0.4985; wrong-region controls 0.0509/0.0668. Clock anchoring is estimated; no audio-search-selected windows or human-listening claim.",
       "checks": [
         {
-          "file": "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/result.json",
+          "file": "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/audio-identity.json",
+          "file": "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/audio-identity.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "evidence": [
-        "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/result.json",
-        "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/audio-identity.json",
-        "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/alignment.json"
+        "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/result.json",
+        "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/audio-identity.json",
+        "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/alignment.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/audio-p42k.py .evidence/P42kLifecycleOwned <fresh-output>",
-      "note": "Current native crossfade/release and actual Maren voice cases pass. Current lifecycle movie passes the unchanged normalized audio-identity metric using marker-derived ten-second windows, authored voice/Village/Marsh samples and wrong-region controls. No audio-search-selected windows or human-listening claim.",
+      "command": "python3 artifacts/studio/verification/TOOLS/audio-p42l.py .evidence/P42lLifecycleOwned <fresh-output>",
       "row": "W-PLUG-11",
       "scenario": "Ambience crossfade, voice line, clip release",
       "requirement": "SR-6.11",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Bake byte-identity; one line change \u2192 one revision change is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml"
+        "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+        "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.BakeTwice_IsByteIdentical_AndVerifyPasses"
         },
         {
-          "file": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
           "xmlCase": "Hollowmere.P1_1.EditMode.Tests.AuthoringBakeTests.OneFieldChange_ChangesOnlyThatDefinitionsRevision"
         },
         {
-          "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/results.xml",
+          "file": "UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/results.xml",
           "xmlCase": "Saltmarsh.Tests.CleanProofAuthoringTests.W_CLEAN_01_AuthorAllIsIdempotentAndJournaled"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Bake byte-identity; one line change \u2192 one revision change is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PLUG-12",
       "scenario": "Bake byte-identity; one line change \u2192 one revision change",
       "requirement": "SR-5.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Corrupted catalog \u2192 named failure, not an empty world is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml"
+        "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+          "file": "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml",
           "xmlCase": "Boot_WithACorruptedCatalog_FailsWithANamedCode_AndCreatesNoWorld"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py validation",
-      "status": "PASS",
-      "note": "Current-run Corrupted catalog \u2192 named failure, not an empty world is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py validation",
       "row": "W-KERNEL-01",
       "scenario": "Corrupted catalog \u2192 named failure, not an empty world",
       "requirement": "SR-7.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Save in the Ruin with items; load: all restored; region re-entered is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
-        "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml"
+        "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
+        "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml"
       ],
       "checks": [
         {
-          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
           "xmlCase": "Hollowmere.P1_7a.PlayMode.Tests.HollowmereSaveRestore.FreshBootRestore_ReattachesTheNarrativeLayer_AndDeliversInFlightWorkExactlyOnce"
         },
         {
-          "file": "UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/results.xml",
+          "file": "UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/results.xml",
           "xmlCase": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.SaveRestoreMidQuest"
         }
       ],
       "command": "studio/tools/verify-all.sh unity",
-      "status": "PASS",
-      "note": "Current-run Save in the Ruin with items; load: all restored; region re-entered is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-PERSIST-01",
       "scenario": "Save in the Ruin with items; load: all restored; region re-entered",
       "requirement": "SR-6.12",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Rename prefab, re-run: NPC keeps state in a save is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json"
+        "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json"
       ],
       "checks": [
         {
-          "file": "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json",
+          "file": "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json",
           "pointer": "/status",
           "equals": "pass"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
-      "status": "PASS",
-      "note": "Current-run Rename prefab, re-run: NPC keeps state in a save is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py lifecycle",
       "row": "W-PERSIST-02",
       "scenario": "Rename prefab, re-run: NPC keeps state in a save",
       "requirement": "SR-2.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml"
+        "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml"
       ],
       "checks": [
         {
-          "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+          "file": "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml",
           "xmlCase": "AV1SaveIsMigratedToV2OnRestore"
         },
         {
-          "file": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
+          "file": "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml",
           "xmlCase": "AMissingMigrationRefusesAndLeavesTheRunningWorldUntouched"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py validation",
-      "status": "PASS",
-      "note": "Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py validation",
       "row": "W-PERSIST-03",
       "scenario": "Schema version bump with migration: restored; without: actionable refusal",
       "requirement": "SR-6.12",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-REC-01/resume-state-20261007T185206.701320Z/recovery-result.json",
-        "W-REC-01/rollback-state-20261007T185026.180708Z/recovery-result.json"
+        "W-REC-01/resume-state-20261007T233207.200917Z/recovery-result.json",
+        "W-REC-01/rollback-state-20261007T233105.356149Z/recovery-result.json"
       ],
       "checks": [
         {
-          "file": "W-REC-01/resume-state-20261007T185206.701320Z/recovery-result.json",
+          "file": "W-REC-01/resume-state-20261007T233207.200917Z/recovery-result.json",
           "pointer": "/ok",
           "equals": true
         },
         {
-          "file": "W-REC-01/rollback-state-20261007T185026.180708Z/recovery-result.json",
+          "file": "W-REC-01/rollback-state-20261007T233105.356149Z/recovery-result.json",
           "pointer": "/ok",
           "equals": true
         }
       ],
       "command": "studio/tools/verify-all.sh recovery",
-      "status": "PASS",
-      "note": "Current-run Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "row": "W-REC-01",
       "scenario": "Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback",
       "requirement": "SR-3.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-REC-01/resume-state-20261007T185206.701320Z/recovery-result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-REC-01/resume-state-20261007T233207.200917Z/recovery-result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run Cancel region load mid-way; cancel staging job is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-REC-03/p42k-installed-cancellation/editor-result.json",
-        "W-REC-03/p42k-installed-cancellation/cancel-editor-result.json",
-        "W-REC-03/p42k-installed-cancellation/stage-resources.json",
-        "W-REC-03/p42k-cancelled-stage-20261007T195656.130261Z/cancelled-after-restart.json"
+        "W-REC-03/p42l-installed-cancellation/editor-result.json",
+        "W-REC-03/p42l-installed-cancellation/cancel-editor-result.json",
+        "W-REC-03/p42l-installed-cancellation/stage-resources.json",
+        "W-REC-03/p42l-cancelled-stage-20261008T002811.211630Z/cancelled-after-restart.json"
       ],
       "checks": [
         {
-          "file": "W-REC-03/p42k-installed-cancellation/editor-result.json",
+          "file": "W-REC-03/p42l-installed-cancellation/editor-result.json",
           "pointer": "/regionCancellation",
           "equals": true
         },
         {
-          "file": "W-REC-03/p42k-installed-cancellation/cancel-editor-result.json",
+          "file": "W-REC-03/p42l-installed-cancellation/cancel-editor-result.json",
           "pointer": "/stageCancellation",
           "equals": true
         },
         {
-          "file": "W-REC-03/p42k-installed-cancellation/stage-resources.json",
+          "file": "W-REC-03/p42l-installed-cancellation/stage-resources.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-REC-03/p42k-cancelled-stage-20261007T195656.130261Z/cancelled-after-restart.json",
+          "file": "W-REC-03/p42l-cancelled-stage-20261008T002811.211630Z/cancelled-after-restart.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/stages-p42k.py cancel",
-      "status": "PASS",
-      "note": "Current-run Cancel region load mid-way; cancel staging job is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/stages-p42l.py cancel",
       "row": "W-REC-03",
       "scenario": "Cancel region load mid-way; cancel staging job",
       "requirement": "SR-9.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-REC-03/p42k-installed-cancellation/editor-result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-REC-03/p42l-installed-cancellation/editor-result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Signed Docker stages pass in 161.873s cold and 80.541s warm; creator admissions restore Play in 61.052s and 24.988s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial bake_stale preflight refusal is retained; ordinary production rebake preceded new explicit attempts.",
       "checks": [
         {
-          "file": "W-MECH-01/p42k-acceptance/result.json",
+          "file": "W-MECH-01/p42l-acceptance/result.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "evidence": [
-        "W-MECH-01/p42k-acceptance/result.json",
-        "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json",
-        "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json",
-        "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json",
-        "W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json",
-        "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json",
-        "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json",
-        "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json",
-        "W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json",
-        "W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json",
-        "W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json"
+        "W-MECH-01/p42l-acceptance/result.json",
+        "W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/restored-world.json",
+        "W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/smoke-witness.json",
+        "W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/undo.json",
+        "W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/restored-world.json",
+        "W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/smoke-witness.json",
+        "W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/undo.json",
+        "W-MECH-01/p42l-signed-record-20261008T001156.744408Z/verified.json",
+        "W-MECH-01/p42l-signed-record-20261008T001633.738482Z/verified.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/stages-p42k.py mechanism --attempt provisioned",
-      "note": "Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission.",
+      "command": "python3 artifacts/studio/verification/TOOLS/stages-p42l.py mechanism --attempt rebaked",
       "row": "W-MECH-01",
       "scenario": "Pressure-plate mechanism: staged, admitted, world resumed from checkpoint",
       "requirement": "SR-3.6, SR-9.3, B-STAGE",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-MECH-01/p42k-acceptance/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-MECH-01/p42l-acceptance/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current 1080p RTX4060Ti VSync OFF recordings both pass: p95 3.505/3.459ms over 613.087/609.749s, zero outside-transition frames over 100ms and maximum transition 144.944ms. Neither run is eligible for a rerun. VSync ON is informational; all four actual game-window movies retained.",
       "checks": [
         {
-          "file": "W-GAME-01/p42k-player/result.json",
+          "file": "W-GAME-01/p42l-player/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-01/p42k-player/visual-review.json",
+          "file": "W-GAME-01/p42l-player/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "evidence": [
-        "W-GAME-01/p42k-player/result.json",
-        "W-GAME-01/p42k-player/visual-review.json",
-        "W-GAME-01/p42k-player/retry-decision.json",
-        "W-GAME-01/p42k-player/external-artifacts.json"
+        "W-GAME-01/p42l-player/result.json",
+        "W-GAME-01/p42l-player/visual-review.json",
+        "W-GAME-01/p42l-player/retry-decision.json",
+        "W-GAME-01/p42l-player/external-artifacts.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
-      "note": "Current 1080p RTX4060Ti VSync OFF runs both pass: p95 3.502/3.565ms over 607.410/611.724s, zero outside-transition frames over 100ms and maximum transition 124.909ms. Neither run is eligible for a rerun. VSync ON p95 17.331/17.315ms is informational only. All four actual game-window movies are retained.",
+      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42l.py",
       "row": "W-GAME-01",
       "scenario": "10-minute graphical playthrough recording with frame log",
       "requirement": "SR-8.1, B-FRAME",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-01/p42k-player/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-01/p42l-player/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed PID-owned-window keyframes show both menus, Saved to slot-1, ending and restarted village. Movie explicitly concatenates two actual processes.",
       "checks": [
         {
-          "file": "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
+          "file": "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
+          "file": "W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
+          "file": "W-GAME-05/p42l-owned-window-lifecycle/visual-review.json",
           "pointer": "/status",
           "equals": "PASS"
         }
       ],
       "evidence": [
-        "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
-        "W-GAME-05/p42k-owned-window-lifecycle/load-ending-restart-report.json",
-        "W-GAME-05/p42k-owned-window-lifecycle/visual-review.json",
-        "W-GAME-05/p42k-owned-window-lifecycle/external-artifacts.json"
+        "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
+        "W-GAME-05/p42l-owned-window-lifecycle/load-ending-restart-report.json",
+        "W-GAME-05/p42l-owned-window-lifecycle/visual-review.json",
+        "W-GAME-05/p42l-owned-window-lifecycle/external-artifacts.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/lifecycle-p42k.py --player .evidence/P42kPlayer/player/Hollowmere.x86_64 --output .evidence/P42kLifecycleOwned",
-      "note": "Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed owned-window keyframes show both menus, Save UI and ending. The 320.3s movie explicitly concatenates two actual process segments.",
+      "command": "python3 artifacts/studio/verification/TOOLS/lifecycle-p42l.py --player .evidence/P42lPlayer/player/Hollowmere.x86_64 --output .evidence/P42lLifecycleOwned",
       "row": "W-GAME-05",
       "scenario": "Full flow menu\u2192save\u2192load\u2192ending\u2192restart in the player",
       "requirement": "SR-6.10",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-05/p42k-owned-window-lifecycle/driver-summary.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-05/p42l-owned-window-lifecycle/driver-summary.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, both build profiles, prescribed probes and docs checks. An owned detached worktree at the exact product revision holds new build caches on /tmp; no compiler caches reclaimed from /home.",
       "checks": [
         {
-          "file": "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
+          "file": "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-01/p42k-player/player/build-report.json",
+          "file": "W-GAME-01/p42l-player/player/build-report.json",
           "pointer": "/result",
           "equals": "Succeeded"
         }
       ],
       "evidence": [
-        "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
-        "W-GAME-01/p42k-player/player/build-report.json",
-        "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/playmode-results.xml",
-        "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/gate/unity/editmode-results.xml"
+        "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/result.json",
+        "W-GAME-01/p42l-player/player/build-report.json",
+        "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/gate/unity/playmode-results.xml",
+        "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/gate/unity/editmode-results.xml",
+        "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/external-artifacts.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
-      "note": "Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, prescribed probes and docs gates. B-FRAME is independently measured and passes under VSync OFF.",
+      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42l.py",
       "row": "W-GAME-06",
       "scenario": "Build log + sha256 + V1 gate transcript on the same revision",
       "requirement": "SR-11.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-06/v1-gate-retry-20261007T210734.019896Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-06/v1-gate-retry-20261008T014132.752757Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
-      "evidence": [
-        "W-GAME-07/p42k-owner-rule/result.json"
-      ],
-      "checks": [],
-      "command": "Not run: Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
       "status": "BLOCKED",
       "note": "Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
+      "checks": [],
+      "evidence": [
+        "W-GAME-07/p42l-owner-rule/result.json"
+      ],
+      "command": "Not run: Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run.",
       "row": "W-GAME-07",
       "scenario": "Player runs with etosd stopped and no network",
       "requirement": "SR-4.10",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-07/p42k-owner-rule/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-07/p42l-owner-rule/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
-      "evidence": [
-        "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
-        "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json"
-      ],
+      "status": "PASS",
+      "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.5436%, below unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained.",
       "checks": [
         {
-          "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
+          "file": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/memory-and-pumps.json",
+          "file": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/memory-and-pumps.json",
           "pointer": "/cycles/9/cycle",
           "equals": 10
         }
       ],
+      "evidence": [
+        "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
+        "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/memory-and-pumps.json"
+      ],
       "command": "studio/tools/verify-all.sh memory",
-      "status": "PASS",
-      "note": "Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained.",
       "row": "W-GAME-08",
       "scenario": "Memory after 10 Play/Edit cycles",
       "requirement": "B-MEMORY",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current clean-project author/bake, 11 EditMode and three PlayMode cases, both rechecks, same-revision Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations. Build uses owned external same-revision worktree to preserve /home reserve.",
       "checks": [
         {
-          "file": "W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/result.json",
+          "file": "W-CLEAN-01/p42l-clean-build-20261008T012754.477935Z/result.json",
           "pointer": "/status",
           "equals": "PASS"
         },
         {
-          "file": "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json",
+          "file": "W-CLEAN-01/p42l-clean-player-20261008T014119.503790Z/result.json",
           "pointer": "/playerProof/frames",
           "equals": 600
         },
         {
-          "file": "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json",
+          "file": "W-CLEAN-01/p42l-clean-player-20261008T014119.503790Z/result.json",
           "pointer": "/playerProof/violations",
           "equals": 0
         }
       ],
       "evidence": [
-        "W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/result.json",
-        "W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/result.json"
+        "W-CLEAN-01/p42l-clean-build-20261008T012754.477935Z/result.json",
+        "W-CLEAN-01/p42l-clean-player-20261008T014119.503790Z/result.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42k.py",
-      "note": "Current clean-project author/bake, 11 EditMode and three PlayMode cases, both rechecks, Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations.",
+      "command": "python3 artifacts/studio/verification/TOOLS/builds-p42l.py",
       "row": "W-CLEAN-01",
       "scenario": "Clean project: install, author, run, build",
       "requirement": "SR-7.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-CLEAN-01/p42l-clean-build-20261008T012754.477935Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Current-run Kernel diff empty after the clean exercise passes linked exact assertions; no historical PASS is carried forward.",
       "checks": [
         {
-          "file": "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json",
+          "file": "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json",
           "pointer": "/exitCode",
           "equals": 0
         }
       ],
       "evidence": [
-        "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json"
+        "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json"
       ],
       "command": "git diff --exit-code origin/main -- Packages/",
-      "note": "After all clean-project/build/player exercises and owned-fixture cleanup, literal git diff --exit-code origin/main -- Packages/ exits zero with empty output. No kernel/package source changed.",
       "row": "W-CLEAN-02",
       "scenario": "Kernel diff empty after the clean exercise",
       "requirement": "SR-7.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/result.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/result.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
+      "status": "PASS",
+      "note": "Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
       "evidence": [
-        "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
-        "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json"
+        "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/results.xml",
+        "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/guide.json"
       ],
       "checks": [
         {
-          "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
+          "file": "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/results.xml",
           "xmlCase": "R2_38_Guide_NpcAndDialogueContextToolsUndo"
         },
         {
-          "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
+          "file": "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/guide.json",
           "pointer": "/dialogueUndoOk",
           "equals": true
         },
         {
-          "file": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/guide.json",
+          "file": "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/guide.json",
           "pointer": "/npcUndoOk",
           "equals": true
         }
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py guide",
-      "status": "PASS",
-      "note": "Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+      "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py guide",
       "row": "W-DOC-01",
       "scenario": "New user adds an NPC with dialogue from the creator guide",
       "requirement": "SR-12.1",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/results.xml",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/results.xml",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
       "status": "PASS",
+      "note": "Literal current guide export/client-submit and signed Docker stage pass. Creator Admit completes in 33.465s, restores nine coins and checkpoint round-trip equality, passes 120-frame smoke; actual Toggle lever control commits 0/1/0 on normal frames with visible On/Off labels. Undo removes the package and restores the original catalog.",
+      "evidence": [
+        "W-DOC-02/p42l-lever-literal/live-admit.json",
+        "W-DOC-02/p42l-lever-literal/interactive-lever.json",
+        "W-DOC-02/p42l-lever-literal/live-undo.json",
+        "W-DOC-02/p42l-lever-literal/signed-verdict.json",
+        "W-DOC-02/p42l-lever-literal/live-progress.json",
+        "W-DOC-02/p42l-lever-literal/visual-review.json"
+      ],
       "checks": [
         {
-          "file": "W-DOC-02/p42k-lever-literal/live-admit.json",
+          "file": "W-DOC-02/p42l-lever-literal/live-admit.json",
           "pointer": "/outcome",
           "equals": "Admitted"
         },
         {
-          "file": "W-DOC-02/p42k-lever-literal/live-admit.json",
+          "file": "W-DOC-02/p42l-lever-literal/live-admit.json",
           "pointer": "/checkpointRoundTripsEqual",
           "equals": true
         },
         {
-          "file": "W-DOC-02/p42k-lever-literal/interactive-lever.json",
+          "file": "W-DOC-02/p42l-lever-literal/interactive-lever.json",
           "pointer": "/states",
           "equals": [
             0,
@@ -2102,58 +2173,65 @@
           ]
         },
         {
-          "file": "W-DOC-02/p42k-lever-literal/live-undo.json",
+          "file": "W-DOC-02/p42l-lever-literal/live-undo.json",
           "pointer": "/outcome",
           "equals": "Undone"
+        },
+        {
+          "file": "W-DOC-02/p42l-lever-literal/visual-review.json",
+          "pointer": "/status",
+          "equals": "PASS"
         }
       ],
-      "evidence": [
-        "W-DOC-02/p42k-lever-literal/live-admit.json",
-        "W-DOC-02/p42k-lever-literal/interactive-lever.json",
-        "W-DOC-02/p42k-lever-literal/live-undo.json",
-        "W-DOC-02/p42k-lever-literal/signed-verdict.json",
-        "W-DOC-02/p42k-lever-literal/live-progress.json"
-      ],
-      "command": "python3 artifacts/studio/verification/TOOLS/lever-literal-p42k.py",
-      "note": "Literal current guide export/client-submit and signed Docker stage pass. Creator Admit completes in 32.253s within 90s, restores nine coins and checkpoint round-trip equality, passes 120-frame smoke, and actual Toggle lever control commits 0/1/0 on normal frames. Undo removes the package and restores the original catalog.",
+      "command": "python3 artifacts/studio/verification/TOOLS/lever-literal-p42l.py",
       "row": "W-DOC-02",
       "scenario": "Developer adds a lever interactable from the plugin guide",
       "requirement": "SR-12.2",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-DOC-02/p42k-lever-literal/live-admit.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-DOC-02/p42l-lever-literal/live-admit.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     },
     {
-      "status": "FAIL",
+      "status": "PASS",
+      "note": "All 68 rows are freshly judged at one product revision and one installed immutable release with strict host exclusivity. All permitted rows pass their current assertions; six exact owner-forbidden scenarios remain BLOCKED, as allowed by SR-12.3. Broad-suite nonpassing cases remain explicit; this is not an all-green suite or unrestricted deployment claim.",
       "checks": [
         {
-          "file": "W-E2E-01/p42k-accounting/accounting.json",
+          "file": "W-E2E-01/p42l-accounting/accounting.json",
           "pointer": "/allRowsJudged",
           "equals": true
         },
         {
-          "file": "W-E2E-01/p42k-accounting/accounting.json",
+          "file": "W-E2E-01/p42l-accounting/accounting.json",
           "pointer": "/historicalPassCarriedForward",
           "equals": false
+        },
+        {
+          "file": "W-E2E-01/p42l-accounting/accounting.json",
+          "pointer": "/allPermittedRowAssertionsPass",
+          "equals": true
+        },
+        {
+          "file": "W-E2E-01/p42l-accounting/accounting.json",
+          "pointer": "/scopedHostExclusive",
+          "equals": true
         }
       ],
       "evidence": [
-        "W-E2E-01/p42k-accounting/accounting.json"
+        "W-E2E-01/p42l-accounting/accounting.json"
       ],
-      "command": "python3 artifacts/studio/verification/TOOLS/report-p42k.py && python3 artifacts/studio/verification/TOOLS/check-p42k.py",
-      "note": "All 68 rows are freshly judged at one product revision and installed companion release with strict host exclusivity; no historical PASS carries forward. End-to-end acceptance is FAIL because current W-AI-02 refuses the unchanged Ferryman candidate with GP-LOG-002 duplicate enrollment. Six exact owner-forbidden scenarios remain BLOCKED.",
+      "command": "python3 artifacts/studio/verification/TOOLS/report-p42l.py && python3 artifacts/studio/verification/TOOLS/check-p42l.py",
       "row": "W-E2E-01",
       "scenario": "All rows resolved on one revision; completion report",
       "requirement": "SR-12.3",
-      "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-      "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-      "releaseId": "0.1.0-3475150b9571123a",
-      "evidencePath": "W-E2E-01/p42k-accounting/accounting.json",
-      "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+      "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+      "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+      "releaseId": "0.1.0-b50cd34dddae2cc4",
+      "evidencePath": "W-E2E-01/p42l-accounting/accounting.json",
+      "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
     }
   ]
 }

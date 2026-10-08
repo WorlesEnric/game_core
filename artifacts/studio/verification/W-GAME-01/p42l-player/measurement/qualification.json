@@ -1,0 +1,350 @@
+{
+  "vsync0": [
+    {
+      "run": 1,
+      "p95": 3.505,
+      "over100": 0,
+      "seconds": 613.087,
+      "transitions": [
+        {
+          "frame": 88146,
+          "time_s": 186.4883,
+          "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 10.998
+        },
+        {
+          "frame": 161022,
+          "time_s": 344.5188,
+          "marker": "region:Blackmere Marsh->Drowned Belfry",
+          "max_dt_ms": 10.237
+        },
+        {
+          "frame": 203774,
+          "time_s": 425.6084,
+          "marker": "reload|region:Drowned Belfry->Thornwick Village",
+          "max_dt_ms": 84.329
+        },
+        {
+          "frame": 211723,
+          "time_s": 442.6813,
+          "marker": "restore",
+          "max_dt_ms": 144.944
+        },
+        {
+          "frame": 211724,
+          "time_s": 442.6886,
+          "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 144.944
+        }
+      ],
+      "manualSave": {
+        "saveCommandFrame": 140722,
+        "savedMarkerFrame": 140727,
+        "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+        "maxDtMs": 48.332,
+        "over100": 0,
+        "captureMainThreadMs": 43.43
+      },
+      "firstReady": {
+        "frame": "3",
+        "time_s": "2.7653",
+        "dt_ms": "1.583",
+        "region": "Thornwick Village",
+        "marker": "ready"
+      },
+      "loadingRows": [
+        {
+          "frame": "1",
+          "time_s": "2.6526",
+          "dt_ms": "2610.156",
+          "region": "Thornwick Village",
+          "marker": "boot-warmup"
+        },
+        {
+          "frame": "2",
+          "time_s": "2.7629",
+          "dt_ms": "151.781",
+          "region": "Thornwick Village",
+          "marker": ""
+        }
+      ],
+      "checks": {
+        "NVIDIA_1080p": true,
+        "VSync_state": true,
+        "NoOtherEditorOrPlayer": true,
+        "FullRoute": true,
+        "P31d_BOOT_VisibleResponsiveMenu": true,
+        "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+        "P31d_BOOT_NoPostReadyStalls": true,
+        "Save": true
+      },
+      "B_FRAME": "PASS",
+      "budgetChecks": {
+        "p95_le_16_7ms": true,
+        "no_frame_over_100ms_outside_transitions": true,
+        "transition_hitch_le_250ms": true,
+        "duration_ge_budget": true
+      }
+    },
+    {
+      "run": 2,
+      "p95": 3.459,
+      "over100": 0,
+      "seconds": 609.749,
+      "transitions": [
+        {
+          "frame": 86565,
+          "time_s": 183.2849,
+          "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 16.768
+        },
+        {
+          "frame": 160144,
+          "time_s": 341.2596,
+          "marker": "region:Blackmere Marsh->Drowned Belfry",
+          "max_dt_ms": 10.4
+        },
+        {
+          "frame": 203317,
+          "time_s": 422.3129,
+          "marker": "reload|region:Drowned Belfry->Thornwick Village",
+          "max_dt_ms": 77.781
+        },
+        {
+          "frame": 211662,
+          "time_s": 439.3578,
+          "marker": "restore",
+          "max_dt_ms": 110.567
+        },
+        {
+          "frame": 211663,
+          "time_s": 439.3641,
+          "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 110.567
+        }
+      ],
+      "manualSave": {
+        "saveCommandFrame": 139294,
+        "savedMarkerFrame": 139300,
+        "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+        "maxDtMs": 55.246,
+        "over100": 0,
+        "captureMainThreadMs": 48.839
+      },
+      "firstReady": {
+        "frame": "3",
+        "time_s": "2.8250",
+        "dt_ms": "3.301",
+        "region": "Thornwick Village",
+        "marker": "ready"
+      },
+      "loadingRows": [
+        {
+          "frame": "1",
+          "time_s": "2.6899",
+          "dt_ms": "2640.158",
+          "region": "Thornwick Village",
+          "marker": "boot-warmup"
+        },
+        {
+          "frame": "2",
+          "time_s": "2.8225",
+          "dt_ms": "179.656",
+          "region": "Thornwick Village",
+          "marker": ""
+        }
+      ],
+      "checks": {
+        "NVIDIA_1080p": true,
+        "VSync_state": true,
+        "NoOtherEditorOrPlayer": true,
+        "FullRoute": true,
+        "P31d_BOOT_VisibleResponsiveMenu": true,
+        "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+        "P31d_BOOT_NoPostReadyStalls": true,
+        "Save": true
+      },
+      "B_FRAME": "PASS",
+      "budgetChecks": {
+        "p95_le_16_7ms": true,
+        "no_frame_over_100ms_outside_transitions": true,
+        "transition_hitch_le_250ms": true,
+        "duration_ge_budget": true
+      }
+    }
+  ],
+  "vsync1": [
+    {
+      "run": 1,
+      "p95": 17.297,
+      "over100": 0,
+      "seconds": 608.175,
+      "transitions": [
+        {
+          "frame": 10629,
+          "time_s": 180.6252,
+          "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 17.684
+        },
+        {
+          "frame": 20148,
+          "time_s": 339.2943,
+          "marker": "region:Blackmere Marsh->Drowned Belfry",
+          "max_dt_ms": 17.851
+        },
+        {
+          "frame": 25019,
+          "time_s": 420.551,
+          "marker": "reload|region:Drowned Belfry->Thornwick Village",
+          "max_dt_ms": 75.667
+        },
+        {
+          "frame": 26041,
+          "time_s": 437.6666,
+          "marker": "restore",
+          "max_dt_ms": 124.208
+        },
+        {
+          "frame": 26042,
+          "time_s": 437.6733,
+          "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 124.208
+        }
+      ],
+      "manualSave": {
+        "saveCommandFrame": 17147,
+        "savedMarkerFrame": 17150,
+        "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+        "maxDtMs": 51.069,
+        "over100": 0,
+        "captureMainThreadMs": 47.23
+      },
+      "firstReady": {
+        "frame": "3",
+        "time_s": "2.8240",
+        "dt_ms": "2.019",
+        "region": "Thornwick Village",
+        "marker": "ready"
+      },
+      "loadingRows": [
+        {
+          "frame": "1",
+          "time_s": "2.6879",
+          "dt_ms": "2637.319",
+          "region": "Thornwick Village",
+          "marker": "boot-warmup"
+        },
+        {
+          "frame": "2",
+          "time_s": "2.8210",
+          "dt_ms": "182.338",
+          "region": "Thornwick Village",
+          "marker": ""
+        }
+      ],
+      "checks": {
+        "NVIDIA_1080p": true,
+        "VSync_state": true,
+        "NoOtherEditorOrPlayer": true,
+        "FullRoute": true,
+        "P31d_BOOT_VisibleResponsiveMenu": true,
+        "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+        "P31d_BOOT_NoPostReadyStalls": true,
+        "Save": true
+      },
+      "B_FRAME": "FAIL",
+      "budgetChecks": {
+        "p95_le_16_7ms": false,
+        "no_frame_over_100ms_outside_transitions": true,
+        "transition_hitch_le_250ms": true,
+        "duration_ge_budget": true
+      }
+    },
+    {
+      "run": 2,
+      "p95": 17.296,
+      "over100": 0,
+      "seconds": 608.134,
+      "transitions": [
+        {
+          "frame": 10670,
+          "time_s": 180.6013,
+          "marker": "marsh|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 17.484
+        },
+        {
+          "frame": 20186,
+          "time_s": 339.2214,
+          "marker": "region:Blackmere Marsh->Drowned Belfry",
+          "max_dt_ms": 17.343
+        },
+        {
+          "frame": 25059,
+          "time_s": 420.5123,
+          "marker": "reload|region:Drowned Belfry->Thornwick Village",
+          "max_dt_ms": 77.569
+        },
+        {
+          "frame": 26080,
+          "time_s": 437.6,
+          "marker": "restore",
+          "max_dt_ms": 115.777
+        },
+        {
+          "frame": 26081,
+          "time_s": 437.611,
+          "marker": "loaded|region:Thornwick Village->Blackmere Marsh",
+          "max_dt_ms": 115.777
+        }
+      ],
+      "manualSave": {
+        "saveCommandFrame": 17187,
+        "savedMarkerFrame": 17190,
+        "windowRule": "two frames before save.1 through three frames after saved, inclusive",
+        "maxDtMs": 55.565,
+        "over100": 0,
+        "captureMainThreadMs": 49.666
+      },
+      "firstReady": {
+        "frame": "3",
+        "time_s": "2.8253",
+        "dt_ms": "3.583",
+        "region": "Thornwick Village",
+        "marker": "ready"
+      },
+      "loadingRows": [
+        {
+          "frame": "1",
+          "time_s": "2.6944",
+          "dt_ms": "2646.440",
+          "region": "Thornwick Village",
+          "marker": "boot-warmup"
+        },
+        {
+          "frame": "2",
+          "time_s": "2.8226",
+          "dt_ms": "173.178",
+          "region": "Thornwick Village",
+          "marker": ""
+        }
+      ],
+      "checks": {
+        "NVIDIA_1080p": true,
+        "VSync_state": true,
+        "NoOtherEditorOrPlayer": true,
+        "FullRoute": true,
+        "P31d_BOOT_VisibleResponsiveMenu": true,
+        "P31d_BOOT_FirstReadyFrameUnder100ms": true,
+        "P31d_BOOT_NoPostReadyStalls": true,
+        "Save": true
+      },
+      "B_FRAME": "FAIL",
+      "budgetChecks": {
+        "p95_le_16_7ms": false,
+        "no_frame_over_100ms_outside_transitions": true,
+        "transition_hitch_le_250ms": true,
+        "duration_ge_budget": true
+      }
+    }
+  ]
+}

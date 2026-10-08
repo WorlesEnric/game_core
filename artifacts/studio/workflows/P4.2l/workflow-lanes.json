@@ -1,0 +1,90 @@
+[
+  {
+    "lane": "narrative",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/live-p42l.py",
+      "narrative",
+      "--row",
+      "W-AI-03",
+      "--method",
+      "Hollowmere.P4_2.EvidenceEntry.RunStage",
+      "--workflow",
+      "narrative"
+    ],
+    "startedAt": "2026-10-07T23:46:36.604953+00:00",
+    "endedAt": "2026-10-07T23:53:25.552239+00:00",
+    "exitCode": 0
+  },
+  {
+    "lane": "reopen",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/live-p42l.py",
+      "reopen",
+      "--row",
+      "W-AI-06",
+      "--method",
+      "Hollowmere.P4_2.EvidenceEntry.RunStage",
+      "--workflow",
+      "reopen",
+      "--offline"
+    ],
+    "startedAt": "2026-10-07T23:53:25.552561+00:00",
+    "endedAt": "2026-10-07T23:54:56.844673+00:00",
+    "exitCode": 0
+  },
+  {
+    "lane": "npc-view",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/live-p42l.py",
+      "npc-view",
+      "--row",
+      "W-AI-02",
+      "--method",
+      "P42g.Live.NpcPrerequisiteProbe.Run",
+      "--offline"
+    ],
+    "startedAt": "2026-10-07T23:54:56.844932+00:00",
+    "endedAt": "2026-10-07T23:55:45.012582+00:00",
+    "exitCode": 0
+  },
+  {
+    "lane": "npc",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/live-p42l.py",
+      "npc",
+      "--row",
+      "W-AI-02",
+      "--method",
+      "Hollowmere.P4_2.EvidenceEntry.RunStage",
+      "--workflow",
+      "p42f-npc"
+    ],
+    "startedAt": "2026-10-07T23:55:45.013194+00:00",
+    "endedAt": "2026-10-08T00:00:23.914444+00:00",
+    "exitCode": 0
+  },
+  {
+    "lane": "tasks",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/tasks-p42l.py"
+    ],
+    "startedAt": "2026-10-08T00:00:23.914834+00:00",
+    "endedAt": "2026-10-08T00:05:26.680665+00:00",
+    "exitCode": 0
+  },
+  {
+    "lane": "ledger",
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/retain-ledger-p42l.py"
+    ],
+    "startedAt": "2026-10-08T00:05:26.681050+00:00",
+    "endedAt": "2026-10-08T00:05:26.764312+00:00",
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,168 @@
+[autoplay] script with 112 commands, quitAfterFrames=0 frame=1
+[autoplay] 3 waituntil ready timeout 120 frame=4
+[autoplay] 3 reached 'ready' after 0.00 s (Running)
+[autoplay] 4 waituntil lifecycle menu timeout 30 frame=4
+[autoplay] 4 reached 'lifecycle menu' after 0.00 s (menu screen=Menu state={"region":"11e8dd95-6622-43d0-8b48-5e17b72f0bb8","position":{"x":0.0,"y":0.0,"z":-12.0},"quest":0,"stage":0,"branch":0,"outcome":0,"lantern":0,"clapper":0,"coins":2,"rumour":0,"gate":0,"shrine":0,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 5 wait 8 frame=4
+[autoplay] 6 ui newgame frame=3647
+[autoplay] 7 waituntil lifecycle newgame timeout 120 frame=3647
+[autoplay] 7 reached 'lifecycle newgame' after 0.00 s (newgame screen=Hud state={"region":"11e8dd95-6622-43d0-8b48-5e17b72f0bb8","position":{"x":0.25,"y":0.0,"z":-12.0},"quest":0,"stage":0,"branch":0,"outcome":0,"lantern":0,"clapper":0,"coins":2,"rumour":0,"gate":0,"shrine":0,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 8 wait 4 frame=3648
+[autoplay] 9 walk -2 -6 frame=5574
+[autoplay] 9 arrived at (-1.68, -6.95) after 2.15 s
+[autoplay] 10 mark voice-maren frame=6467
+[autoplay] 11 approach Maren within 1.8 timeout 40 frame=6467
+[autoplay] 11 reached Maren at (-6.88, -7.17), 1.77 m, facing -39.40 after 2.78 s
+[autoplay] 12 waituntil prompt Maren timeout 15 frame=7654
+[autoplay] 12 reached 'prompt Maren' after 0.00 s (prompt Talk to Maren)
+[autoplay] 13 interact frame=7654
+[autoplay] 14 waituntil dialogue active timeout 10 frame=7654
+[autoplay] 14 reached 'dialogue active' after 0.01 s (dialogue active)
+[autoplay] 15 wait 8 frame=7656
+[autoplay] 16 advance frame=11360
+[autoplay] 17 wait 8 frame=11360
+[autoplay] 18 advance frame=15119
+[autoplay] 19 wait 3 frame=15119
+[autoplay] 20 choose 1 frame=16493
+[autoplay] 21 wait 8 frame=16493
+[autoplay] 22 advance frame=20204
+[autoplay] 23 waituntil dialogue none timeout 10 frame=20204
+[autoplay] 23 reached 'dialogue none' after 0.00 s (dialogue none)
+[autoplay] 24 waituntil fact heard_rumour == 1 timeout 10 frame=20205
+[autoplay] 24 reached 'fact heard_rumour == 1' after 0.00 s (fact heard_rumour=1)
+[autoplay] 25 waituntil quest active timeout 10 frame=20205
+[autoplay] 25 reached 'quest active' after 0.00 s (quest active)
+[autoplay] 26 wait 2 frame=20205
+[autoplay] 28 mark coins frame=21112
+[autoplay] 29 approach "Coins (square)" within 1.4 timeout 30 frame=21112
+[autoplay] 29 reached Coins (square) at (2.75, -3.62), 1.40 m, facing 63.75 after 4.45 s
+[autoplay] 30 waituntil prompt coins timeout 10 frame=23071
+[autoplay] 30 reached 'prompt coins' after 0.00 s (prompt Pick up the coins)
+[autoplay] 31 interact frame=23071
+[autoplay] 32 waituntil item OldCoin >= 5 timeout 10 frame=23071
+[autoplay] 32 reached 'item OldCoin >= 5' after 0.01 s (item OldCoin=5)
+[autoplay] 33 wait 2 frame=23075
+[autoplay] 34 mark bram frame=23953
+[autoplay] 35 walk 6 -8 frame=23953
+[autoplay] 35 arrived at (5.70, -7.05) after 3.27 s
+[autoplay] 36 approach Bram within 1.8 timeout 40 frame=25270
+[autoplay] 36 reached Bram at (9.80, -11.66), 1.80 m, facing 138.27 after 2.47 s
+[autoplay] 37 waituntil prompt Bram timeout 15 frame=26339
+[autoplay] 37 reached 'prompt Bram' after 0.00 s (prompt Talk to Bram)
+[autoplay] 38 interact frame=26339
+[autoplay] 39 waituntil dialogue active timeout 10 frame=26339
+[autoplay] 39 reached 'dialogue active' after 0.00 s (dialogue active)
+[autoplay] 40 wait 6 frame=26341
+[autoplay] 41 advance frame=29059
+[autoplay] 42 wait 2 frame=29059
+[autoplay] 43 choose 0 frame=29969
+[autoplay] 44 wait 6 frame=29969
+[autoplay] 45 advance frame=32912
+[autoplay] 46 waituntil dialogue none timeout 10 frame=32912
+[autoplay] 46 reached 'dialogue none' after 0.00 s (dialogue none)
+[autoplay] 47 waituntil item Lantern == 1 timeout 10 frame=32913
+[autoplay] 47 reached 'item Lantern == 1' after 0.00 s (item Lantern=1)
+[autoplay] 48 wait 4 frame=32913
+[autoplay] 51 walk 4 -6 frame=34801
+[autoplay] 51 arrived at (4.72, -6.69) after 2.84 s
+[autoplay] 52 walk 2 4 frame=36198
+[autoplay] 52 arrived at (2.31, 3.05) after 4.42 s
+[autoplay] 53 walk 12 1 frame=38154
+[autoplay] 53 sidestep right at (5.62, 2.36); ahead: Stone 2/Body at 0.00 m; Traveller/Body at 0.00 m
+[autoplay] 53 arrived at (11.01, 0.89) after 5.95 s
+[autoplay] 54 walk 22 0 frame=41112
+[autoplay] 54 arrived at (21.01, 0.11) after 4.02 s
+[autoplay] 55 face 90 frame=42897
+[autoplay] 56 mark audio-village-before-marsh frame=42897
+[autoplay] 57 wait 8 frame=42897
+[autoplay] 58 walk 30 0 frame=46866
+[autoplay] 58 arrived at (29.00, 0.08) after 3.21 s
+[autoplay] 59 walk 166.5 0 timeout 40 frame=48282
+[autoplay] 59 crossed a portal to (167.50, 0.00) after 2.07 s
+[autoplay] 60 waituntil region Blackmere timeout 30 frame=49194
+[autoplay] 60 reached 'region Blackmere' after 0.00 s (region Blackmere Marsh)
+[autoplay] 61 mark audio-marsh-after-travel frame=49194
+[autoplay] 63 wait 8 frame=49194
+[autoplay] 64 face 90 frame=52983
+[autoplay] 65 approach Hale within 1.8 timeout 30 frame=52983
+[autoplay] 65 reached Hale at (167.50, 2.70), 1.80 m, facing 0.00 after 1.09 s
+[autoplay] 66 waituntil prompt Hale timeout 15 frame=53476
+[autoplay] 66 reached 'prompt Hale' after 0.00 s (prompt Talk to Hale)
+[autoplay] 67 interact frame=53476
+[autoplay] 68 waituntil dialogue active timeout 10 frame=53476
+[autoplay] 68 reached 'dialogue active' after 0.00 s (dialogue active)
+[autoplay] 69 wait 8 frame=53478
+[autoplay] 70 advance frame=57298
+[autoplay] 71 waituntil dialogue none timeout 10 frame=57298
+[autoplay] 71 reached 'dialogue none' after 0.00 s (dialogue none)
+[autoplay] 72 waituntil fact gate_open == 1 timeout 10 frame=57299
+[autoplay] 72 reached 'fact gate_open == 1' after 0.00 s (fact gate_open=1)
+[autoplay] 73 wait 4 frame=57299
+[autoplay] 74 approach "Causeway Gate" within 1.6 timeout 20 frame=59331
+[autoplay] 74 reached Causeway Gate at (168.00, 2.55), 1.60 m, facing 110.03 after 0.21 s
+[autoplay] 75 waituntil prompt gate timeout 10 frame=59454
+[autoplay] 75 reached 'prompt gate' after 0.00 s (prompt The gate is barred)
+[autoplay] 76 interact frame=59454
+[autoplay] 77 wait 3 frame=59454
+[autoplay] 78 walk 172 2 frame=60980
+[autoplay] 78 arrived at (171.01, 2.11) after 1.21 s
+[autoplay] 79 walk 180 2 frame=61559
+[autoplay] 79 arrived at (179.01, 2.09) after 3.20 s
+[autoplay] 80 walk 192 -1 frame=63040
+[autoplay] 80 arrived at (191.04, -0.73) after 4.93 s
+[autoplay] 81 mark shrine frame=65495
+[autoplay] 82 approach "Shrine Lantern West" within 1.6 timeout 30 frame=65495
+[autoplay] 82 reached Shrine Lantern West at (197.64, 3.17), 1.59 m, facing 58.52 after 3.07 s
+[autoplay] 83 waituntil prompt west timeout 10 frame=66898
+[autoplay] 83 reached 'prompt west' after 0.00 s (prompt Light the west shrine lantern)
+[autoplay] 84 interact frame=66898
+[autoplay] 85 waituntil fact shrine_post_1 == 1 timeout 10 frame=66898
+[autoplay] 85 reached 'fact shrine_post_1 == 1' after 0.01 s (fact shrine_post_1=1)
+[autoplay] 86 wait 3 frame=66902
+[autoplay] 87 approach "Shrine Lantern Middle" within 1.6 timeout 30 frame=68412
+[autoplay] 87 reached Shrine Lantern Middle at (204.41, 2.18), 1.60 m, facing 96.28 after 2.71 s
+[autoplay] 88 waituntil prompt middle timeout 10 frame=69831
+[autoplay] 88 reached 'prompt middle' after 0.00 s (prompt Light the middle shrine lantern)
+[autoplay] 89 interact frame=69831
+[autoplay] 90 waituntil fact shrine_post_2 == 1 timeout 10 frame=69831
+[autoplay] 90 reached 'fact shrine_post_2 == 1' after 0.01 s (fact shrine_post_2=1)
+[autoplay] 91 wait 3 frame=69835
+[autoplay] 92 approach "Shrine Lantern East" within 1.6 timeout 30 frame=71233
+[autoplay] 92 reached Shrine Lantern East at (211.43, 3.73), 1.60 m, facing 80.20 after 2.90 s
+[autoplay] 93 waituntil prompt east timeout 10 frame=72512
+[autoplay] 93 reached 'prompt east' after 0.00 s (prompt Light the east shrine lantern)
+[autoplay] 94 interact frame=72512
+[autoplay] 95 waituntil fact shrine_lit == 1 timeout 10 frame=72512
+[autoplay] 95 reached 'fact shrine_lit == 1' after 0.03 s (fact shrine_lit=1)
+[autoplay] 96 wait 8 frame=72518
+[autoplay] 97 mark clapper frame=76579
+[autoplay] 98 walk 213 -2 frame=76579
+[autoplay] 98 arrived at (212.71, -1.05) after 1.99 s
+[autoplay] 99 walk 200 -3 frame=77517
+[autoplay] 99 arrived at (200.99, -2.90) after 4.72 s
+[autoplay] 100 approach "Bell Clapper" within 1.4 timeout 40 frame=79927
+[autoplay] 100 reached Bell Clapper at (194.75, 7.82), 1.40 m, facing -32.35 after 4.99 s
+[autoplay] 101 waituntil prompt clapper timeout 10 frame=82306
+[autoplay] 101 reached 'prompt clapper' after 0.00 s (prompt Lift the bell clapper)
+[autoplay] 102 interact frame=82306
+[autoplay] 103 waituntil item BellClapper == 1 timeout 10 frame=82306
+[autoplay] 103 reached 'item BellClapper == 1' after 0.01 s (item BellClapper=1)
+[autoplay] 104 wait 2 frame=82310
+[autoplay] 105 ui open.pause frame=83243
+[autoplay] 106 waituntil lifecycle paused timeout 10 frame=83243
+[autoplay] 106 reached 'lifecycle paused' after 0.00 s (paused screen=Pause state={"region":"7f21b99a-8e74-412f-a1da-5f7d60843080","position":{"x":194.7480010986328,"y":0.0,"z":7.818999767303467},"quest":1,"stage":2,"branch":0,"outcome":0,"lantern":1,"clapper":1,"coins":1,"rumour":1,"gate":1,"shrine":1,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 107 wait 4 frame=83244
+[autoplay] 108 ui open.save frame=85174
+[autoplay] 109 waituntil screen Save timeout 10 frame=85174
+[autoplay] 109 reached 'screen Save' after 0.00 s (screen Save)
+[autoplay] 110 wait 4 frame=85175
+[autoplay] 111 ui save.1 frame=86877
+[autoplay] 112 waituntil lifecycle saved timeout 30 frame=86877
+[autoplay] 112 reached 'lifecycle saved' after 0.02 s (saved screen=Save state={"region":"7f21b99a-8e74-412f-a1da-5f7d60843080","position":{"x":194.7480010986328,"y":0.0,"z":7.818999767303467},"quest":1,"stage":2,"branch":0,"outcome":0,"lantern":1,"clapper":1,"coins":1,"rumour":1,"gate":1,"shrine":1,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 113 wait 6 frame=86882
+[autoplay] 114 ui close frame=89476
+[autoplay] 115 waituntil lifecycle quit-ready timeout 10 frame=89476
+[autoplay] 115 reached 'lifecycle quit-ready' after 0.00 s (quit-ready screen=Pause state={"region":"7f21b99a-8e74-412f-a1da-5f7d60843080","position":{"x":194.7480010986328,"y":0.0,"z":7.818999767303467},"quest":1,"stage":2,"branch":0,"outcome":0,"lantern":1,"clapper":1,"coins":1,"rumour":1,"gate":1,"shrine":1,"bell":0,"ending":0} attaches=1 restores=0)
+[autoplay] 116 wait 4 frame=89477
+[autoplay] 118 ui quit frame=91052
+[autoplay] 120 waituntil lifecycle unexpected-surviving-quit timeout 15 frame=91052

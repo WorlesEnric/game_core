@@ -1,24 +1,24 @@
 {
+  "status": "PASS",
+  "note": "Current-run Rename prefab, re-run: NPC keeps state in a save is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json"
+    "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json"
   ],
   "checks": [
     {
-      "file": "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json",
+      "file": "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json",
       "pointer": "/status",
       "equals": "pass"
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py lifecycle",
-  "status": "PASS",
-  "note": "Current-run Rename prefab, re-run: NPC keeps state in a save is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py lifecycle",
   "row": "W-PERSIST-02",
   "scenario": "Rename prefab, re-run: NPC keeps state in a save",
   "requirement": "SR-2.1",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/workflow/reopen-result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/workflow/reopen-result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

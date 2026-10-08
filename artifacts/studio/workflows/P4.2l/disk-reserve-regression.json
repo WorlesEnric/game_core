@@ -1,0 +1,6 @@
+{
+  "beforePassed": false,
+  "afterPassed": true,
+  "before": "E\n======================================================================\nERROR: test_R2_38_P42l_explicit_floor_allows_work_above_28_GiB (disk_tests_l.DiskReserveTests.test_R2_38_P42l_explicit_floor_allows_work_above_28_GiB)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/test_disk_reserve_p42l.py\", line 19, in test_R2_38_P42l_explicit_floor_allows_work_above_28_GiB\n    record = verify.run('TEST', 'allowed-disk', [sys.executable, '-c', 'print(\"child-executed\")'])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/verify.py\", line 91, in run\n    if reserve_gib < 28:\n        ^^^^^^^^^^^^^^^^^\nRuntimeError: Disk reserve below 40 GiB; stop before starting another workload.\n\n----------------------------------------------------------------------\nRan 1 test in 0.012s\n\nFAILED (errors=1)\n",
+  "after": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.061s\n\nOK\n"
+}

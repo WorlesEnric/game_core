@@ -1,0 +1,279 @@
+[
+  {
+    "label": "installer-python",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/installer-python-20261007T224805.338687Z",
+    "suites": null
+  },
+  {
+    "label": "p42l-runner-regressions-restored",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/p42l-runner-regressions-restored-20261007T224857.145093Z",
+    "suites": null
+  },
+  {
+    "label": "p42l-disk-reserve-regression",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/p42l-disk-reserve-regression-20261007T225000.069412Z",
+    "suites": null
+  },
+  {
+    "label": "cargo-test",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/cargo-test-20261007T224530.019208Z",
+    "suites": null
+  },
+  {
+    "label": "stage-slot",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/stage-slot-20261007T224814.559176Z",
+    "suites": null
+  },
+  {
+    "label": "cargo-clippy",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/cargo-clippy-20261007T224508.942236Z",
+    "suites": null
+  },
+  {
+    "label": "p42-runner-regressions",
+    "status": "FAIL",
+    "evidencePath": "artifacts/studio/verification/STATIC/p42-runner-regressions-20261007T224814.808343Z",
+    "suites": null
+  },
+  {
+    "label": "host-python",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/host-python-20261007T224811.463055Z",
+    "suites": null
+  },
+  {
+    "label": "csharp",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/csharp-20261007T224438.491756Z",
+    "suites": null
+  },
+  {
+    "label": "stage-python",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/stage-python-20261007T224803.863599Z",
+    "suites": null
+  },
+  {
+    "label": "dotnet",
+    "status": "BLOCKED",
+    "evidencePath": "artifacts/studio/verification/STATIC/dotnet-20261007T224611.876266Z",
+    "suites": {
+      "trx/_worlesenric_2026-10-08_06_46_18.trx": {
+        "total": 10,
+        "counts": {
+          "Passed": 10
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_20[2].trx": {
+        "total": 90,
+        "counts": {
+          "Passed": 90
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_19[2].trx": {
+        "total": 49,
+        "counts": {
+          "Passed": 49
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_47.trx": {
+        "total": 309,
+        "counts": {
+          "Passed": 309
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_22[3].trx": {
+        "total": 173,
+        "counts": {
+          "Passed": 173
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_47[1].trx": {
+        "total": 113,
+        "counts": {
+          "Passed": 113
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_20.trx": {
+        "total": 10,
+        "counts": {
+          "Passed": 10
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_47_35.trx": {
+        "total": 57,
+        "counts": {
+          "Passed": 57
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_19[3].trx": {
+        "total": 189,
+        "counts": {
+          "Passed": 189
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_19.trx": {
+        "total": 47,
+        "counts": {
+          "Passed": 47
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_22[2].trx": {
+        "total": 178,
+        "counts": {
+          "Passed": 178
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_48.trx": {
+        "total": 75,
+        "counts": {
+          "Passed": 69,
+          "NotExecuted": 6
+        },
+        "failedSuites": [],
+        "nonpassing": [
+          {
+            "name": "L04_VoiceTranscribesARealSpokenPromptThroughTheNode",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          },
+          {
+            "name": "L05_3dGenerationIsRefusedHonestlyAndTamperedBytesAreRefused",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          },
+          {
+            "name": "L02_TheAppKeyReachesNothingButItsOwnAgent",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          },
+          {
+            "name": "L01_HelloThroughTheProxyReportsProviderStates",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          },
+          {
+            "name": "L06_CandidateStageFetchesAndVerifiesTheSignedRecord",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          },
+          {
+            "name": "L03_EventsResumeAfterAForcedDisconnectAndCancelEndsTheTask",
+            "result": "NotExecuted",
+            "detail": "live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh) \n         \n           live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+          }
+        ]
+      },
+      "trx/_worlesenric_2026-10-08_06_46_19[1].trx": {
+        "total": 26,
+        "counts": {
+          "Passed": 26
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_19[4].trx": {
+        "total": 118,
+        "counts": {
+          "Passed": 118
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_23.trx": {
+        "total": 27,
+        "counts": {
+          "Passed": 27
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_22[1].trx": {
+        "total": 21,
+        "counts": {
+          "Passed": 21
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_22.trx": {
+        "total": 42,
+        "counts": {
+          "Passed": 42
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_18[1].trx": {
+        "total": 23,
+        "counts": {
+          "Passed": 23
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_20[1].trx": {
+        "total": 163,
+        "counts": {
+          "Passed": 163
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      },
+      "trx/_worlesenric_2026-10-08_06_46_18[2].trx": {
+        "total": 118,
+        "counts": {
+          "Passed": 118
+        },
+        "failedSuites": [],
+        "nonpassing": []
+      }
+    }
+  },
+  {
+    "label": "schemas",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/schemas-20261007T224504.924681Z",
+    "suites": null
+  },
+  {
+    "label": "cargo-fmt",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/cargo-fmt-20261007T224508.358166Z",
+    "suites": null
+  },
+  {
+    "label": "schema-mirror",
+    "status": "PASS",
+    "evidencePath": "artifacts/studio/verification/STATIC/schema-mirror-20261007T224508.226343Z",
+    "suites": null
+  }
+]

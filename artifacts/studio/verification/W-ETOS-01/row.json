@@ -1,18 +1,18 @@
 {
+  "status": "BLOCKED",
+  "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
   "evidence": [
-    "W-ETOS-01/p42k-owner-rule/result.json"
+    "W-ETOS-01/p42l-owner-rule/result.json"
   ],
   "checks": [],
   "command": "Not run: Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
-  "status": "BLOCKED",
-  "note": "Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run.",
   "row": "W-ETOS-01",
   "scenario": "Pair; grep repo + Library for `etk_`: zero hits; logs redacted",
   "requirement": "SR-4.1",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-ETOS-01/p42k-owner-rule/result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-ETOS-01/p42l-owner-rule/result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

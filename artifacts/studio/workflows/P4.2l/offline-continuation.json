@@ -1,0 +1,122 @@
+[
+  {
+    "command": [
+      "bash",
+      "studio/tools/verify-all.sh",
+      "unity"
+    ],
+    "startedAt": "2026-10-07T22:53:15.519441+00:00",
+    "endedAt": "2026-10-07T23:03:25.385600+00:00",
+    "exitCode": 1
+  },
+  {
+    "command": [
+      "bash",
+      "studio/tools/verify-all.sh",
+      "perf"
+    ],
+    "startedAt": "2026-10-07T23:03:25.385752+00:00",
+    "endedAt": "2026-10-07T23:07:51.048702+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "bash",
+      "studio/tools/verify-all.sh",
+      "memory"
+    ],
+    "startedAt": "2026-10-07T23:07:51.048913+00:00",
+    "endedAt": "2026-10-07T23:10:24.785163+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "bash",
+      "studio/tools/verify-all.sh",
+      "clean"
+    ],
+    "startedAt": "2026-10-07T23:10:24.785432+00:00",
+    "endedAt": "2026-10-07T23:11:43.982334+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "editor"
+    ],
+    "startedAt": "2026-10-07T23:11:43.982614+00:00",
+    "endedAt": "2026-10-07T23:16:01.486768+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "views"
+    ],
+    "startedAt": "2026-10-07T23:16:01.486955+00:00",
+    "endedAt": "2026-10-07T23:18:48.068054+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "timing"
+    ],
+    "startedAt": "2026-10-07T23:18:48.068274+00:00",
+    "endedAt": "2026-10-07T23:20:23.180570+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "lifecycle"
+    ],
+    "startedAt": "2026-10-07T23:20:23.180753+00:00",
+    "endedAt": "2026-10-07T23:23:35.786558+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "native"
+    ],
+    "startedAt": "2026-10-07T23:23:35.787211+00:00",
+    "endedAt": "2026-10-07T23:31:05.294130+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "recovery"
+    ],
+    "startedAt": "2026-10-07T23:31:05.294349+00:00",
+    "endedAt": "2026-10-07T23:33:07.604875+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "validation"
+    ],
+    "startedAt": "2026-10-07T23:33:07.605081+00:00",
+    "endedAt": "2026-10-07T23:35:46.060638+00:00",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/rows-p42l.py",
+      "guide"
+    ],
+    "startedAt": "2026-10-07T23:35:46.060909+00:00",
+    "endedAt": "2026-10-07T23:36:48.858234+00:00",
+    "exitCode": 0
+  }
+]

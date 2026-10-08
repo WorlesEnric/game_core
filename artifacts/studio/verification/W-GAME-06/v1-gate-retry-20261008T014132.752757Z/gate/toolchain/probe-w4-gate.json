@@ -1,0 +1,382 @@
+{
+  "task": "W4-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W4Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/w4-world-lane-and-extra-manifests",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=8; declaredSlots=19; slotCases=5; extraManifests=5; scopes=7; mode=Automatic; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "narrative/w4-extra-providers-mount-onto-the-same-revision",
+      "status": "Pass",
+      "detail": "providerEdit=True; policyHost=True; consumerEdit=True; requiredProviderEdit=True; consumerState=Active; providerState=Active; consumerResolved=True; providerRows=3; consumerRows=3; policyHostState=Active; policyHostScoped=True"
+    },
+    {
+      "name": "narrative/w4-automatic-inheritance-and-the-future-target",
+      "status": "Pass",
+      "detail": "secondProviderEdit=True; eligibleTargets=3; dissenting=<none>; neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(rows=5,value=1,inView=True); closure=local,dirty=0,carried=8"
+    },
+    {
+      "name": "narrative/w4-subtree-move-preserves-state-and-switches-binding",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; movedTarget=TargetId(a300fa762c702f9e90dbcb691ea84e96); scope=ScopeId(05cfbe283381aab8902e93d508ff031c)->parent=ScopeId(55f9567dcf63b6526d79e69454a3422c); identityHeld=True; liveState=7->7; expectedState=7; shape=rows=5|3b7872beb719b68042e77a8351198bdf:0/1|a54b600e13612649cc9424903c07bc1c:0/1|608fdf6689c56e29fdd4d007754e93d5:0/1|f360867a33f6ba358bc98014fe26cd4b:0/1|ebeda2e400ca1272e71565694b09cc65:0/1; shapeHeld=True; effectiveValue=1->2; supportProviderIsSecond=True; closure=local,dirty=4,carried=5; epoch=7->8"
+    },
+    {
+      "name": "narrative/w4-mode-automatic-to-conservative-retracts-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=False,rows=0,value=-2147483648); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "narrative/w4-mode-conservative-to-automatic-restores-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=True,rows=5,value=1); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "narrative/w4-suspend-retracts-and-resume-restores",
+      "status": "Pass",
+      "detail": "suspendState=Suspended; suspendCode=None; holdsAuthority=False; liveActivations=5->4; rows=7->0; lateCompletion=DiscardRetiredRoute; resumeState=Active; resumeCode=None; rowsAfterResume=7; freshToken=Dispatch; suspendDerived=Published ; resumeDerived=Published "
+    },
+    {
+      "name": "narrative/w4-required-provider-loss-makes-consumers-wait",
+      "status": "Pass",
+      "detail": "consumerState=WaitingForDependencies; waitingConsumers=1; namedExactly=True; consumerBindings=5->0; consumerRows=5->0; providerState=Disposed; derived=Published "
+    },
+    {
+      "name": "narrative/w4-required-provider-return-resumes-consumers",
+      "status": "Pass",
+      "detail": "consumerState=Active; resumedConsumers=1; namedExactly=True; consumerBindings=0->5; consumerRows=0->5; expectedRows=5; replacementState=Active; derived=Published "
+    },
+    {
+      "name": "narrative/w4-unload-disposes-in-reverse-acquisition-order",
+      "status": "Pass",
+      "detail": "joined=True; mountOutcome=Published; stagedLeases=2; teardownCode=None; disposeSettled=True; steps=6; quarantined=0; failedReleases=0; acquired=4e410573047165760000000000000001,4e410573047165760000000000000002; disposed=4e410573047165760000000000000002,4e410573047165760000000000000001; reverseOrder=True; lateCompletion=discarded; state=Disposed; retained=0"
+    },
+    {
+      "name": "narrative/w4-slot-preserve-keeps-the-non-default-value",
+      "status": "Pass",
+      "detail": "policy=Preserve; expected=preserved; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(ff615db015a052d9c4f6912a9a3e6f3e)); published=True; derived=NoTargetChange; live=23@1->23@1; seeded=23; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(ff615db015a052d9c4f6912a9a3e6f3e))=23@1; plan=succeeded"
+    },
+    {
+      "name": "narrative/w4-slot-preserve-dormant-retains-without-an-active-writer",
+      "status": "Pass",
+      "detail": "policy=PreserveDormant; expected=dormant; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(c4b1cb1692524e16717e51f443193011)); published=True; derived=NoTargetChange; live=11@1->11@1; seeded=11; hasWriter=True->False; dormant=True; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(c4b1cb1692524e16717e51f443193011))=11@1; plan=succeeded"
+    },
+    {
+      "name": "narrative/w4-slot-remove-derived-drops-the-row",
+      "status": "Pass",
+      "detail": "policy=RemoveDerived; expected=removed; slot=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(fbac8bf47d64a59269c7939fae67ef69)); published=True; derived=NoTargetChange; live=13@1-><missing>; seeded=13; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(fbac8bf47d64a59269c7939fae67ef69))=<missing>; plan=succeeded"
+    },
+    {
+      "name": "narrative/w4-slot-transfer-to-moves-the-value-to-the-named-owner",
+      "status": "Pass",
+      "detail": "policy=TransferTo; expected=transferred; slot=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(e2214ab1807a0803b3a0c56ddfc1defd)); published=True; derived=NoTargetChange; live=17@1-><missing>; seeded=17; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(5c63f1314f90924ad5990c531fa9e5b7), OwnerId(5049d0c5e74ecdc753fcb9e98e1d2e27), SlotId(e2214ab1807a0803b3a0c56ddfc1defd))=17@1; plan=succeeded"
+    },
+    {
+      "name": "narrative/w4-slot-reset-uses-the-manifest-permission",
+      "status": "Pass",
+      "detail": "policy=Reset; expected=reset; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(1816a2b8a0dd91fc9a4049a3f9e7f808)); published=True; derived=NoTargetChange; live=19@1->5@1; seeded=19; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(1816a2b8a0dd91fc9a4049a3f9e7f808))=5@1; plan=succeeded"
+    },
+    {
+      "name": "narrative/w4-lane-epoch-equals-world-epoch-throughout",
+      "status": "Pass",
+      "detail": "publications=17; mismatches=0; firstMismatch=<none>; lane=22/22; assembly=22; worldEpoch=22; joined=True"
+    },
+    {
+      "name": "narrative/w4-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:narrative/w4-world-lane-and-extra-manifests",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=8; declaredSlots=19; slotCases=5; extraManifests=5; scopes=7; mode=Automatic; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "fixture:narrative/w4-extra-providers-mount-onto-the-same-revision",
+      "status": "Pass",
+      "detail": "providerEdit=True; policyHost=True; consumerEdit=True; requiredProviderEdit=True; consumerState=Active; providerState=Active; consumerResolved=True; providerRows=3; consumerRows=3; policyHostState=Active; policyHostScoped=True"
+    },
+    {
+      "name": "fixture:narrative/w4-automatic-inheritance-and-the-future-target",
+      "status": "Pass",
+      "detail": "secondProviderEdit=True; eligibleTargets=3; dissenting=<none>; neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(rows=5,value=1,inView=True); closure=local,dirty=0,carried=8"
+    },
+    {
+      "name": "fixture:narrative/w4-subtree-move-preserves-state-and-switches-binding",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; movedTarget=TargetId(a300fa762c702f9e90dbcb691ea84e96); scope=ScopeId(05cfbe283381aab8902e93d508ff031c)->parent=ScopeId(55f9567dcf63b6526d79e69454a3422c); identityHeld=True; liveState=7->7; expectedState=7; shape=rows=5|3b7872beb719b68042e77a8351198bdf:0/1|a54b600e13612649cc9424903c07bc1c:0/1|608fdf6689c56e29fdd4d007754e93d5:0/1|f360867a33f6ba358bc98014fe26cd4b:0/1|ebeda2e400ca1272e71565694b09cc65:0/1; shapeHeld=True; effectiveValue=1->2; supportProviderIsSecond=True; closure=local,dirty=4,carried=5; epoch=7->8"
+    },
+    {
+      "name": "fixture:narrative/w4-mode-automatic-to-conservative-retracts-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=False,rows=0,value=-2147483648); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:narrative/w4-mode-conservative-to-automatic-restores-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(410ef4086b99afcfbfbb781aa53ff6d4)(has=True,rows=5,value=1); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:narrative/w4-suspend-retracts-and-resume-restores",
+      "status": "Pass",
+      "detail": "suspendState=Suspended; suspendCode=None; holdsAuthority=False; liveActivations=5->4; rows=7->0; lateCompletion=DiscardRetiredRoute; resumeState=Active; resumeCode=None; rowsAfterResume=7; freshToken=Dispatch; suspendDerived=Published ; resumeDerived=Published "
+    },
+    {
+      "name": "fixture:narrative/w4-required-provider-loss-makes-consumers-wait",
+      "status": "Pass",
+      "detail": "consumerState=WaitingForDependencies; waitingConsumers=1; namedExactly=True; consumerBindings=5->0; consumerRows=5->0; providerState=Disposed; derived=Published "
+    },
+    {
+      "name": "fixture:narrative/w4-required-provider-return-resumes-consumers",
+      "status": "Pass",
+      "detail": "consumerState=Active; resumedConsumers=1; namedExactly=True; consumerBindings=0->5; consumerRows=0->5; expectedRows=5; replacementState=Active; derived=Published "
+    },
+    {
+      "name": "fixture:narrative/w4-unload-disposes-in-reverse-acquisition-order",
+      "status": "Pass",
+      "detail": "joined=True; mountOutcome=Published; stagedLeases=2; teardownCode=None; disposeSettled=True; steps=6; quarantined=0; failedReleases=0; acquired=4e410573047165760000000000000001,4e410573047165760000000000000002; disposed=4e410573047165760000000000000002,4e410573047165760000000000000001; reverseOrder=True; lateCompletion=discarded; state=Disposed; retained=0"
+    },
+    {
+      "name": "fixture:narrative/w4-slot-preserve-keeps-the-non-default-value",
+      "status": "Pass",
+      "detail": "policy=Preserve; expected=preserved; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(ff615db015a052d9c4f6912a9a3e6f3e)); published=True; derived=NoTargetChange; live=23@1->23@1; seeded=23; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(ff615db015a052d9c4f6912a9a3e6f3e))=23@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:narrative/w4-slot-preserve-dormant-retains-without-an-active-writer",
+      "status": "Pass",
+      "detail": "policy=PreserveDormant; expected=dormant; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(c4b1cb1692524e16717e51f443193011)); published=True; derived=NoTargetChange; live=11@1->11@1; seeded=11; hasWriter=True->False; dormant=True; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(c4b1cb1692524e16717e51f443193011))=11@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:narrative/w4-slot-remove-derived-drops-the-row",
+      "status": "Pass",
+      "detail": "policy=RemoveDerived; expected=removed; slot=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(fbac8bf47d64a59269c7939fae67ef69)); published=True; derived=NoTargetChange; live=13@1-><missing>; seeded=13; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(fbac8bf47d64a59269c7939fae67ef69))=<missing>; plan=succeeded"
+    },
+    {
+      "name": "fixture:narrative/w4-slot-transfer-to-moves-the-value-to-the-named-owner",
+      "status": "Pass",
+      "detail": "policy=TransferTo; expected=transferred; slot=StateSlotKey(TargetId(74c2a98fad57dc0f9fa42d57f47a586f), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(e2214ab1807a0803b3a0c56ddfc1defd)); published=True; derived=NoTargetChange; live=17@1-><missing>; seeded=17; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(5c63f1314f90924ad5990c531fa9e5b7), OwnerId(5049d0c5e74ecdc753fcb9e98e1d2e27), SlotId(e2214ab1807a0803b3a0c56ddfc1defd))=17@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:narrative/w4-slot-reset-uses-the-manifest-permission",
+      "status": "Pass",
+      "detail": "policy=Reset; expected=reset; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(1816a2b8a0dd91fc9a4049a3f9e7f808)); published=True; derived=NoTargetChange; live=19@1->5@1; seeded=19; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(1816a2b8a0dd91fc9a4049a3f9e7f808))=5@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:narrative/w4-lane-epoch-equals-world-epoch-throughout",
+      "status": "Pass",
+      "detail": "publications=17; mismatches=0; firstMismatch=<none>; lane=22/22; assembly=22; worldEpoch=22; joined=True"
+    },
+    {
+      "name": "fixture:narrative/w4-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "w4gate-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab; fixtureDigest=d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab; expectedDigest=d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab; observations=17; digest=d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab; label=narrative; steps=17; failed=0; digest=d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab; label=narrative; steps=17; failed=0"
+    },
+    {
+      "name": "cards/w4-world-lane-and-extra-manifests",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; declaredSlots=11; slotCases=5; extraManifests=5; scopes=9; mode=Automatic; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "cards/w4-extra-providers-mount-onto-the-same-revision",
+      "status": "Pass",
+      "detail": "providerEdit=True; policyHost=True; consumerEdit=True; requiredProviderEdit=True; consumerState=Active; providerState=Active; consumerResolved=True; providerRows=3; consumerRows=3; policyHostState=Active; policyHostScoped=True"
+    },
+    {
+      "name": "cards/w4-automatic-inheritance-and-the-future-target",
+      "status": "Pass",
+      "detail": "secondProviderEdit=True; eligibleTargets=3; dissenting=<none>; neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(rows=3,value=2,inView=True); closure=local,dirty=0,carried=6"
+    },
+    {
+      "name": "cards/w4-subtree-move-preserves-state-and-switches-binding",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; movedTarget=TargetId(c203b09deb766da6f8e93773ca6dd65c); scope=ScopeId(55aacc846396635d81c199adda1b3ba4)->parent=ScopeId(f80bfac84be4bc3a121c5e0f0a16cad0); identityHeld=True; liveState=4242->4242; expectedState=4242; shape=rows=3|62603a901bedf0f5982a2bc89d75054a:0/1|fb6fc29d4f2922dd20eee6f5185a613d:0/1|3f0cbf9dbb7aa7f9a04fd0c65c8391aa:0/1; shapeHeld=True; effectiveValue=2->1; supportProviderIsSecond=True; closure=local,dirty=2,carried=5; epoch=7->8"
+    },
+    {
+      "name": "cards/w4-mode-automatic-to-conservative-retracts-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=False,rows=0,value=-2147483648); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "cards/w4-mode-conservative-to-automatic-restores-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=True,rows=3,value=2); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "cards/w4-suspend-retracts-and-resume-restores",
+      "status": "Pass",
+      "detail": "suspendState=Suspended; suspendCode=None; holdsAuthority=False; liveActivations=5->4; rows=3->0; lateCompletion=DiscardRetiredRoute; resumeState=Active; resumeCode=None; rowsAfterResume=3; freshToken=Dispatch; suspendDerived=Published ; resumeDerived=Published "
+    },
+    {
+      "name": "cards/w4-required-provider-loss-makes-consumers-wait",
+      "status": "Pass",
+      "detail": "consumerState=WaitingForDependencies; waitingConsumers=1; namedExactly=True; consumerBindings=5->0; consumerRows=5->0; providerState=Disposed; derived=Published "
+    },
+    {
+      "name": "cards/w4-required-provider-return-resumes-consumers",
+      "status": "Pass",
+      "detail": "consumerState=Active; resumedConsumers=1; namedExactly=True; consumerBindings=0->5; consumerRows=0->5; expectedRows=5; replacementState=Active; derived=Published "
+    },
+    {
+      "name": "cards/w4-unload-disposes-in-reverse-acquisition-order",
+      "status": "Pass",
+      "detail": "joined=True; mountOutcome=Published; stagedLeases=2; teardownCode=None; disposeSettled=True; steps=6; quarantined=0; failedReleases=0; acquired=43410573047165760000000000000001,43410573047165760000000000000002; disposed=43410573047165760000000000000002,43410573047165760000000000000001; reverseOrder=True; lateCompletion=discarded; state=Disposed; retained=0"
+    },
+    {
+      "name": "cards/w4-slot-preserve-keeps-the-non-default-value",
+      "status": "Pass",
+      "detail": "policy=Preserve; expected=preserved; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(c245eec59d54053ffb94af98648f35a6)); published=True; derived=NoTargetChange; live=17@1->17@1; seeded=17; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(c245eec59d54053ffb94af98648f35a6))=17@1; plan=succeeded"
+    },
+    {
+      "name": "cards/w4-slot-preserve-dormant-retains-without-an-active-writer",
+      "status": "Pass",
+      "detail": "policy=PreserveDormant; expected=dormant; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9216489902826e902dfd1e945491c3d7)); published=True; derived=NoTargetChange; live=23@1->23@1; seeded=23; hasWriter=True->False; dormant=True; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9216489902826e902dfd1e945491c3d7))=23@1; plan=succeeded"
+    },
+    {
+      "name": "cards/w4-slot-remove-derived-drops-the-row",
+      "status": "Pass",
+      "detail": "policy=RemoveDerived; expected=removed; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9b5811cbfc27940640d3e0c53caee48f)); published=True; derived=NoTargetChange; live=29@1-><missing>; seeded=29; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9b5811cbfc27940640d3e0c53caee48f))=<missing>; plan=succeeded"
+    },
+    {
+      "name": "cards/w4-slot-transfer-to-moves-the-value-to-the-named-owner",
+      "status": "Pass",
+      "detail": "policy=TransferTo; expected=transferred; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(74f08a33c22703c8ad7e7b8b3a23807e)); published=True; derived=NoTargetChange; live=31@1-><missing>; seeded=31; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(709f4ce6dacd0abd01d516a7a46bf656), OwnerId(e92b420af02c1aefcd985ef2b8f3136c), SlotId(74f08a33c22703c8ad7e7b8b3a23807e))=31@1; plan=succeeded"
+    },
+    {
+      "name": "cards/w4-slot-reset-uses-the-manifest-permission",
+      "status": "Pass",
+      "detail": "policy=Reset; expected=reset; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(98af5c62477dd1d7bee6370764c54f35)); published=True; derived=NoTargetChange; live=37@1->7@1; seeded=37; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(98af5c62477dd1d7bee6370764c54f35))=7@1; plan=succeeded"
+    },
+    {
+      "name": "cards/w4-lane-epoch-equals-world-epoch-throughout",
+      "status": "Pass",
+      "detail": "publications=18; mismatches=0; firstMismatch=<none>; lane=22/22; assembly=22; worldEpoch=22; joined=True"
+    },
+    {
+      "name": "cards/w4-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:cards/w4-world-lane-and-extra-manifests",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; declaredSlots=11; slotCases=5; extraManifests=5; scopes=9; mode=Automatic; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "fixture:cards/w4-extra-providers-mount-onto-the-same-revision",
+      "status": "Pass",
+      "detail": "providerEdit=True; policyHost=True; consumerEdit=True; requiredProviderEdit=True; consumerState=Active; providerState=Active; consumerResolved=True; providerRows=3; consumerRows=3; policyHostState=Active; policyHostScoped=True"
+    },
+    {
+      "name": "fixture:cards/w4-automatic-inheritance-and-the-future-target",
+      "status": "Pass",
+      "detail": "secondProviderEdit=True; eligibleTargets=3; dissenting=<none>; neutralEdit=True; forwardOutcome=NoTargetChange; spawnOutcome=Published; isSpawn=True; joined=True; registered=True; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(rows=3,value=2,inView=True); closure=local,dirty=0,carried=6"
+    },
+    {
+      "name": "fixture:cards/w4-subtree-move-preserves-state-and-switches-binding",
+      "status": "Pass",
+      "detail": "published=True; outcome=Published; movedTarget=TargetId(c203b09deb766da6f8e93773ca6dd65c); scope=ScopeId(55aacc846396635d81c199adda1b3ba4)->parent=ScopeId(f80bfac84be4bc3a121c5e0f0a16cad0); identityHeld=True; liveState=4242->4242; expectedState=4242; shape=rows=3|62603a901bedf0f5982a2bc89d75054a:0/1|fb6fc29d4f2922dd20eee6f5185a613d:0/1|3f0cbf9dbb7aa7f9a04fd0c65c8391aa:0/1; shapeHeld=True; effectiveValue=2->1; supportProviderIsSecond=True; closure=local,dirty=2,carried=5; epoch=7->8"
+    },
+    {
+      "name": "fixture:cards/w4-mode-automatic-to-conservative-retracts-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Automatic->Conservative; destination=Conservative; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=False,rows=0,value=-2147483648); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=1;accepted=1;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:cards/w4-mode-conservative-to-automatic-restores-existing-and-future",
+      "status": "Pass",
+      "detail": "mode=Conservative->Automatic; destination=Automatic; outcome=Published; eligibleTargets=3; dissenting=<none>; futureTarget=TargetId(0d6a4b487bd76746f7f0ac697158cf09)(has=True,rows=3,value=2); optInKept=True; isolatedHeld=True; isolatedRows=0; ineligibleRows=0; descriptorImports=0; descriptorOptIns=1; scopeImports=0; validator=modeSwitchValidator{checks=2;accepted=2;refused=0;lastCode=None}"
+    },
+    {
+      "name": "fixture:cards/w4-suspend-retracts-and-resume-restores",
+      "status": "Pass",
+      "detail": "suspendState=Suspended; suspendCode=None; holdsAuthority=False; liveActivations=5->4; rows=3->0; lateCompletion=DiscardRetiredRoute; resumeState=Active; resumeCode=None; rowsAfterResume=3; freshToken=Dispatch; suspendDerived=Published ; resumeDerived=Published "
+    },
+    {
+      "name": "fixture:cards/w4-required-provider-loss-makes-consumers-wait",
+      "status": "Pass",
+      "detail": "consumerState=WaitingForDependencies; waitingConsumers=1; namedExactly=True; consumerBindings=5->0; consumerRows=5->0; providerState=Disposed; derived=Published "
+    },
+    {
+      "name": "fixture:cards/w4-required-provider-return-resumes-consumers",
+      "status": "Pass",
+      "detail": "consumerState=Active; resumedConsumers=1; namedExactly=True; consumerBindings=0->5; consumerRows=0->5; expectedRows=5; replacementState=Active; derived=Published "
+    },
+    {
+      "name": "fixture:cards/w4-unload-disposes-in-reverse-acquisition-order",
+      "status": "Pass",
+      "detail": "joined=True; mountOutcome=Published; stagedLeases=2; teardownCode=None; disposeSettled=True; steps=6; quarantined=0; failedReleases=0; acquired=43410573047165760000000000000001,43410573047165760000000000000002; disposed=43410573047165760000000000000002,43410573047165760000000000000001; reverseOrder=True; lateCompletion=discarded; state=Disposed; retained=0"
+    },
+    {
+      "name": "fixture:cards/w4-slot-preserve-keeps-the-non-default-value",
+      "status": "Pass",
+      "detail": "policy=Preserve; expected=preserved; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(c245eec59d54053ffb94af98648f35a6)); published=True; derived=NoTargetChange; live=17@1->17@1; seeded=17; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(c245eec59d54053ffb94af98648f35a6))=17@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:cards/w4-slot-preserve-dormant-retains-without-an-active-writer",
+      "status": "Pass",
+      "detail": "policy=PreserveDormant; expected=dormant; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9216489902826e902dfd1e945491c3d7)); published=True; derived=NoTargetChange; live=23@1->23@1; seeded=23; hasWriter=True->False; dormant=True; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9216489902826e902dfd1e945491c3d7))=23@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:cards/w4-slot-remove-derived-drops-the-row",
+      "status": "Pass",
+      "detail": "policy=RemoveDerived; expected=removed; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9b5811cbfc27940640d3e0c53caee48f)); published=True; derived=NoTargetChange; live=29@1-><missing>; seeded=29; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(9b5811cbfc27940640d3e0c53caee48f))=<missing>; plan=succeeded"
+    },
+    {
+      "name": "fixture:cards/w4-slot-transfer-to-moves-the-value-to-the-named-owner",
+      "status": "Pass",
+      "detail": "policy=TransferTo; expected=transferred; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(74f08a33c22703c8ad7e7b8b3a23807e)); published=True; derived=NoTargetChange; live=31@1-><missing>; seeded=31; hasWriter=True->False; dormant=False; destination=StateSlotKey(TargetId(709f4ce6dacd0abd01d516a7a46bf656), OwnerId(e92b420af02c1aefcd985ef2b8f3136c), SlotId(74f08a33c22703c8ad7e7b8b3a23807e))=31@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:cards/w4-slot-reset-uses-the-manifest-permission",
+      "status": "Pass",
+      "detail": "policy=Reset; expected=reset; slot=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(98af5c62477dd1d7bee6370764c54f35)); published=True; derived=NoTargetChange; live=37@1->7@1; seeded=37; hasWriter=True->True; dormant=False; destination=StateSlotKey(TargetId(5767cc31ae9cbe923b031aa7db4a8512), OwnerId(375db78f732ff6da2b35670deb7e3031), SlotId(98af5c62477dd1d7bee6370764c54f35))=7@1; plan=succeeded"
+    },
+    {
+      "name": "fixture:cards/w4-lane-epoch-equals-world-epoch-throughout",
+      "status": "Pass",
+      "detail": "publications=18; mismatches=0; firstMismatch=<none>; lane=22/22; assembly=22; worldEpoch=22; joined=True"
+    },
+    {
+      "name": "fixture:cards/w4-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "w4gate-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018; fixtureDigest=4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018; expectedDigest=4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018; observations=17; digest=4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018; label=cards; steps=17; failed=0; digest=4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018; label=cards; steps=17; failed=0"
+    }
+  ]
+}

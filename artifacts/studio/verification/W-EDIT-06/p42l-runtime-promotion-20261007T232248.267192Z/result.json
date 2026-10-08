@@ -1,0 +1,26 @@
+{
+  "label": "p42l-runtime-promotion",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "host": "worlesenric",
+  "started": "2026-10-07T23:22:48.268648+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2l/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/logs --label p42l-runtime-promotion --attempts 1 --timeout 1800 --results ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/results.xml -- -runTests -testPlatform EditMode -testFilter 'Hollowmere.R7_B.Promotion|GameCore.Studio.Edit.Tests.RuntimeMovePromotionTests'",
+  "cwd": "~/wkspace/gc-studio/p4.2l",
+  "evidencePath": "artifacts/studio/verification/W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z",
+  "queuedAtRevision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "executionStarted": "2026-10-07T23:22:48.270310+00:00",
+  "sourceDiffSha256": "f5e98b785682f18803e008da46d6e7e9be1f4c273175fede6e5d406a34b6efe2",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T23:23:35.395780+00:00",
+  "seconds": 47.12854748312384,
+  "suites": {
+    "results.xml": {
+      "total": 7,
+      "counts": {
+        "Passed": 7
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

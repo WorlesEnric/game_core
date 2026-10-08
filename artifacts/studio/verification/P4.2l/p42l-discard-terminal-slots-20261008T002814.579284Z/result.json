@@ -1,0 +1,26 @@
+{
+  "label": "p42l-discard-terminal-slots",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "host": "worlesenric",
+  "started": "2026-10-08T00:28:14.580837+00:00",
+  "command": "dotnet test ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/P42lReceipt/P42lReceipt.csproj --filter 'FullyQualifiedName~R2_38_P42i_DiscardTerminalOwnedSlotsPreservesDurableJobs' --logger trx --results-directory ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/P4.2l/p42l-discard-terminal-slots-20261008T002814.579284Z/trx",
+  "cwd": "~/wkspace/gc-studio/p4.2l",
+  "evidencePath": "artifacts/studio/verification/P4.2l/p42l-discard-terminal-slots-20261008T002814.579284Z",
+  "queuedAtRevision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "executionStarted": "2026-10-08T00:28:14.582318+00:00",
+  "sourceDiffSha256": "8eb6b6a2d60a0d4e259dc0c3668f9223656e34d5d15871f4880bb8b42b54f45c",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-08T00:28:18.836870+00:00",
+  "seconds": 4.257529553025961,
+  "suites": {
+    "trx/_worlesenric_2026-10-08_08_28_18.trx": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

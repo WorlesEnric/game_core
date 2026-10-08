@@ -1,24 +1,24 @@
 {
+  "status": "PASS",
+  "note": "Current-run 3D generation request: `not_configured`/blocked surfaced honestly is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json"
+    "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json"
   ],
   "checks": [
     {
-      "file": "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json",
+      "file": "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json",
       "pointer": "/code",
       "equals": "not_configured"
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py hello",
-  "status": "PASS",
-  "note": "Current-run 3D generation request: `not_configured`/blocked surfaced honestly is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py hello",
   "row": "W-AI-07",
   "scenario": "3D generation request: `not_configured`/blocked surfaced honestly",
   "requirement": "SADR-020",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "P4.2k/p42k-hello-20261007T180605.465781Z/3d-refusal.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "P4.2l/p42l-hello-20261007T224425.379751Z/3d-refusal.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

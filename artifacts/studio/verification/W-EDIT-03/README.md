@@ -1,18 +1,23 @@
 # W-EDIT-03: Generate portrait → apply → undo → redo: no second generation (usage unchanged)
 
-Verdict: **PASS**. One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone pixels show the same brown-haired healer portrait with herbs and green-brown cloth. History screenshots are clipped by overlapping windows and do not visibly prove each entry state; normal panel receipts, retained journals, exact image hashes and unchanged ledger checkpoints establish replay. No readable-History-screenshot claim. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers.
+Verdict: **PASS**. One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone images visibly show the same adult healer portrait. History screenshots are obscured by overlapping windows; normal History receipts, retained hashes and unchanged charge checkpoints establish replay, not readable History pixels.
 
-P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
+P4.2l product revision: `6e8e73c42427e4f65ffae6f5028373a0566ba1d0`; installed release: `0.1.0-b50cd34dddae2cc4`. Reported: 2026-10-08T02:38:22.131501+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/live-p42k.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait
+export GC_STUDIO_DISK_RESERVE_GIB=28
+python3 artifacts/studio/verification/TOOLS/P42hMedia/ledger.py --out artifacts/studio/verification/W-EDIT-03/p42l-portrait/workflow &
+observer=$!
+python3 artifacts/studio/verification/TOOLS/live-p42l.py portrait --row W-EDIT-03 --method P42h.Media.Driver.RunPortrait --workflow-out artifacts/studio/verification/W-EDIT-03/p42l-portrait/workflow
+wait "$observer"
+# One-use reservation: do not replay an already attempted run. P4.2l packet retains the robe pre-generation failure and exact baseline-restored continuation.
 ```
 
 ## Current-run evidence
 
-- [W-EDIT-03/p42k-portrait/workflow/result.json](../W-EDIT-03/p42k-portrait/workflow/result.json)
-- [W-EDIT-03/p42k-portrait/workflow/ledger-final.json](../W-EDIT-03/p42k-portrait/workflow/ledger-final.json)
-- [W-EDIT-03/p42k-portrait-20261007T185846.087649Z/workflow/result.json](../W-EDIT-03/p42k-portrait-20261007T185846.087649Z/workflow/result.json)
+- [W-EDIT-03/p42l-portrait/workflow/result.json](../W-EDIT-03/p42l-portrait/workflow/result.json)
+- [W-EDIT-03/p42l-portrait/workflow/ledger-final.json](../W-EDIT-03/p42l-portrait/workflow/ledger-final.json)
+- [W-EDIT-03/p42l-portrait/workflow/result.json](../W-EDIT-03/p42l-portrait/workflow/result.json)

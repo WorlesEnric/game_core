@@ -1,81 +1,81 @@
 {
+  "status": "PASS",
+  "note": "Current-run Undo/redo the above, close and reopen the project, verify consistency is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
-    "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json"
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/undo-result.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/redo-result.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/undo-result.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/redo-result.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/undo-result.json",
+    "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/redo-result.json"
   ],
   "checks": [
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
       "pointer": "/hashesMatchSaved",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/final.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/final.json",
       "pointer": "/backToBefore",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
       "pointer": "/journal/odd-line",
       "equals": "Applied"
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/undo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/undo-result.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/odd-line/redo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/odd-line/redo-result.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
       "pointer": "/journal/hud",
       "equals": "Applied"
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/undo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/undo-result.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/hud/redo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/hud/redo-result.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
       "pointer": "/journal/quest",
       "equals": "Applied"
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/undo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/undo-result.json",
       "pointer": "/ok",
       "equals": true
     },
     {
-      "file": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/quest/redo-result.json",
+      "file": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/quest/redo-result.json",
       "pointer": "/ok",
       "equals": true
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/live-p42k.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
-  "status": "PASS",
-  "note": "Current-run Undo/redo the above, close and reopen the project, verify consistency is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/live-p42l.py reopen --row W-AI-06 --method Hollowmere.P4_2.EvidenceEntry.RunStage --workflow reopen --offline",
   "row": "W-AI-06",
   "scenario": "Undo/redo the above, close and reopen the project, verify consistency",
   "requirement": "mandate \u00a710",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-AI-06/p42k-reopen-20261007T191123.755008Z/workflow/reopen/after-reopen.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-AI-06/p42l-reopen-20261007T235325.590280Z/workflow/reopen/after-reopen.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }
