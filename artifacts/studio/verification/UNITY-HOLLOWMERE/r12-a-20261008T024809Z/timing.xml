@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.6227721">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="628" result="Passed" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.622772" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1974" name="P42b.Acceptance.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Library/ScriptAssemblies/P42b.Acceptance.Tests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.543906" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1197452" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1975" name="P42b" fullname="P42b" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.541013" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1976" name="Acceptance" fullname="P42b.Acceptance" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.529021" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1969" name="TimingTests" fullname="P42b.Acceptance.TimingTests" classname="P42b.Acceptance.TimingTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 03:07:54Z" end-time="2026-10-08 03:07:57Z" duration="2.510853" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1972" name="R2_38_B_APPLY_20MarshAllNpcEdits" fullname="P42b.Acceptance.TimingTests.R2_38_B_APPLY_20MarshAllNpcEdits" methodname="R2_38_B_APPLY_20MarshAllNpcEdits" classname="P42b.Acceptance.TimingTests" runstate="Runnable" seed="1526830084" result="Passed" start-time="2026-10-08 03:07:45Z" end-time="2026-10-08 03:07:47Z" duration="2.068298" asserts="0">
+              <properties />
+              <output><![CDATA[[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCA1PNXAAWZEA3YF1MP0 -> Applied (2 op(s), 79.9 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCGQ5CXHAT27S3HZN3Y4 -> Applied (2 op(s), 29.0 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCJ5V5VV2VQFPPRD1QRV -> Applied (2 op(s), 30.6 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCKZ01DGFDBH0F6X0GFW -> Applied (2 op(s), 28.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCNCGVX4DKWGC0XTBGDD -> Applied (2 op(s), 29.2 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCPSV65WDVE4CW4YYZF2 -> Applied (2 op(s), 29.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCR7W9KSBCE3S4Z22DJJ -> Applied (2 op(s), 28.6 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCSKM93D7V6XDNDBFB2C -> Applied (2 op(s), 32.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCV7N6QBW7FG6MQPRS5Q -> Applied (2 op(s), 30.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCWSX2T2DWHDEK08Q9NR -> Applied (2 op(s), 33.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPCYKQ2JF7CRX6V9FK4MZ -> Applied (2 op(s), 34.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD0SNCGRBQA6XD5T44G4 -> Applied (2 op(s), 29.3 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD29GGPMGMBR582V042J -> Applied (2 op(s), 29.6 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD3K64D2ER892SJG8D8D -> Applied (2 op(s), 29.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD52SR2PBM9GQTQD699R -> Applied (2 op(s), 30.5 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD6P1X4JAEQEWM8RGS0V -> Applied (2 op(s), 34.8 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPD8Q426TBK2SV5TAC9KK -> Applied (2 op(s), 28.9 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPDB2M07W415JVEGB5SZY -> Applied (2 op(s), 29.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPDCH2GHQHJTF43P9196G -> Applied (2 op(s), 29.4 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc0)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op npc1)
+[GameCore.Studio/engine] applied cs_01M4CQPDDZFDZN4AHPJ4W5GSYP -> Applied (2 op(s), 30.8 ms)
+]]></output>
+            </test-case>
+            <test-case id="1971" name="R2_38_B_APPLY_20RealSingleTargetEdits" fullname="P42b.Acceptance.TimingTests.R2_38_B_APPLY_20RealSingleTargetEdits" methodname="R2_38_B_APPLY_20RealSingleTargetEdits" classname="P42b.Acceptance.TimingTests" runstate="Runnable" seed="458265511" result="Passed" start-time="2026-10-08 03:07:47Z" end-time="2026-10-08 03:07:48Z" duration="1.374657" asserts="0">
+              <properties />
+              <output><![CDATA[[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE3YBC05J98QHKNTJA9Q -> Applied (1 op(s), 19.9 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE5M1FXVJ8F0832W6PFF -> Applied (1 op(s), 18.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE6QJEDQZET9NAEF7H5R -> Applied (1 op(s), 17.3 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE7RF3GQPAN8RZ3AT6ZW -> Applied (1 op(s), 17.6 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE8TQSCKYXZHQDQTAZ8Q -> Applied (1 op(s), 18.5 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPE9WNFTR7RE97GPF17JX -> Applied (1 op(s), 18.2 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEAYBR8DJFRP1FSZNHA7 -> Applied (1 op(s), 17.5 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEBZZY6BNJ2406YR831F -> Applied (1 op(s), 16.9 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPECY7R2D9ZD65DW2FCRB -> Applied (1 op(s), 18.3 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEDZC6GHV2JTED79WRWM -> Applied (1 op(s), 17.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEF1TSB5H98F4G9DAKTH -> Applied (1 op(s), 18.2 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEG3DCH1CATMYXND6Q9W -> Applied (1 op(s), 18.3 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEH5YV2GD33Q2FCFEWJJ -> Applied (1 op(s), 18.6 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEJ6D1PJV28G6BNMZHGW -> Applied (1 op(s), 18.3 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEK8Z92VT0H63BSSS1BC -> Applied (1 op(s), 18.8 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEMA1690SPEHBB9FEZG5 -> Applied (1 op(s), 18.2 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPENBG5TDAXX5QCGSG57K -> Applied (1 op(s), 22.4 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEPG32JFVNAZNMHEZX97 -> Applied (1 op(s), 23.1 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPEQYPNB434AQAKPHWQTZ -> Applied (1 op(s), 18.4 ms)
+[GameCore.Studio/engine] Target scope inferred as Instance from the tool/type intersection. (ScopeInferred: Target scope inferred as Instance from the tool/type intersection. @ op op1)
+[GameCore.Studio/engine] applied cs_01M4CQPET89BHXV6JM2KY70SZH -> Applied (1 op(s), 18.1 ms)
+]]></output>
+            </test-case>
+            <test-case id="1973" name="R2_38_B_COMPOSE_20PreparesInReferenceWorld" fullname="P42b.Acceptance.TimingTests.R2_38_B_COMPOSE_20PreparesInReferenceWorld" methodname="R2_38_B_COMPOSE_20PreparesInReferenceWorld" classname="P42b.Acceptance.TimingTests" runstate="Runnable" seed="509159044" result="Passed" start-time="2026-10-08 03:07:48Z" end-time="2026-10-08 03:07:55Z" duration="6.592310" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="240000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1970" name="R2_38_B_SELECT_100PicksAnd500CandidateMarquee" fullname="P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee" methodname="R2_38_B_SELECT_100PicksAnd500CandidateMarquee" classname="P42b.Acceptance.TimingTests" runstate="Runnable" seed="471700045" result="Passed" start-time="2026-10-08 03:07:55Z" end-time="2026-10-08 03:07:57Z" duration="1.756005" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -112,14 +112,35 @@ namespace Hollowmere.P1_7b.EditMode.Tests
         [Test]
         public void WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine()
         {
-            RegionDefinition a = Bed.Create<RegionDefinition>("P17bRegionA", r => r.SetBounds(new Vector3(0f, 5f, 0f), new Vector3(60f, 20f, 60f)));
-            RegionDefinition b = Bed.Create<RegionDefinition>("P17bRegionB", r => r.SetBounds(new Vector3(0f, 5f, 0f), new Vector3(60f, 20f, 60f)));
+            string pathA = HardeningTestBed.TempFolder + "/P17bRegionA.unity";
+            string pathB = HardeningTestBed.TempFolder + "/P17bRegionB.unity";
+            RegionDefinition a = Bed.Create<RegionDefinition>("P17bRegionA", r =>
+            {
+                r.Configure("Region A", pathA);
+                r.SetBounds(new Vector3(0f, 5f, 0f), new Vector3(60f, 20f, 60f));
+            });
+            RegionDefinition b = Bed.Create<RegionDefinition>("P17bRegionB", r =>
+            {
+                r.Configure("Region B", pathB);
+                r.SetBounds(new Vector3(0f, 5f, 0f), new Vector3(60f, 20f, 60f));
+            });
             WorldDefinition world = Bed.Create<WorldDefinition>("P17bWorld", w =>
             {
                 w.AddRegion(a);
                 w.AddRegion(b);
                 w.SetStartRegion(a);
             });
+            Scene closedScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            AuthoredRegion closedMarker = new GameObject("Region B").AddComponent<AuthoredRegion>();
+            closedMarker.Configure(b, null);
+            closedMarker.Bounds.Configure(b.Bounds.center, b.Bounds.size);
+            Assert.That(EditorSceneManager.SaveScene(closedScene, pathB), Is.True);
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            Assert.That(EditorSceneManager.SaveScene(scene, pathA), Is.True);
+            // Opening a single scene unloads assets not referenced by that scene; reacquire the saved fixtures.
+            a = AssetDatabase.LoadAssetAtPath<RegionDefinition>(HardeningTestBed.TempFolder + "/P17bRegionA.asset");
+            b = AssetDatabase.LoadAssetAtPath<RegionDefinition>(HardeningTestBed.TempFolder + "/P17bRegionB.asset");
+            world = AssetDatabase.LoadAssetAtPath<WorldDefinition>(HardeningTestBed.TempFolder + "/P17bWorld.asset");
             Bed.Runtime.Index.Rebuild();
 
             Bed.Apply("world.connectRegions", world, new JObject { ["regionA"] = Bed.RefToken(a), ["regionB"] = Bed.RefToken(b) });
@@ -127,12 +148,12 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             PortalDefinition portal = world.Portals[0];
             Assert.That(portal.Other(a), Is.SameAs(b));
 
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var markerObject = new GameObject("Region A");
             SceneManager.MoveGameObjectToScene(markerObject, scene);
             AuthoredRegion marker = markerObject.AddComponent<AuthoredRegion>();
             marker.Bounds.Configure(new Vector3(0f, 5f, 0f), new Vector3(60f, 20f, 60f));
             marker.Configure(a, null);
+            Assert.That(EditorSceneManager.SaveScene(scene, pathA), Is.True);
             Bed.Runtime.Index.Rebuild();
 
             // No region argument: the portal's region whose scene is open (A) receives the end.

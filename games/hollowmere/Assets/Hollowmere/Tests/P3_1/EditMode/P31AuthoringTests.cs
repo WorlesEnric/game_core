@@ -49,6 +49,12 @@ namespace Hollowmere.P3_1.EditMode.Tests
         [Test]
         public void AuthorAllIsIdempotent()
         {
+            // Establish the first run in this clone instead of assuming a retained authoring journal.
+            AuthorAllReport first = HollowmereAuthoring.AuthorAll(null, 0);
+            Assert.That(first.Error, Is.Null, first.Error);
+            Assert.That(first.Blocked, Is.Empty, "first-run prerequisites: " + string.Join("; ", first.Blocked));
+            Assert.That(first.BakeOk && first.VerifyOk, Is.True, first.Bake + " / " + first.Verify);
+
             StudioRuntime runtime = StudioServices.Runtime;
             int journalBefore = runtime.Journal.List().Count;
             SortedDictionary<string, string> before = Snapshot();

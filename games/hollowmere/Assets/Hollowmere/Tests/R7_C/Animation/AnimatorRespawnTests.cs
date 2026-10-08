@@ -33,6 +33,10 @@ namespace Hollowmere.R7_C.Animation.Tests
         public void SetUp()
         {
             pumpWasEnabled = GameCoreApplicationPump.IsEnabled;
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+            {
+                Assert.Ignore("W-PLUG-02 requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native.");
+            }
         }
 
         [TearDown]

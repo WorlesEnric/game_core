@@ -1,0 +1,18 @@
+[
+  {
+    "command": [
+      "python3",
+      "tools/check_package_metadata.py"
+    ],
+    "exitCode": 0,
+    "output": "check_package_metadata.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/check_game_core_csharp.py"
+    ],
+    "exitCode": 0,
+    "output": "check_game_core_csharp.log"
+  }
+]

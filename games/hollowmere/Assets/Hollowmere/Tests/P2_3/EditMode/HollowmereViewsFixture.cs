@@ -28,6 +28,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         protected static readonly IReadOnlyList<string> BackedUp = Array.AsReadOnly(new[]
         {
             Root + "/Dialogue/Graphs/Maren.asset",
+            Root + "/Rules/HollowmereContent.asset",
             Root + "/Items/Lantern.asset",
             Root + "/Items/OldCoin.asset",
             Root + "/Items/GateKey.asset",

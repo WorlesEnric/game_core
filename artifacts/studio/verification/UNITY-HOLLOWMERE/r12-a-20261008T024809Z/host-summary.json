@@ -1,0 +1,24 @@
+{
+  "samples": 295,
+  "foreignProjectSessionSamples": 0,
+  "minimumHomeFreeGiB": 33.61897659301758,
+  "finalHomeFreeGiB": 33.623863220214844,
+  "reserveGiB": 28,
+  "monitorScope": "Raw Unity process count (including name-based import workers); only foreign omp/codex cwd under ~/wkspace/gc-studio. Samples cover part of first broad EditMode through final PlayMode; initial focused launches checked separately.",
+  "operations": "No etosd operations, key inspection, pairing changes, worker tasks, paid provider calls or disk reclamation.",
+  "maxRawUnityProcesses": 3,
+  "multiProcessSamples": [
+    {
+      "unix": 1791429016.885547,
+      "editors": [
+        1203082,
+        1208526,
+        1208557
+      ],
+      "foreignProjectSessions": [],
+      "homeFreeBytes": 36105199616
+    }
+  ],
+  "maxConcurrentWrapperLaunches": 1,
+  "classificationCaveat": "Monitor used the exact -assetImportWorker argument instead of the allocator's AssetImportWorker substring predicate. One guide sample includes three raw Unity PIDs. Guide log lines 840-841 and 1140/1145 show its two import workers; association of the two extra PIDs is inferred, not retained argv proof. All wrapper launches were serialized; do not interpret this raw process maximum as three Editors."
+}

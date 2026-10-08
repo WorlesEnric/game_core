@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="30" result="Failed(Child)" total="30" passed="28" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:24Z" duration="27.0877816">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="623" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:24Z" duration="27.087782" total="30" passed="28" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1496" name="Hollowmere.P1_7b.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P1_7b.EditMode.Tests.dll" runstate="Runnable" testcasecount="28" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:21Z" duration="24.315282" total="28" passed="26" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1138214" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1497" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="28" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:21Z" duration="24.314751" total="28" passed="26" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1498" name="P1_7b" fullname="Hollowmere.P1_7b" runstate="Runnable" testcasecount="28" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:21Z" duration="24.314578" total="28" passed="26" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1499" name="EditMode" fullname="Hollowmere.P1_7b.EditMode" runstate="Runnable" testcasecount="28" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:21Z" duration="24.314440" total="28" passed="26" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1500" name="Tests" fullname="Hollowmere.P1_7b.EditMode.Tests" runstate="Runnable" testcasecount="28" result="Failed" site="Child" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:51:21Z" duration="24.314203" total="28" passed="26" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1460" name="ConnectRegionsUndoTests" fullname="Hollowmere.P1_7b.EditMode.Tests.ConnectRegionsUndoTests" classname="Hollowmere.P1_7b.EditMode.Tests.ConnectRegionsUndoTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:50:59Z" duration="2.125292" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1461" name="ConnectRegions_OnTheHollowmereWorld_UndoesThroughTheJournal" fullname="Hollowmere.P1_7b.EditMode.Tests.ConnectRegionsUndoTests.ConnectRegions_OnTheHollowmereWorld_UndoesThroughTheJournal" methodname="ConnectRegions_OnTheHollowmereWorld_UndoesThroughTheJournal" classname="Hollowmere.P1_7b.EditMode.Tests.ConnectRegionsUndoTests" runstate="Runnable" seed="975014270" result="Passed" start-time="2026-10-08 02:50:57Z" end-time="2026-10-08 02:50:59Z" duration="2.110469" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[stamp after apply sha256:2d7e60f11ead88a319d4dfb7859fb651b370bfc193efe96779c4f7ce6ef514b0, after flush sha256:2d7e60f11ead88a319d4dfb7859fb651b370bfc193efe96779c4f7ce6ef514b0
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1462" name="ExplainAndQuestTests" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-08 02:50:59Z" end-time="2026-10-08 02:51:00Z" duration="0.825533" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1467" name="B4_TheCatalogMarksStructuralFieldsOnly" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.B4_TheCatalogMarksStructuralFieldsOnly" methodname="B4_TheCatalogMarksStructuralFieldsOnly" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" seed="603483591" result="Passed" start-time="2026-10-08 02:50:59Z" end-time="2026-10-08 02:50:59Z" duration="0.116946" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1466" name="WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides" methodname="WPlug02_DespawnRespawn_KeepsTheVariantAndScaleOverrides" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" seed="1384292673" result="Passed" start-time="2026-10-08 02:50:59Z" end-time="2026-10-08 02:50:59Z" duration="0.007761" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1463" name="WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate" methodname="WPlug05_InteractionExplain_NamesTheFailedConditionOfTheLockedCausewayGate" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" seed="1519049422" result="Passed" start-time="2026-10-08 02:50:59Z" end-time="2026-10-08 02:50:59Z" duration="0.210864" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[initial: narrative.fact.gate_open: fails at #0 fact gate_open != 0 (read 0) | read fact gate_open != 0 : read 0 (fails)
+]]></output>
+                </test-case>
+                <test-case id="1465" name="WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused" methodname="WPlug07_QuestSimulate_FailureClosesDependentsTransitively_AndCyclesAreRefused" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" seed="1843971908" result="Passed" start-time="2026-10-08 02:50:59Z" end-time="2026-10-08 02:51:00Z" duration="0.439934" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[> Start start
+  QuestStarted P17bFirst
+  StageEntered 0 "Raise the flag"
+> Fail fail
+  QuestFailed P17bFirst at stage 0
+= failed at stage 0
+GP-QST-022: closes P17bSecond (prerequisite P17bFirst failed)
+GP-QST-022: closes P17bThird (prerequisite P17bFirst failed)
+]]></output>
+                </test-case>
+                <test-case id="1464" name="WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt" fullname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests.WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt" methodname="WPlug09_LogicWhyNot_NamesTheFailedConditionAndWhatWouldChangeIt" classname="Hollowmere.P1_7b.EditMode.Tests.ExplainAndQuestTests" runstate="Runnable" seed="1270215309" result="Passed" start-time="2026-10-08 02:51:00Z" end-time="2026-10-08 02:51:00Z" duration="0.043983" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[CausewayGate: narrative.fact.gate_open: fails at #0 fact gate_open != 0 (read 0)
+  read fact gate_open != 0 : read 0 (fails)
+  changed by rule BellKeepsGateOpen on FactSet would fire
+  changed by rule GateKeyOpensGate on Manual skips: count of GateKey >= 1 (read 0)
+  changed by action set OpenGate
+  changed by action set BellKeepsGateOpen.actions
+
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1468" name="IndexEdgeTests" fullname="Hollowmere.P1_7b.EditMode.Tests.IndexEdgeTests" classname="Hollowmere.P1_7b.EditMode.Tests.IndexEdgeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 02:51:00Z" end-time="2026-10-08 02:51:01Z" duration="0.767148" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1469" name="IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock" fullname="Hollowmere.P1_7b.EditMode.Tests.IndexEdgeTests.IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock" methodname="IndexEdges_HollowmereContent_TypedReferencesBecomeEdges_AndImpactOfTheLanternListsRewardAndStock" classname="Hollowmere.P1_7b.EditMode.Tests.IndexEdgeTests" runstate="Runnable" seed="572752682" result="Passed" start-time="2026-10-08 02:51:00Z" end-time="2026-10-08 02:51:01Z" duration="0.765309" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[authoring.migrateRefs: 0 changed, 0 unresolved
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1470" name="NarrativeRegistrationTests" fullname="Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests" classname="Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-08 02:51:01Z" end-time="2026-10-08 02:51:02Z" duration="1.472112" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1471" name="EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine" fullname="Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine" methodname="EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests" runstate="Runnable" seed="677380443" result="Failed" start-time="2026-10-08 02:51:01Z" end-time="2026-10-08 02:51:02Z" duration="1.446829" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  assign: state Rejected; InvalidArgs Tool 'assign' needs a target.; op1 Refused InvalidArgs Tool 'assign' needs a target.
+  Expected: True
+  But was:  False
+]]></message>
+                    <stack-trace><![CDATA[at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Apply (System.String toolId, UnityEngine.Object target, Newtonsoft.Json.Linq.JObject args) [0x00073] in /home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:103
+at Hollowmere.P1_7b.EditMode.Tests.NarrativeRegistrationTests.EveryNarrativeType_CreatesAndRegistersOnTheContentSet_ThroughTheEngine () [0x0020e] in /home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/NarrativeRegistrationTests.cs:74
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1472" name="ReadOnlyAndWorldBindingTests" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-10-08 02:51:02Z" end-time="2026-10-08 02:51:09Z" duration="7.041393" total="12" passed="11" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1480" name="LogicWhyNot_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.LogicWhyNot_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" methodname="LogicWhyNot_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1096574759" result="Passed" start-time="2026-10-08 02:51:02Z" end-time="2026-10-08 02:51:03Z" duration="0.594720" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[logic.whyNot -> {
+  "Subject": "CausewayGate",
+  "Condition": {
+    "ConditionRef": "narrative.fact.gate_open",
+    "SetName": "narrative.fact.gate_open",
+    "Known": true,
+    "Passed": false,
+    "FailedIndex": 0,
+    "FailedCondition": "fact gate_open != 0 (read 0)",
+    "Inputs": [
+      "fact gate_open != 0 : read 0 (fails)"
+    ]
+  },
+  "Passed": false,
+  "FailedCondition": "fact gate_open != 0 (read 0)",
+  "Fixes": [
+    "rule BellKeepsGateOpen on FactSet would fire",
+    "rule GateKeyOpensGate on Manual skips: count of GateKey >= 1 (read 0)",
+    "action set OpenGate",
+    "action set BellKeepsGateOpen.actions"
+  ]
+}
+]]></output>
+                </test-case>
+                <test-case id="1481" name="MutatingTool_IsStillRefusedByToolRegistryInvoke" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.MutatingTool_IsStillRefusedByToolRegistryInvoke" methodname="MutatingTool_IsStillRefusedByToolRegistryInvoke" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1551909038" result="Passed" start-time="2026-10-08 02:51:03Z" end-time="2026-10-08 02:51:03Z" duration="0.499700" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1479" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-08 02:51:03Z" end-time="2026-10-08 02:51:06Z" duration="2.932654" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1473" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;dialogue.preview&quot;,&quot;Maren&quot;,GameCore.Gameplay.Dialogue.DialogueGraphDefinition,&quot;{\&quot;facts\&quot;:\&quot;bell_rung=1\&quot;}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;dialogue.preview&quot;,&quot;Maren&quot;,GameCore.Gameplay.Dialogue.DialogueGraphDefinition,&quot;{\&quot;facts\&quot;:\&quot;bell_rung=1\&quot;}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1014093169" result="Passed" start-time="2026-10-08 02:51:03Z" end-time="2026-10-08 02:51:04Z" duration="0.689598" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[dialogue.preview -> graph Maren (entry 0)
+  [0] branch fact bell_rung >= 1 -> yes
+  [12] Maren: "The bell rang. Hollowmere can sleep again. Thank you, traveller."
+  (conversation ends)
+]]></output>
+                  </test-case>
+                  <test-case id="1474" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;quest.simulate&quot;,&quot;DrownedBell&quot;,GameCore.Gameplay.Quest.QuestDefinition,&quot;{\&quot;path\&quot;:\&quot;start; fail\&quot;}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;quest.simulate&quot;,&quot;DrownedBell&quot;,GameCore.Gameplay.Quest.QuestDefinition,&quot;{\&quot;path\&quot;:\&quot;start; fail\&quot;}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1493853320" result="Passed" start-time="2026-10-08 02:51:04Z" end-time="2026-10-08 02:51:04Z" duration="0.452594" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[quest.simulate -> > Start start
+  QuestStarted DrownedBell
+  StageEntered 0 "Rumour"
+> Fail fail
+  QuestFailed DrownedBell at stage 0
+= failed at stage 0
+]]></output>
+                  </test-case>
+                  <test-case id="1475" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;quest.inspectRuntime&quot;,&quot;DrownedBell&quot;,GameCore.Gameplay.Quest.QuestDefinition,&quot;{\&quot;state\&quot;:\&quot;\&quot;}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;quest.inspectRuntime&quot;,&quot;DrownedBell&quot;,GameCore.Gameplay.Quest.QuestDefinition,&quot;{\&quot;state\&quot;:\&quot;\&quot;}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1262676294" result="Passed" start-time="2026-10-08 02:51:04Z" end-time="2026-10-08 02:51:05Z" duration="0.472120" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[quest.inspectRuntime -> {
+  "Quest": "The Drowned Bell",
+  "Status": "inactive",
+  "Stage": 0,
+  "Branch": 0,
+  "BranchName": "",
+  "Objectives": [
+    "#0 stage 0 Fact fact heard_rumour x1",
+    "#1 stage 1 Collect Lantern x1",
+    "#2 stage 2 Fact fact gate_open x1",
+    "#3 stage 2 Reach Drowned Belfry x1",
+    "#4 stage 3 branch 1 Fact fact ending_a x1",
+    "#5 stage 3 branch 2 Fact fact ending_b x1",
+    "#6 stage 3 branch 3 Fact fact ending_c x1"
+  ],
+  "Prerequisites": [],
+  "ClosesOnFailure": [],
+  "Source": "initial"
+}
+]]></output>
+                  </test-case>
+                  <test-case id="1476" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;logic.explain&quot;,&quot;BellKeepsGateOpen&quot;,GameCore.Gameplay.Logic.RuleDefinition,&quot;{}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;logic.explain&quot;,&quot;BellKeepsGateOpen&quot;,GameCore.Gameplay.Logic.RuleDefinition,&quot;{}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1150437161" result="Passed" start-time="2026-10-08 02:51:05Z" end-time="2026-10-08 02:51:05Z" duration="0.427593" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[logic.explain -> rule BellKeepsGateOpen: FIRES
+trigger FactSet of bell_rung = 1
+limits once=yes cooldown=0ms maxFires=0
+  run set fact gate_open = 1
+
+]]></output>
+                  </test-case>
+                  <test-case id="1477" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;logic.test&quot;,&quot;BellKeepsGateOpen&quot;,GameCore.Gameplay.Logic.RuleDefinition,&quot;{\&quot;state\&quot;:\&quot;fact.bell_rung=1\&quot;}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;logic.test&quot;,&quot;BellKeepsGateOpen&quot;,GameCore.Gameplay.Logic.RuleDefinition,&quot;{\&quot;state\&quot;:\&quot;fact.bell_rung=1\&quot;}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1415554531" result="Passed" start-time="2026-10-08 02:51:05Z" end-time="2026-10-08 02:51:06Z" duration="0.436376" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[logic.test -> rule BellKeepsGateOpen: FIRES
+trigger FactSet of bell_rung = 1
+limits once=yes cooldown=0ms maxFires=0
+  run set fact gate_open = 1
+
+]]></output>
+                  </test-case>
+                  <test-case id="1478" name="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;interaction.explain&quot;,&quot;CausewayGate&quot;,GameCore.Gameplay.Interaction.InteractableDefinition,&quot;{\&quot;state\&quot;:\&quot;\&quot;}&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean(&quot;interaction.explain&quot;,&quot;CausewayGate&quot;,GameCore.Gameplay.Interaction.InteractableDefinition,&quot;{\&quot;state\&quot;:\&quot;\&quot;}&quot;)" methodname="PureTool_IsInvokableThroughToolRegistryInvoke_AndLeavesItsTargetClean" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="627551467" result="Passed" start-time="2026-10-08 02:51:06Z" end-time="2026-10-08 02:51:06Z" duration="0.448388" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[interaction.explain -> {
+  "ConditionRef": "narrative.fact.gate_open",
+  "SetName": "narrative.fact.gate_open",
+  "Known": true,
+  "Passed": false,
+  "FailedIndex": 0,
+  "FailedCondition": "fact gate_open != 0 (read 0)",
+  "Inputs": [
+    "fact gate_open != 0 : read 0 (fails)"
+  ]
+}
+]]></output>
+                  </test-case>
+                </test-suite>
+                <test-suite type="ParameterizedMethod" id="1485" name="WorldTool_BindsEveryParameterThroughTheEngine" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTool_BindsEveryParameterThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 02:51:06Z" end-time="2026-10-08 02:51:08Z" duration="1.551657" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1482" name="WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.connectRegions&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.connectRegions&quot;)" methodname="WorldTool_BindsEveryParameterThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="338764415" result="Passed" start-time="2026-10-08 02:51:06Z" end-time="2026-10-08 02:51:07Z" duration="0.414451" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1483" name="WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.addPortal&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.addPortal&quot;)" methodname="WorldTool_BindsEveryParameterThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="2044930224" result="Passed" start-time="2026-10-08 02:51:07Z" end-time="2026-10-08 02:51:07Z" duration="0.618250" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1484" name="WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.setSpawnPoint&quot;)" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTool_BindsEveryParameterThroughTheEngine(&quot;world.setSpawnPoint&quot;)" methodname="WorldTool_BindsEveryParameterThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="63951654" result="Passed" start-time="2026-10-08 02:51:07Z" end-time="2026-10-08 02:51:08Z" duration="0.516049" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+                <test-case id="1486" name="WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine" fullname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine" methodname="WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine" classname="Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests" runstate="Runnable" seed="1298877368" result="Failed" label="Error" start-time="2026-10-08 02:51:08Z" end-time="2026-10-08 02:51:09Z" duration="1.459287" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[UnityEngine.MissingReferenceException : The object of type 'GameCore.Gameplay.World.RegionDefinition' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.]]></message>
+                    <stack-trace><![CDATA[  at UnityEngine.Object+MarshalledUnityObject.TryThrowEditorNullExceptionObject (UnityEngine.Object unityObj, System.String parameterName) [0x00064] in /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/UnityEngineObject.bindings.cs:870 
+  at UnityEngine.Bindings.ThrowHelper.ThrowNullReferenceException (System.Object obj) [0x00010] in /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/BindingsHelpers.cs:61 
+  at UnityEngine.Object.GetName () [0x00006] in <71744785ee784880bddd77397af4a2b6>:0 
+  at UnityEngine.Object.get_name () [0x00001] in /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/UnityEngineObject.bindings.cs:226 
+  at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.Ref (UnityEngine.Object target, System.Nullable`1[T] scope) [0x00013] in /home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:88 
+  at Hollowmere.P1_7b.EditMode.Tests.HardeningTestBed.RefToken (UnityEngine.Object target) [0x00000] in /home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/HardeningTestBed.cs:92 
+  at Hollowmere.P1_7b.EditMode.Tests.ReadOnlyAndWorldBindingTests.WorldTools_ConnectAddPortalAndSetSpawnPoint_ApplyThroughTheEngine () [0x0011a] in /home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Assets/Hollowmere/Tests/P1_7b/EditMode/ReadOnlyAndWorldBindingTests.cs:142 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <297b518d2c9f4ee5bb6b049e9ead4f70>:0 ]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1487" name="ToolJournalTests" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-08 02:51:09Z" end-time="2026-10-08 02:51:21Z" duration="12.080808" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1488" name="Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia" methodname="Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="1908669495" result="Passed" start-time="2026-10-08 02:51:09Z" end-time="2026-10-08 02:51:11Z" duration="1.278927" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1491" name="DialogueTool_SetConsequence_IsJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.DialogueTool_SetConsequence_IsJournaled" methodname="DialogueTool_SetConsequence_IsJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="1909714134" result="Passed" start-time="2026-10-08 02:51:11Z" end-time="2026-10-08 02:51:12Z" duration="1.313268" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1490" name="InteractionTools_LinkConditionSetActionsExplain_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.InteractionTools_LinkConditionSetActionsExplain_AreJournaled" methodname="InteractionTools_LinkConditionSetActionsExplain_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="1831772835" result="Passed" start-time="2026-10-08 02:51:12Z" end-time="2026-10-08 02:51:13Z" duration="1.392643" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1493" name="InventoryTools_SetPriceAndBindUse_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.InventoryTools_SetPriceAndBindUse_AreJournaled" methodname="InventoryTools_SetPriceAndBindUse_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="1267549883" result="Passed" start-time="2026-10-08 02:51:13Z" end-time="2026-10-08 02:51:15Z" duration="1.642320" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1494" name="LogicTools_WhyNotAndMigrateRefs_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.LogicTools_WhyNotAndMigrateRefs_AreJournaled" methodname="LogicTools_WhyNotAndMigrateRefs_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="6515022" result="Passed" start-time="2026-10-08 02:51:15Z" end-time="2026-10-08 02:51:16Z" duration="1.273945" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1489" name="NpcTools_SetDialogueAndAppearance_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.NpcTools_SetDialogueAndAppearance_AreJournaled" methodname="NpcTools_SetDialogueAndAppearance_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="1161516917" result="Passed" start-time="2026-10-08 02:51:16Z" end-time="2026-10-08 02:51:18Z" duration="1.859072" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1492" name="QuestTools_BranchConsequencePrerequisitesInspect_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.QuestTools_BranchConsequencePrerequisitesInspect_AreJournaled" methodname="QuestTools_BranchConsequencePrerequisitesInspect_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="168853105" result="Passed" start-time="2026-10-08 02:51:18Z" end-time="2026-10-08 02:51:20Z" duration="1.650264" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1495" name="WorldTools_ConfigurePortalAndRegionBounds_AreJournaled" fullname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.WorldTools_ConfigurePortalAndRegionBounds_AreJournaled" methodname="WorldTools_ConfigurePortalAndRegionBounds_AreJournaled" classname="Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests" runstate="Runnable" seed="25540688" result="Passed" start-time="2026-10-08 02:51:20Z" end-time="2026-10-08 02:51:21Z" duration="1.666442" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1700" name="Hollowmere.P4_2.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/r12-a/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:24Z" duration="2.746916" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1138214" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1701" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:24Z" duration="2.744797" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1702" name="P4_2" fullname="Hollowmere.P4_2" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:24Z" duration="2.744080" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1695" name="RetainedCandidateTests" fullname="Hollowmere.P4_2.RetainedCandidateTests" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:24Z" duration="2.742830" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1697" name="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" methodname="R11_A_ExplicitDuplicateInTemporaryContentSetStillReportsGpLog002" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="1575772428" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:21Z" duration="0.136159" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1696" name="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" fullname="Hollowmere.P4_2.RetainedCandidateTests.R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" methodname="R11_A_RetainedFerrymanCandidateEnrollsOnceAppliesAndUndoes" classname="Hollowmere.P4_2.RetainedCandidateTests" runstate="Runnable" seed="342022296" result="Passed" start-time="2026-10-08 02:51:21Z" end-time="2026-10-08 02:51:24Z" duration="2.604880" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[GameCore.Studio/etos] candidate cs_01M4BWN4KVG9T8HHCPRYQH10PE staged in 251 ms (0 artifact(s) verified)
+[GameCore.Studio/engine] applied cs_01M4BWN4KVG9T8HHCPRYQH10PE -> Applied (7 op(s), 299.7 ms)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u2)
+[GameCore.Studio/engine] Target scope inferred as Definition from the tool/type intersection. (ScopeInferred: Target scope inferred as Definition from the tool/type intersection. @ op u5)
+[GameCore.Studio/engine] history apply cs_01M4CPRCRH5AB21J55GBZ8ADKK -> Applied (7 op(s), 380.8 ms)
+[GameCore.Studio/history] undid cs_01M4BWN4KVG9T8HHCPRYQH10PE (7 inverse op(s))
+Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

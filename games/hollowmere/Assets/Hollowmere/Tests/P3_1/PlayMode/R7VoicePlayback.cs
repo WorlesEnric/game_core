@@ -12,6 +12,16 @@ namespace Hollowmere.P3_1.PlayMode.Tests
 {
     public sealed partial class FullQuestHeadless
     {
+        [SetUp]
+        public void RequireNativeVoicePrerequisites()
+        {
+            if (TestContext.CurrentContext.Test.MethodName == nameof(R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip)
+                && SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+            {
+                Assert.Ignore("W-PLUG-11 native voice playback requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native.");
+            }
+        }
+
         [UnityTest]
         [Explicit("Native audio acceptance: select this case in a graphics-enabled batch Editor.")]
         public IEnumerator R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip()

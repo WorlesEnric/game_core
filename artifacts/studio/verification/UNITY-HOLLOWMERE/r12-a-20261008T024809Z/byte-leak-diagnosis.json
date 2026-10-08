@@ -1,0 +1,12 @@
+{
+  "preimageLength": 8346,
+  "leakedLength": 8418,
+  "differingOffset": 8359,
+  "expectedByte": 49,
+  "actualByte": 48,
+  "encoding": "First digit of fileID: 11400000 in appended temporary ViewsTestGraph reference; missing graph normalizes to fileID: 0",
+  "leakingCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereEditingViewsTests.R9C_AddChoiceFromChoice_PreservesBothOptionsAndUndoBytes",
+  "fixture": "HollowmereViewsFixture.BackUp omits HollowmereContent; SaveAssets then DeleteAsset(TempFolder)",
+  "classification": "test teardown isolation defect",
+  "reproductionXml": "leak-before.xml"
+}

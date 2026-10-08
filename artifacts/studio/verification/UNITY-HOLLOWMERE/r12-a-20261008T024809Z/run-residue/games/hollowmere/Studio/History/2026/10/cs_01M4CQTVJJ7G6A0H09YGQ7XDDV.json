@@ -1,0 +1,379 @@
+{
+  "id": "cs_01M4CQTVJJ7G6A0H09YGQ7XDDV",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Dialogue: add line",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "dialogue.addLine",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+        "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+        "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+        "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:baebb715c44f1ba4903122fa783c2391ff405f694927d855d996b6ca7aff577b"
+      },
+      "args": {
+        "text": "The Drowned Bell guides travellers home.",
+        "after": 6,
+        "speaker": "Maren"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+                "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+                "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+              },
+              "args": {
+                "fields": {
+                  "nodes": [
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "131e9a71-1319-41a1-88c9-0b923510ae1b",
+                        "global": "GlobalObjectId_V1-3-cbdd4a8b5176fcea6841a70d15db8d3c-11400000-0",
+                        "assetGuid": "cbdd4a8b5176fcea6841a70d15db8d3c",
+                        "path": "Assets/Hollowmere/Rules/Conditions/BellRung.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "9fa5e8cb-4aaf-4a16-bbac-05bf75af633a",
+                        "global": "GlobalObjectId_V1-3-25070db6c5ef45f9bbc94d6547da39f1-11400000-0",
+                        "assetGuid": "25070db6c5ef45f9bbc94d6547da39f1",
+                        "path": "Assets/Hollowmere/Rules/Conditions/HeardRumour.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Traveller, you look half drowned yourself. Sit a moment. I am Maren, the healer here.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-f897124a7f0c7103ab101d1bc29dfcf5-8300000-0",
+                        "assetGuid": "f897124a7f0c7103ab101d1bc29dfcf5",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_greet.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Since the flood the bell in the old belfry has been silent, and the marsh has gone dark and hungry.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-5cac189b9b64139d78bb343d7af7ccdc-8300000-0",
+                        "assetGuid": "5cac189b9b64139d78bb343d7af7ccdc",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_rumour.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Action",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": {
+                        "kind": "Definition",
+                        "authoringId": "266d333d-2e6d-47e6-8e71-8004cf7f4aca",
+                        "global": "GlobalObjectId_V1-3-88ad7492e109d8e92b568b9d4ce3a92d-11400000-0",
+                        "assetGuid": "88ad7492e109d8e92b568b9d4ce3a92d",
+                        "path": "Assets/Hollowmere/Rules/Actions/MarenIntro.asset"
+                      },
+                      "options": []
+                    },
+                    {
+                      "kind": "Choice",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Will you go to the belfry?",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": [
+                        {
+                          "text": "How do I cross the marsh?",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        },
+                        {
+                          "text": "Where would I find a lantern?",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        },
+                        {
+                          "text": "I will go.",
+                          "condition": null,
+                          "hideWhenUnavailable": false
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Warden Hale keeps the causeway gate and lets no one into Blackmere without a light. Past it, Odd's ferry, or the old punt by the jetty.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-926ffe37e1bd19903a03bddf3bc329d3-8300000-0",
+                        "assetGuid": "926ffe37e1bd19903a03bddf3bc329d3",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_cross.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Bram sells them at the inn. There was one in the barn once. And a clever hand can make one at the tinker's bench: an oil flask, and dried herbs for a wick.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-4b759a6e7c9a46ae88cc058276c30f2c-8300000-0",
+                        "assetGuid": "4b759a6e7c9a46ae88cc058276c30f2c",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_lantern.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Then go with care. The marsh keeps what it takes.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-5ad81d1545019570a90eb9a9f79a24a7-8300000-0",
+                        "assetGuid": "5ad81d1545019570a90eb9a9f79a24a7",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_go.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Branch",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "",
+                      "voiceClip": null,
+                      "portrait": null,
+                      "condition": {
+                        "kind": "Definition",
+                        "authoringId": "28e34721-a716-4890-a863-fb0cfba9df30",
+                        "global": "GlobalObjectId_V1-3-850520e0be842c7e9830bf255c4a9069-11400000-0",
+                        "assetGuid": "850520e0be842c7e9830bf255c4a9069",
+                        "path": "Assets/Hollowmere/Rules/Conditions/ShrineLit.asset"
+                      },
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The shrine is lit? I felt it tonight, like a held breath let go.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-71c02f1cbae555acfb8715ddd1724fd1-8300000-0",
+                        "assetGuid": "71c02f1cbae555acfb8715ddd1724fd1",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_lit.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "Find a lantern, then the causeway. The bell is waiting.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-c4dd9252bc65f65b89bfcdff4e9e5d26-8300000-0",
+                        "assetGuid": "c4dd9252bc65f65b89bfcdff4e9e5d26",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_again.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    },
+                    {
+                      "kind": "Line",
+                      "speaker": "",
+                      "speakerEntityId": "",
+                      "text": "The bell rang. Hollowmere can sleep again. Thank you, traveller.",
+                      "voiceClip": {
+                        "kind": "Asset",
+                        "global": "GlobalObjectId_V1-1-4be95551503f3a5359dbbdc4121c51f7-8300000-0",
+                        "assetGuid": "4be95551503f3a5359dbbdc4121c51f7",
+                        "path": "Assets/Hollowmere/Media/Voices/Maren_rung.wav"
+                      },
+                      "portrait": null,
+                      "condition": null,
+                      "actions": null,
+                      "options": []
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": 0,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 1
+                    },
+                    {
+                      "from": 1,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 2
+                    },
+                    {
+                      "from": 2,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 3
+                    },
+                    {
+                      "from": 3,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 4
+                    },
+                    {
+                      "from": 4,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 5
+                    },
+                    {
+                      "from": 5,
+                      "port": "Option",
+                      "option": 0,
+                      "to": 6
+                    },
+                    {
+                      "from": 5,
+                      "port": "Option",
+                      "option": 1,
+                      "to": 7
+                    },
+                    {
+                      "from": 5,
+                      "port": "Option",
+                      "option": 2,
+                      "to": 8
+                    },
+                    {
+                      "from": 1,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 9
+                    },
+                    {
+                      "from": 9,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 10
+                    },
+                    {
+                      "from": 9,
+                      "port": "Else",
+                      "option": 0,
+                      "to": 11
+                    },
+                    {
+                      "from": 0,
+                      "port": "Next",
+                      "option": 0,
+                      "to": 12
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "8e52f233-3797-4396-89c4-24f00fceef8a",
+                "global": "GlobalObjectId_V1-3-b12e0fe862718ab97bdba909d90007c1-11400000-0",
+                "assetGuid": "b12e0fe862718ab97bdba909d90007c1",
+                "path": "Assets/Hollowmere/Dialogue/Graphs/Maren.asset"
+              },
+              "stamp": "sha256:e64e7855f565d1aede3e7ffc8bcfd494ca141490d7f6f0d9c0e60e634c5d8be5"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "policy": "AllOrNothing",
+  "timestamps": {
+    "requested": "2026-10-08T03:10:13.085Z",
+    "applied": "2026-10-08T03:10:13.122Z"
+  }
+}

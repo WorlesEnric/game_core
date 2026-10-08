@@ -21,7 +21,9 @@ using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Hollowmere.P1_7b.EditMode.Tests
 {
@@ -55,6 +57,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             _bed?.Dispose();
             _bed = null;
             _f = null;
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         }
 
         [Test]
@@ -79,6 +82,21 @@ namespace Hollowmere.P1_7b.EditMode.Tests
         [Test]
         public void NpcTools_SetDialogueAndAppearance_AreJournaled()
         {
+            string scenePath = HardeningTestBed.TempFolder + "/P17bNpc.unity";
+            F.RegionA.Configure("NPC Region", scenePath);
+            F.RegionA.SetBounds(Vector3.zero, new Vector3(60f, 20f, 60f));
+            WorldDefinition world = Bed.Create<WorldDefinition>("P17bNpcWorld", w =>
+            {
+                w.AddRegion(F.RegionA);
+                w.SetStartRegion(F.RegionA);
+            });
+            F.Content.Configure(world, F.Content.Definitions);
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            AuthoredRegion marker = new GameObject("NPC Region").AddComponent<AuthoredRegion>();
+            marker.Configure(F.RegionA, null);
+            marker.Bounds.Configure(F.RegionA.Bounds.center, F.RegionA.Bounds.size);
+            Assert.That(EditorSceneManager.SaveScene(scene, scenePath), Is.True);
+            Bed.Runtime.Index.Rebuild();
             Bed.Apply("npc.setDialogue", F.Npc, new JObject { ["graph"] = Bed.RefToken(F.Graph) });
             Assert.That(F.Npc.Dialogue, Is.SameAs(F.Graph));
             Assert.That(F.Npc.DialogueGraph, Is.EqualTo(F.Graph.AuthoringId), "the conversation starter gets the graph's authoring id");

@@ -1,0 +1,151 @@
+{
+  "editmode": [
+    {
+      "case": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+      "label": "Ignored",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "case": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+      "label": "Ignored",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "case": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+      "label": "Ignored",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "case": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+      "label": "Ignored",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "case": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+      "label": "Ignored",
+      "reason": "R2-29: window event delivery requires a graphical Editor."
+    },
+    {
+      "case": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+      "label": "Ignored",
+      "reason": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+    },
+    {
+      "case": "GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_GraphicalClampedOriginReportsTimeout",
+      "label": "Ignored",
+      "reason": "P42-UI-02: native clamping requires the graphical :1 lane."
+    },
+    {
+      "case": "GameCore.Studio.UI.Tests.ViewportWindowTests.R7_D_W_UI_02_MarqueeChooser_OnlyAmbiguityOpensAndFilteringPreservesOriginalOperation",
+      "label": "Ignored",
+      "reason": "W-UI-02 popup interaction requires a graphical editor panel; geometry classification is covered without graphics."
+    },
+    {
+      "case": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+      "label": "Ignored",
+      "reason": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+    },
+    {
+      "case": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+      "label": "Ignored",
+      "reason": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+    },
+    {
+      "case": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+      "label": "Ignored",
+      "reason": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+    },
+    {
+      "case": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+      "label": "Ignored",
+      "reason": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+    },
+    {
+      "case": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+      "label": "Ignored",
+      "reason": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+    },
+    {
+      "case": "Hollowmere.P4_2.CatalogLiveTests.R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "case": "Hollowmere.P4_2.DirectMediaTests.R2_38_DirectImagePriceRefusalIsRecorded",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "case": "Hollowmere.P4_2.DirectMediaTests.R2_38_TtsImportsVerifiedBytesThroughEngineAndUndoes",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "case": "Hollowmere.P4_2.LayoutAcceptanceTests.R2_30_1280By720WorkspaceContainsEveryStudioPanel",
+      "label": "Ignored",
+      "reason": "P4.2 physical layout requires a graphical Editor; run the layout qualification command."
+    },
+    {
+      "case": "Hollowmere.P4_2.MemoryAndPumpAcceptanceTests.R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump",
+      "label": "Ignored",
+      "reason": "P4.2 ten-cycle viewport acceptance requires a graphics device."
+    },
+    {
+      "case": "Hollowmere.P4_2.VoiceAcceptanceTests.R2_38_W_VOICE_01_DestructiveSpeechNeverSubmits",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command."
+    },
+    {
+      "case": "Hollowmere.R4_A.VirtualVoiceSelfTest.P42_VOICE_01_VirtualMicrophoneFixtureFinalContainsDelete",
+      "label": "Ignored",
+      "reason": "Requires explicit realtime-operation authorization and GAMECORE_R4A_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+    },
+    {
+      "case": "Hollowmere.R5_B.VirtualVoiceSelfTest.Request6_VirtualMicrophoneBothRetainedLinesTranscribe",
+      "label": "Ignored",
+      "reason": "Requires explicit realtime-operation authorization and GAMECORE_R5B_VOICE_SELF_TEST=1; no paid calls in the offline packet."
+    },
+    {
+      "case": "Hollowmere.R7_C.Animation.Tests.AnimatorRespawnTests.W_PLUG_02_AnimatorEvaluatesCommittedVariant_AndRespawnRetainsOverrides",
+      "label": "Ignored",
+      "reason": "SetUp : W-PLUG-02 requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native."
+    },
+    {
+      "case": "Hollowmere.R7_C.NativeMediaAcceptance.W_PLUG_01_TravelReleasesRegionNativeMediaWithinFivePercentPeak",
+      "label": "Ignored",
+      "reason": "SetUp : W-PLUG-01 native-media travel requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native."
+    },
+    {
+      "case": "P42b.Acceptance.TimingTests.R2_38_B_APPLY_20MarshAllNpcEdits",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 timing acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py timing."
+    },
+    {
+      "case": "P42b.Acceptance.TimingTests.R2_38_B_APPLY_20RealSingleTargetEdits",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 timing acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py timing."
+    },
+    {
+      "case": "P42b.Acceptance.TimingTests.R2_38_B_COMPOSE_20PreparesInReferenceWorld",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 timing acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py timing."
+    },
+    {
+      "case": "P42b.Acceptance.TimingTests.R2_38_B_SELECT_100PicksAnd500CandidateMarquee",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 timing acceptance requires an explicit GAMECORE_P42_EVIDENCE directory; run artifacts/studio/verification/TOOLS/rows-p42l.py timing."
+    },
+    {
+      "case": "P42d.Live.NoviceGuideTests.R2_38_Guide_NpcAndDialogueContextToolsUndo",
+      "label": "Ignored",
+      "reason": "SetUp : P4.2 novice guide acceptance requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py guide."
+    }
+  ],
+  "playmode": [
+    {
+      "case": "Hollowmere.P3_1.PlayMode.Tests.FullQuestHeadless.R7C_WPLUG11_ActualMarenLinePlaysItsNativeVoiceClip",
+      "label": "Ignored",
+      "reason": "SetUp : W-PLUG-11 native voice playback requires a graphics-enabled Editor (omit -nographics); run artifacts/studio/verification/TOOLS/rows-p42l.py native."
+    }
+  ]
+}

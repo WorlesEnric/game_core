@@ -28,8 +28,14 @@ namespace Hollowmere.R5_B
             Assert.That((bool)witness["verified"]!, Is.True);
             Assert.That((bool)witness["canAdmit"]!, Is.True);
             Assert.That((string)witness["label"]!, Is.EqualTo("not staged"));
-            var service = new RetainedVerdictService((JObject)witness["verdict"]!);
-            string folder = Path.Combine(Repo, "samples/mechanisms/pressure-plate/candidate");
+            // The original witness records the missing durable badge. Replay the later production
+            // stage result, whose signed delta includes the world and predicted combined catalog.
+            JObject currentWitness = JObject.Parse(File.ReadAllText(Path.Combine(Repo,
+                "artifacts/studio/verification/W-MECH-01/p42e-stage-review-20261006T144510.582506Z/panel-verdict.json")));
+            Assert.That((bool)currentWitness["verified"]!, Is.True);
+            Assert.That((bool)currentWitness["canAdmit"]!, Is.True);
+            var service = new RetainedVerdictService((JObject)currentWitness["verdict"]!);
+            string folder = Path.Combine(Repo, "artifacts/studio/workflows/P4.2e/candidate");
             ChangeSet candidate = StudioJson.Deserialize<ChangeSet>(File.ReadAllText(Path.Combine(folder, "change-set.json")));
             try
             {
