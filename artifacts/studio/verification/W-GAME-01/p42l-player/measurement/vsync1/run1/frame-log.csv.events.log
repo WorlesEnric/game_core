@@ -1,0 +1,386 @@
+[autoplay] script with 280 commands, quitAfterFrames=0 frame=1
+[autoplay] 9 waituntil ready timeout 120 frame=4
+[autoplay] 9 reached 'ready' after 0.00 s (Running)
+[autoplay] 10 mark menu frame=4
+[autoplay] 11 wait 12 frame=4
+[autoplay] 12 ui newgame frame=725
+[autoplay] 13 waituntil ready timeout 120 frame=725
+[autoplay] 13 reached 'ready' after 0.00 s (Running)
+[autoplay] 14 mark new-game frame=725
+[autoplay] 15 wait 4 frame=725
+[autoplay] 18 log a look around the square frame=965
+[autoplay] a look around the square
+[autoplay] 19 face 30 frame=965
+[autoplay] 20 wait 5 frame=965
+[autoplay] 21 face -40 frame=1266
+[autoplay] 22 wait 5 frame=1266
+[autoplay] 23 face 160 frame=1567
+[autoplay] 24 wait 5 frame=1567
+[autoplay] 25 face 0 frame=1868
+[autoplay] 26 wait 4 frame=1868
+[autoplay] 27 walk -2 -6 frame=2108
+[autoplay] 27 arrived at (-1.66, -6.92) after 2.17 s
+[autoplay] 28 mark maren frame=2238
+[autoplay] 29 approach Maren within 1.8 timeout 40 frame=2238
+[autoplay] 29 reached Maren at (-6.58, -7.22), 1.79 m, facing -127.72 after 2.43 s
+[autoplay] 30 waituntil prompt Maren timeout 15 frame=2384
+[autoplay] 30 reached 'prompt Maren' after 0.00 s (prompt Talk to Maren)
+[autoplay] 31 interact frame=2384
+[autoplay] 32 waituntil dialogue active timeout 10 frame=2384
+[autoplay] 32 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 33 wait 4 frame=2386
+[autoplay] 34 advance frame=2627
+[autoplay] 35 wait 5 frame=2627
+[autoplay] 36 advance frame=2928
+[autoplay] 37 wait 3 frame=2928
+[autoplay] 38 choose 1 frame=3108
+[autoplay] 39 wait 6 frame=3108
+[autoplay] 40 advance frame=3468
+[autoplay] 41 waituntil dialogue none timeout 10 frame=3468
+[autoplay] 41 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 42 waituntil fact heard_rumour >= 1 timeout 10 frame=3469
+[autoplay] 42 reached 'fact heard_rumour >= 1' after 0.00 s (fact heard_rumour=1)
+[autoplay] 43 wait 2 frame=3469
+[autoplay] 45 mark coins frame=3589
+[autoplay] 46 approach "Coins (square)" within 1.4 timeout 30 frame=3589
+[autoplay] 46 reached Coins (square) at (2.77, -3.57), 1.36 m, facing 65.00 after 4.22 s
+[autoplay] 47 waituntil prompt coins timeout 10 frame=3842
+[autoplay] 47 reached 'prompt coins' after 0.00 s (prompt Pick up the coins)
+[autoplay] 48 interact frame=3842
+[autoplay] 49 waituntil item OldCoin >= 5 timeout 10 frame=3842
+[autoplay] 49 reached 'item OldCoin >= 5' after 0.07 s (item OldCoin=5)
+[autoplay] 50 wait 2 frame=3846
+[autoplay] 52 log Pip knows the shrine order frame=3967
+[autoplay] Pip knows the shrine order
+[autoplay] 53 mark pip frame=3967
+[autoplay] 54 approach Pip within 1.8 timeout 60 frame=3967
+[autoplay] 54 reached Pip at (8.27, -2.37), 1.77 m, facing 78.05 after 2.25 s
+[autoplay] 55 waituntil prompt Pip timeout 15 frame=4102
+[autoplay] 55 reached 'prompt Pip' after 0.00 s (prompt Talk to Pip)
+[autoplay] 56 interact frame=4102
+[autoplay] 57 waituntil dialogue active timeout 10 frame=4102
+[autoplay] 57 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 58 wait 5 frame=4104
+[autoplay] 59 advance frame=4404
+[autoplay] 60 wait 3 frame=4404
+[autoplay] 61 choose 1 frame=4584
+[autoplay] 62 wait 7 frame=4584
+[autoplay] 63 advance frame=5005
+[autoplay] 64 waituntil dialogue none timeout 10 frame=5005
+[autoplay] 64 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 65 wait 4 frame=5006
+[autoplay] 67 mark bram frame=5247
+[autoplay] 68 walk 6 -8 frame=5247
+[autoplay] 68 arrived at (6.37, -7.08) after 2.03 s
+[autoplay] 69 approach Bram within 1.8 timeout 40 frame=5369
+[autoplay] 69 reached Bram at (9.91, -11.61), 1.76 m, facing 141.95 after 2.30 s
+[autoplay] 70 waituntil prompt Bram timeout 15 frame=5507
+[autoplay] 70 reached 'prompt Bram' after 0.00 s (prompt Talk to Bram)
+[autoplay] 71 interact frame=5507
+[autoplay] 72 waituntil dialogue active timeout 10 frame=5507
+[autoplay] 72 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 73 wait 3 frame=5509
+[autoplay] 74 advance frame=5689
+[autoplay] 75 wait 2 frame=5689
+[autoplay] 76 choose 0 frame=5810
+[autoplay] 77 wait 3 frame=5810
+[autoplay] 78 advance frame=5991
+[autoplay] 79 waituntil dialogue none timeout 10 frame=5991
+[autoplay] 79 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 80 waituntil item Lantern >= 1 timeout 10 frame=5992
+[autoplay] 80 reached 'item Lantern >= 1' after 0.00 s (item Lantern=1)
+[autoplay] 81 wait 2 frame=5992
+[autoplay] 82 interact frame=6112
+[autoplay] 83 waituntil dialogue active timeout 10 frame=6112
+[autoplay] 83 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 84 wait 2 frame=6114
+[autoplay] 85 advance frame=6235
+[autoplay] 86 wait 2 frame=6235
+[autoplay] 87 choose 2 frame=6356
+[autoplay] 88 wait 3 frame=6356
+[autoplay] 89 advance frame=6536
+[autoplay] 90 waituntil dialogue none timeout 10 frame=6536
+[autoplay] 90 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 91 wait 2 frame=6537
+[autoplay] 93 log the healer's garden and the barn on the way out frame=6649
+[autoplay] the healer's garden and the barn on the way out
+[autoplay] 94 walk 4 -6 frame=6649
+[autoplay] 94 arrived at (4.71, -6.67) after 2.87 s
+[autoplay] 95 walk 2 6 frame=6791
+[autoplay] 95 arrived at (2.26, 5.05) after 5.14 s
+[autoplay] 96 walk -6 12 frame=7096
+[autoplay] 96 arrived at (-5.33, 11.26) after 5.40 s
+[autoplay] 97 face 0 frame=7420
+[autoplay] 98 wait 10 frame=7420
+[autoplay] 99 face -90 frame=8021
+[autoplay] 100 wait 6 frame=8021
+[autoplay] 101 walk 2 4 frame=8382
+[autoplay] 101 arrived at (1.24, 4.62) after 3.83 s
+[autoplay] 102 wait 4 frame=8612
+[autoplay] 103 walk 12 1 frame=8852
+[autoplay] 103 arrived at (11.12, 1.38) after 4.32 s
+[autoplay] 104 walk 22 0 frame=9111
+[autoplay] 104 arrived at (21.02, 0.13) after 4.00 s
+[autoplay] 105 face 90 frame=9351
+[autoplay] 106 wait 4 frame=9351
+[autoplay] 107 log the road east: a last look back at the village frame=9591
+[autoplay] the road east: a last look back at the village
+[autoplay] 108 face -90 frame=9591
+[autoplay] 109 wait 8 frame=9591
+[autoplay] 110 face 90 frame=10072
+[autoplay] 111 wait 4 frame=10072
+[autoplay] 112 mark gate frame=10312
+[autoplay] 113 walk 30 0 frame=10312
+[autoplay] 113 arrived at (29.02, 0.01) after 3.20 s
+[autoplay] 114 walk 166.5 0 timeout 40 frame=10504
+[autoplay] 114 crossed a portal to (167.50, 0.00) after 2.08 s
+[autoplay] 115 waituntil region Blackmere timeout 30 frame=10629
+[autoplay] 115 reached 'region Blackmere' after 0.00 s (region Blackmere Marsh)
+[autoplay] 118 mark marsh frame=10629
+[autoplay] 119 wait 6 frame=10629
+[autoplay] 120 face 45 frame=10990
+[autoplay] 121 wait 6 frame=10990
+[autoplay] 122 face -60 frame=11351
+[autoplay] 123 wait 6 frame=11351
+[autoplay] 124 face 90 frame=11711
+[autoplay] 125 wait 3 frame=11711
+[autoplay] 126 approach Hale within 1.8 timeout 30 frame=11892
+[autoplay] 126 reached Hale at (167.50, 2.71), 1.79 m, facing -0.03 after 1.08 s
+[autoplay] 127 waituntil prompt Hale timeout 15 frame=11957
+[autoplay] 127 reached 'prompt Hale' after 0.00 s (prompt Talk to Hale)
+[autoplay] 128 interact frame=11957
+[autoplay] 129 waituntil dialogue active timeout 10 frame=11957
+[autoplay] 129 reached 'dialogue active' after 0.04 s (dialogue active)
+[autoplay] 130 wait 4 frame=11959
+[autoplay] 131 advance frame=12200
+[autoplay] 132 waituntil dialogue none timeout 10 frame=12200
+[autoplay] 132 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 133 waituntil fact gate_open >= 1 timeout 10 frame=12201
+[autoplay] 133 reached 'fact gate_open >= 1' after 0.00 s (fact gate_open=1)
+[autoplay] 134 wait 4 frame=12201
+[autoplay] 135 face 0 frame=12441
+[autoplay] 136 wait 6 frame=12441
+[autoplay] 137 face 90 frame=12802
+[autoplay] 138 wait 3 frame=12802
+[autoplay] 139 approach "Causeway Gate" within 1.6 timeout 20 frame=12983
+[autoplay] 139 reached Causeway Gate at (168.01, 2.53), 1.58 m, facing 109.64 after 0.22 s
+[autoplay] 140 waituntil prompt gate timeout 10 frame=12996
+[autoplay] 140 reached 'prompt gate' after 0.00 s (prompt The gate is barred)
+[autoplay] 141 interact frame=12996
+[autoplay] 142 wait 3 frame=12996
+[autoplay] 143 walk 172 2 frame=13176
+[autoplay] 143 arrived at (171.02, 2.13) after 1.22 s
+[autoplay] 144 walk 180 2 frame=13249
+[autoplay] 144 arrived at (179.02, 2.01) after 3.20 s
+[autoplay] 145 mark shrine frame=13441
+[autoplay] 146 walk 192 -1 frame=13441
+[autoplay] 146 arrived at (191.03, -0.77) after 4.93 s
+[autoplay] 147 approach "Shrine Lantern West" within 1.6 timeout 30 frame=13737
+[autoplay] 147 reached Shrine Lantern West at (197.64, 3.18), 1.58 m, facing 59.00 after 3.08 s
+[autoplay] 148 waituntil prompt west timeout 10 frame=13922
+[autoplay] 148 reached 'prompt west' after 0.00 s (prompt Light the west shrine lantern)
+[autoplay] 149 interact frame=13922
+[autoplay] 150 waituntil fact shrine_post_1 >= 1 timeout 10 frame=13922
+[autoplay] 150 reached 'fact shrine_post_1 >= 1' after 0.07 s (fact shrine_post_1=1)
+[autoplay] 151 wait 3 frame=13926
+[autoplay] 152 approach "Shrine Lantern Middle" within 1.6 timeout 30 frame=14107
+[autoplay] 152 reached Shrine Lantern Middle at (204.46, 2.21), 1.56 m, facing 97.60 after 2.75 s
+[autoplay] 153 waituntil prompt middle timeout 10 frame=14272
+[autoplay] 153 reached 'prompt middle' after 0.00 s (prompt Light the middle shrine lantern)
+[autoplay] 154 interact frame=14272
+[autoplay] 155 waituntil fact shrine_post_2 >= 1 timeout 10 frame=14272
+[autoplay] 155 reached 'fact shrine_post_2 >= 1' after 0.07 s (fact shrine_post_2=1)
+[autoplay] 156 wait 3 frame=14276
+[autoplay] 157 approach "Shrine Lantern East" within 1.6 timeout 30 frame=14457
+[autoplay] 157 reached Shrine Lantern East at (211.46, 3.71), 1.57 m, facing 79.25 after 2.88 s
+[autoplay] 158 waituntil prompt east timeout 10 frame=14630
+[autoplay] 158 reached 'prompt east' after 0.00 s (prompt Light the east shrine lantern)
+[autoplay] 159 interact frame=14630
+[autoplay] 160 waituntil fact shrine_lit >= 1 timeout 10 frame=14630
+[autoplay] 160 reached 'fact shrine_lit >= 1' after 0.10 s (fact shrine_lit=1)
+[autoplay] 161 mark shrine-lit frame=14636
+[autoplay] 162 wait 12 frame=14636
+[autoplay] 163 face 180 frame=15357
+[autoplay] 164 wait 8 frame=15357
+[autoplay] 165 face 0 frame=15837
+[autoplay] 166 wait 6 frame=15837
+[autoplay] 168 mark clapper frame=16197
+[autoplay] 169 walk 213 -2 frame=16197
+[autoplay] 169 arrived at (212.75, -1.04) after 1.97 s
+[autoplay] 170 walk 200 -3 frame=16315
+[autoplay] 170 arrived at (200.97, -2.85) after 4.76 s
+[autoplay] 171 approach "Bell Clapper" within 1.4 timeout 40 frame=16601
+[autoplay] 171 reached Bell Clapper at (194.70, 7.82), 1.37 m, facing -30.62 after 4.95 s
+[autoplay] 172 waituntil prompt clapper timeout 10 frame=16898
+[autoplay] 172 reached 'prompt clapper' after 0.00 s (prompt Lift the bell clapper)
+[autoplay] 173 interact frame=16898
+[autoplay] 174 waituntil item BellClapper >= 1 timeout 10 frame=16898
+[autoplay] 174 reached 'item BellClapper >= 1' after 0.07 s (item BellClapper=1)
+[autoplay] 175 wait 2 frame=16902
+[autoplay] 176 ui open.pause frame=17023
+[autoplay] 177 waituntil screen Pause timeout 10 frame=17023
+[autoplay] 177 reached 'screen Pause' after 0.02 s (screen Pause)
+[autoplay] 178 wait 1 frame=17024
+[autoplay] 179 ui open.save frame=17085
+[autoplay] 180 waituntil screen Save timeout 10 frame=17085
+[autoplay] 180 reached 'screen Save' after 0.02 s (screen Save)
+[autoplay] 181 wait 1 frame=17086
+[autoplay] 182 ui save.1 frame=17147
+[autoplay] 183 waituntil slot slot-1 timeout 20 frame=17147
+[autoplay] 183 reached 'slot slot-1' after 0.02 s (slot slot-1 exists)
+[autoplay] 184 mark saved frame=17150
+[autoplay] 185 wait 4 frame=17150
+[autoplay] 186 ui close frame=17391
+[autoplay] 187 wait 1 frame=17391
+[autoplay] 188 ui resume frame=17451
+[autoplay] 189 waituntil screen Hud timeout 10 frame=17451
+[autoplay] 189 reached 'screen Hud' after 0.02 s (screen Hud)
+[autoplay] 190 wait 2 frame=17452
+[autoplay] 192 log the satchel in the reeds frame=17573
+[autoplay] the satchel in the reeds
+[autoplay] 193 walk 190 -6 frame=17573
+[autoplay] 193 arrived at (190.32, -5.08) after 5.45 s
+[autoplay] 194 approach "Drowned Satchel" within 1.4 timeout 30 frame=17900
+[autoplay] 194 reached Drowned Satchel at (186.51, -14.73), 1.37 m, facing -158.21 after 4.15 s
+[autoplay] 195 waituntil prompt satchel timeout 10 frame=18149
+[autoplay] 195 reached 'prompt satchel' after 0.00 s (prompt Search the drowned satchel)
+[autoplay] 196 interact frame=18149
+[autoplay] 197 wait 4 frame=18149
+[autoplay] 199 mark odd frame=18390
+[autoplay] 200 walk 192 0 frame=18390
+[autoplay] 200 arrived at (191.67, -0.90) after 5.90 s
+[autoplay] 201 walk 200 16 frame=18744
+[autoplay] 201 arrived at (199.57, 15.13) after 7.15 s
+[autoplay] 202 walk 212 19.5 frame=19173
+[autoplay] 202 arrived at (211.06, 19.17) after 4.87 s
+[autoplay] 203 approach Odd within 1.8 timeout 40 frame=19465
+[autoplay] 203 reached Odd at (219.23, 19.85), 1.78 m, facing 85.19 after 3.28 s
+[autoplay] 204 waituntil prompt Odd timeout 15 frame=19662
+[autoplay] 204 reached 'prompt Odd' after 0.00 s (prompt Talk to Odd)
+[autoplay] 205 interact frame=19662
+[autoplay] 206 waituntil dialogue active timeout 10 frame=19662
+[autoplay] 206 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 207 wait 5 frame=19664
+[autoplay] 208 advance frame=19965
+[autoplay] 209 wait 3 frame=19965
+[autoplay] 210 choose 0 frame=20146
+[autoplay] 211 waituntil region Belfry timeout 30 frame=20146
+[autoplay] 211 reached 'region Belfry' after 0.03 s (region Drowned Belfry)
+[autoplay] 212 wait 4 frame=20148
+[autoplay] 215 mark belfry frame=20388
+[autoplay] 216 wait 8 frame=20388
+[autoplay] 217 face 90 frame=20869
+[autoplay] 218 wait 6 frame=20869
+[autoplay] 219 face -90 frame=21229
+[autoplay] 220 wait 6 frame=21229
+[autoplay] 221 face 0 frame=21589
+[autoplay] 222 wait 4 frame=21589
+[autoplay] 223 approach "Belfry Echo" within 1.8 timeout 30 frame=21830
+[autoplay] 223 reached Belfry Echo at (101.05, 189.56), 1.79 m, facing -36.14 after 9.20 s
+[autoplay] 224 waituntil prompt Echo timeout 15 frame=22382
+[autoplay] 224 reached 'prompt Echo' after 0.00 s (prompt Talk to Belfry Echo)
+[autoplay] 225 interact frame=22382
+[autoplay] 226 waituntil dialogue active timeout 10 frame=22382
+[autoplay] 226 reached 'dialogue active' after 0.03 s (dialogue active)
+[autoplay] 227 wait 5 frame=22384
+[autoplay] 228 advance frame=22685
+[autoplay] 229 wait 4 frame=22685
+[autoplay] 230 choose 0 frame=22925
+[autoplay] 231 wait 5 frame=22925
+[autoplay] 232 advance frame=23226
+[autoplay] 233 waituntil dialogue none timeout 10 frame=23226
+[autoplay] 233 reached 'dialogue none' after 0.02 s (dialogue none)
+[autoplay] 234 approach "Drowned Bell" within 1.8 timeout 30 frame=23227
+[autoplay] 234 reached Drowned Bell at (100.23, 196.26), 1.76 m, facing -7.51 after 2.70 s
+[autoplay] 235 waituntil prompt bell timeout 15 frame=23389
+[autoplay] 235 reached 'prompt bell' after 0.00 s (prompt Ring the bell)
+[autoplay] 236 mark ring frame=23389
+[autoplay] 237 interact frame=23389
+[autoplay] 238 waituntil fact bell_rung >= 1 timeout 10 frame=23389
+[autoplay] 238 reached 'fact bell_rung >= 1' after 0.07 s (fact bell_rung=1)
+[autoplay] 239 waituntil ending timeout 30 frame=23393
+[autoplay] 239 reached 'ending' after 3.07 s (ending True Ending C: The Freed Echo)
+[autoplay] 240 mark ending frame=23577
+[autoplay] 241 wait 24 frame=23577
+[autoplay] 244 ui restart frame=25017
+[autoplay] 245 waituntil ready timeout 120 frame=25017
+[autoplay] 245 reached 'ready' after 0.00 s (Running)
+[autoplay] 246 mark restarted frame=25017
+[autoplay] 247 wait 6 frame=25017
+[autoplay] 248 log a last look at the square before loading frame=25375
+[autoplay] a last look at the square before loading
+[autoplay] 249 face 160 frame=25375
+[autoplay] 250 wait 5 frame=25375
+[autoplay] 251 face 0 frame=25676
+[autoplay] 252 wait 4 frame=25676
+[autoplay] 253 ui open.pause frame=25916
+[autoplay] 254 waituntil screen Pause timeout 10 frame=25916
+[autoplay] 254 reached 'screen Pause' after 0.02 s (screen Pause)
+[autoplay] 255 wait 1 frame=25917
+[autoplay] 256 ui open.load frame=25978
+[autoplay] 257 waituntil screen Load timeout 10 frame=25978
+[autoplay] 257 reached 'screen Load' after 0.02 s (screen Load)
+[autoplay] 258 wait 1 frame=25979
+[autoplay] 259 ui load.1 frame=26040
+[autoplay] 260 waituntil restored timeout 60 frame=26040
+[autoplay] 260 reached 'restored' after 0.14 s (restores 1)
+[autoplay] 261 mark loaded frame=26042
+[autoplay] 262 wait 6 frame=26042
+[autoplay] 263 log a walk on the causeway at dusk frame=26404
+[autoplay] a walk on the causeway at dusk
+[autoplay] 264 walk 196 0 frame=26404
+[autoplay] 264 arrived at (195.85, 0.96) after 2.78 s
+[autoplay] 265 face 90 frame=26571
+[autoplay] 266 wait 8 frame=26571
+[autoplay] 267 walk 192 -1 frame=27052
+[autoplay] 267 arrived at (192.87, -0.56) after 1.33 s
+[autoplay] 268 wait 5 frame=27132
+[autoplay] 269 walk 180 2 frame=27433
+[autoplay] 269 arrived at (180.95, 1.80) after 4.86 s
+[autoplay] 270 face -90 frame=27725
+[autoplay] 271 wait 8 frame=27725
+[autoplay] 272 walk 172 2 frame=28205
+[autoplay] 272 arrived at (172.99, 1.99) after 3.18 s
+[autoplay] 273 wait 5 frame=28396
+[autoplay] 274 walk 180 2 frame=28697
+[autoplay] 274 arrived at (179.03, 1.99) after 2.42 s
+[autoplay] 275 walk 192 -1 frame=28842
+[autoplay] 275 arrived at (191.06, -0.78) after 4.93 s
+[autoplay] 276 face 0 frame=29138
+[autoplay] 277 wait 10 frame=29138
+[autoplay] 278 walk 200 16 frame=29738
+[autoplay] 278 arrived at (199.54, 15.14) after 7.22 s
+[autoplay] 279 wait 6 frame=30171
+[autoplay] 280 face 90 frame=30532
+[autoplay] 281 wait 10 frame=30532
+[autoplay] 282 log back along the causeway to the shrine and the gate frame=31132
+[autoplay] back along the causeway to the shrine and the gate
+[autoplay] 283 walk 192 0 frame=31132
+[autoplay] 283 arrived at (192.44, 0.89) after 6.37 s
+[autoplay] 284 wait 4 frame=31514
+[autoplay] 285 walk 192 -1 frame=31754
+[autoplay] 285 arrived at (192.22, -0.04) after 0.38 s
+[autoplay] 286 face 180 frame=31777
+[autoplay] 287 wait 10 frame=31777
+[autoplay] 288 walk 180 2 frame=32378
+[autoplay] 288 arrived at (180.95, 1.85) after 4.57 s
+[autoplay] 289 wait 6 frame=32652
+[autoplay] 290 walk 172 2 frame=33012
+[autoplay] 290 arrived at (173.00, 1.99) after 3.18 s
+[autoplay] 291 face 0 frame=33203
+[autoplay] 292 wait 10 frame=33203
+[autoplay] 293 face 180 frame=33803
+[autoplay] 294 wait 8 frame=33803
+[autoplay] 295 walk 180 2 frame=34284
+[autoplay] 295 arrived at (179.04, 1.99) after 2.42 s
+[autoplay] 296 walk 192 -1 frame=34429
+[autoplay] 296 arrived at (191.04, -0.78) after 4.93 s
+[autoplay] 297 face 90 frame=34725
+[autoplay] 298 wait 12 frame=34725
+[autoplay] 299 walk 196 0 frame=35446
+[autoplay] 299 arrived at (195.03, -0.15) after 1.62 s
+[autoplay] 300 face 0 frame=35543
+[autoplay] 301 wait 15 frame=35543
+[autoplay] 302 mark done frame=36443
+[autoplay] 303 quit 0 frame=36443
+[autoplay] quit 0 at frame 36443

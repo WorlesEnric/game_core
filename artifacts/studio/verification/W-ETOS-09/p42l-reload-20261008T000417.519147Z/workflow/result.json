@@ -1,0 +1,135 @@
+{
+  "lane": "reload",
+  "row": "W-ETOS-09",
+  "phase": 0,
+  "output": "~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/W-ETOS-09/p42l-reload-20261008T000417.519147Z/workflow",
+  "startedMs": 1791417892836,
+  "processId": 624080,
+  "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+  "taskIds": [
+    "tc0e3f3666b70d4b287e10734"
+  ],
+  "sourceProject": "~/wkspace/gc-studio/p4.2l/games/hollowmere",
+  "worker": "gc-designer",
+  "selectedNpc": {
+    "kind": "Definition",
+    "authoringId": "e0465061-5794-4be8-8116-794f5e921a40",
+    "global": "GlobalObjectId_V1-3-3ed7e53aa9bb3045d9cbbe8d6563db55-11400000-0",
+    "assetGuid": "3ed7e53aa9bb3045d9cbbe8d6563db55",
+    "path": "Assets/Hollowmere/Npcs/Definitions/Bram.asset",
+    "scope": "Definition",
+    "stamp": "sha256:4b7f39fcaaf5e9c14ba70b52c36bc16103b92fdf7c9991ffa31f25e4fc66fada"
+  },
+  "graphId": "06d8cd36-a0a2-47ca-93d0-8ca0d21b611d",
+  "graphPath": "Assets/Hollowmere/Dialogue/Graphs/Bram.asset",
+  "expectedTexts": [
+    "Welcome to the Drowned Lantern. Coin for goods, and no questions.",
+    "What will it be?",
+    "There you are. Keep it dry.",
+    "Chew them when your legs give out.",
+    "Suit yourself."
+  ],
+  "submittedMs": 1791417899444,
+  "lastTrayRow": {
+    "changeSetId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "state": "cancelled",
+    "etosStatus": "cancelled",
+    "taskIds": [
+      "tc0e3f3666b70d4b287e10734"
+    ],
+    "worker": "gc-designer",
+    "sequence": 1087,
+    "localState": "",
+    "createdTicks": 639270146994556150,
+    "diagnostics": [
+      "{\"code\":\"cancelled\",\"message\":\"This task was cancelled (cancelled by the owner); I stopped working on it.\"}"
+    ],
+    "question": ""
+  },
+  "originalTaskId": "tc0e3f3666b70d4b287e10734",
+  "runningRequest": {
+    "attempt": 0,
+    "changeSetId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "createdAt": 1791417899477,
+    "hasCandidate": false,
+    "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "seq": 1085,
+    "state": "running",
+    "taskId": "tc0e3f3666b70d4b287e10734",
+    "taskStatus": "running",
+    "tasks": [
+      "tc0e3f3666b70d4b287e10734"
+    ],
+    "topic": "#agent/gamecore-studio/cs-01m4cd7pdhnxzy82j8c3yjc55h",
+    "updatedAt": 1791417899990,
+    "worker": "gc-designer"
+  },
+  "runningTray": {
+    "changeSetId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "state": "running",
+    "etosStatus": "running",
+    "taskIds": [
+      "tc0e3f3666b70d4b287e10734"
+    ],
+    "worker": "gc-designer",
+    "sequence": 1085,
+    "localState": "",
+    "createdTicks": 639270146994556150,
+    "diagnostics": [],
+    "question": ""
+  },
+  "compileToken": "ce18c6cf0fe040329fa435011db5bc85",
+  "gatewayStartsBeforeReload": 39,
+  "cursorAtCompileRequest": 1085,
+  "cursorFile": "~/wkspace/gc-studio/p4.2l/games/hollowmere/Library/GameCoreStudio/de44d21f6b598a7319ca82a72f5f3fae480f101b99f01b1114167e6f8c45ba08-etos-events.cursor",
+  "sourceBeforeSha256": "06d9a5af1584f805df7acbeae0563153788dac6a39caed92197171fa5af6a41f",
+  "sourceAfterSha256": "2ae9f7b788eb14208e79b7f4df28efe827350ec51d84ac266f5931fc465cd645",
+  "harnessCompiled": true,
+  "cursorBeforeReload": 1085,
+  "beforeReloadMs": 1791417904865,
+  "rowBeforeReload": {
+    "changeSetId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "state": "running",
+    "etosStatus": "running",
+    "taskIds": [
+      "tc0e3f3666b70d4b287e10734"
+    ],
+    "worker": "gc-designer",
+    "sequence": 1085,
+    "localState": "",
+    "createdTicks": 639270146994556150,
+    "diagnostics": [],
+    "question": ""
+  },
+  "afterReloadMs": 1791417908757,
+  "compiledToken": "ce18c6cf0fe040329fa435011db5bc85",
+  "reloadCallback": true,
+  "resumeCursor": 1085,
+  "gatewayStartsAfterReload": 40,
+  "rowAfterReload": {
+    "changeSetId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "requestId": "cs_01M4CD7PDHNXZY82J8C3YJC55H",
+    "state": "running",
+    "etosStatus": "running",
+    "taskIds": [
+      "tc0e3f3666b70d4b287e10734"
+    ],
+    "worker": "gc-designer",
+    "sequence": 1085,
+    "localState": "",
+    "createdTicks": 639270146994556150,
+    "diagnostics": [],
+    "question": ""
+  },
+  "sameRunningTaskAfterReload": true,
+  "clickedCancelMs": 1791417911963,
+  "cancelledMs": 1791417912505,
+  "finalCursor": 1087,
+  "phaseAtFinish": 20,
+  "status": "PASS",
+  "detail": "Actual changed-source compilation and domain reload preserved the same running task and one attached tray row; production cursor continuation matches independent authenticated ledger replay; attached Cancel then yielded one cancelled task and no candidate.",
+  "finishedMs": 1791417915637
+}

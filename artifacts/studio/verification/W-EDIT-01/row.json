@@ -1,24 +1,24 @@
 {
+  "status": "PASS",
+  "note": "Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json"
+    "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json"
   ],
   "checks": [
     {
-      "file": "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json",
+      "file": "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42k.py",
-  "status": "PASS",
-  "note": "Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/tasks-p42l.py",
   "row": "W-EDIT-01",
   "scenario": "Change set in History shows etos task id and GameCore operation ids",
   "requirement": "SR-3.1",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-EDIT-01/p42k-move-20261007T191754.881437Z/workflow/result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-EDIT-01/p42l-move-20261008T000024.102305Z/workflow/result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

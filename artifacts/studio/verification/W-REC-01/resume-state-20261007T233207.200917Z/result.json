@@ -1,0 +1,17 @@
+{
+  "label": "R2-03-R2-38-resume",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "host": "worlesenric",
+  "started": "2026-10-07T23:32:35.944220+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2l/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/W-REC-01/resume-reopened-editor-20261007T233235.943310Z/logs --label recovery-reopen -- -executeMethod Hollowmere.P4_2.ProcessRecovery.Recover -p42State ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/W-REC-01/resume-state-20261007T233207.200917Z",
+  "cwd": "~/wkspace/gc-studio/p4.2l",
+  "evidencePath": "artifacts/studio/verification/W-REC-01/resume-reopened-editor-20261007T233235.943310Z",
+  "queuedAtRevision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "executionStarted": "2026-10-07T23:32:35.945383+00:00",
+  "sourceDiffSha256": "f5e98b785682f18803e008da46d6e7e9be1f4c273175fede6e5d406a34b6efe2",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T23:33:07.389503+00:00",
+  "seconds": 31.44615269289352,
+  "note": "A real SIGKILL at the engine fault hook; the killed-editor attempt is an expected nonzero exit, retained separately. Recovery is checked in a different Editor process."
+}

@@ -1,0 +1,219 @@
++ set -euo pipefail
++++ dirname ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/measure-frames-p42l.sh
+++ cd ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/../../../..
+++ pwd
++ root=~/wkspace/gc-studio/p4.2l
++ cd ~/wkspace/gc-studio/p4.2l
++ [[ 2 == 2 ]]
++ out=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer
++ player=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher
++ exe=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64
++ [[ -x /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 ]]
++ [[ ! -e /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement ]]
+++ cat /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/revision.txt
++ git merge-base --is-ancestor 1752ca8 6e8e73c42427e4f65ffae6f5028373a0566ba1d0
++ mkdir -p /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement
++ out=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement
++ export DISPLAY=:1 XAUTHORITY=/run/user/1000/gdm/Xauthority
++ DISPLAY=:1
++ XAUTHORITY=/run/user/1000/gdm/Xauthority
++ xdpyinfo
++ glxinfo -B
++ grep -q 'OpenGL renderer string: NVIDIA GeForce RTX 4060 Ti' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/opengl.txt
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/wait-start.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/wait-start.json
++ cp /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/wait-start.json /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/unity-processes-at-start.json
++ unity_tools_dir=~/wkspace/gc-studio/p4.2l/studio/tools
++ source ~/wkspace/gc-studio/p4.2l/studio/tools/unity-slot.sh
++ export GC_STUDIO_UNITY_SLOTS=1
++ GC_STUDIO_UNITY_SLOTS=1
++ wait_start=0
++ watchdog=769500
++ trap cleanup EXIT
++ trap 'echo "BLOCKED: interrupted or sixty-minute idle wait expired" > "$out/BLOCKED.txt"; exit 3' TERM INT HUP
++ unity_slot_acquire
++ python3 - 769467
++ local count i probe mutex occupied owner waited=0
++ slots=1
++ [[ 1 =~ ^[1-3]$ ]]
++ slot_dir=~/wkspace/gc-studio/.unity-slots
++ mkdir -p ~/wkspace/gc-studio/.unity-slots
++ true
++ exec
++ flock 10
++ occupied=0
++ (( i=1 ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' ~/wkspace/gc-studio/.unity-slots/slot1.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f ~/wkspace/gc-studio/.unity-slots/slot1.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' ~/wkspace/gc-studio/.unity-slots/slot2.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f ~/wkspace/gc-studio/.unity-slots/slot2.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
++ exec
++ flock -n 11
+++ sed -n 's/.*pid=\([0-9]*\).*/\1/p' ~/wkspace/gc-studio/.unity-slots/slot3.owner
+++ true
++ owner=
++ [[ -z '' ]]
++ rm -f ~/wkspace/gc-studio/.unity-slots/slot3.owner
++ flock -u 11
++ exec
++ (( i++ ))
++ (( i<=3 ))
+++ python3 ~/wkspace/gc-studio/p4.2l/studio/tools/../stage/host-processes.py ~/wkspace/gc-studio/.unity-slots
++ count=0
++ ((  occupied + count < slots  ))
++ (( i=1 ))
++ (( i<=slots ))
++ exec
++ flock -n 11
++ unity_slot_number=1
++ printf 'pid=%s\n' 769467
++ flock -u 10
++ exec
++ return 0
++ true
++ exec
++ flock 10
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/idle-before.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/idle-before.json
++ break
++ kill 769500
++ wait 769500
++ true
++ unset watchdog
++ printf '%s\n' 1
+++ cat /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/revision.txt
++ echo source_revision=6e8e73c42427e4f65ffae6f5028373a0566ba1d0
+++ git rev-parse HEAD
++ echo launcher_revision=6e8e73c42427e4f65ffae6f5028373a0566ba1d0
+++ hostname
++ echo host=worlesenric
+++ date -Is
++ echo started=2026-10-08T08:40:43+08:00
++ echo 'PROBE_RUNS=2 per VSync state; one allocator reservation; allocator mutex held throughout all four probes'
++ echo 'All four routes recorded; capture overhead included; no service operations; no batchmode; no Xvfb'
++ sha256sum ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt ~/wkspace/gc-studio/p4.2l/games/hollowmere/Tools/frame_stats.py ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/measure-frames-p42l.sh
++ for vsync in 0 1
++ for run in 1 2
++ target=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1
++ mkdir -p /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/host-before.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/host-before.json
++ route=~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt
++ [[ 0 == 1 ]]
++ args=("$exe" -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route" -saveDir "$target/saves" -logFile "$target/player.log")
++ [[ 0 == 1 ]]
++ printf '%q ' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/player.log
++ printf '\n'
++ rc=0
++ timeout --signal=TERM --kill-after=30 1000 /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/player.log
++ printf '%s\n' 0
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/host-after.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/host-after.json
++ python3 games/hollowmere/Tools/frame_stats.py /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1
++ grep -Eq 'Renderer:.*GeForce RTX 4060 Ti' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/player.log
++ grep -q '^# screen 1920x1080' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run1/frame-log.csv
+++ date -Is
++ echo 'run 1 finished 2026-10-08T08:51:07+08:00, player exit 0'
+run 1 finished 2026-10-08T08:51:07+08:00, player exit 0
++ for run in 1 2
++ target=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2
++ mkdir -p /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/host-before.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/host-before.json
++ route=~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt
++ [[ 0 == 1 ]]
++ args=("$exe" -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route" -saveDir "$target/saves" -logFile "$target/player.log")
++ [[ 0 == 1 ]]
++ printf '%q ' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/player.log
++ printf '\n'
++ rc=0
++ timeout --signal=TERM --kill-after=30 1000 /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 0 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/player.log
++ printf '%s\n' 0
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/host-after.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/host-after.json
++ python3 games/hollowmere/Tools/frame_stats.py /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2
++ grep -Eq 'Renderer:.*GeForce RTX 4060 Ti' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/player.log
++ grep -q '^# screen 1920x1080' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync0/run2/frame-log.csv
+++ date -Is
++ echo 'run 2 finished 2026-10-08T09:01:28+08:00, player exit 0'
+run 2 finished 2026-10-08T09:01:28+08:00, player exit 0
++ for vsync in 0 1
++ for run in 1 2
++ target=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1
++ mkdir -p /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/host-before.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/host-before.json
++ route=~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt
++ [[ 0 == 1 ]]
++ args=("$exe" -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route" -saveDir "$target/saves" -logFile "$target/player.log")
++ [[ 0 == 1 ]]
++ printf '%q ' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 1 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/player.log
++ printf '\n'
++ rc=0
++ timeout --signal=TERM --kill-after=30 1000 /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 1 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/player.log
++ printf '%s\n' 0
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/host-after.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/host-after.json
++ python3 games/hollowmere/Tools/frame_stats.py /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1
++ grep -Eq 'Renderer:.*GeForce RTX 4060 Ti' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/player.log
++ grep -q '^# screen 1920x1080' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run1/frame-log.csv
+++ date -Is
++ echo 'run 1 finished 2026-10-08T09:11:46+08:00, player exit 0'
+run 1 finished 2026-10-08T09:11:46+08:00, player exit 0
++ for run in 1 2
++ target=/tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2
++ mkdir -p /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/host-before.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/host-before.json
++ route=~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt
++ [[ 0 == 1 ]]
++ args=("$exe" -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync "$vsync" -frameLog "$target/frame-log.csv" -autoplay "$route" -saveDir "$target/saves" -logFile "$target/player.log")
++ [[ 0 == 1 ]]
++ printf '%q ' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 1 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/player.log
++ printf '\n'
++ rc=0
++ timeout --signal=TERM --kill-after=30 1000 /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/capture-launcher/Hollowmere.x86_64 -force-glcore -screen-width 1920 -screen-height 1080 -screen-fullscreen 1 -window-mode borderless -frameVsync 1 -frameLog /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/frame-log.csv -autoplay ~/wkspace/gc-studio/p4.2l/games/hollowmere/Autoplay/playthrough.txt -saveDir /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/saves -logFile /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/player.log
++ printf '%s\n' 0
++ inventory /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/host-after.json
++ python3 - /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/host-after.json
++ python3 games/hollowmere/Tools/frame_stats.py /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2
++ grep -Eq 'Renderer:.*GeForce RTX 4060 Ti' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/player.log
++ grep -q '^# screen 1920x1080' /tmp/gamecore-p42l-6e8e73c4/P42lPlayer/measurement/vsync1/run2/frame-log.csv
+++ date -Is
++ echo 'run 2 finished 2026-10-08T09:22:05+08:00, player exit 0'
+run 2 finished 2026-10-08T09:22:05+08:00, player exit 0
++ cleanup
++ [[ -n '' ]]
++ [[ -n 10 ]]
++ flock -u 10
++ exec
++ unity_slot_release
++ [[ -n 11 ]]
++ local mutex
++ exec
++ flock 10
++ rm -f ~/wkspace/gc-studio/.unity-slots/slot1.owner
++ flock -u 11
++ exec
++ unset unity_slot_fd
++ flock -u 10
++ exec

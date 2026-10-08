@@ -1,0 +1,79 @@
+{
+  "artifacts": [],
+  "attempt": 0,
+  "changeSet": {
+    "artifacts": [],
+    "baseVersions": [
+      {
+        "ref": {
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "kind": "Entity",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      }
+    ],
+    "id": "cs_01M4CD0Y6ZHX918HZ9VRA61SSJ",
+    "intent": {
+      "origin": "agent",
+      "text": "Move only the selected live Bram instance in the running GameCore world, not authored content, to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees."
+    },
+    "operations": [
+      {
+        "applyRequirement": "Live",
+        "args": {
+          "position": [
+            11.5,
+            0.0,
+            -13.0
+          ],
+          "yaw": 270.0
+        },
+        "dependsOn": [],
+        "opId": "op1",
+        "preconditions": "stamp",
+        "target": {
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "kind": "Entity",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        },
+        "tool": "runtime.move"
+      }
+    ],
+    "requirements": {
+      "build": false,
+      "compile": false,
+      "max": "Live",
+      "worldRebuild": false
+    },
+    "schema": "gamecore.studio.changeset/1",
+    "selection": {
+      "id": "sel_01M4CD0Y5GFEJJSYZGND3GRP4E",
+      "indexRevision": 222,
+      "mode": "Play",
+      "targets": [
+        {
+          "assetGuid": "6cba302899c45bb919b097ade959283c",
+          "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+          "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+          "kind": "Entity",
+          "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+          "scope": "Instance",
+          "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+        }
+      ]
+    }
+  },
+  "changeSetId": "cs_01M4CD0Y6ZHX918HZ9VRA61SSJ",
+  "receivedAt": 1791417705577,
+  "taskId": "t1327932547f03f1023f2a9b0",
+  "toolCatalogRevision": "a673b1cbff79b9985afff146dabbe3279b8ecd0de799dbf9eb5e9eeac6015680"
+}

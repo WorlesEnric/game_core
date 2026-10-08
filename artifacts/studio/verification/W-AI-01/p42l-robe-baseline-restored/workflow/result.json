@@ -1,0 +1,29 @@
+{
+  "row": "W-AI-01",
+  "status": "PASS",
+  "runtimeStatus": "PASS",
+  "reason": "One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Actual generated image is green woven cloth. The complete real Maren body changes from olive to dark green weave and returns to olive after normal History Undo. Distant magenta geometry remains; no aesthetics improvement claimed.",
+  "phase": 37,
+  "endedUtc": "2026-10-07T23:45:46.0301930Z",
+  "mode": "robe",
+  "runtimeReason": "One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call.",
+  "generationCalls": 1,
+  "maximumCostUsdPerImage": 0.2,
+  "requestId": null,
+  "taskIds": [],
+  "mediaIdentity": {
+    "effectKey": "gc-3f80f8905880df7dc0e9ba76b72bcc8e366c5f75",
+    "etosRef": "ref_01m4cc3ga73bfc29ptd966hsmf",
+    "jobId": null,
+    "reason": "App-owned direct media route; no worker request or task was created",
+    "requestId": null,
+    "taskIds": []
+  },
+  "importChangeSetId": "cs_01M4CC3GQ8MH8EPZYME5VA15HM",
+  "assignmentChangeSetId": "cs_01M4CC3JQ8VZC4YWPCV7EWKVCC",
+  "identityNote": "No worker request/task exists for this app-owned direct-media route. Actual companion effect key and node jobId come only from the ledger; local journal IDs are not request authority.",
+  "accountingScope": "Binding companion tariff/charge ledger and original node-reported generation usage; no upstream provider invoice assertion.",
+  "visualEvidence": "viewport-before.png; viewport-applied.png; viewport-undone.png; studio-*.png",
+  "cleanup": "Normal History undo removed imported file; CAS and receipts retained.",
+  "visualReview": "visual-review.json"
+}

@@ -1,41 +1,41 @@
 {
+  "status": "PASS",
+  "note": "Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-    "W-VIEW-01/captures-20261007T183557Z/visual-review.json"
+    "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+    "W-VIEW-01/captures-20261007T231704Z/visual-review.json"
   ],
   "checks": [
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
       "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.Maren_ShowsHerDialogueGraphPatrolPointsAndRegion"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
       "xmlCase": "GameCore.Studio.Views.Hollowmere.Tests.HollowmereRelationshipsWorldTests.LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
       "xmlCase": "GameCore.Studio.Views.Tests.RelationshipsModelTests.Export_WritesJsonAndMermaid"
     },
     {
-      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
+      "file": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
       "xmlCase": "GameCore.Studio.Views.Tests.R2ViewsRegressionTests.SelectionSoftBindingPropagatesFocusChangesAndDetaches"
     },
     {
-      "file": "W-VIEW-01/captures-20261007T183557Z/visual-review.json",
+      "file": "W-VIEW-01/captures-20261007T231704Z/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py views",
-  "status": "PASS",
-  "note": "Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py views",
   "row": "W-VIEW-01",
   "scenario": "Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export",
   "requirement": "P2.3 view definition",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/results.xml",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/results.xml",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

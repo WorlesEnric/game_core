@@ -1,70 +1,70 @@
 {
+  "status": "PASS",
+  "note": "Two current 500-candidate datasets contain 100 picks and 100 marquees: pick p95 1.3656/0.8867ms, marquee p95 0.4024/0.2487ms. Unchanged limits are 16/50ms.",
   "evidence": [
-    "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
-    "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json"
+    "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
+    "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json"
   ],
   "checks": [
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
       "pointer": "/candidateCount",
       "equals": 500
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
       "pointer": "/picks/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
       "pointer": "/marquee/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
       "pointer": "/picks/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
       "pointer": "/marquee/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
       "pointer": "/candidateCount",
       "equals": 500
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
       "pointer": "/picks/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
       "pointer": "/marquee/count",
       "equals": 100
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
       "pointer": "/picks/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/selection.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/selection.json",
       "pointer": "/marquee/pass",
       "equals": true
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
-  "status": "PASS",
-  "note": "Two current datasets contain 100 picks and 100 marquees over 500 candidates. Pick p95 is 1.499/0.881ms; marquee p95 0.4756/0.2362ms. Unchanged limits are 16/50ms.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py timing",
   "row": "W-UI-05",
   "scenario": "Selection/hover and marquee timings",
   "requirement": "B-SELECT",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/selection.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/selection.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "reportedAt": "2026-10-08T00:24:20.923206+00:00",
+  "runs": [
+    {
+      "run": "cold",
+      "status": "PASS",
+      "durationMs": 161873,
+      "admitMs": 61052.278000000006,
+      "jobId": "stg_1a118d7afe937011d0dc13b",
+      "checks": {
+        "signedServiceVerifies": true,
+        "mandatoryStepsPass": true,
+        "stageWithin360Seconds": true,
+        "admitWithin90Seconds": true,
+        "restoredCoins": true,
+        "playResumed": true,
+        "smoke120Frames": true,
+        "undoVerified": true,
+        "currentRevision": true,
+        "docker": true,
+        "xmlPass": true
+      },
+      "suites": {
+        "editmode.xml": {
+          "total": 36,
+          "counts": {
+            "Passed": 36
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        },
+        "playmode.xml": {
+          "total": 2,
+          "counts": {
+            "Passed": 2
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        }
+      },
+      "review": "W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z",
+      "request": "W-MECH-01/p42l-stage-submit-cold-20261008T000821.932378Z/stage-request.json",
+      "verified": "W-MECH-01/p42l-signed-record-20261008T001156.744408Z/verified.json"
+    },
+    {
+      "run": "warm",
+      "status": "PASS",
+      "durationMs": 80541,
+      "admitMs": 24988.386000000002,
+      "jobId": "stg_1a118dd3470c04b4fc6b328",
+      "checks": {
+        "signedServiceVerifies": true,
+        "mandatoryStepsPass": true,
+        "stageWithin360Seconds": true,
+        "admitWithin90Seconds": true,
+        "restoredCoins": true,
+        "playResumed": true,
+        "smoke120Frames": true,
+        "undoVerified": true,
+        "currentRevision": true,
+        "docker": true,
+        "xmlPass": true
+      },
+      "suites": {
+        "editmode.xml": {
+          "total": 36,
+          "counts": {
+            "Passed": 36
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        },
+        "playmode.xml": {
+          "total": 2,
+          "counts": {
+            "Passed": 2
+          },
+          "failedSuites": [],
+          "nonpassing": []
+        }
+      },
+      "review": "W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z",
+      "request": "W-MECH-01/p42l-stage-submit-warm-20261008T001429.208383Z/stage-request.json",
+      "verified": "W-MECH-01/p42l-signed-record-20261008T001633.738482Z/verified.json"
+    }
+  ],
+  "initialPrerequisiteFailure": "Initial submit refused bake_stale before service job; ordinary production AuthorAll/bake passed, new explicit cold/warm attempts then ran."
+}

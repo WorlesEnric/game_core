@@ -1,26 +1,24 @@
 # W-MECH-01: Pressure-plate mechanism: staged, admitted, world resumed from checkpoint
 
-Verdict: **PASS**. Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission.
+Verdict: **PASS**. Signed Docker stages pass in 161.873s cold and 80.541s warm; creator admissions restore Play in 61.052s and 24.988s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial bake_stale preflight refusal is retained; ordinary production rebake preceded new explicit attempts.
 
-P4.2k product revision: `7a7ff0c0e5ec2332f360f521ff0467390d063491`; installed release: `0.1.0-3475150b9571123a`. Reported: 2026-10-07T22:04:41.754041+00:00.
+P4.2l product revision: `6e8e73c42427e4f65ffae6f5028373a0566ba1d0`; installed release: `0.1.0-b50cd34dddae2cc4`. Reported: 2026-10-08T02:38:22.131501+00:00.
 Only this run's evidence determines this disposition. Earlier attempts remain on disk as history, not current PASS.
 
 ## Reproduce
 
 ```sh
-python3 artifacts/studio/verification/TOOLS/stages-p42k.py mechanism --attempt provisioned
+python3 artifacts/studio/verification/TOOLS/stages-p42l.py mechanism --attempt rebaked
 ```
 
 ## Current-run evidence
 
-- [W-MECH-01/p42k-acceptance/result.json](../W-MECH-01/p42k-acceptance/result.json)
-- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/admission.json)
-- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/restored-world.json)
-- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/smoke-witness.json)
-- [W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json](../W-MECH-01/p42k-stage-review-cold-20261007T193823.372400Z/undo.json)
-- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/admission.json)
-- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/restored-world.json)
-- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/smoke-witness.json)
-- [W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json](../W-MECH-01/p42k-stage-review-warm-20261007T194244.401167Z/undo.json)
-- [W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json](../W-MECH-01/p42k-signed-record-20261007T194735.641371Z/verified.json)
-- [W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json](../W-MECH-01/p42k-signed-record-20261007T194739.162762Z/verified.json)
+- [W-MECH-01/p42l-acceptance/result.json](../W-MECH-01/p42l-acceptance/result.json)
+- [W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/restored-world.json](../W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/restored-world.json)
+- [W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/smoke-witness.json](../W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/smoke-witness.json)
+- [W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/undo.json](../W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/undo.json)
+- [W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/restored-world.json](../W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/restored-world.json)
+- [W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/smoke-witness.json](../W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/smoke-witness.json)
+- [W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/undo.json](../W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/undo.json)
+- [W-MECH-01/p42l-signed-record-20261008T001156.744408Z/verified.json](../W-MECH-01/p42l-signed-record-20261008T001156.744408Z/verified.json)
+- [W-MECH-01/p42l-signed-record-20261008T001633.738482Z/verified.json](../W-MECH-01/p42l-signed-record-20261008T001633.738482Z/verified.json)

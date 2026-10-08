@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M4CBVANVSQNDAC2MVMK117E5",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: A painted head-and-shoulders portrait of Maren, a kindly adult village healer in a misty marsh fantasy village, muted natural colours, plain background, no lettering. Qualification take fb8e43c01e5048e3835b82df31386cc1; do not draw this identifier.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P42h/portrait-fb8e43c01e5048e3835b82df31386cc1.png",
+        "artifact": {
+          "artifact": "sha256:2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e",
+      "name": "portrait-fb8e43c01e5048e3835b82df31386cc1.png",
+      "mediaType": "image/png",
+      "bytes": 2368351,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P42h/portrait-fb8e43c01e5048e3835b82df31386cc1.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-bc8fc1ca59bc8a8b896c875a990932eb-2800000-0",
+                "assetGuid": "bc8fc1ca59bc8a8b896c875a990932eb",
+                "path": "Assets/Hollowmere/Generated/P42h/portrait-fb8e43c01e5048e3835b82df31386cc1.png"
+              },
+              "stamp": "sha256:2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T23:40:45.680Z",
+    "applied": "2026-10-07T23:40:47.678Z"
+  }
+}

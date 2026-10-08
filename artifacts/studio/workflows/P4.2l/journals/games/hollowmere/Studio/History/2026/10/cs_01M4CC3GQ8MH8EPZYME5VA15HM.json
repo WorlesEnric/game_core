@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M4CC3GQ8MH8EPZYME5VA15HM",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: A seamless tileable texture of soft green woven wool cloth for Maren the village healer's green robe, flat even lighting, no seams, no text, green cloth filling the whole image. Qualification take 6839cac8fda94f26b66352ebcf1c1896; do not draw this identifier.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P42h/robe-6839cac8fda94f26b66352ebcf1c1896.png",
+        "artifact": {
+          "artifact": "sha256:94f9460d1c0cc45178e283d90356240e5c7cf82c326ae51193483ca1598dc98b"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "94f9460d1c0cc45178e283d90356240e5c7cf82c326ae51193483ca1598dc98b",
+      "name": "robe-6839cac8fda94f26b66352ebcf1c1896.png",
+      "mediaType": "image/png",
+      "bytes": 3848655,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Undone",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P42h/robe-6839cac8fda94f26b66352ebcf1c1896.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-a3839dadc5bc8f536a81c41c96e5e870-2800000-0",
+                "assetGuid": "a3839dadc5bc8f536a81c41c96e5e870",
+                "path": "Assets/Hollowmere/Generated/P42h/robe-6839cac8fda94f26b66352ebcf1c1896.png"
+              },
+              "stamp": "sha256:94f9460d1c0cc45178e283d90356240e5c7cf82c326ae51193483ca1598dc98b"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-07T23:45:13.989Z",
+    "applied": "2026-10-07T23:45:14.549Z"
+  }
+}

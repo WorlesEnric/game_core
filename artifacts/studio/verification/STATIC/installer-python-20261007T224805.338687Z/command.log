@@ -1,0 +1,66 @@
+test_r3_d14_templates_prices_and_apply_diff (test_install.Installer.test_r3_d14_templates_prices_and_apply_diff) ... ok
+test_r3_d15_copy_is_immutable_atomic_switch_and_rollback (test_install.Installer.test_r3_d15_copy_is_immutable_atomic_switch_and_rollback) ... healthy: 0.1.0-2da2c3038e9dfb7d; previous release retained: /tmp/tmpxkyi48q_/build-clone
+healthy: 0.1.0-61e187a873021d96; previous release retained: 0.1.0-2da2c3038e9dfb7d
+unchanged: release 0.1.0-61e187a873021d96 (checksums verified)
+healthy: 0.1.0-61e187a873021d96; previous release retained: 0.1.0-61e187a873021d96
+ok
+test_r3_d24_register_preserves_config_and_matches_client_identity (test_install.Installer.test_r3_d24_register_preserves_config_and_matches_client_identity) ... --- /tmp/tmpc83xvs5i/agents/gamecore-studio/state/config.toml
++++ /tmp/tmpc83xvs5i/agents/gamecore-studio/state/config.toml
+@@ -15,10 +15,10 @@
+ # Copy the required keys into the companion state directory's config.toml.
+ # This example does not itself alter the installed service configuration.
+ [stage]
+-confinement = "docker"
+-docker_image = "gamecore-stage:6000.0.75f1-v1"
+-# Degraded environments can explicitly choose confinement = "host".
+-# There is no automatic fallback. Admission UI must warn for host verdicts.
++"command" = "~/wkspace/gc-studio/p4.2l/studio/stage/stage.sh"
++"confinement" = "docker"
++"docker_image" = "gamecore-stage:6000.0.75f1-v1"
+
+ [stage.projects]
+-# "<stable SHA-256 project id>" = "/absolute/path/to/Unity/project"
++"32394f754d90d335c1137672787b3ba48e1b42f0cda0e3b7ab6b6bd6c855ee72" = "/tmp/tmpc83xvs5i/project space"
++
+
+registered 32394f754d90d335c1137672787b3ba48e1b42f0cda0e3b7ab6b6bd6c855ee72 -> /tmp/tmpc83xvs5i/project space
+registered 32394f754d90d335c1137672787b3ba48e1b42f0cda0e3b7ab6b6bd6c855ee72 -> /tmp/tmpc83xvs5i/project space
+--- /tmp/tmpc83xvs5i/agents/gamecore-studio/state/config.toml
++++ /tmp/tmpc83xvs5i/agents/gamecore-studio/state/config.toml
+@@ -21,4 +21,5 @@
+
+ [stage.projects]
+ "32394f754d90d335c1137672787b3ba48e1b42f0cda0e3b7ab6b6bd6c855ee72" = "/tmp/tmpc83xvs5i/project space"
++"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" = "/tmp/tmpc83xvs5i/second"
+
+
+registered bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -> /tmp/tmpc83xvs5i/second
+ok
+test_r4_operator_declaration_and_provider_binding (test_install.Installer.test_r4_operator_declaration_and_provider_binding) ... ok
+test_r4_placeholder_refuses_before_any_write (test_install.Installer.test_r4_placeholder_refuses_before_any_write) ... ok
+test_r6_c_describe_only_cli_refuses_placeholder_without_writes (test_install.Installer.test_r6_c_describe_only_cli_refuses_placeholder_without_writes) ... ok
+test_r6_c_describe_only_cli_updates_provider_and_tariff_preserving_other_state (test_install.Installer.test_r6_c_describe_only_cli_updates_provider_and_tariff_preserving_other_state) ... ok
+test_r6_f_failed_registration_rollback_invalidates_noop_marker (test_install.Installer.test_r6_f_failed_registration_rollback_invalidates_noop_marker) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_health_failure_restores_worker_registration_and_policy (test_install.Installer.test_r6_f_health_failure_restores_worker_registration_and_policy) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_manifest_policy_change_refuses_before_node_calls (test_install.Installer.test_r6_f_manifest_policy_change_refuses_before_node_calls) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_missing_registered_worker_refuses_policy_reset (test_install.Installer.test_r6_f_missing_registered_worker_refuses_policy_reset) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_operator_budget_drift_refuses_before_registration (test_install.Installer.test_r6_f_operator_budget_drift_refuses_before_registration) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_partial_upgrade_failure_restores_old_registration (test_install.Installer.test_r6_f_partial_upgrade_failure_restores_old_registration) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+ok
+test_r6_f_worker_change_updates_registration_preserves_policy_and_noop (test_install.Installer.test_r6_f_worker_change_updates_registration_preserves_policy_and_noop) ... healthy: 0.1.0-3b62051ed1c1c710; previous release retained: none
+healthy: 0.1.0-efb286cfa0f6b8f3; previous release retained: 0.1.0-3b62051ed1c1c710
+unchanged: release 0.1.0-efb286cfa0f6b8f3 (checksums verified)
+ok
+test_r7_a_cache_action_refuses_foreign_binary_cache_path (test_install.Installer.test_r7_a_cache_action_refuses_foreign_binary_cache_path) ... ok
+test_r7_a_cache_action_refuses_node_root_without_mutation (test_install.Installer.test_r7_a_cache_action_refuses_node_root_without_mutation) ... ok
+test_r7_a_cache_action_requires_complete_seeds_before_any_write (test_install.Installer.test_r7_a_cache_action_requires_complete_seeds_before_any_write) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 5.653s
+
+OK

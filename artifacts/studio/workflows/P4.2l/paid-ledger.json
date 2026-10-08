@@ -1,0 +1,90 @@
+{
+  "charges": [
+    {
+      "id": "describe_1a118c2eb57a5937d258621",
+      "tariff": {
+        "kind": "operator",
+        "model": "echo/gpt-5.6-sol",
+        "note": "Owner-declared USD 0.01 per-call estimate (2026-10-06), basis: OpenAI published vision input pricing for one small image plus a short answer; Echo resells OpenAI models",
+        "perUnitUsd": 0.01,
+        "provider": "echo-describe",
+        "unit": "call",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.01
+    },
+    {
+      "id": "gc-14af82239ed99f9567c8af2002a7f86459c80de1",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 32.0,
+      "costUsd": 0.0003669824
+    },
+    {
+      "id": "gc-3f80f8905880df7dc0e9ba76b72bcc8e366c5f75",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    },
+    {
+      "id": "gc-4b868e7214b65954f7b8dcd94b9e8f70c7518617",
+      "tariff": {
+        "kind": "operator",
+        "model": "gpt-image-2",
+        "note": "Owner-declared total per-image estimate (2026-10-06), basis: OpenAI gpt-image published list prices; Echo publishes no tariff",
+        "perUnitUsd": 0.2,
+        "provider": "echo-images",
+        "unit": "image",
+        "url": ""
+      },
+      "quantity": 1.0,
+      "costUsd": 0.2
+    },
+    {
+      "id": "gc-939abc7602da00108b6645f9b6f40df179bca60d",
+      "tariff": {
+        "kind": "published",
+        "model": "qwen3-tts-flash",
+        "note": "",
+        "perUnitUsd": 1.14682e-05,
+        "provider": "bailian-tts",
+        "unit": "bailian_character",
+        "url": "https://www.alibabacloud.com/help/en/model-studio/model-pricing"
+      },
+      "quantity": 36.0,
+      "costUsd": 0.0004128552
+    }
+  ],
+  "companionLedgerUsd": 0.41077983760000003,
+  "workerMicroUsd": 0,
+  "workerTaskCount": 11,
+  "tasksWithoutReportedMicroUsd": [
+    "t7f9e3a9cd65db3cc3db35dae",
+    "td0f80f9879ec72baa46fc6fd"
+  ],
+  "accountedUsd": 0.41077983760000003,
+  "operationCounts": {
+    "image": 2.0,
+    "tts": 2,
+    "describe": 1,
+    "3dPaid": 0,
+    "3dRefusals": 1
+  },
+  "accountingLimit": "Sum of node-reported task usage and binding operator media charges. Missing task usage entries are listed, not asserted as invoiced zero. Upstream provider invoices/unreported charges are unavailable."
+}

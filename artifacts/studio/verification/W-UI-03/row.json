@@ -1,30 +1,30 @@
 {
+  "status": "PASS",
+  "note": "Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
   "evidence": [
-    "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
-    "W-UI-03/r7-d-20261007T183348335Z/visual-review.json"
+    "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
+    "W-UI-03/r7-d-20261007T231458672Z/visual-review.json"
   ],
   "checks": [
     {
-      "file": "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
+      "file": "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
       "pointer": "/verdict",
       "equals": "PASS"
     },
     {
-      "file": "W-UI-03/r7-d-20261007T183348335Z/visual-review.json",
+      "file": "W-UI-03/r7-d-20261007T231458672Z/visual-review.json",
       "pointer": "/status",
       "equals": "PASS"
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py editor",
-  "status": "PASS",
-  "note": "Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py editor",
   "row": "W-UI-03",
   "scenario": "Subpart vs logical vs prefab vs scope choice on a lantern",
   "requirement": "SR-1.3",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-UI-03/r7-d-20261007T183348335Z/receipt.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-UI-03/r7-d-20261007T231458672Z/receipt.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

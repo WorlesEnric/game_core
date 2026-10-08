@@ -1,0 +1,15 @@
+test_R2_38_P42l_explicit_floor_allows_work_above_28_GiB (test_disk_reserve_p42l.DiskReserveTests.test_R2_38_P42l_explicit_floor_allows_work_above_28_GiB) ... START TEST/allowed-disk
+END TEST/allowed-disk: PASS (0.0s)
+~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/TOOLS/test_disk_reserve_p42l.py:19: ResourceWarning: unclosed file <_io.TextIOWrapper name=4 encoding='UTF-8'>
+  record = verify.run('TEST', 'allowed-disk', [sys.executable, '-c', 'print("child-executed")'])
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_R2_38_P42l_owner_floor_cannot_be_lowered (test_disk_reserve_p42l.DiskReserveTests.test_R2_38_P42l_owner_floor_cannot_be_lowered) ... ok
+test_R2_38_P42l_owner_floor_refuses_before_child_launch (test_disk_reserve_p42l.DiskReserveTests.test_R2_38_P42l_owner_floor_refuses_before_child_launch) ... ok
+test_R2_38_actual_query_witness_accepts_variable_and_punctuation_variation (test_query_p42k.QueryWitnessTests.test_R2_38_actual_query_witness_accepts_variable_and_punctuation_variation) ... ok
+test_R2_38_actual_query_witness_accepts_variable_and_punctuation_variation (test_query_p42l.QueryWitnessTests.test_R2_38_actual_query_witness_accepts_variable_and_punctuation_variation) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.034s
+
+OK

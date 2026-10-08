@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "reportedAt": "2026-10-08T01:31:43.125525+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "observation": "Reviewed exact movie keyframes: both process menus, Save game slot 1 Blackmere Marsh and Saved to slot-1, Ending C: The Freed Echo with Play again, then restarted village. Movie explicitly concatenates two different player process/window segments; no continuous-process claim. Distant magenta geometry remains.",
+  "keyframes": {
+    "menu.png": "save-quit.mp4 @ 1s",
+    "save-menu.png": "save-quit.mp4 @ 185s",
+    "second-menu.png": "load-ending-restart.mp4 @ 1s",
+    "ending-menu.png": "load-ending-restart.mp4 @ 100s",
+    "ending.png": "load-ending-restart.mp4 @ 114s (post-restart village)"
+  }
+}

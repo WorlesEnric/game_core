@@ -1,18 +1,18 @@
 {
+  "status": "BLOCKED",
+  "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
   "evidence": [
-    "W-HOST-01/p42k-owner-rule/result.json"
+    "W-HOST-01/p42l-owner-rule/result.json"
   ],
   "checks": [],
   "command": "Not run: Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
-  "status": "BLOCKED",
-  "note": "Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden.",
   "row": "W-HOST-01",
   "scenario": "`install.sh` fresh, then no-op; `verify.sh` with real image/describe/tts/realtime calls",
   "requirement": "SR-11.2",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-HOST-01/p42k-owner-rule/result.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-HOST-01/p42l-owner-rule/result.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

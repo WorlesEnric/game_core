@@ -87,8 +87,11 @@ def finish(folder, record):
 
 def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, expected_http=None, editor=False):
     free = shutil.disk_usage(ROOT).free
-    if free < 40 * 1024**3:
-        raise RuntimeError('Disk reserve below 40 GiB; stop before starting another workload.')
+    reserve_gib = int(os.environ.get('GC_STUDIO_DISK_RESERVE_GIB', '40'))
+    if reserve_gib < 28:
+        raise RuntimeError('Disk reserve must be at least 28 GiB.')
+    if free < reserve_gib * 1024**3:
+        raise RuntimeError(f'Disk reserve below {reserve_gib} GiB; stop before starting another workload.')
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     folder = OUT / row / f'{label}-{stamp}'
     folder.mkdir(parents=True)

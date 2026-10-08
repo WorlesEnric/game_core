@@ -1,0 +1,20 @@
+{
+  "row": "W-EDIT-03",
+  "status": "PASS",
+  "reviewer": "Main",
+  "observedUtc": "2026-10-08T00:30:26.920192+00:00",
+  "observation": "Generated, applied and redone images visibly show the same adult healer portrait. History screenshots are obscured by overlapping windows; normal History receipts, retained hashes and unchanged charge checkpoints establish replay, not readable History pixels.",
+  "reviewAssertions": [
+    "The actual generated image depicts a portrait, not a pre-existing fixture or placeholder.",
+    "History captures show applied, undone and redone states; restored image is visibly the same portrait."
+  ],
+  "reviewedImagesSha256": {
+    "generated.png": "2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e",
+    "portrait-applied.png": "2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e",
+    "portrait-redone.png": "2a199ace90c87eaa4d37f9191efbd6b7ba5a96344eb5c7b2b9f6bbd02240a22e",
+    "history-applied.png": "d9d0e82cdc420876dc3f455e2b666cf806cd2b87f67540a477e9e3490a82b828",
+    "history-undone.png": "39dfea95168c36237af988139e81d59fcc2aa3dd1af6ddcad1b735ba072841fb",
+    "history-redone.png": "87f920d1530c1f03f303bcb3d5ed2ce31ea54094e93445fb71c565aa53e11d21"
+  },
+  "method": "Explicit review of actual retained pixels; not an automated image-quality inference"
+}

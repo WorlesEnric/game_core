@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.8465418">
+  <test-suite type="TestSuite" id="1011" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.846542" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1005" name="Saltmarsh.PlayMode.Tests.dll" fullname="~/wkspace/gc-studio/p4.2l/games/cleanproof/Library/ScriptAssemblies/Saltmarsh.PlayMode.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.839993" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="437729" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="Saltmarsh" fullname="Saltmarsh" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.839658" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="Tests" fullname="Saltmarsh.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.839443" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="SaltmarshQuestHeadless" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:19Z" duration="1.838477" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" methodname="W_CLEAN_01_SalvageBranchSaveRestoreAndConsequence" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="1747015415" result="Passed" start-time="2026-10-07 23:03:17Z" end-time="2026-10-07 23:03:18Z" duration="1.119779" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Saltmarsh] branch=0 captured/restored slot hash=ea3a140529218570c734c3901e045dd6c8e205b24118180b5378c838b8b6e74c
+]]></output>
+            </test-case>
+            <test-case id="1003" name="W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" methodname="W_CLEAN_01_SpareBranchSaveRestoreAndConsequence" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="1088514454" result="Passed" start-time="2026-10-07 23:03:18Z" end-time="2026-10-07 23:03:18Z" duration="0.346516" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[Saltmarsh] branch=1 captured/restored slot hash=12ebc02487705bf44be965a071d1422fdc2a8a19879430de3931e03182a94b8c
+]]></output>
+            </test-case>
+            <test-case id="1004" name="W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" fullname="Saltmarsh.Tests.SaltmarshQuestHeadless.W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" methodname="W_CLEAN_01_ThreeRegionLoopPreservesNpcIdentity" classname="Saltmarsh.Tests.SaltmarshQuestHeadless" runstate="Runnable" seed="564245845" result="Passed" start-time="2026-10-07 23:03:18Z" end-time="2026-10-07 23:03:19Z" duration="0.361755" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: ~/.config/unity3d/GameCore/Saltmarsh/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

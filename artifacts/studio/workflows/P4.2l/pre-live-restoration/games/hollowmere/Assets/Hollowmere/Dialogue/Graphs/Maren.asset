@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: Maren
+  m_EditorClassIdentifier: 
+  authoringId: 8e52f233-3797-4396-89c4-24f00fceef8a
+  contentStamp: cbd569b82d44b12af047436c45871472c96d46dd5530db91bb480be835bcb57c
+  speaker: Maren
+  speakerEntityId: da525107-c2c1-4626-ac08-5058a1e01c06
+  npcGraphRef: dialogue.maren
+  entry: 0
+  nodes:
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: cbdd4a8b5176fcea6841a70d15db8d3c, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: 25070db6c5ef45f9bbc94d6547da39f1, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Traveller, you look half drowned yourself. Sit a moment. I am Maren, the
+      healer here.
+    voiceClip: {fileID: 8300000, guid: f897124a7f0c7103ab101d1bc29dfcf5, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Since the flood the bell in the old belfry has been silent, and the marsh
+      has gone dark and hungry.
+    voiceClip: {fileID: 8300000, guid: 5cac189b9b64139d78bb343d7af7ccdc, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 88ad7492e109d8e92b568b9d4ce3a92d, type: 2}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: Will you go to the belfry?
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: How do I cross the marsh?
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Where would I find a lantern?
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: I will go.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Warden Hale keeps the causeway gate and lets no one into Blackmere without
+      a light. Past it, Odd's ferry, or the old punt by the jetty.
+    voiceClip: {fileID: 8300000, guid: 926ffe37e1bd19903a03bddf3bc329d3, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: 'Bram sells them at the inn. There was one in the barn once. And a clever
+      hand can make one at the tinker''s bench: an oil flask, and dried herbs for
+      a wick.'
+    voiceClip: {fileID: 8300000, guid: 4b759a6e7c9a46ae88cc058276c30f2c, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Then go with care. The marsh keeps what it takes.
+    voiceClip: {fileID: 8300000, guid: 5ad81d1545019570a90eb9a9f79a24a7, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: 850520e0be842c7e9830bf255c4a9069, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The shrine is lit? I felt it tonight, like a held breath let go.
+    voiceClip: {fileID: 8300000, guid: 71c02f1cbae555acfb8715ddd1724fd1, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Find a lantern, then the causeway. The bell is waiting.
+    voiceClip: {fileID: 8300000, guid: c4dd9252bc65f65b89bfcdff4e9e5d26, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: The bell rang. Hollowmere can sleep again. Thank you, traveller.
+    voiceClip: {fileID: 8300000, guid: 4be95551503f3a5359dbbdc4121c51f7, type: 3}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: Maren
+    speakerEntityId: 
+    text: The Drowned Bell guides travellers home.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 0
+    port: 1
+    option: 0
+    to: 1
+  - from: 1
+    port: 1
+    option: 0
+    to: 2
+  - from: 2
+    port: 0
+    option: 0
+    to: 3
+  - from: 3
+    port: 0
+    option: 0
+    to: 4
+  - from: 4
+    port: 0
+    option: 0
+    to: 5
+  - from: 5
+    port: 2
+    option: 0
+    to: 6
+  - from: 5
+    port: 2
+    option: 1
+    to: 7
+  - from: 5
+    port: 2
+    option: 2
+    to: 8
+  - from: 1
+    port: 0
+    option: 0
+    to: 9
+  - from: 9
+    port: 0
+    option: 0
+    to: 10
+  - from: 9
+    port: 1
+    option: 0
+    to: 11
+  - from: 0
+    port: 0
+    option: 0
+    to: 12
+  - from: 6
+    port: 0
+    option: 0
+    to: 13

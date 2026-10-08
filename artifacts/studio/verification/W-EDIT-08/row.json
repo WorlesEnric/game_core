@@ -1,84 +1,84 @@
 {
+  "status": "PASS",
+  "note": "Two current 20-sample datasets pass: single-target p95 20.7325/23.758ms; Marsh-all-NPC p95 30.0882/36.0957ms; kernel prepare p95 6.6654/10.5762ms. Limits remain 200/1000/300ms.",
   "evidence": [
-    "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
-    "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
-    "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
-    "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
-    "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
-    "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json"
+    "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
+    "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
+    "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
+    "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
+    "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
+    "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json"
   ],
   "checks": [
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
       "pointer": "/single/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
       "pointer": "/single/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
       "pointer": "/region/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/region-apply.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/region-apply.json",
       "pointer": "/region/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
       "pointer": "/prepare/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/compose.json",
+      "file": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/compose.json",
       "pointer": "/prepare/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
       "pointer": "/single/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/apply.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/apply.json",
       "pointer": "/single/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
       "pointer": "/region/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/region-apply.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/region-apply.json",
       "pointer": "/region/pass",
       "equals": true
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json",
       "pointer": "/prepare/count",
       "equals": 20
     },
     {
-      "file": "W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/compose.json",
+      "file": "W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/compose.json",
       "pointer": "/prepare/pass",
       "equals": true
     }
   ],
-  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42k.py timing",
-  "status": "PASS",
-  "note": "Two current 20-sample datasets pass: single-target p95 25.926/24.6934ms; Marsh-all-NPC p95 43.5722/35.9275ms; kernel prepare p95 9.8924/7.0972ms. Limits remain 200/1000/300ms.",
+  "command": "python3 artifacts/studio/verification/TOOLS/rows-p42l.py timing",
   "row": "W-EDIT-08",
   "scenario": "Apply timings (single and region-wide)",
   "requirement": "B-APPLY, B-COMPOSE",
-  "reportedAt": "2026-10-07T22:04:41.754041+00:00",
-  "revision": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "baseline": "7a7ff0c0e5ec2332f360f521ff0467390d063491",
-  "releaseId": "0.1.0-3475150b9571123a",
-  "evidencePath": "W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/apply.json",
-  "runStartedAt": "2026-10-07T18:03:54.914827+00:00"
+  "reportedAt": "2026-10-08T02:38:22.131501+00:00",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "baseline": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "releaseId": "0.1.0-b50cd34dddae2cc4",
+  "evidencePath": "W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/apply.json",
+  "runStartedAt": "2026-10-07T22:43:12.337324+00:00"
 }

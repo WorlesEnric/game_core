@@ -1,0 +1,26 @@
+{
+  "label": "memory-ten-cycles",
+  "revision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "host": "worlesenric",
+  "started": "2026-10-07T23:06:24.400027+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2l/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T230624.398089Z/logs --label memory-ten-cycles --results ~/wkspace/gc-studio/p4.2l/artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T230624.398089Z/results.xml -- -runTests -testPlatform EditMode -testFilter Hollowmere.P3_1.EditMode.Tests.P31PlayModeHooksTests.TenPlayEditCycles",
+  "cwd": "~/wkspace/gc-studio/p4.2l",
+  "evidencePath": "artifacts/studio/verification/UNITY-HOLLOWMERE/memory-ten-cycles-20261007T230624.398089Z",
+  "queuedAtRevision": "6e8e73c42427e4f65ffae6f5028373a0566ba1d0",
+  "executionStarted": "2026-10-07T23:06:24.402771+00:00",
+  "sourceDiffSha256": "f1d95da040c00030f4cf7d74ef754af823e50b6dc3c611c0867d9d76f842b86b",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-07T23:07:50.949060+00:00",
+  "seconds": 86.55090728309005,
+  "suites": {
+    "results.xml": {
+      "total": 1,
+      "counts": {
+        "Passed": 1
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

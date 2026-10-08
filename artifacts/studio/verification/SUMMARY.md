@@ -1,14 +1,14 @@
-# P4.2k same-revision verification summary
+# P4.2l same-revision verification summary
 
-Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
+Matrix row totals: PASS 62, BLOCKED 6, FAIL 0.
 
 | Row | Verdict | Evidence / exact limitation |
 |---|---|---|
 | W-UI-01 | PASS | [Evidence](W-UI-01/README.md): Current-run Open Hollowmere in Studio; Play; walk; Select; click NPC; card shows definition is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-UI-02 | PASS | [Evidence](W-UI-02/README.md): Current-run Box-select three NPCs behind a fence; overlap list; choose NPCs is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-UI-03 | PASS | [Evidence](W-UI-03/README.md): Current-run Subpart vs logical vs prefab vs scope choice on a lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-UI-04 | PASS | [Evidence](W-UI-04/README.md): Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained. |
-| W-UI-05 | PASS | [Evidence](W-UI-05/README.md): Two current datasets contain 100 picks and 100 marquees over 500 candidates. Pick p95 is 1.499/0.881ms; marquee p95 0.4756/0.2362ms. Unchanged limits are 16/50ms. |
+| W-UI-04 | PASS | [Evidence](W-UI-04/README.md): Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.5436%, below unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained. |
+| W-UI-05 | PASS | [Evidence](W-UI-05/README.md): Two current 500-candidate datasets contain 100 picks and 100 marquees: pick p95 1.3656/0.8867ms, marquee p95 0.4024/0.2487ms. Unchanged limits are 16/50ms. |
 | W-VIEW-01 | PASS | [Evidence](W-VIEW-01/README.md): Current-run Relationships: Selection/search neighbourhood, labelled references, impact, navigation and JSON/Mermaid export is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-VIEW-02 | PASS | [Evidence](W-VIEW-02/README.md): Current-run Dialogue: Graph tools, conditions, preview, journaled edits/undo and real-Play bridge is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-VIEW-03 | PASS | [Evidence](W-VIEW-03/README.md): Current-run Quests: Stage/objective graph, branches, reward/rule links, simulation and live state is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
@@ -20,24 +20,24 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | W-TOOL-02 | PASS | [Evidence](W-TOOL-02/README.md): Current-run `check_package_metadata.py` passes with all new packages is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-EDIT-01 | PASS | [Evidence](W-EDIT-01/README.md): Current-run Change set in History shows etos task id and GameCore operation ids is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-EDIT-02 | PASS | [Evidence](W-EDIT-02/README.md): Current-run 5-op change set with one stale op: AllOrNothing rollback and BestEffort partial report is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-EDIT-03 | PASS | [Evidence](W-EDIT-03/README.md): One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone pixels show the same brown-haired healer portrait with herbs and green-brown cloth. History screenshots are clipped by overlapping windows and do not visibly prove each entry state; normal panel receipts, retained journals, exact image hashes and unchanged ledger checkpoints establish replay. No readable-History-screenshot claim. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers. |
+| W-EDIT-03 | PASS | [Evidence](W-EDIT-03/README.md): One current image generated/imported through the production media service; normal History undo/redo restored identical retained bytes with unchanged companion charge ledger; cleanup used normal History undo. Visual review: Generated, applied and redone images visibly show the same adult healer portrait. History screenshots are obscured by overlapping windows; normal History receipts, retained hashes and unchanged charge checkpoints establish replay, not readable History pixels. |
 | W-EDIT-04 | PASS | [Evidence](W-EDIT-04/README.md): Current-run Edit a running NPC, exit Play, apply; delete it, apply: `StaleTarget` is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-EDIT-05 | PASS | [Evidence](W-EDIT-05/README.md): Current-run Gizmo drag and typed value produce identical History entries is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-EDIT-06 | PASS | [Evidence](W-EDIT-06/README.md): Current-run Runtime-only move → "Apply to authored" → persists after exiting Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-EDIT-07 | PASS | [Evidence](W-EDIT-07/README.md): Current-run Concurrent manual rename vs agent candidate: per-op `Conflict`, rebase works is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-EDIT-08 | PASS | [Evidence](W-EDIT-08/README.md): Two current 20-sample datasets pass: single-target p95 25.926/24.6934ms; Marsh-all-NPC p95 43.5722/35.9275ms; kernel prepare p95 9.8924/7.0972ms. Limits remain 200/1000/300ms. |
+| W-EDIT-08 | PASS | [Evidence](W-EDIT-08/README.md): Two current 20-sample datasets pass: single-target p95 20.7325/23.758ms; Marsh-all-NPC p95 30.0882/36.0957ms; kernel prepare p95 6.6654/10.5762ms. Limits remain 200/1000/300ms. |
 | W-HOST-01 | BLOCKED | [Evidence](W-HOST-01/README.md): Owner rule: never stop/restart etosd; fresh node installation prerequisite is forbidden. |
 | W-ETOS-01 | BLOCKED | [Evidence](W-ETOS-01/README.md): Owner rule: credential handling is forbidden; pairing and credential-file inspection are not run. |
 | W-ETOS-02 | BLOCKED | [Evidence](W-ETOS-02/README.md): Owner rule: credential handling is forbidden; cross-agent credential probe is not run. |
-| W-ETOS-04 | PASS | [Evidence](W-ETOS-04/README.md): Actual installed worker executes an owner-scoped query and returns all eight current Bram nodes with matching indices/kinds/texts. Initial observer rejected local variable cmd and colon-delimited output; unchanged independent trace and receipt pass the corrected observer without another worker call. |
+| W-ETOS-04 | PASS | [Evidence](W-ETOS-04/README.md): Actual installed worker executes an owner-scoped query and returns all eight current Bram nodes with exact indices/kinds/texts. Initial observer rejected structured total_rows output; unchanged independent trace passes corrected observer without another worker call. |
 | W-ETOS-05 | PASS | [Evidence](W-ETOS-05/README.md): Current-run Cancel a running task from the tray: `cancelled`, no candidate, no duplicate task is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-ETOS-06 | BLOCKED | [Evidence](W-ETOS-06/README.md): Companion-only portion PASS: permitted restart preserves the original task and cursor replay with one cancellation outcome. Owner rule: never stop/restart etosd; node-death/reconnect portion is forbidden and not run. |
 | W-ETOS-07 | PASS | [Evidence](W-ETOS-07/README.md): Current-run Generated texture arrives with matching sha256; tampered file refused is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-ETOS-08 | BLOCKED | [Evidence](W-ETOS-08/README.md): Owner rule: shared-provider removal is forbidden; removing the shared image provider and reloading the node are not run. |
 | W-ETOS-09 | PASS | [Evidence](W-ETOS-09/README.md): Current-run Domain reload during a task: tray shows the same task afterwards is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-VOICE-01 | PASS | [Evidence](W-VOICE-01/README.md): Current-run Speak a destructive command without sending: nothing happens; final transcript appears; partial results never commit; final text becomes a prompt only on explicit Send (restated per SR-4.8 by owner decision 2026-10-07) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-AI-01 | PASS | [Evidence](W-AI-01/README.md): One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Generated pixels show green woven cloth. Actual Maren body is visibly olive before, dark green with coarse weave after application, and olive again after normal Undo. All three viewport captures frame the complete body; Studio captures identify the workflow. Capsule geometry and distant magenta geometry are unchanged, not improved. Initial attempts stopped before generation because the ledger observer was absent; both are retained, and the same unused reservations were subsequently exercised with observers. |
-| W-AI-02 | FAIL | [Evidence](W-AI-02/README.md): Fresh unchanged installed-worker Ferryman candidate is refused before apply: GP-LOG-002, FerrymanElian is listed twice in Assets/Hollowmere/Rules/HollowmereContent.asset. No NPC Play/nav/dialogue or successful admission is claimed; original roster remains 20. Candidate is not repaired or regenerated. |
+| W-VOICE-01 | PASS | [Evidence](W-VOICE-01/README.md): Final transcript visibly remains unsent; tray/request/journal counts stay 1/1/122. Earlier move is explicitly sent and undone. Provider transcription of the destructive fixture is imperfect (To, to lead to every NPC in the village.); no partial-revision visibility requirement is imposed. |
+| W-AI-01 | PASS | [Evidence](W-AI-01/README.md): One real green cloth image passed through entity.setMaterialTexture; the real Hollowmere view used it in the body material slot, behaviour inputs and runtime profile stayed equal, and normal History undo restored the authored binding and rendered material. No tint substitute or direct binding call. Visual review: Actual generated image is green woven cloth. The complete real Maren body changes from olive to dark green weave and returns to olive after normal History Undo. Distant magenta geometry remains; no aesthetics improvement claimed. |
+| W-AI-02 | PASS | [Evidence](W-AI-02/README.md): Fresh installed-worker Ferryman candidate stages and applies unchanged; graph enrollment, committed movement, NavMesh and bell dialogue pass in real Play. Scene-entity roster is 20 → 21 → 20 after normal Undo. No retained candidate reuse, repair or regeneration. |
 | W-AI-03 | PASS | [Evidence](W-AI-03/README.md): Current-run "Add a line Odd only says after the shrine is lit": conditional dialogue works in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-AI-04 | PASS | [Evidence](W-AI-04/README.md): Current-run Edit the HUD objective label and rebind it to the quest stage name is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-AI-05 | PASS | [Evidence](W-AI-05/README.md): Current-run Change the lantern quest to require two oil flasks; verify consequences in Play is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
@@ -53,7 +53,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | W-PLUG-08 | PASS | [Evidence](W-PLUG-08/README.md): Current-run Take spam + reload: exactly one lantern is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-PLUG-09 | PASS | [Evidence](W-PLUG-09/README.md): Current-run "Why didn't the gate open" trace is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-PLUG-10 | PASS | [Evidence](W-PLUG-10/README.md): Current-run Definition validator parity (inspector, validator, agent) is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-PLUG-11 | PASS | [Evidence](W-PLUG-11/README.md): Current native crossfade/release and actual Maren voice cases pass. Current lifecycle movie passes the unchanged normalized audio-identity metric using marker-derived ten-second windows, authored voice/Village/Marsh samples and wrong-region controls. No audio-search-selected windows or human-listening claim. |
+| W-PLUG-11 | PASS | [Evidence](W-PLUG-11/README.md): Current graphical native crossfade/release and actual Maren voice cases pass. Marker-derived ten-second audio windows pass unchanged 2000Hz correlation metric at threshold 0.2: voice 0.5783, Village 0.4657, Marsh 0.4985; wrong-region controls 0.0509/0.0668. Clock anchoring is estimated; no audio-search-selected windows or human-listening claim. |
 | W-PLUG-12 | PASS | [Evidence](W-PLUG-12/README.md): Current-run Bake byte-identity; one line change → one revision change is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-KERNEL-01 | PASS | [Evidence](W-KERNEL-01/README.md): Current-run Corrupted catalog → named failure, not an empty world is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-PERSIST-01 | PASS | [Evidence](W-PERSIST-01/README.md): Current-run Save in the Ruin with items; load: all restored; region re-entered is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
@@ -61,17 +61,17 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | W-PERSIST-03 | PASS | [Evidence](W-PERSIST-03/README.md): Current-run Schema version bump with migration: restored; without: actionable refusal is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-REC-01 | PASS | [Evidence](W-REC-01/README.md): Current-run Kill editor mid-apply; reopen: journal `Interrupted`, resume/rollback is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
 | W-REC-03 | PASS | [Evidence](W-REC-03/README.md): Current-run Cancel region load mid-way; cancel staging job is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-MECH-01 | PASS | [Evidence](W-MECH-01/README.md): Current signed Docker stages pass in 163.483s cold and 81.506s warm. Creator admissions restore Play in 46.292s and 44.906s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial cache_invalid prerequisite refusal and stale-harness revision assertion failures are retained; neither authorized admission. |
-| W-GAME-01 | PASS | [Evidence](W-GAME-01/README.md): Current 1080p RTX4060Ti VSync OFF runs both pass: p95 3.502/3.565ms over 607.410/611.724s, zero outside-transition frames over 100ms and maximum transition 124.909ms. Neither run is eligible for a rerun. VSync ON p95 17.331/17.315ms is informational only. All four actual game-window movies are retained. |
-| W-GAME-05 | PASS | [Evidence](W-GAME-05/README.md): Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed owned-window keyframes show both menus, Save UI and ending. The 320.3s movie explicitly concatenates two actual process segments. |
-| W-GAME-06 | PASS | [Evidence](W-GAME-06/README.md): Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, qualification/release builds, prescribed probes and docs gates. B-FRAME is independently measured and passes under VSync OFF. |
+| W-MECH-01 | PASS | [Evidence](W-MECH-01/README.md): Signed Docker stages pass in 161.873s cold and 80.541s warm; creator admissions restore Play in 61.052s and 24.988s, preserve nine coins, pass 120-step Pending-to-Passed smoke and verified Undo. Initial bake_stale preflight refusal is retained; ordinary production rebake preceded new explicit attempts. |
+| W-GAME-01 | PASS | [Evidence](W-GAME-01/README.md): Current 1080p RTX4060Ti VSync OFF recordings both pass: p95 3.505/3.459ms over 613.087/609.749s, zero outside-transition frames over 100ms and maximum transition 144.944ms. Neither run is eligible for a rerun. VSync ON is informational; all four actual game-window movies retained. |
+| W-GAME-05 | PASS | [Evidence](W-GAME-05/README.md): Current release IL2CPP player completes menu/save/UI Quit, then separate-process load/Ending C/Play Again. Reviewed PID-owned-window keyframes show both menus, Saved to slot-1, ending and restarted village. Movie explicitly concatenates two actual processes. |
+| W-GAME-06 | PASS | [Evidence](W-GAME-06/README.md): Current-source release Hollowmere Linux IL2CPP build passes with executable/full-file hashes. Complete unchanged V1 gate passes 1318 EditMode and 84 PlayMode XML cases, codegen byte identity, both build profiles, prescribed probes and docs checks. An owned detached worktree at the exact product revision holds new build caches on /tmp; no compiler caches reclaimed from /home. |
 | W-GAME-07 | BLOCKED | [Evidence](W-GAME-07/README.md): Owner rule: never stop/restart etosd; stopped-node/no-network player scenario is not run. |
-| W-GAME-08 | PASS | [Evidence](W-GAME-08/README.md): Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.8041%, below the unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained. |
-| W-CLEAN-01 | PASS | [Evidence](W-CLEAN-01/README.md): Current clean-project author/bake, 11 EditMode and three PlayMode cases, both rechecks, Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations. |
-| W-CLEAN-02 | PASS | [Evidence](W-CLEAN-02/README.md): After all clean-project/build/player exercises and owned-fixture cleanup, literal git diff --exit-code origin/main -- Packages/ exits zero with empty output. No kernel/package source changed. |
+| W-GAME-08 | PASS | [Evidence](W-GAME-08/README.md): Ten current graphical Play/Edit cycles pass one-pump checks. Combined native/managed memory growth is 1.5436%, below unchanged 15% limit. Full cycle-1/10 snapshots are losslessly retained. |
+| W-CLEAN-01 | PASS | [Evidence](W-CLEAN-01/README.md): Current clean-project author/bake, 11 EditMode and three PlayMode cases, both rechecks, same-revision Linux IL2CPP build and standalone 600-frame quest/save/restore/ending autoplay pass with zero pump violations. Build uses owned external same-revision worktree to preserve /home reserve. |
+| W-CLEAN-02 | PASS | [Evidence](W-CLEAN-02/README.md): Current-run Kernel diff empty after the clean exercise passes linked exact assertions; no historical PASS is carried forward. |
 | W-DOC-01 | PASS | [Evidence](W-DOC-01/README.md): Current-run New user adds an NPC with dialogue from the creator guide is verified by the linked exact XML cases and/or current JSON assertions; no historical PASS is used. |
-| W-DOC-02 | PASS | [Evidence](W-DOC-02/README.md): Literal current guide export/client-submit and signed Docker stage pass. Creator Admit completes in 32.253s within 90s, restores nine coins and checkpoint round-trip equality, passes 120-frame smoke, and actual Toggle lever control commits 0/1/0 on normal frames. Undo removes the package and restores the original catalog. |
-| W-E2E-01 | FAIL | [Evidence](W-E2E-01/README.md): All 68 rows are freshly judged at one product revision and installed companion release with strict host exclusivity; no historical PASS carries forward. End-to-end acceptance is FAIL because current W-AI-02 refuses the unchanged Ferryman candidate with GP-LOG-002 duplicate enrollment. Six exact owner-forbidden scenarios remain BLOCKED. |
+| W-DOC-02 | PASS | [Evidence](W-DOC-02/README.md): Literal current guide export/client-submit and signed Docker stage pass. Creator Admit completes in 33.465s, restores nine coins and checkpoint round-trip equality, passes 120-frame smoke; actual Toggle lever control commits 0/1/0 on normal frames with visible On/Off labels. Undo removes the package and restores the original catalog. |
+| W-E2E-01 | PASS | [Evidence](W-E2E-01/README.md): All 68 rows are freshly judged at one product revision and one installed immutable release with strict host exclusivity. All permitted rows pass their current assertions; six exact owner-forbidden scenarios remain BLOCKED, as allowed by SR-12.3. Broad-suite nonpassing cases remain explicit; this is not an all-green suite or unrestricted deployment claim. |
 
 ## Retained attempts (including superseded and expected failures)
 
@@ -88,6 +88,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [GRAPHICAL/p42i-graphics-20261007T044925.083020Z](GRAPHICAL/p42i-graphics-20261007T044925.083020Z/README.md) | PASS | cb5e2aa20263 |
 | [GRAPHICAL/p42j-graphics-20261007T120827.071700Z](GRAPHICAL/p42j-graphics-20261007T120827.071700Z/README.md) | PASS | 389cf038a738 |
 | [GRAPHICAL/p42k-graphics-20261007T183359.631957Z](GRAPHICAL/p42k-graphics-20261007T183359.631957Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [GRAPHICAL/p42l-graphics-20261007T231507.717364Z](GRAPHICAL/p42l-graphics-20261007T231507.717364Z/README.md) | PASS | 6e8e73c42427 |
 | [INSTALL-P4.2b/final-main-build-20261006T043503.739699Z](INSTALL-P4.2b/final-main-build-20261006T043503.739699Z/README.md) | FAIL | 8d1574e4326a |
 | [INSTALL-P4.2b/final-main-release-20261006T042504.872797Z](INSTALL-P4.2b/final-main-release-20261006T042504.872797Z/README.md) | FAIL | 8d1574e4326a |
 | [INSTALL-P4.2b/final-main-release-binary-20261006T043811.635588Z](INSTALL-P4.2b/final-main-release-binary-20261006T043811.635588Z/README.md) | PASS | 8d1574e4326a |
@@ -143,6 +144,9 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [P4.2j/p42j-hello-20261007T113142.594535Z](P4.2j/p42j-hello-20261007T113142.594535Z/README.md) | PASS | 389cf038a738 |
 | [P4.2k/p42k-discard-terminal-slots-20261007T195658.411784Z](P4.2k/p42k-discard-terminal-slots-20261007T195658.411784Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [P4.2k/p42k-hello-20261007T180605.465781Z](P4.2k/p42k-hello-20261007T180605.465781Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [P4.2l/p42l-discard-terminal-slots-20261008T002027.812132Z](P4.2l/p42l-discard-terminal-slots-20261008T002027.812132Z/README.md) | PASS | 6e8e73c42427 |
+| [P4.2l/p42l-discard-terminal-slots-20261008T002814.579284Z](P4.2l/p42l-discard-terminal-slots-20261008T002814.579284Z/README.md) | PASS | 6e8e73c42427 |
+| [P4.2l/p42l-hello-20261007T224425.379751Z](P4.2l/p42l-hello-20261007T224425.379751Z/README.md) | PASS | 6e8e73c42427 |
 | [R6-P4.2e/p42e-regression-20261006T143611.682920Z](R6-P4.2e/p42e-regression-20261006T143611.682920Z/README.md) | FAIL | 26c971a61ab0 |
 | [R6-P4.2e/p42e-regression-20261006T143939.136591Z](R6-P4.2e/p42e-regression-20261006T143939.136591Z/README.md) | PASS | 26c971a61ab0 |
 | [R6-P4.2f/p42f-regression-20261006T165922.104070Z](R6-P4.2f/p42f-regression-20261006T165922.104070Z/README.md) | PASS | 4ac7ba858b91 |
@@ -154,27 +158,32 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/cargo-clippy-20261007T041638.961694Z](STATIC/cargo-clippy-20261007T041638.961694Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/cargo-clippy-20261007T113238.205464Z](STATIC/cargo-clippy-20261007T113238.205464Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/cargo-clippy-20261007T180723.082708Z](STATIC/cargo-clippy-20261007T180723.082708Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/cargo-clippy-20261007T224508.942236Z](STATIC/cargo-clippy-20261007T224508.942236Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/cargo-fmt-20261005T170026.358681Z](STATIC/cargo-fmt-20261005T170026.358681Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/cargo-fmt-20261005T185349.460752Z](STATIC/cargo-fmt-20261005T185349.460752Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/cargo-fmt-20261007T041638.525053Z](STATIC/cargo-fmt-20261007T041638.525053Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/cargo-fmt-20261007T113237.713382Z](STATIC/cargo-fmt-20261007T113237.713382Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/cargo-fmt-20261007T180722.629848Z](STATIC/cargo-fmt-20261007T180722.629848Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/cargo-fmt-20261007T224508.358166Z](STATIC/cargo-fmt-20261007T224508.358166Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/cargo-test-20261005T170039.345047Z](STATIC/cargo-test-20261005T170039.345047Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/cargo-test-20261005T185350.034834Z](STATIC/cargo-test-20261005T185350.034834Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/cargo-test-20261007T041659.917033Z](STATIC/cargo-test-20261007T041659.917033Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/cargo-test-20261007T113259.305718Z](STATIC/cargo-test-20261007T113259.305718Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/cargo-test-20261007T180743.876605Z](STATIC/cargo-test-20261007T180743.876605Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/cargo-test-20261007T224530.019208Z](STATIC/cargo-test-20261007T224530.019208Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/collector-temp-root-regression-before-20261005T180136.487684Z](STATIC/collector-temp-root-regression-before-20261005T180136.487684Z/README.md) | FAIL | 20e34d1e6a68 |
 | [STATIC/csharp-20261005T170003.419790Z](STATIC/csharp-20261005T170003.419790Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/csharp-20261005T185323.246630Z](STATIC/csharp-20261005T185323.246630Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/csharp-20261007T041607.114167Z](STATIC/csharp-20261007T041607.114167Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/csharp-20261007T113208.154677Z](STATIC/csharp-20261007T113208.154677Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/csharp-20261007T180651.255912Z](STATIC/csharp-20261007T180651.255912Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/csharp-20261007T224438.491756Z](STATIC/csharp-20261007T224438.491756Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/dotnet-20261005T170105.969990Z](STATIC/dotnet-20261005T170105.969990Z/README.md) | BLOCKED | 813e6b4591d8 |
 | [STATIC/dotnet-20261005T185357.113798Z](STATIC/dotnet-20261005T185357.113798Z/README.md) | BLOCKED | 4214d67b2289 |
 | [STATIC/dotnet-20261007T041759.908388Z](STATIC/dotnet-20261007T041759.908388Z/README.md) | BLOCKED | cb5e2aa20263 |
 | [STATIC/dotnet-20261007T113341.193143Z](STATIC/dotnet-20261007T113341.193143Z/README.md) | BLOCKED | 389cf038a738 |
 | [STATIC/dotnet-20261007T180824.260335Z](STATIC/dotnet-20261007T180824.260335Z/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [STATIC/dotnet-20261007T224611.876266Z](STATIC/dotnet-20261007T224611.876266Z/README.md) | BLOCKED | 6e8e73c42427 |
 | [STATIC/enospc-summary-before-20261005T190318.843314Z](STATIC/enospc-summary-before-20261005T190318.843314Z/README.md) | FAIL | 12d7e5c7abab |
 | [STATIC/evidence-footer-20261005T173202.335369Z](STATIC/evidence-footer-20261005T173202.335369Z/README.md) | PASS | 20e34d1e6a68 |
 | [STATIC/final-csharp-policy-20261005T205441.575079Z](STATIC/final-csharp-policy-20261005T205441.575079Z/README.md) | PASS | 50a4c07c2021 |
@@ -187,6 +196,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/host-python-20261007T042039.230695Z](STATIC/host-python-20261007T042039.230695Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/host-python-20261007T113521.643097Z](STATIC/host-python-20261007T113521.643097Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/host-python-20261007T180954.388545Z](STATIC/host-python-20261007T180954.388545Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/host-python-20261007T224811.463055Z](STATIC/host-python-20261007T224811.463055Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/host-python-dependencies-20261005T185559.640539Z](STATIC/host-python-dependencies-20261005T185559.640539Z/README.md) | PASS | 38baed3d6484 |
 | [STATIC/host-python-with-dependencies-20261005T170413.171545Z](STATIC/host-python-with-dependencies-20261005T170413.171545Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/installer-python-20261005T170213.921047Z](STATIC/installer-python-20261005T170213.921047Z/README.md) | PASS | 813e6b4591d8 |
@@ -194,6 +204,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/installer-python-20261007T042010.694411Z](STATIC/installer-python-20261007T042010.694411Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/installer-python-20261007T113515.988445Z](STATIC/installer-python-20261007T113515.988445Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/installer-python-20261007T180948.614130Z](STATIC/installer-python-20261007T180948.614130Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/installer-python-20261007T224805.338687Z](STATIC/installer-python-20261007T224805.338687Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/p42-recovery-csharp-20261005T172504.169495Z](STATIC/p42-recovery-csharp-20261005T172504.169495Z/README.md) | PASS | 3c5f817aa45a |
 | [STATIC/p42-recovery-metadata-20261005T172521.633061Z](STATIC/p42-recovery-metadata-20261005T172521.633061Z/README.md) | PASS | 3c5f817aa45a |
 | [STATIC/p42-regressions-20261005T170758.766805Z](STATIC/p42-regressions-20261005T170758.766805Z/README.md) | PASS | 813e6b4591d8 |
@@ -202,6 +213,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/p42-runner-regressions-20261007T042043.038656Z](STATIC/p42-runner-regressions-20261007T042043.038656Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/p42-runner-regressions-20261007T113524.545577Z](STATIC/p42-runner-regressions-20261007T113524.545577Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/p42-runner-regressions-20261007T180957.310433Z](STATIC/p42-runner-regressions-20261007T180957.310433Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/p42-runner-regressions-20261007T224814.808343Z](STATIC/p42-runner-regressions-20261007T224814.808343Z/README.md) | FAIL | 6e8e73c42427 |
 | [STATIC/p42b-csharp-20261006T042924.991352Z](STATIC/p42b-csharp-20261006T042924.991352Z/README.md) | PASS | 8d1574e4326a |
 | [STATIC/p42b-evidence-check-20261006T045515.284217Z](STATIC/p42b-evidence-check-20261006T045515.284217Z/README.md) | PASS | 53525c74d62c |
 | [STATIC/p42b-evidence-check-20261006T045625.240655Z](STATIC/p42b-evidence-check-20261006T045625.240655Z/README.md) | PASS | 53525c74d62c |
@@ -226,6 +238,15 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/p42k-all-acceptance-tests-20261007T220052.505991Z](STATIC/p42k-all-acceptance-tests-20261007T220052.505991Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [STATIC/p42k-final-csharp-20261007T215644.761359Z](STATIC/p42k-final-csharp-20261007T215644.761359Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [STATIC/p42k-query-regression-20261007T215715.763276Z](STATIC/p42k-query-regression-20261007T215715.763276Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/p42l-acceptance-regressions-20261008T004406.587139Z](STATIC/p42l-acceptance-regressions-20261008T004406.587139Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-all-acceptance-tests-20261008T011808.869767Z](STATIC/p42l-all-acceptance-tests-20261008T011808.869767Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-default-runner-tests-20261008T011812.145743Z](STATIC/p42l-default-runner-tests-20261008T011812.145743Z/README.md) | FAIL | 6e8e73c42427 |
+| [STATIC/p42l-default-runner-tests-external-20261008T011841.008558Z](STATIC/p42l-default-runner-tests-external-20261008T011841.008558Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-disk-reserve-regression-20261007T225000.069412Z](STATIC/p42l-disk-reserve-regression-20261007T225000.069412Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-final-csharp-20261008T004327.511991Z](STATIC/p42l-final-csharp-20261008T004327.511991Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-final-new-harness-tests-20261008T023535.528519Z](STATIC/p42l-final-new-harness-tests-20261008T023535.528519Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-query-regression-20261008T004406.481215Z](STATIC/p42l-query-regression-20261008T004406.481215Z/README.md) | PASS | 6e8e73c42427 |
+| [STATIC/p42l-runner-regressions-restored-20261007T224857.145093Z](STATIC/p42l-runner-regressions-restored-20261007T224857.145093Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/python-test-dependencies-20261005T194810.055434Z](STATIC/python-test-dependencies-20261005T194810.055434Z/README.md) | PASS | c532b77edd93 |
 | [STATIC/python-test-environment-20261005T194808.117890Z](STATIC/python-test-environment-20261005T194808.117890Z/README.md) | PASS | c532b77edd93 |
 | [STATIC/reproducer-python-dependencies-20261005T194814.041644Z](STATIC/reproducer-python-dependencies-20261005T194814.041644Z/README.md) | PASS | c532b77edd93 |
@@ -236,70 +257,84 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [STATIC/schema-mirror-20261007T041638.508045Z](STATIC/schema-mirror-20261007T041638.508045Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/schema-mirror-20261007T113237.592167Z](STATIC/schema-mirror-20261007T113237.592167Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/schema-mirror-20261007T180722.612079Z](STATIC/schema-mirror-20261007T180722.612079Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/schema-mirror-20261007T224508.226343Z](STATIC/schema-mirror-20261007T224508.226343Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/schemas-20261005T170021.351083Z](STATIC/schemas-20261005T170021.351083Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/schemas-20261005T185346.823990Z](STATIC/schemas-20261005T185346.823990Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/schemas-20261007T041635.165636Z](STATIC/schemas-20261007T041635.165636Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/schemas-20261007T113234.273566Z](STATIC/schemas-20261007T113234.273566Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/schemas-20261007T180718.998023Z](STATIC/schemas-20261007T180718.998023Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/schemas-20261007T224504.924681Z](STATIC/schemas-20261007T224504.924681Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/stage-python-20261005T170212.958736Z](STATIC/stage-python-20261005T170212.958736Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/stage-python-20261005T185454.115173Z](STATIC/stage-python-20261005T185454.115173Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/stage-python-20261007T042008.763305Z](STATIC/stage-python-20261007T042008.763305Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/stage-python-20261007T113514.694248Z](STATIC/stage-python-20261007T113514.694248Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/stage-python-20261007T180947.311327Z](STATIC/stage-python-20261007T180947.311327Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/stage-python-20261007T224803.863599Z](STATIC/stage-python-20261007T224803.863599Z/README.md) | PASS | 6e8e73c42427 |
 | [STATIC/stage-slot-20261005T170215.275359Z](STATIC/stage-slot-20261005T170215.275359Z/README.md) | PASS | 813e6b4591d8 |
 | [STATIC/stage-slot-20261005T185456.082576Z](STATIC/stage-slot-20261005T185456.082576Z/README.md) | PASS | 4214d67b2289 |
 | [STATIC/stage-slot-20261007T042042.825223Z](STATIC/stage-slot-20261007T042042.825223Z/README.md) | PASS | cb5e2aa20263 |
 | [STATIC/stage-slot-20261007T113524.306670Z](STATIC/stage-slot-20261007T113524.306670Z/README.md) | PASS | 389cf038a738 |
 | [STATIC/stage-slot-20261007T180957.113636Z](STATIC/stage-slot-20261007T180957.113636Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [STATIC/stage-slot-20261007T224814.559176Z](STATIC/stage-slot-20261007T224814.559176Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-CLEANPROOF/clean-recheck-editmode-20261005T182050.502116Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261005T182050.502116Z/README.md) | FAIL | 20e34d1e6a68 |
 | [UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261005T202042.513842Z/README.md) | FAIL | c532b77edd93 |
 | [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261007T044422.332841Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T120320.910141Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261007T120320.910141Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261007T182948.351805Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z](UNITY-CLEANPROOF/clean-recheck-editmode-20261007T231024.855233Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-CLEANPROOF/clean-recheck-playmode-20261005T182126.162519Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261005T182126.162519Z/README.md) | PASS | 20e34d1e6a68 |
 | [UNITY-CLEANPROOF/clean-recheck-playmode-20261005T202131.388822Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261005T202131.388822Z/README.md) | PASS | c532b77edd93 |
 | [UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261007T044507.142970Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-CLEANPROOF/clean-recheck-playmode-20261007T120428.161780Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261007T120428.161780Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-CLEANPROOF/clean-recheck-playmode-20261007T183025.526453Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261007T183025.526453Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-CLEANPROOF/clean-recheck-playmode-20261007T231102.667401Z](UNITY-CLEANPROOF/clean-recheck-playmode-20261007T231102.667401Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-CLEANPROOF/editmode-20261005T172247.414492Z](UNITY-CLEANPROOF/editmode-20261005T172247.414492Z/README.md) | PASS | 3c5f817aa45a |
 | [UNITY-CLEANPROOF/editmode-20261005T190038.583676Z](UNITY-CLEANPROOF/editmode-20261005T190038.583676Z/README.md) | FAIL | 38baed3d6484 |
 | [UNITY-CLEANPROOF/editmode-20261007T043529.273476Z](UNITY-CLEANPROOF/editmode-20261007T043529.273476Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-CLEANPROOF/editmode-20261007T115036.659052Z](UNITY-CLEANPROOF/editmode-20261007T115036.659052Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-CLEANPROOF/editmode-20261007T182300.208808Z](UNITY-CLEANPROOF/editmode-20261007T182300.208808Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-CLEANPROOF/editmode-20261007T230206.200832Z](UNITY-CLEANPROOF/editmode-20261007T230206.200832Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-CLEANPROOF/playmode-20261005T172329.747118Z](UNITY-CLEANPROOF/playmode-20261005T172329.747118Z/README.md) | PASS | 3c5f817aa45a |
 | [UNITY-CLEANPROOF/playmode-20261005T190114.416914Z](UNITY-CLEANPROOF/playmode-20261005T190114.416914Z/README.md) | PASS | 38baed3d6484 |
 | [UNITY-CLEANPROOF/playmode-20261007T043623.698282Z](UNITY-CLEANPROOF/playmode-20261007T043623.698282Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-CLEANPROOF/playmode-20261007T115134.053559Z](UNITY-CLEANPROOF/playmode-20261007T115134.053559Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-CLEANPROOF/playmode-20261007T182337.179779Z](UNITY-CLEANPROOF/playmode-20261007T182337.179779Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-CLEANPROOF/playmode-20261007T230243.551751Z](UNITY-CLEANPROOF/playmode-20261007T230243.551751Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/editmode-20261005T171102.242838Z](UNITY-HOLLOWMERE/editmode-20261005T171102.242838Z/README.md) | BLOCKED | 3c5f817aa45a |
 | [UNITY-HOLLOWMERE/editmode-20261005T185625.043671Z](UNITY-HOLLOWMERE/editmode-20261005T185625.043671Z/README.md) | BLOCKED | 38baed3d6484 |
 | [UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z](UNITY-HOLLOWMERE/editmode-20261007T042823.666683Z/README.md) | FAIL | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z](UNITY-HOLLOWMERE/editmode-20261007T114227.611651Z/README.md) | FAIL | 389cf038a738 |
 | [UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z](UNITY-HOLLOWMERE/editmode-20261007T181428.800202Z/README.md) | FAIL | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z](UNITY-HOLLOWMERE/editmode-20261007T225315.557417Z/README.md) | FAIL | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z](UNITY-HOLLOWMERE/editmode-final-gated-20261005T204827.752033Z/README.md) | BLOCKED | 50a4c07c2021 |
 | [UNITY-HOLLOWMERE/editmode-final-harness-20261005T204130.782071Z](UNITY-HOLLOWMERE/editmode-final-harness-20261005T204130.782071Z/README.md) | FAIL | 74005cef3447 |
 | [UNITY-HOLLOWMERE/memory-ten-cycles-20261007T043900.993187Z](UNITY-HOLLOWMERE/memory-ten-cycles-20261007T043900.993187Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/memory-ten-cycles-20261007T115638.512902Z](UNITY-HOLLOWMERE/memory-ten-cycles-20261007T115638.512902Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-HOLLOWMERE/memory-ten-cycles-20261007T182552.282623Z](UNITY-HOLLOWMERE/memory-ten-cycles-20261007T182552.282623Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/memory-ten-cycles-20261007T230624.398089Z](UNITY-HOLLOWMERE/memory-ten-cycles-20261007T230624.398089Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z](UNITY-HOLLOWMERE/p42b-final-views-20261006T042540.489299Z/README.md) | PASS | 8d1574e4326a |
 | [UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z](UNITY-HOLLOWMERE/p42b-final-views-20261007T045056.957279Z/README.md) | FAIL | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z](UNITY-HOLLOWMERE/p42b-final-views-20261007T121042.755054Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z](UNITY-HOLLOWMERE/p42b-final-views-20261007T183451.741453Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z](UNITY-HOLLOWMERE/p42b-final-views-20261007T231601.552579Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/perf-final-1-20261005T201110.316067Z](UNITY-HOLLOWMERE/perf-final-1-20261005T201110.316067Z/README.md) | PASS | c532b77edd93 |
 | [UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z](UNITY-HOLLOWMERE/perf-final-2-20261005T201658.304250Z/README.md) | PASS | c532b77edd93 |
 | [UNITY-HOLLOWMERE/perf-probe-1-20261005T181938.833666Z](UNITY-HOLLOWMERE/perf-probe-1-20261005T181938.833666Z/README.md) | PASS | 20e34d1e6a68 |
 | [UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z](UNITY-HOLLOWMERE/perf-probe-1-20261007T043718.908062Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/perf-probe-1-20261007T115310.470379Z](UNITY-HOLLOWMERE/perf-probe-1-20261007T115310.470379Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z](UNITY-HOLLOWMERE/perf-probe-1-20261007T182419.381563Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z](UNITY-HOLLOWMERE/perf-probe-1-20261007T230325.425551Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/perf-probe-2-20261005T182014.974536Z](UNITY-HOLLOWMERE/perf-probe-2-20261005T182014.974536Z/README.md) | PASS | 20e34d1e6a68 |
 | [UNITY-HOLLOWMERE/perf-probe-2-20261007T043809.667520Z](UNITY-HOLLOWMERE/perf-probe-2-20261007T043809.667520Z/README.md) | PASS | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/perf-probe-2-20261007T115518.843710Z](UNITY-HOLLOWMERE/perf-probe-2-20261007T115518.843710Z/README.md) | PASS | 389cf038a738 |
 | [UNITY-HOLLOWMERE/perf-probe-2-20261007T182505.279924Z](UNITY-HOLLOWMERE/perf-probe-2-20261007T182505.279924Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/perf-probe-2-20261007T230536.796749Z](UNITY-HOLLOWMERE/perf-probe-2-20261007T230536.796749Z/README.md) | PASS | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/playmode-20261005T172047.459311Z](UNITY-HOLLOWMERE/playmode-20261005T172047.459311Z/README.md) | PASS | 3c5f817aa45a |
 | [UNITY-HOLLOWMERE/playmode-20261005T185951.720751Z](UNITY-HOLLOWMERE/playmode-20261005T185951.720751Z/README.md) | PASS | 38baed3d6484 |
 | [UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z](UNITY-HOLLOWMERE/playmode-20261007T043423.985881Z/README.md) | FAIL | cb5e2aa20263 |
 | [UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z](UNITY-HOLLOWMERE/playmode-20261007T114916.371012Z/README.md) | FAIL | 389cf038a738 |
 | [UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z](UNITY-HOLLOWMERE/playmode-20261007T182156.794770Z/README.md) | FAIL | 7a7ff0c0e5ec |
+| [UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z](UNITY-HOLLOWMERE/playmode-20261007T230108.163218Z/README.md) | FAIL | 6e8e73c42427 |
 | [UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z](UNITY-HOLLOWMERE/playmode-final-harness-20261005T204457.641118Z/README.md) | PASS | 74005cef3447 |
 | [W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z](W-AI-01/p42b-live-prerequisite-20261006T044153.908826Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-01/p42c-robe2-20261006T072832.434641Z](W-AI-01/p42c-robe2-20261006T072832.434641Z/README.md) | PASS | 65666ac27168 |
@@ -308,6 +343,8 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-AI-01/p42j-robe-20261007T124136.895164Z](W-AI-01/p42j-robe-20261007T124136.895164Z/README.md) | PASS | 389cf038a738 |
 | [W-AI-01/p42k-robe-20261007T190127.927059Z](W-AI-01/p42k-robe-20261007T190127.927059Z/README.md) | FAIL | 7a7ff0c0e5ec |
 | [W-AI-01/p42k-robe-observed-20261007T192600.540388Z](W-AI-01/p42k-robe-observed-20261007T192600.540388Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-AI-01/p42l-robe-20261007T234111.325341Z](W-AI-01/p42l-robe-20261007T234111.325341Z/README.md) | FAIL | 6e8e73c42427 |
+| [W-AI-01/p42l-robe-observed-20261007T234406.195842Z](W-AI-01/p42l-robe-observed-20261007T234406.195842Z/README.md) | PASS | 6e8e73c42427 |
 | [W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z](W-AI-02/p42b-live-prerequisite-20261006T044154.619482Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-02/p42c-text2-20261006T071746.894107Z](W-AI-02/p42c-text2-20261006T071746.894107Z/README.md) | FAIL | 65666ac27168 |
 | [W-AI-02/p42d-text2-20261006T113349.342620Z](W-AI-02/p42d-text2-20261006T113349.342620Z/README.md) | FAIL | 274cfc7d24bb |
@@ -334,6 +371,8 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-AI-02/p42j-npc-view-20261007T125422.879147Z](W-AI-02/p42j-npc-view-20261007T125422.879147Z/README.md) | PASS | 389cf038a738 |
 | [W-AI-02/p42k-npc-20261007T191317.157379Z](W-AI-02/p42k-npc-20261007T191317.157379Z/README.md) | FAIL | 7a7ff0c0e5ec |
 | [W-AI-02/p42k-npc-view-20261007T191235.565763Z](W-AI-02/p42k-npc-view-20261007T191235.565763Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-AI-02/p42l-npc-20261007T235545.087554Z](W-AI-02/p42l-npc-20261007T235545.087554Z/README.md) | PASS | 6e8e73c42427 |
+| [W-AI-02/p42l-npc-view-20261007T235456.871621Z](W-AI-02/p42l-npc-view-20261007T235456.871621Z/README.md) | PASS | 6e8e73c42427 |
 | [W-AI-02/r9-a-npc-20261007T103755.217153Z](W-AI-02/r9-a-npc-20261007T103755.217153Z/README.md) | pass | unknown (receipt has no revision) |
 | [W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z](W-AI-03/p42b-live-prerequisite-20261006T044156.183935Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-03/p42c-narrative-20261006T073303.291662Z](W-AI-03/p42c-narrative-20261006T073303.291662Z/README.md) | FAIL | dbedd2fb6c83 |
@@ -342,6 +381,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-AI-03/p42i-narrative-20261007T052144.251187Z](W-AI-03/p42i-narrative-20261007T052144.251187Z/README.md) | FAIL | cb5e2aa20263 |
 | [W-AI-03/p42j-narrative-20261007T124515.649672Z](W-AI-03/p42j-narrative-20261007T124515.649672Z/README.md) | PASS | 389cf038a738 |
 | [W-AI-03/p42k-narrative-20261007T190416.133826Z](W-AI-03/p42k-narrative-20261007T190416.133826Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-AI-03/p42l-narrative-20261007T234636.675960Z](W-AI-03/p42l-narrative-20261007T234636.675960Z/README.md) | PASS | 6e8e73c42427 |
 | [W-AI-03/r9-a-odd-20261007T104156.540366Z](W-AI-03/r9-a-odd-20261007T104156.540366Z/README.md) | pass | unknown (receipt has no revision) |
 | [W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z](W-AI-04/p42b-live-prerequisite-20261006T044156.192058Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z](W-AI-05/p42b-live-prerequisite-20261006T044156.198991Z/README.md) | BLOCKED | 8d1574e4326a |
@@ -354,6 +394,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-AI-06/p42i-reopen-20261007T052926.823205Z](W-AI-06/p42i-reopen-20261007T052926.823205Z/README.md) | PASS | cb5e2aa20263 |
 | [W-AI-06/p42j-reopen-20261007T125251.086788Z](W-AI-06/p42j-reopen-20261007T125251.086788Z/README.md) | PASS | 389cf038a738 |
 | [W-AI-06/p42k-reopen-20261007T191123.755008Z](W-AI-06/p42k-reopen-20261007T191123.755008Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-AI-06/p42l-reopen-20261007T235325.590280Z](W-AI-06/p42l-reopen-20261007T235325.590280Z/README.md) | PASS | 6e8e73c42427 |
 | [W-AI-06/r7-a](W-AI-06/r7-a/README.md) | PASS | 1a462f88 |
 | [W-AI-06/r9-a-reopen-20261007T104315.385095Z](W-AI-06/r9-a-reopen-20261007T104315.385095Z/README.md) | pass | unknown (receipt has no revision) |
 | [W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z](W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/README.md) | FAIL | d26494a498d4 |
@@ -367,15 +408,19 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-CLEAN-01/p42j-clean-player-20261007T145428.743794Z](W-CLEAN-01/p42j-clean-player-20261007T145428.743794Z/README.md) | PASS | 389cf038a738 |
 | [W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z](W-CLEAN-01/p42k-clean-build-20261007T205517.239438Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z](W-CLEAN-01/p42k-clean-player-20261007T210722.243877Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-CLEAN-01/p42l-clean-build-20261008T012754.477935Z](W-CLEAN-01/p42l-clean-build-20261008T012754.477935Z/README.md) | PASS | 6e8e73c42427 |
+| [W-CLEAN-01/p42l-clean-player-20261008T014119.503790Z](W-CLEAN-01/p42l-clean-player-20261008T014119.503790Z/README.md) | PASS | 6e8e73c42427 |
 | [W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z](W-CLEAN-01/saltmarsh-linux-build-20261005T184220.324518Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-CLEAN-02/p42i-final-kernel-diff](W-CLEAN-02/p42i-final-kernel-diff/README.md) | PASS | cb5e2aa20263 |
 | [W-CLEAN-02/p42j-final-kernel-diff-20261007T160009.420577Z](W-CLEAN-02/p42j-final-kernel-diff-20261007T160009.420577Z/README.md) | PASS | 389cf038a738 |
 | [W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z](W-CLEAN-02/p42k-final-kernel-diff-20261007T215644.394944Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z](W-CLEAN-02/p42l-final-kernel-diff-20261008T004327.011066Z/README.md) | PASS | 6e8e73c42427 |
 | [W-CLEAN-02/package-diff-20261005T182204.124598Z](W-CLEAN-02/package-diff-20261005T182204.124598Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-CLEAN-02/package-diff-20261005T202208.742343Z](W-CLEAN-02/package-diff-20261005T202208.742343Z/README.md) | PASS | c532b77edd93 |
 | [W-CLEAN-02/package-diff-20261007T044552.800496Z](W-CLEAN-02/package-diff-20261007T044552.800496Z/README.md) | PASS | cb5e2aa20263 |
 | [W-CLEAN-02/package-diff-20261007T120519.714493Z](W-CLEAN-02/package-diff-20261007T120519.714493Z/README.md) | PASS | 389cf038a738 |
 | [W-CLEAN-02/package-diff-20261007T183111.939652Z](W-CLEAN-02/package-diff-20261007T183111.939652Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-CLEAN-02/package-diff-20261007T231143.751239Z](W-CLEAN-02/package-diff-20261007T231143.751239Z/README.md) | PASS | 6e8e73c42427 |
 | [W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z](W-DOC-01/p42b-fresh-guide-open-20261006T044416.491505Z/README.md) | PASS | 8d1574e4326a |
 | [W-DOC-01/p42c-guides-20261006T082946.366496Z](W-DOC-01/p42c-guides-20261006T082946.366496Z/README.md) | FAIL | 9d8ab6b11d43 |
 | [W-DOC-01/p42c-image-recovered-20261006T084302.391519Z](W-DOC-01/p42c-image-recovered-20261006T084302.391519Z/README.md) | FAIL | 9d8ab6b11d43 |
@@ -384,6 +429,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-DOC-01/p42i-creator-guide-20261007T051239.640968Z](W-DOC-01/p42i-creator-guide-20261007T051239.640968Z/README.md) | PASS | cb5e2aa20263 |
 | [W-DOC-01/p42j-creator-guide-20261007T123414.950608Z](W-DOC-01/p42j-creator-guide-20261007T123414.950608Z/README.md) | PASS | 389cf038a738 |
 | [W-DOC-01/p42k-creator-guide-20261007T185445.408074Z](W-DOC-01/p42k-creator-guide-20261007T185445.408074Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-DOC-01/p42l-creator-guide-20261007T233546.090584Z](W-DOC-01/p42l-creator-guide-20261007T233546.090584Z/README.md) | PASS | 6e8e73c42427 |
 | [W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z](W-DOC-02/p42b-literal-plugin-guide-20261006T043233.012634Z/README.md) | FAIL | 8d1574e4326a |
 | [W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z](W-DOC-02/p42b-plugin-guide-built-prerequisite-20261006T045350.370953Z/README.md) | FAIL | 53525c74d62c |
 | [W-DOC-02/p42i-lever-literal-export-20261007T074755.268152Z](W-DOC-02/p42i-lever-literal-export-20261007T074755.268152Z/README.md) | PASS | cb5e2aa20263 |
@@ -400,6 +446,9 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-DOC-02/p42k-lever-literal-export-20261007T195206.125264Z](W-DOC-02/p42k-lever-literal-export-20261007T195206.125264Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-DOC-02/p42k-lever-literal-review-20261007T195412.664105Z](W-DOC-02/p42k-lever-literal-review-20261007T195412.664105Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-DOC-02/p42k-lever-literal-submit-20261007T195249.347742Z](W-DOC-02/p42k-lever-literal-submit-20261007T195249.347742Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-DOC-02/p42l-lever-literal-export-20261008T002314.156331Z](W-DOC-02/p42l-lever-literal-export-20261008T002314.156331Z/README.md) | PASS | 6e8e73c42427 |
+| [W-DOC-02/p42l-lever-literal-review-20261008T002528.602047Z](W-DOC-02/p42l-lever-literal-review-20261008T002528.602047Z/README.md) | PASS | 6e8e73c42427 |
+| [W-DOC-02/p42l-lever-literal-submit-20261008T002356.918875Z](W-DOC-02/p42l-lever-literal-submit-20261008T002356.918875Z/README.md) | PASS | 6e8e73c42427 |
 | [W-DOC-02/r7-a](W-DOC-02/r7-a/README.md) | PASS | 1a462f88 |
 | [W-DOC-02/r8-c](W-DOC-02/r8-c/README.md) | PASS | unknown (receipt has no revision) |
 | [W-E2E-01/p42h-accounting](W-E2E-01/p42h-accounting/README.md) | BLOCKED | a77cb38ba4a2 |
@@ -409,18 +458,22 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-EDIT-01/p42i-move-20261007T054012.009656Z](W-EDIT-01/p42i-move-20261007T054012.009656Z/README.md) | PASS | cb5e2aa20263 |
 | [W-EDIT-01/p42j-move-20261007T130223.318527Z](W-EDIT-01/p42j-move-20261007T130223.318527Z/README.md) | PASS | 389cf038a738 |
 | [W-EDIT-01/p42k-move-20261007T191754.881437Z](W-EDIT-01/p42k-move-20261007T191754.881437Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-EDIT-01/p42l-move-20261008T000024.102305Z](W-EDIT-01/p42l-move-20261008T000024.102305Z/README.md) | PASS | 6e8e73c42427 |
 | [W-EDIT-03/p42h-portrait-20261006T233329.764957Z](W-EDIT-03/p42h-portrait-20261006T233329.764957Z/README.md) | FAIL | a77cb38ba4a2 |
 | [W-EDIT-03/p42h-portrait-history-20261006T233621.554895Z](W-EDIT-03/p42h-portrait-history-20261006T233621.554895Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-EDIT-03/p42i-portrait-20261007T051704.128255Z](W-EDIT-03/p42i-portrait-20261007T051704.128255Z/README.md) | PASS | cb5e2aa20263 |
 | [W-EDIT-03/p42j-portrait-20261007T123941.341326Z](W-EDIT-03/p42j-portrait-20261007T123941.341326Z/README.md) | PASS | 389cf038a738 |
 | [W-EDIT-03/p42k-portrait-20261007T185846.087649Z](W-EDIT-03/p42k-portrait-20261007T185846.087649Z/README.md) | FAIL | 7a7ff0c0e5ec |
 | [W-EDIT-03/p42k-portrait-observed-20261007T192336.005363Z](W-EDIT-03/p42k-portrait-observed-20261007T192336.005363Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-EDIT-03/p42l-portrait-20261007T233944.073825Z](W-EDIT-03/p42l-portrait-20261007T233944.073825Z/README.md) | PASS | 6e8e73c42427 |
 | [W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z](W-EDIT-04/p42i-edit-lifecycle-20261007T045529.763068Z/README.md) | PASS | cb5e2aa20263 |
 | [W-EDIT-04/p42j-edit-lifecycle-20261007T121618.513069Z](W-EDIT-04/p42j-edit-lifecycle-20261007T121618.513069Z/README.md) | PASS | 389cf038a738 |
 | [W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z](W-EDIT-04/p42k-edit-lifecycle-20261007T184013.246609Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-EDIT-04/p42l-edit-lifecycle-20261007T232023.211234Z](W-EDIT-04/p42l-edit-lifecycle-20261007T232023.211234Z/README.md) | PASS | 6e8e73c42427 |
 | [W-EDIT-06/p42i-runtime-promotion-20261007T045843.133627Z](W-EDIT-06/p42i-runtime-promotion-20261007T045843.133627Z/README.md) | PASS | cb5e2aa20263 |
 | [W-EDIT-06/p42j-runtime-promotion-20261007T121907.034955Z](W-EDIT-06/p42j-runtime-promotion-20261007T121907.034955Z/README.md) | PASS | 389cf038a738 |
 | [W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z](W-EDIT-06/p42k-runtime-promotion-20261007T184240.138879Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z](W-EDIT-06/p42l-runtime-promotion-20261007T232248.267192Z/README.md) | PASS | 6e8e73c42427 |
 | [W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z](W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/README.md) | PASS | c532b77edd93 |
 | [W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z](W-EDIT-07/live-catalog-stale-context-20261005T194602.663654Z/README.md) | FAIL | d26494a498d4 |
 | [W-EDIT-08/p42i-timing-1-20261007T045345.335538Z](W-EDIT-08/p42i-timing-1-20261007T045345.335538Z/README.md) | PASS | cb5e2aa20263 |
@@ -429,9 +482,12 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-EDIT-08/p42j-timing-2-20261007T121510.067979Z](W-EDIT-08/p42j-timing-2-20261007T121510.067979Z/README.md) | PASS | 389cf038a738 |
 | [W-EDIT-08/p42k-timing-1-20261007T183741.128628Z](W-EDIT-08/p42k-timing-1-20261007T183741.128628Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-EDIT-08/p42k-timing-2-20261007T183828.714513Z](W-EDIT-08/p42k-timing-2-20261007T183828.714513Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-EDIT-08/p42l-timing-1-20261007T231848.106840Z](W-EDIT-08/p42l-timing-1-20261007T231848.106840Z/README.md) | PASS | 6e8e73c42427 |
+| [W-EDIT-08/p42l-timing-2-20261007T231935.569361Z](W-EDIT-08/p42l-timing-2-20261007T231935.569361Z/README.md) | PASS | 6e8e73c42427 |
 | [W-ETOS-01/p42i-owner-block](W-ETOS-01/p42i-owner-block/README.md) | BLOCKED | cb5e2aa20263 |
 | [W-ETOS-01/p42j-owner-rule](W-ETOS-01/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-ETOS-01/p42k-owner-rule](W-ETOS-01/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-ETOS-01/p42l-owner-rule](W-ETOS-01/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-ETOS-01/proxy-missing-app-20261005T182210.204090Z](W-ETOS-01/proxy-missing-app-20261005T182210.204090Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-ETOS-01/proxy-missing-app-20261005T190751.625610Z](W-ETOS-01/proxy-missing-app-20261005T190751.625610Z/README.md) | PASS | 12d7e5c7abab |
 | [W-ETOS-01/proxy-missing-app-20261005T202419.696320Z](W-ETOS-01/proxy-missing-app-20261005T202419.696320Z/README.md) | PASS | c532b77edd93 |
@@ -447,14 +503,17 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-ETOS-02/p42i-owner-block](W-ETOS-02/p42i-owner-block/README.md) | BLOCKED | cb5e2aa20263 |
 | [W-ETOS-02/p42j-owner-rule](W-ETOS-02/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-ETOS-02/p42k-owner-rule](W-ETOS-02/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-ETOS-02/p42l-owner-rule](W-ETOS-02/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-ETOS-04/p42h-query-20261006T233851.413333Z](W-ETOS-04/p42h-query-20261006T233851.413333Z/README.md) | FAIL | a77cb38ba4a2 |
 | [W-ETOS-04/p42i-query-20261007T054157.439022Z](W-ETOS-04/p42i-query-20261007T054157.439022Z/README.md) | FAIL | cb5e2aa20263 |
 | [W-ETOS-04/p42j-query-20261007T130430.466361Z](W-ETOS-04/p42j-query-20261007T130430.466361Z/README.md) | FAIL | 389cf038a738 |
 | [W-ETOS-04/p42k-query-20261007T191948.047722Z](W-ETOS-04/p42k-query-20261007T191948.047722Z/README.md) | FAIL | 7a7ff0c0e5ec |
+| [W-ETOS-04/p42l-query-20261008T000152.746669Z](W-ETOS-04/p42l-query-20261008T000152.746669Z/README.md) | FAIL | 6e8e73c42427 |
 | [W-ETOS-05/p42h-cancel-20261006T234228.357309Z](W-ETOS-05/p42h-cancel-20261006T234228.357309Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-ETOS-05/p42i-cancel-20261007T054357.507172Z](W-ETOS-05/p42i-cancel-20261007T054357.507172Z/README.md) | PASS | cb5e2aa20263 |
 | [W-ETOS-05/p42j-cancel-20261007T130611.687321Z](W-ETOS-05/p42j-cancel-20261007T130611.687321Z/README.md) | PASS | 389cf038a738 |
 | [W-ETOS-05/p42k-cancel-20261007T192114.982259Z](W-ETOS-05/p42k-cancel-20261007T192114.982259Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-ETOS-05/p42l-cancel-20261008T000330.148810Z](W-ETOS-05/p42l-cancel-20261008T000330.148810Z/README.md) | PASS | 6e8e73c42427 |
 | [W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z](W-ETOS-06/installed-stream-resume-cancel-20261005T185854.961200Z/README.md) | PASS | 38baed3d6484 |
 | [W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z](W-ETOS-06/p42b-live-prerequisite-20261006T044157.822009Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z](W-ETOS-06/p42c-companion-restart-20261006T082527.197356Z/README.md) | PASS | 9d8ab6b11d43 |
@@ -464,6 +523,8 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-ETOS-06/p42j-owner-rule](W-ETOS-06/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-ETOS-06/p42k-companion-restart-20261007T195622.701526Z](W-ETOS-06/p42k-companion-restart-20261007T195622.701526Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-ETOS-06/p42k-owner-rule](W-ETOS-06/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-ETOS-06/p42l-companion-restart-20261008T002740.659906Z](W-ETOS-06/p42l-companion-restart-20261008T002740.659906Z/README.md) | PASS | 6e8e73c42427 |
+| [W-ETOS-06/p42l-owner-rule](W-ETOS-06/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z](W-ETOS-07/direct-image-price-refusal-20261005T200701.405209Z/README.md) | PASS | c532b77edd93 |
 | [W-ETOS-07/direct-tts-import-20261005T194103.515551Z](W-ETOS-07/direct-tts-import-20261005T194103.515551Z/README.md) | PASS | d26494a498d4 |
 | [W-ETOS-07/installed-media-20261005T192218.561813Z](W-ETOS-07/installed-media-20261005T192218.561813Z/README.md) | FAIL | 12d7e5c7abab |
@@ -474,14 +535,18 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-ETOS-07/p42j-tamper-20261007T124429.514414Z](W-ETOS-07/p42j-tamper-20261007T124429.514414Z/README.md) | PASS | 389cf038a738 |
 | [W-ETOS-07/p42k-describe-20261007T192814.175198Z](W-ETOS-07/p42k-describe-20261007T192814.175198Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-ETOS-07/p42k-tamper-20261007T192804.029366Z](W-ETOS-07/p42k-tamper-20261007T192804.029366Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-ETOS-07/p42l-describe-20261007T234617.273213Z](W-ETOS-07/p42l-describe-20261007T234617.273213Z/README.md) | PASS | 6e8e73c42427 |
+| [W-ETOS-07/p42l-tamper-20261007T234608.137312Z](W-ETOS-07/p42l-tamper-20261007T234608.137312Z/README.md) | PASS | 6e8e73c42427 |
 | [W-ETOS-07/r8-b-media](W-ETOS-07/r8-b-media/README.md) | PASS | unknown (receipt has no revision) |
 | [W-ETOS-08/p42i-owner-block](W-ETOS-08/p42i-owner-block/README.md) | BLOCKED | cb5e2aa20263 |
 | [W-ETOS-08/p42j-owner-rule](W-ETOS-08/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-ETOS-08/p42k-owner-rule](W-ETOS-08/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-ETOS-08/p42l-owner-rule](W-ETOS-08/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-ETOS-09/p42h-reload-20261006T234520.220306Z](W-ETOS-09/p42h-reload-20261006T234520.220306Z/README.md) | PASS | a77cb38ba4a2 |
 | [W-ETOS-09/p42i-reload-20261007T054455.135309Z](W-ETOS-09/p42i-reload-20261007T054455.135309Z/README.md) | PASS | cb5e2aa20263 |
 | [W-ETOS-09/p42j-reload-20261007T130708.562116Z](W-ETOS-09/p42j-reload-20261007T130708.562116Z/README.md) | PASS | 389cf038a738 |
 | [W-ETOS-09/p42k-reload-20261007T192207.203212Z](W-ETOS-09/p42k-reload-20261007T192207.203212Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-ETOS-09/p42l-reload-20261008T000417.519147Z](W-ETOS-09/p42l-reload-20261008T000417.519147Z/README.md) | PASS | 6e8e73c42427 |
 | [W-GAME-01/p42h-player](W-GAME-01/p42h-player/README.md) | BLOCKED | a77cb38ba4a2 |
 | [W-GAME-01/p42h-player-setup-desktop](W-GAME-01/p42h-player-setup-desktop/README.md) | FAIL | a77cb38ba4a2 |
 | [W-GAME-01/p42h-player-setup-final](W-GAME-01/p42h-player-setup-final/README.md) | FAIL | a77cb38ba4a2 |
@@ -494,21 +559,26 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-GAME-01/p42j-player](W-GAME-01/p42j-player/README.md) | FAIL | 389cf038a738 |
 | [W-GAME-01/p42k-frame-profiles-20261007T200807.956795Z](W-GAME-01/p42k-frame-profiles-20261007T200807.956795Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-GAME-01/p42k-player](W-GAME-01/p42k-player/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-GAME-01/p42l-frame-profiles-20261008T004042.478927Z](W-GAME-01/p42l-frame-profiles-20261008T004042.478927Z/README.md) | PASS | 6e8e73c42427 |
+| [W-GAME-01/p42l-player](W-GAME-01/p42l-player/README.md) | PASS | 6e8e73c42427 |
 | [W-GAME-01/r10-b](W-GAME-01/r10-b/README.md) | unknown (receipt has no status) | fe5364ab |
 | [W-GAME-05/p42i-player-lifecycle-20261007T072455.059988Z](W-GAME-05/p42i-player-lifecycle-20261007T072455.059988Z/README.md) | PASS | cb5e2aa20263 |
 | [W-GAME-05/p42j-player-lifecycle-20261007T143604.700070Z](W-GAME-05/p42j-player-lifecycle-20261007T143604.700070Z/README.md) | PASS | 389cf038a738 |
 | [W-GAME-05/p42k-player-lifecycle-20261007T204932.023173Z](W-GAME-05/p42k-player-lifecycle-20261007T204932.023173Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-GAME-05/p42l-player-lifecycle-20261008T012208.995702Z](W-GAME-05/p42l-player-lifecycle-20261008T012208.995702Z/README.md) | PASS | 6e8e73c42427 |
 | [W-GAME-06/final-player-manifests-20261005T201815.687151Z](W-GAME-06/final-player-manifests-20261005T201815.687151Z/README.md) | PASS | c532b77edd93 |
 | [W-GAME-06/hollowmere-linux-build-20261005T183343.413775Z](W-GAME-06/hollowmere-linux-build-20261005T183343.413775Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z](W-GAME-06/hollowmere-linux-retry-20261005T195106.895058Z/README.md) | PASS | c532b77edd93 |
 | [W-GAME-06/p42i-linux-il2cpp-20261007T063340.203130Z](W-GAME-06/p42i-linux-il2cpp-20261007T063340.203130Z/README.md) | PASS | cb5e2aa20263 |
 | [W-GAME-06/p42j-linux-il2cpp-20261007T134353.970008Z](W-GAME-06/p42j-linux-il2cpp-20261007T134353.970008Z/README.md) | PASS | 389cf038a738 |
 | [W-GAME-06/p42k-linux-il2cpp-20261007T195715.073805Z](W-GAME-06/p42k-linux-il2cpp-20261007T195715.073805Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-GAME-06/p42l-linux-il2cpp-20261008T002834.372526Z](W-GAME-06/p42l-linux-il2cpp-20261008T002834.372526Z/README.md) | PASS | 6e8e73c42427 |
 | [W-GAME-06/v1-gate-20261005T173334.352630Z](W-GAME-06/v1-gate-20261005T173334.352630Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-GAME-06/v1-gate-retry-20261005T190359.447287Z](W-GAME-06/v1-gate-retry-20261005T190359.447287Z/README.md) | FAIL | 12d7e5c7abab |
 | [W-GAME-06/v1-gate-retry-20261007T075649.868432Z](W-GAME-06/v1-gate-retry-20261007T075649.868432Z/README.md) | PASS | cb5e2aa20263 |
 | [W-GAME-06/v1-gate-retry-20261007T145440.615549Z](W-GAME-06/v1-gate-retry-20261007T145440.615549Z/README.md) | PASS | 389cf038a738 |
 | [W-GAME-06/v1-gate-retry-20261007T210734.019896Z](W-GAME-06/v1-gate-retry-20261007T210734.019896Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-GAME-06/v1-gate-retry-20261008T014132.752757Z](W-GAME-06/v1-gate-retry-20261008T014132.752757Z/README.md) | PASS | 6e8e73c42427 |
 | [W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z](W-GAME-06/v1-release-evidence-resume-20261005T200353.317063Z/README.md) | PASS | c532b77edd93 |
 | [W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z](W-GAME-06/v1-resume-phases-9-11-20261005T195509.235538Z/README.md) | FAIL | c532b77edd93 |
 | W-GAME-06/v1-resumed-phases-6-10-20261005T182148.098597Z | BLOCKED (incomplete ENOSPC record retained) | unknown |
@@ -516,6 +586,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-GAME-07/p42i-owner-block](W-GAME-07/p42i-owner-block/README.md) | BLOCKED | cb5e2aa20263 |
 | [W-GAME-07/p42j-owner-rule](W-GAME-07/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-GAME-07/p42k-owner-rule](W-GAME-07/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-GAME-07/p42l-owner-rule](W-GAME-07/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z](W-GAME-08/final-ten-cycle-snapshots-20261005T201735.176679Z/README.md) | PASS | c532b77edd93 |
 | [W-GAME-08/memory-20261005T185951.720007Z](W-GAME-08/memory-20261005T185951.720007Z/README.md) | BLOCKED | 38baed3d6484 |
 | [W-GAME-08/memory-20261005T204457.635953Z](W-GAME-08/memory-20261005T204457.635953Z/README.md) | BLOCKED | 74005cef3447 |
@@ -526,10 +597,13 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-GAME-08/memory-20261007T115919.432830Z](W-GAME-08/memory-20261007T115919.432830Z/README.md) | BLOCKED | 389cf038a738 |
 | [W-GAME-08/memory-20261007T182156.792580Z](W-GAME-08/memory-20261007T182156.792580Z/README.md) | BLOCKED | 7a7ff0c0e5ec |
 | [W-GAME-08/memory-20261007T182723.785407Z](W-GAME-08/memory-20261007T182723.785407Z/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-GAME-08/memory-20261007T230108.159295Z](W-GAME-08/memory-20261007T230108.159295Z/README.md) | BLOCKED | 6e8e73c42427 |
+| [W-GAME-08/memory-20261007T230750.954713Z](W-GAME-08/memory-20261007T230750.954713Z/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-GAME-08/native-memory-and-pumps-20261005T181112.083902Z](W-GAME-08/native-memory-and-pumps-20261005T181112.083902Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z](W-GAME-08/native-memory-and-pumps-20261007T044042.839291Z/README.md) | PASS | cb5e2aa20263 |
 | [W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z](W-GAME-08/native-memory-and-pumps-20261007T115919.520196Z/README.md) | PASS | 389cf038a738 |
 | [W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z](W-GAME-08/native-memory-and-pumps-20261007T182723.901674Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z](W-GAME-08/native-memory-and-pumps-20261007T230751.084405Z/README.md) | PASS | 6e8e73c42427 |
 | [W-HOST-01/companion-release-build-20261005T170828.242918Z](W-HOST-01/companion-release-build-20261005T170828.242918Z/README.md) | PASS | 813e6b4591d8 |
 | [W-HOST-01/immutable-install-20261005T185516.633891Z](W-HOST-01/immutable-install-20261005T185516.633891Z/README.md) | PASS | 38baed3d6484 |
 | [W-HOST-01/immutable-release-build-20261005T185321.958874Z](W-HOST-01/immutable-release-build-20261005T185321.958874Z/README.md) | PASS | 4214d67b2289 |
@@ -537,10 +611,12 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-HOST-01/p42i-owner-block](W-HOST-01/p42i-owner-block/README.md) | BLOCKED | cb5e2aa20263 |
 | [W-HOST-01/p42j-owner-rule](W-HOST-01/p42j-owner-rule/README.md) | BLOCKED | 389cf038a738 |
 | [W-HOST-01/p42k-owner-rule](W-HOST-01/p42k-owner-rule/README.md) | BLOCKED | 7a7ff0c0e5ec |
+| [W-HOST-01/p42l-owner-rule](W-HOST-01/p42l-owner-rule/README.md) | BLOCKED | 6e8e73c42427 |
 | [W-HOST-01/requested-status-command-20261005T194932.604898Z](W-HOST-01/requested-status-command-20261005T194932.604898Z/README.md) | FAIL | c532b77edd93 |
 | [W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z](W-KERNEL-01/p42i-kernel-save-20261007T051059.070176Z/README.md) | PASS | cb5e2aa20263 |
 | [W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z](W-KERNEL-01/p42j-kernel-save-20261007T123231.787001Z/README.md) | PASS | 389cf038a738 |
 | [W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z](W-KERNEL-01/p42k-kernel-save-20261007T185312.723379Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z](W-KERNEL-01/p42l-kernel-save-20261007T233307.640315Z/README.md) | PASS | 6e8e73c42427 |
 | [W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z](W-MECH-01/negative-semantic-explicit-paired-ui-20261005T193633.001803Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/negative-semantic-installed-ui-20261005T193242.839824Z](W-MECH-01/negative-semantic-installed-ui-20261005T193242.839824Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/p42b-live-prerequisite-20261006T044157.689794Z](W-MECH-01/p42b-live-prerequisite-20261006T044157.689794Z/README.md) | BLOCKED | 8d1574e4326a |
@@ -629,6 +705,17 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-MECH-01/p42k-stage-submit-cold-20261007T193451.830925Z](W-MECH-01/p42k-stage-submit-cold-20261007T193451.830925Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-MECH-01/p42k-stage-submit-negative-20261007T194516.829080Z](W-MECH-01/p42k-stage-submit-negative-20261007T194516.829080Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-MECH-01/p42k-stage-submit-warm-20261007T194035.029967Z](W-MECH-01/p42k-stage-submit-warm-20261007T194035.029967Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-MECH-01/p42l-acceptance](W-MECH-01/p42l-acceptance/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-signed-record-20261008T001156.744408Z](W-MECH-01/p42l-signed-record-20261008T001156.744408Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-signed-record-20261008T001633.738482Z](W-MECH-01/p42l-signed-record-20261008T001633.738482Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-source-rebake-20261008T000733.303699Z](W-MECH-01/p42l-source-rebake-20261008T000733.303699Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-negative-review-20261008T001943.744672Z](W-MECH-01/p42l-stage-negative-review-20261008T001943.744672Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z](W-MECH-01/p42l-stage-review-cold-20261008T001200.830681Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z](W-MECH-01/p42l-stage-review-warm-20261008T001636.910123Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-submit-cold-20261008T000538.260889Z](W-MECH-01/p42l-stage-submit-cold-20261008T000538.260889Z/README.md) | FAIL | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-submit-cold-20261008T000821.932378Z](W-MECH-01/p42l-stage-submit-cold-20261008T000821.932378Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-submit-negative-20261008T001841.313686Z](W-MECH-01/p42l-stage-submit-negative-20261008T001841.313686Z/README.md) | PASS | 6e8e73c42427 |
+| [W-MECH-01/p42l-stage-submit-warm-20261008T001429.208383Z](W-MECH-01/p42l-stage-submit-warm-20261008T001429.208383Z/README.md) | PASS | 6e8e73c42427 |
 | [W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z](W-MECH-01/pressure-plate-explicit-paired-ui-20261005T193418.507302Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z](W-MECH-01/pressure-plate-installed-ui-20261005T192605.266487Z/README.md) | FAIL | d26494a498d4 |
 | [W-MECH-01/r9-b](W-MECH-01/r9-b/README.md) | unknown (receipt has no status) | e201d52c6648 |
@@ -639,65 +726,81 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-PERSIST-02/p42j-prefab-reopen-20261007T121806.721437Z](W-PERSIST-02/p42j-prefab-reopen-20261007T121806.721437Z/README.md) | PASS | 389cf038a738 |
 | [W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z](W-PERSIST-02/p42k-prefab-prepare-20261007T184104.777862Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-PERSIST-02/p42k-prefab-reopen-20261007T184152.387422Z](W-PERSIST-02/p42k-prefab-reopen-20261007T184152.387422Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z](W-PERSIST-02/p42l-prefab-prepare-20261007T232114.536367Z/README.md) | PASS | 6e8e73c42427 |
+| [W-PERSIST-02/p42l-prefab-reopen-20261007T232201.030263Z](W-PERSIST-02/p42l-prefab-reopen-20261007T232201.030263Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-01/p42i-native-1-20261007T045942.121995Z](W-PLUG-01/p42i-native-1-20261007T045942.121995Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-01/p42i-native-2-20261007T050214.386449Z](W-PLUG-01/p42i-native-2-20261007T050214.386449Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-01/p42j-native-1-20261007T122027.825900Z](W-PLUG-01/p42j-native-1-20261007T122027.825900Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-01/p42j-native-2-20261007T122240.031825Z](W-PLUG-01/p42j-native-2-20261007T122240.031825Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-01/p42k-native-1-20261007T184327.390946Z](W-PLUG-01/p42k-native-1-20261007T184327.390946Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-PLUG-01/p42k-native-2-20261007T184524.470978Z](W-PLUG-01/p42k-native-2-20261007T184524.470978Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-01/p42l-native-1-20261007T232335.853309Z](W-PLUG-01/p42l-native-1-20261007T232335.853309Z/README.md) | PASS | 6e8e73c42427 |
+| [W-PLUG-01/p42l-native-2-20261007T232629.188222Z](W-PLUG-01/p42l-native-2-20261007T232629.188222Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-02/p42i-animation-20261007T050400.252886Z](W-PLUG-02/p42i-animation-20261007T050400.252886Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-02/p42j-animation-20261007T122512.100407Z](W-PLUG-02/p42j-animation-20261007T122512.100407Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-02/p42k-animation-20261007T184758.576913Z](W-PLUG-02/p42k-animation-20261007T184758.576913Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-02/p42l-animation-20261007T232913.724791Z](W-PLUG-02/p42l-animation-20261007T232913.724791Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z](W-PLUG-03/p42i-player-interactions-20261007T050443.011713Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-03/p42j-player-interactions-20261007T122610.989186Z](W-PLUG-03/p42j-player-interactions-20261007T122610.989186Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z](W-PLUG-03/p42k-player-interactions-20261007T184835.766230Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z](W-PLUG-03/p42l-player-interactions-20261007T232945.971207Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z](W-PLUG-10/p42i-validator-parity-20261007T050539.192872Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-10/p42j-validator-parity-20261007T122659.130516Z](W-PLUG-10/p42j-validator-parity-20261007T122659.130516Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z](W-PLUG-10/p42k-validator-parity-20261007T184948.777489Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-10/p42l-validator-parity-20261007T233027.031604Z](W-PLUG-10/p42l-validator-parity-20261007T233027.031604Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-11/p42i-audio-identity-20261007T073040.927212Z](W-PLUG-11/p42i-audio-identity-20261007T073040.927212Z/README.md) | FAIL | cb5e2aa20263 |
 | [W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z](W-PLUG-11/p42i-audio-identity-20261007T075637.391454Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-11/p42j-audio-identity-20261007T144149.852637Z](W-PLUG-11/p42j-audio-identity-20261007T144149.852637Z/README.md) | FAIL | 389cf038a738 |
 | [W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z](W-PLUG-11/p42k-audio-identity-20261007T205516.225809Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z](W-PLUG-11/p42l-audio-identity-20261008T012753.430802Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-12/bake-cleanproof-20261005T170620.529719Z](W-PLUG-12/bake-cleanproof-20261005T170620.529719Z/README.md) | PASS | 813e6b4591d8 |
 | [W-PLUG-12/bake-cleanproof-20261005T185554.359006Z](W-PLUG-12/bake-cleanproof-20261005T185554.359006Z/README.md) | PASS | 38baed3d6484 |
 | [W-PLUG-12/bake-cleanproof-20261007T042449.737467Z](W-PLUG-12/bake-cleanproof-20261007T042449.737467Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-12/bake-cleanproof-20261007T113913.848615Z](W-PLUG-12/bake-cleanproof-20261007T113913.848615Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-12/bake-cleanproof-20261007T181238.349098Z](W-PLUG-12/bake-cleanproof-20261007T181238.349098Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-12/bake-cleanproof-20261007T225048.621615Z](W-PLUG-12/bake-cleanproof-20261007T225048.621615Z/README.md) | PASS | 6e8e73c42427 |
 | [W-PLUG-12/bake-hollowmere-20261005T170228.211803Z](W-PLUG-12/bake-hollowmere-20261005T170228.211803Z/README.md) | PASS | 813e6b4591d8 |
 | [W-PLUG-12/bake-hollowmere-20261005T185517.764081Z](W-PLUG-12/bake-hollowmere-20261005T185517.764081Z/README.md) | PASS | 38baed3d6484 |
 | [W-PLUG-12/bake-hollowmere-20261007T042136.470601Z](W-PLUG-12/bake-hollowmere-20261007T042136.470601Z/README.md) | PASS | cb5e2aa20263 |
 | [W-PLUG-12/bake-hollowmere-20261007T113644.607591Z](W-PLUG-12/bake-hollowmere-20261007T113644.607591Z/README.md) | PASS | 389cf038a738 |
 | [W-PLUG-12/bake-hollowmere-20261007T181020.679426Z](W-PLUG-12/bake-hollowmere-20261007T181020.679426Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-PLUG-12/bake-hollowmere-20261007T224850.018667Z](W-PLUG-12/bake-hollowmere-20261007T224850.018667Z/README.md) | PASS | 6e8e73c42427 |
 | [W-REC-01/resume-killed-editor-20261005T174227.978810Z](W-REC-01/resume-killed-editor-20261005T174227.978810Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-REC-01/resume-killed-editor-20261005T202307.744055Z](W-REC-01/resume-killed-editor-20261005T202307.744055Z/README.md) | FAIL | c532b77edd93 |
 | [W-REC-01/resume-killed-editor-20261007T050804.537451Z](W-REC-01/resume-killed-editor-20261007T050804.537451Z/README.md) | FAIL | cb5e2aa20263 |
 | [W-REC-01/resume-killed-editor-20261007T123105.394343Z](W-REC-01/resume-killed-editor-20261007T123105.394343Z/README.md) | FAIL | 389cf038a738 |
 | [W-REC-01/resume-killed-editor-20261007T185206.701383Z](W-REC-01/resume-killed-editor-20261007T185206.701383Z/README.md) | FAIL | 7a7ff0c0e5ec |
+| [W-REC-01/resume-killed-editor-20261007T233207.200984Z](W-REC-01/resume-killed-editor-20261007T233207.200984Z/README.md) | FAIL | 6e8e73c42427 |
 | [W-REC-01/resume-reopened-editor-20261005T180654.261221Z](W-REC-01/resume-reopened-editor-20261005T180654.261221Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-REC-01/resume-reopened-editor-20261005T202333.359864Z](W-REC-01/resume-reopened-editor-20261005T202333.359864Z/README.md) | PASS | c532b77edd93 |
 | [W-REC-01/resume-reopened-editor-20261007T050922.417151Z](W-REC-01/resume-reopened-editor-20261007T050922.417151Z/README.md) | PASS | cb5e2aa20263 |
 | [W-REC-01/resume-reopened-editor-20261007T123147.600307Z](W-REC-01/resume-reopened-editor-20261007T123147.600307Z/README.md) | PASS | 389cf038a738 |
 | [W-REC-01/resume-reopened-editor-20261007T185240.875221Z](W-REC-01/resume-reopened-editor-20261007T185240.875221Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-REC-01/resume-reopened-editor-20261007T233235.943310Z](W-REC-01/resume-reopened-editor-20261007T233235.943310Z/README.md) | PASS | 6e8e73c42427 |
 | [W-REC-01/resume-state-20261005T174227.978767Z](W-REC-01/resume-state-20261005T174227.978767Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-REC-01/resume-state-20261005T202307.744000Z](W-REC-01/resume-state-20261005T202307.744000Z/README.md) | PASS | c532b77edd93 |
 | [W-REC-01/resume-state-20261007T050804.537383Z](W-REC-01/resume-state-20261007T050804.537383Z/README.md) | PASS | cb5e2aa20263 |
 | [W-REC-01/resume-state-20261007T123105.394286Z](W-REC-01/resume-state-20261007T123105.394286Z/README.md) | PASS | 389cf038a738 |
 | [W-REC-01/resume-state-20261007T185206.701320Z](W-REC-01/resume-state-20261007T185206.701320Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-REC-01/resume-state-20261007T233207.200917Z](W-REC-01/resume-state-20261007T233207.200917Z/README.md) | PASS | 6e8e73c42427 |
 | [W-REC-01/rollback-killed-editor-20261005T174119.215565Z](W-REC-01/rollback-killed-editor-20261005T174119.215565Z/README.md) | FAIL | 20e34d1e6a68 |
 | [W-REC-01/rollback-killed-editor-20261005T202208.951931Z](W-REC-01/rollback-killed-editor-20261005T202208.951931Z/README.md) | FAIL | c532b77edd93 |
 | [W-REC-01/rollback-killed-editor-20261007T050623.898408Z](W-REC-01/rollback-killed-editor-20261007T050623.898408Z/README.md) | FAIL | cb5e2aa20263 |
 | [W-REC-01/rollback-killed-editor-20261007T122851.849278Z](W-REC-01/rollback-killed-editor-20261007T122851.849278Z/README.md) | FAIL | 389cf038a738 |
 | [W-REC-01/rollback-killed-editor-20261007T185026.180864Z](W-REC-01/rollback-killed-editor-20261007T185026.180864Z/README.md) | FAIL | 7a7ff0c0e5ec |
+| [W-REC-01/rollback-killed-editor-20261007T233105.356252Z](W-REC-01/rollback-killed-editor-20261007T233105.356252Z/README.md) | FAIL | 6e8e73c42427 |
 | [W-REC-01/rollback-reopened-editor-20261005T174154.867175Z](W-REC-01/rollback-reopened-editor-20261005T174154.867175Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-REC-01/rollback-reopened-editor-20261005T202237.272767Z](W-REC-01/rollback-reopened-editor-20261005T202237.272767Z/README.md) | PASS | c532b77edd93 |
 | [W-REC-01/rollback-reopened-editor-20261007T050703.970697Z](W-REC-01/rollback-reopened-editor-20261007T050703.970697Z/README.md) | PASS | cb5e2aa20263 |
 | [W-REC-01/rollback-reopened-editor-20261007T123022.695868Z](W-REC-01/rollback-reopened-editor-20261007T123022.695868Z/README.md) | PASS | 389cf038a738 |
 | [W-REC-01/rollback-reopened-editor-20261007T185135.167754Z](W-REC-01/rollback-reopened-editor-20261007T185135.167754Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-REC-01/rollback-reopened-editor-20261007T233135.060869Z](W-REC-01/rollback-reopened-editor-20261007T233135.060869Z/README.md) | PASS | 6e8e73c42427 |
 | [W-REC-01/rollback-state-20261005T174119.215442Z](W-REC-01/rollback-state-20261005T174119.215442Z/README.md) | PASS | 20e34d1e6a68 |
 | [W-REC-01/rollback-state-20261005T202208.950937Z](W-REC-01/rollback-state-20261005T202208.950937Z/README.md) | PASS | c532b77edd93 |
 | [W-REC-01/rollback-state-20261007T050623.898305Z](W-REC-01/rollback-state-20261007T050623.898305Z/README.md) | PASS | cb5e2aa20263 |
 | [W-REC-01/rollback-state-20261007T122851.849146Z](W-REC-01/rollback-state-20261007T122851.849146Z/README.md) | PASS | 389cf038a738 |
 | [W-REC-01/rollback-state-20261007T185026.180708Z](W-REC-01/rollback-state-20261007T185026.180708Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-REC-01/rollback-state-20261007T233105.356149Z](W-REC-01/rollback-state-20261007T233105.356149Z/README.md) | PASS | 6e8e73c42427 |
 | [W-REC-03/p42h-prerequisite](W-REC-03/p42h-prerequisite/README.md) | BLOCKED | a77cb38ba4a2 |
 | [W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z](W-REC-03/p42i-cancelled-stage-20261007T062735.109356Z/README.md) | PASS | cb5e2aa20263 |
 | [W-REC-03/p42i-region-cancel-20261007T060933.249658Z](W-REC-03/p42i-region-cancel-20261007T060933.249658Z/README.md) | PASS | cb5e2aa20263 |
@@ -711,6 +814,10 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-REC-03/p42k-region-cancel-20261007T194712.964834Z](W-REC-03/p42k-region-cancel-20261007T194712.964834Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-REC-03/p42k-stage-cancel-20261007T195123.742042Z](W-REC-03/p42k-stage-cancel-20261007T195123.742042Z/README.md) | PASS | 7a7ff0c0e5ec |
 | [W-REC-03/p42k-stage-submit-cancel-20261007T195016.932747Z](W-REC-03/p42k-stage-submit-cancel-20261007T195016.932747Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-REC-03/p42l-cancelled-stage-20261008T002811.211630Z](W-REC-03/p42l-cancelled-stage-20261008T002811.211630Z/README.md) | PASS | 6e8e73c42427 |
+| [W-REC-03/p42l-region-cancel-20261008T002042.391754Z](W-REC-03/p42l-region-cancel-20261008T002042.391754Z/README.md) | PASS | 6e8e73c42427 |
+| [W-REC-03/p42l-stage-cancel-20261008T002225.328004Z](W-REC-03/p42l-stage-cancel-20261008T002225.328004Z/README.md) | PASS | 6e8e73c42427 |
+| [W-REC-03/p42l-stage-submit-cancel-20261008T002125.301648Z](W-REC-03/p42l-stage-submit-cancel-20261008T002125.301648Z/README.md) | PASS | 6e8e73c42427 |
 | [W-TOOL-02/final-harness-metadata-20261005T194717.145522Z](W-TOOL-02/final-harness-metadata-20261005T194717.145522Z/README.md) | PASS | c532b77edd93 |
 | [W-TOOL-02/final-metadata-20261005T205459.094614Z](W-TOOL-02/final-metadata-20261005T205459.094614Z/README.md) | PASS | 50a4c07c2021 |
 | [W-TOOL-02/metadata-20261005T170003.293967Z](W-TOOL-02/metadata-20261005T170003.293967Z/README.md) | PASS | 813e6b4591d8 |
@@ -718,20 +825,25 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-TOOL-02/metadata-20261007T041606.827753Z](W-TOOL-02/metadata-20261007T041606.827753Z/README.md) | PASS | cb5e2aa20263 |
 | [W-TOOL-02/metadata-20261007T113207.870567Z](W-TOOL-02/metadata-20261007T113207.870567Z/README.md) | PASS | 389cf038a738 |
 | [W-TOOL-02/metadata-20261007T180650.868229Z](W-TOOL-02/metadata-20261007T180650.868229Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-TOOL-02/metadata-20261007T224438.069632Z](W-TOOL-02/metadata-20261007T224438.069632Z/README.md) | PASS | 6e8e73c42427 |
 | [W-TOOL-02/p42k-final-metadata-20261007T215644.453865Z](W-TOOL-02/p42k-final-metadata-20261007T215644.453865Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-TOOL-02/p42l-final-metadata-20261008T004327.038086Z](W-TOOL-02/p42l-final-metadata-20261008T004327.038086Z/README.md) | PASS | 6e8e73c42427 |
 | [W-UI-01/layout-1280x720-20261005T193653.367571Z](W-UI-01/layout-1280x720-20261005T193653.367571Z/README.md) | PASS | d26494a498d4 |
 | [W-UI-01/p42i-open-play-20261007T044622.194456Z](W-UI-01/p42i-open-play-20261007T044622.194456Z/README.md) | PASS | cb5e2aa20263 |
 | [W-UI-01/p42j-open-play-20261007T120519.948523Z](W-UI-01/p42j-open-play-20261007T120519.948523Z/README.md) | PASS | 389cf038a738 |
 | [W-UI-01/p42k-open-play-20261007T183112.222372Z](W-UI-01/p42k-open-play-20261007T183112.222372Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-UI-01/p42l-open-play-20261007T231144.009992Z](W-UI-01/p42l-open-play-20261007T231144.009992Z/README.md) | PASS | 6e8e73c42427 |
 | [W-UI-01/r7-a](W-UI-01/r7-a/README.md) | PASS | 1a462f88 |
 | [W-UI-01/ui-capture-20261005T190220.779562Z](W-UI-01/ui-capture-20261005T190220.779562Z/README.md) | FAIL | 12d7e5c7abab |
 | [W-UI-01/ui-capture-20261005T192323.970290Z](W-UI-01/ui-capture-20261005T192323.970290Z/README.md) | FAIL | d26494a498d4 |
 | [W-UI-02/p42i-fence-20261007T044746.487542Z](W-UI-02/p42i-fence-20261007T044746.487542Z/README.md) | PASS | cb5e2aa20263 |
 | [W-UI-02/p42j-fence-20261007T120642.070128Z](W-UI-02/p42j-fence-20261007T120642.070128Z/README.md) | PASS | 389cf038a738 |
 | [W-UI-02/p42k-fence-20261007T183229.565380Z](W-UI-02/p42k-fence-20261007T183229.565380Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-UI-02/p42l-fence-20261007T231301.110316Z](W-UI-02/p42l-fence-20261007T231301.110316Z/README.md) | PASS | 6e8e73c42427 |
 | [W-UI-03/p42i-lantern-20261007T044837.239366Z](W-UI-03/p42i-lantern-20261007T044837.239366Z/README.md) | PASS | cb5e2aa20263 |
 | [W-UI-03/p42j-lantern-20261007T120734.848863Z](W-UI-03/p42j-lantern-20261007T120734.848863Z/README.md) | PASS | 389cf038a738 |
 | [W-UI-03/p42k-lantern-20261007T183317.888425Z](W-UI-03/p42k-lantern-20261007T183317.888425Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-UI-03/p42l-lantern-20261007T231348.960041Z](W-UI-03/p42l-lantern-20261007T231348.960041Z/README.md) | PASS | 6e8e73c42427 |
 | [W-UI-05/p42d-selection-20261006T112100.063994Z](W-UI-05/p42d-selection-20261006T112100.063994Z/README.md) | PASS | ed1969e4cc14 |
 | [W-UI-05/p42d-selection-repeat-20261006T123743.261129Z](W-UI-05/p42d-selection-repeat-20261006T123743.261129Z/README.md) | PASS | 249ce726c452 |
 | [W-VIEW-01/captures-20261005T173933Z](W-VIEW-01/captures-20261005T173933Z/README.md) | PASS | 20e34d1e6a68 |
@@ -740,6 +852,7 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-VIEW-01/views-capture-20261007T045200.372039Z](W-VIEW-01/views-capture-20261007T045200.372039Z/README.md) | PASS | cb5e2aa20263 |
 | [W-VIEW-01/views-capture-20261007T121149.314625Z](W-VIEW-01/views-capture-20261007T121149.314625Z/README.md) | PASS | 389cf038a738 |
 | [W-VIEW-01/views-capture-20261007T183557.990046Z](W-VIEW-01/views-capture-20261007T183557.990046Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-VIEW-01/views-capture-20261007T231704.031443Z](W-VIEW-01/views-capture-20261007T231704.031443Z/README.md) | PASS | 6e8e73c42427 |
 | [W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z](W-VOICE-01/capture-ready-recorded-wav-20261005T194304.382344Z/README.md) | FAIL | d26494a498d4 |
 | [W-VOICE-01/p42b-live-prerequisite-20261006T044157.715808Z](W-VOICE-01/p42b-live-prerequisite-20261006T044157.715808Z/README.md) | BLOCKED | 8d1574e4326a |
 | [W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z](W-VOICE-01/p42c-fresh-destructive-20261006T074915.219505Z/README.md) | FAIL | dbedd2fb6c83 |
@@ -751,5 +864,6 @@ Matrix row totals: PASS 60, BLOCKED 6, FAIL 2.
 | [W-VOICE-01/p42i-voice-20261007T051405.333523Z](W-VOICE-01/p42i-voice-20261007T051405.333523Z/README.md) | PASS | cb5e2aa20263 |
 | [W-VOICE-01/p42j-voice-20261007T123542.149202Z](W-VOICE-01/p42j-voice-20261007T123542.149202Z/README.md) | PASS | 389cf038a738 |
 | [W-VOICE-01/p42k-voice-20261007T185601.031912Z](W-VOICE-01/p42k-voice-20261007T185601.031912Z/README.md) | PASS | 7a7ff0c0e5ec |
+| [W-VOICE-01/p42l-voice-20261007T233657.311356Z](W-VOICE-01/p42l-voice-20261007T233657.311356Z/README.md) | PASS | 6e8e73c42427 |
 | [W-VOICE-01/recorded-wav-pipewire-20261005T193238.270894Z](W-VOICE-01/recorded-wav-pipewire-20261005T193238.270894Z/README.md) | FAIL | d26494a498d4 |
 | [W-VOICE-01/recorded-wav-pipewire-20261005T193646.251324Z](W-VOICE-01/recorded-wav-pipewire-20261005T193646.251324Z/README.md) | FAIL | d26494a498d4 |

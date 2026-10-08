@@ -1,0 +1,94 @@
+{
+  "id": "cs_01M4CD0Y6ZHX918HZ9VRA61SSJ",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Move only the selected live Bram instance in the running GameCore world, not authored content, to absolute world position [11.5,0.0,-13.0] and yaw 270 degrees.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M4CD0Y5GFEJJSYZGND3GRP4E",
+    "mode": "Play",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      }
+    ],
+    "indexRevision": 222
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      },
+      "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "runtime.move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "2825db71-11a1-4155-b1db-9e7734111d9e",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1087114180-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Bram",
+        "scope": "Instance",
+        "stamp": "sha256:af554909744edc0e86291db8637ed269dd2429982e4ca046db7e0dd8a9dc38c1"
+      },
+      "args": {
+        "position": [
+          11.5,
+          0.0,
+          -13.0
+        ],
+        "yaw": 270.0
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Live"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Live",
+    "worldRebuild": false,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t1327932547f03f1023f2a9b0"
+    ],
+    "gameCoreOps": [
+      "w:c785cb4ea406e66111804dcb389e3f90/i:c696b9df8c15685712fcd173f2864320/s:17"
+    ]
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "detail": "Runtime move admitted; non-undoable. Apply to authored is available only once its pose commits.",
+      "gameCoreOps": [
+        "w:c785cb4ea406e66111804dcb389e3f90/i:c696b9df8c15685712fcd173f2864320/s:17"
+      ]
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-08T00:01:46.623Z",
+    "applied": "2026-10-08T00:01:46.641Z"
+  }
+}
